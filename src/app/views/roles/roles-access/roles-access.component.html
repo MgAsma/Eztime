@@ -1,0 +1,47 @@
+
+<div class="row mobileView">
+    <div class="col-sm-12 col-md-12 sidebar-container" *ngIf="show">
+        <!-- <form [formGroup]="rolesAccessForm"> -->
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let items of mainMenu;let i=index"  (change)='onChange(items)'>
+                <div [class]="items.containerClass" >
+                    <input [class]="items.class" [type]="items.type" [checked]="items.checked"  [routerLink]="items.path" name="roles">
+                    <label [class]="items.labelClass">
+                        {{items.label}}
+                    </label>
+                </div>
+                <span class="icon-span"><i [class]="items.icon" aria-hidden="true" id="h-icon"></i></span>
+            </li>
+        </ul>
+
+        <!-- </form> -->
+
+    </div>
+    <div class="col-sm-12 col-md-12 p-0" *ngIf="!show">
+        <h1><i  class="bi bi-arrow-left" (click)="onChange('goback')"></i>Roles Accessibility</h1>
+        <router-outlet ></router-outlet>
+    </div>
+</div>
+<div class="row webView">
+    <div class="col-sm-3 sidebar-container">
+        <!-- <form [formGroup]="rolesAccessForm"> -->
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let items of mainMenu;let i=index"  >
+                <div [class]="items.containerClass" >
+                    <input [class]="items.class" [type]="items.type" [checked]="items.checked"  [routerLink]="items.path" name="roles">
+                    <label [class]="items.labelClass">
+                        {{items.label}}
+                    </label>
+                </div>
+                <span class="icon-span"><i [class]="items.icon" aria-hidden="true" id="h-icon"></i></span>
+            </li>
+        </ul>
+
+        <!-- </form> -->
+
+    </div>
+    <div class="col-sm-9 p-0"> 
+        <h1>Roles Accessibility</h1>
+        <router-outlet></router-outlet>
+    </div>
+</div>

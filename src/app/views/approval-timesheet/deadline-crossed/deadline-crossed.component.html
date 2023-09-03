@@ -1,0 +1,164 @@
+<div class="container-fluid webView">
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Dead line crossed timesheets </h1>
+        </div>
+        <div class="col-sm"></div>
+        <div class="col-sm-4">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
+                  <li class="breadcrumb-item">
+                    Dead line crossed timesheets  </li>
+                  
+                </ol>
+              </nav>
+        </div>
+        
+    </div>
+  
+    <div class="container-middle">
+        <div class="p-20 pt-4">
+            <div class="card">
+              <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-8">
+                  <form [formGroup]="monthForm" (ngSubmit)="submit()">
+                  <div class="row">
+                         <div class="col-sm-12 col-md-12 col-lg-4">
+                          <mat-form-field >
+                            <mat-label>Select month</mat-label>
+                            <mat-select formControlName="fromMonth"  (change)="onChanges()">
+                              <mat-option *ngFor="let month of monthNames" [value]="month" >
+                                {{month}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <div *ngIf="f['fromMonth'].touched && f['fromMonth'].invalid">
+                            <p *ngIf="f['fromMonth'].errors['required']" class="feedback">Month is required</p>
+                          </div>
+                         </div>
+                         
+                       <div class="col-sm-12 col-md-12 col-lg-4">
+                           <button mat-raised-button class="proceedbtn mat-btn-s">Submit</button>
+                       </div>
+                   </div>
+                  </form>  
+                </div>
+          
+              </div>
+              
+            </div>
+               
+           </div>
+           <div>
+        <div class="row  p-20">
+            <div class="col-sm-12">
+                <tabset #tabset >
+                    <tab heading="Yet to approved" (selectTab)="tabState($event)">
+                        <ng-container *ngIf="allDetails.length > 0">
+                          <app-deadline-yetto-approve  [data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-deadline-yetto-approve>
+                        </ng-container>
+                    </tab>
+                    <!-- <tab heading="Approved Timesheet" (selectTab)="tabState($event)">
+                        <ng-container *ngFor="let items of allDetails">
+                            <app-approved *ngIf="items.approved_state === 'APPROVED'" [data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-approved>
+                        </ng-container>
+                      
+                    </tab>
+                    <tab heading="Declined Timesheet" (selectTab)="tabState($event)">
+                        <ng-container *ngFor="let items of allDetails">
+                            <app-declined *ngIf="items.approved_state  === 'DECLINED'"[data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-declined>
+                        </ng-container>
+                      
+                    </tab>
+                    <tab heading="Time Sheets" (selectTab)="tabState($event)">
+                        <ng-container *ngFor="let items of allDetails">
+                            <app-time-sheet *ngIf="items.approved_state === 'TIMESHEET'" [data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-time-sheet>    
+                        </ng-container>
+                      
+                    </tab> -->
+                   
+                  </tabset>
+            </div>
+        </div>
+           </div>
+    </div>
+</div>
+<div class="container-fluid mobileView">
+  <div class="row">
+      <div class="col-sm-6">
+          <h1>Dead line crossed timesheets </h1>
+      </div>
+  </div>
+
+  <div class="container-middle">
+      <div class="p-20 pt-4">
+          <div class="card">
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-8">
+                <form [formGroup]="monthForm" (ngSubmit)="submit()">
+                <div class="row">
+                       <div class="col-sm-12 col-md-12 col-lg-4">
+                        <mat-form-field >
+                          <mat-label>Select month</mat-label>
+                          <mat-select formControlName="fromMonth"  (change)="onChanges()">
+                            <mat-option *ngFor="let month of monthNames" [value]="month" >
+                              {{month}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <div *ngIf="f['fromMonth'].touched && f['fromMonth'].invalid">
+                          <p *ngIf="f['fromMonth'].errors['required']" class="feedback">Month is required</p>
+                        </div>
+                       </div>
+                       
+                     <div class="col-sm-12 col-md-12 col-lg-4">
+                         <button mat-raised-button class="proceedbtn mat-btn-s">Submit</button>
+                     </div>
+                 </div>
+                </form>  
+              </div>
+        
+            </div>
+            
+          </div>
+             
+         </div>
+         <div>
+      <div class="row  p-20">
+          <div class="col-sm-12">
+              <tabset #tabset >
+                  <tab heading="Yet to approved" (selectTab)="tabState($event)">
+                      <ng-container *ngIf="allDetails.length > 0">
+                        <app-deadline-yetto-approve  [data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-deadline-yetto-approve>
+                      </ng-container>
+                  </tab>
+                  <div *ngIf="allDetails.length  === 0" class="nodata text-muted">
+                    <td> No records found
+  !</td>  
+                </div>
+                  <!-- <tab heading="Approved Timesheet" (selectTab)="tabState($event)">
+                      <ng-container *ngFor="let items of allDetails">
+                          <app-approved *ngIf="items.approved_state === 'APPROVED'" [data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-approved>
+                      </ng-container>
+                    
+                  </tab>
+                  <tab heading="Declined Timesheet" (selectTab)="tabState($event)">
+                      <ng-container *ngFor="let items of allDetails">
+                          <app-declined *ngIf="items.approved_state  === 'DECLINED'"[data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-declined>
+                      </ng-container>
+                    
+                  </tab>
+                  <tab heading="Time Sheets" (selectTab)="tabState($event)">
+                      <ng-container *ngFor="let items of allDetails">
+                          <app-time-sheet *ngIf="items.approved_state === 'TIMESHEET'" [data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-time-sheet>    
+                      </ng-container>
+                    
+                  </tab> -->
+                 
+                </tabset>
+          </div>
+      </div>
+         </div>
+  </div>
+</div>

@@ -1,0 +1,159 @@
+ol{
+    background-color: inherit;
+}
+a{
+    color: #3F51B5;
+    text-decoration: none;
+}
+li{
+    
+    list-style: none;
+    color: grey;
+}
+ul{
+    padding: 0px;
+}
+.bg{
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+    border-radius: 5px;
+}
+.proceedbtn{
+    background-color: #3F51B5;
+    border-radius: 5px;
+    border: none;
+    height: 40px;
+    width: 100%;
+    color: white;
+    margin: 10px 0px;
+}
+.printbtn{
+    background-color: #00BCD4;
+    border-radius: 5px;
+    border: none;
+    height: 40px;
+    width: 100%;
+    color: white;
+    margin: 10px 0px;
+}
+.row{
+    padding: 5px;
+}
+i{
+    padding: 0px 5px 0px 0px;
+}
+.btnicon{
+    display: none;
+}
+button:hover .btnicon{
+    display: block;
+}
+::ng-deep .mat-form-field {
+    height: 55px;
+    width: 95%!important;
+    background-color: #ffff;
+    border-radius: 50px;
+    border: solid gray;
+}
+
+::ng-deep .mat-form-field-underline {
+    display: none;
+}
+select{
+    width: 100%;
+    height: 50px;
+}
+span{
+    color: red;
+}
+p{
+    color: grey;
+}
+
+h2 {
+    margin: 0;
+    font-size: 16px;
+  }
+  
+  ul {
+    margin: 0;
+    padding: 0 0 0 1.5em;
+  }
+  
+  li {
+    margin: 1.5em 0;
+    padding: 0;
+  }
+  
+  b { /* used for event dates/times */
+    margin-right: 3px;
+  }
+  
+  .demo-app {
+    display: flex;
+    min-height: 100%;
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    font-size: 14px;
+  }
+  
+  .demo-app-sidebar {
+    width: 300px;
+    line-height: 1.5;
+    background: #eaf9ff;
+    border-right: 1px solid #d3e2e8;
+  }
+  
+//   .demo-app-sidebar-section {
+//     padding: 2em;
+//   }
+  
+  .demo-app-main {
+    flex-grow: 1;
+  }
+  
+  .fc { /* the calendar root */
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+@media only screen and (max-width: 1023px){
+    .bg {
+      height: 64vh !important;
+      overflow-y: auto !important;
+      overflow-x: auto !important;
+    }
+  }
+  @media only screen and (min-width: 1024px){
+    .bg {
+      height: 70vh !important;
+      overflow-y: auto !important;
+    }
+  }
+  #h-1{
+  padding: 0 !important;
+  margin: 0 !important;
+  height: 20px !important;
+  }
+  b.ng-star-inserted {
+    display: none !important;
+}
+i.ng-star-inserted {
+  font-weight: 700;
+  font-size: 12px;
+  font-style: normal;
+  width: 100%;
+  color:white;
+  background: black;
+  text-align: center;
+ // position: relative;
+}
+i.ng-star-inserted:hover {
+  background: blue;
+  font-size: medium;
+  // position: absolute;
+  // top: 0px;
+  width: fit-content;
+}
+/* padding: 3px 0; */

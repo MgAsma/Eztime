@@ -1,0 +1,93 @@
+
+.sidebar-nav .nav-link {
+     color: black !important;
+  //   padding: 11px 15px 11px 0px;
+ }
+ .sidebar-nav{
+     padding: 10px 0px 0px 0px;
+ }
+ 
+ 
+ // .sidebar-nav .nav-group.show {
+ //     background: #eeeeee !important;
+ // }
+ //.sidebar-nav .nav-group.show {
+   //   background: #d8d8d8;
+   //   color: black !important;
+ //}
+
+.sidebar-nav .nav-link.active {
+    color: #212529 !important;
+    font-weight: 500;
+    background: white;
+    margin: 10px;
+    border-radius: 5px;
+}
+ // .sidebar-nav .nav-link{
+ //     color:white !important;
+ // }
+ //a.nav-link.ng-star-inserted {
+ //   color: black;
+//}
+ 
+ .sidebar-nav .nav-link:hover .nav-icon {
+    opacity: 0.7;
+ }
+ .sidebar-nav .nav-link:hover {
+  //   color: #6c757d !important;
+     text-decoration: none;
+     transition: all 0.5s ease
+ }
+ .sidebar {
+    //  --cui-sidebar-width: 15rem;
+     font-size: 14px;
+ }
+ .mobileView{
+    .sidebar {
+        //  --cui-sidebar-width: 15rem;
+         font-size: 16px !important;
+     }
+ }
+ .sidebar-brand {
+     height: 50px;
+     background: #fff!important;
+     padding: 5px!important;
+    // border: 3px solid black;
+ }
+ //.sidebar-nav .nav-link .nav-icon {
+  //  color: black !important;
+// }
+.sidebar-nav .nav-icon {
+    color: rgb(13 107 178);
+    font-size: 16px;
+}
+.sidebar-nav .nav-link:hover .nav-icon{
+    color: rgb(13 107 178) !important;
+    font-size: 16px;
+}
+ .sidebar-nav .nav-link.active .nav-icon {
+  color: white !important;
+ }
+ //.sidebar-nav .nav-group.show .nav-group-toggle {
+  //  background: rgba(255, 255, 255, 0.87);
+  //  color: black;
+ //}
+ .sidebar-toggler {   
+   background-color:transparent !important; 
+ }
+ .sidebar-toggler:hover::before {
+  background-image: var(--cui-sidebar-toggler-indicator) !important;
+ }
+ .sidebar-nav .nav-group-toggle::after {
+     background-image: var(--cui-sidebar-toggler-indicator) !important;
+     transform: rotate(-92deg) !important;
+     transition: all 0.5s ease
+ }
+ .sidebar-nav .nav-group.show > .nav-group-toggle::after {
+     transform: rotate(92deg) !important;
+ }
+//  .sidebar-logo{
+//      transform: scale(0.8);
+//  }
+ 
+ 

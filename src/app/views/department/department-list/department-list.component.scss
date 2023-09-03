@@ -1,0 +1,124 @@
+ol{
+    background-color: inherit;
+}
+a{
+    color: #3F51B5;
+    text-decoration: none;
+}
+li{
+    
+    list-style: none;
+    color: grey;
+}
+ul{
+    padding: 0px;
+}
+.bg{
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+
+}
+.proceedbtn{
+    background-color: #3F51B5;
+    border-radius: 5px;
+    border: none;
+    height: 40px;
+    width: 100%;
+    color: white;
+    margin: 10px 0px;
+}
+.printbtn{
+    background-color: #00BCD4;
+    border-radius: 5px;
+    border: none;
+    height: 40px;
+    width: 100%;
+    color: white;
+    margin: 10px 0px;
+}
+.row{
+    padding: 5px;
+}
+i {
+    padding: 2px 3px 0px 0px;
+}
+.btnicon{
+    display: none;
+}
+button:hover .btnicon{
+    display: block;
+}
+::ng-deep .mat-form-field {
+    height: 55px;
+    width: 95%!important;
+    background-color: #ffff;
+    border-radius: 50px;
+    border: solid gray;
+}
+
+::ng-deep .mat-form-field-underline {
+    display: none;
+}
+select{
+    width: 100%;
+    height: 40px;
+    margin: 1px 1px;
+}
+span{
+    color: red;
+}
+p{
+    color: grey;
+}
+html{
+    position: relative;
+}
+// .createbtn{
+//     background-color: #3F51B5;
+//     border: none;
+//     color: white;
+//     padding: 10px 13px;
+//     text-align: center;
+//     text-decoration: none;
+//     display: inline-block;
+//     font-size: 25px;
+//     margin: 0px 2px;
+//     border-radius: 50%;
+//     position: fixed;
+//     right: 5%;
+//     bottom: 15%;
+// }
+
+.search-color{
+    background-color: #f6f6f6;
+}
+
+.outer-card{
+    border: none;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 4%);
+    margin: 10px 5px;
+    border-radius: 10px;
+    zoom: 80%;
+}
+.card-subtitle{
+    font-weight: bold;
+}
+.inner-card{
+    margin: 8px 10px;
+    border-radius: 18px;
+    border:none;
+    background: #3d358f;
+    color: white !important;
+}
+.p-c{
+    padding: 15px 2rem 0px 2rem;
+}
+// .outer-card:hover{
+//     background-color: #dfdfdf;
+// }
+.main-col{
+    padding: 5px;
+}

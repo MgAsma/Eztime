@@ -1,0 +1,201 @@
+<div class="container-wrapper webView">
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Client list</h1>
+        </div>
+        <div class="col-sm"></div>
+        <div class="col-sm-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
+                  <li class="breadcrumb-item">Client list</li>
+                  
+                </ol>
+              </nav>
+        </div>
+        
+    </div>
+        <div class="row p-20">
+            <div class="col-sm-2">
+                <select (change)="onTableSizeChange($event)" class="form-select">
+                    <option *ngFor="let size of tableSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+            </div>
+            <div class="col-sm"></div>
+            <div class="col-sm-3 search-div">
+                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp"  autocomplete="off">
+                <i class="bi bi-search" id="search-icon-tab"></i>     
+            </div>
+        </div>
+        <div class="bg">
+        <div class="row">
+            <div class="col">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                          <th scope="col">Sl. No.</th>
+                          <th scope="col">Client Name <i  *ngIf="!arrow" (click)="sort('asc','c_name')" class="fa fa-sort-up"></i><i (click)="sort('desc','c_name')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col">Code <i  *ngIf="!arrow" (click)="sort('asc','c_code')" class="fa fa-sort-up"></i><i (click)="sort('desc','c_code')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col">Industry <i  *ngIf="!arrow" (click)="sort('asc','toi_ref_id')" class="fa fa-sort-up"></i><i (click)="sort('desc','toi_ref_id')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <!-- <th scope="col">Type <i  *ngIf="!arrow" (click)="sort('asc','c_type')" class="fa fa-sort-up"></i><i (click)="sort('desc','c_type')" *ngIf="arrow" class="fa fa-sort-down"></i></th> -->
+                          <th scope="col">Contact Person <i  *ngIf="!arrow" (click)="sort('asc','c_contact_person')" class="fa fa-sort-up"></i><i (click)="sort('desc','c_contact_person')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <!-- <th scope="col">Projects <i  *ngIf="!arrow" (click)="sort('asc','project')" class="fa fa-sort-up"></i><i (click)="sort('desc','project')" *ngIf="arrow" class="fa fa-sort-down"></i></th> -->
+                          <th scope="col">Reg. Date <i  *ngIf="!arrow" (click)="sort('asc','c_c_timestamp')" class="fa fa-sort-up"></i><i (click)="sort('desc','c_c_timestamp')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <ng-container *ngIf="(allClientList) as result"> 
+                        <tr *ngFor='let item of result| filter:term|paginate : {
+                            itemsPerPage: tableSize,
+                            currentPage: page,
+                            totalItems: count
+                          }|customSort:directionValue:sortValue|filter:term; let i=index' [class.active]="i == currentIndex">
+                            <td>{{i + 1}}</td>
+                            <td>{{item.c_name}}</td>
+                            <td>{{item.c_code}}</td>
+                            <td>{{item.toi_ref_id}}</td>
+                            <!-- <td>{{item.c_type}}</td> -->
+                            <td>{{item.c_contact_person}}</td>
+                            <!-- <td>{{item.project ? item.project :"NA"}}</td> -->
+                            <td>{{item.c_c_timestamp | date:'mediumDate'}}</td>
+                            
+                            <td>
+                                <ng-container *ngFor="let access of permissions">
+                                    <button mat-mini-fab  routerLink="/client/update/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
+                                      <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
+                                    </button>
+                                    <button mat-mini-fab   (click)="open(item.id)" *ngIf="access === 'DELETE'">
+                                      <i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i>
+                                    </button>
+                                  </ng-container>  
+                                <!-- <a routerLink="/client/update/{{item.id}}/{{page}}/{{tableSize}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></a>
+                               <button style="border: none;background-color: inherit;" (click)="open(item.id)"><i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i></button> -->
+                            </td>
+                        </tr>
+                        <tr *ngIf="result.length === 0" class="nodata">
+                            <td> No records found!</td>  
+                        </tr>
+                        </ng-container>
+                      </tbody>
+                  </table>
+            </div>
+        </div>
+        <div class="row">
+           
+            <div class="col-sm"></div>
+            <div class="col-sm">
+                <div class="d-flex justify-content-end p-nav">
+                    <pagination-controls 
+                      previousLabel="Prev" 
+                      nextLabel="Next" 
+                      (pageChange)="onTableDataChange($event)">
+                    </pagination-controls>
+                  </div>
+            </div>
+        </div>
+    </div>
+    
+ <ng-container *ngFor="let access of permissions">
+    <button mat-fab color="primary" *ngIf="access == 'CREATE'" routerLink="/client/create" class="createbtn" placement="top" container="body" ngbTooltip="Add client">
+      <i class="fa fa-plus"></i>
+  
+    </button>
+  </ng-container>
+    <!-- <a routerLink="/client/create"> <button type="button"  class="createbtn" placement="top" container="body" ngbTooltip="Add Client"><i class="fa fa-plus"></i>
+  </button></a> -->
+</div>
+
+<div class="container-wrapper mobileView">
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Client list</h1>
+        </div>
+        <div class="col-sm-6 col-md-6 mb-1 search-div">
+            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
+            <i class="bi bi-search" id="search-icon"></i>
+        </div>
+    </div>
+    <div class="bg">
+        <div class="row">
+            <ng-container *ngIf="(allClientList | filter:term) as result"> 
+            <div class="col-sm-12 col-md-6 c-m" *ngFor='let item of result| filter:term |paginate : {
+                itemsPerPage: tableSize,
+                currentPage: page,
+                totalItems: count
+              }'>  
+                <div class="card" >
+                    <div class="row">
+                        <div class="col-6 b-b">
+                            <h6 class="card-subtitle"><i class="bi bi-person-circle"></i> Client name</h6>
+                            <div class="val-pad">{{item.c_name}}</div>
+                        </div>
+                        <div class="col-6 p-2 text-end">
+                        <ng-container *ngFor="let access of permissions">
+                         <a *ngIf="access == 'UPDATE'"> <button type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" ></i></button></a>
+                         <a *ngIf="access == 'DELETE'"> <button type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash-fill"></i></button></a>
+                        </ng-container>
+                        </div>
+                        </div>
+                    <!-- <div class="row">
+                        <div class="col-12 b-b">
+                            <h6 class="card-subtitle"><i class="bi bi-person-circle"></i> Client name</h6>
+                            <div class="val-pad">{{item.c_name}}</div>
+                        </div>
+                    </div> -->
+                    <div class="row">
+                        <div class="col-6">
+                            <h6 class="card-subtitle"><i class="bi bi-calendar-week"></i> Reg. date</h6>
+                            <div class="val-pad">{{item.c_c_timestamp | date:'mediumDate'}}</div>
+                        </div>
+                        <div class="col-6">
+                            <h6 class="card-subtitle"><i class="bi bi-upc-scan"></i> Code</h6>
+                            <div class="val-pad">{{item.c_code}}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <h6 class="card-subtitle"><i class="bi bi-upc-scan"></i> Industry</h6>
+                            <div class="val-pad">{{item.toi_ref_id}}</div>
+                        </div>
+                        <div class="col-6">
+                            <!-- <h6 class="card-subtitle"><i class="bi bi-text-wrap"></i> Type</h6>
+                            <div class="val-pad">{{item.c_type}}</div> -->
+                            <h6 class="card-subtitle"><i class="bi bi-person-rolodex"></i> Contact person</h6>
+                            <div class="val-pad">{{item.c_contact_person}}</div>
+                        </div>
+                    </div>
+              
+                </div>
+            </div>
+            <div *ngIf="result.length === 0 " >
+            <app-generic-norecards></app-generic-norecards>
+            </div>
+            <div class="row" *ngIf="result.length !== 0 ">
+                <div class="col-sm">
+                    <div class="d-flex justify-content-center">
+                        <pagination-controls 
+                          previousLabel="Prev" 
+                          nextLabel="Next" 
+                          (pageChange)="onTableDataChange($event)">
+                        </pagination-controls>
+                      </div>
+                </div>
+            </div>
+            </ng-container>
+        </div>
+    </div>
+    <div class="s-position">
+        <ng-container *ngFor="let access of permissions">
+        <button *ngIf="access == 'CREATE'"  routerLink="/client/create" type="button" mat-fab class="createbtn-new" ><i class="fa fa-plus"></i>
+         </button>
+        </ng-container>
+    </div>
+</div>
+
+
+
+
+

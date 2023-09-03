@@ -1,0 +1,45 @@
+<!--sidebar-->
+<c-sidebar
+  #sidebar="cSidebar"
+  class="d-print-none sidebar sidebar-fixed"
+  id="sidebar"
+  visible
+>
+
+ <c-sidebar-brand > 
+  <!-- <b style="color: #3F51B5;
+  
+  font-family: sans-serif;" class="industry-title" [ngStyle]="!iconSize ? {'font-size':'1.7rem'}:{'font-size':'1rem'}">
+  <i class="bi bi-clock-history" style="color:blue" *ngIf="!iconSize"></i> EZTIME</b> -->
+  <!-- <img src="../../../assets/images/eztime_logo.svg" class="sidebar-logo"/> -->
+  <!-- <img src="../../../assets/images/Project Ace logo-04.png" class="sidebar-logo"/> -->
+  <img src="../../../assets/images/logo.png" class="sidebar-logo"/>
+ </c-sidebar-brand>
+    <perfect-scrollbar [config]="perfectScrollbarConfig">
+  <!--  [perfectScrollbar]="perfectScrollbarConfig"-->
+  <c-sidebar-nav
+    [navItems]="config == 'SUPER ADMIN'? navItems : sidebarNavItems"
+    dropdownMode="close"
+  >
+  </c-sidebar-nav>
+    </perfect-scrollbar>
+  <c-sidebar-toggler
+    *ngIf="!sidebar.narrow"
+    toggle="unfoldable"
+    cSidebarToggle="sidebar"
+   (click)="iconSize = !iconSize"></c-sidebar-toggler>
+</c-sidebar>
+
+<!--main-->
+<div class="wrapper d-flex flex-column dark:bg-transparent" >
+  <!--app-header-->
+  <ngx-ui-loader fgsColor="#1d2a6e" pbColor="#1d2a6e" text="Please wait..."></ngx-ui-loader>
+  <app-default-header class="d-print-none header header-sticky" position="sticky" sidebarId="sidebar"></app-default-header>
+  <!--app-body-->
+  <div class="body px-3 scroll-fix">
+      <router-outlet></router-outlet>
+  </div>
+  <!--app footer-->
+  <app-default-footer class="mobileView"></app-default-footer>
+
+</div>

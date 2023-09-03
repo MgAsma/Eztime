@@ -1,0 +1,33 @@
+import { NgModule} from '@angular/core';
+import { RouterModule,Routes } from '@angular/router';
+import { OrganizationComponent } from './organization.component'
+import { CreateOrganizationComponent } from './create-organization/create-organization.component';
+import { UpdateOrganizationComponent } from './update-organization/update-organization.component';
+import { OrganizationListComponent } from './organization-list/organization-list.component';
+
+const routes: Routes = [
+    {
+      path:'', component:OrganizationComponent,
+      children:[
+      {
+        path:'createOrg',component:CreateOrganizationComponent
+      },
+      {
+        path:'updateOrg/:id',component:UpdateOrganizationComponent
+      },
+      {
+        path:'orgList',component:OrganizationListComponent
+      },
+    ]
+    },
+    
+  ];
+
+
+  @NgModule({
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
+  })
+
+
+export class OrganizationRoutingModule{}

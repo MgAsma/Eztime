@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <div class="modal-header" >
+        <h4 class="modal-title" *ngIf="!message"><i class="bi bi-exclamation-triangle"></i> Delete</h4>
+        <h4 class="modal-title" *ngIf="message"><i class="bi bi-exclamation-triangle" ></i>  {{message}}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modalStatus('cancel')"></button>
+    </div>
+    <div class="modal-body" [ngClass]="title ? 'justify-content-center':''">
+        <p *ngIf="!title"> Are you sure do you want to delete ?</p>
+        <p *ngIf="title" >{{title}}?</p>
+    </div>
+    <div class="modal-footer" [ngClass]="title ? 'justify-content-center':''">
+        <button type="button" mat-raised-button color="warn" class="act-btn"  (click)="modalStatus('cancel')">Cancel</button>
+        <button type="button" mat-raised-button color="primary" class="act-btn" (click)="modalStatus('ok')">Yes</button>
+    </div>
+</div>

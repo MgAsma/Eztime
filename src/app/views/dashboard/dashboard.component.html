@@ -1,0 +1,111 @@
+<section class="section">
+  <div class="row">
+    <div class="col-sm-6 px-4">
+        <h1>Dashboard</h1>
+    </div>
+    <div class="col-sm"></div>
+</div>
+    <div class="container" *ngIf="enable">
+      <div class="bg">
+      <ng-container *ngIf="user_role_name === 'SUPER ADMIN'">
+        <div class="row" >
+          <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
+            <!-- <a routerLink="../role/list"> -->
+                <div class="card card-org">
+                  <div class="c-icon">
+                    <i class="bi bi-person-vcard"></i>
+                  </div>
+                    <div class="card-body p-3">
+                      <div class="h5 heading mb-0 mt-2">{{organization}}</div>
+                      <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Organization</strong></div>
+                    </div>        
+                  </div>
+               <!-- </a> -->
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
+            <!-- <a routerLink="../role/list"> -->
+                <div class="card card-admin">
+                  <div class="c-icon" id="bi-microsoft">
+                    <i class="bi bi-microsoft"></i>
+                  </div>
+                    <div class="card-body p-3">
+                      <div class="h5 heading mb-0 mt-2">{{admin}}</div>
+                      <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Admin</strong></div>
+                    </div>        
+                  </div>
+               <!-- </a> -->
+          </div>
+
+          <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
+            <!-- <a routerLink="../role/list"> -->
+                <div class="card card-user">
+                  <div class="c-icon">
+                    <i class="bi bi-list-task"></i>
+                  </div>
+                    <div class="card-body p-3">
+                      <div class="h5 heading mb-0 mt-2">{{userCount}}</div>
+                      <div class="text-muted text-uppercase font-weight-bold font-xs"><strong>Users</strong></div>
+                    </div>        
+                  </div>
+               <!-- </a> -->
+          </div>
+        </div>
+        </ng-container>
+        <ng-container *ngIf="user_role_name !== 'SUPER ADMIN'">
+        <div class="row" >
+          <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
+              <a *ngIf="user_role_name !== 'EMPLOYEE'" >
+                  <div class="card card-role">
+                    <div class="c-icon">
+                      <i class="bi bi-person-vcard"></i>
+                    </div>
+                      <div class="card-body p-3">
+                        <div class="h5 heading mb-0 mt-2">{{role}}</div>
+                        <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Roles</strong></div>
+                      </div>        
+                    </div>
+              </a>
+              <div *ngIf="user_role_name === 'EMPLOYEE'" >
+                <div class="card card-role">
+                  <div class="c-icon">
+                    <i class="bi bi-person-vcard"></i>
+                  </div>
+                    <div class="card-body p-3">
+                      <div class="h5 heading mb-0 mt-2">{{role}}</div>
+                      <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Roles</strong></div>
+                    </div>        
+                  </div>
+            </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
+                <a >
+                  <div class="card card-department">
+                    <div class="c-icon" id="bi-microsoft">
+                      <i class="bi bi-microsoft"></i>
+                    </div>
+                      <div class="card-body p-3">
+                        <div class="h5 heading mb-0 mt-2">{{department}}</div>
+                        <div class="text-muted text-uppercase font-weight-bold font-xs"><strong>Departments</strong></div>
+                      </div>
+                    </div>
+                </a>               
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
+              <a >
+                  <div class="card card-industry">
+                    <div class="c-icon">
+                      <i class="bi bi-list-task"></i>
+                    </div>
+                      <div class="card-body p-3">
+                        <div class="h5 heading mb-0 mt-2">{{industry}}</div>
+                        <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Industries</strong></div>
+                      </div>
+                    </div>
+              </a>
+            </div> 
+          </div>
+         </ng-container>
+      </div>
+    </div>
+</section>

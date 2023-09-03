@@ -1,0 +1,58 @@
+import { Component, OnInit } from '@angular/core';
+import {  Validators, FormBuilder,FormGroup } from '@angular/forms';
+import { ApiserviceService } from '../../../service/apiservice.service';
+import { Location } from '@angular/common';
+@Component({
+  selector: 'app-add-new-tag',
+  templateUrl: './add-new-tag.component.html',
+  styleUrls: ['./add-new-tag.component.scss']
+})
+export class AddNewTagComponent implements OnInit {
+  tagForm! : FormGroup
+
+  constructor(
+    private builder:FormBuilder, 
+    private api: ApiserviceService,
+    private location:Location) { }
+  goBack(event)
+  {
+    event.preventDefault(); // Prevent default back button behavior
+  this.location.back();
+  
+  }
+
+  ngOnInit(): void {
+   this.initForm()
+  }
+  initForm(){
+    this.tagForm= this.builder.group({
+      tag_name:['',[Validators.pattern(/^[a-zA-Z]+$/),Validators.required]],
+      tage_status:['',Validators.required],
+    })
+  }
+  get f(){
+    return this.tagForm.controls;
+  }
+ 
+  addtag(){
+    if(this.tagForm.invalid){
+      this.api.showError('Invalid!');
+      this.tagForm.markAllAsTouched()
+    }
+    else{
+      this.api.addTagDetails(this.tagForm.value).subscribe(response=>{
+        if(response){
+          this.api.showSuccess('Tag added successfully!!');
+          this.tagForm.reset();
+          this.initForm()
+        }
+        else{
+          this.api.showError('Error!');
+        }
+          
+        }
+      )
+    }
+  }
+
+}

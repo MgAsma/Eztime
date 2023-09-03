@@ -1,0 +1,210 @@
+<div class="container-fluid webView">
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Master leave types</h1>
+        </div>
+        <div class="col-sm"></div>
+        <div class="col-sm-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
+                  <li class="breadcrumb-item">Master leave types</li>
+                  
+                </ol>
+              </nav>
+        </div>
+        
+    </div>
+
+        <div class="row p-20">
+            <div class="col-sm-2">
+                <select (change)="onTableSizeChange($event)" class="form-select">
+                    <option *ngFor="let size of tableSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+            </div>
+            <div class="col-sm"></div>
+            <div class="col-sm-3 search-div">
+                <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
+                <i class="bi bi-search" id="search-icon"></i>
+            </div>
+        </div>
+        <div class="bg">
+        <div class="row">
+            <div class="col">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                          <th scope="col">Sl. No.</th>
+                          <th scope="col">Leave Type<i  *ngIf="!arrow" (click)="sort('asc','leave_title')" class="fa fa-sort-up"></i><i (click)="sort('desc','leave_title')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col">No of Leaves <i  *ngIf="!arrow" (click)="sort('asc','no_of_leaves')" class="fa fa-sort-up"></i><i (click)="sort('desc','no_of_leaves')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col">Carry Forward(%) <i  *ngIf="!arrow" (click)="sort('asc','carry_forward_per')" class="fa fa-sort-up"></i><i (click)="sort('desc','carry_forward_per')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col">Graceful Days <i  *ngIf="!arrow" (click)="sort('asc','gracefull_days')" class="fa fa-sort-up"></i><i (click)="sort('desc','gracefull_days')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <!-- <th scope="col">Encashment</th> -->
+                          <th scope="col">Max Encashment  <i  *ngIf="!arrow" (click)="sort('asc','max_encashments')" class="fa fa-sort-up"></i><i (click)="sort('desc','max_encashments')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                     
+                        <ng-container *ngIf="(leaveMasterList | filter:term) as result">
+                        <tr  *ngFor='let item of result| filter:term | paginate : {
+                            itemsPerPage: tableSize,
+                            currentPage: page,
+                            totalItems: count
+                          }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
+                         <td>{{i + 1}}</td>
+                         <td>{{item.leave_title}}</td>
+                         <td >{{item.no_of_leaves?item.no_of_leaves:"NA"}}</td>
+                         <td>{{item.carry_forward_per}}</td>
+                         <td>{{item.gracefull_days}}</td>
+                         <!-- <td>{{item.encashment}}</td> -->
+                         <td>{{item.max_encashments?item.max_encashments:"NA"}}</td>
+                         <td>
+                            <ng-container *ngFor="let access of permissions">
+                                <button mat-raised-button mat-mini-fab  routerLink="/leave/updateLeaveDetails/{{item.id}}" *ngIf="access === 'UPDATE'">
+                                  <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
+                                </button>
+                                <button mat-raised-button mat-mini-fab   (click)="open(item.id)" *ngIf="access === 'DELETE'">
+                                  <i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i>
+                                </button>
+                              </ng-container> 
+
+                            <!-- <a routerLink="/leave/updateLeaveDetails/{{item.id}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></a>
+                            <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item.id)"><i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i> </button> -->
+                         </td>
+                        </tr>
+                        <tr *ngIf="result.length === 0" class="nodata">
+                            <td> No records found
+  !</td>  
+                        </tr>
+                        </ng-container>
+                      </tbody>
+                  </table>
+            </div>
+        </div>
+        <div class="row">
+           
+            <div class="col-sm"></div>
+            <div class="col-sm">
+                <div class="d-flex justify-content-end p-nav">
+                    <pagination-controls 
+                      previousLabel="Prev" 
+                      nextLabel="Next" 
+                      (pageChange)="onTableDataChange($event)">
+                    </pagination-controls>
+                  </div>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngFor="let access of permissions">
+        <button mat-raised-button mat-fab color="primary" *ngIf="access == 'CREATE'" routerLink="/leave/leaveDetails" class="createbtn" placement="top" container="body" ngbTooltip="Add leave">
+          <i class="fa fa-plus"></i>
+  
+        </button>
+    </ng-container>
+
+    <!-- <a routerLink="/leave/leaveDetails"> <button mat-raised-button type="button"  class="createbtn" placement="top" container="body" ngbTooltip="Add Leave"><i class="fa fa-plus"></i>
+  </button></a> -->
+       
+</div>
+
+
+<div class="container-wrapper mobileView">
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <h1>Master Leave Types</h1>
+        </div>
+        <div class="col-sm-6 col-md-6 mb-1 search-div">
+            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
+            <i class="bi bi-search" id="search-icon"></i>
+        </div>
+    </div>
+    <div class="bg">
+    <div class="row">
+        <ng-container *ngIf="(leaveMasterList | filter:term) as result">
+        <div class="col-sm-12 col-md-6 p-1" *ngFor="let item of result| filter:term">
+            <div class="card" (click)="cardId(item)">
+                <div class="row">
+                    <div class="col-12 p-3 text-end">
+                        <ng-container *ngFor="let access of permissions">
+                        <a *ngIf="access == 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" ></i></button></a>
+                        <a *ngIf="access == 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash-fill"></i></button></a>
+                        </ng-container>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-6">
+                <h6 class="card-subtitle">Leave Type</h6>
+                <p>{{item.leave_title}}</p>
+                </div>
+                <!-- <div class="col-6">
+                    <h6 class="card-subtitle">Type</h6>
+                    <p>{{item.leave_type? item.leave_type :"NA"}}</p>
+                </div> -->
+                <div class="col-6">
+                    <h6 class="card-subtitle">Max Encashment</h6>
+                <p>{{item.max_encashments?item.max_encashments:"NA"}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="n-l">
+                        <h6 class="card-subtitle">No of Leaves</h6>
+                        <p>{{item.no_of_leaves?item.no_of_leaves:"NA"}}</p>
+                    </div>
+                  
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <h6 class="card-subtitle">Carry Forward(%)</h6>
+                    <p>{{item.carry_forward_per}}</p>
+                </div>
+                <div class="col-6">
+                    <h6 class="card-subtitle">Graceful Days</h6>
+                <p>{{item.gracefull_days}}</p>
+                </div>
+            </div>
+           
+            </div>
+           
+        </div>
+        <div *ngIf="result.length === 0 " >
+            <app-generic-norecards></app-generic-norecards>
+        </div>
+        <div class="row" *ngIf="result.length !== 0 ">      
+            <div class="col-sm">
+                <div class="d-flex justify-content-center ">
+                    <pagination-controls 
+                      previousLabel="Prev" 
+                      nextLabel="Next" 
+                      (pageChange)="onTableDataChange($event)">
+                    </pagination-controls>
+                  </div>
+            </div>
+        </div>
+        </ng-container>
+    </div>
+    
+    
+</div>
+
+<div class="s-position">
+    <!--  <ng-container *ngFor="let access of permissions">
+    <a routerLink="/leave/leaveDetails" *ngIf="access == 'CREATE'"> <button mat-raised-button type="button"  class="createbtn" placement="top" container="body" ngbTooltip="Add"><i class="fa fa-plus"></i>
+  </button></a>
+   <a class="mobileView" *ngIf="access == 'UPDATE'"> <button mat-raised-button type="button"  class="editbtn" placement="top" container="body" (click)='editCard()'  ngbTooltip="Edit" [disabled]="enabled" [ngStyle]="enabled ? {'background-color':'#8585e0'}:{}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></button></a>
+    <a class="mobileView" *ngIf="access == 'DELETE'"> <button mat-raised-button type="button"  class="deletebtn" placement="top" container="body" ngbTooltip="delete" (click)='deleteCard()' [disabled]="enabled" [ngStyle]="enabled ? {'background-color':'#8585e0'}:{}"><i class="bi bi-trash-fill"></i></button></a> 
+</ng-container>-->
+<ng-container *ngFor="let access of permissions">
+   <button mat-fab type="button" routerLink="/leave/leaveDetails" *ngIf="access === 'CREATE'" class="createbtn-new" ><i class="fa fa-plus"></i>
+  </button>
+</ng-container>
+</div>
+</div>
+
+
+

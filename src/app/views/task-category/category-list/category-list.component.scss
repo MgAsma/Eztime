@@ -1,0 +1,129 @@
+ol{
+    background-color: inherit;
+}
+a{
+    color: #3F51B5;
+    text-decoration: none;
+}
+li{
+    
+    list-style: none;
+    color: grey;
+}
+ul{
+    padding: 0px;
+}
+.bg{
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+
+}
+.proceedbtn{
+    background-color: #3F51B5;
+    border-radius: 5px;
+    border: none;
+    height: 40px;
+    width: 100%;
+    color: white;
+    margin: 10px 0px;
+}
+.printbtn{
+    background-color: #00BCD4;
+    border-radius: 5px;
+    border: none;
+    height: 40px;
+    width: 100%;
+    color: white;
+    margin: 10px 0px;
+}
+.row{
+    padding: 5px;
+}
+i{
+    padding: 2px 3px 0px 0px;
+}
+.btnicon{
+    display: none;
+}
+button:hover .btnicon{
+    display: block;
+}
+::ng-deep .mat-form-field {
+    height: 55px;
+    width: 95%!important;
+    background-color: #ffff;
+    border-radius: 50px;
+    border: solid gray;
+}
+
+::ng-deep .mat-form-field-underline {
+    display: none;
+}
+select{
+    width: 100%;
+    height: 40px;
+    margin: 1px 0px 0px 1px;
+}
+span{
+    color: red;
+}
+p{
+    color: grey;
+}
+html{
+    position: relative;
+}
+
+.card{
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.04);
+    padding: 10px 24px 7px;
+    margin: 10px 10px;
+    zoom: 87%;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+}
+.card-subtitle{
+    color:#fff !important;
+}
+.card:hover{
+    background: #dfdfdf;
+    .col-4{
+        background-color: #908e8e;
+        color: #fff;
+    }
+}
+.set-display{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+}
+.set-display .col-4{
+    border-right: 1px solid #f6f6f6;
+    height: 100%;
+    border-radius: 5px;
+    padding-top: 13px;
+}
+.c-1{
+    background-color: #3d358f;
+    padding: 6px;
+    border-radius: 10px;
+}
+.c-2{
+    background-color: #71aad6;
+    margin-top: 5px;
+    padding: 5px;
+    border-radius: 10px;
+}
+.common-col{
+    padding: 2px 3px 2px 6px
+}
+.card-subtitle{
+    font-size: 16px;
+    color:black;
+}

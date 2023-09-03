@@ -1,0 +1,56 @@
+.background-content{
+    background: url(/../../../../assets/img/book.jpg);
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+   background-repeat: no-repeat;
+  }
+.box{
+   
+   padding: 2rem;
+
+}
+.p-h{
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+h1,p,label{
+    color: white;
+}
+input{
+    outline: 0;
+    background-color: transparent;
+  border-width: 0 0 2px;
+  border-color: black;
+  border-radius: 0;
+}
+.proceedbtn{
+    background-color: #3F51B5;
+    border-radius: 5px;
+    border: none;
+    height: 40px;
+    width: 100%;
+    color: white;
+    margin: 10px 0px;
+}
+i{
+    color: white;
+    padding: 5px;
+}
+.s-c{
+    color: red !important;
+    font-size: small;
+}
+.forgot-links{
+    color:black;
+    font-weight: 400;
+}
+label b{
+    color: red;
+}

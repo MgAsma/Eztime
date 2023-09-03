@@ -1,0 +1,205 @@
+<div class="container-fluid webView">
+    <div class="row">
+        <div class="col-sm">
+            <h1>Timesheet approval configuration</h1>
+        </div>
+        <!-- <div class="col-sm"></div> -->
+        <div class="col-sm-4">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
+                  <li class="breadcrumb-item">Timesheet approval configuration</li>
+                  
+                </ol>
+              </nav>
+        </div>
+        
+    </div>
+    <div class="generic-form bg">
+    <form [formGroup]='configurationForm' (ngSubmit)='addConfiguration()' >
+        <!-- <div class="row">
+            <div class="col-sm-6">
+                <h4>Approve Manager </h4>
+            </div>
+        </div> -->
+    
+        <div class="row">
+            <div class="col-sm-6">
+                <p>Approval period <span >*</span></p> 
+                <select class="form-select" aria-label="Default select example" formControlName="approval_period">
+                    <option value="" selected disabled>Select period</option>
+                    <option value="DAILY">Daily</option>
+                    <option value="WEEKLY">Weekly</option>
+                    <option value="MONTHLY">Monthly</option>
+                  </select>
+                  <div *ngIf="f['approval_period'].touched && f['approval_period'].invalid" >
+                    <div *ngIf="f['approval_period'].errors && f['approval_period'].errors['required'] " ><p class="error-msg">Approval period is required.</p></div>
+                </div>
+            </div>
+        </div>
+     
+        <div class="row">
+            <div class="col-sm-6">
+                <p>Grace days to approve <span >*</span></p>
+                <select class="form-select" aria-label="Default select example" formControlName="grce_days_to_approve">
+                    <option value=""selected disabled>Select grace days</option>
+                    <option value="0">00</option>
+                    <option value="1">01</option>
+                    <option value="2">02</option>
+                    <option value="3">03</option>
+                  </select>
+                  <div *ngIf="f['grce_days_to_approve'].touched && f['grce_days_to_approve'].invalid" >
+                    <div *ngIf="f['grce_days_to_approve'].errors && f['grce_days_to_approve'].errors['required'] " ><p class="error-msg">Grace days is required.</p></div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col-sm-6">
+                <p>Next approval starts on:</p>
+                <p>Approval deadline is:</p>
+            </div>
+        </div> -->
+      
+        <div class="row">
+            <div class="col-sm-6">
+                <p>Auto Approve <span >*</span></p>
+                <select class="form-select" aria-label="Default select example" formControlName="tmd_auto_approved">
+                    <option value="" selected disabled>Select an option</option>
+                    <option value=true>Yes</option>
+                    <option value=false>No</option>
+                  </select>
+                  <div *ngIf="f['tmd_auto_approved'].touched && f['tmd_auto_approved'].invalid" >
+                    <div *ngIf="f['tmd_auto_approved'].errors && f['tmd_auto_approved'].errors['required'] " ><p class="error-msg">Auto approve is required.</p></div>
+                </div>
+            </div>
+            
+        </div>
+       
+        <div class="row">
+            <div class="col-sm-6">
+                <p>Status <span >*</span></p>
+                <select class="form-select" aria-label="Default select example" formControlName="status">
+                    <option value="" selected disabled>Select status</option>
+                    <option value="Activate">Activate</option>
+                    <option value="Suspend">Suspend</option>
+                  </select>
+                  <div *ngIf="f['status'].touched && f['status'].invalid" >
+                    <div *ngIf="f['status'].errors && f['status'].errors['required'] " ><p class="error-msg">Status is required.</p></div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="row">
+            <!-- <div class="col-sm-6">
+                <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
+                <p>1) Timesheet get auto approved if deadline date is crossed</p>
+                <p>2) No. of days to approve timesheets - Maximum : 6 days</p>
+                <p>3) Yet To Be Approve Timesheets gets approved based on above configuration</p>
+            </div>
+            <div class="col-sm"></div> -->
+            <div class="col-sm-2">
+                <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Submit</button>
+            </div>
+        </div>
+    </form>
+       
+    </div>
+   
+</div>
+<div class="container-fluid mobileView">
+    <div class="row">
+        <div class="col-sm">
+            <h1>Timesheet approval configuration</h1>
+        </div>
+    </div>
+    <div class="generic-form bg">
+    <form [formGroup]='configurationForm' (ngSubmit)='addConfiguration()' >
+        <!-- <div class="row">
+            <div class="col-sm-6">
+                <h4>Approve Manager </h4>
+            </div>
+        </div> -->
+    
+        <div class="row">
+            <div class="col-sm-6">
+                <p>Approval period <span >*</span></p> 
+                <select class="form-select" aria-label="Default select example" formControlName="approval_period">
+                    <option value="" selected disabled>Select period</option>
+                    <option value="DAILY">Daily</option>
+                    <option value="WEEKLY">Weekly</option>
+                    <option value="MONTHLY">Monthly</option>
+                  </select>
+                  <div *ngIf="f['approval_period'].touched && f['approval_period'].invalid" >
+                    <div *ngIf="f['approval_period'].errors && f['approval_period'].errors['required'] " ><p class="error-msg">Approval period is required.</p></div>
+                </div>
+            </div>
+        </div>
+     
+        <div class="row">
+            <div class="col-sm-6">
+                <p>Grace days to approve <span >*</span></p>
+                <select class="form-select" aria-label="Default select example" formControlName="grce_days_to_approve">
+                    <option value=""selected disabled>Select grace days</option>
+                    <option value="0">00</option>
+                    <option value="1">01</option>
+                    <option value="2">02</option>
+                    <option value="3">03</option>
+                  </select>
+                  <div *ngIf="f['grce_days_to_approve'].touched && f['grce_days_to_approve'].invalid" >
+                    <div *ngIf="f['grce_days_to_approve'].errors && f['grce_days_to_approve'].errors['required'] " ><p class="error-msg">Grace days is required.</p></div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col-sm-6">
+                <p>Next approval starts on:</p>
+                <p>Approval deadline is:</p>
+            </div>
+        </div> -->
+      
+        <div class="row">
+            <div class="col-sm-6">
+                <p>Auto Approve <span >*</span></p>
+                <select class="form-select" aria-label="Default select example" formControlName="tmd_auto_approved">
+                    <option value="" selected disabled>Select an option</option>
+                    <option value=true>Yes</option>
+                    <option value=false>No</option>
+                  </select>
+                  <div *ngIf="f['tmd_auto_approved'].touched && f['tmd_auto_approved'].invalid" >
+                    <div *ngIf="f['tmd_auto_approved'].errors && f['tmd_auto_approved'].errors['required'] " ><p class="error-msg">Auto approve is required.</p></div>
+                </div>
+            </div>
+            
+        </div>
+       
+        <div class="row">
+            <div class="col-sm-6">
+                <p>Status <span >*</span></p>
+                <select class="form-select" aria-label="Default select example" formControlName="status">
+                    <option value="" selected disabled>Select status</option>
+                    <option value="Activate">Activate</option>
+                    <option value="Suspend">Suspend</option>
+                  </select>
+                  <div *ngIf="f['status'].touched && f['status'].invalid" >
+                    <div *ngIf="f['status'].errors && f['status'].errors['required'] " ><p class="error-msg">Status is required.</p></div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="row">
+            <!-- <div class="col-sm-6">
+                <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
+                <p>1) Timesheet get auto approved if deadline date is crossed</p>
+                <p>2) No. of days to approve timesheets - Maximum : 6 days</p>
+                <p>3) Yet To Be Approve Timesheets gets approved based on above configuration</p>
+            </div>
+            <div class="col-sm"></div> -->
+            <div class="col-sm-2">
+                <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Submit</button>
+            </div>
+        </div>
+    </form>
+       
+    </div>
+   
+</div>

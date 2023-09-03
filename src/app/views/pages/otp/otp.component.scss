@@ -1,0 +1,70 @@
+.background-content{
+    background: url(/../../../../assets/img/book.jpg);
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+   background-repeat: no-repeat;
+  }
+
+
+.card {
+    width: 350px;
+    padding: 10px;
+    border-radius: 20px;
+    background: rgb(0 0 0 / 10%);
+    border: none;
+    position: relative;
+  }
+  
+  .container {
+    height: 100vh;
+  }
+  
+  body {
+    background: #eee;
+  }
+  
+  .email-text {
+    color:#ffff;
+    font-size: 15px;
+  }
+  
+  .form-control {
+    margin-right: 12px;
+  }
+  
+  .form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border:1px solid #3F51B5;
+    // border-color: #3F51B5;
+    outline: 0;
+    
+    box-shadow: none;
+  }
+  
+  .cursor {
+    cursor: pointer;
+  }
+  h1{
+    color: white;
+}
+.proceedbtn{
+    background-color: #3F51B5;
+    border-radius: 5px;
+    border: none;
+    height: 35px;
+    width: 100%;
+    color: white;
+    margin: 1px 0px;
+    font-size: small;
+    font-weight: 500;
+}
+.otp-links{
+    font-weight: 400;
+    color: black;
+}

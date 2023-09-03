@@ -1,0 +1,186 @@
+<div class="container-fluid webView">
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Project sub category</h1>
+        </div>
+        <div class="col-sm"></div>
+        <div class="col-sm-4 text-end">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
+                  <li class="breadcrumb-item">Project status sub category</li>
+                  
+                </ol>
+              </nav>
+        </div>
+        
+    </div>
+        <div class="row p-20">
+            <div class="col-sm-2">
+                <select (change)="onTableSizeChange($event)" class="form-select">
+                    <option *ngFor="let size of tableSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+            </div>
+            <div class="col-sm"></div>
+            <div class="col-sm-3 mb-1 search-div">
+                <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp"  autocomplete="off">
+                <i class="bi bi-search" id="search-icon"></i>
+            </div>
+        </div>
+        <div class="bg">
+        <div class="row">
+            <div class="col">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                          <th scope="col">Sl. No.</th>
+                          <th scope="col">Main Category <i  *ngIf="!arrow" (click)="sort('asc','psmc_name')" class="fa fa-sort-up"></i><i (click)="sort('desc','psmc_name')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col">Sub Category <i  *ngIf="!arrow" (click)="sort('asc','pssc_name')" class="fa fa-sort-up"></i><i (click)="sort('desc','pssc_name')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col">Color <i  *ngIf="!arrow" (click)="sort('asc','color')" class="fa fa-sort-up"></i><i (click)="sort('desc','color')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col">Status <i  *ngIf="!arrow" (click)="sort('asc','pssc_status')" class="fa fa-sort-up"></i><i (click)="sort('desc','pssc_status')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col">Action</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <ng-container *ngIf="(allSubCategoryList | filter:term) as result">
+                            <!-- <h1>{{allSubCategoryList | json}}</h1> -->
+                        <tr *ngFor='let item of result | paginate : {
+                            itemsPerPage: tableSize,
+                            currentPage: page,
+                            totalItems: count
+                          }|customSort:directionValue:sortValue|filter:term
+                            ; let i=index' >
+                            <td>{{i + 1}}</td>
+                            <td>{{item.psmc_name?item.psmc_name:"NA"}}</td>
+                            <td>{{item.pssc_name}}</td>
+                            <td>{{item.color ? item.color : "NA"}}</td>
+                            <td>{{item.pssc_status?item.pssc_status:"NA"}}</td>
+                            <td>
+                                <ng-container *ngFor="let access of permissions">
+                                <button mat-raised-button mat-mini-fab  routerLink="/status/updateSubCategory/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
+                                    <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
+                                </button>
+                                <button mat-raised-button mat-mini-fab (click)="open(item.id)" *ngIf="access === 'DELETE'">
+                                    <i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i>
+                                </button>
+                                </ng-container>     
+                                <!-- <a routerLink="/status/updateSubCategory/{{item.id}}/{{page}}/{{tableSize}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></a>
+                               <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item.id)"><i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i></button> -->
+                            </td>
+                           </tr>
+                           <tr *ngIf="result.length === 0" class="nodata">
+                            <td> No records found
+  !</td>  
+                        </tr>
+                        </ng-container>
+                      </tbody>
+                  </table>
+                   
+            </div>
+        </div>
+        <div class="row">
+           
+            <div class="col-sm"></div>
+            <div class="col-sm" *ngIf="allSubCategoryList.length > 0">
+                <div class="d-flex justify-content-end p-nav">
+                    <pagination-controls 
+                      previousLabel="Prev" 
+                      nextLabel="Next" 
+                      (pageChange)="onTableDataChange($event)">
+                    </pagination-controls>
+                  </div>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngFor="let access of permissions">
+        <button mat-raised-button mat-fab color="primary" *ngIf="access == 'CREATE'" routerLink="/status/createSubCategory" class="createbtn" placement="top" container="body" ngbTooltip="Add sub category">
+          <i class="fa fa-plus"></i>
+  
+        </button>
+      </ng-container>
+    <!-- <a routerLink="/status/createSubCategory"> <button mat-raised-button type="button"  class="createbtn" placement="top" container="body" ngbTooltip="Add Sub Category"><i class="fa fa-plus"></i>
+  </button></a> -->
+</div>
+
+  
+<div class="conainter-wrapper mobileView">
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <h1>Project sub category</h1>
+        </div>
+        <div class="col-sm-6 col-md-6 mb-1 search-div">
+            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
+            <i class="bi bi-search" id="search-icon"></i>
+        </div>
+    </div>
+  
+    <div class="bg pb-5">
+    <div class="row">
+        <ng-container *ngIf="(allSubCategoryList | filter:term) as result">
+        <div class="col-sm-12 col-md-6 main-c" *ngFor='let item of result | filter:term | paginate : {
+            itemsPerPage: tableSize,
+            currentPage: page,
+            totalItems: count
+          }'>
+        <div class="card">
+            <div class="row">
+            <div class="col-12 p-2 text-end">
+                <ng-container *ngFor="let access of permissions">
+                <a *ngIf="access == 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" ></i></button></a>
+                <a *ngIf="access == 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash-fill"></i></button></a>
+                </ng-container>
+            </div>
+            </div>
+         <div class="row r-p">
+            <div class="col-4">
+                <h6 class="card-subtitle">Main category</h6>
+                <div class="val-container"><i class="bi bi-card-list"></i> {{item.psmc_name?item.psmc_name:"NA"}}</div>
+            </div>
+            <div class="col-4">
+                <h6 class="card-subtitle">Color</h6>
+                <div class="val-container"><i class="bi bi-view-list"></i> {{item.color ? item.color : "NA"}}</div>
+            </div>
+            <div class="col-4">
+                <h6 class="card-subtitle">Status</h6>
+                <div class="val-container"><i class="bi bi-activity"></i>{{item.pssc_status?item.pssc_status:"NA"}}</div>
+            </div>
+         </div>
+         <div class="row text-center">
+            <div class="col-12">
+                <h6 class="card-subtitle">Sub category</h6>
+                <div class="val-container"><i class="bi bi-card-checklist"></i> {{item.pssc_name}}</div>
+            </div>
+         </div>
+         </div>
+        </div>
+        <div *ngIf="result.length === 0 " >
+            <app-generic-norecards></app-generic-norecards>
+        </div>
+        <div class="row" *ngIf="result.length !== 0 " >
+            <div class="col-sm" >
+                <div class="d-flex justify-content-center">
+                    <pagination-controls 
+                      previousLabel="Prev" 
+                      nextLabel="Next" 
+                      (pageChange)="onTableDataChange($event)">
+                    </pagination-controls>
+                  </div>
+            </div>
+        </div>
+        </ng-container>
+    </div>
+</div>
+   <div class="s-position">
+    <ng-container *ngFor="let access of permissions">
+    <button mat-fab *ngIf="access == 'CREATE'" routerLink="/status/createSubCategory" type="button"  class="createbtn-new mat-btn-s" ><i class="fa fa-plus"></i>
+  </button>
+</ng-container>
+</div>
+</div>
+
+
+
+

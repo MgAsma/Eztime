@@ -1,0 +1,261 @@
+<div class="container-fluid webView">
+    <div class="row py-2">
+        <div class="col-sm-1 col-md-6 col-sm-2 col-lg-2">
+            <select class="form-select page-set" aria-label="Default select example" (change)="onTableSizeChange($event)">
+              
+                <option *ngFor="let size of tableSizes" [ngValue]="size">
+                    {{ size }}
+                  </option>
+              </select>
+        </div>
+        <div class="col-sm"></div>
+        <div class="col-sm-3 search-div">
+            <input type="text" class="form-control p-2 sizeinput" placeholder="Search"[(ngModel)]="term" aria-describedby="emailHelp"  autocomplete="off">
+            <i class="bi bi-search" id="search-icon-tab"></i>  
+        </div>
+    </div>
+    <div class="bg">
+    <div class="row">
+        <div class="col">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                      <th scope="col">Sl.No.</th>
+                      <th scope="col">Date </th>
+                      <th scope="col">People</th>
+                      <th scope="col">Time Sheets</th>
+                      <th scope="col">Time</th>
+                      <!-- <th scope="col">Saved On</th> -->
+                      <th scope="col">Approved On</th>
+                      <th scope="col">Approved By</th>
+                      <th scope="col">Status</th>
+                      <ng-container *ngFor="let approval of accessConfig">
+                        <th scope="col" *ngIf="approval == 'DELETE'">Action</th>
+                      </ng-container>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                  
+                    <ng-container *ngIf="(approvedAll | filter:term) as result">
+                        <tr *ngFor="let items of result| filter:term| paginate : {
+                            itemsPerPage: tableSize,
+                            currentPage: page,
+                            totalItems: count
+                          };let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{items.created_date_time | date :'mediumDate'}}</td>
+                        <td>{{items.created_by_id?items.created_by_id:"NA"}}</td>
+                        <td>{{items.description ? items.description :'NA'}}</td>
+                        <td>{{items.time_spent}}</td>
+                        <!-- <td>{{items.created_by_id?items.created_by_id:"NA"}}</td> -->
+                        <td>{{items.approved_date_time | date :"mediumDate"}}</td>
+                        <td>{{items.approved_by_id?items.approved_by_id:'NA'}}</td>
+                        <td>{{items.approved_state}}</td>
+                        <td>
+                            <!-- <ng-container *ngFor="let approval of accessConfig">
+                                 <span *ngIf="approval == 'DELETE'">
+                                    <button  style="border: none;background-color: inherit;" (click)="open(items)"> <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>
+                                </span> 
+                                <span *ngIf="approval == 'ACCEPT'">
+                                    <button style="border: none;background-color: inherit;" (click)="open(items.id,'APPROVED')"><i class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>
+                                </span>
+                                <span *ngIf="approval == 'REJECT'">
+                                    <button style="border: none;background-color: inherit;" (click)="open(items.id,'DECLINED')"><i class="bi bi-x-circle-fill" container="body" ngbTooltip="Reject" style="color:red"></i></button>
+                                </span>
+                            </ng-container> -->
+                        </td>
+                        </tr>
+                        <tr *ngIf="result.length === 0" class="nodata">
+                            <td> No records found
+  !</td>  
+                        </tr>
+
+                    </ng-container>
+                  </tbody>
+              </table>    
+        </div>
+    </div>
+    <div class="row">   
+        <div class="col-sm"></div>
+        <div class="col-sm">
+            <div class="d-flex justify-content-end p-nav">
+                <pagination-controls 
+                  previousLabel="Prev" 
+                  nextLabel="Next" 
+                  (pageChange)="onTableDataChange($event)">
+                </pagination-controls>
+              </div>
+        </div>
+    </div>  
+</div>
+</div>
+
+
+<div class="container-fluid mobileView">
+    <div class="row">
+      <div class="col-sm-12 col-md-6 col-lg-2">
+        <select class="form-select page-set" aria-label="Default select example" (change)="onTableSizeChange($event)">
+            <option *ngFor="let size of tableSizes" [ngValue]="size">
+                {{ size }}
+              </option>
+          </select>
+    </div>
+      <div class="col-sm-6 col-md-6 mb-1 search-div">
+        <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp" autocomplete="off">
+        <i class="bi bi-search" id="search-icon"></i>
+      </div>
+    </div>
+  
+    <div class="bg row">
+      <ng-container *ngIf="(approvedAll | filter:term) as result">
+        <div class="col-sm-12 col-md-6 p-0" *ngFor="let item of result | filter:term| paginate : {
+          itemsPerPage: tableSize,
+          currentPage: page,
+          totalItems: count
+          };">
+          <div class="card outer-card" >
+            <div class="row rc-p">
+              <div class="col-7">
+                <div class="row">
+                  <div class="col-12">
+                    <h6 class="card-subtitle">Status</h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 status-text">
+                    {{ item.approved_state ? item.approved_state : 'Yet to Approve' }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-5">
+                  <!-- <ng-container *ngFor="let approval of accessConfig">
+                      <span *ngIf="approval == 'DELETE'" style="float: right;">
+                          <button type="button" class="toolbar-btn "   (click)="open(item)"  ><i class="bi bi-trash-fill"></i></button>
+                        
+                        </span>
+                        <span *ngIf="approval == 'ACCEPT'" style="float: right;">
+                            <button type="button" class="toolbar-btn " (click)="openDialogue(item.id,'APPROVED')"><i class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>
+                        </span>
+                        <span *ngIf="approval == 'REJECT'" style="float: right;">
+                            <button type="button" class="toolbar-btn " (click)="openDialogue(item.id,'DECLINED')"><i class="bi bi-x-circle-fill" container="body" ngbTooltip="Reject" style="color:red"></i></button>
+                        </span>
+                  </ng-container>   -->
+              </div>
+            </div>
+            
+            <div class="card inner-card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-6">
+                    <div class="row">
+                      <div class="col-12">
+                        <h6 class="card-subtitle">Created Date</h6>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 val-r">
+                        {{item['created_date_time'] | date : 'mediumDate'}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="row">
+                      <div class="col-12">
+                        <h6 class="card-subtitle">People</h6>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 val-r">
+                        {{ item.created_by_id ?item.created_by_id :'NA' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="row">
+                  <div class="col-6">
+                    <div class="row">
+                      <div class="col-12">
+                        <h6 class="card-subtitle">Timesheet Id</h6>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 val-r">
+                        {{ item.id ? item.id :'NA' }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="row">
+                      <div class="col-12">
+                        <h6 class="card-subtitle">Time</h6>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 val-r">
+                        {{ item['time_spent'] }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-12">
+                          <h6 class="card-subtitle">Approved Date</h6>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 val-r">
+                          {{ item['approved_date_time'] | date : 'mediumDate' }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-12">
+                          <h6 class="card-subtitle">Approved By</h6>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 val-r">
+                          {{  item.approved_by_id?item.approved_by_id:'NA'  }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="result.length === 0" class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <p>No records found
+  !</p>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div class="row">      
+        
+        <div class="col-sm">
+            <div class="d-flex justify-content-center ">
+                <pagination-controls 
+                  previousLabel="Prev" 
+                  nextLabel="Next" 
+                  (pageChange)="onTableDataChange($event)">
+                </pagination-controls>
+              </div>
+        </div>
+    </div>
+    </div>
+    
+  </div>
+
+
+
+
+

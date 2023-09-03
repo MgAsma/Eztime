@@ -1,0 +1,77 @@
+// Place for temp fixes
+//$back-color: #3F51B5;
+$back-color: #3D358F;
+body .sidebar {
+    // --cui-sidebar-bg: #e9f5ff !important;
+    --cui-sidebar-bg: #fafafa !important;
+    //box-shadow: 0px 3px 2px -1px rgba(0, 0, 0, 0.2), 0px 6px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+}
+.proceedbtn,.mat-fab.mat-primary,.user-name,.createbtn-new {
+  background-color: $back-color !important;
+}
+.sidebar-nav .nav-link.active {
+  background-color: $back-color !important;
+  color:white !important;
+}
+.sidebar-nav .nav-group.show {
+  background: #e6e6e6 !important;
+  // background: #e4fbff !important;
+}
+thead tr th{
+    background-color: $back-color !important;
+    color:white;
+    text-transform: uppercase;
+  }
+  #register-icon{
+    font-size: x-large;
+    color:$back-color;
+    padding-right: 10px;
+    cursor: pointer;
+  }
+  .ngx-pagination .current {
+    padding: 0.1875rem 0.625rem;
+    background: $back-color !important;
+    // border-radius: 50%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.ngx-pagination a, .ngx-pagination button {
+    color: $back-color !important;
+    display: block;
+    padding: 0.1875rem 0.625rem;
+    border-radius: 0;
+    text-decoration: none;
+}
+.ngx-pagination .current:hover{
+    // background: $back-color !important;
+    // border-radius: 50%;
+    opacity: 0.8;  
+}
+.createbtn{
+    background: $back-color !important;
+    // font-size: 25px;
+    border-radius: 50%;
+    position: fixed !important;
+    right: 4% !important;
+    width: 50px !important;
+    height: 50px !important;
+    
+    i{
+      display: flex;
+      justify-content:center
+    }
+  
+  }
+  .user-container{    
+    background: $back-color !important;
+}
+  .bg-role{
+    background: $back-color !important;
+    height: 85vh !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-size: small;
+    input,textarea,select{
+        font-size: small !important;
+    }
+  }
+  

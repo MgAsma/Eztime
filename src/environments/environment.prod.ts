@@ -1,0 +1,20 @@
+export const environment = {
+  production: true,
+  live_url:'https://eztime.thestorywallcafe.com/api',
+  media_url:'https://eztime.thestorywallcafe.com/media',
+  leave_application:'leave-application',
+  timesheetCalender:'time-sheets-calender',
+  taskProjectCategories:'task-project-categories',
+  users_leave_details:`users-leave-details`,
+  get_time_sheet_values:`get-time-stamp-values`,
+  managerReview:`manager-review`,
+  add_on_leave_request:`add-on-leave-request`,
+  organization:`organization`,
+  userRole:`user-role`,
+  office_working_days:`office-working-days`,
+  profile_custom_user:`profile-custom-user`,
+  time_sheets:`time-sheets`,
+  time_sheets_deadline_crossed:`time-sheets-deadline-crossed`,
+  time_sheets_monthly:`time-sheets-monthly`,
+  country_state_city:`country-state-city`
+};

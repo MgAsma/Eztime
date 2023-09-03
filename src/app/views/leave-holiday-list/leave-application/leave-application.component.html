@@ -1,0 +1,398 @@
+<div class="container-fluid webView">
+    <div class="row">
+        <div class="col-sm">
+            <h1>Leave application</h1>
+        </div>
+        <div class="col-sm"></div>
+        <div class="col-sm">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
+                  <li class="breadcrumb-item">Leave application</li> 
+                </ol>
+              </nav>
+        </div>
+        
+    </div>
+    <div class="generic-form bg">
+   <form [formGroup]='leaveForm' (ngSubmit)='addLeave()' >
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-6">
+            <div class="row webView">
+                <div class="col-sm">
+                    <h4>Leave application</h4>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-sm">
+                    <p>Leave type <span >*</span></p> 
+                    <select class="form-select" aria-label="Default select example" formControlName="leave_type_id" (change)="toggleDisable('leave_type_id')">
+                        <option value="" selected disabled>Select type</option>
+                        <option [value]="items.id" *ngFor="let items of leaveType">{{items.leave_title}}
+                        </option>
+                      </select>
+                      <div *ngIf="f['leave_type_id'].touched && f['leave_type_id'].invalid" >
+                        <div *ngIf="f['leave_type_id'].errors && f['leave_type_id'].errors['required'] " ><p class="error-msg">Leave type is required</p></div>
+                    </div> 
+                </div>
+            </div>
+         
+            <div class="row">
+                <div class="col-sm">
+                    <p>Reason<span >*</span></p>
+                        <textarea class="form-control" placeholder="Enter your reason here" formControlName="reason"  style="height: 100px"></textarea> 
+                        <div *ngIf="f['reason'].touched && f['reason'].invalid" >
+                            <div *ngIf="f['reason'].errors && f['reason'].errors['required'] " ><p class="error-msg">Reason is required</p></div>
+                        </div>
+                        <div *ngIf="f['reason'].touched && f['reason'].hasError('pattern')" >
+                            <p class="error-msg">Cannot start with a space.</p>
+                        </div>                  
+                      </div> 
+                 </div>
+          
+                 <div class="row">
+                    <div class="col-sm">
+                        <p>CC to <span >*</span></p>
+                        <!-- <input type="text" class="form-control p-3 sizeinput" placeholder="Enter cc to" formControlName="cc_to" aria-describedby="emailHelp"  autocomplete="off">
+                        <div *ngIf="f['cc_to'].touched && f['cc_to'].invalid" >
+                        </div>  -->
+                        <ng-multiselect-dropdown [placeholder]="'Select CC to'"  [settings]="ccSetting"
+                        [data]="allPeopleGroup" (onSelect)="onPeopleSelect($event)"  (onSelectAll)="onPeopleSelectAll($event)" 
+                         formControlName="cc_to">
+                        </ng-multiselect-dropdown> 
+                        <div *ngIf="f['cc_to'].touched && f['cc_to'].invalid" >
+                            <div *ngIf="f['cc_to'].errors && f['cc_to'].errors['required'] " ><p class="error-msg">CC to is required</p></div>
+                        </div>   
+                    </div>   
+                   
+                </div>
+                
+            <div class="row">
+                <div class="col-sm">
+                    <p>Contact details <span >*</span></p>
+                        <textarea class="form-control" placeholder="Enter contact details here" formControlName="contact_details" id="floatingTextarea2" style="height: 100px"></textarea>  
+                        <div *ngIf="f['contact_details'].touched && f['contact_details'].invalid" >
+                            <div *ngIf="f['contact_details'].errors && f['contact_details'].errors['required'] " ><p class="error-msg">Contact details is required</p></div>
+                        </div> 
+                        <div *ngIf="f['contact_details'].touched && f['contact_details'].hasError('pattern')" >
+                            <p class="error-msg">Cannot start with a space.</p>
+                        </div>                  
+                </div>        
+            </div>
+         
+            <div class="row">
+                <div class="col-sm">
+                    <p>File attachment</p>
+                    <input type="file" class="form-control p-4-0 sizeinput"  accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" formControlName="leave_application_file_attachment" placeholder="File Attachment" aria-describedby="emailHelp"  autocomplete="off"
+                    (change)="uploadImageFile($event)">
+                </div> 
+                <div class="error-msg" *ngIf="f['leave_application_file_attachment'].errors && f['leave_application_file_attachment'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</div>
+            </div>
+           
+     
+        </div>
+            <div class="col-sm-6 col-md-6 col-lg-3">  
+                <div class="row">
+                <div class="col-sm">
+                    <h4>Leave details</h4>
+                </div>
+            </div>
+          
+            <div class="row">
+                <div class="col-sm">
+                    <p>From date <span >*</span></p> 
+                    <input class="form-control size-input" [min]="min"  type="date" name="date-input" placeholder="date"  formControlName="leaveApplication_from_date" [readonly]="disableTextbox" (change)="toggleDisable('from_date')">  
+                    <p id="statusMessage"></p>
+                    <div id="reservationDate" name="reservationDate"  *ngIf="f['leaveApplication_from_date'].touched && f['leaveApplication_from_date'].invalid" >
+                        <div *ngIf="f['leaveApplication_from_date'].errors && f['leaveApplication_from_date'].errors['required'] " ><p class="error-msg">From date is required</p></div>
+                    </div>
+                    <!-- <div *ngIf="f['leave_type_id'].invalid && f['leaveApplication_from_date'].valid">
+                        <p class="error-msg">Leave type id is required</p>
+                    </div> -->
+                    
+                </div>
+            </div>
+       
+            <div class="row">
+                <div class="col-sm">
+                    <p>To date <span >*</span></p> 
+                    <input class="form-control size-input"  [min]="leaveForm.value.leaveApplication_from_date"  type="date"  name="date-input" placeholder="date" formControlName="leaveApplication_to_date" [readonly]="disableTextbox2" (change)="endDateValidator()">  
+                    <div *ngIf="f['leaveApplication_to_date'].touched && f['leaveApplication_to_date'].invalid" >
+                        <div *ngIf="f['leaveApplication_to_date'].errors && f['leaveApplication_to_date'].errors['required'] " ><p class="error-msg">To date is required</p></div>
+                    </div>
+                    <div *ngIf="invalidDate">
+                        <p class="error-msg">End date should be greater than or equals to start date</p>
+                    </div>
+                </div>
+            </div>
+         
+            <div class="row" >
+                <div class="col-sm">
+                    <p>Days  <span >*</span></p>
+                    <input type="text" readonly class="form-control p-3 sizeinput d-able" formControlName="days" placeholder="Days" aria-describedby="emailHelp"  autocomplete="off">
+                    <div *ngIf="f['days'].touched && f['days'].invalid" >
+                        <div *ngIf="f['days'].errors && f['days'].errors['required']" ><p class="error-msg">Days are required</p></div>
+                    </div>
+                </div>          
+            </div>
+        </div>
+            <div class="col-sm-6 col-md-6 col-lg-3">
+                <div class="row">
+                    <div class="col-sm">
+                        <h4 style="color: white;height: 30px;"></h4>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="col-sm">
+                        <p>From session <span >*</span></p> 
+                        <select class="form-select" aria-label="Default select example" formControlName="from1_session" >
+                            <option value="" selected disabled>Select from session</option>
+                            <option value="1">1 st Half</option>
+                            <option value="2">2 nd Half</option>
+                          </select>
+                          <div *ngIf="f['from1_session'].touched && f['from1_session'].invalid" >
+                            <div *ngIf="f['from1_session'].errors && f['from1_session'].errors['required'] " ><p class="error-msg">From session is required</p></div>
+                        </div>
+                    </div>
+                </div>
+              
+                <div class="row">
+                    <div class="col-sm">
+                        <p>To session <span >*</span></p> 
+                        <select class="form-select" aria-label="Default select example" formControlName="to1_session" (change)="getappliedLeave()">
+                            <option value="" selected disabled>Select to session</option>
+                            <option value="1">1 st Half</option>
+                            <option value="2">2 nd Half</option>
+                          </select>
+                          <div *ngIf="f['to1_session'].touched && f['to1_session'].invalid" >
+                            <div *ngIf="f['to1_session'].errors && f['to1_session'].errors['required'] " ><p class="error-msg">To session is required</p></div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row" >          
+                    <div class="col-sm">
+                        <p>Balance  <span >*</span></p>
+                        <input type="text" readonly class="form-control p-3 sizeinput d-able" formControlName="balance" placeholder="Balance" aria-describedby="emailHelp"  autocomplete="off">
+                        <div *ngIf="f['balance'].touched && f['balance'].invalid" >
+                            <div *ngIf="f['balance'].errors && f['balance'].errors['required'] " ><p class="error-msg">Balance is required</p></div>
+                        </div>
+                    </div>            
+                </div>
+                <div class="row">
+                    <div class="col"></div>   
+                    <div class="col-sm-4 col-md-4 col-lg-6">
+                        <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Apply</button>
+                    </div>  
+                </div>
+            </div>
+           
+            
+
+       
+    </div>
+    <!-- <div class="row">
+        <div class="col-sm">
+            <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
+        </div>
+        
+    </div> -->
+    
+   </form>
+       
+    </div>
+  
+</div>
+
+<div class="container-fluid mobileView">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1> <i  class="bi bi-arrow-left" (click)="goBack($event)"></i>  Leave application</h1>
+        </div>
+        
+    </div>
+    <div class="generic-form bg">
+   <form [formGroup]='leaveForm' (ngSubmit)='addLeave()' >
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-6">
+            <div class="row webView">
+                <div class="col-sm">
+                    <h4>Leave application</h4>
+                </div>
+            </div>
+           
+            <div class="row">
+                <div class="col-sm">
+                    <p>Leave type <span >*</span></p> 
+                    <select class="form-select" aria-label="Default select example" formControlName="leave_type_id" (change)="toggleDisable('leave_type_id')">
+                        <option value="" selected disabled>Select type</option>
+                        <option [value]="items.id" *ngFor="let items of leaveType">{{items.leave_title}}
+                        </option>
+                      </select>
+                      <div *ngIf="f['leave_type_id'].touched && f['leave_type_id'].invalid" >
+                        <div *ngIf="f['leave_type_id'].errors && f['leave_type_id'].errors['required'] " ><p class="error-msg">Leave type is required</p></div>
+                    </div> 
+                </div>
+            </div>
+         
+            <div class="row">
+                <div class="col-sm">
+                    <p>Reason<span >*</span></p>
+                        <textarea class="form-control" placeholder="Enter your reason here" formControlName="reason"  style="height: 100px"></textarea> 
+                        <div *ngIf="f['reason'].touched && f['reason'].invalid" >
+                            <div *ngIf="f['reason'].errors && f['reason'].errors['required'] " ><p class="error-msg">Reason is required</p></div>
+                        </div>
+                        <div *ngIf="f['reason'].touched && f['reason'].hasError('pattern')" >
+                            <p class="error-msg">Cannot start with a space.</p>
+                        </div>                  
+                      </div> 
+                 </div>
+          
+                 <div class="row">
+                    <div class="col-sm">
+                        <p>CC to <span >*</span></p>
+                        <!-- <input type="text" class="form-control p-3 sizeinput" placeholder="Enter cc to" formControlName="cc_to" aria-describedby="emailHelp"  autocomplete="off">
+                        <div *ngIf="f['cc_to'].touched && f['cc_to'].invalid" >
+                        </div>  -->
+                        <ng-multiselect-dropdown [placeholder]="'Select CC to'"  [settings]="ccSetting"
+                        [data]="allPeopleGroup" (onSelect)="onPeopleSelect($event)"  (onSelectAll)="onPeopleSelectAll($event)" 
+                         formControlName="cc_to">
+                        </ng-multiselect-dropdown> 
+                        <div *ngIf="f['cc_to'].touched && f['cc_to'].invalid" >
+                            <div *ngIf="f['cc_to'].errors && f['cc_to'].errors['required'] " ><p class="error-msg">CC to is required</p></div>
+                        </div>   
+                    </div>   
+                   
+                </div>
+                
+            <div class="row">
+                <div class="col-sm">
+                    <p>Contact details <span >*</span></p>
+                        <textarea class="form-control" placeholder="Enter contact details here" formControlName="contact_details" id="floatingTextarea2" style="height: 100px"></textarea>  
+                        <div *ngIf="f['contact_details'].touched && f['contact_details'].invalid" >
+                            <div *ngIf="f['contact_details'].errors && f['contact_details'].errors['required'] " ><p class="error-msg">Contact details is required</p></div>
+                        </div> 
+                        <div *ngIf="f['contact_details'].touched && f['contact_details'].hasError('pattern')" >
+                            <p class="error-msg">Cannot start with a space.</p>
+                        </div>                  
+                </div>        
+            </div>
+         
+            <div class="row">
+                <div class="col-sm">
+                    <p>File attachment</p>
+                    <input type="file" class="form-control p-4-0 sizeinput"  accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" formControlName="leave_application_file_attachment" placeholder="File Attachment" aria-describedby="emailHelp"  autocomplete="off"
+                    (change)="uploadImageFile($event)">
+                </div> 
+                <div class="error-msg" *ngIf="f['leave_application_file_attachment'].errors && f['leave_application_file_attachment'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</div>
+            </div>
+        
+           
+     
+        </div>
+            <div class="col-sm-6 col-md-12 col-lg-3">  
+                <div class="row">
+                <div class="col-sm">
+                    <h4>Leave details</h4>
+                </div>
+            </div>
+          
+            <div class="row">
+                <div class="col-sm">
+                    <p>From date <span >*</span></p> 
+                    <input class="size-input date-pic"
+                      type="date" name="date-input" placeholder="date" [min]="min" formControlName="leaveApplication_from_date" [readonly]="disableTextbox" (change)="toggleDisable('from_date')">  
+                    <p id="statusMessage"></p>
+                    <div  *ngIf="f['leaveApplication_from_date'].touched && f['leaveApplication_from_date'].invalid" >
+                        <div *ngIf="f['leaveApplication_from_date'].errors && f['leaveApplication_from_date'].errors['required'] " ><p class="error-msg">From date is required</p></div>
+                    </div>
+                    <!-- <div *ngIf="f['leave_type_id'].invalid && f['leaveApplication_from_date'].valid">
+                        <p class="error-msg">Leave type id is required</p>
+                    </div> -->
+                    
+                </div>
+            </div>
+       
+            <div class="row">
+                <div class="col-sm">
+                    <p>From session <span >*</span></p> 
+                    <select class="form-select" aria-label="Default select example" formControlName="from1_session" >
+                        <option value="" selected disabled>Select from session</option>
+                        <option value="1">1 st Half</option>
+                        <option value="2">2 nd Half</option>
+                      </select>
+                      <div *ngIf="f['from1_session'].touched && f['from1_session'].invalid" >
+                        <div *ngIf="f['from1_session'].errors && f['from1_session'].errors['required'] " ><p class="error-msg">From session is required</p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <p>To date <span >*</span></p> 
+                    <input class="size-input date-pic"  [min]="leaveForm.value.leaveApplication_from_date" type="date"  name="date-input" placeholder="date" formControlName="leaveApplication_to_date" [readonly]="disableTextbox2" (change)="endDateValidator()">  
+                    <div *ngIf="f['leaveApplication_to_date'].touched && f['leaveApplication_to_date'].invalid" >
+                        <div *ngIf="f['leaveApplication_to_date'].errors && f['leaveApplication_to_date'].errors['required'] " ><p class="error-msg">To date is required</p></div>
+                    </div>
+                    <div *ngIf="invalidDate">
+                        <p class="error-msg">End date should be greater than or equals to start date</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-sm">
+                    <p>To session <span >*</span></p> 
+                    <select class="form-select" aria-label="Default select example" formControlName="to1_session" (change)="getappliedLeave()">
+                        <option value="" selected disabled>Select to session</option>
+                        <option value="1">1 st Half</option>
+                        <option value="2">2 nd Half</option>
+                      </select>
+                      <div *ngIf="f['to1_session'].touched && f['to1_session'].invalid" >
+                        <div *ngIf="f['to1_session'].errors && f['to1_session'].errors['required'] " ><p class="error-msg">To session is required</p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" >
+                <div class="col-sm">
+                    <p>Days  <span >*</span></p>
+                    <input type="text" readonly class="form-control p-3 sizeinput d-able" formControlName="days" placeholder="Days" aria-describedby="emailHelp"  autocomplete="off">
+                    <div *ngIf="f['days'].touched && f['days'].invalid" >
+                        <div *ngIf="f['days'].errors && f['days'].errors['required']" ><p class="error-msg">Days are required</p></div>
+                    </div>
+                </div>          
+            </div>
+            <div class="row" >          
+                <div class="col-sm">
+                    <p>Balance  <span >*</span></p>
+                    <input type="text" readonly class="form-control p-3 sizeinput d-able" formControlName="balance" placeholder="Balance" aria-describedby="emailHelp"  autocomplete="off">
+                    <div *ngIf="f['balance'].touched && f['balance'].invalid" >
+                        <div *ngIf="f['balance'].errors && f['balance'].errors['required'] " ><p class="error-msg">Balance is required</p></div>
+                    </div>
+                </div>            
+            </div>
+            <div class="row">
+                <div class="col"></div>   
+                <div class="col-sm-4 col-md-4 col-lg-6">
+                    <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Apply</button>
+                </div>  
+            </div>
+        </div>
+           
+
+       
+    </div>
+    <!-- <div class="row">
+        <div class="col-sm">
+            <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
+        </div>
+        
+    </div> -->
+    
+   </form>
+       
+   
+    </div>
+  
+</div>

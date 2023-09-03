@@ -1,0 +1,148 @@
+ol{
+    background-color: inherit;
+}
+a{
+    color: #3F51B5;
+    text-decoration: none;
+}
+li{
+    
+    list-style: none;
+    color: grey;
+}
+ul{
+    padding: 0px;
+}
+.bg{
+    background-color: white;
+    height: 100%;
+    width: 99% !important;
+    padding: 10px;
+    border-radius: 5px;
+  
+}
+.proceedbtn{
+    background-color: #3F51B5;
+    border-radius: 5px;
+    border: none;
+    height: 40px;
+    width: 100%;
+    color: white;
+    margin: 10px 0px;
+}
+.printbtn{
+    background-color: #00BCD4;
+    border-radius: 5px;
+    border: none;
+    height: 40px;
+    width: 100%;
+    color: white;
+    margin: 10px 0px;
+}
+.row{
+    padding: 5px;
+}
+i{
+    padding: 0px 5px 0px 0px;
+}
+.btnicon{
+    display: none;
+}
+button:hover .btnicon{
+    display: block;
+}
+::ng-deep .mat-form-field {
+    height: 55px;
+    width: 95%!important;
+    background-color: #ffff;
+    border-radius: 50px;
+    border: solid gray;
+}
+
+::ng-deep .mat-form-field-underline {
+    display: none;
+}
+
+span{
+    color: red;
+}
+p{
+    color: grey;
+}
+html{
+    position: relative;
+}
+// .createbtn{
+//     background-color: #3F51B5;
+//     border: none;
+//     color: white;
+//     padding: 20px;
+//     text-align: center;
+//     text-decoration: none;
+//     display: inline-block;
+//     font-size: 35px;
+//     margin: 0px 2px;
+//     border-radius: 50%;
+//     position: fixed;
+//     right: 5%;
+//     bottom: 10%;
+
+// }
+input{
+    margin: 15px 0 0 0;
+    height: 41px !important;
+}
+select{
+    margin: 16px 0px 0px 0px;
+    border:1px solid #dfdfdf;
+    border-radius: 5px;
+    width: 100%;
+    height: 40px;
+}
+
+@media(max-width:767px){
+//    table{
+//     font-size: 12px !important;
+//     zoom: 80%;
+// }
+
+
+}
+
+@media(min-width:320px) and (max-width:1023px){
+    // .bg{
+    //     padding: 0 0 8rem 0!important;
+    // }
+    // table{
+    //     font-size: 12px !important;
+    //     zoom: 90%;
+    // }
+    select,input{
+        width: 100%;
+        margin: 2px !important;
+    }
+    label{
+        color:gray !important;
+    }
+    .days-container{
+        background: #f3f3f3;
+    }
+    .day-header{
+    color: #972fa7;
+    font-size: 16px;
+    font-weight: bold;
+    padding-top: 10px;
+    }
+}
+.form-control,.sizeinput:focus {
+    border-color: rgb(223, 223, 223);
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+.sizeinput{
+    background-color: lightgray;
+}
+.error-border{
+  border:1px solid red;
+}
+

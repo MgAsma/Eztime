@@ -1,0 +1,183 @@
+<div class="container-fluid webView">
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Project category list</h1>
+        </div>
+        <div class="col-sm"></div>
+        <div class="col-sm-4 text-end ">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
+                  <li class="breadcrumb-item">Project category list</li>
+                  
+                </ol>
+              </nav>
+        </div>
+        
+    </div>
+  
+        <div class="row p-20">
+            <div class="col-sm-2">
+                <select (change)="onTableSizeChange($event)" class="form-select">
+                    <option *ngFor="let size of tableSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+            </div>
+            <div class="col-sm"></div>
+            <div class="col-sm-3 mb-1 search-div">
+                <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp"  autocomplete="off">
+                <i class="bi bi-search" id="search-icon"></i>
+            </div>
+        </div>
+        <div class="bg">
+        <div class="row">
+            <div class="col">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                          <th scope="col">Sl. No.</th>
+                          <th scope="col">Category Name <i  *ngIf="!arrow" (click)="sort('asc','tpc_name')" class="fa fa-sort-up"></i><i (click)="sort('desc','tpc_name')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col">Added Date <i  *ngIf="!arrow" (click)="sort('asc','tpc_c_date')" class="fa fa-sort-up"></i><i (click)="sort('desc','tpc_c_date')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <!-- <th scope="col">Status <i  *ngIf="!arrow" (click)="sort('asc','tpc_status')" class="fa fa-sort-up"></i><i (click)="sort('desc','tpc_status')" *ngIf="arrow" class="fa fa-sort-down"></i></th> -->
+                          <th scope="col">Action</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                  
+                        <ng-container *ngIf="(categoryList | filter:term) as result">
+                          <tr *ngFor='let item of result|customSort:directionValue:sortValue| filter:term| paginate : {
+                            itemsPerPage: tableSize,
+                            currentPage: page,
+                            totalItems: count
+                          };let i=index'>
+                            <td>{{i + 1}}</td>
+                            <td>{{item.tpc_name ?item.tpc_name:"NA" }}</td>
+                            <td>{{item.tpc_c_date| date:'mediumDate'}}</td>
+                            <!-- <td>{{item.tpc_status?item.tpc_status:"NA"}}</td>  -->
+                            <td>
+                                 <ng-container *ngFor="let access of permissions">
+                                    <button mat-raised-button mat-mini-fab  routerLink="/task/update/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
+                                      <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
+                                    </button>
+                                    <button mat-raised-button mat-mini-fab (click)="open(item.id)" *ngIf="access === 'DELETE'">
+                                      <i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i>
+                                    </button>
+                                  </ng-container>                          	
+                                   
+                                <!-- <a routerLink="/task/update/{{item.id}}/{{page}}/{{tableSize}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></a>
+                                <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item.id)"><i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i></button> -->
+                             </td>
+                        </tr>
+                        
+                        <tr *ngIf="result.length === 0" class="nodata">
+                            <td> No records found
+  !</td>  
+                        </tr>
+                    </ng-container>
+                    </tbody>
+                  </table>
+                  
+            </div>
+        </div>
+        <div class="row">
+           
+            <div class="col-sm"></div>
+            <div class="col-sm" *ngIf="categoryList.length > 0">
+                <div class="d-flex justify-content-end p-nav">
+                    <pagination-controls 
+                      previousLabel="Prev" 
+                      nextLabel="Next" 
+                      (pageChange)="onTableDataChange($event)">
+                    </pagination-controls>
+                  </div>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngFor="let access of permissions">
+        <button mat-raised-button mat-fab color="primary" *ngIf="access == 'CREATE'" routerLink="/task/add" class="createbtn" placement="top" container="body" ngbTooltip="Add category/checklist">
+          <i class="fa fa-plus"></i>
+  
+        </button>
+      </ng-container>
+    <!-- <a routerLink="/task/add"> <button mat-raised-button type="button"  class="createbtn" placement="top" container="body" ngbTooltip="Add Category/Checklist"><i class="fa fa-plus"></i>
+  </button></a> -->
+</div>
+
+<div class="container-wrapper mobileView">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>Project category list</h1>
+        </div>
+        <div class="col-sm-6 col-md-6 mb-1 search-div">
+            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
+            <i class="bi bi-search" id="search-icon"></i>
+        </div>
+    </div>
+    <div class="bg">
+    <div class="row ">
+        <ng-container *ngIf="(categoryList | filter:term) as result">
+        <div class="col-sm-12 col-md-6 common-col" *ngFor='let item of result| filter:term
+        |paginate : {
+            itemsPerPage: tableSize,
+            currentPage: page,
+            totalItems: count
+          }'>
+      
+         <div class="card">
+            <div class="row">
+                <div class="col-12 p-2 text-end">
+                 <ng-container *ngFor="let access of permissions">
+                 <a *ngIf="access === 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" ></i></button></a>
+                 <a *ngIf="access === 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash-fill"></i></button></a>
+                </ng-container>
+                </div>
+                </div>
+            <div class="row ">
+                <div class="col-12 c-1">
+                <h6 class="card-subtitle">Category name</h6>
+                <div class="value-container">{{item.tpc_name}}</div>
+                </div>
+                <div class="col-12 c-2">
+                    <h6 class="card-subtitle">Added date</h6>
+                    <div class="value-container">{{item.tpc_c_date| date:'mediumDate'}}</div>
+                </div>
+                <!-- <div class="col-4 c-1">
+                    <h6 class="card-subtitle">Status</h6>
+                    <div class="value-container">{{item.tpc_status}}</div>
+                </div> -->
+             </div>
+         </div>
+        </div>
+        
+        <div *ngIf="result.length === 0" >
+            <app-generic-norecards></app-generic-norecards>
+        </div>
+        <div class="row"> 
+            <div class="col-sm" *ngIf="result.length !== 0 ">
+                <div class="d-flex justify-content-center">
+                    <pagination-controls 
+                      previousLabel="Prev" 
+                      nextLabel="Next" 
+                      (pageChange)="onTableDataChange($event)">
+                    </pagination-controls>
+                  </div>
+            </div>
+        </div>
+        </ng-container>
+    </div>
+    <div class="s-position">
+        <ng-container *ngFor="let access of permissions">
+        <button *ngIf="access === 'CREATE'" routerLink="/task/add" type="button" mat-fab  class="createbtn-new mat-btn-s" ><i class="fa fa-plus"></i>
+        </button>  
+    </ng-container>
+    </div>
+</div>
+
+</div>
+  
+ 
+
+
+

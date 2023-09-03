@@ -1,0 +1,340 @@
+<div class="container-fluid webView">
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Update client</h1>
+        </div>
+        <div class="col-sm"></div>
+        <div class="col-sm-3 text-end">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
+                  <li class="breadcrumb-item">Update client</li>
+                  
+                </ol>
+              </nav>
+        </div>
+        
+    </div>
+    <div class="generic-form bg">
+        <form [formGroup]='updateForm' (ngSubmit)='update()'>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm">
+                            <h4>Client details</h4>
+                        </div>
+                    </div>
+            
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>Industry/sector <span >*</span></p> 
+                            <select class="form-select" [(value)]='industry' aria-label="Default select example" formControlName="toi_ref_id">
+                                <option value="" selected disabled>Select industry/sector </option>
+                                <option *ngFor="let item of allIndustry" [value]="item.id">
+                                    {{item.toi_title}}
+                                </option>
+                              </select>
+                              <div *ngIf="f['toi_ref_id'].touched && f['toi_ref_id'].invalid" >
+                                <div *ngIf="f['toi_ref_id'].errors && f['toi_ref_id'].errors['required'] " ><p class="error-msg">Industry/sector is required</p></div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    
+            <div class="row">
+                <div class="col-sm">
+                    <p>Client name <span >*</span></p>
+                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_name" placeholder="Enter client name" aria-describedby="emailHelp"  autocomplete="off">
+                    <div *ngIf="f['c_name'].touched && f['c_name'].invalid" >
+                        <div *ngIf="f['c_name'].errors && f['c_name'].errors['required'] " ><p class="error-msg">Client name is required</p></div>
+                    </div>
+                    <div *ngIf="f['c_name'].invalid && f['c_name'].hasError('pattern')" >
+                        <p class="error-msg">Cannot start with a space.</p>
+                    </div> 
+                </div>
+            </div>
+      
+            <div class="row">
+                <div class="col-sm">
+                    <p>Client code <span >*</span></p>
+                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_code" placeholder="Enter client code" aria-describedby="emailHelp"  autocomplete="off">
+                    <div *ngIf="f['c_code'].touched && f['c_code'].invalid" >
+                        <div *ngIf="f['c_code'].errors && f['c_code'].errors['required'] " ><p class="error-msg">Client code is required</p></div>
+                    </div>
+                    <div *ngIf="f['c_code'].invalid && f['c_code'].hasError('pattern')" >
+                        <p class="error-msg">Cannot start with a space.</p>
+                    </div> 
+                </div>       
+            </div>
+   
+            <div class="row">
+                <div class="col-sm">
+                    <p>Address<span >*</span></p>
+                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_address" placeholder="Enter address" aria-describedby="emailHelp"  autocomplete="off">
+                    <div *ngIf="f['c_address'].touched && f['c_address'].invalid" >
+                        <div *ngIf="f['c_address'].errors && f['c_address'].errors['required'] " ><p class="error-msg">Address is required</p></div>
+                    </div>
+                    <div *ngIf="f['c_address'].invalid && f['c_address'].hasError('pattern')" >
+                        <p class="error-msg">Cannot start with a space.</p>
+                    </div> 
+                </div>         
+            </div>
+     
+            <div class="row">
+                <div class="col-sm">
+                    <p>Billable client <span >*</span></p>
+                    <select class="form-select" aria-label="Default select example" formControlName="c_type">
+                       <option value="" selected disabled>Select billable client</option>
+                        <option value="1">Yes</option>
+                        <option value="2">NO</option>
+                      </select>
+                      <div *ngIf="f['c_type'].touched && f['c_type'].invalid" >
+                        <div *ngIf="f['c_type'].errors && f['c_type'].errors['required']" ><p class="error-msg">Billable client is required</p></div>
+                    </div>
+                </div>
+                         
+            </div>
+            <!-- <div class="row">
+                <div class="col-sm">
+                    <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
+                </div>
+            
+                </div> -->
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm">
+                            <h4>Contact person details</h4>
+                        </div>
+                    </div>
+          
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>Contact person name <span >*</span></p> 
+                            <input type="text" class="form-control p-3 sizeinput" formControlName="c_contact_person" placeholder="Enter contact person name" aria-describedby="emailHelp"  autocomplete="off">
+                            <div *ngIf="f['c_contact_person'].touched && f['c_contact_person'].invalid" >
+                                <div *ngIf="f['c_contact_person'].errors && f['c_contact_person'].errors['required']" ><p class="error-msg">Contact person name is required</p></div>
+                            </div>
+                            <div *ngIf="f['c_contact_person'].invalid && f['c_contact_person'].hasError('pattern')" >
+                                <p class="error-msg">Cannot start with a space.</p>
+                            </div> 
+                        </div>
+                    </div>
+                  
+                    
+            <div class="row">
+                <div class="col-sm">
+                    <p>Email Id <span >*</span></p>
+                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_contact_person_email_id" placeholder="Enter email Id " aria-describedby="emailHelp"  autocomplete="off">
+                    <div *ngIf="f['c_contact_person_email_id'].touched && f['c_contact_person_email_id'].invalid" >
+                        <div *ngIf="f['c_contact_person_email_id'].errors['required']" ><p class="error-msg">Email Id is required</p></div>
+                        <div *ngIf="f['c_contact_person_email_id'].errors['email'] " ><p class="error-msg">Email Id is invalid</p></div>
+                    </div>
+                </div>
+            </div>
+            
+        
+            <div class="row">
+                <div class="col-sm">
+                    <p>Phone number  <span >*</span></p>
+                    <input type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control p-3 sizeinput" formControlName="c_contact_person_phone_no" placeholder="Enter phone number" aria-describedby="emailHelp"  autocomplete="off">
+                    <div *ngIf="f['c_contact_person_phone_no'].touched && f['c_contact_person_phone_no'].invalid" >
+                        <div *ngIf="f['c_contact_person_phone_no'].errors && f['c_contact_person_phone_no'].errors['required'] || f['c_contact_person_phone_no'].errors['pattern'] " ><p class="error-msg">Phone number is required</p></div>
+                    </div>
+                </div>           
+            </div>
+            <!-- <div class="row">
+                <div class="col-sm">
+                    <p>Status <span >*</span></p>
+                    <select formControlName="c_satus" class="form-select p-3 sizeinput">
+                        <option value="" selected disabled>Select An Option</option>
+                        <option value="Active" >Active</option>
+                        <option value="In Active">In Active</option>
+                        </select>
+                    <div *ngIf="f['c_satus'].touched && f['c_satus'].invalid" >
+                        <div *ngIf="f['c_satus'].errors && f['c_satus'].errors['required'] " ><p class="error-msg">Status is required</p></div>
+                    </div>
+                </div>           
+            </div> -->
+            
+            <div class="row">
+                <div class="col-sm-8"></div>
+                <div class="col-sm-4">
+                    <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Update</button>
+                </div>
+            
+                </div>
+            </div>
+    
+            </div>
+        </form>
+       
+    </div>
+   
+</div>
+
+<div class="container-fluid mobileView">
+    <div class="row">
+        <div class="col-sm-6">
+            <h1><i  class="bi bi-arrow-left" (click)="goBack($event)
+  
+  "></i>  Update client</h1>
+        </div>
+    </div>
+    <div class="generic-form bg">
+        <form [formGroup]='updateForm' (ngSubmit)='update()'>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm">
+                            <h4>Client details</h4>
+                        </div>
+                    </div>
+            
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>Industry/sector <span >*</span></p> 
+                            <select class="form-select" [(value)]='industry' aria-label="Default select example" formControlName="toi_ref_id">
+                                <option value="" selected disabled>Select industry/sector </option>
+                                <option *ngFor="let item of allIndustry" [value]="item.id">
+                                    {{item.toi_title}}
+                                </option>
+                              </select>
+                              <div *ngIf="f['toi_ref_id'].touched && f['toi_ref_id'].invalid" >
+                                <div *ngIf="f['toi_ref_id'].errors && f['toi_ref_id'].errors['required'] " ><p class="error-msg">Industry/sector is required</p></div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    
+            <div class="row">
+                <div class="col-sm">
+                    <p>Client name <span >*</span></p>
+                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_name" placeholder="Enter client name" aria-describedby="emailHelp"  autocomplete="off">
+                    <div *ngIf="f['c_name'].touched && f['c_name'].invalid" >
+                        <div *ngIf="f['c_name'].errors && f['c_name'].errors['required'] " ><p class="error-msg">Client name is required</p></div>
+                    </div>
+                    <div *ngIf="f['c_name'].invalid && f['c_name'].hasError('pattern')" >
+                        <p class="error-msg">Cannot start with a space.</p>
+                    </div> 
+                </div>
+            </div>
+      
+            <div class="row">
+                <div class="col-sm">
+                    <p>Client code <span >*</span></p>
+                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_code" placeholder="Enter client code" aria-describedby="emailHelp"  autocomplete="off">
+                    <div *ngIf="f['c_code'].touched && f['c_code'].invalid" >
+                        <div *ngIf="f['c_code'].errors && f['c_code'].errors['required'] " ><p class="error-msg">Client code is required</p></div>
+                    </div>
+                    <div *ngIf="f['c_code'].invalid && f['c_code'].hasError('pattern')" >
+                        <p class="error-msg">Cannot start with a space.</p>
+                    </div> 
+                </div>       
+            </div>
+   
+            <div class="row">
+                <div class="col-sm">
+                    <p>Address<span >*</span></p>
+                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_address" placeholder="Enter address" aria-describedby="emailHelp"  autocomplete="off">
+                    <div *ngIf="f['c_address'].touched && f['c_address'].invalid" >
+                        <div *ngIf="f['c_address'].errors && f['c_address'].errors['required'] " ><p class="error-msg">Address is required</p></div>
+                    </div>
+                    <div *ngIf="f['c_address'].invalid && f['c_address'].hasError('pattern')" >
+                        <p class="error-msg">Cannot start with a space.</p>
+                    </div> 
+                </div>         
+            </div>
+     
+            <div class="row">
+                <div class="col-sm">
+                    <p>Billable client <span >*</span></p>
+                    <select class="form-select" aria-label="Default select example" formControlName="c_type">
+                       <option value="" selected disabled>Select billable client</option>
+                        <option value="1">Yes</option>
+                        <option value="2">NO</option>
+                      </select>
+                      <div *ngIf="f['c_type'].touched && f['c_type'].invalid" >
+                        <div *ngIf="f['c_type'].errors && f['c_type'].errors['required']" ><p class="error-msg">Billable client is required</p></div>
+                    </div>
+                </div>
+                         
+            </div>
+            <!-- <div class="row">
+                <div class="col-sm">
+                    <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
+                </div>
+            
+                </div> -->
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm">
+                            <h4>Contact person details</h4>
+                        </div>
+                    </div>
+          
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>Contact person name <span >*</span></p> 
+                            <input type="text" class="form-control p-3 sizeinput" formControlName="c_contact_person" placeholder="Enter contact person name" aria-describedby="emailHelp"  autocomplete="off">
+                            <div *ngIf="f['c_contact_person'].touched && f['c_contact_person'].invalid" >
+                                <div *ngIf="f['c_contact_person'].errors && f['c_contact_person'].errors['required']" ><p class="error-msg">Contact person name is required</p></div>
+                            </div>
+                            <div *ngIf="f['c_contact_person'].invalid && f['c_contact_person'].hasError('pattern')" >
+                                <p class="error-msg">Cannot start with a space.</p>
+                            </div> 
+                        </div>
+                    </div>
+                  
+                    
+            <div class="row">
+                <div class="col-sm">
+                    <p>Email Id <span >*</span></p>
+                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_contact_person_email_id" placeholder="Enter email Id " aria-describedby="emailHelp"  autocomplete="off">
+                    <div *ngIf="f['c_contact_person_email_id'].touched && f['c_contact_person_email_id'].invalid" >
+                        <div *ngIf="f['c_contact_person_email_id'].errors['required']" ><p class="error-msg">Email Id is required</p></div>
+                        <div *ngIf="f['c_contact_person_email_id'].errors['email'] " ><p class="error-msg">Email Id is invalid</p></div>
+                    </div>
+                </div>
+            </div>
+            
+        
+            <div class="row">
+                <div class="col-sm">
+                    <p>Phone number  <span >*</span></p>
+                    <input type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control p-3 sizeinput" formControlName="c_contact_person_phone_no" placeholder="Enter phone number" aria-describedby="emailHelp"  autocomplete="off">
+                    <div *ngIf="f['c_contact_person_phone_no'].touched && f['c_contact_person_phone_no'].invalid" >
+                        <div *ngIf="f['c_contact_person_phone_no'].errors && f['c_contact_person_phone_no'].errors['required'] || f['c_contact_person_phone_no'].errors['pattern'] " ><p class="error-msg">Phone number is required</p></div>
+                    </div>
+                </div>           
+            </div>
+            <!-- <div class="row">
+                <div class="col-sm">
+                    <p>Status <span >*</span></p>
+                    <select formControlName="c_satus" class="form-select p-3 sizeinput">
+                        <option value="" selected disabled>Select An Option</option>
+                        <option value="Active" >Active</option>
+                        <option value="In Active">In Active</option>
+                        </select>
+                    <div *ngIf="f['c_satus'].touched && f['c_satus'].invalid" >
+                        <div *ngIf="f['c_satus'].errors && f['c_satus'].errors['required'] " ><p class="error-msg">Status is required</p></div>
+                    </div>
+                </div>           
+            </div> -->
+            
+            <div class="row">
+                <div class="col-sm-8"></div>
+                <div class="col-sm-4">
+                    <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Update</button>
+                </div>
+            
+                </div>
+            </div>
+    
+            </div>
+        </form>
+       
+    </div>
+   
+</div>

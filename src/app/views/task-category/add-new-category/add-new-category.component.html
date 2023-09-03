@@ -1,0 +1,312 @@
+<div class="container-fluid webView">
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Add project category/checklist</h1>
+        </div>
+        <div class="col-sm"></div>
+        <div class="col-sm-4 text-end">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
+                  <li class="breadcrumb-item">
+                    Add project category/checklist</li>
+                </ol>
+              </nav>
+        </div>
+        
+    </div>
+    <div class="generic-form bg">
+   <form [formGroup]='taskCategoryForm' (ngSubmit)='addTaskCategory()' >
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Project category/checklist details</h4>
+        </div>
+    </div>
+ 
+    <div class="row">
+        <div class="col-sm-4">
+            <label>Category name <span >*</span></label> 
+            <input type="text" class="form-control p-3 sizeinput" formControlName="tpc_name" placeholder="Enter category name" aria-describedby="emailHelp"  autocomplete="off">
+            <div *ngIf="f['tpc_name'].touched && f['tpc_name'].invalid" >
+                <div *ngIf="f['tpc_name'].errors && f['tpc_name'].errors['required'] " ><p class="error-msg">Category name is required</p></div>
+            </div>
+            <div class="feedback" *ngIf="f['tpc_name'].invalid && f['tpc_name'].hasError('pattern')">
+                Cannot start with a space.
+              </div>
+        </div>
+    </div>
+    <div>
+    
+    <form [formGroup]="taskCategoryForm" >
+        <div class="container bg-light my-3 p-2">
+        
+        <div class="row mb-0">
+            <div class="col-sm-6 mb-0">
+                <h5>File templates </h5>
+            </div>
+        </div>
+        <div formArrayName="file_templates_list">
+          <div *ngFor="let file of taskCategoryForm.get('file_templates_list')['controls']; let i = index">
+            <div [formGroupName]="i">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-4 py-0">
+                        <label class="p-0">Photo <b style="color:red">*</b></label>
+                        <input type="file" formControlName="file_base_64" accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" class="form-control sizeinput" (change)="uploadImageFile($event,i)" (ngModelChange)="uploadImageFile($event,i)">
+                        <div *ngIf="file.get('file_base_64').invalid && (file.get('file_base_64').dirty || file.get('file_base_64').touched)">
+                            <div class="feedback" *ngIf="file.get('file_base_64').errors.required">
+                              Photo is required.
+                            </div>
+                          </div>
+                          <span class="feedback" *ngIf="file.get('file_base_64').errors && file.get('file_base_64').errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-4 py-0">
+                        <label class="p-0">File template name <b style="color:red">*</b></label>
+                        <input type="text" formControlName="file_template_name" class="form-control sizeinput" placeholder="Enter template name">
+                        <div *ngIf="file.get('file_template_name').invalid && (file.get('file_template_name').dirty || file.get('file_template_name').touched)">
+                            <div class="feedback" *ngIf="file.get('file_template_name').errors.required">
+                              File template name is required.
+                            </div>
+                            <div class="feedback" *ngIf="file.get('file_template_name').invalid && file.get('file_template_name').hasError('pattern')">
+                                Cannot start with a space.
+                              </div>
+                          </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-2 py-4">
+                        <button mat-raised-button mat-raised-button class="mat-btn-s printbtn delete mx-1"  type="button"
+                        (click)="delete(i)" [disabled]="i<= 0 ? true : false" [ngStyle]="i==0? {'background':'lightgray'}:{'background':'red'}"> Delete <i class="bi bi-trash-fill px-1" ></i></button>
+                    </div>
+                </div>
+
+            </div>
+           
+          </div>
+        </div>
+        <div class="row align-end">
+            <div class="col-sm-4 col-md-4 col-lg-3">
+                <button mat-raised-button mat-raised-button class="mat-btn-s printbtn" type="button" (click)="add()" [disabled]="taskCategoryForm.get('file_templates_list').invalid " [ngClass]="taskCategoryForm.get('file_templates_list').invalid  ? 'add_disabled':'printbtn'">+Add more files</button>
+            </div>
+        </div>
+        </div>
+       
+        <div formArrayName="task_list">
+            <div class="container bg-light my-3 p-2">
+            <div class="row mb-0">
+                <div class="col-sm-6 mb-0">
+                    <h5>Task list <span ></span></h5>
+                </div>
+            </div>
+          <div *ngFor="let task of taskCategoryForm.get('task_list')['controls']; let i = index">
+            <div [formGroupName]="i">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-4 py-0">
+                        <label class="p-0">Task name <b style="color:red">*</b></label>
+                        <input type="text" formControlName="task_name" class="form-control sizeinput" placeholder="Enter task name">
+                        <div *ngIf="task.get('task_name').invalid && (task.get('task_name').dirty || task.get('task_name').touched)">
+                            <div class="feedback" *ngIf="task.get('task_name').errors.required">
+                              Task name is required.
+                            </div>
+                            <div class="feedback" *ngIf="task.get('task_name').invalid && task.get('task_name').hasError('pattern')">
+                                Cannot start with a space.
+                              </div>
+                          </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-4 py-0">
+                        <label class="p-0">Billable type <b style="color:red">*</b></label>
+                        <!-- <input type="text" formControlName="billable_type" class="form-control sizeinput" placeholder="Enter billable type"> -->
+                        <select formControlName="billable_type" id="billable_type" class="form-select sizeinput">
+                            <option value="">Select billable type</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                          </select>
+                        <div *ngIf="task.get('billable_type').invalid && (task.get('billable_type').dirty || task.get('billable_type').touched)">
+                            <div class="feedback" *ngIf="task.get('billable_type').errors.required">
+                              Billable type is required.
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-2 py-4">
+                        <button mat-raised-button mat-raised-button class="mat-btn-s printbtn delete  mx-1"  type="button"
+                        (click)="deleteTask(i)" [disabled]="i<= 0 ? true : false" [ngStyle]="i==0? {'background':'lightgray'}:{'background':'red'}"> Delete <i class="bi bi-trash-fill px-1" ></i></button>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3 ">
+                <button mat-raised-button mat-raised-button class="mat-btn-s printbtn" type="button" (click)="addTask()" [disabled]="taskCategoryForm.get('task_list').invalid "  [ngClass]="taskCategoryForm.get('task_list').invalid  ? 'add_disabled':'printbtn'">+Add tasks</button>
+            </div>
+        </div>
+        </div>
+        </div>
+      </form>
+      
+    </div>
+    
+   
+    
+    <div class="row">
+        <!-- <div class="col-sm-7">
+            <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
+            <p>Maximum file size is 5MB</p>
+        </div> -->
+        <div class="col-sm"></div>
+        <div class="col-sm-3">
+            <button mat-raised-button mat-raised-button color="primary" type="submit" class="mat-btn-s proceedbtn">Submit</button>
+        </div>
+    </div>
+   </form>
+</div>
+</div>
+<div class="container-fluid mobileView">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1> <i  class="bi bi-arrow-left" (click)="goBack($event)
+  
+  "></i>  Add project category/checklist</h1>
+        </div>
+    </div>
+    <div class="generic-form bg">
+   <form [formGroup]='taskCategoryForm' (ngSubmit)='addTaskCategory()' >
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Project category/checklist details</h4>
+        </div>
+    </div>
+ 
+    <div class="row">
+        <div class="col-sm-6">
+            <label>Category name <span >*</span></label> 
+            <input type="text" class="form-control p-3 sizeinput" formControlName="tpc_name" placeholder="Enter category name" aria-describedby="emailHelp"  autocomplete="off">
+            <div *ngIf="f['tpc_name'].touched && f['tpc_name'].invalid" >
+                <div *ngIf="f['tpc_name'].errors && f['tpc_name'].errors['required'] " ><p class="error-msg">Category name is required</p></div>
+            </div>
+            <div class="feedback" *ngIf="f['tpc_name'].invalid && f['tpc_name'].hasError('pattern')">
+                Cannot start with a space.
+              </div>
+        </div>
+    </div>
+    <div>
+    
+    <form [formGroup]="taskCategoryForm">
+        <div class="container bg-light my-3 p-2">
+        
+        <div class="row mb-0">
+            <div class="col-sm-6 mb-0">
+                <h5>File templates </h5>
+            </div>
+        </div>
+        <div formArrayName="file_templates_list">
+          <div *ngFor="let file of taskCategoryForm.get('file_templates_list')['controls']; let i = index">
+            <div [formGroupName]="i">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-4 py-0">
+                        <label class="p-0">Photo <b style="color:red">*</b></label>
+                        <input type="file" formControlName="file_base_64" accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" class="form-control sizeinput" (change)="uploadImageFile($event,i)" (ngModelChange)="uploadImageFile($event,i)">
+                        <div *ngIf="file.get('file_base_64').invalid && (file.get('file_base_64').dirty || file.get('file_base_64').touched)">
+                            <div class="feedback" *ngIf="file.get('file_base_64').errors.required">
+                              Photo is required.
+                            </div>
+                          </div>
+                          <span class="feedback" *ngIf="file.get('file_base_64').errors && file.get('file_base_64').errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-4 py-0">
+                        <label class="p-0">File template name <b style="color:red">*</b></label>
+                        <input type="text" formControlName="file_template_name" class="form-control sizeinput" placeholder="Enter template name">
+                        <div *ngIf="file.get('file_template_name').invalid && (file.get('file_template_name').dirty || file.get('file_template_name').touched)">
+                            <div class="feedback" *ngIf="file.get('file_template_name').errors.required">
+                              File template name is required.
+                            </div>
+                            <div class="feedback" *ngIf="file.get('file_template_name').invalid && file.get('file_template_name').hasError('pattern')">
+                                Cannot start with a space.
+                              </div>
+                          </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-2 py-4">
+                        <button mat-raised-button mat-raised-button class="mat-btn-s printbtn delete mx-1"  type="button"
+                        (click)="delete(i)" [disabled]="i<= 0 ? true : false" [ngStyle]="i==0? {'background':'lightgray'}:{'background':'red'}"> Delete <i class="bi bi-trash-fill px-1" ></i></button>
+                    </div>
+                </div>
+
+            </div>
+           
+          </div>
+        </div>
+        <div class="row align-end">
+            <div class="col-sm-4 col-md-4 col-lg-3">
+                <button mat-raised-button mat-raised-button class="mat-btn-s printbtn" type="button" (click)="add()" [disabled]="taskCategoryForm.get('file_templates_list').invalid " [ngClass]="taskCategoryForm.get('file_templates_list').invalid  ? 'add_disabled':'printbtn'">+Add more files</button>
+            </div>
+        </div>
+        </div>
+       
+        <div formArrayName="task_list">
+            <div class="container bg-light my-3 p-2">
+            <div class="row mb-0">
+                <div class="col-sm-6 mb-0">
+                    <h5>Task list <span ></span></h5>
+                </div>
+            </div>
+          <div *ngFor="let task of taskCategoryForm.get('task_list')['controls']; let i = index">
+            <div [formGroupName]="i">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-4 py-0">
+                        <label class="p-0">Task name <b style="color:red">*</b></label>
+                        <input type="text" formControlName="task_name" class="form-control sizeinput" placeholder="Enter task name">
+                        <div *ngIf="task.get('task_name').invalid && (task.get('task_name').dirty || task.get('task_name').touched)">
+                            <div class="feedback" *ngIf="task.get('task_name').errors.required">
+                              Task name is required.
+                            </div>
+                            <div class="feedback" *ngIf="task.get('task_name').invalid && task.get('task_name').hasError('pattern')">
+                                Cannot start with a space.
+                              </div>
+                          </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-4 py-0">
+                        <label class="p-0">Billable type <b style="color:red">*</b></label>
+                        <!-- <input type="text" formControlName="billable_type" class="form-control sizeinput" placeholder="Enter billable type"> -->
+                        <select formControlName="billable_type" id="billable_type" class="form-select sizeinput">
+                            <option value="">Select billable type</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                          </select>
+                        <div *ngIf="task.get('billable_type').invalid && (task.get('billable_type').dirty || task.get('billable_type').touched)">
+                            <div class="feedback" *ngIf="task.get('billable_type').errors.required">
+                              Billable type is required.
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-2 py-4">
+                        <button mat-raised-button mat-raised-button class="mat-btn-s printbtn delete  mx-1"  type="button"
+                        (click)="deleteTask(i)" [disabled]="i<= 0 ? true : false" [ngStyle]="i==0? {'background':'lightgray'}:{'background':'red'}"> Delete <i class="bi bi-trash-fill px-1" ></i></button>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3 ">
+                <button mat-raised-button mat-raised-button class="mat-btn-s printbtn" type="button" (click)="addTask()" [disabled]="taskCategoryForm.get('task_list').invalid "  [ngClass]="taskCategoryForm.get('task_list').invalid  ? 'add_disabled':'printbtn'">+Add tasks</button>
+            </div>
+        </div>
+        </div>
+        </div>
+      </form>
+      
+    </div>
+    
+   
+    
+    <div class="row">
+        <!-- <div class="col-sm-7">
+            <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
+            <p>Maximum file size is 5MB</p>
+        </div> -->
+        <div class="col-sm"></div>
+        <div class="col-sm-3">
+            <button mat-raised-button mat-raised-button color="primary" type="submit" class="mat-btn-s proceedbtn">Submit</button>
+        </div>
+    </div>
+   </form>
+</div>
+</div>
+
+
+

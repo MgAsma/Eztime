@@ -1,0 +1,35 @@
+.user-id{
+    border: 1px solid #c1c0c0;
+    padding: 2px 5px;
+    background: #769df7;
+}
+.addOn-icon{
+    position: absolute;
+    right: 67px;
+}
+.user-name {
+    position: absolute;
+    right: 67px;
+    /* border: 1px solid #3f51b5; */
+    padding: 5px 10px;
+    text-align: center;
+    background: #ffeded !important;
+    border-radius: 4px;
+    // color: white;
+    line-height: 16px;
+    font-size: 12px;
+    text-transform: capitalize;
+}
+.user-name:hover{
+    opacity: 0.9;
+}
+.nonemployee{
+    top: 12px;  
+}
+.employee{
+    top: 19px;  
+}
+.role-name{
+    font-size: 10px;
+    font-weight: bold;
+}
