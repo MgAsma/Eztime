@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { ClassToggleService, HeaderComponent } from '@coreui/angular';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 
 @Component({
   selector: 'app-default-header',
@@ -16,7 +19,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
   public newMessages = new Array(4)
   public newTasks = new Array(5)
   public newNotifications = new Array(5)
-
+  
   headerNav = [
     {
       link:'/profile',
@@ -34,7 +37,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
       icons:'fa fa-key'
     },
     {
-      link:'/login',
+      link:'/logout',
       page:'Logout',
       icons:'bi bi-power'
     }
@@ -43,7 +46,8 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
   user_name: string;
   
 
-  constructor(private classToggler: ClassToggleService) {
+  constructor(private classToggler: ClassToggleService,private modalService :NgbModal,
+    private router:Router) {
     super();
   }
   ngOnInit(): void {
@@ -61,8 +65,30 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
   }
   clearStorage(type){
     if(type['page'] === 'Logout'){
-     sessionStorage.clear()
-     location.reload();
+      this.openDialogue()
+     
     }
+  }
+  openDialogue() {
+   
+      const modelRef =   this.modalService.open(GenericDeleteComponent, {
+        size: <any>'sm'
+    ,
+        backdrop: true,
+        centered:true
+      });
+      modelRef.componentInstance.title = `Are you sure do you want to logout`;
+      modelRef.componentInstance.message = `Logout`;
+      modelRef.componentInstance.status.subscribe(resp => {
+        if(resp == "ok"){
+          this.router.navigate(['/login'])
+          sessionStorage.clear()
+          location.reload();
+         modelRef.close();
+        }
+        else{
+          modelRef.close();
+        }
+    })
   }
 }

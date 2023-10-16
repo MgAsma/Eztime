@@ -188,7 +188,7 @@
                         <p>Estimated hours <span >*</span></p>
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1"><i style="color: gray;" class="bi bi-clock"></i></span>
-                            <input type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control" formControlName="p_estimated_hours" placeholder="Enter estimated hours" aria-label="Username" aria-describedby="basic-addon1"> 
+                            <input type="number" appHypen onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control" formControlName="p_estimated_hours" placeholder="Enter estimated hours" aria-label="Username" aria-describedby="basic-addon1" > 
                           </div>
                           <div *ngIf="f['p_estimated_hours'].touched && f['p_estimated_hours'].invalid" >
                             <div *ngIf="f['p_estimated_hours'].errors && f['p_estimated_hours'].errors['required']" ><p class="error-msg">Estimated hours is required</p></div>
@@ -201,7 +201,7 @@
                         <p>Estimated billing <span >*</span></p>
                         <div class="input-group">    
                             <span class="input-group-text" id="basic-addon1"><i style="color: gray;" class="bi bi-currency-rupee"></i></span>
-                            <input type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control" formControlName="p_estimated_cost" placeholder="Enter estimated billing" aria-label="Username" aria-describedby="basic-addon1">
+                            <input type="number" appHypen onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control" formControlName="p_estimated_cost" placeholder="Enter estimated billing" aria-label="Username" aria-describedby="basic-addon1" >
                           
                           </div>
                           <div *ngIf="f['p_estimated_cost'].touched && f['p_estimated_cost'].invalid" >
@@ -521,7 +521,7 @@
                         <p>Estimated hours <span >*</span></p>
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1"><i style="color: gray;" class="bi bi-clock"></i></span>
-                            <input type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control" formControlName="p_estimated_hours" placeholder="Enter estimated hours" aria-label="Username" aria-describedby="basic-addon1"> 
+                            <input type="number" appHypen onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control" formControlName="p_estimated_hours" placeholder="Enter estimated hours" aria-label="Username" aria-describedby="basic-addon1" > 
                           </div>
                           <div *ngIf="f['p_estimated_hours'].touched && f['p_estimated_hours'].invalid" >
                             <div *ngIf="f['p_estimated_hours'].errors && f['p_estimated_hours'].errors['required']" ><p class="error-msg">Estimated hours is required</p></div>
@@ -534,7 +534,7 @@
                         <p>Estimated billing <span >*</span></p>
                         <div class="input-group">    
                             <span class="input-group-text" id="basic-addon1"><i style="color: gray;" class="bi bi-currency-rupee"></i></span>
-                            <input type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control" formControlName="p_estimated_cost" placeholder="Enter estimated billing" aria-label="Username" aria-describedby="basic-addon1">
+                            <input type="number" appHypen onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control" formControlName="p_estimated_cost" placeholder="Enter estimated billing" aria-label="Username" aria-describedby="basic-addon1" >
                           
                           </div>
                           <div *ngIf="f['p_estimated_cost'].touched && f['p_estimated_cost'].invalid" >

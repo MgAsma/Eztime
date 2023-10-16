@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {  Validators, FormBuilder,FormGroup } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
+import { error } from 'console';
 @Component({
   selector: 'app-add-new-tag',
   templateUrl: './add-new-tag.component.html',
@@ -50,7 +51,9 @@ export class AddNewTagComponent implements OnInit {
           this.api.showError('Error!');
         }
           
-        }
+        },(error =>{
+          this.api.showError(error.error.error.message)
+        })
       )
     }
   }

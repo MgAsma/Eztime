@@ -244,7 +244,7 @@
                                   </div>
                                   <div class="col-9 text-end">
                                     <ng-container *ngFor="let access of timesheetAccess">
-                                    <button mat-raised-button mat-raised-button color="primary" *ngIf="access ==='ACCEPT'" (click)="openDialogue(time,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
+                                    <button mat-raised-button mat-raised-button color="primary" *ngIf="access ==='APPROVE'" (click)="openDialogue(time,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
                                     <button mat-raised-button mat-raised-button color="warn" *ngIf="access ==='REJECT'" (click)="openDialogue(time,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
                                     </ng-container>
                                   </div>

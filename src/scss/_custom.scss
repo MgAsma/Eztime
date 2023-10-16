@@ -183,5 +183,8 @@ form {
 }
 
 
-
+.md-drppicker.drops-down-auto.ltr.shown {
+    left: unset !important;
+    right: unset !important;
+}
 

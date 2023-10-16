@@ -137,19 +137,24 @@ export class MonthTimesheetComponent implements OnInit {
     }
     }
     getByStatus(params){
+      this.allListDataids = []
+      this.exebtn = false;
       this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&approved_state=${params.approved_state}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res=>{
       if(res['result']['data']){
         if(res['result']['data'].length >1){
           res['result']['data'].forEach(element => {
-         //   console.log(element.id)
+           // console.log(element.id)
             this.allListDataids.push(element.id)
+            this.exebtn = true;
           });
         }
         else{
           if(res['result']['data'].length === 1){
             this.allListDataids.push(res['result']['data'][0].id)
+            this.exebtn = true;
           }  
         } 
+        
         this.allDetails = res['result']['data']
         this.totalCount = res['result'].pagination.number_of_pages
         if(this.allDetails.length <= 0){
@@ -162,30 +167,33 @@ export class MonthTimesheetComponent implements OnInit {
       })
       )
     }
-  getAllTimeSheet(params){ 
-    this.allListDataids = []
-    this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&timesheets_from_date=${params.timesheets_from_date}&approved_state=${params.approved_state}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res=>{
-      if(res['result']['data'].length >1){
-        res['result']['data'].forEach(element => {
-         // console.log(element.id)
-          this.allListDataids.push(element.id)
-        });
-      }
-      else{
-        if(res['result']['data'].length === 1){
-          this.allListDataids.push(res['result']['data'][0].id)
-        }  
-      } 
-      this.allDetails = res['result']['data']
-      this.totalCount = res['result'].pagination.number_of_pages
-      if(this.allDetails.length <= 0){
-        this.api.showWarning('No records found !')
-      }
-    },((error:any)=>{
-      this.api.showError(error.error.error.message)
-    }))
-    
-  }
+    getAllTimeSheet(params){ 
+      this.allListDataids = []
+      this.exebtn = false;
+      this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&timesheets_from_date=${params.timesheets_from_date}&approved_state=${params.approved_state}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res=>{
+        if(res['result']['data'].length >1){
+          res['result']['data'].forEach(element => {
+           // console.log(element.id)
+            this.allListDataids.push(element.id)
+            this.exebtn = true;
+          });
+        }
+        else{
+          if(res['result']['data'].length === 1){
+            this.allListDataids.push(res['result']['data'][0].id)
+            this.exebtn = true;
+          }  
+        } 
+        this.allDetails = res['result']['data']
+        this.totalCount = res['result'].pagination.number_of_pages
+        if(this.allDetails.length <= 0){
+          this.api.showWarning('No records found !')
+        }
+      },((error:any)=>{
+        this.api.showError(error.error.error.message)
+      }))
+      
+    }
  
   
   tabState(data){

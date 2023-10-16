@@ -93,7 +93,7 @@
                               <button mat-raised-button mat-mini-fab  routerLink="/people/updatePeople/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
                                 <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
                               </button>
-                              <button mat-raised-button mat-mini-fab   (click)="open(item.id)" *ngIf="access === 'DELETE'">
+                              <button mat-raised-button mat-mini-fab   (click)="open(item.people_id)" *ngIf="access === 'DELETE'">
                                 <i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i>
                               </button>
                             </ng-container>

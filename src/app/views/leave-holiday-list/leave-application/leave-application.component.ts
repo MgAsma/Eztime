@@ -1,15 +1,22 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Validators, FormBuilder,FormGroup, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+
+import * as dayjs from 'dayjs';
+
+import { environment } from 'src/environments/environment';
+import { LocaleConfig } from 'ngx-daterangepicker-material';
+
+
 @Component({
   selector: 'app-leave-application',
   templateUrl: './leave-application.component.html',
   styleUrls: ['./leave-application.component.scss']
 })
 export class LeaveApplicationComponent implements OnInit {
+  
   leaveForm! : FormGroup
 
   allLeave:any=[];
@@ -37,16 +44,32 @@ export class LeaveApplicationComponent implements OnInit {
   noLeaves: boolean = false;
   minDate: any;
   maxDate: any;
-  datepickerConfig: Partial<BsDatepickerConfig>;
+  
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
     private datepipe:DatePipe,
-    private location:Location
-    ) 
-    { 
-    }
+    private location:Location,
+    ) { }
+     d = dayjs();
 
+    selected: any;
+    locale: LocaleConfig |any = {
+      applyLabel: 'Appliquer',
+      customRangeLabel: ' - ',
+      //daysOfWeek: this.d.day(),
+     // monthNames: d.monthsShort(),
+      // firstDay: d.localeData().firstDayOfWeek(),
+    }
+  
+   
+  
+    myFilter = (d: Date | null): boolean => {
+      // Disable weekends
+      const day = (d || new Date()).getDay();
+      return day !== 0 && day !== 6 ;
+    }
+    
     goBack(event)
   {
       event.preventDefault(); // Prevent default back button behavior
@@ -59,59 +82,44 @@ export class LeaveApplicationComponent implements OnInit {
    this.getPeopleGroup();
    this.getLeaveType();
    this.initForm();
-   this.datepickerConfig = {
-    minDate: new Date('2023-08-14'), // Set the minimum allowed date
-    maxDate: new Date('2023-08-30'), // Set the maximum allowed date
-    datesDisabled: this.dateDisabled.bind(this), // Custom function to disable specific dates
-  };
+   this.enableDatepicker()
+   
  
-   //this.getAllleaveData(); 
-  //  this.getMinDate();
-  //  this.getMaxDate();
-  }
-  dateDisabled(date: Date, mode: string): boolean {
-    // Your logic to disable specific date ranges based on backend response
-    // Example: Disable dates from the backend response
-    const disabledDates = [
-      // { from_date: '2023-08-14', expires: '2023-08-22' },
-      { from_date: '2023-08-25', expires: '2023-08-25' },
-      // { from_date: '2023-08-28', expires: '2023-08-30' },
-    ];
-
-    for (const range of disabledDates) {
-      const fromDate = new Date(range.from_date);
-      const expiresDate = new Date(range.expires);
-      if (fromDate  === expiresDate) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  // getAllleaveData(){
-  //   let params = {
-  //     pagination:"FALSE"
-  //   }
-  //   let user_id = sessionStorage.getItem('user_id')
-  //   this.api.getData(`${environment.live_url}/${environment.users_leave_details}?user_id=${user_id}&method=VIEW&menu=MY_LEAVES&module=LEAVE/HOLIDAY_LIST&page_number=1&data_per_page=2&pagination=${params.pagination}`).subscribe(
-  //     (res:any)=>{
-  //      this.leaveDetails = res.result.data
-  //      this.leaveDetails.forEach(element => {
-  //       this.reservedDates.push({
-  //         fromDate: this.datepipe.transform(element.leaveApplication_from_date * 1000, 'yyyy-MM-dd'),
-  //         toDate: this.datepipe.transform(element.leaveApplication_to_date * 1000, 'yyyy-MM-dd')
-  //       });
-  //     });
-
-  //     //console.log(this.reservedDates,"FROMDATE")
-  //   },
-  //   err=>{
-  //    this.api.showError(err.error.error.message)
-  //   }
-  //   )
-  // }
+   this.getAllleaveData(); 
   
+  }
+  
+  getAllleaveData(){
+    let params = {
+      pagination:"FALSE"
+    }
+    let user_id = sessionStorage.getItem('user_id')
+    this.api.getData(`${environment.live_url}/${environment.users_leave_details}?user_id=${user_id}&method=VIEW&menu=MY_LEAVES&module=LEAVE/HOLIDAY_LIST&page_number=1&data_per_page=2&pagination=${params.pagination}`).subscribe(
+      (res:any)=>{
+        if(res.result.data){
+          this.leaveDetails = res.result.data
+        this.leaveDetails.forEach(element => {
+          // this.reservedDates.push({
+          //   fromDate: this.datepipe.transform(element.leaveApplication_from_date * 1000, 'yyyy-MM-dd'),
+          //   toDate: this.datepipe.transform(element.leaveApplication_to_date * 1000, 'yyyy-MM-dd')
+          // });
+          this.reservedDates.push(this.datepipe.transform(element.leaveApplication_from_date * 1000, 'yyyy-MM-dd'))
+        });
+        }
+       
+
+      //console.log(this.reservedDates,"FROMDATE")
+    },
+    err=>{
+     this.api.showError(err.error.error.message)
+    }
+    )
+  }
+  enableDatepicker() {
+    // Assuming you have a reference to your ngx-datepicker, let's call it 'myDatepicker'
+    // You can use this.reservedDates to disable specific dates
+    // console.log(this.myDatepicker,"CONSOLE")
+  }
   toggleDisable(event) {
     if(event == "from_date"){
       this.disableTextbox2 = false;
@@ -298,7 +306,7 @@ this.api.getLeaveBalance(params,data).subscribe(res=>{
   this.leaveForm.patchValue({balance:this.balanceLeave ? this.balanceLeave :0})
 },(error:any)=>{
   this.noLeaves = true
-  this.api.showError(`Balance ${error.error.error.message}`)
+  this.api.showError(error.error.error.message)
 })
  
 }

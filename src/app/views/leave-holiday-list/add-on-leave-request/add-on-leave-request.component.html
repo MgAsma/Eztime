@@ -99,17 +99,17 @@
                 <tabset >
                     <tab heading="Yet to approved" (selectTab)="tabState($event)">
                       <app-yet-approve [data]="AllListData" (buttonClick)="buttonClick($event)" [totalCount]="totalCount" *ngIf="AllListData[0]?.approved_state === 'YET_TO_APPROVED'"></app-yet-approve>
-                      <div class="text-center text-muted no-data py-2" *ngIf="AllListData[0]?.approved_state !== 'YET_TO_APPROVED' ">No records found
+                      <div class="text-center text-muted no-data py-2" *ngIf="AllListData[0]?.approved_state !== 'YET_TO_APPROVED' ">No records found !
                      </div>  
                     </tab>
                     <tab heading="Approved leaves" (selectTab)="tabState($event)" aria-selected="true">
                         <app-approved [data]="AllListData" (buttonClick)="buttonClick($event)" *ngIf="AllListData[0]?.approved_state === 'APPROVED'"></app-approved>
-                        <div class="text-center text-muted no-data py-2" *ngIf="AllListData[0]?.approved_state !== 'APPROVED' ">No records found
+                        <div class="text-center text-muted no-data py-2" *ngIf="AllListData[0]?.approved_state !== 'APPROVED' ">No records found !
                     </div>  
                     </tab>
                     <tab heading="Declined leaves" (selectTab)="tabState($event)">
                       <app-declined *ngIf="AllListData[0]?.approved_state === 'DECLINED'" (buttonClick)="buttonClick($event)" [data]="AllListData" (buttonClick)="buttonClick($event)" ></app-declined>
-                      <div class="text-center text-muted no-data py-2" *ngIf="AllListData[0]?.approved_state !== 'DECLINED' ">No records found
+                      <div class="text-center text-muted no-data py-2" *ngIf="AllListData[0]?.approved_state !== 'DECLINED' ">No records found !
                     </div>  
                     </tab>
                   </tabset>

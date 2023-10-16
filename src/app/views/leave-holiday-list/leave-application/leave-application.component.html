@@ -99,7 +99,7 @@
                 </div>
             </div>
           
-            <div class="row">
+          <div class="row">
                 <div class="col-sm">
                     <p>From date <span >*</span></p> 
                     <input class="form-control size-input" [min]="min"  type="date" name="date-input" placeholder="date"  formControlName="leaveApplication_from_date" [readonly]="disableTextbox" (change)="toggleDisable('from_date')">  
@@ -109,11 +109,26 @@
                     </div>
                     <!-- <div *ngIf="f['leave_type_id'].invalid && f['leaveApplication_from_date'].valid">
                         <p class="error-msg">Leave type id is required</p>
-                    </div> -->
+                    </div>--->
                     
                 </div>
-            </div>
-       
+            </div> 
+            
+                
+            <!-- <div class="row">
+                <div class="col-sm">
+                    <input type="text"
+                    formControlName="leaveApplication_from_date"
+                        #myDatepicker
+                        ngxDaterangepickerMd
+                        [isInvalidDate]="isInvalidDate"
+                        [isCustomDate]="isCustomDate"
+                        [locale]="locale"
+                        [(ngModel)]="selected"
+                        [singleDatePicker]="true"
+                        [autoApply]="true"/>
+                </div>
+            </div> -->
             <div class="row">
                 <div class="col-sm">
                     <p>To date <span >*</span></p> 

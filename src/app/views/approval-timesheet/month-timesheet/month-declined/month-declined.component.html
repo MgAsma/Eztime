@@ -45,12 +45,12 @@
                           };let i=index">
                         <td>{{i+1}}</td>
                         <td>{{items.created_date_time | date :'mediumDate'}}</td>
-                        <td>{{items.created_by_id?items.created_by_id:"NA"}}</td>
-                        <td>{{items.description ? items.description :'NA'}}</td>
+                        <td>{{items.created_by_name?items.created_by_name:"NA"}}</td>
+                        <td>{{items.id ? items.id :'NA'}}</td>
                         <td>{{items.time_spent}}</td>
                         <td>{{items.created_by_id?items.created_by_id:"NA"}}</td>
                         <td>{{items.approved_date_time| date :'mediumDate'}}</td>
-                        <td>{{items.approved_by_id?items.approved_by_id:'NA'}}</td>
+                        <td>{{items.approved_by_name?items.approved_by_name:'NA'}}</td>
                         <td>{{items.approved_state}}</td>
                         <!-- <td>
                             <button style="border: none;background-color: inherit;" (click)="open(items.id,'Approved')"><i class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>
@@ -174,7 +174,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12 val-r">
-                        {{ item.created_by_id ?item.created_by_id :'NA' }}
+                        {{ item.created_by_name ?item.created_by_name :'NA' }}
                       </div>
                     </div>
                   </div>
@@ -228,7 +228,7 @@
                       </div>
                       <div class="row">
                         <div class="col-12 val-r">
-                          {{  item.approved_by_id?item.approved_by_id:'NA'  }}
+                          {{  item.approved_by_name?item.approved_by_name:'NA'  }}
                         </div>
                       </div>
                     </div>

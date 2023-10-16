@@ -51,7 +51,9 @@ export class CreateMainCategoryListComponent implements OnInit {
         else{
           this.api.showError('Error!')
         }
-        }
+        },(error =>{
+          this.api.showError(error.error.error.message)
+        })
       )
     }
   }

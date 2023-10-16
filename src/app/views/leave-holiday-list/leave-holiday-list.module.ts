@@ -19,7 +19,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,9 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     NgbTooltipModule,
     NgMultiSelectDropDownModule,
     SharedModule,
-    BsDatepickerModule.forRoot()
+    MatDatepickerModule,
+    MatNativeDateModule,
+    
   ]
 })
 export class LeaveHolidayListModule { }

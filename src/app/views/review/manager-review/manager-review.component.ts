@@ -78,11 +78,16 @@ export class ManagerReviewComponent implements OnInit {
       const accessArr = res
       if(accessArr.length > 0){
         accessArr.forEach((element,i) => {
-          if(element['PEOPLE_TIMESHEET']){
-            this.timesheetAccess = element['PEOPLE_TIMESHEET']
-          }
-          if(element['LEAVE_APPLICATION']){
-            this.leaveAccess = element['LEAVE_APPLICATION']
+          // if(element['PEOPLE_TIMESHEET']){
+          //   this.timesheetAccess = element['PEOPLE_TIMESHEET']
+          // }
+          // if(element['LEAVE_APPLICATION']){
+          //   this.leaveAccess = element['LEAVE_APPLICATION']
+          // }
+          if(element['REVIEW']){
+            this.timesheetAccess = element['REVIEW'];
+            this.leaveAccess = element['REVIEW']
+
           }
           
         });

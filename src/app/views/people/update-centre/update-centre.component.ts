@@ -4,6 +4,7 @@ import { ApiserviceService } from '../../../service/apiservice.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Location } from '@angular/common';
+import { error } from 'console';
 @Component({
   selector: 'app-update-centre',
   templateUrl: './update-centre.component.html',
@@ -106,14 +107,16 @@ export class UpdateCentreComponent implements OnInit {
     this.api.updateCentre(this.id,data).subscribe(
       response=>{
         if(response){
-          this.api.showSuccess('Center updated successfully!!');
+          this.api.showSuccess('Center updated successfully !!');
           this.router.navigate(['/people/centers-list'])
         }
         else{
         this.api.showError('Error!')
       }
         
-      }
+      },(error =>{
+        this.api.showError(error.error.error.message)
+      })
     )
     }
   }

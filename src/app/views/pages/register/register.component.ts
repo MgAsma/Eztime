@@ -60,7 +60,7 @@ export class RegisterComponent {
   }
 
   initStepper(){
-    let passwordRegex = 
+    // let passwordRegex = 
     this.firstFormGroup = this.formBuilder.group({
       u_first_name: ['', [Validators.required,Validators.pattern(/^[a-zA-Z]+$/), Validators.maxLength(20)]],
       u_last_name: ['', [Validators.required,,Validators.pattern(/^[a-zA-Z]+$/),Validators.minLength(1), Validators.maxLength(20)]],

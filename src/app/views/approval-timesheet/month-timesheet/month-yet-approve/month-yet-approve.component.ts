@@ -143,6 +143,7 @@ this._timesheet.updateStatus(data).subscribe(res =>{
  if(res){
   const toasterText = status ===  'DECLINED'?'declined':'approved'
    this.api.showSuccess(`Timesheet ${toasterText} successfully !!`)
+   this.ngOnInit();
  }
  
 })

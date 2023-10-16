@@ -38,7 +38,7 @@
                           <th scope="col">Sl. No.</th>
                           <th scope="col">Client Name <i  *ngIf="!arrow" (click)="sort('asc','c_name')" class="fa fa-sort-up"></i><i (click)="sort('desc','c_name')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
                           <th scope="col">Code <i  *ngIf="!arrow" (click)="sort('asc','c_code')" class="fa fa-sort-up"></i><i (click)="sort('desc','c_code')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                          <th scope="col">Industry <i  *ngIf="!arrow" (click)="sort('asc','toi_ref_id')" class="fa fa-sort-up"></i><i (click)="sort('desc','toi_ref_id')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <!-- <th scope="col">Industry <i  *ngIf="!arrow" (click)="sort('asc','toi_ref_id')" class="fa fa-sort-up"></i><i (click)="sort('desc','toi_ref_id')" *ngIf="arrow" class="fa fa-sort-down"></i></th> -->
                           <!-- <th scope="col">Type <i  *ngIf="!arrow" (click)="sort('asc','c_type')" class="fa fa-sort-up"></i><i (click)="sort('desc','c_type')" *ngIf="arrow" class="fa fa-sort-down"></i></th> -->
                           <th scope="col">Contact Person <i  *ngIf="!arrow" (click)="sort('asc','c_contact_person')" class="fa fa-sort-up"></i><i (click)="sort('desc','c_contact_person')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
                           <!-- <th scope="col">Projects <i  *ngIf="!arrow" (click)="sort('asc','project')" class="fa fa-sort-up"></i><i (click)="sort('desc','project')" *ngIf="arrow" class="fa fa-sort-down"></i></th> -->
@@ -56,7 +56,7 @@
                             <td>{{i + 1}}</td>
                             <td>{{item.c_name}}</td>
                             <td>{{item.c_code}}</td>
-                            <td>{{item.toi_ref_id}}</td>
+                            <!-- <td>{{item.toi_ref_id}}</td> -->
                             <!-- <td>{{item.c_type}}</td> -->
                             <td>{{item.c_contact_person}}</td>
                             <!-- <td>{{item.project ? item.project :"NA"}}</td> -->
@@ -156,10 +156,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-6">
+                        <!-- <div class="col-6">
                             <h6 class="card-subtitle"><i class="bi bi-upc-scan"></i> Industry</h6>
                             <div class="val-pad">{{item.toi_ref_id}}</div>
-                        </div>
+                        </div> -->
                         <div class="col-6">
                             <!-- <h6 class="card-subtitle"><i class="bi bi-text-wrap"></i> Type</h6>
                             <div class="val-pad">{{item.c_type}}</div> -->
@@ -170,7 +170,7 @@
               
                 </div>
             </div>
-            <div *ngIf="result.length === 0 " >
+            <div *ngIf="result.length === 0" >
             <app-generic-norecards></app-generic-norecards>
             </div>
             <div class="row" *ngIf="result.length !== 0 ">

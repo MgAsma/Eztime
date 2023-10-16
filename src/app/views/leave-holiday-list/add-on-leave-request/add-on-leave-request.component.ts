@@ -101,7 +101,7 @@ export class AddOnLeaveRequestComponent implements OnInit {
   getByStatus(params){
     this.api.getData(`${environment.live_url}/${environment.add_on_leave_request}?module=${params.module}&menu=${params.menu}&method=${params.method}&user_id=${params.user_id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&params=${params.pagination}&approved_state=${params.approved_state}`).subscribe(res=>{
       if(res){ 
-        this.AllCardData = res['result'].leave_dashboard
+        this.AllCardData = res['result'].add_on_leave_dashboard
         this.AllListData = res['result'].data
         this.totalCount  = res['result']['pagination'].number_of_pages
         if(this.AllListData.length <= 0){
@@ -121,7 +121,7 @@ export class AddOnLeaveRequestComponent implements OnInit {
   getAppliedLeaves(params){
     this.api.getData(`${environment.live_url}/${environment.add_on_leave_request}?module=${params.module}&menu=${params.menu}&method=${params.method}&user_id=${params.user_id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&params=${params.pagination}&approved_state=${params.approved_state}&leaveApplication_from_date=${params.leaveApplication_from_date}&leaveApplication_to_date=${params.leaveApplication_to_date}`).subscribe(res=>{
       if(res){ 
-        this.AllCardData = res['result'].leave_dashboard
+        this.AllCardData = res['result'].add_on_leave_dashboard
         this.AllListData = res['result'].data
         this.totalCount  = res['result']['pagination'].number_of_pages
         //console.log(res['result']['pagination'].number_of_pages,"NUMBER OF PAGES---")

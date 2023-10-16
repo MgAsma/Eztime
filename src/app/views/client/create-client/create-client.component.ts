@@ -58,10 +58,12 @@ export class CreateClientComponent implements OnInit {
     }
     this.api.getIndustryDetails(params).subscribe((data:any)=>{
       this.allIndustry= data.result.data;
-    },error=>{
+    },(error =>{
+      this.api.showError(error.error.error.message)
+    })
       //console.log(error);
       
-    }
+   
 
     )
   }
@@ -80,7 +82,9 @@ export class CreateClientComponent implements OnInit {
         else{
           this.api.showError('Error!')
         } 
-        }
+        },(error =>{
+          this.api.showError(error.error.error.message)
+        })
       )
     }
   }

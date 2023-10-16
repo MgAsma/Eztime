@@ -52,7 +52,7 @@
       <li></li>
       <li *ngFor="let headNav of headerNav" >
         <div [ngClass]="getHeaderNavStyles(headNav)">
-          <a routerLink="{{headNav.link}}" cDropdownItem>
+          <a [routerLink]="headNav.link" cDropdownItem>
             <i class="{{headNav.icons}}" id="nav-icon"></i>
             <span class="title" (click)="clearStorage(headNav)">{{headNav.page}} </span>
           </a>

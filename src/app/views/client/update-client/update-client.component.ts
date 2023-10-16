@@ -61,10 +61,9 @@ export class UpdateClientComponent implements OnInit {
     }
     this.api.getIndustryDetails(params).subscribe((data:any)=>{
       this.allIndustry= data.result.data;
-    },error=>{
-      //console.log(error);
-      
-    }
+    },(error =>{
+      this.api.showError(error.error.error.message)
+    })
 
     )
   }
@@ -103,7 +102,9 @@ export class UpdateClientComponent implements OnInit {
           else{
             this.api.showError('Error!')
           }
-        }
+        },(error =>{
+          this.api.showError(error.error.error.message)
+        })
         
       )
     }

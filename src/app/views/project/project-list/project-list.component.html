@@ -67,7 +67,7 @@
                             <td>{{item.p_status?item.p_status:"NA"}}</td>
                            
                             
-                            <td class="d-flex">
+                            <td>
                                 <ng-container *ngFor="let access of permissions">
  
                                     <button mat-raised-button mat-mini-fab  routerLink="/project/update/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
@@ -77,13 +77,10 @@
                                       <i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i>
                                     </button>
                                   </ng-container>  
-                                <!-- <a routerLink="/project/update/{{item.id}}/{{page}}/{{tableSize}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></a>
-                               <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item.id)"> <i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i></button> -->
                             </td>
                         </tr>
                         <tr *ngIf="result.length === 0" class="nodata">
-                            <td> No records found
-  !</td>  
+                            <td> No records found !</td>  
                         </tr>
                         
                     </ng-container>

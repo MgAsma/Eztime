@@ -49,7 +49,7 @@
                   <div class="col-12">
                     <div ngbDropdown class="d-inline-block" >
                       <ng-container>
-                        <button type="button"  class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle  *ngIf="selectedTab == 'YET_TO_APPROVED' && allListDataids.length !== 0 && exebtn == true">
+                        <button type="button"  class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle  *ngIf="selectedTab === 'YET_TO_APPROVED' && allListDataids.length !== 0 && exebtn === true">
                           Execute timsheets
                         </button>
                       </ng-container>
@@ -149,7 +149,7 @@
               <div class="col-12">
                 <div ngbDropdown class="d-inline-block" >
                   <ng-container>
-                    <button type="button"  class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle  *ngIf="selectedTab == 'YET_TO_APPROVED' && allListDataids.length !== 0 && exebtn == true">
+                    <button type="button"  class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle  *ngIf="selectedTab === 'YET_TO_APPROVED' && allListDataids.length !== 0 && exebtn === true">
                       Execute timsheets
                     </button>
                   </ng-container>
@@ -195,6 +195,8 @@
                                  <div class="text-center text-muted no-data py-2" *ngIf="allDetails[0]?.approved_state !== 'TIMESHEET' ">No records found
   </div>  
                                </tab> -->
+                               <div class="text-center text-muted no-data py-2" *ngIf="allDetails.length === 0">No records found !
+                              </div>
                              </tabset>                             
                            </div>
                      </div>

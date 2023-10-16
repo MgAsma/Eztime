@@ -12,12 +12,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { HypenDirective } from './hypen.directive';
 
 
 @NgModule({
   declarations: [
     SortPipe,
     GenericNorecardsComponent,
+    HypenDirective,
  
   ],
   imports: [
@@ -44,7 +46,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormFieldModule,
     MatButtonModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    HypenDirective
    ],
   
 })

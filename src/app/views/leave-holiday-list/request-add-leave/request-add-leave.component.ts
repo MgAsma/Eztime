@@ -4,6 +4,7 @@ import { Validators, FormBuilder,FormGroup } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
+import { error } from 'console';
 @Component({
   selector: 'app-request-add-leave',
   templateUrl: './request-add-leave.component.html',
@@ -140,10 +141,9 @@ export class RequestAddLeaveComponent implements OnInit {
     this.api.getLeaveTypeDetails().subscribe((data:any)=>{
       this.leaveType= data.result.data;
       //console.log(this.leaveType,"dfsfs")
-    },error=>{
-      //console.log(error);
-      
-    }
+    },(error =>{
+      this.api.showError(error.error.error.message)
+    })
 
     )
   }
@@ -215,7 +215,7 @@ export class RequestAddLeaveComponent implements OnInit {
     this.noLeaves = false
   },(error:any)=>{
     this.noLeaves = true
-    this.api.showError(`Balance ${error.error.error.message}`)
+    this.api.showError(error.error.error.message)
   })
    
   }

@@ -85,7 +85,9 @@ export class UpdateSubCategoryComponent implements OnInit {
         else{
           this.api.showError('Error!')
         }  
-        }
+        },(error =>{
+          this.api.showError(error.error.error.message)
+        })
       )
     }
   

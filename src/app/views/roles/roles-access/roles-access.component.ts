@@ -108,17 +108,6 @@ export class RolesAccessComponent implements OnInit {
         path:'review'
       },
       {
-        label:'Organization',
-        icon:'fa fa-university',
-        type:'radio',
-        class:'form-check-input',
-        labelClass:'form-check-label',
-        checked:false,
-        containerClass:'form-check',
-        controlName:'organization',
-        path:'organization'
-      },
-      {
         label:'Clients',
         icon:'fa fa-building',
         type:'radio',

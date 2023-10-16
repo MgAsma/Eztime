@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {  Validators, FormBuilder,FormGroup } from '@angular/forms';
+import {  Validators, FormBuilder,FormGroup, ValidatorFn, AbstractControl } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
@@ -33,6 +33,7 @@ export class CreateNewProjectComponent implements OnInit {
   this.isListShown = ! this.isListShown;
   
   }
+  
   projectForm : FormGroup
 
   allProject:any=[];
@@ -82,7 +83,7 @@ export class CreateNewProjectComponent implements OnInit {
   initForm(){
     this.projectForm = this.builder.group({
       p_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      p_estimated_hours:['',[Validators.required]],
+      p_estimated_hours:['',[Validators.required,this.noHyphenValidator()]],
       p_estimated_cost:['',[Validators.required]],
       reporting_manager_ref_id:['',[Validators.required]],
       pc_ref_id: [''],
@@ -104,6 +105,14 @@ export class CreateNewProjectComponent implements OnInit {
       task_project_category_list:['']
      
     })
+  }
+    noHyphenValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (control.value && control.value.includes('-')) {
+        return { hyphen: true };
+      }
+      return null;
+    };
   }
   get f(){
     return this.projectForm.controls;
