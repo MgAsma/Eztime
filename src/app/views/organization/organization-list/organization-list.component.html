@@ -24,9 +24,9 @@
                   </select>
             </div>
             <div class="col-sm"></div>
-            <div class="col-sm-3 search-div">
-                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp"  autocomplete="off">
-                <i class="bi bi-search" id="search-icon-tab"></i>       
+            <div class="col-sm-5 search-div">
+                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search by organization name" aria-describedby="emailHelp"  autocomplete="off">
+                <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>       
               </div>
         </div>
         <div class="bg">
@@ -48,8 +48,8 @@
                       </thead>
                       <tbody>
                       
-                        <ng-container *ngIf="(organizationData | filter:term) as result">
-                        <tr *ngFor='let item of result|customSort:directionValue:sortValue|filter:term
+                        <ng-container *ngIf="(organizationData) as result">
+                        <tr *ngFor='let item of result|customSort:directionValue:sortValue
                            |paginate : {
                             itemsPerPage: tableSize,
                             currentPage: page,
@@ -125,13 +125,13 @@
         <h1>Organization List</h1>
       </div>
       <div class="col-sm-6 col-md-6 mb-1 search-div">
-        <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp"  autocomplete="off">
-        <i class="bi bi-search" id="search-icon"></i>
+        <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by organization name" aria-describedby="emailHelp"  autocomplete="off">
+        <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
       </div>
     </div> 
       <div class="bg row">
-        <ng-container *ngIf="(organizationData | filter:term) as result">
-        <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of result| filter:term |paginate : {
+        <ng-container *ngIf="(organizationData) as result">
+        <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of result|paginate : {
           itemsPerPage: tableSize,
           currentPage: page,
           totalItems: count

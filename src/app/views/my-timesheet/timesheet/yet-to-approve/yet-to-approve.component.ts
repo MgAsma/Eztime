@@ -13,6 +13,7 @@ import { TimesheetService } from 'src/app/service/timesheet.service';
 })
 export class YetToApproveComponent implements OnInit {
   @Output() buttonClick:any = new EventEmitter<string>();
+  @Output() filter:any = new EventEmitter<string>();
   list:any=[];
   slno:any;
   date:any;
@@ -92,6 +93,14 @@ export class YetToApproveComponent implements OnInit {
     // }
 
     //)
+  }
+  filterSearch(){
+    let tableData ={
+      search_key:this.term,
+      page:this.page,
+      tableSize:this.tableSize
+     }
+    this.filter.emit(tableData);
   }
   delete(item:any){
   if(this.list === 1){

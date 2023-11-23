@@ -8,28 +8,35 @@
                             <div class="col">
                                 <h1 class="text-center py-4">New Password</h1>
                                 
-                                <label >New Password <b>*</b></label>
-                                <input type="password" class="form-control p-3 sizeinput" formControlName='new_password' placeholder="New Password" aria-describedby="emailHelp"  autocomplete="off">
-                                <div *ngIf="f['new_password'].touched && f['new_password'].invalid" class="s-f" >
-                                   <p  *ngIf="f['new_password'].errors['required']" class='s-c'>New Password is Required</p>    
-                               </div> 
+                                <!-- <label >Email Id <b>*</b></label>
+                                <input type="email" class="form-control p-3 sizeinput" formControlName='username' placeholder="Enter your email id" aria-describedby="emailHelp"  autocomplete="off">
+                                <div *ngIf="f['username'].touched && f['username'].invalid" class="s-f" >
+                                   <p  *ngIf="f['username'].errors['required']" class='s-c'>Email id is required</p>    
+                               </div>  -->
 
-                               <label >Confirm Password <b>*</b></label>
+                               <!-- <label >Confirm Password <b>*</b></label>
                                 <input type="password" class="form-control p-3 sizeinput" formControlName='old_password' placeholder="Confirm Password" aria-describedby="emailHelp"  autocomplete="off">
                                  <div *ngIf="f['old_password'].touched && f['old_password'].invalid" class="s-f" >
                                     <p  *ngIf="f['old_password'].errors['required']" class='s-c'>Confirm Password is Required</p>
                                 </div>
                                 <div *ngIf="f['old_password'].valid && changePassword.hasError('passwordMismatch') && (changePassword.get('old_password').dirty || changePassword.get('old_password').touched)">
                                     <p class="s-c">Confirm Password is mismatched</p>
+                                </div> -->
+                                <label >Password <b>*</b></label>
+                                <input type="password" class="form-control p-3 sizeinput" formControlName='password' placeholder="Enter your password" aria-describedby="emailHelp"  autocomplete="off">
+                                 <div *ngIf="f['password'].touched && f['password'].invalid" class="s-f" >
+                                    <p  *ngIf="f['password'].errors['required']" class='s-c'>Password is required</p>
                                 </div>
-
-                                
+                                <label >Confirm Password <b>*</b></label>
+                                <input type="password" class="form-control p-3 sizeinput" formControlName='old_password' placeholder="Enter confirm Password" aria-describedby="emailHelp"  autocomplete="off">
+                                 <div *ngIf="f['old_password'].touched && f['old_password'].invalid" class="s-f" >
+                                    <p  *ngIf="f['old_password'].errors['required']" class='s-c'>Confirm password is required</p>
+                                </div>
+                                <div *ngIf="f['old_password'].valid && changePassword.hasError('passwordMismatch') && (changePassword.get('old_password').dirty || changePassword.get('old_password').touched)">
+                                    <p class="s-c">Confirm password is mismatched</p>
+                                </div>
                                
-                                <label >User Id <b>*</b></label>
-                                <input type="number" class="form-control p-3 sizeinput" formControlName='user_id' placeholder="User Id" aria-describedby="emailHelp"  autocomplete="off">
-                                 <div *ngIf="f['user_id'].touched && f['user_id'].invalid" class="s-f" >
-                                    <p  *ngIf="f['user_id'].errors['required']" class='s-c'>user Id is Required</p>    
-                                </div>            
+                                
                             </div>
                         </div>
                         <div class="row" class="text-center p-2">
@@ -43,7 +50,7 @@
                                 <a routerLink="../login"  class="forgot-links">Go back to Login</a>
                             </div>
                         </div>
-                        <div class="row" style="text-align: center;">
+                        <!-- <div class="row" style="text-align: center;">
                             <div class="col">
                                 <p>Copyright Ⓒ <a href="https://www.ekfrazo.com/"  target="_blank" style="color: #3F51B5;text-decoration: none;">Ekfrazo Technologies Private Limited</a></p>
                             </div>
@@ -53,7 +60,7 @@
                                 <p>All rights reserved.</p>
                             </div>
                         </div>
-                     
+                      -->
                     </form>
                     
                 </div>

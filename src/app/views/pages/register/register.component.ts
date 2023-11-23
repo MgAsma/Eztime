@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -78,7 +79,7 @@ export class RegisterComponent {
     });
     this.thirdFormGroup = this.formBuilder.group({
       center_id: ['', Validators.required],
-      user_reporting_manager_ref_id: ['', Validators.required],
+      user_reporting_manager_ref_id: [''],
       profile_base64: ['',[Validators.required,this.fileFormatValidator]],
       prefix_suffix_id: ['', Validators.required],
       department_id: ['', Validators.required],
@@ -235,7 +236,7 @@ export class RegisterComponent {
     )
   }
   getReportingManager(){
-    this.api.getManagerDetails(this.params).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?filter=MANAGER&page_number=1&data_per_page=2&pagination=FALSE`).subscribe((data:any)=>{
       if(data.result.data){
         const reportingManager = data.result.data
         const filteredRepotingManager = reportingManager.filter(manager => !manager.u_status?.includes('Inactive'))

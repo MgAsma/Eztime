@@ -13,8 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { HypenDirective } from './hypen.directive';
-
-
+import {MatListModule} from '@angular/material/list';
+import {MatBadgeModule} from '@angular/material/badge';
 @NgModule({
   declarations: [
     SortPipe,
@@ -32,7 +32,9 @@ import { HypenDirective } from './hypen.directive';
     MatStepperModule,
     MatFormFieldModule,
     MatButtonModule,
-    MatInputModule
+    MatInputModule,
+    MatListModule,
+    MatBadgeModule
   ],
   exports:[
     SortPipe,
@@ -47,7 +49,9 @@ import { HypenDirective } from './hypen.directive';
     MatButtonModule,
     MatInputModule,
     MatSelectModule,
-    HypenDirective
+    HypenDirective,
+    MatListModule,
+    MatBadgeModule
    ],
   
 })

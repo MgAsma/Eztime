@@ -6,6 +6,7 @@ import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.co
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-prefix-suffix-list',
   templateUrl: './prefix-suffix-list.component.html',
@@ -103,6 +104,18 @@ export class PrefixSuffixListComponent implements OnInit {
     }
   getPrefixSuffix(params){
     this.api.getPrefixSuffixDetailsPage(params).subscribe((data:any)=>{
+      this.allPrefixSuffix   = data.result.data;
+      const noOfPages:number = data['result'].pagination.number_of_pages
+      this.count  = noOfPages * this.tableSize
+    },(error=>{
+      this.api.showError(error.error.error.message)
+    })
+      
+    
+    )
+  }
+  filterSearch(){
+    this.api.getData(`${environment.live_url}/${environment.prefix_suffix}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((data:any)=>{
       this.allPrefixSuffix   = data.result.data;
       const noOfPages:number = data['result'].pagination.number_of_pages
       this.count  = noOfPages * this.tableSize

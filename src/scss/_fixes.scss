@@ -397,7 +397,9 @@ app-add-on-leave-request,app-applied-approved-leaves,app-timesheet,approval-time
 
 
 
-
+.bi-search{
+  cursor: pointer !important;
+}
 
 app-default-header {
   .c-dropClass{
@@ -458,6 +460,7 @@ font-size: small;
 }
 #search-icon-tab{
   font-size: 16px;
+  cursor: pointer !important;
 }
 }
 

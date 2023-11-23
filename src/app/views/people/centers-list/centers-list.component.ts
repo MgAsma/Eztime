@@ -5,6 +5,7 @@ import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.co
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-centers-list',
   templateUrl: './centers-list.component.html',
@@ -105,7 +106,18 @@ export class CentersListComponent implements OnInit {
 
     )
   }
- 
+ filterSearch(){
+  this.api.getData(`${environment.live_url}/${environment.center_list}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((data:any)=>{
+    this.allCenterList= data.result.data;
+    const noOfPages:number = data['result'].pagination.number_of_pages
+    this.count  = noOfPages * this.tableSize
+  },((error:any)=>{
+    this.api.showError(error.error.error.message)
+    
+  })
+
+  )
+ }
   delete(id:any){
     this.api.deleteCenterDetails(id).subscribe((data:any)=>{
       if(data){

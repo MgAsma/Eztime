@@ -6,6 +6,8 @@ import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.co
 import { SortPipe } from 'src/app/sort/sort.pipe';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { environment } from 'src/environments/environment';
+import { error } from 'console';
 @Component({
   selector: 'app-client-list',
   templateUrl: './client-list.component.html',
@@ -98,6 +100,17 @@ export class ClientListComponent implements OnInit {
       }
    
     })
+    }
+    filterSearch(){
+      this.api.getData(`${environment.live_url}/${environment.clients}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+        if(res){
+          this.allClientList= res.result.data;
+            const noOfPages:number = res['result'].pagination.number_of_pages
+            this.count  = noOfPages * this.tableSize
+        }
+        },((error:any)=>{
+          this.api.showError(error.error.error.message)
+        }))
     }
   getClient(){
     let params = {

@@ -147,7 +147,6 @@ export class AppliedApprovedLeavesComponent implements OnInit {
     this.changes  = true;
     if(this.appliedLeaveForm.value.to_date){
       this.month    = this.appliedLeaveForm.value.to_date
-      alert(this.month)
     }
     
    }

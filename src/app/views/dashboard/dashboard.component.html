@@ -54,7 +54,9 @@
         <ng-container *ngIf="user_role_name !== 'SUPER ADMIN'">
         <div class="row" >
           <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
-              <a *ngIf="user_role_name !== 'EMPLOYEE'" >
+            <ng-container *ngFor="let access of permissionRoles">
+             <a *ngIf="access === 'VIEW'" routerLink="../role/list">
+              <!-- <a *ngIf="user_role_name !== 'EMPLOYEE'" > -->
                   <div class="card card-role">
                     <div class="c-icon">
                       <i class="bi bi-person-vcard"></i>
@@ -64,8 +66,10 @@
                         <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Roles</strong></div>
                       </div>        
                     </div>
-              </a>
-              <div *ngIf="user_role_name === 'EMPLOYEE'" >
+             </a>
+            </ng-container>
+              <!-- </a> -->
+              <!-- <div *ngIf="user_role_name === 'EMPLOYEE'" >
                 <div class="card card-role">
                   <div class="c-icon">
                     <i class="bi bi-person-vcard"></i>
@@ -75,11 +79,12 @@
                       <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Roles</strong></div>
                     </div>        
                   </div>
-            </div>
+            </div> -->
             </div>
 
             <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
-                <a >
+              <ng-container *ngFor="let access of permissionsDepartment">
+                <a *ngIf="access === 'VIEW'" routerLink="../department/list">
                   <div class="card card-department">
                     <div class="c-icon" id="bi-microsoft">
                       <i class="bi bi-microsoft"></i>
@@ -89,10 +94,12 @@
                         <div class="text-muted text-uppercase font-weight-bold font-xs"><strong>Departments</strong></div>
                       </div>
                     </div>
-                </a>               
+                </a>  
+              </ng-container>             
             </div>
             <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
-              <a >
+              <ng-container *ngFor="let access of permissionsIndustry">
+                <a *ngIf="access === 'VIEW'" routerLink="../industry/list">
                   <div class="card card-industry">
                     <div class="c-icon">
                       <i class="bi bi-list-task"></i>
@@ -103,6 +110,7 @@
                       </div>
                     </div>
               </a>
+              </ng-container>
             </div> 
           </div>
          </ng-container>

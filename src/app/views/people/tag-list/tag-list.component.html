@@ -25,9 +25,9 @@
                   </select>
             </div>
             <div class="col-sm"></div>
-            <div class="col-sm-3 search-div">
-                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp"  autocomplete="off">
-                <i class="bi bi-search" id="search-icon-tab"></i>         
+            <div class="col-md-7 col-lg-5 search-div">
+                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search by tag name/status" aria-describedby="emailHelp"  autocomplete="off">
+                <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>         
             </div>
         </div>
         <div class="bg">
@@ -45,12 +45,12 @@
                       </thead>
                       <tbody>
                         
-                        <ng-container *ngIf="(allTag | filter:term) as result">
-                        <tr *ngFor='let item of result| filter:term | paginate : {
+                        <ng-container *ngIf="(allTag) as result">
+                        <tr *ngFor='let item of result| paginate : {
                             itemsPerPage: tableSize,
                             currentPage: page,
                             totalItems: count
-                          }|customSort:directionValue:sortValue|filter:term
+                          }|customSort:directionValue:sortValue
                             ; let i=index' [class.active]="i == currentIndex">
                             <td>{{i + 1}}</td>
                             <td>{{item.tag_name}}</td>
@@ -71,8 +71,7 @@
                             </td>
                         </tr>
                         <tr *ngIf="result.length === 0" class="nodata">
-                            <td> No records found
-  !</td>  
+                            <td> No records found!</td>  
                         </tr>
                     </ng-container>
                       </tbody>
@@ -111,14 +110,14 @@
             <h1>Tag List</h1>
         </div>
         <div class="col-sm-6 col-md-6 mb-1 search-div">
-            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
-            <i class="bi bi-search" id="search-icon"></i>
+            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by tag name/status" aria-describedby="emailHelp"  autocomplete="off">
+            <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
         </div>
     </div>
     <div class="bg">
 <div class="row">
-    <ng-container *ngIf="(allTag | filter:term) as result">
-    <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of allTag| filter:term | paginate : {
+    <ng-container *ngIf="(allTag) as result">
+    <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of allTag| paginate : {
         itemsPerPage: tableSize,
         currentPage: page,
         totalItems: count

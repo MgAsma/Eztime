@@ -225,8 +225,8 @@ export class ApiserviceService {
 
   //reporting/Aprrover manager
   getManagerDetails(params){
-    return this.http.get(`${this.baseurl}/profile-custom-user?page_number=1&data_per_page=2&pagination=${params.pagination}`,{headers:this.headers})
-    // return this.http.get(`${this.baseurl}/profile-custom-user?page_number=1&data_per_page=2&pagination=${params.pagination}&filter=MANAGER`,{headers:this.headers})
+    //return this.http.get(`${this.baseurl}/profile-custom-user?page_number=1&data_per_page=2&pagination=${params.pagination}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/profile-custom-user?page_number=1&data_per_page=2&pagination=${params.pagination}&filter=MANAGER`,{headers:this.headers})
   }
   //reporting/Aprrover manager
 
@@ -365,6 +365,7 @@ export class ApiserviceService {
   getPeopleDetailsPage(params){
     return this.http.get(`${this.baseurl}/people?page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
   }
+ 
   deletePeopleDetails(id:any){
     return this.http.delete(`${this.baseurl}/people/${id}`,{headers:this.headers})
   }
@@ -407,6 +408,9 @@ export class ApiserviceService {
   // change password
   addChangePassword(data:any){
     return this.http.post(`${this.baseurl}/change-password`, data,{headers:this.headers})
+  }
+  forgotPassword(data:any){
+    return this.http.post(`${this.baseurl}/password-reset`, data)
   }
   // change password
 

@@ -24,9 +24,9 @@
                   </select>
             </div>
             <div class="col-sm"></div>
-            <div class="col-sm-3 search-div">
-                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
-                <i class="bi bi-search" id="search-icon-tab"></i>         
+            <div class="col-md-7 col-lg-5 search-div">
+                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search by prefix /suffix"aria-describedby="emailHelp"  autocomplete="off">
+                <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>         
             </div>
         </div>
         <div class="bg">
@@ -39,17 +39,16 @@
                           <th scope="col">Prefix <i  *ngIf="!arrow" (click)="sort('asc','prefix')" class="fa fa-sort-up"></i><i (click)="sort('desc','prefix')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
                           <th scope="col">Suffix <i  *ngIf="!arrow" (click)="sort('asc','suffix')" class="fa fa-sort-up"></i><i (click)="sort('desc','suffix')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
                           <th scope="col">Added Date <i  *ngIf="!arrow" (click)="sort('asc','added_date')" class="fa fa-sort-up"></i><i (click)="sort('desc','added_date')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                          <!-- <th scope="col">Status <i  *ngIf="!arrow" (click)="sort('asc','prefixsuffix_status')" class="fa fa-sort-up"></i><i (click)="sort('desc','prefixsuffix_status')" *ngIf="arrow" class="fa fa-sort-down"></i></th> -->
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <ng-container *ngIf="(allPrefixSuffix | filter:term) as result">
+                        <ng-container *ngIf="(allPrefixSuffix) as result">
                         <tr *ngFor='let item of result| paginate : {
                             itemsPerPage: tableSize,
                             currentPage: page,
                             totalItems: count
-                          }|customSort:directionValue:sortValue|filter:term; let i=index' [class.active]="i == currentIndex">
+                          }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
                          <td>{{i + 1}}</td>
                          <td>{{item.prefix}}</td>
                          <td>{{item.suffix}}</td>
@@ -64,8 +63,6 @@
                                 <i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i>
                               </button>
                             </ng-container>  
-                            <!-- <a routerLink="/people/updatePrefixSuffix/{{item.id}}/{{page}}/{{tableSize}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></a>
-                            <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item.id)"><i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i></button> -->
                          </td>
                         </tr>
                         <tr *ngIf="result.length === 0" class="nodata">
@@ -98,9 +95,7 @@
   
       </button>
     </ng-container>
-        <!-- <a routerLink="/people/create-prefix-suffix"> <button mat-raised-button type="button"  class="createbtn" placement="top"  ngbTooltip="Add Prefix/Suffix"><i class="fa fa-plus"></i>
-  </button></a> -->
-   
+       
 </div>
 
 
@@ -111,25 +106,15 @@
             <h1>Prefix/Suffix List</h1>
         </div>
         <div class="col-sm-6 col-md-6 mb-1 search-div">
-            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
-            <i class="bi bi-search" id="search-icon"></i>
+            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by prefix /suffix "aria-describedby="emailHelp"  autocomplete="off">
+            <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
           </div>
-        <!-- <div class="col-sm"></div> -->
-        <!-- <div class="col-sm-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                 <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">People Group List</li>
-                  
-                </ol>
-              </nav>
-        </div> -->
         
     </div>
     <div class="bg">
    <div class="row ">
-    <ng-container *ngIf="(allPrefixSuffix | filter:term) as result">
-    <div class="col-sm-12 col-md-6 px-1 main-col" *ngFor='let item of result| filter:term |paginate : {
+    <ng-container *ngIf="(allPrefixSuffix) as result">
+    <div class="col-sm-12 col-md-6 px-1 main-col" *ngFor='let item of result|paginate : {
         itemsPerPage: tableSize,
         currentPage: page,
         totalItems: count
@@ -148,15 +133,7 @@
                   </ng-container>
                   </div>
             </div>
-            <!-- <div class="row p-2">
-                <div class="col">
-                  <h6>Added Date</h6>
-                  <p>{{item.added_date | date:'mediumDate'}}</p>
-               
-                </div>
-                <div class="col">
-                </div>
-            </div> -->
+            
             <div class="row row-b">
                 <div class="col-6 c-1">
                   <h6>Prefix</h6>
@@ -189,13 +166,7 @@
    </div> 
   
   </div>
-  <!-- <div class="s-position">
-    <a routerLink="/people/create-prefix-suffix"> <button mat-raised-button type="button"  class="createbtn" placement="top" container="body" ngbTooltip="Add"><i class="fa fa-plus"></i>
-  </button></a>
-   <a class="mobileView" > <button mat-raised-button type="button"  class="editbtn" placement="top" container="body" (click)='editCard()'  ngbTooltip="Edit" [disabled]="enabled" [ngStyle]="enabled ? {'background-color':'#8585e0'}:{}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></button></a>
-    <a class="mobileView" > <button mat-raised-button type="button"  class="deletebtn" placement="top" container="body" ngbTooltip="delete" (click)='deleteCard()' [disabled]="enabled" [ngStyle]="enabled ? {'background-color':'#8585e0'}:{}"><i class="bi bi-trash-fill"></i></button></a>
-  </div> -->
-  
+ 
   <div class="s-position" *ngFor="let access of permissions" >
     <ng-container *ngIf="access === 'CREATE'">
     <button type="button" mat-fab  routerLink="/people/create-prefix-suffix" class="createbtn-new" placement="top" container="body" ngbTooltip="Add"><i class="fa fa-plus"></i>

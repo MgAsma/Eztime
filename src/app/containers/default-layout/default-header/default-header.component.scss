@@ -33,3 +33,38 @@
     font-size: 10px;
     font-weight: bold;
 }
+.bi-bell-fill{
+    color:gray;
+    position: relative;
+    top:10px;
+    cursor: pointer;
+    font-size: large;
+}
+.p-r{
+    position: relative;
+}
+
+@media(max-width:767px){
+    .p-r{
+        right: 12px;
+    } 
+    
+}
+@media(min-width:768px) and (max-width:1023px){
+    
+    .w-27{
+        width:29% !important;
+    } 
+}
+@media(min-width:1024px) and (max-width:1033px){
+    
+    .w-27{
+        width:52% !important;
+    } 
+}
+@media(min-width:1034px){
+    
+    .w-27{
+        width:64% !important;
+    } 
+}

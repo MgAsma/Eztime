@@ -14,6 +14,7 @@ import { ForgotChangeComponent } from './views/pages/forgot-change/forgot-change
 import { ActivateChildGuard } from './activate-child.guard'
 import { AuthGuard } from './auth.guard'
 import { OrgAuthGuard } from './org-auth.guard';
+import { NotificationComponent } from './views/pages/notification/notification.component';
 
 
 
@@ -143,20 +144,20 @@ const routes: Routes = [
     }
   },
   {
-    path: 'forgotPassword',canActivate:[AuthGuard],
+    path: 'forgotPassword',
     component: ForgotPasswordComponent,
     data: {
       title: 'Forgot Password Page'
     },
     
   },
-  // {
-  //   path: 'forgotChange',
-  //   component: ForgotChangeComponent,
-  //   data: {
-  //     title: 'Forgot Change Page'
-  //   }
-  // },
+  {
+    path: 'forgotChange',
+    component: ForgotChangeComponent,
+    data: {
+      title: 'Forgot Change Page'
+    }
+  },
   {
     path: 'otp',
     component: OtpComponent,
@@ -164,12 +165,20 @@ const routes: Routes = [
       title: 'Otp Page'
     }
   },
+  // {
+  //   path: 'notification',canActivate:[AuthGuard],
+  //   component: NotificationComponent,
+  //   data: {
+  //     title: 'Notification Page'
+  //   }
+ // },
   {
     path: 'changePassword',canActivate:[AuthGuard],
     component: ChangePasswordComponent,
     data: {
       title: 'Change Password Page'
-    }
+    },
+    
   }
     // { path: '**', redirectTo: 'login' }
 ];

@@ -6,6 +6,7 @@ import { ApiserviceService } from '../../../service/apiservice.service';
 import { SortPipe } from 'src/app/sort/sort.pipe';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-department-list',
@@ -50,18 +51,6 @@ export class DepartmentListComponent implements OnInit {
 }
   ngOnInit(): void {
   
-  // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
-
-  // if (accessAction.length) {
-  //   accessAction.forEach((res) => {
-  //   //  console.log(res.module_name, res.permissions, "RESP");
-  //     if (res.module_name === 'DEPARTMENT') {
-  //       this.permissions = res.permissions['DEPARTMENT'];
-  //       console.log(this.permissions, "Permissions for DEPARTMENT");
-  //     }
-  //   });
-  // }
-  
     
     this.params = {
       page_number : this.page,
@@ -101,6 +90,21 @@ export class DepartmentListComponent implements OnInit {
     })
    
     }
+    filterSearch(){
+      this.api.getData(`${environment.live_url}/${environment.org_department}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((res:any) =>{
+        if(res){
+          this.allDepartmentList= res.result.data;
+          const noOfPages:number = res['result'].pagination.number_of_pages
+          this.count  = noOfPages * this.tableSize
+        }
+        else{
+          this.api.showError('Error!')
+        }
+  
+      },((error)=>{
+        this.api.showError(error.error.error.message)
+      }))
+    }
   getDepartment(params){
     this.api.getDepartmentDetailsPage(params).subscribe((res:any) =>{
       if(res){
@@ -112,7 +116,9 @@ export class DepartmentListComponent implements OnInit {
         this.api.showError('Error!')
       }
 
-    })
+    },((error)=>{
+      this.api.showError(error.error.error.message)
+    }))
   }
   delete(id:any){
     this.api.deleteDepartmentDetails(id).subscribe((data:any)=>{

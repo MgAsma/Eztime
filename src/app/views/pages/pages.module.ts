@@ -17,6 +17,7 @@ import { RouterModule } from '@angular/router';
 import { CreateRoleComponent } from './create-role/create-role.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ForgotChangeComponent } from './forgot-change/forgot-change.component';
+import { NotificationComponent } from './notification/notification.component';
 @NgModule({
   declarations: [
     LoginComponent,
@@ -27,7 +28,8 @@ import { ForgotChangeComponent } from './forgot-change/forgot-change.component';
     OtpComponent,
     ChangePasswordComponent,
     CreateRoleComponent,
-    ForgotChangeComponent
+    ForgotChangeComponent,
+    NotificationComponent
   ],
   imports: [
     CommonModule,

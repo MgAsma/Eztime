@@ -161,12 +161,12 @@ export class UpdateProjectComponent implements OnInit {
     this.peopleListSetting = {
       singleSelection: false,
       idField: 'id',
-      textField: 'opg_group_name',
+      textField: 'u_first_name',
       itemsShowLimit: 3,
       allowSearchFilter: true
     };
   
-    this.api.getPeopleGroupDetails().subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.people_list}?page_number=1&data_per_page=2&pagination=FALSE`).subscribe((data:any)=>{
       if(data){
         this.allPeopleGroup = data.result.data;
       }
@@ -174,7 +174,9 @@ export class UpdateProjectComponent implements OnInit {
         //console.log('Error');
       }
       
-    }
+    },((error)=>{
+      this.api.showError(error.error.error.message)
+    })
 
     )
   }

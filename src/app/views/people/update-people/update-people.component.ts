@@ -93,7 +93,7 @@ export class UpdatePeopleComponent implements OnInit {
       user_role_id:['',[Validators.required]],
       org_role_id:[''],
       u_last_name:['',[Validators.required,Validators.pattern(/^[a-zA-Z]+$/)]],
-      user_reporting_manager_ref_id:['',[Validators.required]],
+      user_reporting_manager_ref_id:[''],
       u_gender:['',[Validators.required]],
       u_marital_status:['',[Validators.required]],
       u_designation:['',[Validators.required,Validators.pattern(/^\S.*$/)]],

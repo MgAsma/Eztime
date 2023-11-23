@@ -24,9 +24,9 @@
       </div>
      
       <div class="col-sm"></div>
-      <div class="col-sm-3 search-div">
-          <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp"  autocomplete="off">
-          <i class="bi bi-search" id="search-icon-tab"></i> 
+      <div class="col-md-6 col-lg-5 search-div">
+          <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search by role name/description/status" aria-describedby="emailHelp"  autocomplete="off">
+          <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i> 
         </div>
   </div>
   <div class="bg">
@@ -37,17 +37,7 @@
               <thead >
                   <tr>
                     <th scope="col">  Sl. No.</th>
-                    <!-- <th scope="col">  Drag</th> -->
-                    <!-- ORG-ROLES
-                    <th scope="col"> Role Name  <i  *ngIf="!arrow" (click)="sort('asc','or_name')" class="fa fa-sort-up"></i><i (click)="sort('desc','or_name')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                    <th scope="col"> Description <i  *ngIf="!arrow" (click)="sort('asc','or_description')" class="fa fa-sort-up"></i><i (click)="sort('desc','or_description')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                    <th scope="col"> Priority <i  *ngIf="!arrow" (click)="sort('asc','or_priority')" class="fa fa-sort-up"></i><i (click)="sort('desc','or_priority')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                    <th scope="col"> Type <i  *ngIf="!arrow" (click)="sort('asc','or_type')" class="fa fa-sort-up"></i><i (click)="sort('desc','or_type')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                    <th scope="col"> Added Date <i  *ngIf="!arrow" (click)="sort('asc','or_c_date')" class="fa fa-sort-up"></i><i (click)="sort('desc','or_c_date')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                    <th scope="col">Status <i  *ngIf="!arrow" (click)="sort('asc','or_status')" class="fa fa-sort-up"></i><i (click)="sort('desc','or_status')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                    <th scope="col" >Accessibilty</th>
-                    <th scope="col">Action</th> -->
-               
+                    
                     <th scope="col"> Role Name  <i  *ngIf="!arrow" (click)="sort('asc','user_role_name')" class="fa fa-sort-up"></i><i (click)="sort('desc','user_role_name')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
                     <th scope="col"> Description <i  *ngIf="!arrow" (click)="sort('asc','description')" class="fa fa-sort-up"></i><i (click)="sort('desc','description')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
                     <th scope="col"> Added Date <i  *ngIf="!arrow" (click)="sort('asc','created_time')" class="fa fa-sort-up"></i><i (click)="sort('desc','created_time')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
@@ -56,59 +46,22 @@
                     <th scope="col" *ngIf="role == 'ADMIN'">Action</th>
                   </tr>
                 </thead>
-                <!-- <tbody cdkDrag *ngFor='let item of (allRoleList|customSort:directionValue:sortValue|filter:term
-                 )| paginate : {
-                  itemsPerPage: tableSize,
-                  currentPage: page,
-                  totalItems: count
-                }as result ; let i=index' [class.active]="i == currentIndex"> -->
+                
                 <tbody>
-                  <ng-container *ngIf="(allRoleList | filter:term) as result">
-                  <tr *ngFor='let item of result|customSort:directionValue:sortValue|filter:term|paginate:config;
+                  <ng-container *ngIf="(allRoleList ) as result">
+                  <tr *ngFor='let item of result|customSort:directionValue:sortValue|paginate:config;
                    let i=index' [class.active]="i == currentIndex">
                    <td>{{i + 1}}</td>
-                   <!-- ORG-ROLES
-                   <td>{{item.or_name}}</td>
-                   <td>{{item.or_description}}</td>
-                   <td>{{item.or_priority}}</td>
-                   <td>{{item.or_type ? item.or_type : 'NA' }}</td>
-                   <td>{{item.or_c_date ? item.or_c_date : 'NA' }}</td>
-                   <td>{{item.or_status}}</td> -->
+                  
                    <td>{{item.user_role_name}}</td>
                    <td>{{item.description}}</td>
                    <td>{{item.created_time | date : 'dd/MM/yyyy'}}</td>
                    <td>{{item.role_status}}</td>
                    <td  *ngIf="role == 'ADMIN'"><a routerLink="/role/roles-access/{{item.id}}/{{item.user_role_name}}"><i class="fa fa-cogs" aria-hidden="true" ></i></a></td>
                   
-                  <!-- <td *ngIf="role == 'MANAGER' || role == 'Admin' || role == 'ADMIN'">
-                   <div class="font-s" *ngIf="item.permissions && item.permissions.length > i">
-                    
-                     <b>MY_LEAVES:</b>{{item.permissions[i]['MY_LEAVES']}}<br/>
-                     <b>ADD_ON_LEAVE_REQUEST: </b>{{item.permissions[i]['ADD_ON_LEAVE_REQUEST']}}<br/>
-                     <b>APPLIED/APPROVIED_LEAVES:</b>{{item.permissions[i]['APPLIED/APPROVIED_LEAVES']}}<br/>
-                     <b>LEAVE/HOLIDAY:</b>{{item.permissions[i]['LEAVE/HOLIDAY']}}<br/>
-                     <b>LEAVE_MASTER:</b>{{item.permissions[i]['LEAVE_MASTER']}}<br/>
-                     <b>OFFICE_WORKING_DAYS:</b>{{item.permissions[i]['OFFICE_WORKING_DAYS']}}<br/>
-                     
-                    </div>--->
+                 
                     <td  *ngIf="role == 'ADMIN'">
-                      <!-- <ul  class="font-s">
-                        <li *ngFor="let permission of item.permissions">
-                          <ul>
-                            <ng-container *ngFor="let modulePermission of permission | keyvalue">
-                              <li *ngIf="isArray(modulePermission.value)">
-                                <b>{{ modulePermission.key }}</b>:{{modulePermission.value}}
-                                
-                              </li>
-                             
-                            </ng-container>
-                          </ul>
-                        </li>
-                      </ul> -->
-                    
-                      <!-- <a routerLink="/role/update/{{item.id}}/{{page}}/{{tableSize}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></a>
-                      -->
-                      <!-- <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item.id)"> <i class="bi bi-trash-fill" container="body" ngbTooltip="Delete" style="color: red;"></i></button> -->
+                     
                       <ng-container *ngFor="let access of permissions">
                         <button mat-mini-fab  routerLink="/role/update/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
                           <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
@@ -146,9 +99,7 @@
         </div>
   </div>
 </div>
-<!-- <a routerLink="/role/create"> <button mat-raised-button type="button" class="createbtn"  ngbTooltip="Add Role"  container="body" placement="top"> <i class="fa fa-plus"></i>
-  </button> -->
-<!-- </a> -->
+
 <ng-container *ngFor="let access of permissions">
   <button mat-raised-button mat-fab color="primary" *ngIf="access == 'CREATE'" routerLink="/role/create" class="createbtn" placement="top" container="body" ngbTooltip="Add role">
     <i class="fa fa-plus"></i>
@@ -163,14 +114,14 @@
       <h1> Role List</h1>
   </div>
   <div class="col-sm-6 col-md-6 mb-1 search-div">
-    <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
-    <i class="bi bi-search" id="search-icon"></i>
+    <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by role name/description/status" aria-describedby="emailHelp"  autocomplete="off">
+    <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
   </div>
 </div> 
 
   <div class="bg row">
-    <ng-container *ngIf="(allRoleList | filter:term) as result">
-    <div class="col-sm-12 col-md-6 p-0" *ngFor='let item of result| filter:term|paginate:config;'>
+    <ng-container *ngIf="(allRoleList ) as result">
+    <div class="col-sm-12 col-md-6 p-0" *ngFor='let item of result|paginate:config;'>
       <div class="card outer-card" >
         <div class="row rc-p">
           <div class="col-7">
@@ -191,10 +142,7 @@
             <button  *ngIf="access === 'DELETE'" (click)="open(item.id)"  type="button" class="toolbar-btn"  placement="top" container="body"  ngbTooltip="Delete" ><i class="bi bi-trash-fill"></i></button>
           </ng-container>
         </div>
-          <!-- <div class="col-5 p-0 text-end">
-            <a> <button mat-raised-button type="button" class="toolbar-btn"  placement="top" container="body" (click)='editCard()'  ngbTooltip="Edit" [disabled]="enabled"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></button></a>
-            <a> <button mat-raised-button type="button" class="toolbar-btn"  placement="top" container="body" (click)="deleteCard()" ngbTooltip="Delete" [disabled]="enabled" ><i class="bi bi-trash-fill"></i></button></a>
-          </div> -->
+          
         </div>
         
         <div class="card inner-card">
@@ -256,9 +204,7 @@
                 </div>
               </div>
              </div>
-             <!-- <div class="col-6">
-              
-             </div> -->
+             
            </div>
          
           </div>
@@ -284,8 +230,7 @@
     </ng-container>
     <div class="s-position">
       <ng-container *ngFor="let access of permissions">
-        <!-- <a routerLink="/role/create" *ngIf="access ==='CREATE'"> <button  color="primary" type="button" class="createbtn-new"  ngbTooltip="Add Role"  container="body" placement="top"> <i class="bi bi-plus" ></i></button> 
-      </a> -->
+        
       <button mat-raised-button mat-fab color="primary" *ngIf="access == 'CREATE'" routerLink="/role/create" class="createbtn-new" placement="top" container="body" ngbTooltip="Add role">
         <i class="fa fa-plus"></i>
       </button>

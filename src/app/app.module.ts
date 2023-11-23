@@ -69,7 +69,6 @@ import { AuthGuard } from './auth.guard';
 import { OrgAuthGuard } from './org-auth.guard';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
-
 const APP_CONTAINERS = [
   DefaultFooterComponent,
   DefaultHeaderComponent,
@@ -82,8 +81,7 @@ const APP_CONTAINERS = [
     LoginComponent,
     ...APP_CONTAINERS,
     VirtualScrollDirective,
-
-  
+   
     
   ],
   imports: [

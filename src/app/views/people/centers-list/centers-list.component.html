@@ -25,9 +25,9 @@
                   </select>
             </div>
             <div class="col-sm"></div>
-            <div class="col-sm-3 search-div">
-                <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
-                <i class="bi bi-search" id="search-icon"></i>
+            <div class="col-md-7 col-lg-5 search-div">
+                <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by center name/status"aria-describedby="emailHelp"  autocomplete="off">
+                <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
             </div>
         </div>
         <div class="bg">
@@ -45,11 +45,11 @@
                       </thead>
                       <tbody>
                         <ng-container *ngIf="allCenterList as result">
-                        <tr *ngFor='let item of result| filter:term | paginate : {
+                        <tr *ngFor='let item of result| paginate : {
                             itemsPerPage: tableSize,
                             currentPage: page,
                             totalItems: count
-                          }|customSort:directionValue:sortValue|filter:term; let i=index' [class.active]="i == currentIndex">
+                          }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
                          <td>{{i + 1}}</td>
                          <td>{{item.center_name}}</td>
                          <td>{{item.year_start_date *1000 | date:'dd-MM-yyyy'}}</td>
@@ -65,8 +65,6 @@
                                   <i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i>
                                 </button>
                               </ng-container>  
-                            <!-- <a routerLink="/people/updateCenter/{{item.id}}/{{page}}/{{tableSize}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></a>
-                            <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item.id)"><i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i></button> -->
                          </td> 
                         </tr>
                         <tr *ngIf="result.length === 0" class="nodata">
@@ -102,8 +100,7 @@
   
     </button>
   </ng-container>
-    <!-- <a routerLink="/people/add-centers"> <button mat-raised-button type="button"  class="createbtn" placement="top"  ngbTooltip="Add Center"><i class="fa fa-plus"></i>
-  </button></a> -->
+    
 </div>
 
 <div class="container-wrapper mobileView">
@@ -112,14 +109,14 @@
             <h1> Center List</h1>
         </div>
         <div class="col-sm-6 col-md-6 mb-1 search-div">
-            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
-            <i class="bi bi-search" id="search-icon"></i>
+            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by center name/status" aria-describedby="emailHelp"  autocomplete="off">
+            <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
         </div>
     </div>
     <div class="bg">
     <div class="row">
-        <ng-container *ngIf="(allCenterList | filter:term) as result">
-        <div class="col-sm-12 col-md-6 main-col" *ngFor="let item of result | filter:term">
+        <ng-container *ngIf="(allCenterList) as result">
+        <div class="col-sm-12 col-md-6 main-col" *ngFor="let item of result">
         <div class="card">
             <div class="row">
                 <div class="col-7">

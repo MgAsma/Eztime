@@ -16,5 +16,19 @@ export const environment = {
   time_sheets:`time-sheets`,
   time_sheets_deadline_crossed:`time-sheets-deadline-crossed`,
   time_sheets_monthly:`time-sheets-monthly`,
-  country_state_city:`country-state-city`
+  country_state_city:`country-state-city`,
+  people_list:`people`,
+  prefix_suffix:`prefix-suffix`,
+  center_list:`center`,
+  tag:`tag`,
+  master_leave_list:`master-leave-types`,
+  type_of_industries:`type-of-industries`,
+  clients:`clients`,
+  main_category:`project-status-main-category`,
+  sub_category:`project-status-sub-category`,
+  project_tasks:`task-project-categories`,
+  project_list:`projects`,
+  org_department:`organization-department`,
+  approval_config:`time-sheets-approval-config`,
+  notification_center:`notification-center`
 };

@@ -6,6 +6,7 @@ import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
 import { error } from 'console';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
@@ -58,6 +59,20 @@ export class CategoryListComponent implements OnInit {
     // }
     this.getUserControls()
   }
+  filterSearch(){
+    this.api.getData(`${environment.live_url}/${environment.project_tasks}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe(data=>{
+      
+      if(data['result'].data){
+        this.categoryList= data['result'].data;
+        //console.log(this.categoryList,"CATEGORY")
+        const noOfPages:number = data['result'].pagination.number_of_pages
+        this.count  = noOfPages * this.tableSize
+      }
+      
+    },((error)=>{
+      this.api.showError(error.error.error.message)
+    }))
+  }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
     this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
@@ -104,9 +119,9 @@ export class CategoryListComponent implements OnInit {
         this.count  = noOfPages * this.tableSize
       }
       
-    },error=>{
+    },((error)=>{
       this.api.showError(error.error.error.message)
-    })
+    }))
   }
   delete(id:any){
     this.api.deleteProjectTaskCategoryDetails(id).subscribe((data:any)=>{
@@ -116,9 +131,9 @@ export class CategoryListComponent implements OnInit {
         this.api.showWarning('Project category deleted successfully')
       }
      
-    },error=>{
+    },((error)=>{
       this.api.showError(error.error.error.message)
-    })
+    }))
     
   }
   

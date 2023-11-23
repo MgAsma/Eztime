@@ -24,9 +24,9 @@
                   </select>
             </div>
             <div class="col-sm"></div>
-            <div class="col-sm-3 search-div">
-                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
-                <i class="bi bi-search" id="search-icon-tab"></i> 
+            <div class="col-md-7 col-lg-5 search-div">
+                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search by name/role/center"aria-describedby="emailHelp"  autocomplete="off">
+                <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i> 
               </div>
         </div>
         <div class="bg">
@@ -35,14 +35,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                          <!-- <td>{{item.u_first_name +" "+ item.u_last_name}}</td>
-                          <td>{{item.u_designation?item.u_designation:"NA"}}</td>
-                          <td *ngIf="item.u_date_of_joining">{{item.u_date_of_joining *1000 | date:'dd-MM-yyyy'}}</td> 
-                          <td *ngIf="!item.u_date_of_joining">{{"NA"}}</td> 
-                          <td>{{item.role_id}}</td>
-                          <td>{{item.cost_center_id}}</td>
-                          <td><a href="{{item.u_profile_path}}" target="_blank"><img src="{{item.u_profile_path}}" alt="" height="50px" width="100px"></a></td>
-                          <td>{{item.u_status?item.u_status:'NA'}}</td> -->
+                          
                           <th scope="col">Sl. No.</th>
                           <th scope="col">People Name <i  *ngIf="!arrow" (click)="sort('asc','u_first_name')" class="fa fa-sort-up"></i><i (click)="sort('desc','u_first_name')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
                           <th scope="col">Designation <i  *ngIf="!arrow" (click)="sort('asc','u_designation')" class="fa fa-sort-up"></i><i (click)="sort('desc','u_designation')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
@@ -58,12 +51,12 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <ng-container *ngIf="(allPeople | filter:term) as result">
-                        <tr *ngFor='let item of result|filter:term|paginate : {
+                        <ng-container *ngIf="(allPeople ) as result">
+                        <tr *ngFor='let item of result|paginate : {
                             itemsPerPage: tableSize,
                             currentPage: page,
                             totalItems: count
-                        }|customSort:directionValue:sortValue|filter:term; let i=index' [class.active]="i == currentIndex">
+                        }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
                             <td>{{i + 1}}</td>
                             <td>{{item.u_first_name +" "+ item.u_last_name}}</td>
                             <td>{{item.u_designation?item.u_designation:"NA"}}</td>
@@ -80,8 +73,8 @@
                             <td style="padding-left: 15px !important;">{{item.center_name ? item.center_name :'NA'}}</td>
                             <td class="p-r">
                               
-                              <img src="{{item.u_profile_path}}" alt="" height="25px" width="50px">
-                              <a href="{{item.u_profile_path}}" target="_blank">
+                              <img src="{{item.u_profile_path}}" alt="NAN" height="25px" width="50px">
+                              <a *ngIf="item.u_profile_path" href="{{item.u_profile_path}}" target="_blank">
                                 <i class="bi bi-eye-fill" id="eye-btn"></i>
                             </a>
                             
@@ -124,12 +117,7 @@
             </div>
         </div>
     </div>
-    <!-- <ng-container *ngFor="let access of permissions">
-      <button mat-raised-button mat-fab color="primary" routerLink="/people/create-people" *ngIf="access == 'CREATE'"  class="createbtn" placement="top" container="body"  ngbTooltip="Add people">
-        <i class="fa fa-plus"></i>
-  
-      </button>
-  </ng-container> -->
+    
   <ng-container *ngFor="let access of permissions">
     <button mat-fab color="primary" routerLink="/register" *ngIf="access == 'CREATE'"  class="createbtn" placement="top" container="body"  ngbTooltip="Add people">
       <i class="fa fa-plus"></i>
@@ -147,14 +135,14 @@
         <h1>People List</h1>
       </div>
       <div class="col-sm-6 col-md-6 mb-1 search-div">
-        <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
-        <i class="bi bi-search" id="search-icon"></i>
+        <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by name/role/center" aria-describedby="emailHelp"  autocomplete="off">
+        <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
       </div>
     </div> 
     <div class="bg">
       <div class="row">
-        <ng-container *ngIf="(allPeople | filter:term) as result">
-        <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of allPeople| filter:term;let i=index' >
+        <ng-container *ngIf="(allPeople) as result">
+        <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of allPeople;let i=index' >
             <div class="card inner-card" (click)="cardId(item)">
               <div class="row">
                 <div class="col-6 p-2">
@@ -238,19 +226,7 @@
                    <div *ngIf="!isDate(item.u_date_of_joining)">{{item.u_date_of_joining *1000 | date:'YYYY-MM-dd'}}</div> 
                  </div>
                </div>
-                <!-- <div class="col-6">
-                  
-                  <div class="row">
-                    <div class="col-12 ">
-                      <h6 class="card-subtitle">Role Name</h6>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12">
-                        {{item.user_role_name}}
-                    </div>
-                  </div>
-                </div> -->
+               
                </div>
               
             </div>

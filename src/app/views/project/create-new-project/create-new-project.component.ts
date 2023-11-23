@@ -83,7 +83,7 @@ export class CreateNewProjectComponent implements OnInit {
   initForm(){
     this.projectForm = this.builder.group({
       p_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      p_estimated_hours:['',[Validators.required,this.noHyphenValidator()]],
+      p_estimated_hours:['',[Validators.required]],
       p_estimated_cost:['',[Validators.required]],
       reporting_manager_ref_id:['',[Validators.required]],
       pc_ref_id: [''],
@@ -154,18 +154,18 @@ export class CreateNewProjectComponent implements OnInit {
     this.peopleListSetting = {
       singleSelection: false,
       idField: 'id',
-      textField: 'opg_group_name',
+      textField: 'u_first_name',
       itemsShowLimit: 3,
       allowSearchFilter: true
     };
     this.peopleGroupSetting = {
       singleSelection: true,
       idField: 'id',
-      textField: 'opg_group_name',
+      textField: 'u_first_name',
       itemsShowLimit: 3,
       allowSearchFilter: true
     };
-    this.api.getPeopleGroupDetails().subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.people_list}?page_number=1&data_per_page=2&pagination=FALSE`).subscribe((data:any)=>{
       if(data){
         this.allPeopleGroup = data.result.data;
       }

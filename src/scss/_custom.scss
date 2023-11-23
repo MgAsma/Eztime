@@ -188,3 +188,18 @@ form {
     right: unset !important;
 }
 
+.avatar-img {
+    height: inherit !important;
+
+}
+@media(min-width:1023px) {
+    .c_class.modal-dialog  {
+        position: absolute !important;
+        right: 15px !important ;
+        top: 28px !important;
+        width: auto;
+        margin: var(--bs-modal-margin);
+        pointer-events: none;
+    }   
+}
+

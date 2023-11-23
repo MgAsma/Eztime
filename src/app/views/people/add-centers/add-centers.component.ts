@@ -81,19 +81,18 @@ export class AddCentersComponent implements OnInit {
         }
         this.api.addCenterDetails(data).subscribe(response=>{
             if(response){
-              this.api.showSuccess('Center added successfully !!');
+              this.api.showSuccess('Center added successfully!!');
               this.ngOnInit()
             }
             else{
               this.api.showError('Error!')
             }
-          }
-        ),(error =>{
-          this.api.showError(error.error.error.message)
-        })
+          },(error =>{
+            this.api.showError(error.error.error.message)
+          })
+        )
       }
       
-     
     }
   }
   checkValues(event){

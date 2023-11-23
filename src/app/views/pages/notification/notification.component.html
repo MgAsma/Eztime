@@ -1,0 +1,23 @@
+
+  
+    <ul>
+      <div class="row">
+          <div class="col-9"><h2>Notification </h2></div>
+          <div class="col-1"><button type="button" class="btn-close text-end" aria-label="Close" (click)="closeBtn()" ></button></div>
+      </div>
+  
+   
+      <div class="container-h">
+        <li *ngFor="let note of notes">
+          <h5>{{note.project_data.project_name}}</h5>
+          <div class="data-d">{{note.info.message}}</div>
+          
+          <div class="data-d" *ngIf="note.project_data.project_closure_date">Project end date : {{(note.project_data.project_closure_date*1000) | date}}</div>
+          <div class="clr-state" [ngStyle]="note.notify ? {'background-color':note.notify}:{'background-color':''}">{{note.project_data.project_status}}</div>
+          
+        </li>
+      </div>
+      </ul>
+  
+  
+ 

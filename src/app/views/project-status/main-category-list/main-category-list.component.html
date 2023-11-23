@@ -25,9 +25,9 @@
                   </select>
             </div>
             <div class="col-sm"></div>
-            <div class="col-sm-3 mb-1 search-div">
-             <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp"  autocomplete="off">
-             <i class="bi bi-search" id="search-icon"></i>
+            <div class="col-sm-5 mb-1 search-div">
+             <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by category name/color" aria-describedby="emailHelp"  autocomplete="off">
+             <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
             </div>
         </div>
         <div class="bg">
@@ -43,12 +43,12 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <ng-container *ngIf="(allMainCategoryList | filter:term) as result">
-                        <tr *ngFor='let item of result| filter:term | paginate : {
+                        <ng-container *ngIf="(allMainCategoryList ) as result">
+                        <tr *ngFor='let item of result | paginate : {
                             itemsPerPage: tableSize,
                             currentPage: page,
                             totalItems: count
-                          }|customSort:directionValue:sortValue|filter:term; let i=index' [class.active]="i == currentIndex">
+                          }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
                             <td>{{i + 1}}</td>
                             <td>{{item.psmc_name}}</td>
                             <td>{{item.psmc_color_code}}</td>
@@ -107,14 +107,14 @@
             <h1>Project status main category</h1>
         </div>
         <div class="col-sm-6 col-md-6 mb-1 search-div">
-            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
-            <i class="bi bi-search" id="search-icon"></i>
+            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by category name/color"aria-describedby="emailHelp"  autocomplete="off">
+            <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
         </div>
     </div>
     <div class="bg pb-5">
     <div class="row">
-        <ng-container *ngIf="(allMainCategoryList | filter:term) as result">
-        <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of allMainCategoryList| filter:term
+        <ng-container *ngIf="(allMainCategoryList) as result">
+        <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of allMainCategoryList
         | paginate : {
             itemsPerPage: tableSize,
             currentPage: page,

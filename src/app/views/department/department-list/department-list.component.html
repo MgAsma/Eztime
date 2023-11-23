@@ -25,9 +25,9 @@
                   </select>
             </div>
             <div class="col-sm"></div>
-            <div class="col-sm-3 search-div">
-                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
-                <i class="bi bi-search" id="search-icon-tab"></i>       
+            <div class="col-md-7 col-lg-5 search-div">
+                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term"  placeholder="Search by department name/status"aria-describedby="emailHelp"  autocomplete="off">
+                <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>       
               </div>
         </div>
         <div class="bg">
@@ -46,8 +46,8 @@
                       </thead>
                       <tbody>
                        
-                        <ng-container *ngIf="(allDepartmentList | filter:term) as result">
-                        <tr *ngFor='let item of result|customSort:directionValue:sortValue|filter:term
+                        <ng-container *ngIf="(allDepartmentList) as result">
+                        <tr *ngFor='let item of result|customSort:directionValue:sortValue
                           |paginate : {
                           itemsPerPage: tableSize,
                           currentPage: page,
@@ -66,15 +66,11 @@
                               <i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i>
                             </button>
                           </ng-container>
-                         
-                            <!-- <a routerLink="/department/update/{{item.id}}/{{page}}/{{tableSize}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></a> -->
-                            <!-- <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item.id)"><i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i></button> -->
                          </td>
                         
                         </tr>
                         <tr *ngIf="result.length === 0" class="nodata">
-                          <td> No records found
-  !</td>  
+                          <td> No records found !</td>  
                         </tr>
                         </ng-container>
                       </tbody>
@@ -102,12 +98,7 @@
   
     </button>
   </ng-container>
-        <!-- <a routerLink="/department/create"> <button mat-raised-button type="button"  class="createbtn" placement="top" container="body" ngbTooltip="Add Department"><i class="fa fa-plus"></i>
-  
-       
-        </button>
-      </a> -->
-    
+      
 </div>
 
 
@@ -117,13 +108,13 @@
         <h1>Department List</h1>
       </div>
       <div class="col-sm-6 col-md-6 mb-1 search-div">
-        <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
-        <i class="bi bi-search" id="search-icon"></i>
+        <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by department name/status"aria-describedby="emailHelp"  autocomplete="off">
+        <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
       </div>
     </div> 
       <div class="bg row">
-        <ng-container *ngIf="(allDepartmentList | filter:term) as result">
-        <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of result| filter:term |paginate : {
+        <ng-container *ngIf="(allDepartmentList) as result">
+        <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of result|paginate : {
           itemsPerPage: tableSize,
           currentPage: page,
           totalItems: count
@@ -201,12 +192,7 @@
         </div>
 
         </ng-container>
-        <!-- <div class="s-position">
-            <a routerLink="/department/create"> <button mat-raised-button type="button"  class="createbtn" placement="top" container="body" ngbTooltip="Add"><i class="fa fa-plus"></i>
-  </button></a>
-           <a class="mobileView" > <button mat-raised-button type="button"  class="editbtn" placement="top" container="body" (click)='editCard()'  ngbTooltip="Edit" [disabled]="enabled" [ngStyle]="enabled ? {'background-color':'#8585e0'}:{}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></button></a>
-            <a class="mobileView" > <button mat-raised-button type="button"  class="deletebtn" placement="top" container="body" ngbTooltip="delete" (click)='deleteCard()' [disabled]="enabled" [ngStyle]="enabled ? {'background-color':'#8585e0'}:{}"><i class="bi bi-trash-fill"></i></button></a>
-          </div> -->
+      
           <div class="s-position">
             <ng-container *ngFor="let access of permissions">
               <button mat-fab type="button"  routerLink="/department/create" *ngIf="access === 'CREATE'" class="createbtn-new" placement="top" container="body" ngbTooltip="Add">

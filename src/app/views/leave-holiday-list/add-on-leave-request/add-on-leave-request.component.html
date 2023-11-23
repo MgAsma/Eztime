@@ -96,7 +96,7 @@
         <div class="row">
             <div class="col-md-12 mb-4">
                 <!-- Nav tabs -->
-                <tabset >
+                <tabset #tabset>
                     <tab heading="Yet to approved" (selectTab)="tabState($event)">
                       <app-yet-approve [data]="AllListData" (buttonClick)="buttonClick($event)" [totalCount]="totalCount" *ngIf="AllListData[0]?.approved_state === 'YET_TO_APPROVED'"></app-yet-approve>
                       <div class="text-center text-muted no-data py-2" *ngIf="AllListData[0]?.approved_state !== 'YET_TO_APPROVED' ">No records found !
@@ -208,7 +208,7 @@
         <div class="row">
             <div class="col-md-12 mb-4">
                 <!-- Nav tabs -->
-                <tabset >
+                <tabset #tabsets>
                     <tab heading="Yet to approved" (selectTab)="tabState($event)">
                       <app-yet-approve [data]="AllListData" (buttonClick)="buttonClick($event)" [totalCount]="totalCount" *ngIf="AllListData[0]?.approved_state === 'YET_TO_APPROVED'"></app-yet-approve>
                       <div class="text-center text-muted no-data py-2" *ngIf="AllListData[0]?.approved_state !== 'YET_TO_APPROVED' ">No records found

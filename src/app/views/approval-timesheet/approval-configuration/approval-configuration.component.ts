@@ -3,6 +3,7 @@ import {  Validators, FormBuilder,FormGroup } from '@angular/forms';
 import { TimesheetService } from 'src/app/service/timesheet.service';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-approval-configuration',
@@ -16,6 +17,7 @@ export class ApprovalConfigurationComponent implements OnInit {
   configuration:any;
   user_id:any;
   orgId: string;
+  configData: any = [];
 
   constructor(
     private builder:FormBuilder, 
@@ -28,6 +30,7 @@ export class ApprovalConfigurationComponent implements OnInit {
    this.initForm()
    this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
    this.orgId = JSON.parse(sessionStorage.getItem('org_id'))
+   this.getConfiguration()
   }
   goBack(event)
   {
@@ -35,8 +38,7 @@ export class ApprovalConfigurationComponent implements OnInit {
   this.location.back();
   
   }
-  initForm(){
-    
+  initForm(){ 
     this.configurationForm= this.builder.group({
       approval_period:['',Validators.required],
       grce_days_to_approve:['',Validators.required],
@@ -73,14 +75,14 @@ export class ApprovalConfigurationComponent implements OnInit {
         user_id:this.user_id,
         approval_period:formVal.approval_period,
         grace_days_to_approve:formVal.grce_days_to_approve,
-        auto_approve:formVal.tmd_auto_approved == 'true' ? true :false,
+        auto_approve:formVal.tmd_auto_approved === 'true' || formVal.tmd_auto_approved == true ? true :false,
         active_status:formVal.status
        }
       this.timesheetService.addApproval(data).subscribe(response=>{
           if(response){
             this.api.showSuccess('Configuration added successfully!!');
             this.configurationForm.reset();
-            this.initForm()
+            this.getConfiguration()
           }
           else{
             this.api.showError('Error')
@@ -91,6 +93,20 @@ export class ApprovalConfigurationComponent implements OnInit {
       )
     }
   }
-
+ getConfiguration(){
+  this.api.getData(`${environment.live_url}/${environment.approval_config}?user_id=${this.user_id}&organization_id=${this.orgId}&method=VIEW&module=TIMESHEET&menu=MONTH_APPROVAL_TIMESHEET`).subscribe((res:any)=>{
+    if(res.result.data){
+     this.configData = res.result.data
+     this.configurationForm.patchValue({
+        approval_period:this.configData[0].approval_period,
+        grce_days_to_approve:this.configData[0].grace_days_to_approve,
+        tmd_auto_approved:this.configData[0].auto_approve,
+        status:this.configData[0].active_status 
+     })
+    }
+  },((error:any)=>{
+    this.api.showError(error.error.error.message)
+  }))
+ }
 
 }

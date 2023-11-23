@@ -194,7 +194,7 @@
                         <div *ngIf="f['conctact_person_phone_number'].touched && f['conctact_person_phone_number'].invalid" class="error-text">
                             <span *ngIf="f['conctact_person_phone_number'].invalid && f['conctact_person_phone_number'].errors['required']" >Phone number is required</span>
                          </div>
-                        <span *ngIf="f['conctact_person_phone_number'].invalid && organizationForm.get('conctact_person_phone_number').hasError('phoneNumberLength')">Please enter 10 digits</span>
+                        <span *ngIf="f['conctact_person_phone_number'].invalid && organizationForm.get('conctact_person_phone_number').hasError('phoneNumberLength')" class="error-text">Please enter 10 digits</span>
                        
                     </div> 
                     <!-- <div class="row">
@@ -458,6 +458,7 @@
                         <div *ngIf="f['conctact_person_phone_number'].touched && f['conctact_person_phone_number'].invalid" class="error-text">
                             <span *ngIf="f['conctact_person_phone_number'].invalid && f['conctact_person_phone_number'].errors['required']" >Phone number is required</span>
                         </div>
+                        <span *ngIf="f['conctact_person_phone_number'].invalid && organizationForm.get('conctact_person_phone_number').hasError('phoneNumberLength')" class="error-text">Please enter 10 digits</span>
                     </div> 
                     <!-- <div class="row">
                         <div class="col-12">

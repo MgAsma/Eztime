@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-industry-sector-list',
   templateUrl: './industry-sector-list.component.html',
@@ -59,6 +60,17 @@ export class IndustrySectorListComponent implements OnInit {
     //   });
     // }
     this.getUserControls()
+  }
+  filterSearch(){
+   
+    this.api.getData(`${environment.live_url}/${environment.type_of_industries}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((data:any)=>{
+      this.allIndustryList= data.result.data;
+        const noOfPages:number = data['result'].pagination.number_of_pages
+        this.count  = noOfPages * this.tableSize
+      },((error:any)=>{
+        this.api.showError(error.error.error.message)
+      })
+    )
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')

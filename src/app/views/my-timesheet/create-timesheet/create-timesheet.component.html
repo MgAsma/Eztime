@@ -17,8 +17,6 @@
   </div>
   <div class="generic-form bg">
     <form [formGroup]="timeSheetForm" (ngSubmit)="addTimeSheet()">
-
-     
       <div formArrayName="response" class="p-2">
         <div *ngFor="let task of createdtasks.controls; let i=index">
           <div [formGroupName]="i">

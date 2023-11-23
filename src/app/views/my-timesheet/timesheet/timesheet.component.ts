@@ -136,7 +136,33 @@ export class TimesheetComponent implements OnInit {
     
     }
   }
-
+  searchFiter(event){
+    if(event){
+      this.allDetails = []
+      this.cardData =""
+      this.totalCount = ""
+     let c_params={
+        module:"TIMESHEET",
+        menu:"PEOPLE_TIMESHEET",
+        method:"VIEW",
+        status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
+        user_id:this.userId,
+        page_number:event.page,
+        data_per_page:event.tableSize,
+       }
+       this.api.getData(`${environment.live_url}/${environment.time_sheets}?search_key=${event.search_key}&user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&approved_state=${c_params.status}&page_number=${c_params.page_number}&data_per_page=${c_params.data_per_page}&pagination=TRUE`).subscribe((res:any)=>{
+        if( res['result'].data.length >0){
+          this.allDetails = res['result']['data']
+          this.cardData = res['result'].timesheet_dashboard
+          this.totalCount = res['result'].pagination.number_of_pages
+        }
+        else{
+          this.allDetails.length < 0 ? this.api.showWarning('No records found') : ''
+         }
+       })
+    }
+    
+  }
    submit(){
       //console.log(this.timeSheetForm.value.from_date)
       let c_params = {}
@@ -158,6 +184,7 @@ export class TimesheetComponent implements OnInit {
           //this.api.showWarning('Please enter from date and to date')
         }
         else{
+          this.allDetails = []
           this.getAllTimeSheet(c_params)
           this.tabset.tabs[0].active = true;
         }

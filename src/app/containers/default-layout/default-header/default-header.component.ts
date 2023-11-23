@@ -1,10 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { ClassToggleService, HeaderComponent } from '@coreui/angular';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
+import { ApiserviceService } from 'src/app/service/apiservice.service';
+import { NotificationComponent } from 'src/app/views/pages/notification/notification.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-default-header',
@@ -44,16 +47,23 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
   ]
   user_id: string;
   user_name: string;
+  profileImg: any;
+  notes: any;
+  screenWidth: number;
   
 
   constructor(private classToggler: ClassToggleService,private modalService :NgbModal,
-    private router:Router) {
+    private router:Router,
+    private api:ApiserviceService) {
     super();
+    this.getScreenSize()
   }
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id');
     this.user_role_Name = sessionStorage.getItem('user_role_name');
     this.user_name = sessionStorage.getItem('user_name');
+    this.getProfiledata()
+    this.getNotification()
   }
   getHeaderNavStyles(type):any{
     switch (type['page']) {
@@ -81,6 +91,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
       modelRef.componentInstance.message = `Logout`;
       modelRef.componentInstance.status.subscribe(resp => {
         if(resp == "ok"){
+          this.api.showSuccess('You have been logged out!')
           this.router.navigate(['/login'])
           sessionStorage.clear()
           location.reload();
@@ -90,5 +101,56 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
           modelRef.close();
         }
     })
+  }
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(_event?: Event) {
+    this.screenWidth = window.innerWidth;
+  }
+  openNotification(){
+    if(this.notes?.length > 0){
+      const modelRef =   this.modalService.open(NotificationComponent, {
+        size: <any>'md',
+        backdrop: true,
+        centered:this.screenWidth < 1023 ? true :false,
+        modalDialogClass:'c_class'
+      });
+     
+      modelRef.componentInstance.status.subscribe(resp => {
+        if(resp == "ok"){
+        //  this.delete(content);
+         modelRef.close();
+        }
+        else{
+          modelRef.close();
+        }
+    })
+	
+    }else{
+      this.api.showWarning('No data found !!')
+    }
+    
+
+
+  
+}
+  getProfiledata(){
+    this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+   // console.log(res,'PROFILE GET API RESPONSE')
+      if(res.result.data){
+        this.profileImg = res.result.data[0].u_profile_path
+      
+      }
+    },(error=>{
+      this.api.showError(error.error.error.message)
+    }))
+  }
+  getNotification(){
+    this.api.getData(`${environment.live_url}/${environment.notification_center}`).subscribe((res:any)=>{
+      if(res.result.data){
+        this.notes = res.result.data
+      }
+    },((error:any)=>{
+      this.api.showError(error.error.error.message)
+    }))
   }
 }

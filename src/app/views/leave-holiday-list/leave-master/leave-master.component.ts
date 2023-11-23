@@ -5,6 +5,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { environment } from 'src/environments/environment';
+import { error } from 'console';
 @Component({
   selector: 'app-leave-master',
   templateUrl: './leave-master.component.html',
@@ -63,6 +65,16 @@ export class LeaveMasterComponent implements OnInit {
     // }
     this.getUserControls()
   }
+  filterSearch(){
+    this.api.getData(`${environment.live_url}/${environment.master_leave_list}?search_key=${this.term}&page_number=1&data_per_page=2&pagination=TRUE`).subscribe((res:any)=>{
+      if(res){
+        this.leaveMasterList= res.result.data;
+      }
+    },((error:any)=>{
+      this.api.showError(error.error.error.message)
+    }))
+  }
+
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
     this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{

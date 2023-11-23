@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
@@ -51,18 +52,23 @@ export class ProjectListComponent implements OnInit {
   ngOnInit(): void {
     this.getProject();
     this.enabled = true;
-    // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
-
-    // if (accessAction.length) {
-    //   accessAction.forEach((res) => {
-    //    //console.log(res.module_name, res.permissions, "RESP");
-    //     if (res.module_name === 'PROJECTS') {
-    //       this.permissions = res.permissions['PROJECTS'];
-    //    //   console.log(this.permissions, "Permissions for PROJECTS");
-    //     }
-    //   });
-    // }
     this.getUserControls()
+  }
+  filterSearch(){
+    this.api.getData(`${environment.live_url}/${environment.project_list}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((data:any)=>{
+      if(data.result){
+        this.allProjectList= data.result.data;
+        //console.log( this.allProjectList,"ALL")
+        const noOfPages:number = data['result'].pagination.number_of_pages
+        this.count  = noOfPages * this.tableSize
+      }
+      
+    },((error:any)=>{
+      this.api.showError(error.error.error.message)
+      
+    })
+
+    )
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
@@ -96,6 +102,7 @@ export class ProjectListComponent implements OnInit {
   
     })
     }
+    
   getProject(){
     let params = {
       page_number:this.page,
@@ -108,10 +115,10 @@ export class ProjectListComponent implements OnInit {
       const noOfPages:number = data['result'].pagination.number_of_pages
       this.count  = noOfPages * this.tableSize
 
-    },error=>{
+    },((error:any)=>{
       this.api.showError(error.error.error.message)
       
-    }
+    })
 
     )
   }

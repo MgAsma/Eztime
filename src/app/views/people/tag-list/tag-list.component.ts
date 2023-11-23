@@ -5,6 +5,7 @@ import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.co
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-tag-list',
   templateUrl: './tag-list.component.html',
@@ -118,6 +119,17 @@ export class TagListComponent implements OnInit {
     }
     
     this.api.getTagDetailsPage(params).subscribe((data:any)=>{
+      this.allTag = data.result.data;
+      this.pagination = data['result'].pagination
+      const noOfPages:number = data['result'].pagination.number_of_pages
+      this.count  = noOfPages * this.tableSize
+    },((error)=>{
+      this.api.showError(error.error.error.message)
+    })
+    )
+  }
+  filterSearch(){
+    this.api.getData(`${environment.live_url}/${environment.tag}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((data:any)=>{
       this.allTag = data.result.data;
       this.pagination = data['result'].pagination
       const noOfPages:number = data['result'].pagination.number_of_pages

@@ -114,6 +114,17 @@ currentIndex: any;
       this.api.showError(error.error.error.message)
     }))
   }
+  filterSearch(){
+    this.api.getData(`${environment.live_url}/${environment.organization}?search_key=${this.term}&page_number=1&data_per_page=2&pagination=TRUE`).subscribe((res:any)=>{
+      if(res){
+        this.organizationData= res.result.data;
+        const noOfPages:number = res['result'].pagination.number_of_pages
+        this.count  = noOfPages * this.tableSize
+      }
+    },((error:any)=>{
+      this.api.showError(error.error.error.message)
+    }))
+  }
   onTableDataChange(event:any){
     this.page = event;
     this.getOrgDetails(`page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`)

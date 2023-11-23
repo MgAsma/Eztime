@@ -24,9 +24,9 @@
                   </select>
             </div>
             <div class="col-sm"></div>
-            <div class="col-sm-3 search-div">
-                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp"  autocomplete="off">
-                <i class="bi bi-search" id="search-icon-tab"></i>     
+            <div class="col-sm-5 search-div">
+                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search by client name/contact person" aria-describedby="emailHelp"  autocomplete="off">
+                <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>     
             </div>
         </div>
         <div class="bg">
@@ -48,11 +48,11 @@
                       </thead>
                       <tbody>
                         <ng-container *ngIf="(allClientList) as result"> 
-                        <tr *ngFor='let item of result| filter:term|paginate : {
+                        <tr *ngFor='let item of result|paginate : {
                             itemsPerPage: tableSize,
                             currentPage: page,
                             totalItems: count
-                          }|customSort:directionValue:sortValue|filter:term; let i=index' [class.active]="i == currentIndex">
+                          }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
                             <td>{{i + 1}}</td>
                             <td>{{item.c_name}}</td>
                             <td>{{item.c_code}}</td>
@@ -114,14 +114,14 @@
             <h1>Client list</h1>
         </div>
         <div class="col-sm-6 col-md-6 mb-1 search-div">
-            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search"aria-describedby="emailHelp"  autocomplete="off">
-            <i class="bi bi-search" id="search-icon"></i>
+            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by client name/contact person" aria-describedby="emailHelp"  autocomplete="off">
+            <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
         </div>
     </div>
     <div class="bg">
         <div class="row">
-            <ng-container *ngIf="(allClientList | filter:term) as result"> 
-            <div class="col-sm-12 col-md-6 c-m" *ngFor='let item of result| filter:term |paginate : {
+            <ng-container *ngIf="(allClientList) as result"> 
+            <div class="col-sm-12 col-md-6 c-m" *ngFor='let item of result | paginate : {
                 itemsPerPage: tableSize,
                 currentPage: page,
                 totalItems: count

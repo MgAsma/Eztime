@@ -5,6 +5,7 @@ import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.co
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-main-category-list',
   templateUrl: './main-category-list.component.html',
@@ -46,18 +47,20 @@ export class MainCategoryListComponent implements OnInit {
   ngOnInit(): void {
     this.getMainCategory();
     this.enabled = true;
-    // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
-
-    // if (accessAction.length) {
-    //   accessAction.forEach((res) => {
-    //   // console.log(res.module_name, res.permissions, "RESP");
-    //     if (res.module_name === 'PROJECT_STATUS') {
-    //       this.permissions = res.permissions['MAIN_CATEGORIES'];
-    //     //  console.log(this.permissions, "Permissions for DEPARTMENT");
-    //     }
-    //   });
-    // }
     this.getUserControls()
+  }
+  filterSearch(){
+    this.api.getData(`${environment.live_url}/${environment.main_category}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+      if(res){
+      this.allMainCategoryList= res.result.data;
+      this.selectedColor = this.allMainCategoryList.map(cr => cr.psmc_color_code)
+     
+      const noOfPages:number = res['result'].pagination.number_of_pages
+      this.count  = noOfPages * this.tableSize
+      }
+    },((error:any)=>{
+      this.api.showError(error.error.error.message)
+    }))
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
@@ -100,10 +103,9 @@ export class MainCategoryListComponent implements OnInit {
      
       const noOfPages:number = data['result'].pagination.number_of_pages
       this.count  = noOfPages * this.tableSize
-    },error=>{
+    },((error:any)=>{
       this.api.showError(error.error.error.message)
-      
-    }
+    })
 
     )
   }

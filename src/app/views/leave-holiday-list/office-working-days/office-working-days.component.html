@@ -1,490 +1,490 @@
 <div class="container-fluid webView">
-    <div class="row">
-        <div class="col-sm-6">
-            <h1>Working days</h1>
-        </div>
-        <div class="col-sm"></div>
-        <div class="col-sm-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">Working days</li>
-                  
-                </ol>
-              </nav>
-        </div>
-        
-    </div>
-    <div class="generic-form bg">
-        <div class="row">
-            <div class="col-sm">
-              <form [formGroup]="officeWorkingDaysForm">
+  <div class="row">
+      <div class="col-sm-6">
+          <h1>Working days</h1>
+      </div>
+      <div class="col-sm"></div>
+      <div class="col-sm-3">
+          <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
+                <li class="breadcrumb-item">Working days</li>
                 
-                <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Working Days</th>
-                        <th scope="col">From(hrs)</th>
-                        <th scope="col">Mins</th>
-                        <th scope="col">To(hrs)</th>
-                        <th scope="col">Mins</th>
-                        <th scope="col">Total Working Hrs</th>
+              </ol>
+            </nav>
+      </div>
+      
+  </div>
+  <div class="generic-form bg">
+      <div class="row">
+          <div class="col-sm">
+            <form [formGroup]="officeWorkingDaysForm">
+              
+              <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Working Days</th>
+                      <th scope="col">From(hrs)</th>
+                      <th scope="col">Mins</th>
+                      <th scope="col">To(hrs)</th>
+                      <th scope="col">Mins</th>
+                      <th scope="col">Total Working Hrs</th>
 
-                      </tr>
-                    </thead>
-                    <tbody>
-                     <td class="webView">
-                        <input type="text" readonly class="form-control  sizeinput" placeholder="Monday" aria-describedby="emailHelp"  autocomplete="off" >
-                        <input type="text" readonly class="form-control  sizeinput" placeholder="Tuesday" aria-describedby="emailHelp"  autocomplete="off">
-                        <input type="text" readonly class="form-control  sizeinput" placeholder="Wednesday" aria-describedby="emailHelp"  autocomplete="off">
-                        <input type="text" readonly class="form-control  sizeinput" placeholder="Thursday" aria-describedby="emailHelp"  autocomplete="off">
-                        <input type="text" readonly class="form-control  sizeinput" placeholder="Friday" aria-describedby="emailHelp"  autocomplete="off">
-                        <input type="text" readonly class="form-control  sizeinput" placeholder="Saturday" aria-describedby="emailHelp"  autocomplete="off">
-                        <input type="text" readonly class="form-control  sizeinput" placeholder="Sunday" aria-describedby="emailHelp"  autocomplete="off">
-                     </td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                   <td class="webView">
+                      <input type="text" readonly class="form-control  sizeinput" placeholder="Monday" aria-describedby="emailHelp"  autocomplete="off" >
+                      <input type="text" readonly class="form-control  sizeinput" placeholder="Tuesday" aria-describedby="emailHelp"  autocomplete="off">
+                      <input type="text" readonly class="form-control  sizeinput" placeholder="Wednesday" aria-describedby="emailHelp"  autocomplete="off">
+                      <input type="text" readonly class="form-control  sizeinput" placeholder="Thursday" aria-describedby="emailHelp"  autocomplete="off">
+                      <input type="text" readonly class="form-control  sizeinput" placeholder="Friday" aria-describedby="emailHelp"  autocomplete="off">
+                      <input type="text" readonly class="form-control  sizeinput" placeholder="Saturday" aria-describedby="emailHelp"  autocomplete="off">
+                      <input type="text" readonly class="form-control  sizeinput" placeholder="Sunday" aria-describedby="emailHelp"  autocomplete="off">
+                   </td>
+                  
+                   <td >
+                    <!--From Hours--->
                     
-                     <td >
-                      <!--From Hours--->
+                       <select [ngClass]="submitted && f['monFromHrs'].touched && f['monFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="monFromHrs" (change)="onChanges()" (click)="valueChanges()">
+                          <option selected  disabled value="">Select from hours</option>
+                          <option [value]="hours" *ngFor="let hours of hours.hour1">{{hours}}</option>
+                        </select>
+                        <select [ngClass]="submitted && f['tuesFromHrs'].touched && f['tuesFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesFromHrs" (change)="onChanges()" (click)="valueChanges()">
+                          <option selected  disabled value="">Select from hours</option>
+                          <option [value]="hours" *ngFor="let hours of hours.hour2">{{hours}}</option>
+                        </select>
+                        <select [ngClass]="submitted && f['wedFromHrs'].touched && f['wedFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="wedFromHrs" (change)="onChanges()" (click)="valueChanges()">
+                          <option selected  disabled value="">Select from hours</option>
+                          <option [value]="hours" *ngFor="let hours of hours.hour3">{{hours}}</option>
+                        </select>
+                        <select [ngClass]="submitted && f['thursFromHrs'].touched && f['thursFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="thursFromHrs" (change)="onChanges()" (click)="valueChanges()">
+                          <option selected  disabled value="">Select from hours</option>
+                          <option [value]="hours" *ngFor="let hours of hours.hour4">{{hours}}</option>
+                        </select>
+                        <select [ngClass]="submitted && f['friFromHrs'].touched && f['friFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friFromHrs" (change)="onChanges()" (click)="valueChanges()">
+                          <option selected  disabled value="">Select from hours</option>
+                          <option [value]="hours" *ngFor="let hours of hours.hour5">{{hours}}</option>
+                        </select>
+                        <select class="d-able"  [attr.disabled]="'true'" aria-label="Default select example" formControlName="satFromHrs" (change)="onChanges()" (click)="valueChanges()" >
+                          <option selected  disabled value="">Select from hours</option>
+                          <option [value]="hours" *ngFor="let hours of hours.hour6">{{hours}}</option>
+                        </select>
+                        <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="sunFromHrs" (change)="onChanges()" (click)="valueChanges()" >
+                          <option selected  disabled value="">Select from hours</option>
+                          <option [value]="hours" *ngFor="let hours of hours.hour7">{{hours}}</option>
+                        </select>
                       
-                         <select [ngClass]="submitted && f['monFromHrs'].touched && f['monFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="monFromHrs" (change)="onChanges()" (click)="valueChanges()">
-                            <option selected  disabled value="">Select from hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour1">{{hours}}</option>
-                          </select>
-                          <select [ngClass]="submitted && f['tuesFromHrs'].touched && f['tuesFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesFromHrs" (change)="onChanges()" (click)="valueChanges()">
-                            <option selected  disabled value="">Select from hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour2">{{hours}}</option>
-                          </select>
-                          <select [ngClass]="submitted && f['wedFromHrs'].touched && f['wedFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="wedFromHrs" (change)="onChanges()" (click)="valueChanges()">
-                            <option selected  disabled value="">Select from hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour3">{{hours}}</option>
-                          </select>
-                          <select [ngClass]="submitted && f['thursFromHrs'].touched && f['thursFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="thursFromHrs" (change)="onChanges()" (click)="valueChanges()">
-                            <option selected  disabled value="">Select from hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour4">{{hours}}</option>
-                          </select>
-                          <select [ngClass]="submitted && f['friFromHrs'].touched && f['friFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friFromHrs" (change)="onChanges()" (click)="valueChanges()">
-                            <option selected  disabled value="">Select from hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour5">{{hours}}</option>
-                          </select>
-                          <select class="d-able"  [attr.disabled]="'true'" aria-label="Default select example" formControlName="satFromHrs" (change)="onChanges()" (click)="valueChanges()" >
-                            <option selected  disabled value="">Select from hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour6">{{hours}}</option>
-                          </select>
-                          <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="sunFromHrs" (change)="onChanges()" (click)="valueChanges()" >
-                            <option selected  disabled value="">Select from hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour7">{{hours}}</option>
-                          </select>
-                        
-                     </td>
-                     <td >
-                      <!---From Mins--->
-                        <select [ngClass]="submitted && f['monFromMins'].touched && f['monFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="monFromMins" (change)="onChanges()">
-                            <option selected  disabled value="">Select from mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins1">{{mins}}</option>
-                          </select>
-                          <select [ngClass]="submitted && f['tuesFromMins'].touched && f['tuesFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesFromMins" (change)="onChanges()">
-                            <option selected  disabled value="">Select from mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins2">{{mins}}</option>
-                          </select>
-                          <select [ngClass]="submitted && f['wedFromMins'].touched && f['wedFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="wedFromMins" (change)="onChanges()">
-                            <option selected  disabled value="">Select from mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins3">{{mins}}</option>
-                          </select>
-                          <select [ngClass]="submitted && f['thursFromMins'].touched && f['thursFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="thursFromMins" (change)="onChanges()">
-                            <option selected  disabled value="">Select from mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins4">{{mins}}</option>
-                          </select>
-                          <select [ngClass]="submitted && f['friFromMins'].touched && f['friFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friFromMins" (change)="onChanges()">
-                            <option selected  disabled value="">Select from mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins5">{{mins}}</option>
-                          </select>
-                          <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="satFromMins" (change)="onChanges()" >
-                            <option selected  disabled value="">Select from mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins6">{{mins}}</option>
-                          </select>
-                          <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="sunFromMins" (change)="onChanges()" >
-                            <option selected  disabled value="">Select from mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins7">{{mins}}</option>
-                          </select>
-                     </td>
-                     <td >
-                      <!--To Hours--->
-                        <select [ngClass]="submitted && f['monToHours'].touched && f['monToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example"  formControlName="monToHours" (change)="onChanges()">
-                            <option selected  disabled value="">Select to hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour1" [disabled]="(officeWorkingDaysForm.value.monFromHrs + 1) > hours">{{hours}}</option>
-                          </select>
-                          <select [ngClass]="submitted && f['tuesToHours'].touched && f['tuesToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesToHours" (change)="onChanges()">
-                            <option selected  disabled value="">Select to hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour2" [disabled]="(officeWorkingDaysForm.value.tuesFromHrs + 1 ) > hours">{{hours}}</option>
-                          </select>
-                          <select [ngClass]="submitted && f['wedToHours'].touched && f['wedToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="wedToHours" (change)="onChanges()">
-                            <option selected  disabled value="">Select to hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour3" [disabled]="(officeWorkingDaysForm.value.wedFromHrs + 1) > hours">{{hours}}</option>
-                          </select>
-                          <select [ngClass]="submitted && f['thursToHours'].touched && f['thursToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="thursToHours" (change)="onChanges()">
-                            <option selected  disabled value="">Select to hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour4" [disabled]="(officeWorkingDaysForm.value.thursFromHrs + 1 ) > hours">{{hours}}</option>
-                          </select>
-                          <select [ngClass]="submitted && f['friToHours'].touched && f['friToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friToHours" (change)="onChanges()">
-                            <option selected  disabled value="">Select to hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour5" [disabled]="( officeWorkingDaysForm.value.friFromHrs + 1) > hours">{{hours}}</option>
-                          </select>
-                          <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="satToHours" (change)="onChanges()" >
-                            <option selected  disabled value="">Select to hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour6" >{{hours}}</option>
-                          </select>
-                          <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="sunToHours" (change)="onChanges()" >
-                            <option selected  disabled value="">Select to hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour7" >{{hours}}</option>
-                          </select>
-                        
-                     </td>
-                     <td >
-                       <!---To Mins--->
-                      <select [ngClass]="f['monToMins'].touched && f['monToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="monToMins" (change)="onChanges()">
-                          <option selected  disabled value="">Select to mins</option>
+                   </td>
+                   <td >
+                    <!---From Mins--->
+                      <select [ngClass]="submitted && f['monFromMins'].touched && f['monFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="monFromMins" (change)="onChanges()">
+                          <option selected  disabled value="">Select from mins</option>
                           <option [value]="mins" *ngFor="let mins of mins.mins1">{{mins}}</option>
                         </select>
-                        <select [ngClass]="f['tuesToMins'].touched && f['tuesToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesToMins" (change)="onChanges()">
-                          <option selected  disabled value="">Select to mins</option>
+                        <select [ngClass]="submitted && f['tuesFromMins'].touched && f['tuesFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesFromMins" (change)="onChanges()">
+                          <option selected  disabled value="">Select from mins</option>
                           <option [value]="mins" *ngFor="let mins of mins.mins2">{{mins}}</option>
                         </select>
+                        <select [ngClass]="submitted && f['wedFromMins'].touched && f['wedFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="wedFromMins" (change)="onChanges()">
+                          <option selected  disabled value="">Select from mins</option>
+                          <option [value]="mins" *ngFor="let mins of mins.mins3">{{mins}}</option>
+                        </select>
+                        <select [ngClass]="submitted && f['thursFromMins'].touched && f['thursFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="thursFromMins" (change)="onChanges()">
+                          <option selected  disabled value="">Select from mins</option>
+                          <option [value]="mins" *ngFor="let mins of mins.mins4">{{mins}}</option>
+                        </select>
+                        <select [ngClass]="submitted && f['friFromMins'].touched && f['friFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friFromMins" (change)="onChanges()">
+                          <option selected  disabled value="">Select from mins</option>
+                          <option [value]="mins" *ngFor="let mins of mins.mins5">{{mins}}</option>
+                        </select>
+                        <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="satFromMins" (change)="onChanges()" >
+                          <option selected  disabled value="">Select from mins</option>
+                          <option [value]="mins" *ngFor="let mins of mins.mins6">{{mins}}</option>
+                        </select>
+                        <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="sunFromMins" (change)="onChanges()" >
+                          <option selected  disabled value="">Select from mins</option>
+                          <option [value]="mins" *ngFor="let mins of mins.mins7">{{mins}}</option>
+                        </select>
+                   </td>
+                   <td >
+                    <!--To Hours--->
+                      <select [ngClass]="submitted && f['monToHours'].touched && f['monToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example"  formControlName="monToHours" (change)="onChanges()">
+                          <option selected  disabled value="">Select to hours</option>
+                          <option [value]="hours" *ngFor="let hours of hoursTo.hour1" [disabled]="+officeWorkingDaysForm.value.monFromHrs + 1 > hours">{{hours}}</option>
+                        </select>
+                        <select [ngClass]="submitted && f['tuesToHours'].touched && f['tuesToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesToHours" (change)="onChanges()">
+                          <option selected  disabled value="">Select to hours</option>
+                          <option [value]="hours" *ngFor="let hours of hoursTo.hour2" [disabled]="+officeWorkingDaysForm.value.tuesFromHrs + 1  > hours">{{hours}}</option>
+                        </select>
+                        <select [ngClass]="submitted && f['wedToHours'].touched && f['wedToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="wedToHours" (change)="onChanges()">
+                          <option selected  disabled value="">Select to hours</option>
+                          <option [value]="hours" *ngFor="let hours of hoursTo.hour3" [disabled]="+officeWorkingDaysForm.value.wedFromHrs + 1 > hours">{{hours}}</option>
+                        </select>
+                        <select [ngClass]="submitted && f['thursToHours'].touched && f['thursToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="thursToHours" (change)="onChanges()">
+                          <option selected  disabled value="">Select to hours</option>
+                          <option [value]="hours" *ngFor="let hours of hoursTo.hour4" [disabled]="+officeWorkingDaysForm.value.thursFromHrs + 1  > hours">{{hours}}</option>
+                        </select>
+                        <select [ngClass]="submitted && f['friToHours'].touched && f['friToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friToHours" (change)="onChanges()">
+                          <option selected  disabled value="">Select to hours</option>
+                          <option [value]="hours" *ngFor="let hours of hoursTo.hour5" [disabled]="+officeWorkingDaysForm.value.friFromHrs + 1 > hours">{{hours}}</option>
+                        </select>
+                        <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="satToHours" (change)="onChanges()" >
+                          <option selected  disabled value="">Select to hours</option>
+                          <option [value]="hours" *ngFor="let hours of hoursTo.hour6" >{{hours}}</option>
+                        </select>
+                        <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="sunToHours" (change)="onChanges()" >
+                          <option selected  disabled value="">Select to hours</option>
+                          <option [value]="hours" *ngFor="let hours of hoursTo.hour7" >{{hours}}</option>
+                        </select>
+                      
+                   </td>
+                   <td >
+                     <!---To Mins--->
+                    <select [ngClass]="f['monToMins'].touched && f['monToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="monToMins" (change)="onChanges()">
+                        <option selected  disabled value="">Select to mins</option>
+                        <option [value]="mins" *ngFor="let mins of mins.mins1">{{mins}}</option>
+                      </select>
+                      <select [ngClass]="f['tuesToMins'].touched && f['tuesToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesToMins" (change)="onChanges()">
+                        <option selected  disabled value="">Select to mins</option>
+                        <option [value]="mins" *ngFor="let mins of mins.mins2">{{mins}}</option>
+                      </select>
+                      <select [ngClass]="f['wedToMins'].touched && f['wedToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="wedToMins" (change)="onChanges()">
+                        <option selected  disabled value="">Select to mins</option>
+                        <option [value]="mins" *ngFor="let mins of mins.mins3">{{mins}}</option>
+                      </select>
+                      <select [ngClass]="f['thursToMins'].touched && f['thursToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="thursToMins" (change)="onChanges()">
+                        <option selected  disabled value="">Select to mins</option>
+                        <option [value]="mins" *ngFor="let mins of mins.mins4">{{mins}}</option>
+                      </select>
+                      <select [ngClass]="f['friToMins'].touched && f['friToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friToMins" (change)="onChanges()">
+                        <option selected  disabled value="">Select to mins</option>
+                        <option [value]="mins" *ngFor="let mins of mins.mins5">{{mins}}</option>
+                      </select>
+                      <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="satToMins" (change)="onChanges()" >
+                        <option selected  disabled value="">Select to mins</option>
+                        <option [value]="mins" *ngFor="let mins of mins.mins6">{{mins}}</option>
+                      </select>
+                      <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="sunToMins" (change)="onChanges()" (change)="onChanges()" >
+                        <option selected  disabled value="">Select to mins</option>
+                        <option [value]="mins" *ngFor="let mins of mins.mins7">{{mins}}</option>
+                      </select>
+                 </td>
+                   <td>
+                    <input type="text" readonly class="form-control sizeinput"  formControlName="monTotalhrs">
+                    <input type="text" readonly class="form-control sizeinput"  formControlName="tuesTotalhrs">
+                    <input type="text" readonly class="form-control sizeinput"  formControlName="wedTotalhrs">
+                    <input type="text" readonly class="form-control sizeinput"  formControlName="thursTotalhrs">
+                    <input type="text" readonly class="form-control sizeinput"  formControlName="friTotalhrs">
+                    <input type="text" readonly class="form-control sizeinput"  formControlName="satTotalhrs">
+                    <input type="text" readonly class="form-control sizeinput"  formControlName="sunTotalhrs">
+                   </td>
+                  </tbody>
+                </table>
+              </form>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-sm-3">
+              
+          </div>
+          <div class="col-sm"></div>
+          <div class="col-sm-2">
+              <button mat-raised-button class="proceedbtn mat-btn-s" type="button" (click)="submit()" [ngClass]="!enable  ? 'd-able' :''" [disabled]="!enable">Submit</button>
+           </div>
+      </div>
+  </div>
+ 
+</div>
+
+<div class="container-fluid mobileView">
+<div class="row">
+    <div class="col-sm-12">
+        <h1>Working days</h1>
+    </div>
+</div>
+<div class="generic-form bg">
+    <div class="row">
+        <div class="col-sm-12">
+          <form [formGroup]="officeWorkingDaysForm">
+             <div class="days-container">
+                    <div class="px-2 day-header">Monday</div>
+                    <div class="row">
+                      <div class="col-6">
+                        <label>From hour</label>
+                        <select [ngClass]="submitted && f['monFromHrs'].touched && f['monFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="monFromHrs" (change)="onChanges()" (click)="valueChanges()">
+                        <option selected  disabled value="">From hours</option>
+                        <option [value]="hours" *ngFor="let hours of hours.hour1">{{hours}}</option>
+                      </select>
+                      </div>
+                      <div class="col-6">
+                        <label>From mins</label>
+                        <select [ngClass]="submitted && f['monFromMins'].touched && f['monFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="monFromMins" (change)="onChanges()">
+                          <option selected  disabled value="">From mins</option>
+                          <option [value]="mins" *ngFor="let mins of mins.mins1">{{mins}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>To hour</label>
+                        <select [ngClass]="submitted && f['monToHours'].touched && f['monToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example"  formControlName="monToHours" (change)="onChanges()">
+                          <option selected  disabled value="">To hours</option>
+                          <option [value]="hours" *ngFor="let hours of hoursTo.hour1" [disabled]="+officeWorkingDaysForm.value.monFromHrs + 1 > hours">{{hours}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>To mins</label>
+                        <select [ngClass]="f['monToMins'].touched && f['monToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="monToMins" (change)="onChanges()">
+                          <option selected  disabled value="">To mins</option>
+                          <option [value]="mins" *ngFor="let mins of mins.mins1">{{mins}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>Total hours</label>
+                        <input type="text" readonly class="form-control sizeinput"  formControlName="monTotalhrs">
+                      </div>
+                      
+                    </div>
+                    
+                  </div>
+                  <div class="days-container">
+                    <div class="px-2 day-header">Tuesday</div>
+                    <div class="row">
+                      <div class="col-6">
+                        <label>From hour</label>
+                        <select [ngClass]="submitted && f['tuesFromHrs'].touched && f['tuesFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesFromHrs" (change)="onChanges()" (click)="valueChanges()">
+                          <option selected  disabled value="">From hours</option>
+                          <option [value]="hours" *ngFor="let hours of hours.hour2">{{hours}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>To mins</label>
+                        <select [ngClass]="submitted && f['tuesFromMins'].touched && f['tuesFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesFromMins" (change)="onChanges()">
+                          <option selected  disabled value="">From mins</option>
+                          <option [value]="mins" *ngFor="let mins of mins.mins2">{{mins}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>To hour</label>
+                        <select [ngClass]="submitted && f['tuesToHours'].touched && f['tuesToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesToHours" (change)="onChanges()">
+                          <option selected  disabled value="">To hours</option>
+                          <option [value]="hours" *ngFor="let hours of hoursTo.hour2" [disabled]="+officeWorkingDaysForm.value.tuesFromHrs + 1  > hours">{{hours}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>To mins</label>
+                        <select [ngClass]="f['tuesToMins'].touched && f['tuesToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesToMins" (change)="onChanges()">
+                          <option selected  disabled value="">To mins</option>
+                          <option [value]="mins" *ngFor="let mins of mins.mins2">{{mins}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>Total hour</label>
+                        <input type="text" readonly class="form-control sizeinput"  formControlName="tuesTotalhrs">
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="days-container">
+                    <div class="px-2 day-header">Wednesday</div>
+                    <div class="row">
+                      <div class="col-6">
+                        <label>From hour</label>
+                        <select [ngClass]="submitted && f['wedFromHrs'].touched && f['wedFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="wedFromHrs" (change)="onChanges()" (click)="valueChanges()">
+                          <option selected  disabled value="">From hours</option>
+                          <option [value]="hours" *ngFor="let hours of hours.hour3">{{hours}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>From mins</label>
+                        <select [ngClass]="submitted && f['wedFromMins'].touched && f['wedFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="wedFromMins" (change)="onChanges()">
+                          <option selected  disabled value="">From mins</option>
+                          <option [value]="mins" *ngFor="let mins of mins.mins3">{{mins}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>To hour</label>
+                        <select [ngClass]="submitted && f['tuesToHours'].touched && f['tuesToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesToHours" (change)="onChanges()">
+                          <option selected  disabled value="">To hours</option>
+                          <option [value]="hours" *ngFor="let hours of hoursTo.hour2" [disabled]="+officeWorkingDaysForm.value.tuesFromHrs + 1  > hours">{{hours}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>To mins</label>
                         <select [ngClass]="f['wedToMins'].touched && f['wedToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="wedToMins" (change)="onChanges()">
                           <option selected  disabled value="">Select to mins</option>
                           <option [value]="mins" *ngFor="let mins of mins.mins3">{{mins}}</option>
                         </select>
+                      </div>
+                      <div class="col-6">
+                        <label>Total hour</label>
+                        <input type="text" readonly class="form-control sizeinput"  formControlName="wedTotalhrs">
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="days-container">
+                    <div class="px-2 day-header">Thursday</div>
+                    <div class="row">
+                      <div class="col-6">
+                        <label>From hour</label>
+                        <select [ngClass]="submitted && f['thursFromHrs'].touched && f['thursFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="thursFromHrs" (change)="onChanges()" (click)="valueChanges()">
+                          <option selected  disabled value="">From hours</option>
+                          <option [value]="hours" *ngFor="let hours of hours.hour4">{{hours}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>From mins</label>
+                        <select [ngClass]="submitted && f['thursFromMins'].touched && f['thursFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="thursFromMins" (change)="onChanges()">
+                          <option selected  disabled value="">From mins</option>
+                          <option [value]="mins" *ngFor="let mins of mins.mins4">{{mins}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>To hour</label>
+                        <select [ngClass]="submitted && f['thursToHours'].touched && f['thursToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="thursToHours" (change)="onChanges()">
+                          <option selected  disabled value="">To hours</option>
+                          <option [value]="hours" *ngFor="let hours of hoursTo.hour4" [disabled]="+officeWorkingDaysForm.value.thursFromHrs + 1  > hours">{{hours}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>To mins</label>
                         <select [ngClass]="f['thursToMins'].touched && f['thursToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="thursToMins" (change)="onChanges()">
                           <option selected  disabled value="">Select to mins</option>
                           <option [value]="mins" *ngFor="let mins of mins.mins4">{{mins}}</option>
                         </select>
-                        <select [ngClass]="f['friToMins'].touched && f['friToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friToMins" (change)="onChanges()">
-                          <option selected  disabled value="">Select to mins</option>
+                      </div>
+                      <div class="col-6">
+                        <label>Total hour</label>
+                       
+                        <input type="text" readonly class="form-control sizeinput"  formControlName="thursTotalhrs">
+                        
+                      </div>
+                    </div>
+                  </div>
+                  <div class="days-container">
+                    <div class="px-2 day-header">Friday</div>
+                    <div class="row">
+                      <div class="col-6">
+                        <label>From hour</label>
+                        <select [ngClass]="submitted && f['friFromHrs'].touched && f['friFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friFromHrs" (change)="onChanges()" (click)="valueChanges()">
+                          <option selected  disabled value="">From hours</option>
+                          <option [value]="hours" *ngFor="let hours of hours.hour5">{{hours}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>From mins</label>
+                        <select [ngClass]="submitted && f['friFromMins'].touched && f['friFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friFromMins" (change)="onChanges()">
+                          <option selected  disabled value="">From mins</option>
                           <option [value]="mins" *ngFor="let mins of mins.mins5">{{mins}}</option>
                         </select>
+                      </div>
+                      <div class="col-6">
+                        <label>To hour</label>
+                        <select [ngClass]="submitted && f['friToHours'].touched && f['friToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friToHours" (change)="onChanges()">
+                          <option selected  disabled value="">To hours</option>
+                          <option [value]="hours" *ngFor="let hours of hoursTo.hour5" [disabled]="+officeWorkingDaysForm.value.friFromHrs + 1 > hours">{{hours}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>To mins</label>
+                        <select [ngClass]="f['friToMins'].touched && f['friToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friToMins" (change)="onChanges()">
+                          <option selected  disabled value="">To mins</option>
+                          <option [value]="mins" *ngFor="let mins of mins.mins5">{{mins}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>Total hour</label>
+                        <input type="text" readonly class="form-control sizeinput"  formControlName="friTotalhrs">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="days-container">
+                    <div class="px-2 day-header">Saturday</div>
+                    <div class="row">
+                      <div class="col-6">
+                        <label>From hour</label>
+                        <select class="d-able"  [attr.disabled]="'true'" aria-label="Default select example" formControlName="satFromHrs" (change)="onChanges()" (click)="valueChanges()" >
+                          <option selected  disabled value="">From hours</option>
+                          <option [value]="hours" *ngFor="let hours of hours.hour6">{{hours}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>From mins</label>
+                        <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="satFromMins" (change)="onChanges()" >
+                          <option selected  disabled value="">From mins</option>
+                          <option [value]="mins" *ngFor="let mins of mins.mins6">{{mins}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>To hour</label>
+                        <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="satToHours" (change)="onChanges()" >
+                          <option selected  disabled value="">To hours</option>
+                          <option [value]="hours" *ngFor="let hours of hours.hour6" >{{hours}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>To mins</label>
                         <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="satToMins" (change)="onChanges()" >
                           <option selected  disabled value="">Select to mins</option>
                           <option [value]="mins" *ngFor="let mins of mins.mins6">{{mins}}</option>
                         </select>
-                        <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="sunToMins" (change)="onChanges()" (change)="onChanges()" >
-                          <option selected  disabled value="">Select to mins</option>
+                      </div>
+                      <div class="col-6">
+                        <label>Total hour</label>
+                        <input type="text" readonly class="form-control sizeinput"  formControlName="satTotalhrs">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="days-container">
+                    <div class="px-2 day-header">Sunday</div>
+                    <div class="row">
+                      <div class="col-6">
+                        <label>From hour</label>
+                        <select class="d-able"  [attr.disabled]="'true'" aria-label="Default select example" formControlName="satFromHrs" (change)="onChanges()" (click)="valueChanges()" >
+                          <option selected  disabled value="">From hours</option>
+                          <option [value]="hours" *ngFor="let hours of hours.hour6">{{hours}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>From mins</label>
+                        <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="sunFromMins" (change)="onChanges()" >
+                          <option selected  disabled value="">From mins</option>
                           <option [value]="mins" *ngFor="let mins of mins.mins7">{{mins}}</option>
                         </select>
-                   </td>
-                     <td>
-                      <input type="text" readonly class="form-control sizeinput"  formControlName="monTotalhrs">
-                      <input type="text" readonly class="form-control sizeinput"  formControlName="tuesTotalhrs">
-                      <input type="text" readonly class="form-control sizeinput"  formControlName="wedTotalhrs">
-                      <input type="text" readonly class="form-control sizeinput"  formControlName="thursTotalhrs">
-                      <input type="text" readonly class="form-control sizeinput"  formControlName="friTotalhrs">
-                      <input type="text" readonly class="form-control sizeinput"  formControlName="satTotalhrs">
-                      <input type="text" readonly class="form-control sizeinput"  formControlName="sunTotalhrs">
-                     </td>
-                    </tbody>
-                  </table>
+                      </div>
+                      <div class="col-6">
+                        <label>To hour</label>
+                        <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="sunToHours" (change)="onChanges()" >
+                          <option selected  disabled value="">To hours</option>
+                          <option [value]="hours" *ngFor="let hours of hours.hour7" >{{hours}}</option>
+                        </select>
+                      
+                      </div>
+                      <div class="col-6">
+                        <label>To mins</label>
+                        <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="sunToMins" (change)="onChanges()" (change)="onChanges()" >
+                          <option selected  disabled value="">To mins</option>
+                          <option [value]="mins" *ngFor="let mins of mins.mins7">{{mins}}</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label>Total hour</label>
+                        <input type="text" readonly class="form-control sizeinput"  formControlName="sunTotalhrs">
+                      </div>
+                    </div>
+                  </div>
                 </form>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-3">
-                
-            </div>
-            <div class="col-sm"></div>
-            <div class="col-sm-2">
+            <div class="col-sm-12 col-md-6">
                 <button mat-raised-button class="proceedbtn mat-btn-s" type="button" (click)="submit()" [ngClass]="!enable  ? 'd-able' :''" [disabled]="!enable">Submit</button>
-             </div>
+            </div>
         </div>
     </div>
-   
-</div>
 
-<div class="container-fluid mobileView">
-  <div class="row">
-      <div class="col-sm-12">
-          <h1>Working days</h1>
-      </div>
-  </div>
-  <div class="generic-form bg">
-      <div class="row">
-          <div class="col-sm-12">
-            <form [formGroup]="officeWorkingDaysForm">
-               <div class="days-container">
-                      <div class="px-2 day-header">Monday</div>
-                      <div class="row">
-                        <div class="col-6">
-                          <label>From hour</label>
-                          <select [ngClass]="submitted && f['monFromHrs'].touched && f['monFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="monFromHrs" (change)="onChanges()" (click)="valueChanges()">
-                          <option selected  disabled value="">From hours</option>
-                          <option [value]="hours" *ngFor="let hours of hours.hour1">{{hours}}</option>
-                        </select>
-                        </div>
-                        <div class="col-6">
-                          <label>From mins</label>
-                          <select [ngClass]="submitted && f['monFromMins'].touched && f['monFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="monFromMins" (change)="onChanges()">
-                            <option selected  disabled value="">From mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins1">{{mins}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>To hour</label>
-                          <select [ngClass]="submitted && f['monToHours'].touched && f['monToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example"  formControlName="monToHours" (change)="onChanges()">
-                            <option selected  disabled value="">To hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour1" [disabled]="(officeWorkingDaysForm.value.monFromHrs + 1) > hours">{{hours}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>To mins</label>
-                          <select [ngClass]="f['monToMins'].touched && f['monToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="monToMins" (change)="onChanges()">
-                            <option selected  disabled value="">To mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins1">{{mins}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>Total hours</label>
-                          <input type="text" readonly class="form-control sizeinput"  formControlName="monTotalhrs">
-                        </div>
-                        
-                      </div>
-                      
-                    </div>
-                    <div class="days-container">
-                      <div class="px-2 day-header">Tuesday</div>
-                      <div class="row">
-                        <div class="col-6">
-                          <label>From hour</label>
-                          <select [ngClass]="submitted && f['tuesFromHrs'].touched && f['tuesFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesFromHrs" (change)="onChanges()" (click)="valueChanges()">
-                            <option selected  disabled value="">From hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour2">{{hours}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>To mins</label>
-                          <select [ngClass]="submitted && f['tuesFromMins'].touched && f['tuesFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesFromMins" (change)="onChanges()">
-                            <option selected  disabled value="">From mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins2">{{mins}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>To hour</label>
-                          <select [ngClass]="submitted && f['tuesToHours'].touched && f['tuesToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesToHours" (change)="onChanges()">
-                            <option selected  disabled value="">To hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour2" [disabled]="(officeWorkingDaysForm.value.tuesFromHrs + 1 ) > hours">{{hours}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>To mins</label>
-                          <select [ngClass]="f['tuesToMins'].touched && f['tuesToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesToMins" (change)="onChanges()">
-                            <option selected  disabled value="">To mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins2">{{mins}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>Total hour</label>
-                          <input type="text" readonly class="form-control sizeinput"  formControlName="tuesTotalhrs">
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div class="days-container">
-                      <div class="px-2 day-header">Wednesday</div>
-                      <div class="row">
-                        <div class="col-6">
-                          <label>From hour</label>
-                          <select [ngClass]="submitted && f['wedFromHrs'].touched && f['wedFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="wedFromHrs" (change)="onChanges()" (click)="valueChanges()">
-                            <option selected  disabled value="">From hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour3">{{hours}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>From mins</label>
-                          <select [ngClass]="submitted && f['wedFromMins'].touched && f['wedFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="wedFromMins" (change)="onChanges()">
-                            <option selected  disabled value="">From mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins3">{{mins}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>To hour</label>
-                          <select [ngClass]="submitted && f['tuesToHours'].touched && f['tuesToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="tuesToHours" (change)="onChanges()">
-                            <option selected  disabled value="">To hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour2" [disabled]="(officeWorkingDaysForm.value.tuesFromHrs + 1 ) > hours">{{hours}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>To mins</label>
-                          <select [ngClass]="f['wedToMins'].touched && f['wedToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="wedToMins" (change)="onChanges()">
-                            <option selected  disabled value="">Select to mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins3">{{mins}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>Total hour</label>
-                          <input type="text" readonly class="form-control sizeinput"  formControlName="wedTotalhrs">
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div class="days-container">
-                      <div class="px-2 day-header">Thursday</div>
-                      <div class="row">
-                        <div class="col-6">
-                          <label>From hour</label>
-                          <select [ngClass]="submitted && f['thursFromHrs'].touched && f['thursFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="thursFromHrs" (change)="onChanges()" (click)="valueChanges()">
-                            <option selected  disabled value="">From hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour4">{{hours}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>From mins</label>
-                          <select [ngClass]="submitted && f['thursFromMins'].touched && f['thursFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="thursFromMins" (change)="onChanges()">
-                            <option selected  disabled value="">From mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins4">{{mins}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>To hour</label>
-                          <select [ngClass]="submitted && f['thursToHours'].touched && f['thursToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="thursToHours" (change)="onChanges()">
-                            <option selected  disabled value="">To hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour4" [disabled]="(officeWorkingDaysForm.value.thursFromHrs + 1 ) > hours">{{hours}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>To mins</label>
-                          <select [ngClass]="f['thursToMins'].touched && f['thursToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="thursToMins" (change)="onChanges()">
-                            <option selected  disabled value="">Select to mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins4">{{mins}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>Total hour</label>
-                         
-                          <input type="text" readonly class="form-control sizeinput"  formControlName="thursTotalhrs">
-                          
-                        </div>
-                      </div>
-                    </div>
-                    <div class="days-container">
-                      <div class="px-2 day-header">Friday</div>
-                      <div class="row">
-                        <div class="col-6">
-                          <label>From hour</label>
-                          <select [ngClass]="submitted && f['friFromHrs'].touched && f['friFromHrs'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friFromHrs" (change)="onChanges()" (click)="valueChanges()">
-                            <option selected  disabled value="">From hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour5">{{hours}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>From mins</label>
-                          <select [ngClass]="submitted && f['friFromMins'].touched && f['friFromMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friFromMins" (change)="onChanges()">
-                            <option selected  disabled value="">From mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins5">{{mins}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>To hour</label>
-                          <select [ngClass]="submitted && f['friToHours'].touched && f['friToHours'].invalid ? 'error-border':'' ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friToHours" (change)="onChanges()">
-                            <option selected  disabled value="">To hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour5" [disabled]="( officeWorkingDaysForm.value.friFromHrs + 1) > hours">{{hours}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>To mins</label>
-                          <select [ngClass]="f['friToMins'].touched && f['friToMins'].invalid ? 'error-border':''"class="form-select" aria-label="Default select example" formControlName="friToMins" (change)="onChanges()">
-                            <option selected  disabled value="">To mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins5">{{mins}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>Total hour</label>
-                          <input type="text" readonly class="form-control sizeinput"  formControlName="friTotalhrs">
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="days-container">
-                      <div class="px-2 day-header">Saturday</div>
-                      <div class="row">
-                        <div class="col-6">
-                          <label>From hour</label>
-                          <select class="d-able"  [attr.disabled]="'true'" aria-label="Default select example" formControlName="satFromHrs" (change)="onChanges()" (click)="valueChanges()" >
-                            <option selected  disabled value="">From hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour6">{{hours}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>From mins</label>
-                          <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="satFromMins" (change)="onChanges()" >
-                            <option selected  disabled value="">From mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins6">{{mins}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>To hour</label>
-                          <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="satToHours" (change)="onChanges()" >
-                            <option selected  disabled value="">To hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour6" >{{hours}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>To mins</label>
-                          <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="satToMins" (change)="onChanges()" >
-                            <option selected  disabled value="">Select to mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins6">{{mins}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>Total hour</label>
-                          <input type="text" readonly class="form-control sizeinput"  formControlName="satTotalhrs">
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="days-container">
-                      <div class="px-2 day-header">Sunday</div>
-                      <div class="row">
-                        <div class="col-6">
-                          <label>From hour</label>
-                          <select class="d-able"  [attr.disabled]="'true'" aria-label="Default select example" formControlName="satFromHrs" (change)="onChanges()" (click)="valueChanges()" >
-                            <option selected  disabled value="">From hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour6">{{hours}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>From mins</label>
-                          <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="sunFromMins" (change)="onChanges()" >
-                            <option selected  disabled value="">From mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins7">{{mins}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>To hour</label>
-                          <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="sunToHours" (change)="onChanges()" >
-                            <option selected  disabled value="">To hours</option>
-                            <option [value]="hours" *ngFor="let hours of hours.hour7" >{{hours}}</option>
-                          </select>
-                        
-                        </div>
-                        <div class="col-6">
-                          <label>To mins</label>
-                          <select class="d-able" [attr.disabled]="'true'" aria-label="Default select example" formControlName="sunToMins" (change)="onChanges()" (change)="onChanges()" >
-                            <option selected  disabled value="">To mins</option>
-                            <option [value]="mins" *ngFor="let mins of mins.mins7">{{mins}}</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label>Total hour</label>
-                          <input type="text" readonly class="form-control sizeinput"  formControlName="sunTotalhrs">
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-              </div>
-          </div>
-          <div class="row">
-              <div class="col-sm-12 col-md-6">
-                  <button mat-raised-button class="proceedbtn mat-btn-s" type="button" (click)="submit()" [ngClass]="!enable  ? 'd-able' :''" [disabled]="!enable">Submit</button>
-              </div>
-          </div>
-      </div>
- 
 </div>
 
 

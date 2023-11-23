@@ -65,8 +65,8 @@
                 <p>Auto Approve <span >*</span></p>
                 <select class="form-select" aria-label="Default select example" formControlName="tmd_auto_approved">
                     <option value="" selected disabled>Select an option</option>
-                    <option value=true>Yes</option>
-                    <option value=false>No</option>
+                    <option value='true'>Yes</option>
+                    <option value='false'>No</option>
                   </select>
                   <div *ngIf="f['tmd_auto_approved'].touched && f['tmd_auto_approved'].invalid" >
                     <div *ngIf="f['tmd_auto_approved'].errors && f['tmd_auto_approved'].errors['required'] " ><p class="error-msg">Auto approve is required.</p></div>

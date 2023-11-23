@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AddOnLeaveRequestComponent implements OnInit {
   @ViewChild('tabset') tabset: TabsetComponent;
+  @ViewChild('tabsets') tabsets: TabsetComponent;
   addOnLeaveForm:FormGroup;
   params:any={};
   AllCardData: any = [];
@@ -124,23 +125,11 @@ export class AddOnLeaveRequestComponent implements OnInit {
         this.AllCardData = res['result'].add_on_leave_dashboard
         this.AllListData = res['result'].data
         this.totalCount  = res['result']['pagination'].number_of_pages
-        //console.log(res['result']['pagination'].number_of_pages,"NUMBER OF PAGES---")
-        
-        if(res['result'].data.length >0){
-          let fromDate = this.datepipe.transform(res['result'].data[0].leaveApplication_from_date*1000,'yyyy-MM-dd')
-          let toDate = this.datepipe.transform(res['result'].data[0].leaveApplication_to_date*1000,'yyyy-MM-dd')
-          this.addOnLeaveForm.patchValue({
-            from_date:fromDate,
-            to_date:toDate
-          });
+      }
+      else{
+        if(this.AllListData.length <= 0){
+          this.api.showWarning('No records found')
         }
-        
-        else{
-          if(this.AllListData.length <= 0){
-            this.api.showWarning('No records found')
-          }
-        }
-     
       }
     },((error:any)=>{
       this.api.showError(error.error.error.message)
@@ -189,8 +178,10 @@ export class AddOnLeaveRequestComponent implements OnInit {
       this.api.showWarning('Please enter from date and to date')
     }
     else{
-      this.getAppliedLeaves(c_params)
       this.tabset.tabs[0].active = true;
+      this.tabsets.tabs[0].active = true;
+      this.getAppliedLeaves(c_params)
+      
     }
    
     }
@@ -225,6 +216,8 @@ export class AddOnLeaveRequestComponent implements OnInit {
           this.addOnLeaveForm.markAllAsTouched()
         }
         else{
+          this.tabset.tabs[0].active = true;
+          this.tabsets.tabs[0].active = true;
           this.getAppliedLeaves(c_params)
         }
       }

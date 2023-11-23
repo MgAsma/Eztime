@@ -9,8 +9,8 @@
         </div>
         <div class="col-sm col-md col-lg"></div>
         <div class="col-sm-3 col-md-4 col-lg-3 search-div">
-            <input type="text" class="form-control p-2 sizeinput" placeholder="Search"[(ngModel)]="term" aria-describedby="emailHelp"  autocomplete="off">
-            <i class="bi bi-search" id="search-icon-tab"></i>
+            <input type="text" class="form-control p-2 sizeinput" placeholder="Search" [(ngModel)]="term" aria-describedby="emailHelp"  autocomplete="off">
+            <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>
         </div>
     </div>
     <div class="bg">
@@ -30,8 +30,8 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <ng-container *ngIf="(list | filter:term) as result">
-                    <tr *ngFor='let item of result| filter:term| paginate : {
+                    <ng-container *ngIf="(list) as result">
+                    <tr *ngFor='let item of result| paginate : {
                         itemsPerPage: tableSize,
                         currentPage: page,
                         totalItems: count
@@ -97,13 +97,13 @@
   </div>
     <div class="col-sm-6 col-md-6 mb-1 search-div">
       <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp" autocomplete="off">
-      <i class="bi bi-search" id="search-icon"></i>
+      <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
     </div>
   </div>
 
   <div class="bg row">
-    <ng-container *ngIf="(list | filter:term) as result">
-      <div class="col-sm-12 col-md-6 p-0" *ngFor="let item of result | filter:term| paginate : {
+    <ng-container *ngIf="(list) as result">
+      <div class="col-sm-12 col-md-6 p-0" *ngFor="let item of result | paginate : {
         itemsPerPage: tableSize,
         currentPage: page,
         totalItems: count

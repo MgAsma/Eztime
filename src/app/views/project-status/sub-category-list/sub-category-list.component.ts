@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-sub-category-list',
   templateUrl: './sub-category-list.component.html',
@@ -59,7 +60,17 @@ export class SubCategoryListComponent implements OnInit {
     // }
     this.getUserControls();
   }
+  filterSearch(){
+    this.api.getData(`${environment.live_url}/${environment.sub_category}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((data:any)=>{
+      this.allSubCategoryList= data.result.data;
+      const noOfPages:number = data['result'].pagination.number_of_pages
+       this.count  = noOfPages * this.tableSize
+    },((error:any)=>{
+      this.api.showError(error.error.error.message)  
+    })
 
+    )
+  }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
     this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
@@ -100,11 +111,9 @@ export class SubCategoryListComponent implements OnInit {
       this.allSubCategoryList= data.result.data;
       const noOfPages:number = data['result'].pagination.number_of_pages
        this.count  = noOfPages * this.tableSize
-    },error=>{
-      this.api.showError(error.error.error.message)
-      
-    }
-
+    },((error:any)=>{
+      this.api.showError(error.error.error.message)  
+    })
     )
   }
   delete(id:any){
@@ -114,10 +123,9 @@ export class SubCategoryListComponent implements OnInit {
         this.ngOnInit();
         this.api.showWarning('Sub category deleted successfully!')
       }
-    },error=>{
-      this.api.showError(error.error.error.message)
-      
-    })
+    },((error:any)=>{
+      this.api.showError(error.error.error.message)  
+    }))
     
   }
  

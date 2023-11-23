@@ -74,6 +74,9 @@ export class RoleListComponent implements OnInit {
     this.getUserControls()
   
   }
+  filterSearch(){
+    this.getRole(`search_key=${this.term}&page_number=1&data_per_page=10`)
+  }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
     this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{

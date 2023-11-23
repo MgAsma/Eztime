@@ -28,6 +28,7 @@ export class MonthTimesheetComponent implements OnInit {
   rejectOption: boolean = false;
   c_params: {};
   @ViewChild('tabset') tabset: TabsetComponent;
+  @ViewChild('tabsets') tabsets: TabsetComponent;
 
   monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -78,7 +79,6 @@ export class MonthTimesheetComponent implements OnInit {
     const monthIndex = new Date(Date.parse(selectedMonth + ' 1, ' + currentYear)).getMonth() + 1;
     const formattedMonth = ('0' + monthIndex).slice(-2); // Add leading zero if needed
     this.formattedDate = '01/' + formattedMonth +"/"+ currentYear;
-    //console.log(this.formattedDate)
   }
   onChanges(){
     this.changes = true
@@ -119,6 +119,7 @@ export class MonthTimesheetComponent implements OnInit {
       this.api.showWarning('Please select month')
     }
     else{
+      this.allDetails = []
       this.submited = true;
       this.handleMonthSelection(this.monthForm.value['fromMonth'])
       let c_params={
@@ -132,15 +133,17 @@ export class MonthTimesheetComponent implements OnInit {
         timesheets_from_date:this.formattedDate,
         pagination:'TRUE'
        }
+      
        this.getAllTimeSheet(c_params)
-      this.tabset.tabs[0].active = true;  
+       this.tabset.tabs[0].active = true; 
+       this.tabsets.tabs[0].active = true;  
     }
     }
     getByStatus(params){
       this.allListDataids = []
       this.exebtn = false;
       this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&approved_state=${params.approved_state}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res=>{
-      if(res['result']['data']){
+      if(res['result']['data']){ 
         if(res['result']['data'].length >1){
           res['result']['data'].forEach(element => {
            // console.log(element.id)
@@ -171,6 +174,7 @@ export class MonthTimesheetComponent implements OnInit {
       this.allListDataids = []
       this.exebtn = false;
       this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&timesheets_from_date=${params.timesheets_from_date}&approved_state=${params.approved_state}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res=>{
+      if(res['result']['data']){
         if(res['result']['data'].length >1){
           res['result']['data'].forEach(element => {
            // console.log(element.id)
@@ -180,15 +184,19 @@ export class MonthTimesheetComponent implements OnInit {
         }
         else{
           if(res['result']['data'].length === 1){
+            
             this.allListDataids.push(res['result']['data'][0].id)
             this.exebtn = true;
           }  
         } 
         this.allDetails = res['result']['data']
+        
         this.totalCount = res['result'].pagination.number_of_pages
         if(this.allDetails.length <= 0){
           this.api.showWarning('No records found !')
         }
+      }
+        
       },((error:any)=>{
         this.api.showError(error.error.error.message)
       }))
@@ -214,7 +222,7 @@ export class MonthTimesheetComponent implements OnInit {
       this.selectedTab = 'YET_TO_APPROVED' 
     }
     this.handleMonthSelection(this.monthForm.value['fromMonth'])
-    if(this.changes){
+    if(this.monthForm.value['fromMonth'] !== ''){
       let c_params={
         module:"TIMESHEET",
         menu:"MONTH_APPROVAL_TIMESHEET",
@@ -226,11 +234,13 @@ export class MonthTimesheetComponent implements OnInit {
         timesheets_from_date:this.formattedDate,
         pagination:'TRUE'
        }
+       
         if(this.monthForm.invalid){
           this.monthForm.markAllAsTouched()
           this.api.showWarning('Please select month')
         }
         else{
+          this.allDetails = []
           this.getAllTimeSheet(c_params)
         }
     }
@@ -245,7 +255,7 @@ export class MonthTimesheetComponent implements OnInit {
         data_per_page:10,
         pagination:'TRUE'
        }
-       this.getByStatus(c_params)
+       this.getByStatus(c_params) 
     }
     
    
