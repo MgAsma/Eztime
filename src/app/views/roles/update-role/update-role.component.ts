@@ -13,6 +13,7 @@ export class UpdateRoleComponent implements OnInit {
   updateForm: FormGroup;
   page: string;
   tableSize: string;
+  org_id: any;
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService, 
@@ -31,7 +32,8 @@ export class UpdateRoleComponent implements OnInit {
       role_status:['',Validators.required],
       module_name:[],
       permissions:[],
-      update:'ROLE'
+      update:'ROLE',
+      organization_id:this.org_id
     })
   }
  
@@ -42,6 +44,7 @@ export class UpdateRoleComponent implements OnInit {
   
   }
   ngOnInit(): void {
+    this.org_id = sessionStorage.getItem('org_id')
    this.edit();
    this.initForm();
   }
@@ -50,7 +53,7 @@ export class UpdateRoleComponent implements OnInit {
   }
   edit(){
     
-    this.api.getUserAccess(`module=ROLES&menu=ROLES&method=VIEW&page_number=1&data_per_page=10&pagination=FALSE&id=${this.id}`).subscribe((res:any)=>{
+    this.api.getUserAccess(`module=ROLES&menu=ROLES&method=VIEW&page_number=1&data_per_page=10&pagination=FALSE&id=${this.id}&organization_id=${this.org_id}`).subscribe((res:any)=>{
      // console.log(res,"RESPONSE")
      
       this.updateForm.patchValue({
@@ -59,7 +62,7 @@ export class UpdateRoleComponent implements OnInit {
         priority:res.data[0].priority,
         role_status:res.data[0].role_status,
         module_name:res.data[0].module_name,
-        permissions:res.data[0].permissions
+        permissions:res.data[0].permissions,
       })
    })
   }

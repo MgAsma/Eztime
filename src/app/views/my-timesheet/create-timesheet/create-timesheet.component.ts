@@ -37,65 +37,49 @@ export class CreateTimesheetComponent implements OnInit {
   projectList: any =[];
   taskList: any = [];
   timeList: any = [];
+  orgId: any;
+  allPeopleGroup: any = [];
+  peopleId: any = [];
+  ccSetting: { singleSelection: boolean; idField: string; textField: string; itemsShowLimit: number; allowSearchFilter: boolean; };
+  user_role_name: any;
 
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
     private datepipe:DatePipe,
-    private location:Location) { }
+    private location:Location) {
+      this.user_role_name = sessionStorage.getItem('user_role_name')
+     }
 
   ngOnInit(): void {
-    
+    this.orgId = sessionStorage.getItem('org_id') 
     this.userId = JSON.parse(sessionStorage.getItem('user_id'))
     this.manager_id = JSON.parse(sessionStorage.getItem('manager_id'))
      this.currDate = new Date()
-     this.timeSheetForm= this.builder.group({
-      response: this.builder.array([])
-    });
+     this.initForm();
+    this.getPeopleGroup()
     this.getClient();
      this.addTask();
+     
   }
-  
+  initForm(){
+    this.timeSheetForm = this.builder.group({
+      reportingManagerRef:[''],
+      response: this.builder.array([])
+    });
+  }
  goBack(event)
   {
   event.preventDefault(); // Prevent default back button behavior
   this.location.back();
   
 }
-  initForm(){
-    // {
-    //   "module":"TIMESHEET",
-    //   "menu":"PEOPLE_TIMESHEET",
-    //   "method":"CREATE",
-    //   "created_by":"158",
-    //   "user_id":"158",
-    //   "reporting_manager_ref":"156",
-    //   "date": "16/05/2023",
-    //   "timesheet_status":"YET_TO_APPROVED",
-    //   "response":[
-    //       {
-    //           "client_id": "26",
-    //           "project_id": "67",
-    //           "task_id":"3",
-    //           "description":"Nothing",
-    //           "time_spent": "5hr"   
-    //       },
-    //       {
-    //           "client_id": "26",
-    //           "project_id": "67",
-    //           "task_id":"3",
-    //           "description":"Nothing",
-    //           "time_spent": "5hr"   
-    //       }
-    //   ]
-      
-    // }
-  }
+  
   get f(){
     return this.timeSheetForm.controls;
   }
   getClient(){
-    this.api.getClientDetails(this.params).subscribe((data:any)=>{
+    this.api.getClientDetails(this.params,this.orgId).subscribe((data:any)=>{
       if(data){
         this.allClient = data.result.data;
         //console.log(this.allClient,'CLIENTLIST')
@@ -121,10 +105,17 @@ export class CreateTimesheetComponent implements OnInit {
       });
       
      // console.log(selectedArr, "SELECTED");
-      
+     let managerId:any;
+     if(this.user_role_name === 'ADMIN' || this.user_role_name === 'MANAGER' ){
+      managerId = this.peopleId
+     }else{
+      managerId = this.manager_id 
+     }
+     
+      console.log( this.peopleId,"fsfsd")
       let data = {
         created_by:this.userId,
-        reporting_manager_ref:this.manager_id,
+        reporting_manager_ref:managerId ,
         user_id:this.userId,
         status:'YET_TO_APPROVED',
         module:"TIMESHEET",
@@ -132,7 +123,8 @@ export class CreateTimesheetComponent implements OnInit {
         method:"CREATE",
         date: this.datepipe.transform(date,'dd/MM/yyyy'),
         timesheet_status:"YET_TO_APPROVED",
-        response:selectedArr
+        response:selectedArr,
+        organization_id:this.orgId
       }
      
       this.api.addTimeSheet(data).subscribe(
@@ -152,7 +144,39 @@ export class CreateTimesheetComponent implements OnInit {
       )
     }
   }
-  
+  onPeopleSelect(event: any) {
+    this.peopleId = event.id;
+  }
+  onPeopleSelectAll(event: any) {
+    event.forEach((element: any) => {
+      this.peopleId.push(element.id);
+    });
+    //console.log(this.peopleId)
+  }
+  getPeopleGroup() {
+    this.ccSetting = {
+      singleSelection: true,
+      idField: 'id',
+      textField: 'u_first_name',
+      itemsShowLimit: 3,
+      allowSearchFilter: true,
+    };
+
+    this.api
+      .getData(
+        `${environment.live_url}/${environment.people_list}?page_number=1&data_per_page=2&pagination=FALSE&organization_id=${this.orgId}`
+      )
+      .subscribe(
+        (data: any) => {
+          if (data) {
+            this.allPeopleGroup = data.result.data;
+          }
+        },
+        (error) => {
+          this.api.showError(error.error.error.message);
+        }
+      );
+  }
 createTask(): FormGroup {
   return this.builder.group({
     client_id: ['',Validators.required],
@@ -160,6 +184,7 @@ createTask(): FormGroup {
     projectList:[],
     taskList:[],
     time:[],
+    reportingManagerRef:[],
     description: ['',[Validators.pattern(/^\S.*$/)]],
     task_id: ['',Validators.required],
     time_spent: ['',Validators.required],

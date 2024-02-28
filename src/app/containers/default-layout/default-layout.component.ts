@@ -23,6 +23,7 @@ export class DefaultLayoutComponent {
   config: string;
   access: any = [];
   user_id: any;
+  org_id: string;
  
 
   constructor(private ngxService: NgxUiLoaderService,
@@ -53,7 +54,8 @@ export class DefaultLayoutComponent {
   }
   
  getUserControls(role_id){
-  this.api.getUserRoleById(`id=${role_id}&page_number=1&data_per_page=10`).subscribe(res => {
+  this.org_id = sessionStorage.getItem('org_id')
+  this.api.getUserRoleById(`id=${role_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe(res => {
     if (res) {
       this.permission = res['data'][0].permissions;
       if(this.permission.length > 0){

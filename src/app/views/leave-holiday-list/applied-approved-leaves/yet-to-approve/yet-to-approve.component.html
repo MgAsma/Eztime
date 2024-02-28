@@ -20,14 +20,14 @@
                     <thead>
                         <tr>
                           <th scope="col">Sl. No.</th>
-                          <th scope="col">From Date</th>
-                          <th scope="col">To Date</th>
-                          <th scope="col">Applied Days</th>
-                          <th scope="col">Alloted Leaves</th>
-                          <th scope="col">Used Leaves</th>
-                          <th scope="col">Applied Date</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Action</th>
+                          <th scope="col" class="text-center">From Date</th>
+                          <th scope="col" class="text-center">To Date</th>
+                          <th scope="col" class="text-center">Applied Days</th>
+                          <th scope="col" class="text-center">Alloted Leaves</th>
+                          <th scope="col" class="text-center">Used Leaves</th>
+                          <th scope="col" class="text-center">Applied Date</th>
+                          <th scope="col" class="text-center">Status</th>
+                          <th scope="col" class="text-center">Action</th>
                         </tr>
                       </thead>
                       <tbody id="i-cr">
@@ -39,13 +39,13 @@
                             totalItems: count
                         }; let i=index'>
                             <td>{{i+1}}</td>
-                            <td>{{item.your_applied_leave_from_date}}</td>
+                            <td class="text-center">{{item.your_applied_leave_from_date}}</td>
                             <td>{{item.your_applied_leave_to_date}}</td>
-                            <td>{{item.applied_days}}</td>
-                            <td>{{item.alloted_leaves}}</td>
-                            <td>{{item.used_leaves}}</td>
-                            <td>{{item.applied_date}}</td>
-                            <td>{{item.status}}</td>                            
+                            <td class="text-center">{{item.applied_days}}</td>
+                            <td class="text-center">{{item.alloted_leaves}}</td>
+                            <td class="text-center">{{item.used_leaves}}</td>
+                            <td class="text-center">{{item.applied_date}}</td>
+                            <td class="text-center">{{item.status}}</td>                            
                             <!-- <td *ngIf="!entryPoint['approver']">
                                 <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item)"> <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>
                              </td>
@@ -53,7 +53,7 @@
                                  <button mat-raised-button style="border: none;background-color: inherit;" (click)="openDialogue(item.id,'APPROVED')"><i class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>
                                  <button mat-raised-button style="border: none;background-color: inherit;" (click)="openDialogue(item.id,'DECLINED')"><i class="bi bi-x-circle-fill" container="body" ngbTooltip="Reject" style="color:red"></i></button>
                              </td> -->
-                             <td >
+                             <td class="text-center">
                                 <ng-container *ngFor="let approval of accessConfig">
                                     <span *ngIf="approval == 'DELETE'">
                                         <button   style="border: none;background-color: inherit;" (click)="open(item)"> <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>

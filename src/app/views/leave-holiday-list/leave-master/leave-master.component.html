@@ -25,7 +25,7 @@
                   </select>
             </div>
             <div class="col-sm"></div>
-            <div class="col-sm-5 search-div">
+            <div class="col-sm-4 search-div">
                 <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by leave type" aria-describedby="emailHelp"  autocomplete="off">
                 <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
             </div>
@@ -38,11 +38,10 @@
                         <tr>
                           <th scope="col">Sl. No.</th>
                           <th scope="col">Leave Type<i  *ngIf="!arrow" (click)="sort('asc','leave_title')" class="fa fa-sort-up"></i><i (click)="sort('desc','leave_title')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                          <th scope="col">No of Leaves <i  *ngIf="!arrow" (click)="sort('asc','no_of_leaves')" class="fa fa-sort-up"></i><i (click)="sort('desc','no_of_leaves')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                          <th scope="col">Carry Forward(%) <i  *ngIf="!arrow" (click)="sort('asc','carry_forward_per')" class="fa fa-sort-up"></i><i (click)="sort('desc','carry_forward_per')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                          <th scope="col">Graceful Days <i  *ngIf="!arrow" (click)="sort('asc','gracefull_days')" class="fa fa-sort-up"></i><i (click)="sort('desc','gracefull_days')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                          <!-- <th scope="col">Encashment</th> -->
-                          <th scope="col">Max Encashment  <i  *ngIf="!arrow" (click)="sort('asc','max_encashments')" class="fa fa-sort-up"></i><i (click)="sort('desc','max_encashments')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col" class="text-center">No of Leaves <i  *ngIf="!arrow" (click)="sort('asc','no_of_leaves')" class="fa fa-sort-up"></i><i (click)="sort('desc','no_of_leaves')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col" class="text-center">Carry Forward(%) <i  *ngIf="!arrow" (click)="sort('asc','carry_forward_per')" class="fa fa-sort-up"></i><i (click)="sort('desc','carry_forward_per')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col" class="text-center">Graceful Days <i  *ngIf="!arrow" (click)="sort('asc','gracefull_days')" class="fa fa-sort-up"></i><i (click)="sort('desc','gracefull_days')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col" class="text-center">Max Encashment  <i  *ngIf="!arrow" (click)="sort('asc','max_encashments')" class="fa fa-sort-up"></i><i (click)="sort('desc','max_encashments')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
@@ -56,12 +55,12 @@
                           }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
                          <td>{{i + 1}}</td>
                          <td>{{item.leave_title}}</td>
-                         <td >{{item.no_of_leaves?item.no_of_leaves:"NA"}}</td>
-                         <td>{{item.carry_forward_per}}</td>
-                         <td>{{item.gracefull_days}}</td>
+                         <td class="text-center">{{item.no_of_leaves?item.no_of_leaves:"NA"}}</td>
+                         <td class="text-center">{{item.carry_forward_per}}</td>
+                         <td class="text-center">{{item.gracefull_days}}</td>
                          <!-- <td>{{item.encashment}}</td> -->
-                         <td>{{item.max_encashments?item.max_encashments:"NA"}}</td>
-                         <td>
+                         <td class="text-center">{{item.max_encashments?item.max_encashments:"NA"}}</td>
+                         <td class="text-center">
                             <ng-container *ngFor="let access of permissions">
                                 <button mat-raised-button mat-mini-fab  routerLink="/leave/updateLeaveDetails/{{item.id}}" *ngIf="access === 'UPDATE'">
                                   <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
@@ -70,14 +69,10 @@
                                   <i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i>
                                 </button>
                               </ng-container> 
-
-                            <!-- <a routerLink="/leave/updateLeaveDetails/{{item.id}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></a>
-                            <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item.id)"><i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i> </button> -->
                          </td>
                         </tr>
                         <tr *ngIf="result.length === 0" class="nodata">
-                            <td> No records found
-  !</td>  
+                            <td> No records found!</td>  
                         </tr>
                         </ng-container>
                       </tbody>
@@ -104,10 +99,6 @@
   
         </button>
     </ng-container>
-
-    <!-- <a routerLink="/leave/leaveDetails"> <button mat-raised-button type="button"  class="createbtn" placement="top" container="body" ngbTooltip="Add Leave"><i class="fa fa-plus"></i>
-  </button></a> -->
-       
 </div>
 
 
@@ -139,10 +130,6 @@
                 <h6 class="card-subtitle">Leave Type</h6>
                 <p>{{item.leave_title}}</p>
                 </div>
-                <!-- <div class="col-6">
-                    <h6 class="card-subtitle">Type</h6>
-                    <p>{{item.leave_type? item.leave_type :"NA"}}</p>
-                </div> -->
                 <div class="col-6">
                     <h6 class="card-subtitle">Max Encashment</h6>
                 <p>{{item.max_encashments?item.max_encashments:"NA"}}</p>
@@ -193,12 +180,6 @@
 </div>
 
 <div class="s-position">
-    <!--  <ng-container *ngFor="let access of permissions">
-    <a routerLink="/leave/leaveDetails" *ngIf="access == 'CREATE'"> <button mat-raised-button type="button"  class="createbtn" placement="top" container="body" ngbTooltip="Add"><i class="fa fa-plus"></i>
-  </button></a>
-   <a class="mobileView" *ngIf="access == 'UPDATE'"> <button mat-raised-button type="button"  class="editbtn" placement="top" container="body" (click)='editCard()'  ngbTooltip="Edit" [disabled]="enabled" [ngStyle]="enabled ? {'background-color':'#8585e0'}:{}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></button></a>
-    <a class="mobileView" *ngIf="access == 'DELETE'"> <button mat-raised-button type="button"  class="deletebtn" placement="top" container="body" ngbTooltip="delete" (click)='deleteCard()' [disabled]="enabled" [ngStyle]="enabled ? {'background-color':'#8585e0'}:{}"><i class="bi bi-trash-fill"></i></button></a> 
-</ng-container>-->
 <ng-container *ngFor="let access of permissions">
    <button mat-fab type="button" routerLink="/leave/leaveDetails" *ngIf="access === 'CREATE'" class="createbtn-new" ><i class="fa fa-plus"></i>
   </button>

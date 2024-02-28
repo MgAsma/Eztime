@@ -40,6 +40,7 @@ export class RoleListComponent implements OnInit {
   role: any;
   permissions: any =[];
   user_id: string;
+  org_id: string;
 
   
   constructor(private api:ApiserviceService,
@@ -48,47 +49,34 @@ export class RoleListComponent implements OnInit {
     private location:Location,
     private common_service : CommonServiceService
     ) { }
-    goBack(event)
-  {
+    goBack(event){
       event.preventDefault(); // Prevent default back button behavior
   this.location.back();
   
     }
   ngOnInit(): void {
-     
-    this.getRole(`page_number=${this.page}&data_per_page=${this.tableSize}`)
+    this.org_id = sessionStorage.getItem('org_id')
+    this.getRole(`page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`)
     this.enabled = true
     this.role = sessionStorage.getItem('user_role_name')
     this.user_id = sessionStorage.getItem('user_id')
-    // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
-
-    // if (accessAction.length) {
-    //   accessAction.forEach((res) => {
-    //   // console.log(res.module_name, res.permissions, "RESP");
-    //     if (res.module_name === 'ROLES') {
-    //       this.permissions = res.permissions['ROLES'];
-    //       //console.log(this.permissions, "Permissions for ROLES");
-    //     }
-    //   });
-    // }
+    
+    
     this.getUserControls()
   
   }
   filterSearch(){
-    this.getRole(`search_key=${this.term}&page_number=1&data_per_page=10`)
+    this.getRole(`search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`)
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=FALSE&organization_id=${this.org_id}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
       }
       else{
         this.api.showError("ERROR !")
       }
-      //console.log(res,'resp from yet');
-      
     }
   
     )
@@ -116,12 +104,8 @@ export class RoleListComponent implements OnInit {
       if(data){
         this.allRoleList = data.result.data
         data.result.data.forEach(res=>{
-          // permission.push(res.permissions)
           this.permission.push(res)
-          //console.log(res,"PERMISSIONS")
         })
-        
-       
         this.sortedRolls = this.allRoleList
           const noOfPages:number = data['result'].pagination.number_of_pages
            this.totalCount  = noOfPages * this.tableSize
@@ -167,7 +151,7 @@ export class RoleListComponent implements OnInit {
   onTableDataChange(event:any){
     this.page = event;
     //console.log(this.page,"EVENT PAGE---")
-    this.getRole(`page_number=${this.page}&data_per_page=${this.tableSize}`);
+    this.getRole(`page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`);
   }  
   onTableSizeChange(event:any): void {
     //console.log(event,"EVENT CHECK")
@@ -179,7 +163,7 @@ export class RoleListComponent implements OnInit {
     if(calculatedPageNo < this.page){
       this.page = 1
     }
-    this.getRole(`page_number=${this.page}&data_per_page=${this.tableSize}`);
+    this.getRole(`page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`);
   }  
 
  

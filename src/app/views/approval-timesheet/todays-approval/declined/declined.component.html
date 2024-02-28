@@ -22,14 +22,14 @@
                 <thead>
                     <tr>
                       <th scope="col">Sl. No.</th>
-                      <th scope="col">Date </th>
-                      <th scope="col">People</th>
-                      <th scope="col">Time Sheet Id</th>
-                      <th scope="col">Time</th>
+                      <th scope="col" class="text-center">Date </th>
+                      <th scope="col" class="text-center">People</th>
+                      <th scope="col" class="text-center">Time Sheet Id</th>
+                      <th scope="col" class="text-center">Time</th>
                       <!-- <th scope="col">Saved On</th> -->
-                      <th scope="col">Rejected On</th>
-                      <th scope="col">Rejected By</th>
-                      <th scope="col">Status</th>
+                      <th scope="col" class="text-center">Rejected On</th>
+                      <th scope="col" class="text-center">Rejected By</th>
+                      <th scope="col" class="text-center">Status</th>
                       <!-- <th scope="col">Action</th> -->
                     </tr>
                   </thead>
@@ -41,14 +41,14 @@
                     totalItems: count
                     };let i=index">
                     <td>{{i+1}}</td>
-                    <td>{{item['created_date_time'] | date : 'mediumDate'}}</td>
-                    <td>{{item.created_by_first_name?item.created_by_first_name:'NA'}}</td>
-                    <td>{{item.id}}</td>
-                    <td>{{item['time_spent'] }}</td>
+                    <td class="text-center">{{item['created_date_time'] | date : 'mediumDate'}}</td>
+                    <td class="text-center">{{item.created_by_first_name?item.created_by_first_name:'NA'}}</td>
+                    <td class="text-center">{{item.id}}</td>
+                    <td class="text-center">{{item['time_spent'] }}</td>
                     <!-- <td>{{item.saved_on}}</td> -->
-                    <td>{{item.approved_date?item.approved_date:'NA'}}</td>
-                    <td>{{item.approved_by_first_name?item.approved_by_first_name:'NA'}}</td>
-                    <td>{{item.approved_state?item.approved_state:'NA' }}</td>
+                    <td class="text-center">{{item.approved_date?item.approved_date:'NA'}}</td>
+                    <td class="text-center">{{item.approved_by_first_name?item.approved_by_first_name:'NA'}}</td>
+                    <td class="text-center">{{item.approved_state?item.approved_state:'NA' }}</td>
                      <td>
                         <!-- <ng-container *ngFor="let approval of accessConfig">
                             <span *ngIf="approval == 'DELETE'">
@@ -64,8 +64,7 @@
                     </td>  
                 </tr>
                 <tr *ngIf="result.length === 0" class="nodata">
-                    <td> No records found
-  !</td>  
+                    <td> No records found!</td>  
                 </tr>
                     </ng-container>
                   </tbody>

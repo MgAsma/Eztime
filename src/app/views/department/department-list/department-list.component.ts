@@ -35,6 +35,7 @@ export class DepartmentListComponent implements OnInit {
   params: { page_number: number; data_per_page: number; };
   permissions: any = [];
   user_id: string;
+  org_id: string;
 
   constructor(private api:ApiserviceService,private router:Router,
     private modalService:NgbModal,
@@ -43,26 +44,25 @@ export class DepartmentListComponent implements OnInit {
     ) { }
 
     
- goBack(event)
-  {
+ goBack(event){
   event.preventDefault(); // Prevent default back button behavior
   this.location.back();
   
 }
   ngOnInit(): void {
-  
+    this.org_id = sessionStorage.getItem('org_id')
     
     this.params = {
       page_number : this.page,
       data_per_page : this.tableSize
     }
-    this.getDepartment(`page_number=${this.params.page_number}&data_per_page=${this.params.data_per_page}`); 
+    this.getDepartment(`page_number=${this.params.page_number}&data_per_page=${this.params.data_per_page}&pagination=TRUE&org_ref_id=${this.org_id}`); 
     this.enabled = true;
     this.getUserControls()
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=FALSE&organization_id=${this.org_id}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
         //console.log(this.common_service.permission,"PERMISSION")
@@ -91,7 +91,7 @@ export class DepartmentListComponent implements OnInit {
    
     }
     filterSearch(){
-      this.api.getData(`${environment.live_url}/${environment.org_department}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((res:any) =>{
+      this.api.getData(`${environment.live_url}/${environment.org_department}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&org_ref_id=${this.org_id}`).subscribe((res:any) =>{
         if(res){
           this.allDepartmentList= res.result.data;
           const noOfPages:number = res['result'].pagination.number_of_pages
@@ -142,7 +142,7 @@ export class DepartmentListComponent implements OnInit {
   }
   onTableDataChange(event:any){
     this.page = event;
-    this.getDepartment(`page_number=${this.page}&data_per_page=${this.tableSize}`);
+    this.getDepartment(`page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`);
   }  
   onTableSizeChange(event:any): void {
     this.tableSize = Number(event.target.value);
@@ -154,7 +154,7 @@ export class DepartmentListComponent implements OnInit {
       this.page = 1
     }
    
-    this.getDepartment(`page_number=${this.page}&data_per_page=${this.tableSize}&pagination=FALSE`);
+    this.getDepartment(`page_number=${this.page}&data_per_page=${this.tableSize}&pagination=FALSE&org_ref_id=${this.org_id}`);
   } 
   arrow:boolean=false
   sort(direction:any,value:any){

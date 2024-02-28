@@ -22,15 +22,14 @@
                 <thead>
                     <tr>
                       <th scope="col">Sl. No.</th>
-                      <th scope="col">Date </th>
-                      <th scope="col">People </th>
-                      <th scope="col">Timesheet Id</th>
-                      <th scope="col">Time</th>
-                      <th scope="col">Saved On</th>
-                      <th scope="col">Approved On</th>
-                      <th scope="col">Approved By</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">Action</th>
+                      <th scope="col" class="text-center">People </th>
+                      <th scope="col" class="text-center">Timesheet Id</th>
+                      <th scope="col" class="text-center">Time</th>
+                      <th scope="col" class="text-center">Saved On</th>
+                      <th scope="col" class="text-center">Approved On</th>
+                      <th scope="col" class="text-center">Approved By</th>
+                      <th scope="col" class="text-center">Status</th>
+                      <th scope="col" class="text-center">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -42,16 +41,16 @@
                         totalItems: count
                     }|filter:term; let i=index'>
                         <td>{{i + 1}}</td>
-                        <td>{{item.created_date_time | date:'dd/MM/YYYY'}}</td>
-                        <td>{{item.created_by_first_name}}</td>
-                        <td>{{item.id}}</td>
-                        <td>{{item.time_spent}}</td>
-                        <td>{{item.created_date_time | date:'dd/MM/YYYY'}}</td>
-                        <td *ngIf="item.approved_date_time">{{item.approved_date_time | date:'dd/MM/YYYY'}}</td>
-                        <td *ngIf="!item.approved_date_time">{{'NA'}}</td>
-                        <td>{{item.approved_by_first_name ? item.approved_by_first_name : "NA"}}</td>
-                        <td>{{item.approved_state?item.approved_state:"NA"}}</td>
-                        <td>
+                       
+                        <td class="text-center">{{item.created_by_first_name}}</td>
+                        <td class="text-center">{{item.id}}</td>
+                        <td class="text-center">{{item.time_spent}}</td>
+                        <td class="text-center">{{item.created_date_time | date:'dd/MM/YYYY'}}</td>
+                        <td class="text-center" *ngIf="item.approved_date_time">{{item.approved_date_time | date:'dd/MM/YYYY'}}</td>
+                        <td class="text-center" *ngIf="!item.approved_date_time">{{'NA'}}</td>
+                        <td class="text-center">{{item.approved_by_first_name ? item.approved_by_first_name : "NA"}}</td>
+                        <td class="text-center">{{item.approved_state?item.approved_state:"NA"}}</td>
+                        <td class="text-center">
                             <ng-container *ngFor="let approval of accessConfig">
                                <span *ngIf="approval == 'DELETE'">
                                    <button style="border: none;background-color: inherit;" (click)="open(item)"> <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>
@@ -66,8 +65,7 @@
                        </td>
                     </tr>
                     <tr *ngIf="result.length === 0" class="nodata">
-                        <td> No records found
-  !</td>  
+                        <td> No records found!</td>  
                     </tr>
                     </ng-container>
                   </tbody>

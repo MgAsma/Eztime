@@ -7,7 +7,7 @@
     margin: 1px 0px;
  }
   .card-col{
-    border: 1px solid #a7c1fd;
+    // border: 1px solid #a7c1fd;
     font-size: 11px;
     font-weight: 600;
     padding: 2px 4px;
@@ -15,7 +15,7 @@
     margin-bottom: 1px;
   }
   .emp-name{
-    background: #212529;
+    background: #ffa43d;
     width: fit-content;
     padding: 2px 6px;
     color: white;
@@ -32,13 +32,28 @@
   }
 
   button{
-    width: 82px;
-    height: 22px;
+    padding: 10px 8px;
     line-height: 0;
     font-size: 11px;
     margin: 5px;
     font-weight: 600;
     border-radius: unset;
   }
-  
-  
+  mat-card{
+    background: #f3f3f3;
+  }
+  .btn-approval {
+    background: #01c674;
+    color: #f6f6f6;
+    box-shadow: none;
+    padding: 8px 10px;
+    border-radius: 3px;
+    margin-right: 0;
+  }
+  .btn-reject {
+    background: #f54342;
+    color: #f6f6f6;
+    box-shadow: none;
+    padding: 8px 10px;
+    border-radius: 3px;
+  }

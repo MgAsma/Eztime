@@ -20,14 +20,14 @@
                 <thead>
                     <tr>
                       <th scope="col">Sl. No.</th>
-                      <th scope="col">From Date</th>
-                      <th scope="col">To Date</th>
-                      <th scope="col">Applied Days</th>
+                      <th scope="col" class="text-center">From Date</th>
+                      <th scope="col" class="text-center">To Date</th>
+                      <th scope="col" class="text-center">Applied Days</th>
                       <!-- <th scope="col">Alloted Leaves</th>
                       <th scope="col">Used Leaves</th> -->
-                      <th scope="col">Applied Date</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">Action</th>
+                      <th scope="col" class="text-center">Applied Date</th>
+                      <th scope="col" class="text-center">Status</th>
+                      <th scope="col" class="text-center">Action</th>
                     </tr>
                   </thead>
                   <tbody id="i-cr">
@@ -39,14 +39,14 @@
                                 totalItems:count 
                               }; let i=index'>
                                 <td>{{i+1}}</td>
-                                <td>{{item.leaveApplication_from_date *1000 | date: 'dd/MM/yyyy'}}</td>
-                                <td>{{item.leaveApplication_to_date *1000 | date: 'dd/MM/yyyy'}}</td>
-                                <td>{{item.days}}</td>
+                                <td class="text-center">{{item.leaveApplication_from_date *1000 | date: 'dd/MM/yyyy'}}</td>
+                                <td class="text-center">{{item.leaveApplication_to_date *1000 | date: 'dd/MM/yyyy'}}</td>
+                                <td class="text-center">{{item.days}}</td>
                                 <!-- <td>{{item.alloted_leaves}}</td> -->
                                 <!-- <td>{{item.used_leaves}}</td> -->
-                                <td>{{item.c_timestamp | date: 'dd/MM/yyyy'}}</td>
-                                <td>{{item.approved_state}}</td>                            
-                                <td>
+                                <td class="text-center">{{item.c_timestamp | date: 'dd/MM/yyyy'}}</td>
+                                <td class="text-center">{{item.approved_state}}</td>                            
+                                <td class="text-center">
                                     <ng-container *ngFor="let approval of accessConfig">
                                         <span *ngIf="approval == 'DELETE'">
                                             <button  style="border: none;background-color: inherit;" (click)="open(item)"> <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>
@@ -61,8 +61,7 @@
                                 </td>
                             </tr>
                             <tr *ngIf="result.length === 0" class="nodata">
-                                <td> No records found
-  !</td>  
+                                <td> No records found!</td>  
                             </tr>
                         </ng-container>
                     </ng-container>

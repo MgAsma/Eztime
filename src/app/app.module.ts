@@ -73,6 +73,7 @@ const APP_CONTAINERS = [
   DefaultFooterComponent,
   DefaultHeaderComponent,
   DefaultLayoutComponent,
+  
 ];
 
 @NgModule({

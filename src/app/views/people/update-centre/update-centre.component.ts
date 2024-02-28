@@ -17,6 +17,7 @@ export class UpdateCentreComponent implements OnInit {
   page: string;
   tableSize: string;
   invalidDate: boolean = false;
+  orgId: any;
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService, 
@@ -29,8 +30,7 @@ export class UpdateCentreComponent implements OnInit {
     this.page = this.route.snapshot.paramMap.get('page')
     this.tableSize = this.route.snapshot.paramMap.get('tableSize')
   }
-  goBack(event)
-  {
+  goBack(event){
     event.preventDefault(); // Prevent default back button behavior
   this.location.back();
   
@@ -51,6 +51,7 @@ export class UpdateCentreComponent implements OnInit {
       center_status:['',[Validators.required]]
   })
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.edit();
   }
   yearEndDateValidator():any {
@@ -76,7 +77,9 @@ export class UpdateCentreComponent implements OnInit {
     else{
       let params = {
         page_number:this.page,
-        data_per_page:this.tableSize
+        data_per_page:this.tableSize,
+        pagination:'TRUE',
+        organization_id:this.orgId
        }
         this.api.getCurrentCentreDetails(this.id,params).subscribe((data:any)=>{
           //console.log(data.result.data[0].year_start_date);
@@ -101,7 +104,8 @@ export class UpdateCentreComponent implements OnInit {
           center_name:this.updateForm.value.center_name,
           year_start_date:this.datepipe.transform(startDate,'dd/MM/yyyy'),
           year_end_date:this.datepipe.transform(endDate,'dd/MM/yyyy'),
-          center_status:this.updateForm.value.center_status
+          center_status:this.updateForm.value.center_status,
+          organization_id:this.orgId
         }  
   if(this.invalidDate === false){
     this.api.updateCentre(this.id,data).subscribe(

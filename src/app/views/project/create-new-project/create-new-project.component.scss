@@ -79,3 +79,41 @@ p{
 .row .mobileView{
 height: 20px !important;
 }
+.add-new{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+}
+.add-task{
+    color:#3F51B5;
+    background-color: #e3e5f8;
+    margin: 0 16px;
+}
+input,select{
+    // border:0;
+    width:100%
+}
+.mat-form-field {
+    height: 55px;
+    width: 95% !important;
+    background-color: white;
+    border-radius: 10px;
+    border-color: #f6f6f6;
+    padding: 0 10px;
+     //border: 0 !important;
+}
+.mat-add-input{
+ border: 0px !important;
+}
+.add-button{
+    background-color: #e6e9fe;
+    margin-right: 15px;
+}
+.cancel-button{
+    background-color: #f7f7f7;
+}
+mat-card{
+    box-shadow: none !important;
+    padding: 10px 10px 0;
+}

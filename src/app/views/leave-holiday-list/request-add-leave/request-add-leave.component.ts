@@ -4,7 +4,15 @@ import { Validators, FormBuilder,FormGroup } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
-import { error } from 'console';
+
+import * as dayjs from 'dayjs';
+import * as duration from 'dayjs/plugin/duration';
+import * as isBetween from 'dayjs/plugin/isBetween';
+import * as customParseFormat from 'dayjs/plugin/customParseFormat';
+dayjs.extend(duration);
+dayjs.extend(isBetween);
+dayjs.extend(customParseFormat);
+window['dayjs'] = dayjs;
 @Component({
   selector: 'app-request-add-leave',
   templateUrl: './request-add-leave.component.html',
@@ -26,6 +34,7 @@ export class RequestAddLeaveComponent implements OnInit {
   workingDays: number;
   user_id: any;
   noLeaves: boolean = false;
+  orgId: any;
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
@@ -33,6 +42,7 @@ export class RequestAddLeaveComponent implements OnInit {
     private location:Location) { }
 
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.getLeaveType()
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
     this.initForm();
@@ -117,7 +127,13 @@ export class RequestAddLeaveComponent implements OnInit {
     if(event == "from_date"){
       this.disableTextbox2 = false;
       this.leaveForm.patchValue({
-        leaveApplication_to_date :''
+        leaveApplication_to_date :'',
+        ula_to_session:''
+      })
+    }else if(event == "ula_from_session"){
+      this.leaveForm.patchValue({
+        leaveApplication_to_date :'',
+        ula_to_session:''
       })
     }
     else{
@@ -138,7 +154,7 @@ export class RequestAddLeaveComponent implements OnInit {
    
   }
   getLeaveType(){
-    this.api.getLeaveTypeDetails().subscribe((data:any)=>{
+    this.api.getLeaveTypeDetails(this.orgId).subscribe((data:any)=>{
       this.leaveType= data.result.data;
       //console.log(this.leaveType,"dfsfs")
     },(error =>{
@@ -147,6 +163,7 @@ export class RequestAddLeaveComponent implements OnInit {
 
     )
   }
+  
   getappliedLeave(){
     let holidayParams={
       date:'01/01/2023',
@@ -158,25 +175,18 @@ export class RequestAddLeaveComponent implements OnInit {
     //console.log(holidays,"yutre")
     const startDate = new Date(this.leaveForm.value.leaveApplication_from_date);
     const endDate = new Date(this.leaveForm.value.leaveApplication_to_date);
-    
-   this.workingDays = this.getWorkingDays(startDate, endDate, holidays);
   
-    if (this.workingDays === 1) { 
-      
-      const selectedFrom = this.leaveForm.value.ula_from_session;
-      const selectedTo   = this.leaveForm.value.ula_to_session
-     // //console.log(selectedFrom,selectedTo)
-      this.workingDays = selectedFrom === selectedTo ? 0.5: 1 ;
-     }
-     else{
-      const selectedFrom = this.leaveForm.value.ula_from_session;
-      const selectedTo   = this.leaveForm.value.ula_to_session
-     // //console.log(selectedFrom,selectedTo)
-      if(selectedFrom === selectedTo){
-        this.workingDays = (this.workingDays - 0.5)
-      }
-  
-     }
+   const selectedFrom = this.leaveForm.value.ula_from_session;
+   const selectedTo = this.leaveForm.value.ula_to_session;
+   
+   this.workingDays = this.getWorkingDays(
+     startDate,
+     endDate,
+     holidays,
+     selectedFrom,
+     selectedTo
+   );
+   
     //console.log(`Number of working days: ${this.workingDays}`);
     this.leaveForm.patchValue({
       days:this.workingDays
@@ -220,24 +230,53 @@ export class RequestAddLeaveComponent implements OnInit {
    
   }
     
-     getWorkingDays(startDate: Date, endDate: Date, holidays): number {
-      let workingDays = 0;
-      let totalDays = 0;
-      
-      for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-        if (d.getDay() === 0 || d.getDay() === 6) {
-          continue;
+    
+    getWorkingDays(
+      startDate: Date,
+      endDate: Date,
+      _holidays,
+      selectedFrom: string,
+      selectedTo: string
+    ): any {
+      const fromDate = dayjs(new Date(startDate));
+      const toDate = dayjs(new Date(endDate)).subtract(1, 'day');
+      const fromToDuration = dayjs.duration(toDate.diff(fromDate)).asDays()
+  
+      const fromDaySession = fromDate.subtract(
+        selectedFrom === '1' ? 24 : 12,
+        'hours'
+      );
+      const toDaySession = toDate.add(selectedTo === '1' ? 12 : 24, 'hours');
+      const diffMS = toDaySession.diff(fromDaySession);
+      const daysDiff = dayjs.duration(diffMS).asDays();
+      const holidays = Object.values(_holidays?.message[0]);
+      let daysDiffWithHolidays = daysDiff
+  
+  
+      // Exclude weekends from the leaves
+      console.log(daysDiff)
+      for(let i=0; i<daysDiff;i++){
+        const currentDay = fromDate.add(i, 'days').format('dddd')
+        const holidayDate = fromDate.add(i, 'days').format('DD/MM/YYYY')
+        const isHoliday = holidays.includes(holidayDate)
+        console.log("CURRENT DAY", currentDay)
+        if(currentDay === 'Saturday' || currentDay === 'Sunday' || isHoliday){
+          daysDiffWithHolidays--;
         }
-        const dateString = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
-        if (dateString in holidays) {
-          continue;
-        }
-      
-        workingDays++;
-        totalDays++;
       }
-      
-      return workingDays;
+      // Calculate days between dates
+      // const timeDifference = toDate.getTime() - fromDate.getTime();
+      // const daysDifference = timeDifference / (1000 * 3600 * 24);
+  
+      // // Adjust days if sessions are selected
+      // let days = Math.abs(Math.round(daysDifference));
+      // if (fromSession === toSession) {
+      //   days = days + 0.5; // Assuming each session counts as an additional day
+      // }else{
+      //   days++
+      // }
+      console.log(holidays, daysDiff, daysDiffWithHolidays)
+      return daysDiffWithHolidays;
     }
   endDateValidator():any {
     this.leaveForm.patchValue({

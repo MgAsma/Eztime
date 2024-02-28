@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {  Validators, FormBuilder} from '@angular/forms';
+import {  Validators, FormBuilder, FormGroup} from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -12,6 +12,8 @@ export class UpdatePrefixSuffixComponent implements OnInit {
   id:any;
   page: string;
   tableSize: string;
+  orgId: any;
+  updateForm!: FormGroup;
 
   constructor(
     private builder:FormBuilder, 
@@ -22,19 +24,22 @@ export class UpdatePrefixSuffixComponent implements OnInit {
     this.id =this.route.snapshot.paramMap.get('id')
     this.page = this.route.snapshot.paramMap.get('page')
     this.tableSize = this.route.snapshot.paramMap.get('tableSize')
+    this.orgId = sessionStorage.getItem('org_id')
+  }
+  initForm(){
+    this.updateForm= this.builder.group({
+      prefix:['',[Validators.pattern(/^[a-zA-Z]+$/),Validators.required]],
+      suffix:['',[Validators.pattern(/^[a-zA-Z]+$/),Validators.required]],
+      organization_id:this.orgId
+    })
   }
   
-  updateForm= this.builder.group({
-    prefix:['',[Validators.pattern(/^[a-zA-Z]+$/),Validators.required]],
-    suffix:['',[Validators.pattern(/^[a-zA-Z]+$/),Validators.required]],
-  })
-  goBack(event)
-  {
-    event.preventDefault(); // Prevent default back button behavior
+  goBack(event){
+  event.preventDefault(); // Prevent default back button behavior
   this.location.back();
-  
   }
   ngOnInit(): void {
+    this.initForm()
     this.edit();
   }
   get f(){
@@ -43,9 +48,10 @@ export class UpdatePrefixSuffixComponent implements OnInit {
   edit(){
     let params = {
       page_number:this.page,
-      data_per_page:this.tableSize
+      data_per_page:this.tableSize,
+      pagination:'TRUE'
   }
-    this.api.getCurrentPrefixSuffixDetails(this.id,params).subscribe((data:any)=>{
+    this.api.getCurrentPrefixSuffixDetails(this.id,params,this.orgId).subscribe((data:any)=>{
       this.updateForm.patchValue({prefix:data.result.data[0].prefix})
       this.updateForm.patchValue({suffix:data.result.data[0].suffix})
     })

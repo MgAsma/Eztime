@@ -34,6 +34,7 @@ export class TagListComponent implements OnInit {
   enabled: boolean = true;
   permissions: any = [];
   user_id: string;
+  orgId: any;
 
   constructor(
     private modalService:NgbModal, 
@@ -49,52 +50,23 @@ export class TagListComponent implements OnInit {
   
   }
 
-  // updateTagsList = async(params) =>{
-  //   await this.api.getTagDetailsPage(params).subscribe((data:any)=>{
-  //     this.allTag = data.result.data;
-  //     this.pagination = data?.result?.pagination
-
-  //     // Set Correct count
-  //     let totalItems = this.pagination.number_of_pages * this.tableSize
-
-  //     if(!this.pagination.has_next){
-  //       // Last page
-  //       totalItems = (totalItems - this.tableSize) + this.allTag.length
-  //     }
-
-  //   },error =>{
-  //     this.api.showError(error.error.error.message)
-  //   })
-  // }
+ 
 
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.getTag();
     this.enabled = true;
-    // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
-
-    // if (accessAction.length) {
-    //   accessAction.forEach((res) => {
-    //   // console.log(res.module_name, res.permissions, "RESP");
-    //     if (res.module_name === 'PEOPLE') {
-    //       this.permissions = res.permissions['TAGS'];
-    //    //   console.log(this.permissions, "Permissions for DEPARTMENT");
-    //     }
-    //   });
-    // }
     this.getUserControls()
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
       }
       else{
         this.api.showError("ERROR !")
       }
-      //console.log(res,'resp from yet');
-      
     }
   
     )
@@ -115,7 +87,9 @@ export class TagListComponent implements OnInit {
   getTag(){
     let params = {
       page_number:this.page,
-      data_per_page:this.tableSize
+      data_per_page:10,
+      pagination:'TRUE',
+      organization_id:this.orgId
     }
     
     this.api.getTagDetailsPage(params).subscribe((data:any)=>{
@@ -129,7 +103,7 @@ export class TagListComponent implements OnInit {
     )
   }
   filterSearch(){
-    this.api.getData(`${environment.live_url}/${environment.tag}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.tag}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((data:any)=>{
       this.allTag = data.result.data;
       this.pagination = data['result'].pagination
       const noOfPages:number = data['result'].pagination.number_of_pages

@@ -31,6 +31,7 @@ export class YetToApproveComponent implements OnInit {
   entryPoint: any;
   user_id: string;
   accessConfig: any = [];
+  orgId: any;
   @Input() set data(value){
     this.list = value
    //console.log(this.list)
@@ -50,20 +51,18 @@ export class YetToApproveComponent implements OnInit {
 
   ngOnInit(): void {
     this.user_id =sessionStorage.getItem('user_id')
+    this.orgId = sessionStorage.getItem('org_id')
     this.getList();
     this.getUserControls();
   }
   getUserControls(){
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
       }
       else{
         this.api.showError("ERROR !")
       }
-      //console.log(res,'resp from yet');
-      
     },(error=>{
          this.api.showError(error.error.error.message)
       })
@@ -81,18 +80,11 @@ export class YetToApproveComponent implements OnInit {
         });
         
       }
-    //  console.log(this.accessConfig,"this.accessConfig")
     })
     }
   
   getList(){
-    // this.api.getTimeSheetDetails().subscribe((data:any)=>{
-    //   this.list= data.result.data;
-    //   //console.log(data.result.data);
-      
-    // }
-
-    //)
+   
   }
   filterSearch(){
     let tableData ={

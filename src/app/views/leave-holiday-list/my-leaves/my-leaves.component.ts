@@ -11,17 +11,21 @@ import { Location } from '@angular/common';
 export class MyLeavesComponent implements OnInit {
   leaveBalence: any = [];
   leaveDetails: any = [];
+  holidayList: Object;
+  orgId: any;
 
   constructor(
     private api:ApiserviceService,
     private location:Location) { }
   goBack(event){
-    event.preventDefault(); // Prevent default back button behavior
+  event.preventDefault(); // Prevent default back button behavior
   this.location.back();
   
   }
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.getAllleaveData();
+    this.getappliedLeave()
   }
 
   getAllleaveData(){
@@ -29,19 +33,27 @@ export class MyLeavesComponent implements OnInit {
       pagination:"FALSE"
     }
     let user_id = sessionStorage.getItem('user_id')
-    this.api.getData(`${environment.live_url}/${environment.users_leave_details}?user_id=${user_id}&method=VIEW&menu=MY_LEAVES&module=LEAVE/HOLIDAY_LIST&page_number=1&data_per_page=2&pagination=${params.pagination}`).subscribe(
+    this.api.getData(`${environment.live_url}/${environment.users_leave_details}?user_id=${user_id}&method=VIEW&menu=MY_LEAVES&module=LEAVE/HOLIDAY_LIST&page_number=1&data_per_page=2&pagination=${params.pagination}&organization_id=${this.orgId}`).subscribe(
       (res:any)=>{
-      // this.leaveBalence = res.result.leave_balance
-      // this.leaveDetails = res.result.data
       this.leaveBalence = res.result.leave_balance.data
       this.leaveDetails = res.result.leave_details.data
-     
     },
-    error=>{
+    (error)=>{
      this.api.showError(error.error.error.message)
     }
     )
 
+  }
+  getappliedLeave() {
+    let holidayParams = {
+      date: '01/01/2023',
+      country: 'IN',
+      state: 'KA',
+    };
+    this.api.getHolidayList(holidayParams).subscribe((res) => {
+      this.holidayList = res['message'][0];
+    
+    });
   }
 
 }

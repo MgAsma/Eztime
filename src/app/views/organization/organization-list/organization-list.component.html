@@ -24,7 +24,7 @@
                   </select>
             </div>
             <div class="col-sm"></div>
-            <div class="col-sm-5 search-div">
+            <div class="col-sm-4 search-div">
                 <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search by organization name" aria-describedby="emailHelp"  autocomplete="off">
                 <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>       
               </div>
@@ -39,7 +39,7 @@
                           <th scope="col">Sl. No. </th>
                           <th scope="col">Organization<i  *ngIf="!arrow" (click)="sort('asc','org_name')" class="fa fa-sort-up"></i><i (click)="sort('desc','org_name')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
                           <th scope="col">Email <i  *ngIf="!arrow" (click)="sort('asc','org_email')" class="fa fa-sort-up"></i><i (click)="sort('desc','org_email')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                          <th scope="col">No.Of Users <i  *ngIf="!arrow" (click)="sort('asc','number_of_users_in_organization')" class="fa fa-sort-up"></i><i (click)="sort('desc','number_of_users_in_organization')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                          <th scope="col" class="text-center">No.Of Users <i  *ngIf="!arrow" (click)="sort('asc','number_of_users_in_organization')" class="fa fa-sort-up"></i><i (click)="sort('desc','number_of_users_in_organization')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
                           <th scope="col">Phone <i  *ngIf="!arrow" (click)="sort('asc','conctact_person_phone_number')" class="fa fa-sort-up"></i><i (click)="sort('desc','conctact_person_phone_number')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
                           <th scope="col">Logo</th>
                           <th scope="col">Status <i  *ngIf="!arrow" (click)="sort('asc','org_status')" class="fa fa-sort-up"></i><i  *ngIf="arrow" (click)="sort('desc','org_status')" class="fa fa-sort-down"></i></th>
@@ -59,7 +59,7 @@
                          <td>{{i + 1 }}</td>
                          <td>{{item.org_name ? item.org_name :'NA' }}</td>
                          <td>{{item.org_email ? item.org_email :'NA' }}</td>
-                         <td>{{item.number_of_users_in_organization}}</td>
+                         <td class="text-center">{{item.number_of_users_in_organization}}</td>
                          <td>{{item.conctact_person_phone_number ? item.conctact_person_phone_number:'NA'}}</td>
                          <td class="p-r">   
                             <img src="{{item.org_logo_path}}" alt="" height="25px" width="50px">
@@ -70,11 +70,11 @@
                          <td>{{item.org_status ? item.org_status : 'NA'}}</td>
                         
                          <td>
-                          <ng-container *ngFor="let access of permissions">
-                            <button mat-raised-button mat-mini-fab  routerLink="/organization/updateOrg/{{item.id}}" *ngIf="access === 'EDIT'">
+                          <ng-container >
+                            <button mat-raised-button mat-mini-fab  routerLink="/organization/updateOrg/{{item.id}}" >
                               <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
                             </button>
-                            <button mat-raised-button mat-mini-fab  aria-label="Example icon button with a filter list icon" (click)="open(item.id)" *ngIf="access === 'DELETE'">
+                            <button mat-raised-button mat-mini-fab  aria-label="Example icon button with a filter list icon" (click)="open(item.id)" >
                               <i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i>
                             </button>
                           </ng-container> 
@@ -84,8 +84,7 @@
                         
                         </tr>
                         <tr *ngIf="result.length === 0" class="nodata">
-                          <td> No records found
-  !</td>  
+                          <td> No records found! </td>  
                         </tr>
                         </ng-container>
                       </tbody>
@@ -107,10 +106,9 @@
             </div>
         </div>
     </div>
-    <ng-container *ngFor="let access of permissions">
-      <button mat-raised-button mat-fab color="primary" *ngIf="access == 'ADD'" routerLink="/organization/createOrg" class="createbtn" placement="top" container="body" ngbTooltip="Add organization">
+    <ng-container>
+      <button mat-raised-button mat-fab color="primary"  routerLink="/organization/createOrg" class="createbtn" placement="top" container="body" ngbTooltip="Add organization">
         <i class="fa fa-plus"></i>
-  
       </button>
     </ng-container>
         <!-- <a routerLink="/organization/createOrg"> <button mat-raised-button type="button"  class="createbtn" placement="top" container="body" ngbTooltip="Add Department"><i class="fa fa-plus"></i>
@@ -270,9 +268,11 @@
             <a routerLink="/department/create"> <button mat-raised-button type="button"  class="createbtn-new" placement="top" container="body" ngbTooltip="Add"><i class="fa fa-plus"></i>
   </button></a>
           </div> -->
-          <ng-container *ngFor="let access of permissions">
-            <a routerLink="/organization/createOrg"> <button  type="button"  class="createbtn-new" placement="top" container="body" ngbTooltip="Add"><i class="fa fa-plus"></i>
-  </button></a>
+          <ng-container >
+            <a routerLink="/organization/createOrg"> 
+            <button  type="button"  class="createbtn-new" placement="top" container="body" ngbTooltip="Add"><i class="fa fa-plus"></i>
+            </button>
+          </a>
           </ng-container>
          
       </div>

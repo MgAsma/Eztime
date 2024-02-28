@@ -9,8 +9,9 @@
     border-bottom: 0 !important;
 }
 .modal-footer{
-    border-top: 0 !important;
-    justify-content: center !important;
+    padding-bottom: 25px !important;
+        border-top: 0 !important;
+        justify-content: center !important;
 }
 i{
     margin-right: 6px;
@@ -21,7 +22,26 @@ p{
     font-size: 15px !important;
     color: #262525 !important;
 }
-
+button.btn-cancel {  
+    background-color: transparent !important;
+    border: 0;
+    color: #2a2a2a;
+    margin: 0;
+    border: 2px solid #495ae6;
+}
+button.btn-cancel:hover {
+    border: 2px solid #4959e6df;
+    
+}
+button.btn-yes {
+    background-color: #495ae6 !important;
+    border: 1px;
+    color: #fff;
+    margin: 0;
+}
+button.btn-yes:hover {
+    background-color: #4959e6de!important;
+}
 .act-btn{
     height: 28px !important;
     width: 75px !important;
@@ -31,4 +51,30 @@ p{
 }
 .modal-title{
     font-size: 18px;
+}
+
+.custom-modal {
+   
+    text-align: center;
+    padding: 0 !important;
+
+    .modal-title {
+        padding-bottom: 10px;
+    }
+    .title-icon {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 10px;
+
+        i {
+            color: #ffa500c9;
+            font-size: 3rem !important;
+        }
+    }
+    .modal-footer {
+        padding-bottom: 20px !important;
+        border-top: 0 !important;
+        justify-content: center !important;
+    }
+
 }

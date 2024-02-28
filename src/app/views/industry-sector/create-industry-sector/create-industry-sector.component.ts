@@ -13,12 +13,15 @@ export class CreateIndustrySectorComponent implements OnInit {
 
   allIndustry:any=[];
   industry:any;
+  orgId: string;
 
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
     private location:Location
-    ) { }
+    ) {
+      this.orgId = sessionStorage.getItem('org_id')
+     }
   goBack(event)
   {
     event.preventDefault(); // Prevent default back button behavior
@@ -26,6 +29,7 @@ export class CreateIndustrySectorComponent implements OnInit {
   
   }
   ngOnInit(): void {
+   
     this.initForm()
   }
  initForm(){
@@ -33,6 +37,7 @@ export class CreateIndustrySectorComponent implements OnInit {
       toi_title:['',[Validators.required,Validators.pattern(/^\S.*$/)]],
       toi_description:['',[Validators.required,Validators.pattern(/^\S.*$/)]],
       toi_status:['',[Validators.required]],
+      org_ref_id:this.orgId
     })
   }
   get f(){

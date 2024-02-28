@@ -23,6 +23,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 @NgModule({
   declarations: [
     MyTimesheetComponent,
@@ -49,7 +50,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     NgbTooltipModule,
     NgxPaginationModule,
     Ng2SearchPipeModule,
-    SharedModule
+    SharedModule,
+    NgMultiSelectDropDownModule
   ],
   
   

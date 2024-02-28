@@ -15,22 +15,16 @@ export class CreateRoleComponent implements OnInit {
   user:any = false;
   allRole:any=[];
   role:any;
+  orgId: string;
 
-  constructor(private builder:FormBuilder, private api: ApiserviceService,private router:Router) { }
+  constructor(private builder:FormBuilder, private api: ApiserviceService,private router:Router) {
+    this.orgId = sessionStorage.getItem('org_id')
+   }
 
   ngOnInit(): void {
- this.initForm();
+   this.initForm();
   }
-  // initForm(){
-   
-  //   this.roleForm= this.builder.group({
-  //     or_name:['',Validators.required],
-  //     or_description:['',Validators.required],
-  //     or_priority:['',Validators.required],
-  //     or_status:['Active',Validators.required],
-  //   })
-   
-  // }
+  
   initForm(){
     this.roleForm= this.builder.group({
       user_role_name:['',Validators.required],
@@ -64,7 +58,7 @@ export class CreateRoleComponent implements OnInit {
          }
       ]
       }
-      this.api.addRoles(data).subscribe(res =>{
+      this.api.addRoles(data,this.orgId).subscribe(res =>{
           if(res){
             this.api.showSuccess('Role Added Successfully!');
             this.roleForm.reset();

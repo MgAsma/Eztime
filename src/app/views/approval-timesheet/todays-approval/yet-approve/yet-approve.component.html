@@ -20,13 +20,13 @@
                 <thead>
                     <tr>
                       <th scope="col">Sl. No.</th>
-                      <th scope="col">Created Date </th>
-                      <th scope="col">People</th>
-                      <th scope="col">Time Sheet Id</th>
-                      <th scope="col">Time</th>
+                      <th scope="col" class="text-center">Created Date </th>
+                      <th scope="col" class="text-center">People</th>
+                      <th scope="col" class="text-center">Time Sheet Id</th>
+                      <th scope="col" class="text-center">Time</th>
                       <!-- <th scope="col">Saved On</th> -->
-                      <th scope="col">Status</th>
-                      <th scope="col">Action</th>
+                      <th scope="col" class="text-center">Status</th>
+                      <th scope="col" class="text-center">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -38,13 +38,13 @@
                         totalItems: count
                     };let i = index">
                         <td>{{i+1}}</td>
-                        <td>{{item['created_date_time'] | date : 'mediumDate'}}</td>
-                        <td>{{item.created_by_first_name ?item.created_by_first_name :'NA'}}</td>
-                        <td>{{item.id ? item.id :'NA'}}</td>
-                        <td>{{item['time_spent'] }}</td>
+                        <td class="text-center">{{item['created_date_time'] | date : 'mediumDate'}}</td>
+                        <td class="text-center">{{item.created_by_first_name ?item.created_by_first_name :'NA'}}</td>
+                        <td class="text-center">{{item.id ? item.id :'NA'}}</td>
+                        <td class="text-center">{{item['time_spent'] }}</td>
                         <!-- <td>{{item.saved_on}}</td> -->
-                        <td>{{item.approved_state?item.approved_state:'NA' }}</td>
-                         <td>
+                        <td class="text-center">{{item.approved_state?item.approved_state:'NA' }}</td>
+                         <td class="text-center">
                             <ng-container *ngFor="let approval of accessConfig">
                                 <span *ngIf="approval == 'DELETE'">
                                     <button  style="border: none;background-color: inherit;" (click)="open(item)"> <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>
@@ -59,8 +59,7 @@
                         </td>
                     </tr>
                     <tr *ngIf="result.length === 0" class="nodata">
-                        <td> No records found
-  !</td>  
+                        <td> No records found!</td>  
                     </tr>
                     </ng-container>
                   </tbody>

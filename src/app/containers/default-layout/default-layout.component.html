@@ -33,13 +33,15 @@
 <!--main-->
 <div class="wrapper d-flex flex-column dark:bg-transparent" >
   <!--app-header-->
-  <ngx-ui-loader fgsColor="#1d2a6e" pbColor="#1d2a6e" text="Please wait..."></ngx-ui-loader>
-  <app-default-header class="d-print-none header header-sticky" position="sticky" sidebarId="sidebar"></app-default-header>
-  <!--app-body-->
-  <div class="body px-3 scroll-fix">
-      <router-outlet></router-outlet>
-  </div>
-  <!--app footer-->
-  <app-default-footer class="mobileView"></app-default-footer>
-
+    <ngx-ui-loader fgsColor="#1d2a6e" pbColor="#1d2a6e" text="Please wait..."></ngx-ui-loader>
+    <app-default-header class="d-print-none header header-sticky" position="sticky" sidebarId="sidebar"></app-default-header>
+    <!--app-body-->
+    <div class="body px-3 scroll-fix">
+      <mat-card class="body-card">
+        <router-outlet></router-outlet>
+      </mat-card>
+    </div>
+    <!--app footer-->
+    <app-default-footer class="mobileView"></app-default-footer>
+  
 </div>

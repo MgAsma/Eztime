@@ -34,6 +34,7 @@ export class MonthTimeSheetComponent implements OnInit {
   count = 0;
   user_id: any;
   accessConfig: any = [];
+  org_id: any;
   @Input() set data(value) {
     this.timesheetDataAll = value;
    // //console.log(this.timesheetDataAll,"TIMESHEET---")
@@ -60,10 +61,11 @@ export class MonthTimeSheetComponent implements OnInit {
 
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id')
+    this.org_id = sessionStorage.getItem('org_id')
     this.getUserControls()
   }
   getUserControls(){
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.org_id}&pagination=TRUE`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
         //console.log(this.common_service.permission,"PERMISSION")

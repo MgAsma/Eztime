@@ -16,6 +16,7 @@ export class UpdateClientComponent implements OnInit {
   industry:any;
   page: string;
   tableSize: string;
+  orgId: any;
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService, 
@@ -44,10 +45,12 @@ export class UpdateClientComponent implements OnInit {
       c_type:['',[Validators.required]],
       c_contact_person_email_id:['',[Validators.required,Validators.email]],
       c_contact_person_phone_no:['',[Validators.required ,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      org_ref_id:this.orgId
     })
   }
  
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.initForm()
     this.getIndustry();
     this.edit();
@@ -57,7 +60,8 @@ export class UpdateClientComponent implements OnInit {
   }
   getIndustry(){
     let params = {
-      pagination:"FALSE"
+      pagination:"FALSE",
+      org_ref_id:this.orgId
     }
     this.api.getIndustryDetails(params).subscribe((data:any)=>{
       this.allIndustry= data.result.data;
@@ -68,11 +72,10 @@ export class UpdateClientComponent implements OnInit {
     )
   }
   edit(){
-
-
  let params = {
       page_number:this.page,
-      data_per_page:this.tableSize
+      data_per_page:this.tableSize,
+      org_ref_id:this.orgId
   }
     this.api.getCurrentClientDetails(this.id,params).subscribe((data:any)=>{
       this.updateForm.patchValue({

@@ -20,12 +20,12 @@
                 <thead>
                     <tr>
                       <th scope="col">Sl. No.</th>
-                      <th scope="col">Saved On</th>
-                      <th scope="col">People</th>
-                      <th scope="col">Time Sheet Id</th>
-                      <th scope="col">Time</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">Action</th>
+                      <th scope="col" class="text-center">Saved On</th>
+                      <th scope="col" class="text-center">People</th>
+                      <th scope="col" class="text-center">Time Sheet Id</th>
+                      <th scope="col" class="text-center">Time</th>
+                      <th scope="col" class="text-center">Status</th>
+                      <th scope="col" class="text-center">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -37,16 +37,16 @@
                             totalItems: count
                           };let i=index">
                         <td>{{i+1}}</td>
-                        <td>{{items.created_date_time | date :'mediumDate'}}</td>
-                        <td>{{items.created_by_name?items.created_by_name:"NA"}}</td>
-                        <td>{{items.id ? items.id :'NA'}}</td>
-                        <td>{{items.time_spent}}</td>
-                        <td>{{items.approved_state}}</td>
+                        <td class="text-center">{{items.created_date_time | date :'mediumDate'}}</td>
+                        <td class="text-center">{{items.created_by_name?items.created_by_name:"NA"}}</td>
+                        <td class="text-center">{{items.id ? items.id :'NA'}}</td>
+                        <td class="text-center">{{items.time_spent}}</td>
+                        <td class="text-center">{{items.approved_state}}</td>
                         <!-- <td>
                            <button style="border: none;background-color: inherit;" (click)="open(items.id,'Approved')"><i class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>
                            <button style="border: none;background-color: inherit;" (click)="open(items.id,'Declined')"><i class="bi bi-x-circle-fill" container="body" ngbTooltip="Reject" style="color:red"></i></button>
                         </td> -->
-                        <td>
+                        <td class="text-center">
                             <ng-container *ngFor="let approval of accessConfig">
                                 <!-- <span *ngIf="approval == 'DELETE'">
                                     <button  style="border: none;background-color: inherit;" (click)="open(items)"> <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>
@@ -61,8 +61,7 @@
                         </td>
                         </tr>
                         <tr *ngIf="result.length === 0" class="nodata">
-                            <td> No records found
-  !</td>  
+                            <td> No records found!</td>  
                         </tr>
                
                     </ng-container>

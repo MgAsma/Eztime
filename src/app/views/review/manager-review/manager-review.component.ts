@@ -23,6 +23,7 @@ export class ManagerReviewComponent implements OnInit {
   timesheet: any = [];
   timesheetAccess: any;
   leaveAccess: any;
+  orgId: any;
   constructor(
     private api:ApiserviceService,
     private modalService:NgbModal,
@@ -32,44 +33,26 @@ export class ManagerReviewComponent implements OnInit {
     ) { }
   data = []
   
-  goBack(event)
-  {
-    event.preventDefault(); // Prevent default back button behavior
+  goBack(event){
+  event.preventDefault(); // Prevent default back button behavior
   this.location.back();
-  
   }
   ngOnInit(): void {
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
     this.user_role_id = JSON.parse(sessionStorage.getItem('user_role_id'))
-  //  const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
+    this.orgId = sessionStorage.getItem('org_id')
     this.getEmployeeData()
-    // if (accessAction.length) {
-    //   accessAction.forEach((res) => {
-    //   // console.log(res.module_name, res.permissions, "RESP");
-    //     if (res.module_name === 'TIMESHEET') {
-    //       this.timesheetAccess = res.permissions['PEOPLE_TIMESHEET'];
-    //    //   console.log(this.permissions, "Permissions for DEPARTMENT");
-    //     }
-    //     if (res.module_name === 'LEAVE/HOLIDAY_LIST') {
-    //       this.leaveAccess = res.permissions['LEAVE_APPLICATION'];
-    //    //   console.log(this.permissions, "Permissions for DEPARTMENT");
-    //     }
-    //   });
-    // }
    this.getUserControls()
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
       }
       else{
         this.api.showError("ERROR !")
       }
-      //console.log(res,'resp from yet');
-      
     }
   
     )
@@ -78,31 +61,22 @@ export class ManagerReviewComponent implements OnInit {
       const accessArr = res
       if(accessArr.length > 0){
         accessArr.forEach((element,i) => {
-          // if(element['PEOPLE_TIMESHEET']){
-          //   this.timesheetAccess = element['PEOPLE_TIMESHEET']
-          // }
-          // if(element['LEAVE_APPLICATION']){
-          //   this.leaveAccess = element['LEAVE_APPLICATION']
-          // }
           if(element['REVIEW']){
             this.timesheetAccess = element['REVIEW'];
             this.leaveAccess = element['REVIEW']
-
           }
-          
         });
       }
     })
    
     }
   getEmployeeData(){
-    this.api.getData(`${environment.live_url}/${environment.managerReview}?user_id=${this.user_id}&role_id=${this.user_role_id}`).subscribe(response =>{
+    this.api.getData(`${environment.live_url}/${environment.managerReview}?user_id=${this.user_id}&role_id=${this.user_role_id}&organization_id=${this.orgId}`).subscribe(response =>{
       if(response){
        this.empInfoList = response['result'].data.emp_info_list;
        this.manger_info.push(response['result'].data.manger_info);
        this.empLeaveList = response['result'].data.emp_leave_list[0];
        this.timesheet = response['result'].data.emp_timesheet_list
-       //console.log(response['result'].data.emp_timesheet_list,"LEAVE_LIST")
       }
     },(error =>{
       this.api.showError(error.error.error.message)
@@ -150,7 +124,6 @@ export class ManagerReviewComponent implements OnInit {
      modelRef.componentInstance.message =`${confirmText} confirmation`;
       modelRef.componentInstance.status.subscribe(resp => {
         if(resp == "ok"){
-        //  console.log(content,"CONTENT")
           this.updateStatus(content,status)
          modelRef.close();
         }
@@ -186,16 +159,12 @@ export class ManagerReviewComponent implements OnInit {
   }))
   }
   updateStatus(content,status){
-    //console.log(content,status,"STATUS CONTENT CHECK")
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
      let date = new Date();
      let currDate =('0' +(date.getDate())).slice(-2) + '/' + ('0' + (date.getMonth()+1)).slice(-2) + '/'  + date.getFullYear() 
-     //console.log( currDate," this.currDate")
     let method = status ==="APPROVED" ? "APPROVE" :"REJECT"
     let contentUser_id:number = content.user_id
-    //console.log(typeof contentUser_id)
     let content_Id:number = content.leave_id
-    //console.log(typeof this.user_id)
     let data ={
       user_id:this.user_id,
       module:"LEAVE/HOLIDAY_LIST",
@@ -212,7 +181,6 @@ export class ManagerReviewComponent implements OnInit {
     if(res){
       this.api.showSuccess(res['result'].message)
       this.getEmployeeData()
-      //console.log(res,"STATE CHANGE")
     }
  
   },((error:any) =>{

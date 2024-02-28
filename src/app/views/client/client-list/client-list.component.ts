@@ -8,6 +8,7 @@ import { ApiserviceService } from '../../../service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { environment } from 'src/environments/environment';
 import { error } from 'console';
+
 @Component({
   selector: 'app-client-list',
   templateUrl: './client-list.component.html',
@@ -39,6 +40,7 @@ export class ClientListComponent implements OnInit {
   enabled: boolean = true;
   permissions: any = [];
   user_id: string;
+  orgId: any;
   
   constructor(
     private modalService:NgbModal, 
@@ -54,33 +56,21 @@ export class ClientListComponent implements OnInit {
   
   }
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.getClient();
     this.enabled = true
-    // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
-
-    // if (accessAction.length) {
-    //   accessAction.forEach((res) => {
-    //    console.log(res.module_name, res.permissions, "RESP");
-    //     if (res.module_name === 'CLIENTS') {
-    //       this.permissions = res.permissions['CLIENTS'];
-    //    //   console.log(this.permissions, "Permissions for CLIENTS");
-    //     }
-    //   });
-    // }
+ 
     this.getUserControls()
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
       }
       else{
         this.api.showError("ERROR !")
       }
-      //console.log(res,'resp from yet');
-      
     },(error=>{
       this.api.showError(error.error.error.message)
    })
@@ -102,7 +92,7 @@ export class ClientListComponent implements OnInit {
     })
     }
     filterSearch(){
-      this.api.getData(`${environment.live_url}/${environment.clients}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+      this.api.getData(`${environment.live_url}/${environment.clients}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe((res:any)=>{
         if(res){
           this.allClientList= res.result.data;
             const noOfPages:number = res['result'].pagination.number_of_pages
@@ -117,23 +107,19 @@ export class ClientListComponent implements OnInit {
       page_number:this.page,
       data_per_page:this.tableSize
   }
-    this.api.getClientDetailsPage(params).subscribe((data:any)=>{
-      //console.log(data,"TEST")
-      if(data){
-        this.allClientList= data.result.data;
-          // let add:string = '0'
-          // let tableCount:string = data['result'].pagination.number_of_pages
-          // this.count = Number(tableCount+add);
-          const noOfPages:number = data['result'].pagination.number_of_pages
-          this.count  = noOfPages * this.tableSize
+  this.api.getData(`${environment.live_url}/${environment.clients}?page_number=1&data_per_page=10&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe((res:any)=>{
+      if(res){
+        this.allClientList= res.result.data;
+        const noOfPages:number = res['result'].pagination.number_of_pages
+        this.count  = noOfPages * this.tableSize
       }
      else{
       this.api.showError('ERROR !')
      }
       
-    }
-    
-
+    },((error:any)=>{
+      this.api.showError(error.error.error.message)
+    })
     )
   }
   delete(id:any){

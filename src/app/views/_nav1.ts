@@ -110,10 +110,10 @@ export const navItems1: any = [
         name:'Applied Approved Leaves',
         url:'/leave/appliedApprovedLeaves'
       },
-      {
-        name:'Add On Leaves Request',
-        url:'/leave/addOnLeaveRequest'
-      },
+      // {
+      //   name:'Add On Leaves Request',
+      //   url:'/leave/addOnLeaveRequest'
+      // },
       {
         name:'Leave Master',
         url:'/leave/leaveMaster'
@@ -196,22 +196,22 @@ export const navItems1: any = [
       }
     ]
   },
-  {
-    name:'Project Status',
-    url:'/status',
-    icon:'bi bi-circle-square',
-    children:[
-      {
-        name:'Main Category List',
-        url:'/status/mainlist'
-      },
-      {
-        name:'Sub Category List',
-        url:'/status/sublist'
-      },
+  // {
+  //   name:'Project Status',
+  //   url:'/status',
+  //   icon:'bi bi-circle-square',
+  //   children:[
+  //     {
+  //       name:'Main Category List',
+  //       url:'/status/mainlist'
+  //     },
+  //     {
+  //       name:'Sub Category List',
+  //       url:'/status/sublist'
+  //     },
       
-    ]
-  },
+  //   ]
+  // },
   {
     name:'Project Task Category',
     url:'/task',

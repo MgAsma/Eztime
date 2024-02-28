@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {  Validators, FormBuilder,FormGroup, ValidatorFn, AbstractControl } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {  Validators, FormBuilder,FormGroup, ValidatorFn, AbstractControl, FormArray } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
+import { error } from 'console';
 @Component({
   selector: 'app-create-new-project',
   templateUrl: './create-new-project.component.html',
@@ -16,7 +17,15 @@ export class CreateNewProjectComponent implements OnInit {
   invalidDate: boolean = false;
   subTaskSetting:any ={}
   taskName: any = [];
-
+  orgId: any;
+  value;
+  tasks = []
+  status= [
+    {value: 'open', viewValue: 'Open'},
+    {value: 'inprogress', viewValue: 'Inprogress'},
+    {value: 'completed', viewValue: 'Completed'},
+    {value: 'pending', viewValue: 'Pending'},
+  ];
 
   toggleShow() {
   
@@ -54,6 +63,7 @@ export class CreateNewProjectComponent implements OnInit {
   params={
     pagination:"FALSE"
   }
+  taskForm: FormGroup;
 
   constructor(private builder:FormBuilder, 
     private api: ApiserviceService,
@@ -68,17 +78,45 @@ export class CreateNewProjectComponent implements OnInit {
   this.location.back();
   
     }
+    onChange(){
+      this.projectForm.patchValue({
+        p_closure_date:'' 
+      }) 
+    }
+    
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.getClient();
     this.getManager();
     this.getPeopleGroup();
     this.initForm();
     this.getCategory()
+    this.taskForm = this.builder.group({
+      subTasks: this.builder.array([])
+    });
+
+    // Optionally, you can add an initial empty task
+    this.addTask();
   }
-  onChange(){
-    this.projectForm.patchValue({
-      p_closure_date:'' 
-    }) 
+  
+  get subTasks(): FormArray {
+    return this.taskForm.get('subTasks') as FormArray;
+  }
+
+  createSubTask(): FormGroup {
+    return this.builder.group({
+      taskName: '',
+      status: '',
+      assignee: ''
+    });
+  }
+
+  addTask(): void {
+    this.subTasks?.push(this.createSubTask());
+  }
+
+  removeTask(index: number): void {
+    this.subTasks.removeAt(index);
   }
   initForm(){
     this.projectForm = this.builder.group({
@@ -87,13 +125,13 @@ export class CreateNewProjectComponent implements OnInit {
       p_estimated_cost:['',[Validators.required]],
       reporting_manager_ref_id:['',[Validators.required]],
       pc_ref_id: [''],
-      p_status:['',[Validators.required]],
+      // p_status:['',[Validators.required]],
       p_description:['',[Validators.pattern(/^\S.*$/)]],
       p_start_date:['',[Validators.required]],
       p_closure_date:['',[Validators.required]],
       approve_manager_ref_id:['',[Validators.required]],
       p_task_checklist_status:['',[Validators.required]],
-      org_ref_id:[''],
+      org_ref_id:this.orgId,
       user_ref_id:[''],
       opg_ref_id:[''],
       p_code:[''],
@@ -105,6 +143,13 @@ export class CreateNewProjectComponent implements OnInit {
       task_project_category_list:['']
      
     })
+    this.subTaskSetting ={
+      singleSelection: false,
+      idField: 'task_name',
+      textField: 'task_name',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    }
   }
     noHyphenValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -118,32 +163,28 @@ export class CreateNewProjectComponent implements OnInit {
     return this.projectForm.controls;
   }
   getClient(){
-   
-    this.api.getClientDetails(this.params).subscribe((data:any)=>{
+    this.api.getClientDetails(this.params,this.orgId).subscribe((data:any)=>{
       if(data){
         this.allClientList= data.result.data;
       }
-      else{
-        //console.log('Error');
-      }
      
-    }
-
-    )
+    },(error)=>{
+      this.api.showError(error.error.error.message)
+    })
   }
   onPeopleGroupSelect(event: any) {
     this.peopleId.push(event.id)
     
   }
-  // onSingleSelect(event){
-  //   this.taskName.push(event.id)
-  // }
-  // onSelectAll(event){
-  //   event.forEach((element : any)  => {
-  //     this.taskName.push(element.id)
-  //   });
-  //   //console.log(this.taskName)
-  // }
+  onSingleSelect(event){
+    this.taskName.push(event.task_name)
+  }
+  onSelectAll(event){
+    event.forEach((element : any)  => {
+      this.taskName.push(element.task_name)
+    });
+    //console.log(this.taskName)
+  }
   onPeopleGroupSelectAll(event: any) {
     event.forEach((element : any)  => {
       this.peopleId.push(element.id)
@@ -165,7 +206,7 @@ export class CreateNewProjectComponent implements OnInit {
       itemsShowLimit: 3,
       allowSearchFilter: true
     };
-    this.api.getData(`${environment.live_url}/${environment.people_list}?page_number=1&data_per_page=2&pagination=FALSE`).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.people_list}?page_number=1&data_per_page=2&pagination=FALSE&organization_id=${this.orgId}`).subscribe((data:any)=>{
       if(data){
         this.allPeopleGroup = data.result.data;
       }
@@ -178,7 +219,7 @@ export class CreateNewProjectComponent implements OnInit {
     )
   }
   getManager(){
-    this.api.getManagerDetails(this.params).subscribe((data:any)=>{
+    this.api.getManagerDetails(this.params,this.orgId).subscribe((data:any)=>{
       if(data){
         this.allManager= data.result.data;
       }
@@ -187,7 +228,7 @@ export class CreateNewProjectComponent implements OnInit {
 
     )
   }
- 
+  selectedTask = []
   addProject(){
     this.projectForm.patchValue({people_ref_id:this.peopleId});
     
@@ -200,6 +241,17 @@ export class CreateNewProjectComponent implements OnInit {
     }
     else{
       if(this.invalidDate == false){
+        console.log(this.subTaskValue,"subTaskValue")
+        this.selectedTask.push(this.subTaskValue,this.taskForm.value)
+        let flattenedData = this.selectedTask.flatMap(item => {
+          if (Array.isArray(item)) {
+              return item.flat(); // Flatten inner arrays
+          } else if (item.subTasks) {
+              return item.subTasks; // Extract subTasks objects
+          } else {
+              return [item]; // Return single objects
+          }
+      });
         let data = {
           p_name:this.projectForm.value.p_name,
           p_estimated_hours:this.projectForm.value.p_estimated_hours,
@@ -220,7 +272,7 @@ export class CreateNewProjectComponent implements OnInit {
           people_ref_list:this.projectForm.value.people_ref_list,
           p_activation_status:this.projectForm.value.p_activation_status,
           c_ref_id:this.projectForm.value.c_ref_id,
-          project_related_task_list:this.subTaskValue,
+          project_related_task_list:flattenedData,
           task_project_category_list:[Number(this.projectForm.value.task_project_category_list)]
         }
         this.api.addProjectDetails(data).subscribe(res=>{
@@ -259,7 +311,7 @@ export class CreateNewProjectComponent implements OnInit {
         },(error =>{
           this.api.showError(error.error.error.message)
         })
-      )
+        )
       }
       else{
         this.api.showWarning('Invalid date')
@@ -269,14 +321,14 @@ export class CreateNewProjectComponent implements OnInit {
     }
   }
   getCategory(){
-    this.api.getData(`${environment.live_url}/${environment.taskProjectCategories}?page_number=1&data_per_page=2&pagination=FALSE`).subscribe(data=>{
+    this.api.getData(`${environment.live_url}/${environment.taskProjectCategories}?page_number=1&data_per_page=2&pagination=FALSE&org_ref_id=${this.orgId}`).subscribe(data=>{
     //console.log(data,"RESPONSE")
     this.taskCategories = data['result'].data
     })
   }
   getSubTask(event:any){
-  
-    this.api.getSubTaskByProjectTaskCategory(event.target.value).subscribe(
+  this.subTaskValue = ""
+    this.api.getSubTaskByProjectTaskCategory(event.target.value,this.orgId).subscribe(
       (resp:any)=>{
         if(resp.result.data[0].task_list[0].task_name){
           this.subTaskCategories=resp.result.data[0].task_list
@@ -295,8 +347,9 @@ export class CreateNewProjectComponent implements OnInit {
     
   }
   subTaskValue:any
+  
   subTask(event:any){
-    this.subTaskValue=this.subTaskCategories.filter(x => x.task_name ===event.target.value)
+   this.subTaskValue=this.subTaskCategories.filter((x,i) => x.task_name === event.target.value)
   }
   yearEndDateValidator():any {
     const StartDate = new Date(this.projectForm.get('p_start_date').value).getTime() / (1000 * 60);
@@ -308,6 +361,38 @@ export class CreateNewProjectComponent implements OnInit {
     }
     else{
       this.invalidDate = false;
+    }
+  }
+  
+  @Input() options: string[] = [];
+  @Output() valueSelected = new EventEmitter<string>();
+
+  isOpen: boolean = false;
+  selectedValue: string = '';
+  isNewValue: boolean = false;
+
+  toggleDropdown(): void {
+    this.isOpen = !this.isOpen;
+  }
+
+  onSelect(value: string): void {
+    if (value === 'Add new') {
+      this.isNewValue = true;
+      this.selectedValue = '';
+    } else {
+      this.selectedValue = value;
+      this.isNewValue = false;
+      this.valueSelected.emit(value);
+      this.isOpen = false;
+    }
+  }
+
+  addNewValue(): void {
+    this.isNewValue = false;
+    if (this.selectedValue.trim() !== '') {
+      this.options.push(this.selectedValue);
+      this.valueSelected.emit(this.selectedValue);
+      this.selectedValue = '';
     }
   }
 }

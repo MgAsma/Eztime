@@ -1,287 +1,142 @@
-<div class="container-fluid webView">
-    <div class="row">
-        <div class="col-sm-6">
-            <h1>Leave details</h1>
-        </div>
-        <div class="col-sm"></div>
-        <div class="col-sm-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">Leave details</li>
-                </ol>
-              </nav>
-        </div>
-        
+<div class="container-fluid ">
+  <div class="row">
+    <div class="col-sm-6">
+      <h1>Leave details</h1>
     </div>
-    <div class="generic-form bg">
-        
-        <div class="row">
-            <div class="col-md-12 ">
-                <h4>Leave balance</h4>
-                <table class="table">
-                    <thead>
-                        <tr>
-                          <th scope="col">Type</th>
-                          <th scope="col">Alloted</th>
-                          <th scope="col">Used</th>
-                          <th scope="col">Balance</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let items of leaveBalence">
-                         <td>{{items.leave_type}}</td>
-                         <td>{{items.leave_allotted }}</td>
-                         <td>{{items.leaves_used }}</td>
-                         <td>{{items.leave_balance}}</td>
-                        </tr>
-                       
-                        <tr *ngIf="leaveBalence.length == 0" class="text-center">
-                         No records found
-                        </tr>
-                       
-                      </tbody>
-                  </table>
+    <div class="col-sm"></div>
+    <div class="col-sm-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
+          <li class="breadcrumb-item">Leave details</li>
+        </ol>
+      </nav>
+    </div>
+
+  </div>
+  <div class="generic-form bg leave-details-content"> 
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-8">
+        <h6 class="mb-3"> Leave Balance</h6>
+        <mat-card>
+
+        <div  *ngFor="let items of leaveBalence;let i = index">  
+         <div class="leave-stats br-r">
+          <div  class="leave-stat-box">
+            <div class="inner-box">
+              <div class="col-4 d-flex justify-content-center align-items-center" id="balance-count">
+                {{items.leave_allotted }}
+              </div>
+              <div class="col-8">
+                <div>
+                  Leave type
+                </div>
+                <div>
+                  {{items.leave_type }}
+                </div>
+              </div>
             </div>
-            <!-- <div class="col-md-1"></div> -->
-         
+           
+          </div>
+          <div  class="leave-stat-box">
+            <div class="inner-box">
+            <div class="col-4 d-flex justify-content-center align-items-center" id="balance-count">
+              {{items.leaves_used }}
+            </div>
+            <div class="col-8">
+              <div>
+                Used
+              </div>
+              <div>
+                {{items.leave_type }}
+              </div>
+            </div>
+          </div>
+          </div>
+          <div  class="leave-stat-box">
+            <div class="inner-box" style="border: none;">
+            <div class="col-4 d-flex justify-content-center align-items-center" id="balance-count">
+              {{items.leave_balance }}
+            </div>
+            <div class="col-8">
+              <div>
+                Balance
+              </div>
+              <div>
+                {{items.leave_type }}
+              </div>
+            </div>
+          </div>
+          </div>
+         </div>
+          
         </div>
-        <div class="row">
+      </mat-card>
+
+
+        <!-----------Leave details--------------->
+        <h6 class="my-3">Leave details</h6>
+        <mat-card >
+          <div class="row">
             <div class="col-md-12 ">
-                <h4>Leave details</h4>
-                <table class="table">
+                
+                <table class="table" *ngIf="leaveDetails.length > 0">
                     <thead>
                         <tr>
-                          <th scope="col">Status</th>
+                          
                           <th scope="col">From</th>
                           <th scope="col">To</th>
+                          <th scope="col">Status</th>
                           <th scope="col">Days</th>
-                          <th scope="col">Expiry</th>
                         </tr>
                       </thead>
                       <tbody>
-  
+        
                         <tr *ngFor="let items of leaveDetails">
-                         <td><span class="badge badge-info" style="color: white;background-color: blue;">{{items.approved_state}}</span></td>
                          <td>{{items.from_date}}</td>
                          <td>{{items.to_date}}</td>
+                         <td><span class="badge badge-info" style="color: white;background-color: blue;">{{items.approved_state}}</span></td>
                          <td>{{items.days}}</td>
-                         <td>{{items.expires}}</td>
-                         
                         </tr>
-                        <tr *ngIf="leaveDetails.length == 0" class="text-center">
-                          No records found
-                         </tr>
+                       
                       </tbody>
                   </table>
+                  <div *ngIf="leaveDetails.length == 0" class="text-center">
+                    No records found !
+                   </div>
             </div>
-        </div>
+          </div>
+        </mat-card>
+        
+      </div>
+    
+      <div class="col-sm-12 col-md-12 col-lg-4">
         <div class="row">
           <div class="col-md-12">
-              <h4>Upcoming holidays</h4>
-              <table class="table ">
-                  <thead>
-                      <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Day</th>
-                        <th scope="col">Holiday</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <!-- <tr>
-                       <td>abc</td>
-                       <td>abc</td>
-                       <td >abc</td>
-                      </tr> -->
-                      <tr>No records found</tr>
-                    </tbody>
-                </table>
-          </div>
-          <!-- <div class="col-md-1"></div> -->
-          <div class="col-md-12 ">
-            <h4>Add on leave transactions</h4>
-            <table class="table">
+            <h6>Holiday List</h6>
+            <mat-card>
+            <table class="table " *ngIf="holidayList">
                 <thead>
                     <tr>
-                      <th scope="col">Type</th>
-                      <th scope="col">From</th>
-                      <th scope="col">To</th>
-                      <th scope="col">Days</th>
-                      <th scope="col">status</th>
-                      <th scope="col">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr >No records found</tr>
-                  </tbody>
-              </table>
-        </div>
-          <div class="col-md-12 ">
-              <h4>Recent transactions</h4>
-              <table class="table ">
-                  <thead>
-                      <tr>
-                        <th scope="col">Type</th>
-                        <th scope="col">From</th>
-                        <th scope="col">To</th>
-                        <th scope="col">Days</th>
-                        <th scope="col">status</th>
-                        <th scope="col">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>No records found</tr>
-                     
-                    </tbody>
-                </table>
-          </div>
-      </div>
-    </div>
-   
-</div>
-
-<div class="container-fluid mobileView">
-  <div class="row">
-      <div class="col-sm-6">
-          <h1>Leave details</h1>
-      </div>
-  </div>
-  <div class="generic-form bg">
-      
-      <div class="row">
-          <div class="col-md-12 ">
-              <h4>Leave balance</h4>
-              <table class="table">
-                  <thead>
-                      <tr>
-                        <th scope="col">Type</th>
-                        <th scope="col">Alloted</th>
-                        <th scope="col">Used</th>
-                        <th scope="col">Balance</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let items of leaveBalence">
-                       <td>{{items.leave_type}}</td>
-                       <td>{{items.leave_allotted }}</td>
-                       <td>{{items.leaves_used }}</td>
-                       <td>{{items.leave_balance}}</td>
-                      </tr>
-                     
-                      <tr *ngIf="leaveBalence.length == 0" class="text-center">
-                       No records found
-                      </tr>
-                     
-                    </tbody>
-                </table>
-          </div>
-          <!-- <div class="col-md-1"></div> -->
-       
-      </div>
-      <div class="row">
-          <div class="col-md-12 ">
-              <h4>Leave details</h4>
-              <table class="table">
-                  <thead>
-                      <tr>
-                        <th scope="col">Status</th>
-                        <th scope="col">From</th>
-                        <th scope="col">To</th>
-                        <th scope="col">Days</th>
-                        <th scope="col">Expiry</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                      <tr *ngFor="let items of leaveDetails">
-                       <td><span class="badge badge-info" style="color: white;background-color: blue;">{{items.approved_state}}</span></td>
-                       <td>{{items.from_date}}</td>
-                       <td>{{items.to_date}}</td>
-                       <td>{{items.days}}</td>
-                       <td>{{items.expires}}</td>
-                       
-                      </tr>
-                      <tr *ngIf="leaveDetails.length == 0" class="text-center">
-                        No records found
-                       </tr>
-                    </tbody>
-                </table>
-          </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-            <h4>Upcoming holidays</h4>
-            <table class="table ">
-                <thead>
-                    <tr>
-                      <th scope="col">Date</th>
-                      <th scope="col">Day</th>
                       <th scope="col">Holiday</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <!-- <tr>
-                     <td>abc</td>
-                     <td>abc</td>
-                     <td >abc</td>
-                    </tr> -->
-                    <tr>No records found</tr>
-                  </tbody>
-              </table>
-        </div>
-        <!-- <div class="col-md-1"></div> -->
-        <div class="col-md-12 ">
-          <h4>Add on leave transactions</h4>
-          <table class="table">
-              <thead>
-                  <tr>
-                    <th scope="col">Type</th>
-                    <th scope="col">From</th>
-                    <th scope="col">To</th>
-                    <th scope="col">Days</th>
-                    <th scope="col">status</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr >No records found</tr>
-                </tbody>
-            </table>
-      </div>
-        <div class="col-md-12 ">
-            <h4>Recent transactions</h4>
-            <table class="table ">
-                <thead>
-                    <tr>
-                      <th scope="col">Type</th>
-                      <th scope="col">From</th>
-                      <th scope="col">To</th>
-                      <th scope="col">Days</th>
-                      <th scope="col">status</th>
-                      <th scope="col">Action</th>
+                    <tr *ngFor="let items of holidayList  | keyvalue">
+                     <td>{{items.key}} - {{items?.value }}</td>
+                    
                     </tr>
-                  </thead>
-                  <tbody>
-                    <tr>No records found</tr>
-                   
+                    <!-- <tr>No records found</tr> -->
                   </tbody>
               </table>
+              <div *ngIf="!holidayList">No records found</div>
+            </mat-card>
         </div>
+        </div>
+      </div>
     </div>
+    
   </div>
- 
-</div>
-<div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
-  <a routerLink="/leave/leaveApplication"> <button mat-fab-button type="button"  class="createbtn-1" placement="top" container="body" ngbTooltip="Apply leave" placement="top"><i class="fa fa-plus"></i>
-  </button></a>
   
-  </div>
-<div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
-  <a routerLink="/leave/requestAddLeave"> <button mat-fab-button type="button"  class="requestbtn" placement="top" container="body" ngbTooltip="Request add on leave" placement="top"><i class="bi bi-cursor"></i></button></a>
-  </div>
-
-
-
-
-
+</div>
 

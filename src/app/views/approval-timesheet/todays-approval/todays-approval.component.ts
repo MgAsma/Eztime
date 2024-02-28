@@ -14,6 +14,7 @@ export class TodaysApprovalComponent implements OnInit {
   totalCount: any;
   currDate:any;
   user_id: string;
+  orgId: any;
 
   constructor(
     private timesheetService:TimesheetService,
@@ -28,6 +29,7 @@ export class TodaysApprovalComponent implements OnInit {
   ngOnInit(): void {
     let date = new Date();
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
+    this.orgId = sessionStorage.getItem('org_id')
     this.currDate =  date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-'  +('0' +(date.getDate())).slice(-2) 
      //console.log( this.currDate," this.currDate")
   
@@ -35,7 +37,8 @@ export class TodaysApprovalComponent implements OnInit {
       user_id:this.user_id,
       page_number:1,
       data_per_page:10,
-      status:'YET_TO_APPROVED'
+      status:'YET_TO_APPROVED',
+      organization_id:this.orgId
     }
    this.getApprovals(data)
   }
@@ -52,7 +55,8 @@ export class TodaysApprovalComponent implements OnInit {
         user_id:this.user_id,
         page_number:event,
         data_per_page:10,
-        status:'YET_TO_APPROVED'
+        status:'YET_TO_APPROVED',
+        organization_id:this.orgId
       }
       this.getApprovals(data);
     }
@@ -79,6 +83,7 @@ export class TodaysApprovalComponent implements OnInit {
       page_number:1,
       data_per_page:10,
       status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
+      organization_id:this.orgId
     }
     this.getApprovals(params);
   }

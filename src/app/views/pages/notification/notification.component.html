@@ -1,13 +1,13 @@
 
   
-    <ul>
-      <div class="row">
-          <div class="col-9"><h2>Notification </h2></div>
-          <div class="col-1"><button type="button" class="btn-close text-end" aria-label="Close" (click)="closeBtn()" ></button></div>
+    <ul class="notification-modal">
+      <div class="notification-header">
+          <h2 class="title">Notification </h2>
+          <div class="close-btn"><i class="bi bi-x-lg" (click)="closeBtn()"></i> </div>
       </div>
   
    
-      <div class="container-h">
+      <div class="notification-content">
         <li *ngFor="let note of notes">
           <h5>{{note.project_data.project_name}}</h5>
           <div class="data-d">{{note.info.message}}</div>
@@ -16,6 +16,7 @@
           <div class="clr-state" [ngStyle]="note.notify ? {'background-color':note.notify}:{'background-color':''}">{{note.project_data.project_status}}</div>
           
         </li>
+       
       </div>
       </ul>
   

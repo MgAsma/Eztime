@@ -12,6 +12,7 @@ export class CreateRoleComponent implements OnInit {
 
   allRole:any=[];
   role:any;
+  orgId: any;
 
   constructor(
     private builder:FormBuilder, 
@@ -20,6 +21,7 @@ export class CreateRoleComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    this.orgId=sessionStorage.getItem('org_id')
  this.initForm();
   }
   goBack(event)
@@ -56,6 +58,7 @@ export class CreateRoleComponent implements OnInit {
         role_status:this.roleForm.value.role_status,
         description:this.roleForm.value.description,
         module_name:['ROLES'],
+        organization_id:this.orgId,
         permissions:[
           {
           "ROLES": [],
@@ -63,7 +66,7 @@ export class CreateRoleComponent implements OnInit {
          }
       ]
       }
-      this.api.addRoles(data).subscribe(res =>{
+      this.api.addRoles(data,this.orgId).subscribe(res =>{
           if(res){
             this.api.showSuccess('Role added successfully!');
             this.roleForm.reset();

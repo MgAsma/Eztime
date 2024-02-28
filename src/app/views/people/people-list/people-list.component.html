@@ -24,7 +24,7 @@
                   </select>
             </div>
             <div class="col-sm"></div>
-            <div class="col-md-7 col-lg-5 search-div">
+            <div class="col-md-7 col-lg-4 search-div">
                 <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search by name/role/center"aria-describedby="emailHelp"  autocomplete="off">
                 <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i> 
               </div>
@@ -34,8 +34,7 @@
             <div class="col">
                 <table class="table table-hover">
                     <thead>
-                        <tr>
-                          
+                        <tr> 
                           <th scope="col">Sl. No.</th>
                           <th scope="col">People Name <i  *ngIf="!arrow" (click)="sort('asc','u_first_name')" class="fa fa-sort-up"></i><i (click)="sort('desc','u_first_name')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
                           <th scope="col">Designation <i  *ngIf="!arrow" (click)="sort('asc','u_designation')" class="fa fa-sort-up"></i><i (click)="sort('desc','u_designation')" *ngIf="arrow" class="fa fa-sort-down"></i></th>

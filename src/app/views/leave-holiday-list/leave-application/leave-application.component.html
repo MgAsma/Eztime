@@ -333,7 +333,7 @@
             <div class="row">
                 <div class="col-sm">
                     <p>From session <span >*</span></p> 
-                    <select class="form-select" aria-label="Default select example" formControlName="from1_session" >
+                    <select class="form-select" aria-label="Default select example" formControlName="from1_session" (change)="toggleDisable('from1_session')">
                         <option value="" selected disabled>Select from session</option>
                         <option value="1">1 st Half</option>
                         <option value="2">2 nd Half</option>

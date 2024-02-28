@@ -32,13 +32,14 @@ export class PrefixSuffixListComponent implements OnInit {
   cards;
   selectedId: any;
   enabled: boolean = true;
-  params: { page_number: number; data_per_page: number; };
+  params:any;
   permissions: any;
   pagination={
     number_of_pages: 0,
     has_next: false
   }
   user_id: string;
+  orgId: any;
   constructor(
     private modalService:NgbModal, 
     private api:ApiserviceService,
@@ -46,36 +47,25 @@ export class PrefixSuffixListComponent implements OnInit {
     private location:Location,
     private common_service:CommonServiceService) { }
 
-    goBack(event)
-  {
+    goBack(event){
       event.preventDefault(); // Prevent default back button behavior
-  this.location.back();
-  
-    }
-  ngOnInit(): void {
+     this.location.back();
+     }
+    ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.allPrefixSuffix =[]
     this.params = {
       page_number:this.page,
-      data_per_page:this.tableSize
+      data_per_page:this.tableSize,
+      organization_id:this.orgId
     }
     this.getPrefixSuffix(this.params);
     this.enabled = true;
-    // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
-
-    // if (accessAction.length) {
-    //   accessAction.forEach((res) => {
-    //    //console.log(res.module_name, res.permissions, "RESP");
-    //     if (res.module_name === 'PEOPLE') {
-    //       this.permissions = res.permissions['PREFIX/SUFFIX'];
-    //    //   console.log(this.permissions, "Permissions for DEPARTMENT");
-    //     }
-    //   });
-    // }
     this.getUserControls()
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
         //console.log(this.common_service.permission,"PERMISSION")
@@ -110,12 +100,11 @@ export class PrefixSuffixListComponent implements OnInit {
     },(error=>{
       this.api.showError(error.error.error.message)
     })
-      
     
     )
   }
   filterSearch(){
-    this.api.getData(`${environment.live_url}/${environment.prefix_suffix}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.prefix_suffix}?search_key=${this.term}&page_number=1&data_per_page=10&organization_id=${this.orgId}&pagination=TRUE`).subscribe((data:any)=>{
       this.allPrefixSuffix   = data.result.data;
       const noOfPages:number = data['result'].pagination.number_of_pages
       this.count  = noOfPages * this.tableSize

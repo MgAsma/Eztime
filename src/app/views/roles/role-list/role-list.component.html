@@ -24,7 +24,7 @@
       </div>
      
       <div class="col-sm"></div>
-      <div class="col-md-6 col-lg-5 search-div">
+      <div class="col-md-6 col-lg-4 search-div">
           <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search by role name/description/status" aria-describedby="emailHelp"  autocomplete="off">
           <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i> 
         </div>
@@ -42,7 +42,7 @@
                     <th scope="col"> Description <i  *ngIf="!arrow" (click)="sort('asc','description')" class="fa fa-sort-up"></i><i (click)="sort('desc','description')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
                     <th scope="col"> Added Date <i  *ngIf="!arrow" (click)="sort('asc','created_time')" class="fa fa-sort-up"></i><i (click)="sort('desc','created_time')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
                     <th scope="col"> Status <i  *ngIf="!arrow" (click)="sort('asc','role_status')" class="fa fa-sort-up"></i><i (click)="sort('desc','role_status')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                    <th scope="col" *ngIf="role == 'ADMIN'">Accessibilty</th>
+                    <th scope="col" *ngIf="role == 'ADMIN'" class="text-center">Accessibilty</th>
                     <th scope="col" *ngIf="role == 'ADMIN'">Action</th>
                   </tr>
                 </thead>
@@ -57,7 +57,7 @@
                    <td>{{item.description}}</td>
                    <td>{{item.created_time | date : 'dd/MM/yyyy'}}</td>
                    <td>{{item.role_status}}</td>
-                   <td  *ngIf="role == 'ADMIN'"><a routerLink="/role/roles-access/{{item.id}}/{{item.user_role_name}}"><i class="fa fa-cogs" aria-hidden="true" ></i></a></td>
+                   <td  *ngIf="role == 'ADMIN'" class="text-center"><a routerLink="/role/roles-access/{{item.id}}/{{item.user_role_name}}"><i class="fa fa-cogs" aria-hidden="true" ></i></a></td>
                   
                  
                     <td  *ngIf="role == 'ADMIN'">

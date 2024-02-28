@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {  Validators, FormBuilder} from '@angular/forms';
+import {  Validators, FormBuilder, FormGroup} from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -12,6 +12,8 @@ export class UpdateTagComponent implements OnInit {
   id:any;
   page: string;
   tableSize: string;
+  orgId: any;
+  updateForm:FormGroup;
 
   constructor(
     private builder:FormBuilder, 
@@ -26,17 +28,23 @@ export class UpdateTagComponent implements OnInit {
    
     
   }
-  goBack(event)
-  {
-    event.preventDefault(); // Prevent default back button behavior
+  goBack(event){
+  event.preventDefault(); // Prevent default back button behavior
   this.location.back();
   
   }
-  updateForm= this.builder.group({
-    tag_name:['',[Validators.pattern(/^[a-zA-Z]+$/),Validators.required]],
-    tage_status:['',Validators.required],
-  })
+  initForm(){
+    this.updateForm= this.builder.group({
+      tag_name:['',[Validators.pattern(/^[a-zA-Z]+$/),Validators.required]],
+      tage_status:['',Validators.required],
+      organization_id:this.orgId
+      
+    })
+  }
+  
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
+    this.initForm()
     this.edit();
   }
   get f(){
@@ -45,7 +53,9 @@ export class UpdateTagComponent implements OnInit {
   edit(){
     let params = {
       page_number:this.page,
-      data_per_page:this.tableSize
+      data_per_page:this.tableSize,
+      pagination:'TRUE',
+      organization_id:this.orgId
   }
     this.api.getCurrentTagCategoryDetails(this.id,params).subscribe((data:any)=>{
       this.updateForm.patchValue({tag_name:data.result.data[0].tag_name,

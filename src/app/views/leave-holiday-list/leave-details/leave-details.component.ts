@@ -24,6 +24,7 @@ export class LeaveDetailsComponent implements OnInit {
   // }
   leaveTypeForm! : FormGroup
   user_id: string;
+  orgId: any;
 
   constructor(
     private builder:FormBuilder, 
@@ -39,6 +40,7 @@ export class LeaveDetailsComponent implements OnInit {
   
   } 
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.initForm()
     this.getCenter()
     this.isMonthShown =false
@@ -56,6 +58,7 @@ export class LeaveDetailsComponent implements OnInit {
       yearly_leaves:[''],
       monthly_leaves:[''],
       carry_forward_per:['',[Validators.required]],
+      organization_id:this.orgId
       
     })
   }
@@ -86,7 +89,6 @@ export class LeaveDetailsComponent implements OnInit {
     yearlyLeavesControl?.updateValueAndValidity();
   }
   toggleShow(event) {
-    console.log(event,"EVENT--------------------")
     const maxEncashmentsControl = this.leaveTypeForm.get('max_encashments');
     if (event.target.checked === true) {
       if(this.leaveTypeForm.get('max_encashments').value === ''){
@@ -111,14 +113,13 @@ export class LeaveDetailsComponent implements OnInit {
     return this.leaveTypeForm.controls;
   }
   getCenter(){
-    this.api.getCenterDetails(this.params).subscribe((data:any)=>{
+    this.api.getCenterDetails(this.params,this.orgId).subscribe((data:any)=>{
       if(data.result.data){
         this.allCenter = data.result.data;
         }
     })
   }
   toggleAdd() {
-    console.log(this.leaveTypeForm.get('encashment').value,"VALUE------------------")
     const maxEncashmentsControl = this.leaveTypeForm.get('max_encashments');
     if (this.leaveTypeForm.get('encashment').value === true) {
       if(this.leaveTypeForm.get('max_encashments').value === ''){
@@ -161,7 +162,6 @@ export class LeaveDetailsComponent implements OnInit {
       console.log(this.leaveTypeForm.value)
       this.toggleMonthAdd()
       this.toggleAdd()
-      // this.api.showError('Invalid')
       this.leaveTypeForm.markAllAsTouched()
     }
     else{
@@ -243,12 +243,7 @@ export class LeaveDetailsComponent implements OnInit {
       }
         
       }
-    // convertToZero(event: any): void {
-    //   const inputValue = Number(event.target.value);
-    //   if (inputValue < 0) {
-    //    event.target.value = 0;
-    //   }
-    // }
+   
 }
 
   

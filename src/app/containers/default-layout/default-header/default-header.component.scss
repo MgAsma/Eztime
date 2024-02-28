@@ -37,6 +37,7 @@
     color:gray;
     position: relative;
     top:10px;
+    right: 20px;
     cursor: pointer;
     font-size: large;
 }
@@ -67,4 +68,9 @@
     .w-27{
         width:64% !important;
     } 
+}
+mat-card{
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }

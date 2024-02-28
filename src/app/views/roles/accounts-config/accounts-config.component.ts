@@ -34,16 +34,18 @@ export class AccountsConfigComponent implements OnInit {
   permission: any = {};
   checkAll: boolean;
   singleChecked: boolean = false;
+  orgId: any;
   constructor(private api:ApiserviceService) { }
 
   ngOnInit(): void {
     this.id = sessionStorage.getItem('user_role_id')
+    this.orgId = sessionStorage.getItem('org_id')
     this.userRole =sessionStorage.getItem('user_role_c_side') 
     this.getUserControls();
   }
 
   getUserControls(){
-  this.api.getUserRoleById(`id=${this.id}&page_number=1&data_per_page=10`).subscribe(res=>{
+  this.api.getUserRoleById(`id=${this.id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe(res=>{
     if (res) {
       //console.log(res, "RESPONSE")
       this.permission = res['data'];
@@ -181,7 +183,8 @@ export class AccountsConfigComponent implements OnInit {
       data={
       update: "ACCESSIBILITY",   
       module_name:this.permission[0].module_name,
-      permissions: this.permission[0].permissions
+      permissions: this.permission[0].permissions,
+      organization_id:this.orgId
       };
       
     

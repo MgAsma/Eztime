@@ -22,6 +22,7 @@ export class OfficeWorkingDaysComponent implements OnInit {
   mins:any ={};
   user_id: any;
   hoursTo:any = {}
+  orgId: any;
   constructor(
     private _fb:FormBuilder,
     private api:ApiserviceService,
@@ -38,21 +39,8 @@ export class OfficeWorkingDaysComponent implements OnInit {
     this.initForm()
     this.getWorkingDays()
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
-    // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
-    // if(accessAction.length){
-    //   accessAction.forEach(res=>{
-    //    // console.log(res,"APP___________________")
-    //     if(res.module_name === 'LEAVE/HOLIDAY_LIST'){
-    //       this.permissions = res.permissions['OFFICE_WORKING_DAYS']
-    //       if (this.permissions.includes('CREATE')) {
-    //         this.enable = true;
-    //       }
-    //        //console.log(this.enable,'Permission for OFFICE_WORKING_DAYS')
-    //     }
-    //   })
-      
-    // }
-   
+    this.orgId = sessionStorage.getItem('org_id')
+    
     this.hours={
       hour1:['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23'],
       hour2:['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23'],
@@ -85,16 +73,13 @@ export class OfficeWorkingDaysComponent implements OnInit {
   }
   getUserControls(){
    
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
       }
       else{
         this.api.showError("ERROR !")
       }
-      //console.log(res,'resp from yet');
-      
     }
   
     )
@@ -112,9 +97,6 @@ export class OfficeWorkingDaysComponent implements OnInit {
         });
         
       }
-     
-     
-    //  console.log(this.accessConfig,"this.accessConfig")
     })
     }
   get f(){
@@ -169,73 +151,12 @@ export class OfficeWorkingDaysComponent implements OnInit {
     })
   }
   valueChanges(){
-    // console.log(this.officeWorkingDaysForm,)
-    // if(this.officeWorkingDaysForm['monFromHrs']){
-    //   this.officeWorkingDaysForm.patchValue({
-    //   monFromMins:'',
-    //   monToHours:'',
-    //   monToMins:'',
-    //   monTotalhrs:'',
-    //   })
-    // }
-    // else if(this.officeWorkingDaysForm['tuesFromHrs']){
-    //   this.officeWorkingDaysForm.patchValue({
-    //   tuesFromMins:'',
-    //   tuesToHours:'',
-    //   tuesToMins:'',
-    //   tuesTotalhrs:''
-    //   })
-    // }
-    // else if(this.officeWorkingDaysForm['wedFromHrs']){
-    //   this.officeWorkingDaysForm.patchValue({
-    //   wedFromMins:'',
-    //   wedToHours:'',
-    //   wedToMins:'',
-    //   wedTotalhrs:''
-    //   })
-    // }
-    // else if(this.officeWorkingDaysForm['thursFromHrs']){
-    //   this.officeWorkingDaysForm.patchValue({
-    //     thursFromMins:'',
-    //     thursToHours:'',
-    //     thursToMins:'',
-    //     thursTotalhrs:'',
-    //   })
-    // }
-    // else if(this.officeWorkingDaysForm['friFromHrs']){
-    //   this.officeWorkingDaysForm.patchValue({
-    //     friFromMins:'',
-    //     friToHours:'',
-    //     friToMins:'',
-    //     friTotalhrs:'',
-    //   })
-    // }
-    // else if(this.officeWorkingDaysForm['satFromHrs']){
-    //   this.officeWorkingDaysForm.patchValue({
-    //     satFromMins:'',
-    //     satToHours:'',
-    //     satToMins:'',
-    //     satTotalhrs:'',
-    //   })
-    // }
-    // else if(this.officeWorkingDaysForm['sunFromHrs']){
-    //   this.officeWorkingDaysForm.patchValue({
-    //   sunFromMins:'',
-    //   sunToHours:'',
-    //   sunToMins:'',
-    //   sunTotalhrs:'',
-    //   })
-    // }
-    // else{
-    //  this.getWorkingDays() 
-    // }
+    
   }
   
   getWorkingDays(){
     const org_id  = JSON.parse(sessionStorage.getItem('org_id'))
     this.api.getDataWithHeaders(`${environment.live_url}/${environment.office_working_days}?organization_id=${org_id}`).subscribe((res:any)=>{
-    //  console.log(res,'data.office_working_days_all.FRIDAY.from_hr')
-
       const officeWorkingDays = res.data.office_working_days_all;
       this.officeWorkingDaysForm.patchValue({
         monFromHrs: officeWorkingDays.MONDAY.from_hr,
@@ -287,9 +208,7 @@ export class OfficeWorkingDaysComponent implements OnInit {
       this.submitted = true
     }
     else{
-      // window.alert(this.officeWorkingDaysForm.value)
-      //console.log(this.officeWorkingDaysForm.value)
-
+      
       const inputObj = this.officeWorkingDaysForm.value;
       const user_id  = JSON.parse(sessionStorage.getItem('user_id'))
       const org_id  = JSON.parse(sessionStorage.getItem('org_id'))
@@ -361,7 +280,7 @@ export class OfficeWorkingDaysComponent implements OnInit {
           outputObj.office_working_days_all.SUNDAY = {};
         }
       console.log(outputObj);
-      this.api.postData(`${environment.live_url}/${environment.office_working_days}`,outputObj).subscribe(res =>{
+      this.api.postData(`${environment.live_url}/${environment.office_working_days}?organization_id=${this.orgId}`,outputObj).subscribe(res =>{
         if(res){
           this.api.showSuccess(`Office working days updated successfully!!`)
           this.ngOnInit()

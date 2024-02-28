@@ -34,6 +34,7 @@ export class ApprovedComponent implements OnInit {
   entryPoint: any;
   user_id: any;
   accessConfig: any;
+  orgId: any;
   @Input() set data(value) {
     this.list = value;
     // this.count = value['count']
@@ -53,21 +54,19 @@ export class ApprovedComponent implements OnInit {
 
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id')
+    this.orgId = sessionStorage.getItem('org_id')
     this.getUserControls()
   }
     
   getUserControls(){
    
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
       }
       else{
         this.api.showError("ERROR !")
       }
-    //  //console.log(res,'resp from yet');
-      
     }
     )
     this.common_service.permission.subscribe(res=>{
@@ -80,8 +79,6 @@ export class ApprovedComponent implements OnInit {
           
         });  
       }
-    
-    //  console.log(this.accessConfig,"this.accessConfig")
     })
   }
   delete(item:any){

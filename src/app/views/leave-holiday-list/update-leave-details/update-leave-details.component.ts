@@ -19,6 +19,7 @@ export class UpdateLeaveDetailsComponent implements OnInit {
   }
   isMonthShown: boolean = false; // hidden by default
   isYearShown: boolean = true; // seen by default
+  orgId: any;
   // toggleMonthShow() {
   //   this.isMonthShown = !this.isMonthShown;
   // }
@@ -38,6 +39,7 @@ export class UpdateLeaveDetailsComponent implements OnInit {
   }
  
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.initForm();
     this.edit();
     this.getCenter()
@@ -112,7 +114,7 @@ export class UpdateLeaveDetailsComponent implements OnInit {
   }
   
   edit(){
-    this.api.getCurrentLeaveTypeDetails(this.id).subscribe((data:any)=>{
+    this.api.getCurrentLeaveTypeDetails(this.id,this.orgId).subscribe((data:any)=>{
       //console.log(data,"LEAVE TYPE DETAILS")
       const filteredLeaves = data.result.data.filter(f=>{
         return +f.id === +this.id
@@ -156,7 +158,6 @@ export class UpdateLeaveDetailsComponent implements OnInit {
     yearlyLeavesControl?.updateValueAndValidity();
   }
   toggleAdd() {
-    console.log(this.updateForm.get('encashment').value,"VALUE------------------")
     const maxEncashmentsControl = this.updateForm.get('max_encashments');
     if (this.updateForm.get('encashment').value === true) {
       if(this.updateForm.get('max_encashments').value === ''){
@@ -214,9 +215,9 @@ export class UpdateLeaveDetailsComponent implements OnInit {
               carry_forward_per:Number(this.updateForm.value.carry_forward_per),
               leave_applicable_for:Number(this.updateForm.value.leave_applicable_for),
               encashment:this.updateForm.value.encashment,
-              accrude_monthly:this.updateForm.value.accrude_monthly 
+              accrude_monthly:this.updateForm.value.accrude_monthly,
+              organization_id:this.orgId
             }
-           console.log(data,'MONTHLY')
             
            this.api.updateLeaveTypeCategory(this.id,data).subscribe(
              (response: any) => {
@@ -253,7 +254,8 @@ export class UpdateLeaveDetailsComponent implements OnInit {
             carry_forward_per:Number(this.updateForm.value.carry_forward_per),
             leave_applicable_for:Number(this.updateForm.value.leave_applicable_for),
             encashment:this.updateForm.value.encashment,
-            accrude_monthly:this.updateForm.value.accrude_monthly 
+            accrude_monthly:this.updateForm.value.accrude_monthly,
+            organization_id:this.orgId
           }
           // console.log(data,'YEARLY')
            this.api.updateLeaveTypeCategory(this.id,data).subscribe(
@@ -302,22 +304,11 @@ export class UpdateLeaveDetailsComponent implements OnInit {
        
   }
   getCenter(){
-    this.api.getCenterDetails(this.params).subscribe((data:any)=>{
+    this.api.getCenterDetails(this.params,this.orgId).subscribe((data:any)=>{
       if(data.result.data){
         this.allCenter = data.result.data;
-        // //console.log(data,"CENTER ID")
         }
     })
   }
-  // convertToZero(event: any): void {
-    
-  //   const inputValue = Number(event.target.value);
-  //     if (inputValue <0) {
-  //      event.target.value = 0;
-  //      this.updateForm.patchValue({
-  //       type:0
-  //      })
-  //     }
-     
-  // }
+ 
 }

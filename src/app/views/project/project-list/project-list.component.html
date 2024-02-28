@@ -25,7 +25,7 @@
                   </select>
             </div>
             <div class="col-sm"></div>
-            <div class="col-sm-5 mb-1 search-div">
+            <div class="col-sm-4 mb-1 search-div">
                 <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by project/client/status"  aria-describedby="emailHelp"  autocomplete="off">
                 <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
             </div>
@@ -69,7 +69,6 @@
                             
                             <td>
                                 <ng-container *ngFor="let access of permissions">
- 
                                     <button mat-raised-button mat-mini-fab  routerLink="/project/update/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
                                       <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
                                     </button>
@@ -150,7 +149,7 @@
                         <h6 class="card-subtitle"><i class="bi bi-list-task"></i>Tasks</h6>
                         <div class="value-container">
                         <ng-container *ngIf="item.project_related_task_list.length >0">
-                            <ng-container *ngFor="let task of item.project_related_task_list">{{task.task_name}}</ng-container>
+                        <ng-container *ngFor="let task of item.project_related_task_list">{{task.task_name}}</ng-container>
                         </ng-container>
                         <ng-container *ngIf="item.project_related_task_list.length ===0">
                             NA
@@ -192,10 +191,10 @@
                  </div>
             </div>
         </div>
-     <div *ngIf="result.length === 0 " >
+     <div *ngIf="result.length === 0">
     <app-generic-norecards></app-generic-norecards>
      </div>
-     <div class="row" *ngIf="result.length !== 0 " >
+     <div class="row" *ngIf="result.length !== 0">
         <div class="col-sm" >
             <div class="d-flex justify-content-center">
                 <pagination-controls 

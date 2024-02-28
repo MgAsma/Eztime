@@ -44,13 +44,16 @@ export class CreatePeopleComponent implements OnInit {
   allCostCenter: any = [];
   organizationList: any = [];
   user_id: string;
+  org_id: any;
   
   changeYearStartDate(event:any){
    
     this.startDate =this.datepipe.transform( event.target.value,'dd/MM/yyyy')
     //console.log(event.target.value, this.startDate)
   }
-  constructor(private builder:FormBuilder, private api: ApiserviceService,private datepipe:DatePipe) { }
+  constructor(private builder:FormBuilder, private api: ApiserviceService,private datepipe:DatePipe) {
+    this.org_id = sessionStorage.getItem('org_id')
+   }
 
   ngOnInit(): void {
     this.getAllRoleandDepartment()
@@ -90,8 +93,6 @@ export class CreatePeopleComponent implements OnInit {
       center_id:['',Validators.required],
       u_status:['',Validators.required],
       u_org_code:['12345',Validators.required],
-      organization_id:['',Validators.required]
-      
       })
   }
  
@@ -125,7 +126,7 @@ export class CreatePeopleComponent implements OnInit {
   }
  
   getRole(){
-   let params = `page_number=1&data_per_page=2&pagination=FALSE`
+   let params = `page_number=1&data_per_page=2&pagination=FALSE&organization_id=${this.org_id}`
     this.api.getUserAccess(params).subscribe((data:any)=>{
       if(data.result.data){
         const role = data.result.data
@@ -142,7 +143,7 @@ export class CreatePeopleComponent implements OnInit {
   }
  
   getDepartment(){
-    this.api.getDepartmentDetails(this.params).subscribe((data:any)=>{
+    this.api.getDepartmentDetails(this.params,this.org_id).subscribe((data:any)=>{
       if(data){
         const department = data.result.data
         const filteredDepartment = department.filter(depart => !depart.od_status.includes('Inactive'))
@@ -155,7 +156,7 @@ export class CreatePeopleComponent implements OnInit {
     )
   }
   getReportingManager(){
-    this.api.getManagerDetails(this.params).subscribe((data:any)=>{
+    this.api.getManagerDetails(this.params,this.org_id).subscribe((data:any)=>{
       if(data.result.data){
         const reportingManager = data.result.data
         const filteredRepotingManager = reportingManager.filter(manager => !manager.u_status?.includes('Inactive'))
@@ -177,7 +178,7 @@ export class CreatePeopleComponent implements OnInit {
       allowSearchFilter: true,
       unSelectAllText:'Un Select All'
     };
-    this.api.getTagDetails(this.params).subscribe((data:any)=>{
+    this.api.getTagDetails(this.params,this.org_id).subscribe((data:any)=>{
       if(data.result.data){
         const tags = data.result.data
         const filteredTags = tags.filter(tags => !tags.tage_status.includes('Inactive'))
@@ -205,7 +206,7 @@ export class CreatePeopleComponent implements OnInit {
     )
   }
   getCenter(){
-    this.api.getCenterDetails(this.params).subscribe((data:any)=>{
+    this.api.getCenterDetails(this.params,this.org_id).subscribe((data:any)=>{
       if(data.result.data){
         const center = data.result.data;
         const filteredCenter = center.filter(center => !center.center_status?.includes('Inactive'))
@@ -218,7 +219,7 @@ export class CreatePeopleComponent implements OnInit {
     })
   }
   getPrefix(){
-    this.api.getPrefixSuffixDetails(this.params).subscribe((data:any)=>{
+    this.api.getPrefixSuffixDetails(this.params,this.org_id).subscribe((data:any)=>{
       if(data.result.data){
         this.allPrefix= data.result.data;
       } 

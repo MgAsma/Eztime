@@ -13,6 +13,7 @@ export class CreateDepartmentComponent implements OnInit {
 
   allDepartment:any=[];
   department:any;
+  org_id: string;
 
   constructor(
     private builder:FormBuilder, 
@@ -22,18 +23,18 @@ export class CreateDepartmentComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+  this.org_id = sessionStorage.getItem('org_id')
   this.initForm()
   }
-  goBack(event)
-  {
-    event.preventDefault(); // Prevent default back button behavior
+  goBack(event){
+  event.preventDefault(); // Prevent default back button behavior
   this.location.back();
-  
   }
   initForm(){
     this.departmentForm= this.builder.group({
       od_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      od_status:['',Validators.required]
+      od_status:['',Validators.required],
+      organization_id:this.org_id
     })
   }
   get f(){

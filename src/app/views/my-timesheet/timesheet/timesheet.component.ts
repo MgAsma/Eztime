@@ -30,6 +30,7 @@ export class TimesheetComponent implements OnInit {
   p_ToDate= '2023-03-30';
   totalCount: any;
   @ViewChild('tabset') tabset: TabsetComponent;
+  orgId: any;
   constructor(
     private _fb:FormBuilder,
     private api:ApiserviceService,
@@ -45,6 +46,7 @@ export class TimesheetComponent implements OnInit {
     return this.timeSheetForm.controls;
   }
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     let params={
       module:"TIMESHEET",
       menu:"PEOPLE_TIMESHEET",
@@ -66,7 +68,7 @@ export class TimesheetComponent implements OnInit {
  }
   getByStatus(params){
    
-     this.api.getData(`${environment.live_url}/${environment.time_sheets}?user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&approved_state=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE`).subscribe((res:any)=>{
+     this.api.getData(`${environment.live_url}/${environment.time_sheets}?user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&approved_state=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if( res['result'].data.length >0){
         this.allDetails = res['result']['data']
         this.cardData = res['result'].timesheet_dashboard
@@ -79,7 +81,7 @@ export class TimesheetComponent implements OnInit {
   }
 
   getAllTimeSheet(params){ 
-    this.api.getData(`${environment.live_url}/${environment.time_sheets}?user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&approved_state=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&timesheets_from_date=${params.timesheets_from_date}&timesheets_to_date=${params.timesheets_to_date}&pagination=TRUE`).subscribe((res:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.time_sheets}?user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&approved_state=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&timesheets_from_date=${params.timesheets_from_date}&timesheets_to_date=${params.timesheets_to_date}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if( res['result'].data.length >0){
         this.allDetails = res['result']['data']
         this.cardData = res['result'].timesheet_dashboard

@@ -53,44 +53,11 @@
                 </div>
             </div>
             
-       
-            <!-- <div class="row">
-                <div class="col-sm">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="option1" id="checkbox1" (click)="toggleGroupShow()">
-                      <label class="form-check-label" for="checkbox1">
-                        Add People By Group
-                      </label>
-                </div>
-                </div>         
-            </div>
-           
-            <div class="row">
-                <div class="col-sm">
-                    <p *ngIf="isGroupShown"   id="divshow">People Group <span >*</span></p>
-                    <p *ngIf="isListShown"   id="divshow">People List <span >*</span></p>
-                    <div style="margin: 0;" *ngIf="isGroupShown" class="row container-fluid"  id="divshow">
-                        <select class="form-select" [(value)]='peopleGroup' aria-label="Default select example" formControlName="people_ref_id">                       
-                            <option *ngFor="let item of allPeopleGroup" [value]="item.user_ref_id">
-                               
-                                {{item.opg_group_name}}
-                            </option>
-                          </select>
-                          
-                    </div>
-                    <div *ngIf="isListShown" style="margin: 0;" class="row container-fluid"  id="divshow">
-                        <input  type="text" class="form-control p-3 sizeinput" formControlName="people_ref_id" placeholder="People List" aria-describedby="emailHelp"  autocomplete="off">
-                    
-                    </div>
-                    
-                </div>         
-            </div> -->
-        
             <div class="row">
                 <div class="col-sm">
                     <p>Description </p>
                     <div class="">
-                        <textarea class="form-control" placeholder="Enter your description.." formControlName="p_description"  style="height: 100px"></textarea>  
+                        <textarea class="form-control  sizeinput" placeholder="Enter your description.." formControlName="p_description"  style="height: 42px"></textarea>  
                         <div *ngIf="f['p_description'].touched && f['p_description'].invalid" >
                             <div *ngIf="f['p_description'].errors && f['p_description'].errors['required'] " ><p class="error-msg">Description is required</p></div>
                         </div>
@@ -101,10 +68,10 @@
                 </div>          
             </div>
            
-            <div class="row">
+            <div class="row pt-0">
                 <div class="col-sm">
                     <p>Start date<span >*</span></p>
-                    <input class="form-control" id="date-input" formControlName="p_start_date" type="date"  name="date-input" placeholder="date" (change)="onChange()">  
+                    <input class="form-control p-3 sizeinput"  formControlName="p_start_date" type="date"  name="date-input" placeholder="date" (change)="onChange()">  
                     <div *ngIf="f['p_start_date'].touched && f['p_start_date'].invalid" >
                         <div *ngIf="f['p_start_date'].errors && f['p_start_date'].errors['required'] " ><p class="error-msg">Start date is required</p></div>
                     </div>  
@@ -114,7 +81,7 @@
             <div class="row">
                 <div class="col-sm">
                     <p>End date<span >*</span></p>
-                    <input class="form-control" id="date-input" [min]="projectForm.value.p_start_date" formControlName="p_closure_date" type="date" name="date-input" placeholder="date"
+                    <input class="form-control p-3 sizeinput"  [min]="projectForm.value.p_start_date" formControlName="p_closure_date" type="date" name="date-input" placeholder="date"
                     (change)="yearEndDateValidator()">  
                     <div *ngIf="f['p_closure_date'].touched && f['p_closure_date'].invalid" >
                         <div *ngIf="f['p_closure_date'].errors && f['p_closure_date'].errors['required'] " ><p class="error-msg">End date is required</p></div>
@@ -125,44 +92,12 @@
                 </div>      
             </div>
 
-            <!-- <div class="row">
-                <div class="col-sm">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="option1" id="checkbox1" (click)="toggleGroupShow()">
-                      <label class="form-check-label" for="checkbox1">
-                        Add People By Group
-                      </label>
-                </div>
-                </div>         
-            </div> -->
-           
+         
             <div class="row">
                 <div class="col-sm">
-                    <!-- <p *ngIf="isGroupShown"   id="divshow">People Group <span >*</span></p>
-                    <p *ngIf="isListShown"   id="divshow">People List <span >*</span></p> -->
-                    <!-- <div style="margin: 0;" *ngIf="isGroupShown" class="row container-fluid"  id="divshow">
-                        <select class="form-select" [(value)]='peopleGroup' aria-label="Default select example" formControlName="people_ref_list">                       
-                            <option value="" disabled selected>Select People Group</option>
-                            <option *ngFor="let item of allPeopleGroup" [value]="item.user_ref_id">   
-                                {{item.opg_group_name}}
-                            </option>
-                          </select>
-                          <div *ngIf="f['people_ref_list'].touched && f['people_ref_list'].invalid" >
-                            <div *ngIf="f['people_ref_list'].errors && f['people_ref_list'].errors['required'] " ><p class="error-msg">People Group is required</p></div>
-                        </div> 
-                    </div> -->
-                    <!-- <div *ngIf="isListShown" style="margin: 0;" class="row container-fluid"  id="divshow">
-                        <ng-multiselect-dropdown  [placeholder]="'People List'"  [settings]="peopleListSetting"
-                        [data]="allPeopleGroup" (onSelect)="onPeopleGroupSelect($event)"  (onSelectAll)="onPeopleGroupSelectAll($event)" 
-                         formControlName="people_ref_list">
-                        </ng-multiselect-dropdown>
-                        
-                        <div *ngIf="f['people_ref_list'].touched && f['people_ref_list'].invalid" >
-                            <div *ngIf="f['people_ref_list'].errors && f['people_ref_list'].errors['required']" ><p class="error-msg">People List is required</p></div>
-                        </div> 
-                    </div> -->
-                    <p id="divshow">People list <span >*</span></p>
-                    <div style="margin: 0;" class="row container-fluid"  id="divshow">
+                   
+                    <p >People list <span >*</span></p>
+                    <div style="margin: 0;" class="row container-fluid"  >
                         <ng-multiselect-dropdown  [placeholder]="'Select people list'"  [settings]="peopleListSetting"
                         [data]="allPeopleGroup" (onSelect)="onPeopleGroupSelect($event)"  (onSelectAll)="onPeopleGroupSelectAll($event)" 
                          formControlName="people_ref_list">
@@ -175,11 +110,7 @@
                     
                 </div>         
             </div>
-            <!-- <div class="row webView">
-                <div class="col-sm-6">
-                    <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
-                </div>
-            </div> -->
+           
             </div>
             <div class="col-sm-12 col-md-12 col-lg-6">
                 <div class="row">
@@ -192,22 +123,17 @@
             <div class="row">
                 <div class="col-sm">
                     <p>Estimated hours <span >*</span></p>
-                    <div class="input-group">
-                        <span class="input-group-text" id="basic-addon1"><i style="color: gray;" class="bi bi-clock"></i></span>
-                        <input type="number" onkeydown="return event.keyCode !== 69" oninput="this.value = this.value.replace('.', '').replace(/[^\d]/g, '');" appHypen class="form-control" formControlName="p_estimated_hours" placeholder="Enter estimated hours" aria-label="Username" aria-describedby="basic-addon1"> 
+                        <input type="number" class="form-control p-3 sizeinput" onkeydown="return event.keyCode !== 69" oninput="this.value = this.value.replace('.', '').replace(/[^\d]/g, '');" appHypen class="form-control" formControlName="p_estimated_hours" placeholder="Enter estimated hours" aria-label="Username" aria-describedby="basic-addon1"> 
                       </div>
                       <div *ngIf="f['p_estimated_hours'].touched && f['p_estimated_hours'].invalid" >
                         <div *ngIf="f['p_estimated_hours'].errors && f['p_estimated_hours'].errors['required']" ><p class="error-msg">Estimated hours is required</p></div>
                     </div>
-                </div>
             </div>
    
             <div class="row">
                 <div class="col-sm">
                     <p>Estimated billing <span >*</span></p>
-                    <div class="input-group">    
-                        <span class="input-group-text" id="basic-addon1"><i style="color: gray;" class="bi bi-currency-rupee"></i></span>
-                        <input type="number" onkeydown="return event.keyCode !== 69 " oninput="this.value = this.value.replace('.', '').replace(/[^\d]/g, '');" appHypen onKeyPress="if(this.value === '.') return false" class="form-control" formControlName="p_estimated_cost" placeholder="Enter estimated billing" aria-label="Username" aria-describedby="basic-addon1">
+                        <input type="number" class="form-control p-3 sizeinput" onkeydown="return event.keyCode !== 69 " oninput="this.value = this.value.replace('.', '').replace(/[^\d]/g, '');" appHypen onKeyPress="if(this.value === '.') return false" class="form-control" formControlName="p_estimated_cost" placeholder="Enter estimated billing" aria-label="Username" aria-describedby="basic-addon1">
                       
                       </div>
                       <div *ngIf="f['p_estimated_cost'].touched && f['p_estimated_cost'].invalid" >
@@ -215,14 +141,14 @@
                     </div>
                    
                    
-                </div>
+                <!-- </div> -->
             </div>
             
           
             <div class="row">
                 <div class="col-sm">
                     <p>Reporting manager  <span >*</span></p>
-                    <select class="form-select" [(value)]='reporting_manager' aria-label="Default select example" formControlName="reporting_manager_ref_id">                       
+                    <select class="form-select sizeinput"  [(value)]='reporting_manager' aria-label="Default select example" formControlName="reporting_manager_ref_id">                       
                        <option value="" disabled selected>Select reporting manager</option>
                         <option *ngFor="let item of allManager" [value]="item.id">
                             {{item.u_first_name +" "+ item.u_last_name}}
@@ -237,7 +163,7 @@
             <div class="row">
                 <div class="col-sm">
                     <p>Approver  <span >*</span></p>
-                    <select class="form-select" [(value)]='approver_manager' aria-label="Default select example" formControlName="approve_manager_ref_id">                       
+                    <select class="form-select sizeinput" [(value)]='approver_manager' aria-label="Default select example" formControlName="approve_manager_ref_id">                       
                         <option value="" disabled selected>Select approver</option>
                         <option *ngFor="let item of allManager" [value]="item.id">
                             {{item.u_first_name +''+ item.u_last_name}}
@@ -249,66 +175,44 @@
                 </div>            
             </div>
         
-            <!-- <div class="row">
-                <div class="col-sm">
-                    <div class="form-check">
-                        <!-- <input class="form-check-input" type="checkbox" value="option1" id="checkbox2" (click)="toggleShow()"> --
-                        <label class="form-check-label" for="checkbox2">
-                            Add Task & File Templates
-                        </label>
-                  </div>
-                </div>            
-            </div> -->
-
+           
             <div class="row">
                 <div class="col-sm"  >
-                    <!-- <div *ngIf="isShown" class="row container-fluid"  id="divshow">
-                        <p *ngIf="isShown" id="divshow">Task Category <span >*</span></p> -->
-                        <div  class="row container-fluid"  id="divshow">
-                            <p  id="divshow"> Add task & File templates <span >*</span></p>
-                        <!-- <input type="text" class="form-control p-3 sizeinput" formControlName="p_task_checklist_status" placeholder="Enter Task Category" aria-describedby="emailHelp"  autocomplete="off"> -->
-                        <select class="form-select" (change)="getSubTask($event)"  aria-label="Default select example" formControlName="p_task_checklist_status">                       
-                            <option value="" disabled selected>Select task category</option>
-                            <option *ngFor="let item of taskCategories" [value]="item.id">
-                                {{item.tpc_name}}
-                            </option>
-                          </select>
-                          <div *ngIf="f['p_task_checklist_status'].touched && f['p_task_checklist_status'].invalid" >
-                            <div *ngIf="f['p_task_checklist_status'].errors && f['p_task_checklist_status'].errors['required']"><p class="error-msg">Task category is required</p></div>
-                        </div>
+                    <p> Add task & File templates <span >*</span></p>
+                    <select class="form-select sizeinput" (change)="getSubTask($event)"  aria-label="Default select example" formControlName="p_task_checklist_status">                       
+                        <option value="" disabled selected>Select task category</option>
+                        <option *ngFor="let item of taskCategories" [value]="item.id">
+                            {{item.tpc_name}}
+                        </option>
+                        </select>
+                        <div *ngIf="f['p_task_checklist_status'].touched && f['p_task_checklist_status'].invalid" >
+                        <div *ngIf="f['p_task_checklist_status'].errors && f['p_task_checklist_status'].errors['required']"><p class="error-msg">Task category is required</p></div>
                     </div>
+                </div>
                     
-                </div>         
             </div>
             <div class="row">
-                <div class="col-sm" >
-                    <!-- <div *ngIf="isShown" class="row container-fluid"  id="divshow">
-                        <p *ngIf="isShown" id="divshow">Task Category <span >*</span></p> -->
-                        <div  class="row container-fluid"  >
-                            <p  id="divshow"> Sub task <span >*</span></p>
-                        <!-- <input type="text" class="form-control p-3 sizeinput" formControlName="p_task_checklist_status" placeholder="Enter Task Category" aria-describedby="emailHelp"  autocomplete="off"> -->
-                        <select class="form-select" (change)="subTask($event)"  aria-label="Default select example" formControlName="project_related_task_list">                       
+                <div class="col-sm-12" >
+                   <p > Sub task <span >*</span></p>  
+                        <select class="form-select  sizeinput" (change)="subTask($event)"   aria-label="Default select example" formControlName="project_related_task_list" >                       
                             <option value="" disabled selected>Select sub task category</option>
                             <option *ngFor="let item of subTaskCategories" [value]="item?.task_name">
                                 {{item.task_name?item.task_name:"NO RECORDS FOUND"}}
                             </option>
                           </select>
-                          <!-- <ng-multiselect-dropdown  [placeholder]="'Sub Task'"  [settings]="subTaskSetting"
-                          [data]="subTaskCategories" (onSelect)="onSingleSelect($event)"  (onSelectAll)="onSelectAll($event)" 
-                           formControlName="project_related_task_list">
-                          </ng-multiselect-dropdown> -->
-
+                        
                           <div *ngIf="f['project_related_task_list'].touched && f['project_related_task_list'].invalid" >
                             <div *ngIf="f['project_related_task_list'].errors && f['project_related_task_list'].errors['required']"><p class="error-msg">Sub task category is required</p></div>
                         </div>
-                    </div>
                     
-                </div>         
+                    
+                </div>
+                                    
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-sm">
                     <p>Project status  <span >*</span></p>
-                <select class="form-select"  aria-label="Default select example" formControlName="p_status">                       
+                <select class="form-select  sizeinput"  aria-label="Default select example" formControlName="p_status">                       
                     <option value="" disabled selected>Select status</option>
                     <option value="Open">Open</option>
                     <option value="Pending" >Pending</option>
@@ -317,19 +221,77 @@
                     <div *ngIf="f['p_status'].errors && f['p_status'].errors['required']"><p class="error-msg">Status is required</p></div>
                 </div>
                 </div>
-            </div>
+            </div> -->
             <!-- <div class="row mobileView">
                 <div class="col-sm-6">
                     <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
                 </div>
             </div> -->
+            
+            
+
+            </div>
+             <div class="row">
+               
+                <div class="col-12">
+                    <button mat-button type="button" class="add-task" (click)="addTask()"><i class="bi bi-check2-circle"></i> Add Task</button>
+                </div>
+            </div>
+          
+            <form [formGroup]="taskForm">
+                <div formArrayName="subTasks">
+                  <div *ngFor="let task of subTasks?.controls; let i = index;">
+                    <div [formGroupName]="i">
+                      <mat-card>
+                        <!-- Form fields for each task --->
+                        <div class="row">
+                          <!-- <div class="col-1 text-center">
+                            <mat-radio-button color="primary" class="example-radio-button" value="season"></mat-radio-button>
+                          </div> -->
+                          <div class="col-6">
+                            <mat-form-field class="example-form-field">
+                              <mat-label>Add Task Here</mat-label>
+                              <textarea matInput formControlName="taskName" class="mat-add-input"></textarea>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-3">
+                            <mat-form-field>
+                              <mat-label>Status</mat-label>
+                              <mat-select formControlName="status">
+                              <mat-option *ngFor="let status of status" [value]="status.value">{{status.viewValue}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-3">
+                            <mat-form-field>
+                              <mat-label>Assignee</mat-label>
+                              <mat-select formControlName="assignee">
+                                <mat-option *ngFor="let people of allPeopleGroup" [value]="people.id">{{people.u_first_name}}</mat-option>
+                            </mat-select>
+                            </mat-form-field>
+                            
+                            
+                          </div>
+                          <div class="row mb-0 m">
+                               
+                            <div class="col-3">
+                              <button mat-button color="primary" (click)="addTask()" class="add-button">Add</button>
+                              <button mat-button (click)="removeTask(i)" class="cancel-button" >Remove</button>
+                            </div>
+                            <div class="col"></div>
+                          </div>
+                        </div>
+                      </mat-card>
+                    </div>
+                  </div>
+                </div>
+              </form>
+             
             <div class="row">
-                <div class="col-sm-8"></div>                    
-                <div class="col-sm-4">
+                <div class="col-sm"></div>                    
+                <div class="col-sm-2">
                     <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Submit</button>
                 </div>    
-            </div>
-
             </div>
         </div>
     </form>
@@ -341,9 +303,7 @@
     <div class="row">
         <div class="col-sm">
             <h1>
-                <i  class="bi bi-arrow-left" (click)="goBack($event)
-  
-  "></i>  Add project </h1>
+                <i  class="bi bi-arrow-left" (click)="goBack($event)"></i>  Add project </h1>
         </div>
     </div>
     <div class="generic-form bg">
@@ -385,43 +345,11 @@
             </div>
             
        
-            <!-- <div class="row">
-                <div class="col-sm">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="option1" id="checkbox1" (click)="toggleGroupShow()">
-                      <label class="form-check-label" for="checkbox1">
-                        Add People By Group
-                      </label>
-                </div>
-                </div>         
-            </div>
-           
-            <div class="row">
-                <div class="col-sm">
-                    <p *ngIf="isGroupShown"   id="divshow">People Group <span >*</span></p>
-                    <p *ngIf="isListShown"   id="divshow">People List <span >*</span></p>
-                    <div style="margin: 0;" *ngIf="isGroupShown" class="row container-fluid"  id="divshow">
-                        <select class="form-select" [(value)]='peopleGroup' aria-label="Default select example" formControlName="people_ref_id">                       
-                            <option *ngFor="let item of allPeopleGroup" [value]="item.user_ref_id">
-                               
-                                {{item.opg_group_name}}
-                            </option>
-                          </select>
-                          
-                    </div>
-                    <div *ngIf="isListShown" style="margin: 0;" class="row container-fluid"  id="divshow">
-                        <input  type="text" class="form-control p-3 sizeinput" formControlName="people_ref_id" placeholder="People List" aria-describedby="emailHelp"  autocomplete="off">
-                    
-                    </div>
-                    
-                </div>         
-            </div> -->
-        
             <div class="row">
                 <div class="col-sm">
                     <p>Description </p>
                     <div class="">
-                        <textarea class="form-control" placeholder="Enter your description.." formControlName="p_description"  style="height: 100px"></textarea>  
+                        <textarea class="form-control" placeholder="Enter your description.." formControlName="p_description"  style="height: 42px"></textarea>  
                         <div *ngIf="f['p_description'].touched && f['p_description'].invalid" >
                             <div *ngIf="f['p_description'].errors && f['p_description'].errors['required'] " ><p class="error-msg">Description is required</p></div>
                         </div>
@@ -456,42 +384,10 @@
                 </div>      
             </div>
 
-            <!-- <div class="row">
-                <div class="col-sm">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="option1" id="checkbox1" (click)="toggleGroupShow()">
-                      <label class="form-check-label" for="checkbox1">
-                        Add People By Group
-                      </label>
-                </div>
-                </div>         
-            </div> -->
            
             <div class="row">
                 <div class="col-sm">
-                    <!-- <p *ngIf="isGroupShown"   id="divshow">People Group <span >*</span></p>
-                    <p *ngIf="isListShown"   id="divshow">People List <span >*</span></p> -->
-                    <!-- <div style="margin: 0;" *ngIf="isGroupShown" class="row container-fluid"  id="divshow">
-                        <select class="form-select" [(value)]='peopleGroup' aria-label="Default select example" formControlName="people_ref_list">                       
-                            <option value="" disabled selected>Select People Group</option>
-                            <option *ngFor="let item of allPeopleGroup" [value]="item.user_ref_id">   
-                                {{item.opg_group_name}}
-                            </option>
-                          </select>
-                          <div *ngIf="f['people_ref_list'].touched && f['people_ref_list'].invalid" >
-                            <div *ngIf="f['people_ref_list'].errors && f['people_ref_list'].errors['required'] " ><p class="error-msg">People Group is required</p></div>
-                        </div> 
-                    </div> -->
-                    <!-- <div *ngIf="isListShown" style="margin: 0;" class="row container-fluid"  id="divshow">
-                        <ng-multiselect-dropdown  [placeholder]="'People List'"  [settings]="peopleListSetting"
-                        [data]="allPeopleGroup" (onSelect)="onPeopleGroupSelect($event)"  (onSelectAll)="onPeopleGroupSelectAll($event)" 
-                         formControlName="people_ref_list">
-                        </ng-multiselect-dropdown>
-                        
-                        <div *ngIf="f['people_ref_list'].touched && f['people_ref_list'].invalid" >
-                            <div *ngIf="f['people_ref_list'].errors && f['people_ref_list'].errors['required']" ><p class="error-msg">People List is required</p></div>
-                        </div> 
-                    </div> -->
+                  
                     <p id="divshow">People list <span >*</span></p>
                     <div style="margin: 0;" class="row container-fluid"  id="divshow">
                         <ng-multiselect-dropdown  [placeholder]="'Select people list'"  [settings]="peopleListSetting"
@@ -506,11 +402,7 @@
                     
                 </div>         
             </div>
-            <!-- <div class="row webView">
-                <div class="col-sm-6">
-                    <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
-                </div>
-            </div> -->
+           
             </div>
             <div class="col-sm-12 col-md-12 col-lg-6">
                 <div class="row">
@@ -576,24 +468,11 @@
                 </div>            
             </div>
         
-            <!-- <div class="row">
-                <div class="col-sm">
-                    <div class="form-check">
-                        <!-- <input class="form-check-input" type="checkbox" value="option1" id="checkbox2" (click)="toggleShow()"> --
-                        <label class="form-check-label" for="checkbox2">
-                            Add Task & File Templates
-                        </label>
-                  </div>
-                </div>            
-            </div> -->
-
+           
             <div class="row">
                 <div class="col-sm"  >
-                    <!-- <div *ngIf="isShown" class="row container-fluid"  id="divshow">
-                        <p *ngIf="isShown" id="divshow">Task Category <span >*</span></p> -->
                         <div  class="row container-fluid"  id="divshow">
                             <p  id="divshow"> Add task & File templates <span >*</span></p>
-                        <!-- <input type="text" class="form-control p-3 sizeinput" formControlName="p_task_checklist_status" placeholder="Enter Task Category" aria-describedby="emailHelp"  autocomplete="off"> -->
                         <select class="form-select" (change)="getSubTask($event)"  aria-label="Default select example" formControlName="p_task_checklist_status">                       
                             <option value="" disabled selected>Select task category</option>
                             <option *ngFor="let item of taskCategories" [value]="item.id">
@@ -609,22 +488,15 @@
             </div>
             <div class="row">
                 <div class="col-sm" >
-                    <!-- <div *ngIf="isShown" class="row container-fluid"  id="divshow">
-                        <p *ngIf="isShown" id="divshow">Task Category <span >*</span></p> -->
                         <div  class="row container-fluid"  >
                             <p  id="divshow"> Sub task <span >*</span></p>
-                        <!-- <input type="text" class="form-control p-3 sizeinput" formControlName="p_task_checklist_status" placeholder="Enter Task Category" aria-describedby="emailHelp"  autocomplete="off"> -->
                         <select class="form-select" (change)="subTask($event)"  aria-label="Default select example" formControlName="project_related_task_list">                       
                             <option value="" disabled selected>Select sub task category</option>
                             <option *ngFor="let item of subTaskCategories" [value]="item?.task_name">
                                 {{item.task_name?item.task_name:"NO RECORDS FOUND"}}
                             </option>
                           </select>
-                          <!-- <ng-multiselect-dropdown  [placeholder]="'Sub Task'"  [settings]="subTaskSetting"
-                          [data]="subTaskCategories" (onSelect)="onSingleSelect($event)"  (onSelectAll)="onSelectAll($event)" 
-                           formControlName="project_related_task_list">
-                          </ng-multiselect-dropdown> -->
-
+                         
                           <div *ngIf="f['project_related_task_list'].touched && f['project_related_task_list'].invalid" >
                             <div *ngIf="f['project_related_task_list'].errors && f['project_related_task_list'].errors['required']"><p class="error-msg">Sub task category is required</p></div>
                         </div>
@@ -632,7 +504,7 @@
                     
                 </div>         
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-sm">
                     <p>Project status  <span >*</span></p>
                 <select class="form-select"  aria-label="Default select example" formControlName="p_status">                       
@@ -645,11 +517,7 @@
                 </div>
                 </div>
             </div>
-            <!-- <div class="row mobileView">
-                <div class="col-sm-6">
-                    <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
-                </div>
-            </div> -->
+            -->
             <div class="row">
                 <div class="col-sm-8"></div>                    
                 <div class="col-sm-4">

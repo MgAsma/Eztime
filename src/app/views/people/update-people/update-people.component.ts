@@ -46,7 +46,7 @@ export class UpdatePeopleComponent implements OnInit {
   Status:any;
   m_status:any
   params ={
-    pagination:"FALSE"
+    pagination:"FALSE",
   }
   gender = ''
   maritalStatus = ''
@@ -58,19 +58,10 @@ export class UpdatePeopleComponent implements OnInit {
   dateOfJoining: any;
   organizationList: any = [];
   user_id: string;
+  org_id: string;
   
   changeYearStartDate(event:any){
-    // if(event.target.value ){
-    //   this.date =this.datepipe.transform( event.target.value,"dd/MM/yyyy" )
-    // }
-   // else{
-      this.date = event
-    
-    //}
-    
-    // this.updateForm.patchValue({
-    //   u_date_of_joining :this.date
-    // })
+    this.date = event  
   }
   constructor(
     private builder:FormBuilder, 
@@ -82,13 +73,13 @@ export class UpdatePeopleComponent implements OnInit {
     this.id =this.route.snapshot.paramMap.get('id')
     this.page = this.route.snapshot.paramMap.get('page')
     this.tableSize = this.route.snapshot.paramMap.get('tableSize')
-    
+    this.org_id = sessionStorage.getItem('org_id')
   }
   initForm(){
     this.updateForm= this.builder.group({
       prefix_suffix_id:['',[Validators.required]],
       u_email:['',[Validators.required, Validators.email]],
-      department_id:['',[Validators.required]],
+      department_id:['',Validators.required],
       u_first_name:['',[Validators.required,Validators.pattern(/^[a-zA-Z]+$/)]],
       user_role_id:['',[Validators.required]],
       org_role_id:[''],
@@ -106,8 +97,6 @@ export class UpdatePeopleComponent implements OnInit {
       center_id:['',Validators.required],
       u_org_code:['12345'],
       u_status:['',Validators.required],
-      organization_id:['',Validators.required]
-      
     })
   }
   fileFormatValidator(control: AbstractControl): ValidationErrors | null {
@@ -132,8 +121,8 @@ export class UpdatePeopleComponent implements OnInit {
     this.getPrefix();
     this.getTag();
     this.user_id = sessionStorage.getItem('user_id')
-    
-    this.getOrgDetails(`&page_number=1&data_per_page=2&pagination=FALSE`)
+   
+   // this.getOrgDetails(`&page_number=1&data_per_page=2&pagination=FALSE&organization_id=${this.org_id}`)
     this.edit();
   }
 
@@ -152,7 +141,8 @@ export class UpdatePeopleComponent implements OnInit {
   edit(){  
     let params = {
       page_number:this.page,
-      data_per_page:this.tableSize
+      data_per_page:this.tableSize,
+      organization_id:this.org_id
      }
     this.api.getCurrentPeopleDetails(this.id,params).subscribe((data:any)=>{
       //this.url=`https://eztime.thestorywallcafe.com/media${ data.result.data[0].photo}` ;  
@@ -186,7 +176,7 @@ export class UpdatePeopleComponent implements OnInit {
         profile_base64:this.url,
         center_id:data.result.data[0].center_id,
         u_status:data.result.data[0].u_status,
-        organization_id:data.result.data[0].organization_id
+        //organization_id:data.result.data[0].organization_id
       })
      
       //console.log( typeof data.result.data[0].tags,tags)
@@ -265,7 +255,7 @@ export class UpdatePeopleComponent implements OnInit {
             center_id:this.updateForm.value.center_id,
             u_status:this.updateForm.value.u_status,
             u_org_code:this.updateForm.value.u_org_code,
-            organization_id:Number(this.updateForm.value.organization_id)
+            organization_id:this.org_id
           }
           //console.log(data['tags'],"TAGID----")
            this.api.updatePeople(this.id,data).subscribe(response=>{
@@ -350,7 +340,7 @@ export class UpdatePeopleComponent implements OnInit {
   }
  
   getRole(){
-    let params = `page_number=1&data_per_page=2&pagination=FALSE`
+    let params = `page_number=1&data_per_page=2&pagination=FALSE&organization_id=${this.org_id}`
      this.api.getUserAccess(params).subscribe((data:any)=>{
       if(data.result.data){
         const role = data.result.data
@@ -365,7 +355,7 @@ export class UpdatePeopleComponent implements OnInit {
      )
    }
   getDepartment(){
-    this.api.getDepartmentDetails(this.params).subscribe((data:any)=>{
+    this.api.getDepartmentDetails(this.params,this.org_id).subscribe((data:any)=>{
       if(data){
         const department = data.result.data
         const filteredDepartment = department.filter(depart => !depart.od_status.includes('Inactive'))
@@ -378,7 +368,7 @@ export class UpdatePeopleComponent implements OnInit {
     )
   }
   getReportingManager(){
-    this.api.getManagerDetails(this.params).subscribe((data:any)=>{
+    this.api.getManagerDetails(this.params,this.org_id).subscribe((data:any)=>{
       if(data.result.data){
         const reportingManager = data.result.data
         const filteredRepotingManager = reportingManager.filter(manager => !manager.u_status?.includes('Inactive'))
@@ -405,7 +395,7 @@ export class UpdatePeopleComponent implements OnInit {
     )
   }
   getCenter(){
-    this.api.getCenterDetails(this.params).subscribe((data:any)=>{
+    this.api.getCenterDetails(this.params,this.org_id).subscribe((data:any)=>{
       if(data.result.data){
         const center = data.result.data;
         const filteredCenter = center.filter(center => !center.center_status?.includes('Inactive'))
@@ -418,7 +408,7 @@ export class UpdatePeopleComponent implements OnInit {
     })
   }
   getPrefix(){
-    this.api.getPrefixSuffixDetails(this.params).subscribe((data:any)=>{
+    this.api.getPrefixSuffixDetails(this.params,this.org_id).subscribe((data:any)=>{
       if(data.result.data){
         this.allPrefix= data.result.data;
       } 
@@ -462,7 +452,7 @@ export class UpdatePeopleComponent implements OnInit {
       itemsShowLimit: 3,
       allowSearchFilter: true
     };
-    this.api.getTagDetails(this.params).subscribe((data:any)=>{
+    this.api.getTagDetails(this.params,this.org_id).subscribe((data:any)=>{
       if(data.result.data){
         const tags = data.result.data
         const filteredTags = tags.filter(tags => !tags.tage_status.includes('Inactive'))

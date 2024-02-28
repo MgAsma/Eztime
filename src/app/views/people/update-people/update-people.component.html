@@ -125,6 +125,19 @@
                             <div class="error-msg" *ngIf="f['profile_base64'].errors && f['profile_base64'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>Status <span >*</span></p>
+                            <select class="form-select" aria-label="Default select example" formControlName="u_status" >  
+                                <option value="" selected disabled>Select status</option>        
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                              </select>
+                              <div *ngIf="f['u_status'].touched && f['u_status'].invalid">
+                                <div *ngIf="f['u_status'].errors && f['u_status'].errors['required']"><p class="error-msg">Status is required</p></div>
+                            </div>
+                        </div>            
+                    </div>
                     <!-- <div class="row">
                         <div class="col-sm">
                             <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
@@ -164,7 +177,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-sm">
                             <p>Organization <span >*</span></p>
                             <select class="form-select" [(value)]='role' aria-label="Default select example" formControlName="organization_id">
@@ -179,7 +192,7 @@
                                 <div *ngIf="f['organization_id'].errors && f['organization_id'].errors['required'] " ><p class="error-msg">Organization is required</p></div>
                             </div>
                         </div>            
-                    </div>
+                    </div> -->
                     <div class="row">
                         <div class="col-sm">
                             <p>Role  <span >*</span></p>
@@ -265,19 +278,7 @@
                             </div>
                         </div>            
                     </div>
-                    <div class="row">
-                        <div class="col-sm">
-                            <p>Status <span >*</span></p>
-                            <select class="form-select" aria-label="Default select example" formControlName="u_status" >  
-                                <option value="" selected disabled>Select status</option>        
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
-                              </select>
-                              <div *ngIf="f['u_status'].touched && f['u_status'].invalid">
-                                <div *ngIf="f['u_status'].errors && f['u_status'].errors['required']"><p class="error-msg">Status is required</p></div>
-                            </div>
-                        </div>            
-                    </div>
+                   
                     <div class="row">
                         <div class="col-sm-8"></div>
                         <div class="col-sm-4">
@@ -294,9 +295,7 @@
 <div class="container-fluid mobileView">
     <div class="row">
         <div class="col-sm-6">
-            <h1><i  class="bi bi-arrow-left" (click)="goBack($event)
-  
-  "></i> Update people</h1>
+            <h1><i  class="bi bi-arrow-left" (click)="goBack($event)"></i> Update people</h1>
         </div>
     </div>
     <div class="generic-form bg">
@@ -415,6 +414,19 @@
                             <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
                         </div>
                     </div> -->
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>Status <span >*</span></p>
+                            <select class="form-select" aria-label="Default select example" formControlName="u_status" >  
+                                <option value="" selected disabled>Select status</option>        
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                              </select>
+                              <div *ngIf="f['u_status'].touched && f['u_status'].invalid">
+                                <div *ngIf="f['u_status'].errors && f['u_status'].errors['required']"><p class="error-msg">Status is required</p></div>
+                            </div>
+                        </div>            
+                    </div>
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-6">
                     <div class="row">
@@ -449,7 +461,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-sm">
                             <p>Organization <span >*</span></p>
                             <select class="form-select" [(value)]='role' aria-label="Default select example" formControlName="organization_id">
@@ -464,7 +476,7 @@
                                 <div *ngIf="f['organization_id'].errors && f['organization_id'].errors['required'] " ><p class="error-msg">Organization is required</p></div>
                             </div>
                         </div>            
-                    </div>
+                    </div> -->
                     <div class="row">
                         <div class="col-sm">
                             <p>Role  <span >*</span></p>
@@ -547,19 +559,6 @@
                             </ng-multiselect-dropdown> 
                             <div *ngIf="f['tags'].touched && f['tags'].invalid">
                                 <div *ngIf="f['tags'].errors && f['tags'].errors['required']"><p class="error-msg">Tags is required</p></div>
-                            </div>
-                        </div>            
-                    </div>
-                    <div class="row">
-                        <div class="col-sm">
-                            <p>Status <span >*</span></p>
-                            <select class="form-select" aria-label="Default select example" formControlName="u_status" >  
-                                <option value="" selected disabled>Select status</option>        
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
-                              </select>
-                              <div *ngIf="f['u_status'].touched && f['u_status'].invalid">
-                                <div *ngIf="f['u_status'].errors && f['u_status'].errors['required']"><p class="error-msg">Status is required</p></div>
                             </div>
                         </div>            
                     </div>

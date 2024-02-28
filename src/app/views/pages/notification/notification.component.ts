@@ -10,18 +10,21 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./notification.component.scss']
 })
 export class NotificationComponent implements OnInit {
-  notes:any =[
-   
-  ]
-  constructor( private modal:NgbModal,private api:ApiserviceService) { }
+  notes:any =[]
+  orgId: string;
+  constructor( private modal:NgbModal,private api:ApiserviceService) {
+    this.orgId = sessionStorage.getItem('org_id')
+   }
   closeBtn(){
    this.modal.dismissAll()
   }
-  ngOnInit(): void {
+  ngOnInit(){
     this.getNotification()
   }
   getNotification(){
-    this.api.getData(`${environment.live_url}/${environment.notification_center}`).subscribe((res:any)=>{
+    let params = `${environment.live_url}/${environment.notification_center}?organization_id=${this.orgId}`
+   
+   this.api.getData(params).subscribe((res:any)=>{
       if(res.result.data){
         this.notes = res.result.data
       }

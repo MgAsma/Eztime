@@ -57,3 +57,46 @@ marquee{
   .dark-theme::-webkit-scrollbar-thumb:hover {
     background: #999;
   }
+
+  .notification-modal{
+    --padding-space: 1.2rem;
+    padding: 0;
+    margin: 0;
+
+    li:last-child{
+      border-bottom: none;
+    }
+
+    .notification-header{
+      margin: 0;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem var(--padding-space);
+
+      background-color: #3D358F;
+      color: #FFF;
+      border-radius: 6px 6px 0 0;
+
+      .title{
+        margin: 0;
+        padding: 0;
+      }
+
+      .close-btn{
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    .notification-content{
+      padding: 1rem var(--padding-space);
+      max-height: 54vh;
+      overflow: auto;
+      overflow-x: hidden;
+    }
+  }
+  .bi-x-lg{
+    cursor: pointer;
+  }

@@ -15,6 +15,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { HypenDirective } from './hypen.directive';
 import {MatListModule} from '@angular/material/list';
 import {MatBadgeModule} from '@angular/material/badge';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import {MatRadioModule} from '@angular/material/radio';
+
 @NgModule({
   declarations: [
     SortPipe,
@@ -34,7 +38,10 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatButtonModule,
     MatInputModule,
     MatListModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatCardModule,
+    MatIconModule,
+    MatRadioModule
   ],
   exports:[
     SortPipe,
@@ -51,7 +58,10 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatSelectModule,
     HypenDirective,
     MatListModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatCardModule,
+    MatIconModule,
+    MatRadioModule
    ],
   
 })

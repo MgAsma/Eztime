@@ -208,7 +208,7 @@ export class RegisterComponent {
   }
  
   getUserRole(){
-    this.api.getUserAccess(`page_number=1&data_per_page=2&pagination=FALSE`).subscribe((data:any)=>{
+    this.api.getUserAccess(`page_number=1&data_per_page=2&pagination=FALSE&organization_id=${this.orgId}`).subscribe((data:any)=>{
       if(data.result.data){
         const role = data.result.data
         const filteredRole = role.filter(role => role.role_status !== 'Inactive')
@@ -222,7 +222,7 @@ export class RegisterComponent {
     )
   }
   getDepartment(){
-    this.api.getDepartmentDetails(this.params).subscribe((data:any)=>{
+    this.api.getDepartmentDetails(this.params,this.orgId).subscribe((data:any)=>{
       //console.log(data.result.data,"DATA")
       if(data){
       const department = data.result.data
@@ -236,7 +236,7 @@ export class RegisterComponent {
     )
   }
   getReportingManager(){
-    this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?filter=MANAGER&page_number=1&data_per_page=2&pagination=FALSE`).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?filter=MANAGER&page_number=1&data_per_page=2&pagination=FALSE&organization_id=${this.orgId}`).subscribe((data:any)=>{
       if(data.result.data){
         const reportingManager = data.result.data
         const filteredRepotingManager = reportingManager.filter(manager => !manager.u_status?.includes('Inactive'))
@@ -251,7 +251,7 @@ export class RegisterComponent {
     )
   }
   getTag(){
-    this.api.getTagDetails(this.params).subscribe((data:any)=>{
+    this.api.getTagDetails(this.params,this.orgId).subscribe((data:any)=>{
       if(data.result.data){
         const tags = data.result.data
         const filteredTags = tags.filter(tags => !tags.tage_status.includes('Inactive'))
@@ -264,7 +264,7 @@ export class RegisterComponent {
    )
   }
   getPrefix(){
-    this.api.getPrefixSuffixDetails(this.params).subscribe((data:any)=>{
+    this.api.getPrefixSuffixDetails(this.params,this.orgId).subscribe((data:any)=>{
       if(data.result.data){
         this.allPrefix= data.result.data;
       } 
@@ -290,7 +290,7 @@ export class RegisterComponent {
     )
   }
   getCenter(){
-    this.api.getCenterDetails(this.params).subscribe((data:any)=>{
+    this.api.getCenterDetails(this.params,this.orgId).subscribe((data:any)=>{
       if(data.result.data){
         const center = data.result.data;
         const filteredCenter = center.filter(center => !center.center_status?.includes('Inactive'))

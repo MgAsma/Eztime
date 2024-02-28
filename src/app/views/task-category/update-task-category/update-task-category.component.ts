@@ -27,6 +27,7 @@ export class UpdateTaskCategoryComponent implements OnInit {
   imgBaseArr: any = [];
   data:any = {};
   formatError: boolean = false;
+  orgId: any;
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
@@ -55,6 +56,7 @@ export class UpdateTaskCategoryComponent implements OnInit {
    
   }
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.initForm();
     this.edit()
     setTimeout(() => {
@@ -167,7 +169,8 @@ export class UpdateTaskCategoryComponent implements OnInit {
             this.data = {
               tpc_name:this.taskCategoryForm.value.tpc_name,
               file_templates_list:this.taskCategoryForm.value.file_templates_list,
-              task_list:this.taskCategoryForm.value.task_list
+              task_list:this.taskCategoryForm.value.task_list,
+              organization_id:this.orgId
             }
            }
            else{
@@ -183,7 +186,8 @@ export class UpdateTaskCategoryComponent implements OnInit {
                this.data = {
                 tpc_name:this.taskCategoryForm.value.tpc_name,
                 file_templates_list:filterTemplateList,
-                task_list:this.taskCategoryForm.value.task_list
+                task_list:this.taskCategoryForm.value.task_list,
+                organization_id:this.orgId
               }
              // console.log(this.data,"DATA------------>>>>>>>>>")
            }
@@ -198,7 +202,9 @@ export class UpdateTaskCategoryComponent implements OnInit {
         else{
           this.api.showError('Error!')
         }
-      }
+      },((error:any)=>{
+        this.api.showError(error?.error.error.message)
+      })
       )
      
     
@@ -251,7 +257,8 @@ export class UpdateTaskCategoryComponent implements OnInit {
   edit(){
     let params = {
       page_number:this.page,
-      data_per_page:this.tableSize
+      data_per_page:this.tableSize,
+      org_ref_id:this.orgId
     }
     
        this.api.getCurrentProjectTaskCategoryDetails(this.id,params).subscribe((res:any)=>{

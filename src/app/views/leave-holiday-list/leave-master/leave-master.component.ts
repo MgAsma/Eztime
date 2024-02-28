@@ -35,6 +35,7 @@ export class LeaveMasterComponent implements OnInit {
   enabled: boolean = true;
   permissions: any = [];
   user_id: string;
+  orgId: any;
   
   constructor(
     private modalService:NgbModal, 
@@ -50,25 +51,17 @@ export class LeaveMasterComponent implements OnInit {
   
   }
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.getLeaveType();
     this.enabled = true
-    // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
-
-    
-    // if(accessAction.length){
-    //   accessAction.forEach(res=>{
-    //     if(res.module_name === 'LEAVE/HOLIDAY_LIST'){
-    //       this.permissions = res.permissions['LEAVE_MASTER']
-    //      // console.log(this.permissions,'Permission for LEAVE_MASTER')
-    //     }
-    //   })
-    // }
     this.getUserControls()
   }
   filterSearch(){
-    this.api.getData(`${environment.live_url}/${environment.master_leave_list}?search_key=${this.term}&page_number=1&data_per_page=2&pagination=TRUE`).subscribe((res:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.master_leave_list}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res){
         this.leaveMasterList= res.result.data;
+        const noOfPages:number = res['result'].pagination.number_of_pages
+        this.count  = noOfPages * this.tableSize
       }
     },((error:any)=>{
       this.api.showError(error.error.error.message)
@@ -77,7 +70,7 @@ export class LeaveMasterComponent implements OnInit {
 
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
         //console.log(this.common_service.permission,"PERMISSION")
@@ -87,7 +80,9 @@ export class LeaveMasterComponent implements OnInit {
       }
       //console.log(res,'resp from yet');
       
-    }
+    },(error =>{
+      this.api.showError(error.error.error.message)
+    })
   
     )
   
@@ -108,8 +103,9 @@ export class LeaveMasterComponent implements OnInit {
     })
     }
   getLeaveType(){
-    this.api.getLeaveTypeDetails().subscribe((data:any)=>{
+    this.api.getLeaveTypeDetails(this.orgId).subscribe((data:any)=>{
       this.leaveMasterList= data.result.data;
+
     },(error=>{
      this.api.showError(error.error.error.message)
       

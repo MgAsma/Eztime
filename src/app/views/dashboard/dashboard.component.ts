@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
   permissionRoles: any = [];
   permissionsDepartment: any = [];
   permissionsIndustry: any;
+  org_id:any;
   constructor(private builder:FormBuilder, private api:ApiserviceService,
     private location :Location,
     private route: ActivatedRoute,
@@ -32,19 +33,21 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   
-      const isloggedIn = sessionStorage.getItem('token')
+     const isloggedIn = sessionStorage.getItem('token')
       if(isloggedIn){
+        this.org_id = sessionStorage.getItem('org_id')
         this.getCountDetails(isloggedIn);
       }
     
     this.user_role_name = sessionStorage.getItem('user_role_name')  
+     
     this.getUserControls()
   }
   getCountDetails(isloggedIn){
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
     let id ={
-      user_id:this.user_id
+      user_id:this.user_id,
+      organization_id:this.org_id
     }
     this.api.getCount(id,isloggedIn).subscribe((data:any)=>{
       if(data.result){
@@ -66,7 +69,8 @@ export class DashboardComponent implements OnInit {
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.org_id = sessionStorage.getItem('org_id')
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.org_id}&pagination=TRUE`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
         //console.log(this.common_service.permission,"PERMISSION")

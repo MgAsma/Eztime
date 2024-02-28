@@ -30,49 +30,36 @@ export class CentersListComponent implements OnInit {
   selectedId: any;
   permissions: any = [];
   user_id: string;
+  orgId: string;
   constructor(
     private modalService:NgbModal, 
     private api:ApiserviceService,
     private router:Router,
     private location:Location,
     private common_service:CommonServiceService
-    ) { }
+    ) {
+      this.orgId = sessionStorage.getItem('org_id')
+     }
 
   
- goBack(event)
-  {
+ goBack(event){
   event.preventDefault(); // Prevent default back button behavior
   this.location.back();
-  
 }
   ngOnInit(): void {
     this.getCenter();
     this.enabled = true;
-    // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
-
-    // if (accessAction.length) {
-    //   accessAction.forEach((res) => {
-    //   //console.log(res.module_name, res.permissions, "RESP");
-    //     if (res.module_name === 'PEOPLE') {
-    //       this.permissions = res.permissions['CENTERS'];
-    //    //   console.log(this.permissions, "Permissions for CENTERS");
-    //     }
-    //   });
-    // }
     this.getUserControls()
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
       }
       else{
         this.api.showError("ERROR !")
       }
-      //console.log(res,'resp from yet');
-      
     }
   
     )
@@ -93,7 +80,9 @@ export class CentersListComponent implements OnInit {
   getCenter(){
     let params = {
       page_number:this.page,
-      data_per_page:this.tableSize
+      data_per_page:this.tableSize,
+      pagination:'TRUE',
+      organization_id:this.orgId
   }
     this.api.getCenterDetailsPage(params).subscribe((data:any)=>{
       this.allCenterList= data.result.data;
@@ -107,7 +96,7 @@ export class CentersListComponent implements OnInit {
     )
   }
  filterSearch(){
-  this.api.getData(`${environment.live_url}/${environment.center_list}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((data:any)=>{
+  this.api.getData(`${environment.live_url}/${environment.center_list}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((data:any)=>{
     this.allCenterList= data.result.data;
     const noOfPages:number = data['result'].pagination.number_of_pages
     this.count  = noOfPages * this.tableSize

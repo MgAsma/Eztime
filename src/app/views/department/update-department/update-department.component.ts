@@ -12,6 +12,8 @@ export class UpdateDepartmentComponent implements OnInit {
   id:any;
   page: string;
   tableSize: string;
+  org_id: any;
+  updateForm: FormGroup;
 
   constructor(
     private builder:FormBuilder,
@@ -23,6 +25,7 @@ export class UpdateDepartmentComponent implements OnInit {
     this.id =this.route.snapshot.paramMap.get('id')
     this.page = this.route.snapshot.paramMap.get('page')
     this.tableSize = this.route.snapshot.paramMap.get('tableSize')
+    this.org_id = sessionStorage.getItem('org_id')
   }
   goBack(event)
   {
@@ -30,11 +33,17 @@ export class UpdateDepartmentComponent implements OnInit {
   this.location.back();
   
   }
-  updateForm= this.builder.group({
-    od_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-    od_status:['',Validators.required]
-  })
+  initForm(){
+    this.updateForm= this.builder.group({
+      od_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
+      od_status:['',Validators.required],
+      organization_id:this.org_id
+    })
+  }
+  
   ngOnInit(): void {
+   
+    this.initForm()
     this.edit();
   }
   get f(){
@@ -43,14 +52,18 @@ export class UpdateDepartmentComponent implements OnInit {
   edit(){
     let params = {
       page_number:this.page,
-      data_per_page:this.tableSize
+      data_per_page:this.tableSize,
+      org_ref_id:this.org_id
     }
-    this.api.getCurrentDepartmentDetails(this.id,params).subscribe((data:any)=>{
-      this.updateForm.patchValue({
-        od_name:data.result.data[0].od_name,
-        od_status:data.result.data[0].od_status
+    if(this.org_id){
+      this.api.getCurrentDepartmentDetails(this.id,params).subscribe((data:any)=>{
+        this.updateForm.patchValue({
+          od_name:data.result.data[0].od_name,
+          od_status:data.result.data[0].od_status,
+        })
       })
-    })
+    }
+   
   }
   update(){
   if(this.updateForm.invalid){

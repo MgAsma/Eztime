@@ -10,6 +10,7 @@ import { error } from 'console';
 })
 export class AddNewTagComponent implements OnInit {
   tagForm! : FormGroup
+  orgId: any;
 
   constructor(
     private builder:FormBuilder, 
@@ -23,12 +24,14 @@ export class AddNewTagComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
    this.initForm()
   }
   initForm(){
     this.tagForm= this.builder.group({
       tag_name:['',[Validators.pattern(/^[a-zA-Z]+$/),Validators.required]],
       tage_status:['',Validators.required],
+      organization_id:this.orgId
     })
   }
   get f(){

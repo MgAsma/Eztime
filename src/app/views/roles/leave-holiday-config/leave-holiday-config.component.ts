@@ -88,16 +88,18 @@ export class LeaveHolidayConfigComponent implements OnInit {
   permission:any ={};
   permissionkeys: string[];
   userRole: string;
+  orgId: string;
   constructor(private api:ApiserviceService,private router:Router) { }
    
   ngOnInit(): void {
     this.id = sessionStorage.getItem('user_role_id')
+    this.orgId = sessionStorage.getItem('org_id')
     this.userRole =sessionStorage.getItem('user_role_c_side') 
     this.getUserControls();
   }
 
   getUserControls(){
-  this.api.getUserRoleById(`id=${this.id}&page_number=1&data_per_page=10`).subscribe(res=>{
+  this.api.getUserRoleById(`id=${this.id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe(res=>{
     if (res) {
       //console.log(res, "RESPONSE")
       this.permission = res['data'];
@@ -227,7 +229,8 @@ UPDATE() {
     data={
     update: "ACCESSIBILITY",   
     module_name:this.permission[0].module_name,
-    permissions: this.permission[0].permissions
+    permissions: this.permission[0].permissions,
+    organization_id:this.orgId
     };
     
   

@@ -15,16 +15,17 @@
 }
 
 .mat-expansion-panel-header{
-    background: #2073b6 !important;
+    background: #FFF !important;
     padding: 10px !important;
     // margin:5px 0;
 }
 .mat-accordion>.mat-expansion-panel-spacing:last-child,
 .mat-accordion>*:last-child:not(.mat-expansion-panel) 
 .mat-expansion-panel-spacing {
-    background: #2073b6 !important;
+    background: #FFF !important;
     //color:white;
     padding: 10px;
+    box-shadow: none;
 }
 .mat-expansion-panel-header-title, .mat-expansion-panel-header-description {
     font-weight: 600;

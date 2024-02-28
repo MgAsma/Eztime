@@ -5,6 +5,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { error } from 'console';
 @Component({
   selector: 'app-deadline-crossed',
   templateUrl: './deadline-crossed.component.html',
@@ -71,14 +72,16 @@ export class DeadlineCrossedComponent implements OnInit {
     this.changes = true
   }
   getUserControls(){
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.orgId}&pagination=TRUE`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
       }
       else{
         this.api.showError("ERROR !")
       }
-    }
+    },((error:any)=>{
+      this.api.showError(error.error.error.message)
+    })
   
     )
   
@@ -99,8 +102,13 @@ export class DeadlineCrossedComponent implements OnInit {
     }
     getByStatus(params){
       this.api.getData(`${environment.live_url}/${environment.time_sheets_deadline_crossed}?user_id=${params.user_id}&organization_id=${params.organization_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res=>{
-        this.allDetails = res['result']['data']
-        this.totalCount = res['result'].pagination.number_of_pages
+        if(res){
+          this.allDetails = res['result']['data']
+          this.totalCount = res['result'].pagination.number_of_pages
+          if(this.allDetails.length === 0){
+            this.api.showWarning('No records found')
+          }
+        }
       },(error =>{
         this.api.showError(error.error.error.message)
       }))
@@ -109,8 +117,13 @@ export class DeadlineCrossedComponent implements OnInit {
 
     getAllTimeSheet(params){ 
       this.api.getData(`${environment.live_url}/${environment.time_sheets_deadline_crossed}?user_id=${params.user_id}&organization_id=${params.organization_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&timesheets_from_date=${params.timesheets_from_date}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res=>{
-        this.allDetails = res['result']['data']
-        this.totalCount = res['result'].pagination.number_of_pages
+        if(res){
+          this.allDetails = res['result']['data']
+          this.totalCount = res['result'].pagination.number_of_pages
+          if(this.allDetails.length === 0){
+            this.api.showWarning('No records found')
+          }
+        }
       },(error =>{
         this.api.showError(error.error.error.message)
       }))

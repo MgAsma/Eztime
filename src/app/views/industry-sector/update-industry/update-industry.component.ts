@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -12,6 +12,8 @@ export class UpdateIndustryComponent implements OnInit {
   id:any;
   page: string;
   tableSize: string;
+  orgId: any;
+  updateForm:FormGroup;
 
   constructor(
     private builder:FormBuilder, 
@@ -31,27 +33,34 @@ export class UpdateIndustryComponent implements OnInit {
   this.location.back();
   
   }
+  initForm(){
+    this.updateForm= this.builder.group({
+      toi_title:['',[Validators.required,Validators.pattern(/^\S.*$/)]],
+      toi_description:['',[Validators.required,Validators.pattern(/^\S.*$/)]],
+      toi_status:['',[Validators.required]],
+      org_ref_id:this.orgId
+    })
+  }
   
-  updateForm= this.builder.group({
-    toi_title:['',[Validators.required,Validators.pattern(/^\S.*$/)]],
-    toi_description:['',[Validators.required,Validators.pattern(/^\S.*$/)]],
-    toi_status:['',[Validators.required]], 
-  })
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
+    this.initForm();
     this.edit();
   }
   get f(){
     return this.updateForm.controls;
   }
   edit(){
- let params = {
+     let params = {
       page_number:this.page,
-      data_per_page:this.tableSize
+      data_per_page:this.tableSize,
+      pagination:"TRUE",
+      org_ref_id:this.orgId
   }
     this.api.getCurrentIndustryDetails(this.id,params).subscribe((data:any)=>{
       this.updateForm.patchValue({toi_title:data.result.data[0].toi_title,
         toi_description:data.result.data[0].toi_description,
-        toi_status:data.result.data[0].toi_status
+        toi_status:data.result.data[0].toi_status,
       })
      
     })

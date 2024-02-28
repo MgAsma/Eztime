@@ -1,33 +1,39 @@
-ol{
+ol {
     background-color: inherit;
 }
-a{
+
+a {
     color: #3F51B5;
     text-decoration: none;
 }
-li{
-    
+
+li {
+
     list-style: none;
     color: grey;
 }
-ul{
+
+ul {
     padding: 0px;
 }
-.bg{
+
+.bg {
     background-color: white;
     height: 100%;
     width: 100%;
     border-radius: 5px;
-    
+
 }
-@media(max-width:1023px){
-    .bg{
+
+@media(max-width:1023px) {
+    .bg {
         zoom: 88%;
         height: 87vh !important;
         padding-bottom: 7rem !important;
     }
 }
-.proceedbtn{
+
+.proceedbtn {
     background-color: #3F51B5;
     border-radius: 5px;
     border: none;
@@ -36,7 +42,8 @@ ul{
     color: white;
     margin: 10px 0px;
 }
-.printbtn{
+
+.printbtn {
     background-color: #00BCD4;
     border-radius: 5px;
     border: none;
@@ -45,21 +52,26 @@ ul{
     color: white;
     margin: 10px 0px;
 }
-.row{
+
+.row {
     padding: 5px;
 }
-i{
+
+i {
     padding: 0px 5px 0px 0px;
 }
-.btnicon{
+
+.btnicon {
     display: none;
 }
-button:hover .btnicon{
+
+button:hover .btnicon {
     display: block;
 }
+
 ::ng-deep .mat-form-field {
     height: 55px;
-    width: 95%!important;
+    width: 95% !important;
     background-color: #ffff;
     border-radius: 50px;
     border: solid gray;
@@ -68,20 +80,26 @@ button:hover .btnicon{
 ::ng-deep .mat-form-field-underline {
     display: none;
 }
-select{
+
+select {
     width: 100%;
     height: 30px;
 }
-span{
+
+span {
     color: red;
 }
-p{
+
+p {
     color: grey;
 }
-html{
+
+html {
     position: relative;
 }
-.createbtn-1,.requestbtn{
+
+.createbtn-1,
+.requestbtn {
     background-color: #3F51B5;
     border: none;
     color: white;
@@ -96,15 +114,18 @@ html{
     right: 5%;
     bottom: 30%;
 }
-.requestbtn{
+
+.requestbtn {
     background-color: #60B864;
     bottom: 21%;
     font-size: 25px;
     // right: 3%;
 }
-h4{
+
+h4 {
     font-weight: 500;
 }
+
 .circle {
     background-color: #DDA0DD;
     border: none;
@@ -116,8 +137,74 @@ h4{
     font-size: 16px;
     margin: 4px 2px;
     border-radius: 50%;
-  }
-  .fa-plus{
+}
+
+.fa-plus {
     font-size: 22px;
     padding: 5px;
-  }
+}
+
+$br-color: #d6d6d6;
+
+.br-1 {
+    border: 1px solid $br-color;
+}
+
+#balance-count {
+    background: rebeccapurple;
+    border-radius: 50%;
+    /* padding: 20px; */
+    height: 45px;
+    width: 45px;
+    font-size: 20px;
+    color: #FFF;
+    margin-right: 10px;
+}
+
+.br-r {
+    border-right: 1px solid $br-color;
+}
+
+
+.leave-details-content {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 26px;
+
+    h6{
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 1.2rem;
+    }
+
+    //   Leave Statistics
+    .leave-stats {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border: solid 1px rgba(0, 0, 0, 0.25);
+        margin: 10px 0;
+        &:empty{
+            display: none;
+        }
+        
+        .leave-stat-box {
+            flex: 1;
+            padding: 1rem;
+            
+
+            &:empty{
+                display: none;
+            }
+
+           
+            .inner-box{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-right: solid 1px rgba(0, 0, 0, 0.25);
+               
+            }
+        }
+    }
+}

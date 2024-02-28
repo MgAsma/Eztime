@@ -10,13 +10,14 @@ import { BehaviorSubject} from 'rxjs';
 
 export class ApiserviceService {
   baseurl = environment.live_url;
-  
+  org_id:any;
   accessArr:any = []
   token:any
   headers:any;
   constructor(private http:HttpClient,private toastr:ToastrService ) {  }
   ngOnInit(){
     this.token = sessionStorage.getItem('token')
+    this.org_id = sessionStorage.getItem('org_id')
     this.headers = {'Authorization':this.token} 
   }
  
@@ -81,8 +82,7 @@ export class ApiserviceService {
   getCurrentRoleDetails(id:any,params){
     return this.http.get(`${this.baseurl}/organization-roles?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
   }
-  updateRole(id:any,data:any)
-  {
+  updateRole(id:any,data:any){
     return this.http.put(`${this.baseurl}/organization-roles/${id}`,data,{headers:this.headers})
   }
   // Roles
@@ -90,8 +90,8 @@ export class ApiserviceService {
   addDepartmentDetails(data:any){
     return this.http.post(`${this.baseurl}/organization-department`, data,{headers:this.headers})
   }
-  getDepartmentDetails(params){
-    return this.http.get(`${this.baseurl}/organization-department?page_number=1&data_per_page=2&pagination=${params.pagination}`,{headers:this.headers})
+  getDepartmentDetails(params,org){
+    return this.http.get(`${this.baseurl}/organization-department?page_number=1&data_per_page=2&pagination=${params.pagination}&org_ref_id=${org}`,{headers:this.headers})
   }
   getDepartmentDetailsPage(params){
     return this.http.get(`${this.baseurl}/organization-department?${params}`,{headers:this.headers})
@@ -100,10 +100,9 @@ export class ApiserviceService {
     return this.http.delete(`${this.baseurl}/organization-department/${id}`,{headers:this.headers})
   }
   getCurrentDepartmentDetails(id:any,params){
-    return this.http.get(`${this.baseurl}/organization-department?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/organization-department?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&org_ref_id=${params.org_ref_id}&pagination=FALSE`,{headers:this.headers})
   }
-  updateDepartmant(id:any,data:any)
-  {
+  updateDepartmant(id:any,data:any){
     return this.http.put(`${this.baseurl}/organization-department/${id}`,data,{headers:this.headers})
   }
   // Department 
@@ -113,16 +112,16 @@ export class ApiserviceService {
     return this.http.post(`${this.baseurl}/type-of-industries`,data,{headers:this.headers})
   }
   getIndustryDetails(params){
-    return this.http.get(`${this.baseurl}/type-of-industries?page_number=1&data_per_page=2&pagination=${params.pagination}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/type-of-industries?page_number=1&data_per_page=2&pagination=${params.pagination}&org_ref_id=${params.org_ref_id}`,{headers:this.headers})
   }
   getIndustryDetailsPage(params){
-    return this.http.get(`${this.baseurl}/type-of-industries?page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/type-of-industries?page_number=${params.page_number}&data_per_page=${params.data_per_page}&org_ref_id=${params.org_ref_id}&pagination=${params.pagination}`,{headers:this.headers})
   }
   deleteIndustryDetails(id:any){
     return this.http.delete(`${this.baseurl}/type-of-industries/${id}`,{headers:this.headers})
   }
   getCurrentIndustryDetails(id:any,params){
-    return this.http.get(`${this.baseurl}/type-of-industries?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/type-of-industries?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&org_ref_id=${params.org_ref_id}`,{headers:this.headers})
   }
   updateIndustry(id:any,data:any)
   {
@@ -134,8 +133,8 @@ export class ApiserviceService {
   addClientDetails(data:any){
     return this.http.post(`${this.baseurl}/clients`, data,{headers:this.headers})
   }
-  getClientDetails(params){
-    return this.http.get(`${this.baseurl}/clients?page_number=1&data_per_page=2&pagination=${params.pagination}`,{headers:this.headers})
+  getClientDetails(params,org){
+    return this.http.get(`${this.baseurl}/clients?page_number=1&data_per_page=2&pagination=${params.pagination}&org_ref_id=${org}`,{headers:this.headers})
   }
   getClientDetailsPage(params){
     return this.http.get(`${this.baseurl}/clients?page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
@@ -144,7 +143,7 @@ export class ApiserviceService {
     return this.http.delete(`${this.baseurl}/clients/${id}`,{headers:this.headers})
   }
   getCurrentClientDetails(id:any,params){
-    return this.http.get(`${this.baseurl}/clients?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/clients?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&org_ref_id=${params.org_ref_id}`,{headers:this.headers})
   }
   updateClient(id:any,data:any)
   {
@@ -206,7 +205,7 @@ export class ApiserviceService {
     return this.http.get(`${this.baseurl}/projects?page_number=1&data_per_page=2&pagination=${params.pagination}`,{headers:this.headers})
   }
   getProjectDetailsPage(params){
-    return this.http.get(`${this.baseurl}/projects?page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/projects?page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&organization_id=${params.organization_id}`,{headers:this.headers})
   }
   getProjectDetailsByClientId(id:any){
     return this.http.get(`${this.baseurl}/projectbyclients/?client_id=${id}`,{headers:this.headers})
@@ -215,7 +214,7 @@ export class ApiserviceService {
     return this.http.delete(`${this.baseurl}/projects/${id}`,{headers:this.headers})
   }
   getCurrentProjectDetails(id:any,params){
-    return this.http.get(`${this.baseurl}/projects?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/projects?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&organization_id=${params.organization_id}`,{headers:this.headers})
   }
   updateProject(id:any,data:any)
   {
@@ -224,9 +223,9 @@ export class ApiserviceService {
   // Project
 
   //reporting/Aprrover manager
-  getManagerDetails(params){
+  getManagerDetails(params,orgId){
     //return this.http.get(`${this.baseurl}/profile-custom-user?page_number=1&data_per_page=2&pagination=${params.pagination}`,{headers:this.headers})
-    return this.http.get(`${this.baseurl}/profile-custom-user?page_number=1&data_per_page=2&pagination=${params.pagination}&filter=MANAGER`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/profile-custom-user?page_number=1&data_per_page=2&pagination=${params.pagination}&filter=MANAGER&organization_id=${orgId}`,{headers:this.headers})
   }
   //reporting/Aprrover manager
 
@@ -264,14 +263,14 @@ export class ApiserviceService {
   addLeaveTypeDetails(data:any){
     return this.http.post(`${this.baseurl}/master-leave-types`, data,{headers:this.headers})
   }
-  getLeaveTypeDetails(){
-    return this.http.get(`${this.baseurl}/master-leave-types?page_number=1&data_per_page=2&pagination=FALSE`,{headers:this.headers})
+  getLeaveTypeDetails(params){
+    return this.http.get(`${this.baseurl}/master-leave-types?page_number=1&data_per_page=2&pagination=FALSE&organization_id=${params}`,{headers:this.headers})
   }
   deleteLeaveTypeDetails(id:any){
     return this.http.delete(`${this.baseurl}/master-leave-types/${id}?page_number=1&data_per_page=2&pagination=FALSE`,{headers:this.headers})
   }
-  getCurrentLeaveTypeDetails(id:any){
-    return this.http.get(`${this.baseurl}/master-leave-types?id=${id}&page_number=1&data_per_page=2&pagination=FALSE`,{headers:this.headers})
+  getCurrentLeaveTypeDetails(id:any,org:any){
+    return this.http.get(`${this.baseurl}/master-leave-types?id=${id}&page_number=1&data_per_page=2&pagination=FALSE&organization_id=${org}`,{headers:this.headers})
   }
   updateLeaveTypeCategory(id:any,data:any)
   {
@@ -293,16 +292,16 @@ export class ApiserviceService {
     return this.http.get(`${this.baseurl}/timespent/`)
   }
   getProjectTaskCategoryDetailsPage(params){
-    return this.http.get(`${this.baseurl}/task-project-categories?page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/task-project-categories?page_number=${params.page_number}&data_per_page=${params.data_per_page}&org_ref_id=${params.org_ref_id}&pagination=TRUE`,{headers:this.headers})
   }
-  getSubTaskByProjectTaskCategory(id:any){
-    return this.http.get(`${this.baseurl}/task-project-categories?id=${id}&page_number=1&data_per_page=10&pagination=FALSE`,{headers:this.headers})
+  getSubTaskByProjectTaskCategory(id:any,params){
+    return this.http.get(`${this.baseurl}/task-project-categories?id=${id}&page_number=1&data_per_page=10&pagination=FALSE&org_ref_id=${params}`,{headers:this.headers})
   }
   deleteProjectTaskCategoryDetails(id:any){
     return this.http.delete(`${this.baseurl}/task-project-categories/${id}`,{headers:this.headers})
   }
   getCurrentProjectTaskCategoryDetails(id:any,params){
-    return this.http.get(`${this.baseurl}/task-project-categories?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/task-project-categories?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&org_ref_id=${params.org_ref_id}`,{headers:this.headers})
   }
   updateProjectTaskCategory(id:any,data:any)
   {
@@ -316,16 +315,16 @@ export class ApiserviceService {
     return this.http.post(`${this.baseurl}/prefix-suffix`, data,{headers:this.headers})
   }
   getPrefixSuffixDetailsPage(params){
-    return this.http.get(`${this.baseurl}/prefix-suffix?page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/prefix-suffix?page_number=${params.page_number}&data_per_page=${params.data_per_page}&organization_id=${params.organization_id}&pagination=TRUE`,{headers:this.headers})
   }
-  getPrefixSuffixDetails(params){
-    return this.http.get(`${this.baseurl}/prefix-suffix?page_number=1&data_per_page=2&pagination=${params.pagination}`,{headers:this.headers})
+  getPrefixSuffixDetails(params,orgId){
+    return this.http.get(`${this.baseurl}/prefix-suffix?page_number=1&data_per_page=2&pagination=${params.pagination}&organization_id=${orgId}`,{headers:this.headers})
   }
   deletePrefixSuffixDetails(id:any){
     return this.http.delete(`${this.baseurl}/prefix-suffix/${id}`,{headers:this.headers})
   }
-  getCurrentPrefixSuffixDetails(id:any,params){
-    return this.http.get(`${this.baseurl}/prefix-suffix?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+  getCurrentPrefixSuffixDetails(id:any,params,org){
+    return this.http.get(`${this.baseurl}/prefix-suffix?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&organization_id=${org}`,{headers:this.headers})
   }
   updatePrefixSuffix(id:any,data:any)
   {
@@ -337,17 +336,17 @@ export class ApiserviceService {
   addCenterDetails(data:any){
     return this.http.post(`${this.baseurl}/center`, data,{headers:this.headers})
   }
-  getCenterDetails(params){
-    return this.http.get(`${this.baseurl}/center?page_number=1&data_per_page=2&pagination=${params.pagination}`,{headers:this.headers})
+  getCenterDetails(params,orgId){
+    return this.http.get(`${this.baseurl}/center?page_number=1&data_per_page=2&pagination=${params.pagination}&organization_id=${orgId}`,{headers:this.headers})
   }
   getCenterDetailsPage(params){
-    return this.http.get(`${this.baseurl}/center?page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/center?page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&organization_id=${params.organization_id}`,{headers:this.headers})
   }
   deleteCenterDetails(id:any){
     return this.http.delete(`${this.baseurl}/center/${id}`,{headers:this.headers})
   }
   getCurrentCentreDetails(id:any,params){
-    return this.http.get(`${this.baseurl}/center?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/center?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&organization_id=${params.organization_id}`,{headers:this.headers})
   }
   updateCentre(id:any,data:any)
   {
@@ -363,14 +362,14 @@ export class ApiserviceService {
     return this.http.get(`${this.baseurl}/people?page_number=1&data_per_page=2&pagination=${params.pagination}`,{headers:this.headers})
   }
   getPeopleDetailsPage(params){
-    return this.http.get(`${this.baseurl}/people?page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/people?page_number=${params.page_number}&data_per_page=${params.data_per_page}&organization_id=${params.organization_id}&pagination=TRUE`,{headers:this.headers})
   }
  
   deletePeopleDetails(id:any){
     return this.http.delete(`${this.baseurl}/people/${id}`,{headers:this.headers})
   }
   getCurrentPeopleDetails(id:any,params){
-    return this.http.get(`${this.baseurl}/people?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/people?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&organization_id=${params.organization_id}&pagination=TRUE`,{headers:this.headers})
   }
   updatePeople(id:any,data:any)
   {
@@ -382,17 +381,17 @@ export class ApiserviceService {
   addTagDetails(data:any){
     return this.http.post(`${this.baseurl}/tag`, data,{headers:this.headers})
   }
-  getTagDetails(params){
-    return this.http.get(`${this.baseurl}/tag?page_number=1&data_per_page=2&pagination=${params.pagination}`,{headers:this.headers})
+  getTagDetails(params,orgId){
+    return this.http.get(`${this.baseurl}/tag?page_number=1&data_per_page=10&pagination=${params.pagination}&organization_id=${orgId}`,{headers:this.headers})
   }
   getTagDetailsPage(params){
-    return this.http.get(`${this.baseurl}/tag?page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/tag?page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&organization_id=${params.organization_id}`,{headers:this.headers})
   }
   deleteTagDetails(id:any){
     return this.http.delete(`${this.baseurl}/tag/${id}`,{headers:this.headers})
   }
   getCurrentTagCategoryDetails(id:any,params){
-    return this.http.get(`${this.baseurl}/tag?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/tag?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&organization_id=${params.organization_id}`,{headers:this.headers})
   }
   updateTagCategory(id:any,data:any)
   {
@@ -459,7 +458,7 @@ export class ApiserviceService {
   getUserAccess(params){
    return this.http.get(`${this.baseurl}/user-role?${params}`)
   }
-  addRoles(data){
+  addRoles(data,params){
     return this.http.post(`${this.baseurl}/user-role`,data)
    }
   

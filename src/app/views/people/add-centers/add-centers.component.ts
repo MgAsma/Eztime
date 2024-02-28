@@ -12,6 +12,7 @@ export class AddCentersComponent implements OnInit {
 
   centerForm! : FormGroup
   invalidDate: boolean = false;
+  orgId: any;
 
   constructor(
     private builder:FormBuilder, 
@@ -34,8 +35,8 @@ export class AddCentersComponent implements OnInit {
   
   }
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.initForm()
-   
   }
   initForm(){
     this.centerForm= this.builder.group({
@@ -50,7 +51,6 @@ export class AddCentersComponent implements OnInit {
   }
    yearEndDateValidator():any {
     const yearStartDate = new Date(this.centerForm.get('year_start_date').value).getTime() / (1000 * 60);
-    
     const yearEndDate = new Date(this.centerForm.get('year_end_date').value).getTime() / (1000 * 60);
     if(yearStartDate > yearEndDate || yearStartDate === yearEndDate){
       this.invalidDate = true;
@@ -62,11 +62,8 @@ export class AddCentersComponent implements OnInit {
   }
 
   addCenter(){
-   
     if(this.centerForm.invalid){
       this.api.showError('Invalid!');
-
-      //console.log(this.centerForm.value.center_name, this.centerForm.value.year_start_date,this.centerForm.value.year_end_date)
       this.centerForm.markAllAsTouched()
     }
     else{
@@ -77,7 +74,8 @@ export class AddCentersComponent implements OnInit {
           center_name:this.centerForm.value.center_name,
           year_start_date:this.datepipe.transform(startDate,'dd/MM/yyyy'),
           year_end_date:this.datepipe.transform(endDate,'dd/MM/yyyy'),
-          center_status:this.centerForm.value.center_status
+          center_status:this.centerForm.value.center_status,
+          organization_id:this.orgId
         }
         this.api.addCenterDetails(data).subscribe(response=>{
             if(response){

@@ -30,6 +30,7 @@ export class CategoryListComponent implements OnInit {
   enabled: boolean;
   permissions: any = [];
   user_id: string;
+  orgId: string;
 
   constructor(
     private modalService:NgbModal, 
@@ -45,6 +46,7 @@ export class CategoryListComponent implements OnInit {
   
   }
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.getCategory();
     // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
 
@@ -60,7 +62,7 @@ export class CategoryListComponent implements OnInit {
     this.getUserControls()
   }
   filterSearch(){
-    this.api.getData(`${environment.live_url}/${environment.project_tasks}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe(data=>{
+    this.api.getData(`${environment.live_url}/${environment.project_tasks}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe(data=>{
       
       if(data['result'].data){
         this.categoryList= data['result'].data;
@@ -75,16 +77,14 @@ export class CategoryListComponent implements OnInit {
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
       }
       else{
         this.api.showError("ERROR !")
       }
-      //console.log(res,'resp from yet');
-      
+     
     },(error=>{
       this.api.showError(error.error.error.message)
    })
@@ -107,14 +107,14 @@ export class CategoryListComponent implements OnInit {
   getCategory(){
     let params = {
       page_number:this.page,
-      data_per_page:this.tableSize
+      data_per_page:this.tableSize,
+      org_ref_id:this.orgId
   }
 
     this.api.getProjectTaskCategoryDetailsPage(params).subscribe(data=>{
       
       if(data['result'].data){
-        this.categoryList= data['result'].data;
-        //console.log(this.categoryList,"CATEGORY")
+        this.categoryList = data['result'].data;
         const noOfPages:number = data['result'].pagination.number_of_pages
         this.count  = noOfPages * this.tableSize
       }

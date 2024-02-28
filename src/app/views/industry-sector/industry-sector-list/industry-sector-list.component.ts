@@ -31,6 +31,7 @@ export class IndustrySectorListComponent implements OnInit {
   enabled: boolean = true;
   permissions: any = [];
   user_id: string;
+  orgId: any;
 
   constructor(
     private modalService:NgbModal, 
@@ -46,24 +47,15 @@ export class IndustrySectorListComponent implements OnInit {
   
   }
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.getIndustry();
     this.enabled = true;
-    //const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
-
-    // if (accessAction.length) {
-    //   accessAction.forEach((res) => {
-    //   // console.log(res.module_name, res.permissions, "RESP");
-    //     if (res.module_name === 'INDUSTRY/SECTOR') {
-    //       this.permissions = res.permissions['INDUSTRY/SECTOR'];
-    //     console.log(this.permissions, "Permissions for INDUSTRY/SECTOR ");
-    //     }
-    //   });
-    // }
+   
     this.getUserControls()
   }
   filterSearch(){
    
-    this.api.getData(`${environment.live_url}/${environment.type_of_industries}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.type_of_industries}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe((data:any)=>{
       this.allIndustryList= data.result.data;
         const noOfPages:number = data['result'].pagination.number_of_pages
         this.count  = noOfPages * this.tableSize
@@ -74,7 +66,7 @@ export class IndustrySectorListComponent implements OnInit {
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
         //console.log(this.common_service.permission,"PERMISSION")
@@ -107,8 +99,10 @@ export class IndustrySectorListComponent implements OnInit {
   getIndustry(){
     let params = {
       page_number:this.page,
-      data_per_page:this.tableSize
-  }
+      data_per_page:this.tableSize,
+      org_ref_id:this.orgId,
+      pagination:'TRUE'
+     }
     this.api.getIndustryDetailsPage(params).subscribe((data:any)=>{
       this.allIndustryList= data.result.data;
         const noOfPages:number = data['result'].pagination.number_of_pages
@@ -128,9 +122,8 @@ export class IndustrySectorListComponent implements OnInit {
         this.api.showWarning('Industry deleted successfully!!')
       }
     
-    },error=>{
+    },(error)=>{
       this.api.showError(error.error.error.message)
-      
     })
     
   }

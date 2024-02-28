@@ -17,6 +17,7 @@ export class CreateClientComponent implements OnInit {
 
   allIndustry:any=[];
   industry:any;
+  orgId: any;
 
   constructor(
     private builder:FormBuilder, 
@@ -26,6 +27,7 @@ export class CreateClientComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
     this.getIndustry();
     this.initForm();
   }
@@ -46,7 +48,7 @@ export class CreateClientComponent implements OnInit {
       c_type:['',[Validators.required]],
       c_contact_person_email_id:['',[Validators.required,Validators.email]],
       c_contact_person_phone_no:['',[Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-     
+      org_ref_id:this.orgId
     })
   }
   get f(){
@@ -54,7 +56,8 @@ export class CreateClientComponent implements OnInit {
   }
   getIndustry(){
     let params = {
-      pagination:"FALSE"
+      pagination:"FALSE",
+      org_ref_id:this.orgId
     }
     this.api.getIndustryDetails(params).subscribe((data:any)=>{
       this.allIndustry= data.result.data;

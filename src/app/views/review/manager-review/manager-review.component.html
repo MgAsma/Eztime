@@ -1,12 +1,10 @@
 
 
-<h1><span class="mobileView"><i  class="bi bi-arrow-left" (click)="goBack($event)
-  
-  "></i></span> Review</h1>
+<h1><span class="mobileView"><i  class="bi bi-arrow-left" (click)="goBack($event)"></i></span> Review</h1>
  
 <div class="bg">
     <div class="row">
-        <div class="col">
+        <div class="col m-2">
             <mat-accordion>
                 <mat-expansion-panel hideToggle>
                   
@@ -19,7 +17,7 @@
                     </mat-panel-title> 
                   </mat-expansion-panel-header>   
                   <div class="row">
-                    <div class="col" *ngFor="let items of manger_info">
+                    <div class="col-12" *ngFor="let items of manger_info">
                             <!-- <div class="row">
                                 <div class="col-6">
                                     <h6 class="card-subtitle">Manager</h6>
@@ -30,31 +28,33 @@
                                     <div>{{items.user_id}}</div>
                                 </div>    
                         </div> -->
-                        <div class="row p-1">
-                            <div class="col-12 card-col" *ngFor="let emp of empInfoList">
-                           
-                                <h6 class="card-subtitle emp-name">Name : <span>{{emp.first_name }} {{ emp.last_name}}</span></h6>
-                                <div class="row">
-                                    <div class="col-3">
-                                        <h6 class="card-subtitle">Id</h6>
-                                        <div>{{emp.user_id}}</div>
-                                    </div>
-                                    <div class="col-3">
-                                        <h6 class="card-subtitle">Email</h6>
-                                        <div class="overflow-set">{{emp.email}}</div>
-                                    </div>    
-                           
-                                    <div class="col-3" >
-                                        <h6 class="card-subtitle">Contact</h6>
-                                        <div>{{emp.phone_no}}</div>
-                                    </div>
-                                    <div class="col-3">
-                                        <h6 class="card-subtitle">Role</h6>
-                                        <div>{{emp.user_role_name}}</div>
-                                    </div>    
-                               </div>
-                            </div>
+                       
+                          <div class="row p-1">
+                          <div class="col-12 card-col" *ngFor="let emp of empInfoList">
+                            <mat-card>
+                              <h6 class="card-subtitle emp-name">Name : <span>{{emp.first_name }} {{ emp.last_name}}</span></h6>
+                              <div class="row">
+                                  <div class="col-3">
+                                      <h6 class="card-subtitle">Id</h6>
+                                      <div>{{emp.user_id}}</div>
+                                  </div>
+                                  <div class="col-3">
+                                      <h6 class="card-subtitle">Email</h6>
+                                      <div class="overflow-set">{{emp.email}}</div>
+                                  </div>    
+                         
+                                  <div class="col-3" >
+                                      <h6 class="card-subtitle">Contact</h6>
+                                      <div>{{emp.phone_no}}</div>
+                                  </div>
+                                  <div class="col-3">
+                                      <h6 class="card-subtitle">Role</h6>
+                                      <div>{{emp.user_role_name}}</div>
+                                  </div>    
+                             </div>
+                            </mat-card>
                           </div>
+                        </div>
                           
                     </div>
                   </div>
@@ -86,8 +86,8 @@
                               </div>
                               <div class="col-9 text-end">
                                 <ng-container *ngFor="let access of leaveAccess">
-                                <button mat-raised-button mat-raised-button *ngIf="access === 'APPROVE'" color="primary" (click)="open(leave,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
-                                <button mat-raised-button mat-raised-button *ngIf="access === 'REJECT'" color="warn" (click)="open(leave,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
+                                <button class="btn-approval" mat-raised-button mat-raised-button *ngIf="access === 'APPROVE'"  (click)="open(leave,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
+                                <button class="btn-reject" mapprovalat-raised-button mat-raised-button *ngIf="access === 'REJECT'"  (click)="open(leave,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
                               </ng-container>
                               </div>
                             </div>
@@ -121,8 +121,10 @@
                             <div>{{leave.approved_state}}</div>
                         </div>  
                              </div>
+                             <hr/>
                           </div>
                         </div>
+                        <div *ngIf="empLeaveList['yet_to_approve']?.length ===0" class="text-center">No records found !!</div>
                       </mat-tab>
                         <mat-tab label="Approved">
                           <div class="col-12 card-col" *ngFor="let leave of empLeaveList['approve']">
@@ -166,7 +168,9 @@
                           <div>{{leave.approved_state}}</div>
                       </div>  
                            </div>
+                           <hr/>
                         </div>
+                        <div *ngIf="empLeaveList['approve']?.length ===0" class="text-center">No records found !!</div>
                       </mat-tab>
                         <mat-tab label="Declined">  
                           <div class="col-12 card-col" *ngFor="let leave of empLeaveList['declined']">
@@ -209,7 +213,10 @@
                           <div>{{leave.approved_state}}</div>
                       </div>  
                            </div>
+                          
+                           <hr/>
                         </div>
+                        <div *ngIf="empLeaveList['declined']?.length ===0" class="text-center">No records found !!</div>
                       </mat-tab>
                       </mat-tab-group>   
                         
@@ -238,14 +245,15 @@
                           <div class="row p-1">
                             <ng-container *ngFor="let timesheet of timesheet">
                               <div class="col-12 card-col" *ngFor="let time of timesheet['yet_to_approve']">
+                               
                                 <div class="row">
                                   <div class="col">
                                     <h6 class="card-subtitle emp-name">Name : <span>{{time.first_name}} </span></h6>
                                   </div>
                                   <div class="col-9 text-end">
                                     <ng-container *ngFor="let access of timesheetAccess">
-                                    <button mat-raised-button mat-raised-button color="primary" *ngIf="access ==='APPROVE'" (click)="openDialogue(time,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
-                                    <button mat-raised-button mat-raised-button color="warn" *ngIf="access ==='REJECT'" (click)="openDialogue(time,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
+                                    <button class="btn-approval" mat-raised-button mat-raised-button *ngIf="access ==='APPROVE'" (click)="openDialogue(time,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
+                                    <button class="btn-reject" mat-raised-button mat-raised-button  *ngIf="access ==='REJECT'" (click)="openDialogue(time,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
                                     </ng-container>
                                   </div>
                                 </div>
@@ -281,9 +289,11 @@
                                     <div>{{time.approved_state}}</div>
                                 </div> 
                                  </div>
+                               <hr/>
                               </div>
                             </ng-container> 
                           </div>
+                          <div *ngIf="timesheet['yet_to_approve']?.length ===0" class="text-center">No records found !!</div>
                         </mat-tab>
                         <mat-tab label="Approved">
                           <div class="row p-1">
@@ -326,11 +336,12 @@
                                     </div> 
                            
                                  </div>
+                                 <hr/>
                               </div>
                             </ng-container>
                            
                           </div>
-                          
+                          <div *ngIf="timesheet['approve']?.length ===0" class="text-center">No records found !!</div>
                         </mat-tab>
                         <mat-tab label="Declined">
                           <div class="row p-1">
@@ -372,11 +383,12 @@
                                     <div>{{time.approved_state}}</div>
                                 </div> 
                                  </div>
+                                 <hr/>
                               </div>
                             </ng-container>
                             
                           </div>
-                          
+                          <div *ngIf="timesheet['declined']?.length ===0" class="text-center">No records found !!</div>
                         </mat-tab> 
                         </mat-tab-group>
                        

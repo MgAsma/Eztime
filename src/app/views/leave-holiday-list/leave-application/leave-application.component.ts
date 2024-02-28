@@ -11,15 +11,13 @@ import {
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
 
+import { environment } from 'src/environments/environment';
+import { LocaleConfig } from 'ngx-daterangepicker-material';
+
 import * as dayjs from 'dayjs';
 import * as duration from 'dayjs/plugin/duration';
 import * as isBetween from 'dayjs/plugin/isBetween';
 import * as customParseFormat from 'dayjs/plugin/customParseFormat';
-
-import { environment } from 'src/environments/environment';
-import { LocaleConfig } from 'ngx-daterangepicker-material';
-import { error } from 'console';
-
 dayjs.extend(duration);
 dayjs.extend(isBetween);
 dayjs.extend(customParseFormat);
@@ -61,6 +59,7 @@ export class LeaveApplicationComponent implements OnInit {
   noLeaves: boolean = false;
   minDate: any;
   maxDate: any;
+  orgId: any;
 
   constructor(
     private builder: FormBuilder,
@@ -74,9 +73,6 @@ export class LeaveApplicationComponent implements OnInit {
   locale: LocaleConfig | any = {
     applyLabel: 'Appliquer',
     customRangeLabel: ' - ',
-    //daysOfWeek: this.d.day(),
-    // monthNames: d.monthsShort(),
-    // firstDay: d.localeData().firstDayOfWeek(),
   };
 
   myFilter = (d: Date | null): boolean => {
@@ -92,6 +88,7 @@ export class LeaveApplicationComponent implements OnInit {
 
   ngOnInit(): void {
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'));
+    this.orgId = sessionStorage.getItem('org_id')
     this.getPeopleGroup();
     this.getLeaveType();
     this.initForm();
@@ -107,7 +104,7 @@ export class LeaveApplicationComponent implements OnInit {
     let user_id = sessionStorage.getItem('user_id');
     this.api
       .getData(
-        `${environment.live_url}/${environment.users_leave_details}?user_id=${user_id}&method=VIEW&menu=MY_LEAVES&module=LEAVE/HOLIDAY_LIST&page_number=1&data_per_page=2&pagination=${params.pagination}`
+        `${environment.live_url}/${environment.users_leave_details}?user_id=${user_id}&method=VIEW&menu=MY_LEAVES&module=LEAVE/HOLIDAY_LIST&page_number=1&data_per_page=2&pagination=${params.pagination}&organization_id=${this.orgId}`
       )
       .subscribe(
         (res: any) => {
@@ -135,18 +132,21 @@ export class LeaveApplicationComponent implements OnInit {
       );
   }
   enableDatepicker() {
-    // Assuming you have a reference to your ngx-datepicker, let's call it 'myDatepicker'
-    // You can use this.reservedDates to disable specific dates
-    // console.log(this.myDatepicker,"CONSOLE")
+    
   }
   toggleDisable(event) {
     if (event == 'from_date') {
       this.disableTextbox2 = false;
       this.leaveForm.patchValue({
-        leaveApplication_to_date: [''],
+        leaveApplication_to_date: '',
       });
       //this.invalidDate = false;
-    } else {
+    } else if(event == "from1_session"){
+      this.leaveForm.patchValue({
+        leaveApplication_to_date :'',
+        from1_session:''
+      })
+    }else {
       this.disableTextbox2 = true;
       if (event == 'leave_type_id') {
         this.disableTextbox = false;
@@ -163,7 +163,7 @@ export class LeaveApplicationComponent implements OnInit {
     }
   }
   getLeaveType() {
-    this.api.getLeaveTypeDetails().subscribe(
+    this.api.getLeaveTypeDetails(this.orgId).subscribe(
       (data: any) => {
         this.leaveType = data.result.data;
       },
@@ -183,7 +183,6 @@ export class LeaveApplicationComponent implements OnInit {
       (1000 * 60);
     if (yearStartDate > yearEndDate) {
       this.invalidDate = true;
-      //console.log(yearStartDate > yearEndDate,'true')
     } else {
       this.invalidDate = false;
     }
@@ -193,22 +192,6 @@ export class LeaveApplicationComponent implements OnInit {
       days: '',
     });
   }
-
-  // getMinDate(): string {
-  //   const appliedFromDates = this.reservedDates.map(appliedDate => appliedDate.fromDate);
-  //   const minDate:any = new Date(Math.min(...appliedFromDates.filter(date => date != null)));
-  //   //const minDate = appliedFromDates
-  //   //console.log(minDate)
-  //   return minDate;
-  // }
-
-  // getMaxDate(): string {
-  //   const appliedToDates = this.reservedDates.map(appliedDate => appliedDate.toDate);
-  //   const maxDate:any = new Date(Math.max(...appliedToDates.filter(date => date != null)));
-  //   //console.log(maxDate)
-  //   return maxDate;
-  // }
-  // Example: Initialize minDate and maxDate based on the backend response
 
   initForm() {
     this.leaveForm = this.builder.group({
@@ -254,7 +237,6 @@ export class LeaveApplicationComponent implements OnInit {
         this.leaveForm.patchValue({
           leave_application_file_attachment: this.fileUrl,
         });
-        ///  console.log(this.fileUrl,"FILEURL")
       };
     }
   }
@@ -278,11 +260,9 @@ export class LeaveApplicationComponent implements OnInit {
       days: workingdays,
       leave_type_id: this.leaveForm.value.leave_type_id,
     };
-    // //console.log(this.leaveForm.value.days,"workingdays")
     this.api.getLeaveBalance(params, data).subscribe(
       (res) => {
         this.balanceLeave = res['result'].balance_days;
-        //console.log(this.balanceLeave,"BALACE")
         this.noLeaves = false;
         this.leaveForm.patchValue({
           balance: this.balanceLeave ? this.balanceLeave : 0,
@@ -357,26 +337,7 @@ export class LeaveApplicationComponent implements OnInit {
     });
   }
 
-  //  getWorkingDays(startDate: Date, endDate: Date, holidays): number {
-  //   let workingDays = 0;
-  //   let totalDays = 0;
-
-  //   for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-  //     if (d.getDay() === 0 || d.getDay() === 6) {
-  //       continue;
-  //     }
-  //     const dateString = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
-  //     if (dateString in holidays) {
-  //       continue;
-  //     }
-
-  //     workingDays++;
-  //     totalDays++;
-  //   }
-  //   alert(workingDays)
-  //   return workingDays;
-  // }
-
+  
   getWorkingDays(
     startDate: Date,
     endDate: Date,
@@ -398,13 +359,6 @@ export class LeaveApplicationComponent implements OnInit {
     const holidays = Object.values(_holidays?.message[0]);
     let daysDiffWithHolidays = daysDiff
 
-    // Detect the holidays within the leave selection
-    // Object.values(holidays).forEach((h: string) => {
-    //   const holiday = dayjs(h, 'DD/MM/YYYY');
-    //   if (holiday.isBetween(fromDate, toDate)) {
-    //     daysDiffWithHolidays--;
-    //   }
-    // });
 
     // Exclude weekends from the leaves
     console.log(daysDiff)
@@ -417,29 +371,8 @@ export class LeaveApplicationComponent implements OnInit {
         daysDiffWithHolidays--;
       }
     }
-    // Calculate days between dates
-    // const timeDifference = toDate.getTime() - fromDate.getTime();
-    // const daysDifference = timeDifference / (1000 * 3600 * 24);
-
-    // // Adjust days if sessions are selected
-    // let days = Math.abs(Math.round(daysDifference));
-    // if (fromSession === toSession) {
-    //   days = days + 0.5; // Assuming each session counts as an additional day
-    // }else{
-    //   days++
-    // }
-    console.log(holidays, daysDiff, daysDiffWithHolidays)
     return daysDiffWithHolidays;
   }
-
-  // // Example usage
-  // const startDate = new Date('2023-11-02');
-  // const endDate = new Date('2023-11-03');
-  // const selectedFrom = '1st half'; // Session for the start date
-  // const selectedTo = '1st half'; // Session for the end date
-
-  // const result = getWorkingDays(startDate, endDate, selectedFrom, selectedTo);
-  // console.log(`Number of working days: ${result}`);
 
   onPeopleSelect(event: any) {
     this.peopleId.push(event.id);
@@ -461,7 +394,7 @@ export class LeaveApplicationComponent implements OnInit {
 
     this.api
       .getData(
-        `${environment.live_url}/${environment.people_list}?page_number=1&data_per_page=2&pagination=FALSE`
+        `${environment.live_url}/${environment.people_list}?page_number=1&data_per_page=2&pagination=FALSE&organization_id=${this.orgId}`
       )
       .subscribe(
         (data: any) => {
@@ -507,6 +440,7 @@ export class LeaveApplicationComponent implements OnInit {
           balance: String(this.leaveForm.value.balance),
           days: this.leaveForm.value.days,
           user_id: this.user_id,
+          organization_id:this.orgId
         };
 
         this.api.addLeaveDetails(data).subscribe(

@@ -10,6 +10,7 @@ import { Location } from '@angular/common';
 export class CreatePrefixSuffixComponent implements OnInit {
 
   prefixSuffixForm! : FormGroup
+  orgId: string;
 
   constructor(
     private builder:FormBuilder, 
@@ -17,20 +18,20 @@ export class CreatePrefixSuffixComponent implements OnInit {
     private location:Location) { }
 
   ngOnInit(): void {
+    this.orgId = sessionStorage.getItem('org_id')
    this.initForm()
    
   }
 
-  goBack(event)
-  {
-    event.preventDefault(); // Prevent default back button behavior
+  goBack(event){
+  event.preventDefault(); // Prevent default back button behavior
   this.location.back();
-  
   }
   initForm(){
     this.prefixSuffixForm= this.builder.group({
       prefix:['',[Validators.pattern(/^[a-zA-Z]+$/),Validators.required]],
       suffix:['',[Validators.pattern(/^[a-zA-Z]+$/),Validators.required]],
+      organization_id:this.orgId
     })
   }
   get f(){

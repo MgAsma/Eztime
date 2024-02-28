@@ -197,9 +197,11 @@ form {
         position: absolute !important;
         right: 15px !important ;
         top: 28px !important;
-        width: auto;
+        width: 30%;
         margin: var(--bs-modal-margin);
         pointer-events: none;
     }   
 }
-
+.btn-close:focus {
+    box-shadow: none !important;
+}

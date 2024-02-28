@@ -50,6 +50,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
   profileImg: any;
   notes: any;
   screenWidth: number;
+  orgId: any;
   
 
   constructor(private classToggler: ClassToggleService,private modalService :NgbModal,
@@ -60,6 +61,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
   }
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id');
+    this.orgId = sessionStorage.getItem('org_id')
     this.user_role_Name = sessionStorage.getItem('user_role_name');
     this.user_name = sessionStorage.getItem('user_name');
     this.getProfiledata()
@@ -134,7 +136,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
   
 }
   getProfiledata(){
-    this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
    // console.log(res,'PROFILE GET API RESPONSE')
       if(res.result.data){
         this.profileImg = res.result.data[0].u_profile_path
@@ -145,7 +147,8 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
     }))
   }
   getNotification(){
-    this.api.getData(`${environment.live_url}/${environment.notification_center}`).subscribe((res:any)=>{
+    let params = `${environment.live_url}/${environment.notification_center}?organization_id=${this.orgId}`
+    this.api.getData(params).subscribe((res:any)=>{
       if(res.result.data){
         this.notes = res.result.data
       }

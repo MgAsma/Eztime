@@ -40,7 +40,7 @@ export class TimesheetService {
   //Approval Config
   //Todays Approval
   getTodaysApprovalTimesheet(params){
-  return this.http.get(`${this.baseurl}/time-sheets-todays-approval?user_id=${params.user_id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&approved_state=${params.status}`,{headers:this.headers})
+  return this.http.get(`${this.baseurl}/time-sheets-todays-approval?user_id=${params.user_id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&approved_state=${params.status}&organization_id=${params.organization_id}`,{headers:this.headers})
   }
   
  deleteTodaysApproval(id,params){

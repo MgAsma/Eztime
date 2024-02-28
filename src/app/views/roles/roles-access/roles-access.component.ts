@@ -118,17 +118,17 @@ export class RolesAccessComponent implements OnInit {
         controlName:'clients',
         path:'clients-config'
       },
-      {
-        label:'Project Status',
-        icon:'fa fa-list',
-        type:'radio',
-        class:'form-check-input',
-        labelClass:'form-check-label',
-        checked:false,
-        containerClass:'form-check',
-        controlName:'projectStatus',
-        path:'project-status-config'
-      },
+      // {
+      //   label:'Project Status',
+      //   icon:'fa fa-list',
+      //   type:'radio',
+      //   class:'form-check-input',
+      //   labelClass:'form-check-label',
+      //   checked:false,
+      //   containerClass:'form-check',
+      //   controlName:'projectStatus',
+      //   path:'project-status-config'
+      // },
       {
         label:'Project Task Categories',
         icon:'fa fa-tags',

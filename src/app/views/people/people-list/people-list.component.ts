@@ -38,6 +38,7 @@ export class PeopleListComponent implements OnInit {
   organizationList: any = [];
   user_id: any;
   params:any = { };
+  org_id: any;
   constructor(
     private api:ApiserviceService,
     private router:Router,
@@ -46,42 +47,25 @@ export class PeopleListComponent implements OnInit {
     private common_service:CommonServiceService
     ) { }
     
-    goBack(event)
-  {
+    goBack(event){
       event.preventDefault(); // Prevent default back button behavior
-  this.location.back();
-  
-    }
+      this.location.back();
+     }
   ngOnInit(): void {
+    this.org_id = sessionStorage.getItem('org_id')
     this.getPeople();
     this.enabled = true;
-    
-    
-  //   const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
-
-  // if (accessAction.length) {
-  //   accessAction.forEach((res) => {
-  //   //console.log(res.module_name, res.permissions, "RESP");
-  //     if (res.module_name === 'PEOPLE') {
-  //       this.permissions = res.permissions['PEOPLE'];
-  //      // console.log(this.permissions, "Permissions for PEOPLE");
-  //     }
-  //   });
-  // }
-  this.getUserControls()
+   this.getUserControls()
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.org_id}&pagination=FALSE`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
       }
       else{
         this.api.showError("ERROR !")
       }
-      //console.log(res,'resp from yet');
-      
     }
   
     )
@@ -116,7 +100,8 @@ export class PeopleListComponent implements OnInit {
   getPeople(){
     let params = {
     page_number:this.page,
-    data_per_page:this.tableSize
+    data_per_page:this.tableSize,
+    organization_id:this.org_id
     }
     this.api.getPeopleDetailsPage(params).subscribe((data:any)=>{
       this.allPeople = data.result.data;
@@ -129,7 +114,7 @@ export class PeopleListComponent implements OnInit {
     )
   }
   filterSearch(){
-      this.api.getData(`${environment.live_url}/${environment.people_list}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE`).subscribe((data:any)=>{
+      this.api.getData(`${environment.live_url}/${environment.people_list}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe((data:any)=>{
         this.allPeople = data.result.data;
         const noOfPages:number = data['result'].pagination.number_of_pages
         this.count  = noOfPages * this.tableSize

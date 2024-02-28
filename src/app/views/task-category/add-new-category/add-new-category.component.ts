@@ -18,18 +18,20 @@ export class AddNewCategoryComponent implements OnInit {
   url:any;
   fileUrl:any;
   baseImg: any= [];
+  orgId: any;
 
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
     private location:Location
-) { }
+    ) { }
 
   initForm(){
     this.taskCategoryForm = this.builder.group({
       tpc_name: ['', [Validators.pattern(/^\S.*$/),Validators.required]],
       file_templates_list: this.builder.array([]),
-      task_list: this.builder.array([])
+      task_list: this.builder.array([]),
+      organization_id:this.orgId
     });
     
     // Adding file attachment fields to file_templates_list FormArray
@@ -53,11 +55,11 @@ export class AddNewCategoryComponent implements OnInit {
   }
   goBack(event)
   {
-    event.preventDefault(); // Prevent default back button behavior
+  event.preventDefault(); // Prevent default back button behavior
   this.location.back();
-  
   }
-  ngOnInit(): void {
+  ngOnInit(): void { 
+    this.orgId = sessionStorage.getItem('org_id')
     this.initForm();
   }
   get f(){
@@ -163,7 +165,9 @@ export class AddNewCategoryComponent implements OnInit {
          else{
           this.api.showError('Error!')
          } 
-        }
+        },((error:any)=>{
+          this.api.showError(error?.error.error.message)
+        })
       )
     }
   }

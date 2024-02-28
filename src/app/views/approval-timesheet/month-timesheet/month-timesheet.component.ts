@@ -35,6 +35,7 @@ export class MonthTimesheetComponent implements OnInit {
     ];
   formattedDate: any;
   changes: boolean = false;
+  orgId: any;
   constructor(
     private fb:FormBuilder,
     private api:ApiserviceService,
@@ -50,6 +51,7 @@ export class MonthTimesheetComponent implements OnInit {
   ngOnInit(): void {
     this.initForm()
     this.user_id = sessionStorage.getItem('user_id')
+    this.orgId = sessionStorage.getItem('org_id')
     let c_params={
      module:"TIMESHEET",
      menu:"MONTH_APPROVAL_TIMESHEET",
@@ -84,7 +86,7 @@ export class MonthTimesheetComponent implements OnInit {
     this.changes = true
   }
   getUserControls(){
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.orgId}&pagination=TRUE`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
       }
@@ -142,7 +144,7 @@ export class MonthTimesheetComponent implements OnInit {
     getByStatus(params){
       this.allListDataids = []
       this.exebtn = false;
-      this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&approved_state=${params.approved_state}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res=>{
+      this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&approved_state=${params.approved_state}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&organization_id=${this.orgId}`).subscribe(res=>{
       if(res['result']['data']){ 
         if(res['result']['data'].length >1){
           res['result']['data'].forEach(element => {
@@ -173,7 +175,7 @@ export class MonthTimesheetComponent implements OnInit {
     getAllTimeSheet(params){ 
       this.allListDataids = []
       this.exebtn = false;
-      this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&timesheets_from_date=${params.timesheets_from_date}&approved_state=${params.approved_state}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res=>{
+      this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&timesheets_from_date=${params.timesheets_from_date}&approved_state=${params.approved_state}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&organization_id=${this.orgId}`).subscribe(res=>{
       if(res['result']['data']){
         if(res['result']['data'].length >1){
           res['result']['data'].forEach(element => {

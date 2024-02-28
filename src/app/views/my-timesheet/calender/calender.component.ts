@@ -19,6 +19,7 @@ export class CalenderComponent implements OnInit {
   calendarVisible: boolean;
   calendarOptions:CalendarOptions = {};
   user_id: string;
+  orgId: any;
  constructor(
   private changeDetector: ChangeDetectorRef,
   private api:ApiserviceService,
@@ -27,6 +28,7 @@ export class CalenderComponent implements OnInit {
 initEvent: EventInput[] = []
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id')
+    this.orgId = sessionStorage.getItem('org_id')
     this.getAllTimeSheet()
   }
   goBack(event)
@@ -36,10 +38,8 @@ initEvent: EventInput[] = []
   
   }
   getAllTimeSheet(){
-   this.api.getData(`${environment.live_url}/${environment.timesheetCalender}?user_id=${this.user_id}`).subscribe(res=>{
+   this.api.getData(`${environment.live_url}/${environment.timesheetCalender}?user_id=${this.user_id}&organization_id=${this.orgId}`).subscribe(res=>{
     this.allTimeSheet = res['result']['data']
-  //  //console.log(INITIAL_EVENTS,"RES CALENDAR")
-   // //console.log( res['result']['data'],"RES CALENDAR")
     this.allTimeSheet.forEach(element => {
     
     if(element){
@@ -48,7 +48,6 @@ initEvent: EventInput[] = []
     
       })
     }
-     // //console.log(this.initEvent,"INITEVENTS---------------------->")
     this.calendarVisible = true;
    this.calendarOptions = {
       plugins: [

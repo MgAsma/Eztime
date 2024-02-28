@@ -54,17 +54,20 @@
       </c-avatar>
      
     </button>
-    <ul cDropdownMenu class="pt-0 pr-5 w-auto c-dropClass">
-      <li></li>
-      <li *ngFor="let headNav of headerNav" >
-        <div [ngClass]="getHeaderNavStyles(headNav)" (click)="clearStorage(headNav)">
-          <a [routerLink]="headNav.link" cDropdownItem>
-            <i class="{{headNav.icons}}" id="nav-icon"></i>
-            <span class="title" >{{headNav.page}} </span>
-          </a>
-        </div>   
-      </li>
-    </ul>
+    <mat-card >
+      <ul cDropdownMenu class="pt-0 pr-5 w-auto c-dropClass">
+        <li></li>
+        <li *ngFor="let headNav of headerNav" >
+          <div [ngClass]="getHeaderNavStyles(headNav)" (click)="clearStorage(headNav)">
+            <a [routerLink]="headNav.link" cDropdownItem>
+              <i class="{{headNav.icons}}" id="nav-icon"></i>
+              <span class="title" >{{headNav.page}} </span>
+            </a>
+          </div>   
+        </li>
+      </ul>
+    </mat-card>
+   
   </c-dropdown>
 </ng-template>
 

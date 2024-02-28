@@ -22,6 +22,7 @@ export class ProfileComponent implements OnInit {
   country: any = [];
   state: any = [];
   city: any = [];
+  org_id: string;
 
   constructor( 
     private _fb:FormBuilder,
@@ -32,6 +33,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id')
+    this.org_id = sessionStorage.getItem('org_id')
     this.initform()
     this.getProfiledata()
   }
@@ -134,7 +136,7 @@ export class ProfileComponent implements OnInit {
   }
   
   getProfiledata(){
-    this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe((res:any)=>{
    // console.log(res,'PROFILE GET API RESPONSE')
       if(res.result.data){
         let data = res.result.data
