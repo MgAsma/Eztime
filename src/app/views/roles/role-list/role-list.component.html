@@ -1,5 +1,5 @@
 <div class="container-wrapper webView">
-  <div class="row ">
+  <!-- <div class="row ">
     <div class="col-sm-6">
         <h1>Role list</h1>
     </div>
@@ -12,21 +12,22 @@
            </ol>
         </nav>
     </div>
-  </div>
+  </div> -->
 
-  <div class="row p-20">
-      <div class="col-sm-2">
-          <select (change)="onTableSizeChange($event)"  class="form-select ">
-              <option *ngFor="let size of tableSizes" [value]="size">
-                {{ size }}
-              </option>
-            </select>
-      </div>
-     
-      <div class="col-sm"></div>
-      <div class="col-md-6 col-lg-4 search-div">
-          <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search by role name/description/status" aria-describedby="emailHelp"  autocomplete="off">
-          <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i> 
+  <div class="row p-20 my-2">
+    <div class="col-md-6 col-lg-4 search-div px-0">
+      <input type="search" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Role name/Description/Status" aria-describedby="emailHelp"  autocomplete="off">
+      <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i> 
+    </div>
+  
+        <div class="col-sm">
+          
+        </div>
+        <div class="col-md-4 col-lg-3 text-center align-self-center">
+<div class="d-flex justify-content-center pg-bg">
+  <button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
+>{{size}}</button>
+</div>
         </div>
   </div>
   <div class="bg">
@@ -36,7 +37,7 @@
             <table class="table table-hover">
               <thead >
                   <tr>
-                    <th scope="col">  Sl. No.</th>
+                    <th scope="col">  S.No</th>
                     
                     <th scope="col"> Role Name  <i  *ngIf="!arrow" (click)="sort('asc','user_role_name')" class="fa fa-sort-up"></i><i (click)="sort('desc','user_role_name')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
                     <th scope="col"> Description <i  *ngIf="!arrow" (click)="sort('asc','description')" class="fa fa-sort-up"></i><i (click)="sort('desc','description')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
@@ -87,9 +88,9 @@
 </div>
 
 <div class="row p-nav" >
-           
   <div class="col-sm"></div>
   <div class="col-sm" >
+    
       <div class="d-flex justify-content-end p-nav">
           <pagination-controls 
             previousLabel="Prev" 
@@ -113,10 +114,13 @@
   <div class="col-sm-6">
       <h1> Role List</h1>
   </div>
-  <div class="col-sm-6 col-md-6 mb-1 search-div">
-    <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by role name/description/status" aria-describedby="emailHelp"  autocomplete="off">
-    <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
+  <div class="col-sm-6 col-md-6">
+    <div class="mb-1 search-div px-0">
+      <input type="search" class="form-control p-2" [(ngModel)]="term" placeholder="Role name/Description/Status" aria-describedby="emailHelp"  autocomplete="off">
+      <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
+    </div>
   </div>
+ 
 </div> 
 
   <div class="bg row">
@@ -218,6 +222,7 @@
       <div class="row"  *ngIf="result.length !== 0" >
         <div class="col-sm">
             <div class="d-flex justify-content-center">
+  
                 <pagination-controls 
                   previousLabel="Prev" 
                   nextLabel="Next" 

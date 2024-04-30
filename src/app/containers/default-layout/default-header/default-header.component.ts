@@ -18,7 +18,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
   user_role_Name:any;
 
   @Input() sidebarId: string = "sidebar";
-
+@Input() pageName:any;
   public newMessages = new Array(4)
   public newTasks = new Array(5)
   public newNotifications = new Array(5)

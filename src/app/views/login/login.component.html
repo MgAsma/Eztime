@@ -1,89 +1,86 @@
-<div class="container-fluid webView" style="padding: 0px;">
-    <div class="container">
-        <div class="row">
-            <div class="col-7 text-end">
-                <img src="../../../assets/images/login_img.gif" height="500px" width="500px" class="background-content"/>
-            </div>
-            <div class="col-5 p-h">
-                <div class="row">
-                    <div class="col-md-12 p-h"> 
-                       <div class="box" >
-                            <form [formGroup]='loginForm' (ngSubmit)='login()'>
-                                <div class="row">
+<!-- <div class="container-fluid webView" style="padding: 0px;margin: 0px;">
+    <div class="row login-content-bg">
+        <div class="col-6 text-end">
+            <img src="../../../assets/images/login_img.gif" height="500px" width="500px" class="background-content"/>
+        </div>
+        <div class="col-6 p-h">
+            <div class="row">
+                <div class="col-md-12 p-h"> 
+                   <div class="box" >
+                        <form [formGroup]='loginForm' (ngSubmit)='login()'>
+                            <div class="row">
+                                <h1 style="text-align: center;padding: 0;" class="head-txt">LOGIN</h1>
+                                <div class="col custome-column">
+                                    <h1 style="text-align: center;">WELCOME TO TASKMC</h1>
                                     <h1 style="text-align: center;padding: 0;" class="head-txt">LOGIN</h1>
-                                    <div class="col custome-column">
-                                        <!-- <h1 style="text-align: center;">WELCOME TO TASKMC</h1> -->
-                                        <!-- <h1 style="text-align: center;padding: 0;" class="head-txt">LOGIN</h1> -->
-                                        <!-- <p style="text-align: center;">{{message}}</p> -->
-                                        <label >Email Id <span>*</span></label>
-                                        <input type="text" class="form-control p-3  mb-3 accordion-header" formControlName='username' placeholder="Enter Email Id" aria-describedby="emailHelp"  autocomplete="off">
-                                        <i class="bi bi-envelope-fill" id="eye-icon" ></i>
-                                        <div *ngIf="f['username'].touched && f['username'].invalid" class="p-r">
-                                            <div *ngIf="f['username'].errors && f['username'].errors['required'] " class="error-msg" >Email Id is required.</div>
-                                            <div *ngIf="f['username'].errors && f['username'].errors['email']" class="error-msg">Email Id is invalid.</div>
-                                        </div>
+                                    <p style="text-align: center;">{{message}}</p>
+                                    <label >Email Id <span>*</span></label>
+                                    <input type="text" class="form-control p-3  mb-3 accordion-header" formControlName='username' placeholder="Enter Email Id" aria-describedby="emailHelp"  autocomplete="off">
+                                    <i class="bi bi-envelope-fill" id="eye-icon" ></i>
+                                    <div *ngIf="f['username'].touched && f['username'].invalid" class="p-r">
+                                        <div *ngIf="f['username'].errors && f['username'].errors['required'] " class="error-msg" >Email Id is required.</div>
+                                        <div *ngIf="f['username'].errors && f['username'].errors['email']" class="error-msg">Email Id is invalid.</div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col custome-column p-r">
-                                        <label >Password <span>*</span></label>
-                                        <input [type]="passwordType" class="form-control p-3 mb-3 sizeinput" formControlName='password' placeholder="Enter Password" aria-describedby="emailHelp"  autocomplete="off">
-                                        <i [class]="eyeIcon" id="eye-icon" (click)="showPassword()"></i>
-                                        <div *ngIf="f['password'].touched && f['password'].invalid" class="p-r">
-                                            <div *ngIf="f['password'].errors && f['password'].errors['required']"><p class="error-msg">Password is required.</p></div>
-                                        </div>
+                            </div>
+                            <div class="row">
+                                <div class="col custome-column p-r">
+                                    <label >Password <span>*</span></label>
+                                    <input [type]="passwordType" class="form-control p-3 mb-3 sizeinput" formControlName='password' placeholder="Enter Password" aria-describedby="emailHelp"  autocomplete="off">
+                                    <i [class]="eyeIcon" id="eye-icon" (click)="showPassword()"></i>
+                                    <div *ngIf="f['password'].touched && f['password'].invalid" class="p-r">
+                                        <div *ngIf="f['password'].errors && f['password'].errors['required']"><p class="error-msg">Password is required.</p></div>
                                     </div>
                                 </div>
-                                <div class="row" style="text-align: center;">
-                                    <div class="col">
-                                        <button mat-raised-button class="proceedbtn" type="submit">Login</button>
-                                    </div>
+                            </div>
+                            <div class="row" style="text-align: center;">
+                                <div class="col">
+                                    <button mat-raised-button class="proceedbtn" type="submit">Login</button>
                                 </div>
-                                <div class="row" style="text-align: center;">
-                                    <div class="col">
-                                        <!-- <a routerLink="../register" class="login-links">REGISTER?</a><br> --->
-                                        <a routerLink="../forgotPassword" class="login-links">FORGOT PASSWORD?</a>
-                                    </div>
+                            </div>
+                            <div class="row" style="text-align: center;">
+                                <div class="col">
+                                    <a routerLink="../register" class="login-links">REGISTER?</a><br> -
+                                    <a routerLink="../forgotPassword" class="login-links">FORGOT PASSWORD?</a>
                                 </div>
-                                <!-- <div class="row" style="text-align: center;">
-                                    <div class="col">
-                                        <p>Time Sheet Management Software- Version 1.2</p>
-                                    </div>
-                                </div> -->
-                                <!-- <div class="row" style="text-align: center;">
-                                    <div class="col">
-                                        <p>Copyright Ⓒ <a href="https://www.ekfrazo.com/"  target="_blank" style="color: #3F51B5;text-decoration: none;">Ekfrazo Technologies Private Limited</a></p>
-                                    </div>
+                            </div>
+                            <div class="row" style="text-align: center;">
+                                <div class="col">
+                                    <p>Time Sheet Management Software- Version 1.2</p>
                                 </div>
-                                <div class="row" style="text-align: center;">
-                                    <div class="col">
-                                        <p>All rights reserved.</p>
-                                    </div>
-                                </div> -->
-                                <div class="row" style="text-align: center;">
-                                    <div class="col-sm">
-                                       
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <a href="https://twitter.com/ekfrazo" target="_blank"><i class="bi bi-twitter"></i></a> 
-                                        <a href="https://www.facebook.com/ekfrazotechnologies/" target="_blank"><i class="bi bi-facebook"></i></a>
-                                        <a href="https://www.linkedin.com/company/ekfrazo-technologies/" target="_blank"><i class="bi bi-linkedin"></i></a>
-                                    </div>
-                                    <div class="col-sm">
-                                        
-                                    </div>
+                            </div>
+                            <div class="row" style="text-align: center;">
+                                <div class="col">
+                                    <p>Copyright Ⓒ <a href="https://www.ekfrazo.com/"  target="_blank" style="color: #3F51B5;text-decoration: none;">Ekfrazo Technologies Private Limited</a></p>
                                 </div>
-                            </form>
-                            
-                        </div>
+                            </div>
+                            <div class="row" style="text-align: center;">
+                                <div class="col">
+                                    <p>All rights reserved.</p>
+                                </div>
+                            </div>
+                            <div class="row" style="text-align: center;">
+                                <div class="col-sm">
+                                   
+                                </div>
+                                <div class="col-sm-6">
+                                    <a href="https://twitter.com/ekfrazo" target="_blank"><i class="bi bi-twitter"></i></a> 
+                                    <a href="https://www.facebook.com/ekfrazotechnologies/" target="_blank"><i class="bi bi-facebook"></i></a>
+                                    <a href="https://www.linkedin.com/company/ekfrazo-technologies/" target="_blank"><i class="bi bi-linkedin"></i></a>
+                                </div>
+                                <div class="col-sm">
+                                    
+                                </div>
+                            </div>
+                        </form>
+                        
                     </div>
                 </div>
             </div>
         </div>
-     
     </div>
   
-</div>
+</div> -->
 
  <div class="container-fluid mobileView" style="padding: 0px;overflow: hidden !important;height: 100vh !important;">
     <div class="container">
@@ -158,3 +155,66 @@
     </div>
   
 </div> 
+
+
+<!-- New Login Design -->
+<div class="container-fluid webView login-main-bg" style="margin: 0;padding: 0;">
+    <div class="row login-content-bg">
+       <div class="col-12 col-md-6 col-lg-6 col-xl-6 login-left-content">
+      <img src="./../../../assets/images/login-left-content.png" class="left-content-img" alt="left-content-img" />
+       </div> 
+       <div class="col-12 col-md-6 col-lg-6 col-xl-6" style="position: relative;">
+    <div class="login-right-content">
+        <div class="row">
+<div class="logo-section">
+<img src="./../../../assets/images/logo.png" alt="logo-img"  width="170px" height="65px"/>
+</div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12">
+            <h2 class="login-text"><b>Login</b></h2>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <form [formGroup]='loginForm' (ngSubmit)='login()' class="login-form-content">
+      <div class="row">
+        <div class="col custome-column">
+            <fieldset class="input-fieldset">
+                <input type="text" class="form-control p-3  mb-3 accordion-header" formControlName='username' placeholder="Email Address" aria-describedby="emailHelp"  autocomplete="off" id="emailId">
+                <legend for="emailId">Email Address <span>*</span></legend>
+              </fieldset>
+              <div *ngIf="f['username'].touched && f['username'].invalid" class="p-r">
+                  <div *ngIf="f['username'].errors && f['username'].errors['required'] " class="error-msg" >Email Id is required.</div>
+                  <div *ngIf="f['username'].errors && f['username'].errors['email']" class="error-msg">Email Id is invalid.</div>
+              </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col custome-column p-r">
+            <fieldset class="input-fieldset">
+                <input [type]="passwordType" class="form-control p-3 mb-3 sizeinput" formControlName='password' placeholder="Password" aria-describedby="emailHelp"  autocomplete="off" id="password">
+               <legend for="password">Password <span>*</span></legend>
+            </fieldset>
+            <div *ngIf="f['password'].touched && f['password'].invalid" class="p-r">
+                <div *ngIf="f['password'].errors && f['password'].errors['required']"><p class="error-msg">Password is required.</p></div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between">
+        <a routerLink="../forgotPassword" class="login-links">FORGOT PASSWORD?</a>
+        <button mat-raised-button class="proceedbtn" type="submit">Login</button>
+    </div>
+    <div class="d-flex justify-content-center">
+        <a href="https://twitter.com/ekfrazo" target="_blank"><i class="bi bi-twitter"></i></a> 
+        <a href="https://www.facebook.com/ekfrazotechnologies/" target="_blank"><i class="bi bi-facebook"></i></a>
+        <a href="https://www.linkedin.com/company/ekfrazo-technologies/" target="_blank"><i class="bi bi-linkedin"></i></a>
+    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+   
+       </div> 
+    </div>
+</div>

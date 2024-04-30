@@ -43,13 +43,38 @@
 }
 .p-r{
     position: relative;
+    margin-right: 16px;
 }
-
+h1.breadcrumb-title{
+    margin: 0px !important;
+    font-weight: 700;
+    font-size: 24px !important;
+    padding: 0px;
+}
+.breadcrumb-item a{
+    text-decoration: none;
+    color: #126EB4 !important;
+}
+.breadcrumb-item{
+color: #000;
+opacity: 0.7;
+}
+.header-content{
+    justify-content: space-between;
+}
+.desktop-hide-content{
+    display: none;
+}
 @media(max-width:767px){
     .p-r{
         right: 12px;
     } 
-    
+    .header-content{
+        justify-content: space-between;
+    }
+    .desktop-hide-content{
+        display: block;
+    }
 }
 @media(min-width:768px) and (max-width:1023px){
     

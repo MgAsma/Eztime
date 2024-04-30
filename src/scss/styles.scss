@@ -280,6 +280,31 @@ input[type="password"]::-webkit-search-cancel-button {
 }
 .body-card{
   box-shadow: none !important;
-  padding: 0 !important;
+  padding:15px 15px !important;
   margin: 0 !important;
+  border-radius: 16px !important;
+  background: #fff;
+}
+.body{
+  background: #f2f2f2;
+  padding:15px 15px;
+}
+mat-card.profile-settings-card{
+  background: #FFFFFF4D;
+  border: 2px solid !important;
+  border-image-source: linear-gradient(109.53deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 90.43%) !important;
+  padding: 20px !important;
+ border-radius: 10px !important; 
+ margin: 20px !important;
+}
+button.settings-btn{
+  background: #FFFFFF4D;
+  padding: 10px !important;
+  width: 100% !important;
+  padding: 0px, 30px, 0px, 30px !important;
+  border-radius: 5px !important;
+  border: 1px solid #126EB4 !important; 
+}
+.header-sticky{
+  border:none !important;
 }

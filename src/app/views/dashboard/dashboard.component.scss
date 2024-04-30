@@ -11,18 +11,7 @@
 }
 a{
     text-decoration: none;
-}
-.c-icon,#bi-microsoft{
-    position: absolute;
-    right: 9px;
-    top: 35%;
-    font-size: 2rem;
-    color: #6c757d;
-    opacity: 0.7;
-}
-#bi-microsoft{
-top:35%;
-font-size: 1.5rem;
+    color: #126EB4 !important;
 }
 .card-body{
 .heading,.text-muted{
@@ -61,4 +50,51 @@ strong{
 }
 .card:hover{
     opacity: 0.7;
+}
+.dashboard-card{
+    max-height: 350px;
+    height: 100%;
+    box-shadow: 0px 0px 4px 0px #00000040;
+    background: linear-gradient(#C5EDFE 0%, #f0f0f0 98%);
+    // background: #F1FAFF;
+
+}
+.dashboard-card .c-icon{
+position: absolute;
+top: 10%;
+background: #fff;
+width: 60px;
+height: 60px;
+right: 10%;
+padding: 15px;
+border-radius: 50%;
+}
+.c-icon,#bi-microsoft{
+    position: absolute;
+    top: 10%;
+    background: #fff;
+    width: 60px;
+    height: 60px;
+    right: 10%;
+    padding: 15px;
+    border-radius: 50%;
+    font-size: 1.75rem;
+    color: #6c757d;
+    opacity: 0.7;
+}
+.recently-add-content{
+    background: #fff;
+    padding: 10px;
+    margin: 15px 0px!important;
+    // box-shadow: 0px 0px 4px 0px #00000010;
+    border-radius: 10px;
+
+}
+.recently-add-content ul {
+list-style: none;
+padding: 10px;
+margin-bottom: 0px ;
+}
+.recently-add-content ul li{
+    margin: 10px auto ;
 }

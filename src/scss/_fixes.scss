@@ -363,7 +363,7 @@ app-add-on-leave-request,app-applied-approved-leaves,app-timesheet,approval-time
   .bg{
     height: 60vh !important;
     overflow-y: auto !important;
-    margin: 5px 19px;
+    margin: 5px 5px;
     width: 97% !important;
     background: #f8f8f8 !important;
   }
@@ -451,9 +451,19 @@ font-size: small;
 }
 .search-div{
  position: relative;
+ .sizeinput[type="search"]::-webkit-search-cancel-button {
+  margin-right: 30px;
+  appearance: none;
+  -webkit-appearance: none;
+    width: 25px;
+    height: 25px;
+    background-image: url("../assets/images/clear.svg");
+    background-size: contain;
+}
+
  #search-icon,#search-icon-tab{
   position: absolute;
-  right: 2rem;
+  right:10px;
   top: 0.4em;
   font-size: 20px !important;
   color: grey;

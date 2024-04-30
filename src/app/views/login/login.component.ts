@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   loginForm:FormGroup;
   permission: any;
+  showFieldset: boolean = false;
   constructor(private builder:FormBuilder, private api:ApiserviceService, private router:Router) { }
   time = new Date();
   message = '';

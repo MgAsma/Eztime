@@ -1,41 +1,58 @@
 <!--<c-header class="mb-4 d-print-none" position="sticky">-->
 <ng-container>
-  <c-container [fluid]="true">
+  <c-container [fluid]="true" class="header-content">
     <button 
       toggle="visible"
       cHeaderToggler
       [cSidebarToggle]="sidebarId"
-      class="ps-1"
+      class="ps-1 desktop-hide-content"
     >
       <svg cIcon
         name="cilMenu"
         size="lg"
       ></svg>
     </button>
+    <div class="row">
+      <div class="col-sm-12">
+          <h1 class="breadcrumb-title">{{pageName}}</h1>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item" *ngIf="pageName!='Dashboard'"><a routerLink="/dashboards">Home</a></li>
+              <li class="breadcrumb-item">{{pageName}}</li>
+            </ol>
+          </nav>
+      </div>
+  </div>
     <!-- <c-header-nav class="d-none d-lg-flex me-auto"> -->
-      <c-header-nav class="d-lg-flex justify-content-end w-27">
-      <!-- <div class="user-id">WELCOME !</div> -->
+      <!-- <c-header-nav class="d-lg-flex justify-content-end w-27">
+      <div class="user-id">WELCOME !</div>
       
       <div class="user-name" [ngClass]="user_role_Name !== 'EMPLOYEE' ? 'nonemployee' : 'employee'">
               {{user_name}}<br/>
         <small class="role-name" *ngIf="user_role_Name !== 'EMPLOYEE'">{{user_role_Name}}</small>
       </div>
       
-    </c-header-nav>
+    </c-header-nav> -->
     <c-header-nav>
       <div class="p-r">
         <i class="bi bi-bell-fill"  [matBadge]="notes?.length"  matBadgeColor="warn" (click)="openNotification()"></i>
       </div>
+      <div class="p-r">
+        <button class="settings-btn py-1" type="click" (click)="openDialogue()">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </button>
+      </div>
     </c-header-nav>
-    <c-header-nav class="ms-3">
+    <!-- <c-header-nav class="ms-3">
       <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
-    </c-header-nav>
+    </c-header-nav> -->
 
   </c-container>
+  
 </ng-container>
 <!--</c-header>-->
 
-<ng-template #userDropdown>
+<!-- <ng-template #userDropdown>
   <c-dropdown alignment="end" variant="nav-item">
     <button 
       cButton
@@ -69,5 +86,5 @@
     </mat-card>
    
   </c-dropdown>
-</ng-template>
+</ng-template> -->
 

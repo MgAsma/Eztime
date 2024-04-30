@@ -3,8 +3,15 @@
      color: black !important;
   //   padding: 11px 15px 11px 0px;
  }
+ #sidebar{
+    background-image: url(./../assets/images/sidebar-bg-transparent-img.png), radial-gradient(100% 60.3% at 0% 45.5%, #FFFFFF 0%, #D7EEFF 100%);
+     background-repeat: no-repeat;
+     background-size: cover;
+ }
+
  .sidebar-nav{
-     padding: 10px 0px 0px 0px;
+     padding: 10px 20px 0px 0px;
+     
  }
  
  
@@ -20,8 +27,9 @@
     color: #212529 !important;
     font-weight: 500;
     background: white;
-    margin: 10px;
-    border-radius: 5px;
+    margin: 10px 5px 0px 0px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
 }
  // .sidebar-nav .nav-link{
  //     color:white !important;
@@ -36,7 +44,7 @@
  .sidebar-nav .nav-link:hover {
   //   color: #6c757d !important;
      text-decoration: none;
-     transition: all 0.5s ease
+    //  transition: all 0.2s ease
  }
  .sidebar {
     //  --cui-sidebar-width: 15rem;
@@ -50,8 +58,9 @@
  }
  .sidebar-brand {
      height: 50px;
-     background: #fff!important;
+     background: transparent!important;
      padding: 5px!important;
+     justify-content: left;
     // border: 3px solid black;
  }
  //.sidebar-nav .nav-link .nav-icon {
@@ -81,7 +90,7 @@
  .sidebar-nav .nav-group-toggle::after {
      background-image: var(--cui-sidebar-toggler-indicator) !important;
      transform: rotate(-92deg) !important;
-     transition: all 0.5s ease
+    //  transition: all 0.5s ease
  }
  .sidebar-nav .nav-group.show > .nav-group-toggle::after {
      transform: rotate(92deg) !important;
