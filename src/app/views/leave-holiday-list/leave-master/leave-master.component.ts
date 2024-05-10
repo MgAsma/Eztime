@@ -161,7 +161,7 @@ export class LeaveMasterComponent implements OnInit {
     this.getLeaveType();
   }  
   onTableSizeChange(event:any): void {
-    this.tableSize = event.target.value;
+    this.tableSize = Number(event.target.value);
     this.page = 1;
     this.getLeaveType();
   }  

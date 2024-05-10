@@ -82,7 +82,7 @@
   
 </div> -->
 
- <div class="container-fluid mobileView" style="padding: 0px;overflow: hidden !important;height: 100vh !important;">
+ <!-- <div class="container-fluid mobileView" style="padding: 0px;overflow: hidden !important;height: 100vh !important;">
     <div class="container">
         <div class="row c-r">
             <div class="col-12 p-h">
@@ -97,7 +97,7 @@
                         </div>
                             <form [formGroup]='loginForm' (ngSubmit)='login()'>
                                 <div class="row">
-                                    <!-- <h1 class="head-txt">LOGIN</h1> -->
+                                    <h1 class="head-txt">LOGIN</h1>
                                     <div class="col custome-column">
                                         
                                         <label >Email Id <span>*</span></label>
@@ -126,7 +126,7 @@
                                 </div>
                                 <div class="row" style="text-align: center;">
                                     <div class="col">
-                                        <!-- <a routerLink="../register" class="login-links">REGISTER?</a><br> -->
+                                        <a routerLink="../register" class="login-links">REGISTER?</a><br>
                                         <a routerLink="../forgotPassword" class="login-links" style="color:blue !important">FORGOT PASSWORD?</a>
                                     </div>
                                 </div>
@@ -154,16 +154,16 @@
         
     </div>
   
-</div> 
+</div>  -->
 
 
 <!-- New Login Design -->
-<div class="container-fluid webView login-main-bg" style="margin: 0;padding: 0;">
+<div class="container-fluid login-main-bg" style="margin: 0;padding: 5px 0px;">
     <div class="row login-content-bg">
-       <div class="col-12 col-md-6 col-lg-6 col-xl-6 login-left-content">
+       <div class="col-12 col-md-12 col-lg-6 col-xl-6 login-left-content order-2 order-sm-2 order-md-2 order-lg-1 order-xl-1 ">
       <img src="./../../../assets/images/login-left-content.png" class="left-content-img" alt="left-content-img" />
        </div> 
-       <div class="col-12 col-md-6 col-lg-6 col-xl-6" style="position: relative;">
+       <div class="col-12 col-md-12 col-lg-6 col-xl-6 order-1 order-sm-1 order-md-1 order-lg-2 order-xl-2" style="position: relative; align-self: center;">
     <div class="login-right-content">
         <div class="row">
 <div class="logo-section">
@@ -201,8 +201,8 @@
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-between">
-        <a routerLink="../forgotPassword" class="login-links">FORGOT PASSWORD?</a>
+    <div class="action-btn-link-content">
+        <a routerLink="../forgotPassword" class="login-links">Forget Password?</a>
         <button mat-raised-button class="proceedbtn" type="submit">Login</button>
     </div>
     <div class="d-flex justify-content-center">

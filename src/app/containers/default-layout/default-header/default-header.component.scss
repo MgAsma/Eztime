@@ -65,6 +65,7 @@ opacity: 0.7;
 .desktop-hide-content{
     display: none;
 }
+
 @media(max-width:767px){
     .p-r{
         right: 12px;
@@ -81,6 +82,9 @@ opacity: 0.7;
     .w-27{
         width:29% !important;
     } 
+    .desktop-hide-content{
+        display: block;
+    }
 }
 @media(min-width:1024px) and (max-width:1033px){
     
@@ -98,4 +102,10 @@ mat-card{
     box-shadow: none !important;
     padding: 0 !important;
     margin: 0 !important;
+}
+
+@media(min-width:279px) and (max-width:676px){
+.mobile-hide-content{
+    display: none;
+}
 }

@@ -87,7 +87,7 @@ h1{
 body{
   // background-color: #fff !important;
   // background-color: #d8dbe0  !important;
-  overflow-y: hidden !important;
+  // overflow-y: hidden !important;
   overflow-x: hidden !important;
   width: 100% !important;
   .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
@@ -120,7 +120,7 @@ body{
   .toolbar-btn {
     border: none;
     margin: 0 3px;
-    background: #dfdfdf;
+    background: #fff;
     color: black;
     border-radius: 2px;
     padding: 6px;
@@ -162,6 +162,11 @@ body{
   overflow-x: hidden;
 }
 @media only screen and (max-width: 767px) {
+  #search-icon,#search-icon-tab{
+    right: 40px !important;
+    top: 15px !important;
+    position: absolute;
+  }
  body {
   
   background: transparent !important;
@@ -211,7 +216,7 @@ body{
 }
 .mobileView{
   width: 100% !important;
-  height: 77vh !important;
+  // height: 77vh !important;
   visibility: visible;
 }
 .mobileView {
@@ -232,9 +237,14 @@ h1{
     height: 70px !important;
     width: 70px !important;
     /* position: relative !important; */
-    bottom: 25px !important;
+    bottom: 130px !important;
     position: fixed !important;
+    right: 16px;
     // font-size: 25px;
+}
+.createbtn-new span i{
+font-size: 24px !important;
+font-style: normal !important;
 }
 .createbtn{
   top:32% !important;
@@ -340,6 +350,7 @@ app-add-on-leave-request,app-applied-approved-leaves,app-timesheet,approval-time
     overflow-x: auto !important;
   }
 }
+
 }
 @media only screen and (min-width: 1024px) {
   
@@ -464,7 +475,7 @@ font-size: small;
  #search-icon,#search-icon-tab{
   position: absolute;
   right:10px;
-  top: 0.4em;
+  top:5px;
   font-size: 20px !important;
   color: grey;
 }

@@ -236,11 +236,27 @@ button.toast-close-button {
     right: -0.2em;
     top: -0.2em;
   }
+  .body{
+    padding: 0px !important;
+  }
+  .body-card{
+    padding: 0px !important;
+    border-radius: 0px;
+    background: #f2f9ff !important;
+  }
 }
 @media all and (min-width: 481px) and (max-width: 768px) {
   .toast-container .ngx-toastr.div {
     padding: 15px 15px 15px 50px;
     width: 25em;
+  }
+  .body{
+    padding: 0px !important;
+  }
+  .body-card{
+    padding: 0px !important;
+    border-radius: 0px !important;
+    background: #d7efff !important;
   }
 }
 @media(max-width:768px){
@@ -280,14 +296,14 @@ input[type="password"]::-webkit-search-cancel-button {
 }
 .body-card{
   box-shadow: none !important;
-  padding:15px 15px !important;
+  padding:15px 15px;
   margin: 0 !important;
-  border-radius: 16px !important;
+  border-radius: 16px ;
   background: #fff;
 }
 .body{
   background: #f2f2f2;
-  padding:15px 15px;
+  padding: 15px 15px;
 }
 mat-card.profile-settings-card{
   background: #FFFFFF4D;
@@ -307,4 +323,19 @@ button.settings-btn{
 }
 .header-sticky{
   border:none !important;
+}
+.ngx-pagination{
+  display: inline-flex;
+}
+.ngx-pagination ul{
+  padding-left: 0px !important;
+}
+.mobile-pagination{
+  position: fixed;
+  bottom: 10%;
+  left: 0%;
+  right: 0%;
+  z-index: 999;
+  background: #FFFFFFCC;
+  box-shadow: 0px -1px 4px 0px #00000040;
 }

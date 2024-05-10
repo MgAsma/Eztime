@@ -89,7 +89,7 @@ label,p{
         color: #f0441b !important;
     }
     .bi-pencil-square{
-        color: #1bf05b !important;
+        color: #000 !important;
     }
 }
 h5{
@@ -136,9 +136,8 @@ form {
 }
 .mat-fab:not([class*=mat-elevation-z]), 
 .mat-mini-fab:not([class*=mat-elevation-z]) {
-    box-shadow: 0px 0px 1px -1px rgba(0, 0, 0, 0.2), 
-    0px 6px 10px 0px rgba(0, 0, 0, 0.14), 
-    0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    stroke: #D7D7D7;
 }
 
 .mat-btn-s:hover{

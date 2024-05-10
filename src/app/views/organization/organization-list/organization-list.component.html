@@ -250,19 +250,6 @@
         <div *ngIf="result.length === 0" >
           <app-generic-norecards></app-generic-norecards>
           </div>
-          <div class="row" *ngIf="result.length !== 0 " > 
-            <div class="col-sm"></div>
-            <div class="col-sm">
-                <div class="">
-                    <pagination-controls 
-                      previousLabel="Prev" 
-                      nextLabel="Next" 
-                      (pageChange)="onTableDataChange($event)">
-                    </pagination-controls>
-                  </div>
-            </div>
-        </div>
-
         </ng-container>
        
           <!-- <div class="s-position">
@@ -270,6 +257,20 @@
   </button></a>
           </div> -->
           <ng-container >
+            <div class="row mobile-pagination" *ngIf="organizationData.length !== 0">
+              <div class="col-sm-12" >
+                  <div class="d-flex justify-content-center">
+                     
+                      <pagination-controls 
+                        previousLabel="Prev" 
+                        nextLabel="Next" 
+                        (pageChange)="onTableDataChange($event)">
+                      </pagination-controls>
+                      <button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
+                      >{{size}}</button>
+                    </div>
+              </div>
+          </div>
             <a routerLink="/organization/createOrg"> 
             <button  type="button"  class="createbtn-new" placement="top" container="body" ngbTooltip="Add"><i class="fa fa-plus"></i>
             </button>

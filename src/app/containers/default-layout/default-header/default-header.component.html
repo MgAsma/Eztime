@@ -15,12 +15,14 @@
     <div class="row">
       <div class="col-sm-12">
           <h1 class="breadcrumb-title">{{pageName}}</h1>
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
+         <div class="mobile-hide-content">
+          <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb ">
               <li class="breadcrumb-item" *ngIf="pageName!='Dashboard'"><a routerLink="/dashboards">Home</a></li>
               <li class="breadcrumb-item">{{pageName}}</li>
             </ol>
           </nav>
+         </div>
       </div>
   </div>
     <!-- <c-header-nav class="d-none d-lg-flex me-auto"> -->
@@ -37,7 +39,7 @@
       <div class="p-r">
         <i class="bi bi-bell-fill"  [matBadge]="notes?.length"  matBadgeColor="warn" (click)="openNotification()"></i>
       </div>
-      <div class="p-r">
+      <div class="p-r mobile-hide-content">
         <button class="settings-btn py-1" type="click" (click)="openDialogue()">
           <i class="bi bi-box-arrow-right"></i> Logout
         </button>

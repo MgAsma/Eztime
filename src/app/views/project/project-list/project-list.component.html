@@ -116,10 +116,10 @@
 <div class="container-wrapper mobileView">
     <div class="row">
         <div class="col-sm-12 col-md-6">
-            <h1>Project list</h1>
+            <h1 class="mx-3">Project list</h1>
         </div>
-        <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by project/client/status"aria-describedby="emailHelp"  autocomplete="off">
+        <div class="col-sm-6 col-md-6 mb-1 search-div px-4">
+            <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by project/client/status"aria-describedby="emailHelp"  autocomplete="off">
             <i class="bi bi-search" id="search-icon"  (click)="filterSearch()"></i>
         </div>
     </div>
@@ -134,19 +134,23 @@
         <div class="card">
             <div class="row">
                 <div class="col-6">
-                    <h6 class="card-subtitle"><i class="bi bi-collection-fill"></i>Project</h6>
+                    <h6 class="card-subtitle">
+                        <!-- <i class="bi bi-collection-fill"></i> -->
+                        Project</h6>
                     <div class="value-container">{{item.p_name}}</div>
                 </div>
                 <div class="col-6 p-2 text-end">
                     <ng-container *ngFor="let access of permissions">
-                     <a *ngIf="access == 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" ></i></button></a>
-                     <a *ngIf="access == 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash-fill"></i></button></a>
+                     <a *ngIf="access == 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" style="color: #000;"></i></button></a>
+                     <a *ngIf="access == 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash-fill" style="color: red;"></i></button></a>
                     </ng-container>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 bg-secondary">
-                        <h6 class="card-subtitle"><i class="bi bi-list-task"></i>Tasks</h6>
+                        <h6 class="card-subtitle">
+                            <!-- <i class="bi bi-list-task"></i> -->
+                            Tasks</h6>
                         <div class="value-container">
                         <ng-container *ngIf="item.project_related_task_list.length >0">
                         <ng-container *ngFor="let task of item.project_related_task_list">{{task.task_name}}</ng-container>
@@ -159,33 +163,45 @@
                  </div>
                 <div class="row">
                     <div class="col-6">
-                    <h6 class="card-subtitle"><i class="bi bi-calendar2-week"></i>Start date</h6>
+                    <h6 class="card-subtitle">
+                        <!-- <i class="bi bi-calendar2-week"></i> -->
+                        Start date</h6>
                     <div class="value-container">{{item.p_start_date*1000 | date:'dd-MM-yyyy'}}</div>
                     </div>
                     <div class="col-6">
-                        <h6 class="card-subtitle"><i class="bi bi-calendar2-week"></i>End date</h6>
+                        <h6 class="card-subtitle">
+                            <!-- <i class="bi bi-calendar2-week"></i> -->
+                            End date</h6>
                         <div class="value-container">{{item.p_closure_date*1000 | date:'dd-MM-yyyy'}}</div>
                     </div>
                  </div>
 
                  <div class="row">
                     <div class="col-6 bg-secondary">
-                    <h6 class="card-subtitle"><i class="bi bi-person-fill-check"></i>Reporter</h6>
+                    <h6 class="card-subtitle">
+                        <!-- <i class="bi bi-person-fill-check"></i> -->
+                        Reporter</h6>
                     <div class="value-container">{{item.reporting_manager_first_name}}</div>
                     </div>
                     <div class="col-6 bg-secondary">
-                        <h6 class="card-subtitle"><i class="bi bi-person-fill-gear"></i>Approver</h6>
+                        <h6 class="card-subtitle">
+                            <!-- <i class="bi bi-person-fill-gear"></i> -->
+                            Approver</h6>
                         <div class="value-container">{{item.approver_manager_first_name}}</div>
                     </div>
                  </div>
 
                  <div class="row">
                     <div class="col-6">
-                        <h6 class="card-subtitle"><i class="bi bi-person-lines-fill"></i>Client</h6>
+                        <h6 class="card-subtitle">
+                            <!-- <i class="bi bi-person-lines-fill"></i> -->
+                            Client</h6>
                         <div class="value-container">{{item.client_name}}</div>
                     </div>
                     <div class="col-6">
-                        <h6 class="card-subtitle"><i class="bi bi-radioactive"></i>Status</h6>
+                        <h6 class="card-subtitle">
+                            <!-- <i class="bi bi-radioactive"></i> -->
+                            Status</h6>
                         <div class="value-container">{{item.p_status?item.p_status:"NA"}}</div>
                     </div>
                  </div>
@@ -194,19 +210,23 @@
      <div *ngIf="result.length === 0">
     <app-generic-norecards></app-generic-norecards>
      </div>
-     <div class="row" *ngIf="result.length !== 0">
-        <div class="col-sm" >
+    
+    </ng-container>
+      </div>
+    </div>
+    <div class="row mobile-pagination" *ngIf="allProjectList.length !== 0">
+        <div class="col-sm-12" >
             <div class="d-flex justify-content-center">
+               
                 <pagination-controls 
                   previousLabel="Prev" 
                   nextLabel="Next" 
                   (pageChange)="onTableDataChange($event)">
                 </pagination-controls>
+                <button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
+                >{{size}}</button>
               </div>
         </div>
-    </div>
-    </ng-container>
-      </div>
     </div>
     <div class="s-position">
         <ng-container *ngFor="let access of permissions">
