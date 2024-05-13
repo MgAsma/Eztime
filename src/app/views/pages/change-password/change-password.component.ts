@@ -12,7 +12,7 @@ import { ApiserviceService } from 'src/app/service/apiservice.service';
 export class ChangePasswordComponent implements OnInit {
   userId
   changePassword:FormGroup;
-  eyeIcon = 'bi bi-eye-slash-fill'
+  eyeIcon = 'bi bi-eye-slash'
   passwordType = "password";
   eyeState: boolean = false;
   constructor(
@@ -80,11 +80,11 @@ export class ChangePasswordComponent implements OnInit {
   showPassword(){
     this.eyeState = !this.eyeState 
     if(this.eyeState == true){
-      this.eyeIcon = 'bi bi-eye-fill'
+      this.eyeIcon = 'bi bi-eye'
       this.passwordType = 'text'
     }
     else{
-      this.eyeIcon = 'bi bi-eye-slash-fill'
+      this.eyeIcon = 'bi bi-eye-slash'
       this.passwordType = 'password'
     }
     

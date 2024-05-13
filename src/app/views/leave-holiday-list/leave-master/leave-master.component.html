@@ -67,7 +67,7 @@
                                   <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
                                 </button>
                                 <button mat-raised-button mat-mini-fab   (click)="open(item.id)" *ngIf="access === 'DELETE'">
-                                  <i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i>
+                                  <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
                                 </button>
                               </ng-container> 
                          </td>
@@ -122,7 +122,7 @@
                     <div class="col-12 p-3 text-end">
                         <ng-container *ngFor="let access of permissions">
                         <a *ngIf="access == 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" ></i></button></a>
-                        <a *ngIf="access == 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash-fill"></i></button></a>
+                        <a *ngIf="access == 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash"></i></button></a>
                         </ng-container>
                     </div>
                 </div>
@@ -163,23 +163,24 @@
         <div *ngIf="result.length === 0 " >
             <app-generic-norecards></app-generic-norecards>
         </div>
-        <div class="row" *ngIf="result.length !== 0 ">      
-            <div class="col-sm">
-                <div class="d-flex justify-content-center ">
-                    <pagination-controls 
-                      previousLabel="Prev" 
-                      nextLabel="Next" 
-                      (pageChange)="onTableDataChange($event)">
-                    </pagination-controls>
-                  </div>
-            </div>
-        </div>
         </ng-container>
     </div>
     
     
 </div>
-
+<div class="row mobile-pagination" *ngIf="leaveMasterList.length !== 0">
+    <div class="col-sm-12" >
+        <div class="mobile-pagination-content">
+            <pagination-controls 
+              previousLabel="Prev" 
+              nextLabel="Next" 
+              (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+           <div><button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
+            >{{size}}</button></div>
+          </div>
+    </div>
+  </div>
 <div class="s-position">
 <ng-container *ngFor="let access of permissions">
    <button mat-fab type="button" routerLink="/leave/leaveDetails" *ngIf="access === 'CREATE'" class="createbtn-new" ><i class="fa fa-plus"></i>

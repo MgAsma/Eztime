@@ -119,7 +119,7 @@
               <div class="col-5">
                   <ng-container *ngFor="let approval of accessConfig">
                       <span *ngIf="approval == 'DELETE'" style="float: right;">
-                          <button  type="button" class="toolbar-btn "   (click)="open(item)"  ><i class="bi bi-trash-fill"></i></button>
+                          <button  type="button" class="toolbar-btn "   (click)="open(item)"  ><i class="bi bi-trash"></i></button>
                         </span>
                   </ng-container>  
               </div>
@@ -244,20 +244,21 @@
           </div>
         </div>
       </ng-container>
-      <div class="row">      
-        
-        <div class="col-sm">
-            <div class="d-flex justify-content-center ">
-                <pagination-controls 
-                  previousLabel="Prev" 
-                  nextLabel="Next" 
-                  (pageChange)="onTableDataChange($event)">
-                </pagination-controls>
-              </div>
-        </div>
     </div>
-    </div>
-    
+    <div class="row mobile-pagination" *ngIf="list.length !== 0">
+      <div class="col-sm-12" >
+          <div class="mobile-pagination-content">
+             
+              <pagination-controls 
+                previousLabel="Prev" 
+                nextLabel="Next" 
+                (pageChange)="onTableDataChange($event)">
+              </pagination-controls>
+             <div><button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
+              >{{size}}</button></div>
+            </div>
+      </div>
+  </div>
   </div>
 
 

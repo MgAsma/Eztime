@@ -49,7 +49,7 @@
                         <td>{{items.status}}</td>
                         <!-- <td>
                             <button style="border: none;background-color: inherit;" (click)="open(items.id,'Approved')"><i class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>
-                            <button style="border: none;background-color: inherit;" (click)="open(items.id,'Declined')"><i class="bi bi-x-circle-fill" container="body" ngbTooltip="Reject" style="color:red"></i></button>
+                            <button style="border: none;background-color: inherit;" (click)="open(items.id,'Declined')"><i class="bi bi-x-circle" container="body" ngbTooltip="Reject" style="color:red"></i></button>
                         </td> -->
                         <td>
                            <!--  <ng-container *ngFor="let approval of accessConfig">
@@ -60,7 +60,7 @@
                                     <button style="border: none;background-color: inherit;" (click)="open(items.id,'APPROVED')"><i class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>
                                 </span>
                                 <span *ngIf="approval == 'REJECT'">
-                                    <button style="border: none;background-color: inherit;" (click)="open(items.id,'DECLINED')"><i class="bi bi-x-circle-fill" container="body" ngbTooltip="Reject" style="color:red"></i></button>
+                                    <button style="border: none;background-color: inherit;" (click)="open(items.id,'DECLINED')"><i class="bi bi-x-circle" container="body" ngbTooltip="Reject" style="color:red"></i></button>
                                 </span>
                             </ng-container>-->
                         </td>

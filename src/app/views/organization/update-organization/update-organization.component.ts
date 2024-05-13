@@ -22,7 +22,7 @@ export class UpdateOrganizationComponent implements OnInit {
   base64String: string;
   base64WithPrefix: any;
   eyeState: boolean = false;
-  eyeIcon = 'bi bi-eye-slash-fill'
+  eyeIcon = 'bi bi-eye-slash'
   passwordType = "password";
   country: any = [];
   state: any =[];
@@ -319,11 +319,11 @@ export class UpdateOrganizationComponent implements OnInit {
   showPassword(){
     this.eyeState = !this.eyeState 
     if(this.eyeState == true){
-      this.eyeIcon = 'bi bi-eye-fill'
+      this.eyeIcon = 'bi bi-eye'
       this.passwordType = 'text'
     }
     else{
-      this.eyeIcon = 'bi bi-eye-slash-fill'
+      this.eyeIcon = 'bi bi-eye-slash'
       this.passwordType = 'password'
     }
     

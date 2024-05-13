@@ -73,7 +73,7 @@
                                       <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
                                     </button>
                                     <button mat-raised-button mat-mini-fab   (click)="open(item.id)" *ngIf="access === 'DELETE'">
-                                      <i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i>
+                                      <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
                                     </button>
                                   </ng-container>  
                             </td>
@@ -135,14 +135,14 @@
             <div class="row">
                 <div class="col-6">
                     <h6 class="card-subtitle">
-                        <!-- <i class="bi bi-collection-fill"></i> -->
+                        <!-- <i class="bi bi-collection"></i> -->
                         Project</h6>
                     <div class="value-container">{{item.p_name}}</div>
                 </div>
                 <div class="col-6 p-2 text-end">
                     <ng-container *ngFor="let access of permissions">
                      <a *ngIf="access == 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" style="color: #000;"></i></button></a>
-                     <a *ngIf="access == 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash-fill" style="color: red;"></i></button></a>
+                     <a *ngIf="access == 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash" style="color: red;"></i></button></a>
                     </ng-container>
                     </div>
                 </div>
@@ -179,13 +179,13 @@
                  <div class="row">
                     <div class="col-6 bg-secondary">
                     <h6 class="card-subtitle">
-                        <!-- <i class="bi bi-person-fill-check"></i> -->
+                        <!-- <i class="bi bi-person-check"></i> -->
                         Reporter</h6>
                     <div class="value-container">{{item.reporting_manager_first_name}}</div>
                     </div>
                     <div class="col-6 bg-secondary">
                         <h6 class="card-subtitle">
-                            <!-- <i class="bi bi-person-fill-gear"></i> -->
+                            <!-- <i class="bi bi-person-gear"></i> -->
                             Approver</h6>
                         <div class="value-container">{{item.approver_manager_first_name}}</div>
                     </div>
@@ -194,7 +194,7 @@
                  <div class="row">
                     <div class="col-6">
                         <h6 class="card-subtitle">
-                            <!-- <i class="bi bi-person-lines-fill"></i> -->
+                            <!-- <i class="bi bi-person-lines"></i> -->
                             Client</h6>
                         <div class="value-container">{{item.client_name}}</div>
                     </div>
@@ -216,15 +216,15 @@
     </div>
     <div class="row mobile-pagination" *ngIf="allProjectList.length !== 0">
         <div class="col-sm-12" >
-            <div class="d-flex justify-content-center">
+            <div class="mobile-pagination-content">
                
                 <pagination-controls 
                   previousLabel="Prev" 
                   nextLabel="Next" 
                   (pageChange)="onTableDataChange($event)">
                 </pagination-controls>
-                <button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
-                >{{size}}</button>
+               <div><button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
+                >{{size}}</button></div>
               </div>
         </div>
     </div>

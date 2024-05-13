@@ -62,12 +62,12 @@
                                       <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
                                     </button>
                                     <button mat-raised-button mat-mini-fab (click)="open(item.id)" *ngIf="access === 'DELETE'">
-                                      <i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i>
+                                      <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
                                     </button>
                                   </ng-container>                          	
                                    
                                 <!-- <a routerLink="/task/update/{{item.id}}/{{page}}/{{tableSize}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></a>
-                                <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item.id)"><i class="bi bi-trash-fill" style="color: red;" container="body" ngbTooltip="Delete"></i></button> -->
+                                <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item.id)"><i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i></button> -->
                              </td>
                         </tr>
                         <tr *ngIf="result.length === 0" class="nodata">
@@ -128,7 +128,7 @@
                 <div class="col-12 p-2 text-end">
                  <ng-container *ngFor="let access of permissions">
                  <a *ngIf="access === 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" ></i></button></a>
-                 <a *ngIf="access === 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash-fill"></i></button></a>
+                 <a *ngIf="access === 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash"></i></button></a>
                 </ng-container>
                 </div>
                 </div>
@@ -152,19 +152,21 @@
         <div *ngIf="result.length === 0" >
             <app-generic-norecards></app-generic-norecards>
         </div>
-        <div class="row"> 
-            <div class="col-sm" *ngIf="result.length !== 0 ">
-                <div class="d-flex justify-content-center">
-                    <pagination-controls 
-                      previousLabel="Prev" 
-                      nextLabel="Next" 
-                      (pageChange)="onTableDataChange($event)">
-                    </pagination-controls>
-                  </div>
-            </div>
-        </div>
         </ng-container>
     </div>
+    <div class="row mobile-pagination" *ngIf="categoryList.length !== 0">
+      <div class="col-sm-12" >
+          <div class="mobile-pagination-content">
+              <pagination-controls 
+                previousLabel="Prev" 
+                nextLabel="Next" 
+                (pageChange)="onTableDataChange($event)">
+              </pagination-controls>
+             <div><button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
+              >{{size}}</button></div>
+            </div>
+      </div>
+  </div>
     <div class="s-position">
         <ng-container *ngFor="let access of permissions">
         <button *ngIf="access === 'CREATE'" routerLink="/task/add" type="button" mat-fab  class="createbtn-new mat-btn-s" ><i class="fa fa-plus"></i>

@@ -19,7 +19,7 @@ export class CreateOrganizationComponent implements OnInit {
   id: any;
   base64String: string;
   eyeState: boolean = false;
-  eyeIcon = 'bi bi-eye-slash-fill'
+  eyeIcon = 'bi bi-eye-slash'
   passwordType = "password";
   state: any = [];
   city: any = [];
@@ -217,11 +217,11 @@ export class CreateOrganizationComponent implements OnInit {
   showPassword(){
     this.eyeState = !this.eyeState 
     if(this.eyeState == true){
-      this.eyeIcon = 'bi bi-eye-fill'
+      this.eyeIcon = 'bi bi-eye'
       this.passwordType = 'text'
     }
     else{
-      this.eyeIcon = 'bi bi-eye-slash-fill'
+      this.eyeIcon = 'bi bi-eye-slash'
       this.passwordType = 'password'
     }
     

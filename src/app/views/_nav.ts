@@ -54,7 +54,7 @@ export const navItems: any = [
   //   icon:'bi bi-file-person',
   //   children:[
   //     {
-  //       name:'People List',
+  //       name:'Employees',
   //       url:'/people/people-list'
   //     },
   //     // {
@@ -110,7 +110,7 @@ export const navItems: any = [
   // {
   //   name:'Leave/Holiday List',
   //   url:'/leave',
-  //   icon:'bi bi-file-text-fill',
+  //   icon:'bi bi-file-text',
   //   children:[
   //     {
   //       name:'My Leaves',
@@ -183,7 +183,7 @@ export const navItems: any = [
   // {
   //   name:'Industry/Sector',
   //   url:'/industry',
-  //   icon:'bi bi-buildings-fill',
+  //   icon:'bi bi-buildings',
   //   children:[
   //     {
   //       name:'Industry/Sector List',
@@ -198,10 +198,10 @@ export const navItems: any = [
   // {
   //   name:'Clients',
   //   url:'/client',
-  //   icon:'bi bi-person-lines-fill',
+  //   icon:'bi bi-person-lines',
   //   children:[
   //     {
-  //       name:'Client List',
+  //       name:'Clients',
   //       url:'/client/list'
   //     },
   //     {

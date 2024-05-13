@@ -35,12 +35,12 @@ export class DefaultLayoutComponent {
     {
       link: '/profile',
       page: 'Profile',
-      icons: 'bi bi-person-lines-fill'
+      icons: 'bi bi-person-lines'
     },
     // {
     //   link:'../register',
     //   page:'Register',
-    //   icons:'bi bi-person-fill-add'
+    //   icons:'bi bi-person-add'
     // },
     {
       link: '/changePassword',
@@ -141,7 +141,7 @@ export class DefaultLayoutComponent {
                       modifiedKey = 'Todays Approvals';
                       break;
                     case 'PROJECTS':
-                      modifiedKey = 'Project List';
+                      modifiedKey = 'Projects';
                       break;
                     case 'PROJECT_STATUS':
                       modifiedKey = 'Project Status';
@@ -150,25 +150,25 @@ export class DefaultLayoutComponent {
                       modifiedKey = 'Timesheet Calender';
                       break;
                     case 'PROJECT_TASK_CATEGORIES':
-                      modifiedKey = 'Category List';
+                      modifiedKey = 'Project Category ';
                       break;
                     case 'MAIN_CATEGORIES':
-                      modifiedKey = 'Main Category List';
+                      modifiedKey = 'Main Project Category ';
                       break;
                     case 'SUB_CATEGORIES':
-                      modifiedKey = 'Sub Category List';
+                      modifiedKey = 'Sub Project Category ';
                       break;
                     case 'CLIENTS':
-                      modifiedKey = 'Client List';
+                      modifiedKey = 'Clients';
                       break;
                     case 'TAGS':
                       modifiedKey = 'Tag List';
                       break;
                     case 'PEOPLE':
-                      modifiedKey = 'People List';
+                      modifiedKey = 'Employees';
                       break;
                     case 'CENTERS':
-                      modifiedKey = 'Centers List';
+                      modifiedKey = 'Centers';
                       break;
                     case 'PREFIX/SUFFIX':
                       modifiedKey = 'Prefix/Suffix List';
@@ -189,9 +189,11 @@ export class DefaultLayoutComponent {
                       modifiedKey = 'Organization List';
                       break;
                     case 'REVIEW':
-                      modifiedKey = 'Review';
+                      modifiedKey = 'Approvals';
                       break;
-
+                      case 'COMPANY':
+                        modifiedKey = 'Company';
+                        break;
 
                   }
                 }
@@ -208,8 +210,8 @@ export class DefaultLayoutComponent {
                     case 'ROLES':
                       modifiedKey = 'Create Role';
                       break;
-                    case 'PEOPLE':
-                      modifiedKey = 'Create People';
+                    case 'EMPLOYEE':
+                      modifiedKey = 'Create Employee';
                       break;
                     case 'PREFIX/SUFFIX':
                       modifiedKey = 'Create Prefix/Suffix';

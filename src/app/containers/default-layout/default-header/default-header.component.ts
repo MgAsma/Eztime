@@ -27,12 +27,12 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
     {
       link:'/profile',
       page:'Profile',
-      icons:'bi bi-person-lines-fill'
+      icons:'bi bi-person-lines'
     },
     // {
     //   link:'../register',
     //   page:'Register',
-    //   icons:'bi bi-person-fill-add'
+    //   icons:'bi bi-person-add'
     // },
     {
       link:'/changePassword',
