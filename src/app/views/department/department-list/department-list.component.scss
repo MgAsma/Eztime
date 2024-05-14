@@ -49,6 +49,9 @@ ul{
 button:hover .btnicon{
     display: block;
 }
+.toolbar-btn i{
+    font-size: 24px;
+}
 ::ng-deep .mat-form-field {
     height: 55px;
     width: 95%!important;
@@ -100,19 +103,30 @@ html{
     margin: 10px 5px;
     border-radius: 10px;
     zoom: 80%;
+    background: #FFFFFF99 !important;
 }
 .card-subtitle{
     font-weight: bold;
+    color:#454545;
 }
 .inner-card{
     margin: 8px 10px;
     border-radius: 18px;
-    border:none;
-    background: #3d358f;
+    border: 1px solid #126EB4;
+    background: #FFFFFFB2;
     color: white !important;
 }
 .p-c{
     padding: 15px 2rem 0px 2rem;
+}
+.value-container{
+    color: gray;
+    font-weight: 700;
+    font-size: 16px;
+    margin-top: 5px;
+}
+.card .value-container{
+    color:black;  
 }
 // .outer-card:hover{
 //     background-color: #dfdfdf;

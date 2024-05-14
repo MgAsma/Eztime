@@ -101,19 +101,36 @@ html{
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 8%), 0 6px 20px 0 rgb(0 0 0 / 4%);
     margin: 10px 5px; 
     border-radius: 10px;
-    background: white;
+    background: #FFFFFF99 !important;
 }
 .card-subtitle{
     font-weight: bold;
-    color: white;
+    color:#454545;
+}
+.card-body{
+    color: #000;
+    
+}
+.card-body{
+    color: #000;
+    
+}
+.value-container{
+    color: gray;
+    font-weight: 700;
+    font-size: 16px;
+    margin-top: 5px;
+}
+.card .value-container{
+    color:black;  
 }
 .inner-card{
     margin: 10px 15px 20px;
     border-radius: 18px;
-    border: none;
+    border: 1px solid #126EB4;
     padding: 10px 0;
     zoom: 80%;
-    background: #3d358f;
+    background: #FFFFFFB2;
     color: white;
 }
 // .outer-card:hover{
@@ -198,8 +215,10 @@ html{
         font-size: small;  
     }
   }
-  .val-r{
-    color:white;
+ .val-r{
+    color:#000;
+font-weight: bold; 
+margin-top:5px;
   }
   .r-1{
     color: #3d358f;

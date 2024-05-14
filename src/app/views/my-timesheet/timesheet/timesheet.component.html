@@ -6,7 +6,7 @@
             </h1>
         </div>
         <div class="col-sm "></div>
-        <div class="col-sm-12 col-md-12 col-lg-4 px-0 py-2 text-end">
+        <div class="col-6 col-sm-6 col-md-12 col-lg-4 px-0 py-2 text-end">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
@@ -178,12 +178,12 @@
     <div class="row">
         <div class="col-12">
             <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-4">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-4">
                     <div class="card text-white " >
                         <div class="card-body " >
                             <div class="row">
                                     <div class="row">
-                                        <div class="col-8"><h6><i class="bi bi-check"></i> Approved </h6></div>  
+                                        <div class="col-8"><h6><i class="bi bi-check"></i><br><b>Approved</b> </h6></div>  
                                         <div class="col-4 text-end"><h4 class="v-align" style="color: green;">{{cardData?.approved_count}}</h4></div>
                                     </div>
                                     <div class="col-12">
@@ -195,12 +195,12 @@
                     <!--/.col-->
         
                 </div>
-                <div class="col-sm-12 col-md-12 col-lg-4 ">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-4 ">
                     <div class="card text-white" >
                         <div class="card-body" >
                             <div class="row">
                                     <div class="row">
-                                        <div class="col-8"><h6><i class="bi bi-lightning"></i> Request </h6></div>
+                                        <div class="col-8"><h6><i class="bi bi-lightning"></i><br><b>Request</b> </h6></div>
                                         <div class="col-4 text-end"><h4 class="v-align" style="color: #e6b539;">{{cardData ?.request_count}}</h4></div>
                                     </div>
                                     <div class="col-12">
@@ -212,13 +212,13 @@
                     <!--/.col-->
         
                 </div>
-                <div class="col-sm-12 col-md-12 col-lg-4 ">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-4 ">
                     <div class="card text-white " >
                         <div class="card-body " >
                             <div class="row">
                                     <div class="row">
                                         <div class="col-8">
-                                            <h6><i class="bi bi-x"></i> Declined</h6>
+                                            <h6><i class="bi bi-x"></i><br><b>Declined</b></h6>
                                         </div>
                                         <div class="col-4 text-end"><h4 class="v-align" style="color: red;">{{cardData ?.declined_count}}</h4></div>
                                     </div>
@@ -231,12 +231,12 @@
                     <!--/.col-->
         
                 </div>
-                <div class="col-sm-12 col-md-12 col-lg-4 ">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-4 ">
                     <div class="card text-white" >
                         <div class="card-body" >
                             <div class="row">
                                     <div class="row">
-                                        <div class="col"><h6><i class="bi bi-bar-chart"></i> Total </h6></div>
+                                        <div class="col-8"><h6><i class="bi bi-bar-chart"></i><br><b>Total</b></h6></div>
                                         <div class="col-4 text-end"><h4 class="v-align" style="color: red;">{{cardData ?.total_count}}</h4></div>
                                     </div>
                                     <div class="col-12">

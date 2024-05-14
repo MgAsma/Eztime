@@ -98,7 +98,7 @@ html{
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 8%), 0 6px 20px 0 rgb(0 0 0 / 4%);
     margin: 10px 5px; 
     border-radius: 10px;
-    // background: #f1f6f6;
+    background: #FFFFFF99 !important;
     position: relative;
     i{
       color:red ;
@@ -106,16 +106,15 @@ html{
     }
 }
 .card-subtitle{
-    font-weight: bold;
-    color: black;
+    color: #212529;
 }
 .inner-card{
     margin: 10px 15px 20px;
     border-radius: 18px;
-    border: none;
+    border: 1px solid #FFAF13;
     padding: 10px 0;
     zoom: 80%;
-    background: #f9b125;
+    background:#FFFCF3;
     color: white;
     line-height: 13px !important;
     .row{
@@ -205,8 +204,10 @@ html{
         font-size: small;  
     }
   }
-  .val-r{
-    color:white;
+ .val-r{
+    color:#000;
+font-weight: bold; 
+margin-top:5px;
   }
   .r-1{
     color: #0c79e6;

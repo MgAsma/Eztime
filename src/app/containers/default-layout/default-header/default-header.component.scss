@@ -106,8 +106,11 @@ mat-card{
     margin: 0 !important;
 }
 
-@media(min-width:279px) and (max-width:676px){
+@media(min-width:279px) and (max-width:767px){
 .mobile-hide-content{
     display: none;
 }
+h1.breadcrumb-title{
+    font-size: 18px !important;
+} 
 }

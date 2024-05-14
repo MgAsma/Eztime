@@ -512,6 +512,7 @@ input,select,textarea{
 }
 .table>:not(caption)>*>* {
   padding: 0.3rem 0.3rem !important;
+  text-align: center;
 }
 .table>tbody {
   font-size: 12px;
