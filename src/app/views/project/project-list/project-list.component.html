@@ -70,7 +70,7 @@
                             <td>
                                 <ng-container *ngFor="let access of permissions">
                                     <button mat-raised-button mat-mini-fab  routerLink="/project/update/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
-                                      <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
+                                      <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
                                     </button>
                                     <button mat-raised-button mat-mini-fab   (click)="open(item.id)" *ngIf="access === 'DELETE'">
                                       <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
@@ -114,11 +114,11 @@
 
   
 <div class="container-wrapper mobileView">
-    <div class="row">
+    <div class="row mx-1 my-2">
         <div class="col-sm-12 col-md-6">
-            <h1 class="mx-3">Project list</h1>
+            <!-- <h1 class="mx-3">Project list</h1> -->
         </div>
-        <div class="col-sm-6 col-md-6 mb-1 search-div px-4">
+        <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
             <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by project/client/status"aria-describedby="emailHelp"  autocomplete="off">
             <i class="bi bi-search" id="search-icon"  (click)="filterSearch()"></i>
         </div>

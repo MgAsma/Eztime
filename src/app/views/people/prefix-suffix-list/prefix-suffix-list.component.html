@@ -58,7 +58,7 @@
                             <ng-container *ngFor="let access of permissions">
  
                               <button mat-raised-button mat-mini-fab  routerLink="/people/updatePrefixSuffix/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
-                                <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
+                                <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
                               </button>
                               <button mat-raised-button mat-mini-fab  aria-label="Example icon button with a filter list icon" (click)="open(item.id)" *ngIf="access === 'DELETE'">
                                 <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
@@ -102,12 +102,12 @@
 
   <div class="container-fluid mobileView">
     
-    <div class="row">
+    <div class="row mx-1 my-2">
         <div class="col-sm-6">
-            <h1>Prefix/Suffix List</h1>
+            <!-- <h1>Prefix/Suffix List</h1> -->
         </div>
         <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by prefix /suffix "aria-describedby="emailHelp"  autocomplete="off">
+            <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by prefix /suffix "aria-describedby="emailHelp"  autocomplete="off">
             <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
           </div>
         
@@ -122,27 +122,27 @@
       }'>
         <div class="card prefix-card" (click)="cardId(item)">
             <div class="row">
-              <div class="col p-3">
-                <h6 class="clr">Added Date</h6>
-                <p class="clr">{{item.added_date | date:'mediumDate'}}</p>
+              <div class="col p-3 text-start">
+                <h6 class="card-subtitle">Added Date</h6>
+                <p class="value-container">{{item.added_date | date:'mediumDate'}}</p>
              
               </div>
                 <div class="col-5 p-3 text-end">
                   <ng-container *ngFor="let access of permissions">
-                    <a> <button  type="button" class="toolbar-btn"  *ngIf="access =='UPDATE'" (click)='editCard(item.id)' ><i class="bi bi-pencil-square" ></i></button></a>
-                    <a> <button  type="button" class="toolbar-btn"  *ngIf="access =='DELETE'"  (click)="open(item.id)" ><i class="bi bi-trash"></i></button></a>
+                    <a> <button  type="button" class="toolbar-btn"  *ngIf="access =='UPDATE'" (click)='editCard(item.id)' ><i class="bi bi-pencil-square" style="color: #000; font-size: 24px;" ></i></button></a>
+                    <a> <button  type="button" class="toolbar-btn"  *ngIf="access =='DELETE'"  (click)="open(item.id)" ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button></a>
                   </ng-container>
                   </div>
             </div>
             
             <div class="row row-b">
-                <div class="col-6 c-1">
-                  <h6>Prefix</h6>
-                  <p>{{item.prefix}}</p>
+                <div class="col-6 c-1 text-start">
+                  <h6 class="card-subtitle">Prefix</h6>
+                  <p class="value-container">{{item.prefix}}</p>
                 </div>
-                <div class="col-6 c-2">
-                  <h6>Suffix</h6>
-                  <p>{{item.suffix}}</p>
+                <div class="col-6 c-2 text-start">
+                  <h6 class="card-subtitle">Suffix</h6>
+                  <p class="value-container">{{item.suffix}}</p>
                 </div>
             </div>
         </div>

@@ -84,7 +84,7 @@
                               <div class="col">
                                 <h6 class="card-subtitle emp-name">Name : <span>{{leave.first_name}} {{leave.last_name}}</span></h6>
                               </div>
-                              <div class="col-9 text-end">
+                              <div class="col-7 text-end">
                                 <ng-container *ngFor="let access of leaveAccess">
                                 <button class="btn-approval" mat-raised-button mat-raised-button *ngIf="access === 'APPROVE'"  (click)="open(leave,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
                                 <button class="btn-reject" mapprovalat-raised-button mat-raised-button *ngIf="access === 'REJECT'"  (click)="open(leave,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
@@ -250,7 +250,7 @@
                                   <div class="col">
                                     <h6 class="card-subtitle emp-name">Name : <span>{{time.first_name}} </span></h6>
                                   </div>
-                                  <div class="col-9 text-end">
+                                  <div class="col-7 text-end">
                                     <ng-container *ngFor="let access of timesheetAccess">
                                     <button class="btn-approval" mat-raised-button mat-raised-button *ngIf="access ==='APPROVE'" (click)="openDialogue(time,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
                                     <button class="btn-reject" mat-raised-button mat-raised-button  *ngIf="access ==='REJECT'" (click)="openDialogue(time,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  

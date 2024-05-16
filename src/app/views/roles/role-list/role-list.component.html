@@ -65,7 +65,7 @@
                      
                       <ng-container *ngFor="let access of permissions">
                         <button mat-mini-fab  routerLink="/role/update/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
-                          <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
+                          <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
                         </button>
                         <button mat-mini-fab (click)="open(item.id)" *ngIf="access === 'DELETE'">
                           <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
@@ -110,9 +110,9 @@
 </div>
 
 <div class="mobileView">
-<div class="row">
+<div class="row mx-1 my-2">
   <div class="col-sm-6">
-      <h1> Role List</h1>
+      <!-- <h1> Role List</h1> -->
   </div>
   <div class="col-sm-6 col-md-6">
     <div class="mb-1 search-div px-0">
@@ -142,8 +142,8 @@
           </div>
           <div class="col-5 p-0 text-end" *ngIf="role == 'ADMIN'">
           <ng-container *ngFor="let access of permissions">
-            <button *ngIf="access === 'UPDATE'" routerLink="/role/update/{{item.id}}/{{page}}/{{tableSize}}" type="button" class="toolbar-btn"  placement="top" container="body"   ngbTooltip="Edit"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></button>
-            <button  *ngIf="access === 'DELETE'" (click)="open(item.id)"  type="button" class="toolbar-btn"  placement="top" container="body"  ngbTooltip="Delete" ><i class="bi bi-trash"></i></button>
+            <button *ngIf="access === 'UPDATE'" routerLink="/role/update/{{item.id}}/{{page}}/{{tableSize}}" type="button" class="toolbar-btn"  placement="top" container="body"   ngbTooltip="Edit"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i></button>
+            <button  *ngIf="access === 'DELETE'" (click)="open(item.id)"  type="button" class="toolbar-btn"  placement="top" container="body"  ngbTooltip="Delete" ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button>
           </ng-container>
         </div>
           

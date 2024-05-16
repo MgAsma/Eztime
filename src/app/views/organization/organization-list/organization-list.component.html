@@ -73,13 +73,13 @@
                          <td>
                           <ng-container >
                             <button mat-raised-button mat-mini-fab  routerLink="/organization/updateOrg/{{item.id}}" >
-                              <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
+                              <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
                             </button>
                             <button mat-raised-button mat-mini-fab  aria-label="Example icon button with a filter list icon" (click)="open(item.id)" >
                               <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
                             </button>
                           </ng-container> 
-                            <!-- <a routerLink="/organization/updateOrg/{{item.id}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></a>
+                            <!-- <a routerLink="/organization/updateOrg/{{item.id}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i></a>
                             <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item.id)"><i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i></button> -->
                          </td>
                         
@@ -119,12 +119,12 @@
 
 
 <div class="mobileView">
-    <div class="row">
+    <div class="row mx-1 my-2">
       <div class="col-sm-6">
-        <h1>Organization List</h1>
+        <!-- <h1>Organization List</h1> -->
       </div>
       <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-        <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by organization name" aria-describedby="emailHelp"  autocomplete="off">
+        <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by organization name" aria-describedby="emailHelp"  autocomplete="off">
         <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
       </div>
     </div> 
@@ -146,8 +146,8 @@
             <div class="row">
               <div class="col"></div>
               <div class="col-5 p-0 text-end action-btn">
-                <a> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></button></a>
-                <a> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"   ><i class="bi bi-trash"></i></button></a>
+                <a> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i></button></a>
+                <a> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"   ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button></a>
             </div>
             </div>
             <div class="row p-c">

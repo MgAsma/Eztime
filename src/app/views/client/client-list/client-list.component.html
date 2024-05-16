@@ -66,13 +66,13 @@
                             <td>
                                 <ng-container *ngFor="let access of permissions">
                                     <button mat-mini-fab  routerLink="/client/update/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
-                                      <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
+                                      <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
                                     </button>
                                     <button mat-mini-fab   (click)="open(item.id)" *ngIf="access === 'DELETE'">
                                       <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
                                     </button>
                                   </ng-container>  
-                                <!-- <a routerLink="/client/update/{{item.id}}/{{page}}/{{tableSize}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></a>
+                                <!-- <a routerLink="/client/update/{{item.id}}/{{page}}/{{tableSize}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i></a>
                                <button style="border: none;background-color: inherit;" (click)="open(item.id)"><i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i></button> -->
                             </td>
                         </tr>
@@ -110,12 +110,12 @@
 </div>
 
 <div class="container-wrapper mobileView">
-    <div class="row">
+    <div class="row mx-1 my-2">
         <div class="col-sm-6">
-            <h1>Client list</h1>
+            <!-- <h1>Client list</h1> -->
         </div>
         <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by client name/contact person" aria-describedby="emailHelp"  autocomplete="off">
+            <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by client name/contact person" aria-describedby="emailHelp"  autocomplete="off">
             <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
         </div>
     </div>
@@ -135,8 +135,8 @@
                         </div>
                         <div class="col-6 p-2 text-end">
                         <ng-container *ngFor="let access of permissions">
-                         <a *ngIf="access == 'UPDATE'"> <button type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" ></i></button></a>
-                         <a *ngIf="access == 'DELETE'"> <button type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash"></i></button></a>
+                         <a *ngIf="access == 'UPDATE'"> <button type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" style="color: #000; font-size: 24px;" ></i></button></a>
+                         <a *ngIf="access == 'DELETE'"> <button type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button></a>
                         </ng-container>
                         </div>
                         </div>

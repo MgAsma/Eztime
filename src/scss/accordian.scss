@@ -30,3 +30,6 @@
 .mat-expansion-panel-header-title, .mat-expansion-panel-header-description {
     font-weight: 600;
 }
+.mat-accordion .mat-expansion-panel:first-of-type{
+    margin: 10px 0px;
+}

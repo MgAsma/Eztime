@@ -100,12 +100,12 @@ html{
 }
 .n-l{
     border: 3px dotted white;
-    background-color: #3d358f;;
+    // background-color: #3d358f;;
     border-radius: 3px;
     padding-top: 8px;
     margin-bottom: 6px;
     .card-subtitle,p{
-        color:white !important;
+      text-align: left;
     }
 }
 .card p{

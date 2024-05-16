@@ -79,10 +79,11 @@ html{
 
 .card-subtitle{
     font-weight: 600;
-    color: #0a69b1;
+    color: #0a69b1 !important;
 }
 .inner-card{
     border: none;
+    padding-bottom: 15px;
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 4%);
     margin: 10px 15px;
     border-radius: 10px;
@@ -99,12 +100,12 @@ html{
     background-color: #dfdfdf;
 }
 .img-div{
-    text-align: center;
+    text-align: left;
     padding: 10px 10px 5px;
     font-size: 15px;
     text-transform: uppercase;
     font-weight: 500;
-    background: #d3eaff;
+    // background: #d3eaff;
     border-radius: 5px;
 }
 .main-col{
@@ -114,6 +115,11 @@ html{
     padding: 10px 20px !important;
     img{
         border-radius: 100%;
+        object-fit: cover;
+        border-radius: 100%;
+        width: 100px;
+        height: 100px;
+        aspect-ratio: 1 / 1;
     }
 }
 #eye-btn{

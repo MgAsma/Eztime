@@ -163,7 +163,7 @@ body{
 }
 @media only screen and (max-width: 767px) {
   #search-icon,#search-icon-tab{
-    right: 40px !important;
+    right: 10px !important;
     top: 15px !important;
     position: absolute;
   }
@@ -302,7 +302,6 @@ font-style: normal !important;
     overflow-y: auto !important;
     zoom:90%
   }
-  
   .sidebar-backdrop {
     position: fixed;
     top: 0;
@@ -314,12 +313,16 @@ font-style: normal !important;
 }
 .mobileView{
   width: 100% !important;
-  display: inline-block !important;
-  
+  // height: 77vh !important;
+  visibility: visible;
+}
+.mobileView {
+  .page .page-content{
+    zoom: 85%;
+  }
 }
 h1{
   font-size: 22px !important;
-  padding-bottom: 10px !important;
 }
 .webView{
   display: none !important;
@@ -350,7 +353,11 @@ app-add-on-leave-request,app-applied-approved-leaves,app-timesheet,approval-time
     overflow-x: auto !important;
   }
 }
-
+#search-icon,#search-icon-tab{
+  right: 10px !important;
+  top: 15px !important;
+  position: absolute;
+}
 }
 @media only screen and (min-width: 1024px) {
   
@@ -425,6 +432,8 @@ app-default-header {
     box-shadow: 0 0px 6px 0px !important;
     box-sizing: 10px 10px 10px 10px;
     color: gray !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
   }
   #nav-icon{
     // color:gray !important;
