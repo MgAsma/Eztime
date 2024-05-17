@@ -125,7 +125,11 @@
       
          <div class="card">
             <div class="row">
-                <div class="col-12 p-2 text-end">
+              <div class="col-6 text-start">
+                <h6 class="card-subtitle">Category name</h6>
+                <div class="value-container">{{item.tpc_name}}</div>
+                </div>
+                <div class="col-6 p-2 text-end">
                  <ng-container *ngFor="let access of permissions">
                  <a *ngIf="access === 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" style="color: #000; font-size: 24px;" ></i></button></a>
                  <a *ngIf="access === 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button></a>
@@ -133,11 +137,8 @@
                 </div>
                 </div>
             <div class="row ">
-                <div class="col-12 c-1">
-                <h6 class="card-subtitle">Category name</h6>
-                <div class="value-container">{{item.tpc_name}}</div>
-                </div>
-                <div class="col-12 c-2">
+                
+                <div class="col-6 text-start">
                     <h6 class="card-subtitle">Added date</h6>
                     <div class="value-container">{{item.tpc_c_date| date:'mediumDate'}}</div>
                 </div>

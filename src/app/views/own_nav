@@ -8,17 +8,7 @@ export const navItemsOwn: any = [
       }, 
        {
     name:'Organization',
-    url:'/organization',
+    url:'/organization/orgList',
     icon:'bi bi-bank2',
-    children:[
-      {
-        name:'Organization List',
-        url:'/organization/orgList'
-      },
-      {
-        name:'Create Organization',
-        url:'/organization/createOrg'
-      }
-    ]
   },
 ]

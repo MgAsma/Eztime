@@ -96,16 +96,6 @@ export const navItems: any = [
     name:'Organization',
     url:'/organization/orgList',
     icon:'bi bi-bank2',
-    children:[
-      {
-        name:'Organization List',
-        url:'/organization/orgList'
-      },
-      {
-        name:'Create Organization',
-        url:'/organization/createOrg'
-      }
-    ]
   },
   // {
   //   name:'Leave/Holiday List',

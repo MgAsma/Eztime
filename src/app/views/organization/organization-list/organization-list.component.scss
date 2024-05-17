@@ -136,12 +136,12 @@ html{
     margin: 10px 15px 0 !important;
 }
 .org-logo{
-    height: 50px;
-    width: 25%;
+    width: 100px;
     position: absolute;
+    object-fit: contain;
+    aspect-ratio: 1 / 1;
     top: -25px;
-    left: 35%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.04);
+    left: 10%;
     border: 2px solid #a6a9ac;
     border-radius: 5px;
 }

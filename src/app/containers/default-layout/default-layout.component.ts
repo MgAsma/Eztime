@@ -342,14 +342,19 @@ export class DefaultLayoutComponent {
 
 
   findCurrentRouteName(menuItems: any, currentUrl: string): string {
-    for (const menuItem of menuItems) {
-      if (menuItem.url === currentUrl) {
-        return menuItem.name;
-      } else if (menuItem.children) {
-        const foundName = this.findCurrentRouteName(menuItem.children, currentUrl);
-        if (foundName) {
-          return foundName;
-        }
+    if('/profile'===currentUrl){
+      return 'Profile Update';
+    }else{
+      for (const menuItem of menuItems) {
+        if (menuItem.url === currentUrl) {
+          return menuItem.name;
+        } else if (menuItem.children) {
+          const foundName = this.findCurrentRouteName(menuItem.children, currentUrl);
+          if (foundName) {
+            return foundName;
+          }
+        } 
+         
       }
     }
     return '';

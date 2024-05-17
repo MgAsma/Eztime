@@ -41,13 +41,17 @@
             <div class="row"><i  class="bi bi-speedometer2"></i></div>
             <span>Dashboard</span>
           </div>
-          <div class="tab" routerLink="/project/list" routerLinkActive="active">
+          <div class="tab" routerLink="/project/list" routerLinkActive="active" *ngIf="config==='ADMIN' || config==='MANAGER'">
             <div class="row"><i class="bi bi-layers"></i></div>
             <span>Projects</span>
           </div>
-          <div class="tab" routerLink="/myTimesheet/timesheet" routerLinkActive="active">
+          <div class="tab" routerLink="/myTimesheet/timesheet" routerLinkActive="active" *ngIf="config==='ADMIN'|| config==='MANAGER'">
             <div class="row"><i  class="bi bi-calendar4-week"></i></div>
             <span>Timesheets</span>
+          </div>
+          <div class="tab" routerLink="/organization/orgList" routerLinkActive="active" *ngIf="config==='SUPER ADMIN'">
+            <div class="row"><i  class="bi bi-bank2"></i></div>
+            <span>Organization</span>
           </div>
           <div class="tab" routerLink="/profile" routerLinkActive="active">
             <div class="row"><i class="bi bi-person"></i></div>
