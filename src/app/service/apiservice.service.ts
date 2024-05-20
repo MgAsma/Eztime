@@ -18,7 +18,7 @@ export class ApiserviceService {
   ngOnInit(){
     this.token = sessionStorage.getItem('token')
     this.org_id = sessionStorage.getItem('org_id')
-    this.headers = {'Authorization':this.token} 
+    // this.headers = {'Authorization':this.token} 
   }
  
  
@@ -63,7 +63,7 @@ export class ApiserviceService {
 
   // dashboard
   getCount(data,token){
-    return this.http.post(`${this.baseurl}/dash-board`,data,{headers:token})
+    return this.http.post(`${this.baseurl}/dash-board`,data)
   }
   // dashboard
 
