@@ -39,9 +39,6 @@ ul{
     color: white;
     margin: 10px 0px;
 }
-.row{
-    padding: 5px;
-}
 i{
     padding: 2px 3px 0px 0px;
 }
@@ -104,12 +101,13 @@ html{
     border-radius: 10px;
     zoom: 90%;
     background: #FFFFFF99 !important;
+    padding: 5px 16px;
 }
 .card-subtitle{
     font-weight: bold;
 }
 .inner-card{
-    margin: 15px 20px;
+    margin: 15px 0px;
     background: #FFFFFFB2;
     border-radius: 10px;
     padding: 15px 0px;
@@ -117,9 +115,9 @@ html{
     border: 1px solid #126EB4;
     // background: linear-gradient(5deg, #39f, transparent);
 }
-.p-c{
-    padding: 15px 1rem 0px 1rem;
-}
+// .p-c{
+//     padding: 15px 1rem 0px 1rem;
+// }
 // .outer-card:hover{
 //     background-color: #dfdfdf;
 // }
@@ -140,11 +138,11 @@ html{
 }
 .org-logo{
     width: 100px;
-    position: absolute;
-    object-fit: contain;
+    position: relative;
+    object-fit: cover;
     aspect-ratio: 1 / 1;
-    top: -25px;
-    left: 10%;
-    border: 2px solid #a6a9ac;
-    border-radius: 5px;
+    border-radius: 50%;
+    margin: 10px 0px ;
+    width: 70px;
+    height: inherit;
 }

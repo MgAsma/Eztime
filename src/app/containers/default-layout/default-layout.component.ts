@@ -343,7 +343,7 @@ export class DefaultLayoutComponent {
 
   findCurrentRouteName(menuItems: any, currentUrl: string): string {
     if('/profile'===currentUrl){
-      return 'Profile Update';
+      return 'Update Profile';
     }else{
       for (const menuItem of menuItems) {
         if (menuItem.url === currentUrl) {

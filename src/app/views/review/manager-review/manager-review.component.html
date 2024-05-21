@@ -16,8 +16,8 @@
                     Employee list
                     </mat-panel-title> 
                   </mat-expansion-panel-header>   
-                  <div class="row">
-                    <div class="col-12" *ngFor="let items of manger_info">
+                  <div class="row gx-0 mx-0">
+                    <div class="col-12 px-0" *ngFor="let items of manger_info">
                             <!-- <div class="row">
                                 <div class="col-6">
                                     <h6 class="card-subtitle">Manager</h6>
@@ -29,30 +29,39 @@
                                 </div>    
                         </div> -->
                        
-                          <div class="row p-1">
-                          <div class="col-12 card-col" *ngFor="let emp of empInfoList">
-                            <mat-card>
-                              <h6 class="card-subtitle emp-name">Name : <span>{{emp.first_name }} {{ emp.last_name}}</span></h6>
-                              <div class="row">
-                                  <div class="col-3">
-                                      <h6 class="card-subtitle">Id</h6>
-                                      <div>{{emp.user_id}}</div>
-                                  </div>
-                                  <div class="col-3">
-                                      <h6 class="card-subtitle">Email</h6>
-                                      <div class="overflow-set">{{emp.email}}</div>
-                                  </div>    
-                         
-                                  <div class="col-3" >
-                                      <h6 class="card-subtitle">Contact</h6>
-                                      <div>{{emp.phone_no}}</div>
-                                  </div>
-                                  <div class="col-3">
-                                      <h6 class="card-subtitle">Role</h6>
-                                      <div>{{emp.user_role_name}}</div>
-                                  </div>    
-                             </div>
-                            </mat-card>
+                          <div class="row p-1 mx-0 gx-0">
+                          <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col" *ngFor="let emp of empInfoList">
+<div class="card">
+  <div class="row top-row">
+    <div class="col-12 c-1 text-start">
+      <h6 class="card-subtitle">Name</h6>
+      <p class="value-container">{{emp.first_name }} {{ emp.last_name}}</p>
+    </div>
+  </div>
+ <div class="card-inner normal">
+  <div class="row row-b">
+    <div class="col-6 c-2 text-start">
+      <h6 class="card-subtitle">Id</h6>
+      <p class="value-container">{{emp.user_id}}</p>
+    </div>
+    <div class="col-6 c-1 text-start">
+      <h6 class="card-subtitle">Role</h6>
+      <p class="value-container">{{emp.user_role_name}}</p>
+    </div>
+   
+</div>
+<div class="row row-b">
+  <div class="col-6 c-1 text-start">
+    <h6 class="card-subtitle">Email</h6>
+    <p class="value-container">{{emp.email}}</p>
+  </div>
+  <div class="col-6 c-2 text-start">
+    <h6 class="card-subtitle">Contact</h6>
+    <p class="value-container">{{emp.phone_no}}</p>
+  </div>
+</div>
+ </div>
+</div>
                           </div>
                         </div>
                           
@@ -73,148 +82,181 @@
                    
                   </mat-expansion-panel-header>
                   
-                  <div class="row">
-                    <div class="col" >
+                  <div class="row gx-0 mx-0">
+                    <div class="col-12 px-0" >
                       <mat-tab-group >
                         <mat-tab label="Yet to approve">  
-                          <div class="row p-1">
-                          
-                          <div class="col-12 card-col" *ngFor="let leave of empLeaveList['yet_to_approve']">
-                            <div class="row">
-                              <div class="col">
-                                <h6 class="card-subtitle emp-name">Name : <span>{{leave.first_name}} {{leave.last_name}}</span></h6>
-                              </div>
-                              <div class="col-7 text-end">
-                                <ng-container *ngFor="let access of leaveAccess">
-                                <button class="btn-approval" mat-raised-button mat-raised-button *ngIf="access === 'APPROVE'"  (click)="open(leave,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
-                                <button class="btn-reject" mapprovalat-raised-button mat-raised-button *ngIf="access === 'REJECT'"  (click)="open(leave,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
-                              </ng-container>
-                              </div>
-                            </div>
-                              <div class="row">
-                                  <div class="col-3" >
-                                      <h6 class="card-subtitle">leave Type</h6>
-                                      <div>{{leave.leave_title}}</div>
-                                  </div>
-                                  <div class="col-3">
-                                      <h6 class="card-subtitle">From Date</h6>
-                                      <div>{{(leave.leaveApplication_from_date *1000 |date : 'dd/MM/yyyy')}}</div>
-                                  </div>
-                                  <div class="col-3">
-                                    <h6 class="card-subtitle">To Date</h6>
-                                    <div>{{(leave.leaveApplication_to_date *1000 |date : 'dd/MM/yyyy')}}</div>
-                                </div>
-                                <div class="col-3">
-                                  <h6 class="card-subtitle">Number of days</h6>
-                                  <div>{{leave.days}}</div>
-                              </div>
-                              <div class="col-3">
-                                <h6 class="card-subtitle">Leave Balance</h6>
-                                <div>{{leave.balance}}</div>
-                            </div> 
-                            <div class="col-3">
-                              <h6 class="card-subtitle">Reason</h6>
-                              <div>{{leave.reason}}</div>
-                          </div>  
-                          <div class="col-3">
-                            <h6 class="card-subtitle">Status</h6>
-                            <div>{{leave.approved_state}}</div>
-                        </div>  
-                             </div>
-                             <hr/>
+                        <div class="row p-1 mx-0 gx-0">
+                          <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col" *ngFor="let leave of empLeaveList['yet_to_approve']">
+<div class="card">
+  <div class="row top-row">
+    <div class="col-6 c-1 text-start">
+      <h6 class="card-subtitle">Name</h6>
+      <p class="value-container">{{leave.first_name}} {{leave.last_name}}</p>
+    </div>
+    <div class="col-6 c-1 text-start">
+      <h6 class="card-subtitle">leave Type</h6>
+      <p class="value-container">{{leave.leave_title}}</p>
+    </div>
+  </div>
+ <div class="card-inner yet-to-approve">
+  <div class="row row-b">
+    <div class="col-6 c-2 text-start">
+      <h6 class="card-subtitle">Number of days</h6>
+      <p class="value-container">{{leave.days}}</p>
+    </div>
+    <div class="col-6 c-1 text-start">
+      <h6 class="card-subtitle">Leave Balance</h6>
+      <p class="value-container">{{leave.balance}}</p>
+    </div>
+   
+</div>
+<div class="row row-b">
+  <div class="col-6 c-1 text-start">
+    <h6 class="card-subtitle">From Date</h6>
+    <p class="value-container">{{(leave.leaveApplication_from_date *1000 |date : 'dd/MM/yyyy')}}</p>
+  </div>
+  <div class="col-6 c-2 text-start">
+    <h6 class="card-subtitle">To Date</h6>
+    <p class="value-container">{{(leave.leaveApplication_to_date *1000 |date : 'dd/MM/yyyy')}}</p>
+  </div>
+</div>
+<div class="row row-b">
+  <div class="col-6 c-1 text-start">
+    <h6 class="card-subtitle">Reason</h6>
+    <p class="value-container">{{leave.reason}}</p>
+  </div>
+  <div class="col-6 c-2 text-start">
+    <h6 class="card-subtitle">Status</h6>
+    <p class="value-container">{{leave.approved_state}}</p>
+  </div>
+</div>
+ </div>
+ <div class="col-12 d-flex">
+  <ng-container *ngFor="let access of leaveAccess">
+   <button class="btn-approval" mat-raised-button mat-raised-button *ngIf="access === 'APPROVE'"  (click)="open(leave,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
+   <button class="btn-reject" mapprovalat-raised-button mat-raised-button *ngIf="access === 'REJECT'"  (click)="open(leave,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
+  </ng-container>
+</div>
+</div>
                           </div>
                         </div>
+                          
                         <div *ngIf="empLeaveList['yet_to_approve']?.length ===0" class="text-center">No records found !!</div>
                       </mat-tab>
                         <mat-tab label="Approved">
-                          <div class="col-12 card-col" *ngFor="let leave of empLeaveList['approve']">
-                          <div class="row">
-                            <div class="col">
-                              <h6 class="card-subtitle emp-name">Name : <span>{{leave.first_name}} {{leave.last_name}}</span></h6>
-                            </div>
-                            <!-- <div class="col-9 text-end">
-                            
-                              <button mat-raised-button mat-raised-button color="primary" (click)="openDialogue(leave,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
-                              <button mat-raised-button mat-raised-button color="warn" (click)="openDialogue(leave,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
-                            </div> -->
+                        <div class="row p-1 mx-0 gx-0">
+                          <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col" *ngFor="let leave of empLeaveList['approve']">
+<div class="card">
+  <div class="row top-row">
+    <div class="col-6 c-1 text-start">
+      <h6 class="card-subtitle">Name</h6>
+      <p class="value-container">{{leave.first_name}} {{leave.last_name}}</p>
+    </div>
+    <div class="col-6 c-1 text-start">
+      <h6 class="card-subtitle">leave Type</h6>
+      <p class="value-container">{{leave.leave_title}}</p>
+    </div>
+  </div>
+ <div class="card-inner approve">
+  <div class="row row-b">
+    <div class="col-6 c-2 text-start">
+      <h6 class="card-subtitle">Number of days</h6>
+      <p class="value-container">{{leave.days}}</p>
+    </div>
+    <div class="col-6 c-1 text-start">
+      <h6 class="card-subtitle">Leave Balance</h6>
+      <p class="value-container">{{leave.balance}}</p>
+    </div>
+   
+</div>
+<div class="row row-b">
+  <div class="col-6 c-1 text-start">
+    <h6 class="card-subtitle">From Date</h6>
+    <p class="value-container">{{(leave.leaveApplication_from_date *1000 |date : 'dd/MM/yyyy')}}</p>
+  </div>
+  <div class="col-6 c-2 text-start">
+    <h6 class="card-subtitle">To Date</h6>
+    <p class="value-container">{{(leave.leaveApplication_to_date *1000 |date : 'dd/MM/yyyy')}}</p>
+  </div>
+</div>
+<div class="row row-b">
+  <div class="col-6 c-1 text-start">
+    <h6 class="card-subtitle">Reason</h6>
+    <p class="value-container">{{leave.reason}}</p>
+  </div>
+  <div class="col-6 c-2 text-start">
+    <h6 class="card-subtitle">Status</h6>
+    <p class="value-container">{{leave.approved_state}}</p>
+  </div>
+</div>
+ </div>
+ <!-- <div class="col-12 d-flex">
+  <ng-container *ngFor="let access of leaveAccess">
+  <button class="btn-approval" mat-raised-button mat-raised-button *ngIf="access === 'APPROVE'"  (click)="open(leave,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
+  <button class="btn-reject" mapprovalat-raised-button mat-raised-button *ngIf="access === 'REJECT'"  (click)="open(leave,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
+</ng-container>
+</div> -->
+</div>
                           </div>
-                            <div class="row">
-                                <div class="col-3" >
-                                    <h6 class="card-subtitle">leave Type</h6>
-                                    <div>{{leave.leave_title}}</div>
-                                </div>
-                                <div class="col-3">
-                                    <h6 class="card-subtitle">From Date</h6>
-                                    <div>{{(leave.leaveApplication_from_date *1000 |date : 'dd/MM/yyyy')}}</div>
-                                </div>
-                                <div class="col-3">
-                                  <h6 class="card-subtitle">To Date</h6>
-                                  <div>{{(leave.leaveApplication_to_date *1000 |date : 'dd/MM/yyyy')}}</div>
-                              </div>
-                              <div class="col-3">
-                                <h6 class="card-subtitle">Number of days</h6>
-                                <div>{{leave.days}}</div>
-                            </div>
-                            <div class="col-3">
-                              <h6 class="card-subtitle">Leave Balance</h6>
-                              <div>{{leave.balance}}</div>
-                          </div> 
-                          <div class="col-3">
-                            <h6 class="card-subtitle">Reason</h6>
-                            <div>{{leave.reason}}</div>
-                        </div>  
-                        <div class="col-3">
-                          <h6 class="card-subtitle">Status</h6>
-                          <div>{{leave.approved_state}}</div>
-                      </div>  
-                           </div>
-                           <hr/>
                         </div>
                         <div *ngIf="empLeaveList['approve']?.length ===0" class="text-center">No records found !!</div>
                       </mat-tab>
                         <mat-tab label="Declined">  
-                          <div class="col-12 card-col" *ngFor="let leave of empLeaveList['declined']">
-                          <div class="row">
-                            <div class="col">
-                              <h6 class="card-subtitle emp-name">Name : <span>{{leave.first_name}} {{leave.last_name}}</span></h6>
-                            </div>
-                            <!-- <div class="col-9 text-end">
-                              <button mat-raised-button mat-raised-button color="primary" (click)="openDialogue(leave,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
-                              <button mat-raised-button mat-raised-button color="warn" (click)="openDialogue(leave,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
-                            </div> -->
+                        <div class="row p-1 mx-0 gx-0">
+                          <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col" *ngFor="let leave of empLeaveList['declined']">
+<div class="card">
+  <div class="row top-row">
+    <div class="col-6 c-1 text-start">
+      <h6 class="card-subtitle">Name</h6>
+      <p class="value-container">{{leave.first_name}} {{leave.last_name}}</p>
+    </div>
+    <div class="col-6 c-1 text-start">
+      <h6 class="card-subtitle">leave Type</h6>
+      <p class="value-container">{{leave.leave_title}}</p>
+    </div>
+  </div>
+ <div class="card-inner declined">
+  <div class="row row-b">
+    <div class="col-6 c-2 text-start">
+      <h6 class="card-subtitle">Number of days</h6>
+      <p class="value-container">{{leave.days}}</p>
+    </div>
+    <div class="col-6 c-1 text-start">
+      <h6 class="card-subtitle">Leave Balance</h6>
+      <p class="value-container">{{leave.balance}}</p>
+    </div>
+   
+</div>
+<div class="row row-b">
+  <div class="col-6 c-1 text-start">
+    <h6 class="card-subtitle">From Date</h6>
+    <p class="value-container">{{(leave.leaveApplication_from_date *1000 |date : 'dd/MM/yyyy')}}</p>
+  </div>
+  <div class="col-6 c-2 text-start">
+    <h6 class="card-subtitle">To Date</h6>
+    <p class="value-container">{{(leave.leaveApplication_to_date *1000 |date : 'dd/MM/yyyy')}}</p>
+  </div>
+</div>
+<div class="row row-b">
+  <div class="col-6 c-1 text-start">
+    <h6 class="card-subtitle">Reason</h6>
+    <p class="value-container">{{leave.reason}}</p>
+  </div>
+  <div class="col-6 c-2 text-start">
+    <h6 class="card-subtitle">Status</h6>
+    <p class="value-container">{{leave.approved_state}}</p>
+  </div>
+</div>
+ </div>
+ <!-- <div class="col-12 d-flex">
+  <ng-container *ngFor="let access of leaveAccess">
+  <button class="btn-approval" mat-raised-button mat-raised-button *ngIf="access === 'APPROVE'"  (click)="open(leave,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
+  <button class="btn-reject" mapprovalat-raised-button mat-raised-button *ngIf="access === 'REJECT'"  (click)="open(leave,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
+</ng-container>
+</div> -->
+</div>
                           </div>
-                            <div class="row">
-                                <div class="col-3" >
-                                    <h6 class="card-subtitle">leave Type</h6>
-                                    <div>{{leave.leave_title}}</div>
-                                </div>
-                                <div class="col-3">
-                                    <h6 class="card-subtitle">From Date</h6>
-                                    <div>{{(leave.leaveApplication_from_date *1000 |date : 'dd/MM/yyyy')}}</div>
-                                </div>
-                                <div class="col-3">
-                                  <h6 class="card-subtitle">To Date</h6>
-                                  <div>{{(leave.leaveApplication_to_date *1000 |date : 'dd/MM/yyyy')}}</div>
-                              </div>
-                              <div class="col-3">
-                                <h6 class="card-subtitle">Number of days</h6>
-                                <div>{{leave.days}}</div>
-                            </div>
-                            <div class="col-3">
-                              <h6 class="card-subtitle">Leave Balance</h6>
-                              <div>{{leave.balance}}</div>
-                          </div> 
-                          <div class="col-3">
-                            <h6 class="card-subtitle">Reason</h6>
-                            <div>{{leave.reason}}</div>
-                        </div>  
-                        <div class="col-3">
-                          <h6 class="card-subtitle">Status</h6>
-                          <div>{{leave.approved_state}}</div>
-                      </div>  
-                           </div>
-                          
-                           <hr/>
                         </div>
                         <div *ngIf="empLeaveList['declined']?.length ===0" class="text-center">No records found !!</div>
                       </mat-tab>
@@ -238,155 +280,207 @@
                    
                   </mat-expansion-panel-header>
                   
-                  <div class="row">
-                    <div class="col-12" >
+                  <div class="row gx-0 mx-0">
+                    <div class="col-12 px-0" >
                       <mat-tab-group >
                         <mat-tab label="Yet to approve">
-                          <div class="row p-1">
-                            <ng-container *ngFor="let timesheet of timesheet">
-                              <div class="col-12 card-col" *ngFor="let time of timesheet['yet_to_approve']">
-                               
-                                <div class="row">
-                                  <div class="col">
-                                    <h6 class="card-subtitle emp-name">Name : <span>{{time.first_name}} </span></h6>
-                                  </div>
-                                  <div class="col-7 text-end">
-                                    <ng-container *ngFor="let access of timesheetAccess">
-                                    <button class="btn-approval" mat-raised-button mat-raised-button *ngIf="access ==='APPROVE'" (click)="openDialogue(time,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
-                                    <button class="btn-reject" mat-raised-button mat-raised-button  *ngIf="access ==='REJECT'" (click)="openDialogue(time,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
-                                    </ng-container>
-                                  </div>
+                          <div class="row gx-0 mx-0">
+                            <div class="col-12 px-0" *ngFor="let timesheet of timesheet">
+                              <div class="row p-1 mx-0 gx-0">
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col" *ngFor="let time of timesheet['yet_to_approve']">
+      <div class="card">
+        <div class="row top-row">
+          <div class="col-6 c-1 text-start">
+            <h6 class="card-subtitle">Name</h6>
+            <p class="value-container">{{time.first_name}}</p>
+          </div>
+          <div class="col-6 c-1 text-start">
+            <h6 class="card-subtitle">Client</h6>
+            <p class="value-container">{{time.client_name}}</p>
+          </div>
+        </div>
+       <div class="card-inner yet-to-approve">
+        <div class="row row-b">
+          <div class="col-6 c-2 text-start">
+            <h6 class="card-subtitle">Project name</h6>
+            <p class="value-container">{{time.p_name}}</p>
+          </div>
+          <div class="col-6 c-2 text-start">
+            <h6 class="card-subtitle">Time</h6>
+            <p class="value-container">{{time.time_spent}}</p>
+          </div>
+      </div>
+      <div class="row row-b">
+        <div class="col-12 c-1 text-start">
+          <h6 class="card-subtitle">Task name</h6>
+          <p class="value-container">{{time.task_worked_list.task_name}}</p>
+        </div>
+      </div>
+      <div class="row row-b">
+        <div class="col-12 c-1 text-start">
+          <h6 class="card-subtitle">Duration</h6>
+          <p class="value-container">{{(time.p_start_date * 1000) | date : 'dd/MM/YYYY'}}  TO  {{(time.p_closure_date * 1000) | date : 'dd/MM/YYYY'}}</p>
+        </div>
+       
+      </div>
+     
+      <div class="row row-b">
+        <div class="col-6 c-1 text-start">
+          <h6 class="card-subtitle">Description</h6>
+          <p class="value-container">{{time.p_description}}</p>
+        </div>
+        <div class="col-6 c-2 text-start">
+          <h6 class="card-subtitle">Status</h6>
+          <p class="value-container">{{time.approved_state}}</p>
+        </div>
+      </div>
+       </div>
+       <div class="col-12 d-flex">
+        <!-- <ng-container *ngFor="let access of timesheetAccess">
+        <button class="btn-reject" mat-raised-button mat-raised-button  *ngIf="access ==='REJECT'" (click)="openDialogue(time,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
+        <button class="btn-approval" mat-raised-button mat-raised-button *ngIf="access ==='APPROVE'" (click)="openDialogue(time,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>    
+      </ng-container> -->
+      </div>
+      </div>
                                 </div>
-                                  <div class="row">
-                                      <div class="col-3" >
-                                          <h6 class="card-subtitle">Client</h6>
-                                          <div>{{time.client_name}}</div>
-                                      </div>
-                                      <div class="col-3">
-                                        <h6 class="card-subtitle">Project name</h6>
-                                        <div>{{time.p_name}}</div>
-                                      </div>
-                                      <div class="col-3">
-                                        <h6 class="card-subtitle">Task name</h6>
-                                        <div>{{time.task_worked_list.task_name}}</div>
-                                      </div>
-
-                                      <div class="col-3">
-                                        <h6 class="card-subtitle">Duration </h6>
-                                        <div>[{{(time.p_start_date * 1000) | date : 'dd/MM/YYYY'}}]  TO  [{{(time.p_closure_date * 1000) | date : 'dd/MM/YYYY'}}]</div>
-                                    </div>
-                                    
-                                    <div class="col-3">
-                                      <h6 class="card-subtitle">Time</h6>
-                                      <div>{{time.time_spent}}</div>
-                                  </div>
-                                  <div class="col-3">
-                                    <h6 class="card-subtitle">Description</h6>
-                                    <div>{{time.p_description}}</div>
-                                </div> 
-                                  <div class="col-3">
-                                    <h6 class="card-subtitle">Status</h6>
-                                    <div>{{time.approved_state}}</div>
-                                </div> 
-                                 </div>
-                               <hr/>
                               </div>
-                            </ng-container> 
+                            </div> 
                           </div>
+                          
                           <div *ngIf="timesheet['yet_to_approve']?.length ===0" class="text-center">No records found !!</div>
                         </mat-tab>
                         <mat-tab label="Approved">
-                          <div class="row p-1">
-                            <ng-container *ngFor="let timesheet of timesheet">
-                              <div class="col-12 card-col" *ngFor="let time of timesheet['approve']">
-                                <div class="row">
-                                  <div class="col">
-                                    <h6 class="card-subtitle emp-name">Name : <span>{{time.first_name}} </span></h6>
-                                  </div>
-                                   </div>
-                                      <div class="row">
-                                          <div class="col-3" >
-                                              <h6 class="card-subtitle">Client</h6>
-                                              <div>{{time.client_name}}</div>
-                                          </div>
-                                          <div class="col-3">
-                                            <h6 class="card-subtitle">Project name</h6>
-                                            <div>{{time.p_name}}</div>
-                                          </div>
-                                          <div class="col-3">
-                                            <h6 class="card-subtitle">Task name</h6>
-                                            <div>{{time.task_worked_list.task_name}}</div>
-                                          </div>
-    
-                                          <div class="col-3">
-                                            <h6 class="card-subtitle">Duration </h6>
-                                            <div>[{{(time.p_start_date * 1000) | date : 'dd/MM/YYYY'}}]  TO  [{{(time.p_closure_date * 1000) | date : 'dd/MM/YYYY'}}]</div>
-                                        </div>
-                                        <div class="col-3">
-                                          <h6 class="card-subtitle">Time</h6>
-                                          <div>{{time.time_spent}}</div>
-                                      </div>
-                                      <div class="col-3">
-                                        <h6 class="card-subtitle">Description</h6>
-                                        <div>{{time.description}}</div>
-                                    </div> 
-                                    <div class="col-3">
-                                      <h6 class="card-subtitle">Status</h6>
-                                      <div>{{time.approved_state}}</div>
-                                    </div> 
-                           
-                                 </div>
-                                 <hr/>
+                          <div class="row mx-0 gx-0">
+                            <div class="col-12 px-0"  *ngFor="let timesheet of timesheet">
+                              <div class="row p-1 mx-0 gx-0">
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col" *ngFor="let time of timesheet['approve']">
+      <div class="card">
+        <div class="row top-row">
+          <div class="col-6 c-1 text-start">
+            <h6 class="card-subtitle">Name</h6>
+            <p class="value-container">{{time.first_name}}</p>
+          </div>
+          <div class="col-6 c-1 text-start">
+            <h6 class="card-subtitle">Client</h6>
+            <p class="value-container">{{time.client_name}}</p>
+          </div>
+        </div>
+       <div class="card-inner approve">
+        <div class="row row-b">
+          <div class="col-6 c-2 text-start">
+            <h6 class="card-subtitle">Project name</h6>
+            <p class="value-container">{{time.p_name}}</p>
+          </div>
+          <div class="col-6 c-2 text-start">
+            <h6 class="card-subtitle">Time</h6>
+            <p class="value-container">{{time.time_spent}}</p>
+          </div>
+         
+      </div>
+      <div class="row row-b">
+        <div class="col-12 c-1 text-start">
+          <h6 class="card-subtitle">Task name</h6>
+          <p class="value-container">{{time.task_worked_list.task_name}}</p>
+        </div>
+        
+      </div>
+      <div class="row row-b">
+        <div class="col-12 c-1 text-start">
+          <h6 class="card-subtitle">Duration</h6>
+          <p class="value-container">{{(time.p_start_date * 1000) | date : 'dd/MM/YYYY'}}  TO  {{(time.p_closure_date * 1000) | date : 'dd/MM/YYYY'}}</p>
+        </div>
+        
+      </div>
+     
+      <div class="row row-b">
+        <div class="col-6 c-1 text-start">
+          <h6 class="card-subtitle">Description</h6>
+          <p class="value-container">{{time.p_description}}</p>
+        </div>
+        <div class="col-6 c-2 text-start">
+          <h6 class="card-subtitle">Status</h6>
+          <p class="value-container">{{time.approved_state}}</p>
+        </div>
+      </div>
+       </div>
+       <!-- <div class="col-12 d-flex">
+        <ng-container *ngFor="let access of timesheetAccess">
+          <button class="btn-approval" mat-raised-button mat-raised-button *ngIf="access ==='APPROVE'" (click)="openDialogue(time,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
+          <button class="btn-reject" mat-raised-button mat-raised-button  *ngIf="access ==='REJECT'" (click)="openDialogue(time,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
+          </ng-container>
+      </div> -->
+      </div>
+                                </div>
                               </div>
-                            </ng-container>
+                            </div>
                            
                           </div>
                           <div *ngIf="timesheet['approve']?.length ===0" class="text-center">No records found !!</div>
                         </mat-tab>
                         <mat-tab label="Declined">
-                          <div class="row p-1">
-                            <ng-container *ngFor="let timesheet of timesheet">
-                              <div class="col-12 card-col" *ngFor="let time of timesheet['declined']">
-                                <div class="row">
-                                  <div class="col">
-                                    <h6 class="card-subtitle emp-name">Name : <span>{{time.first_name}} </span></h6>
-                                  </div>
-                                </div>
-                                  <div class="row">
-                                      <div class="col-3" >
-                                          <h6 class="card-subtitle">Client</h6>
-                                          <div>{{time.client_name}}</div>
-                                      </div>
-                                      <div class="col-3">
-                                        <h6 class="card-subtitle">Project name</h6>
-                                        <div>{{time.p_name}}</div>
-                                      </div>
-                                      <div class="col-3">
-                                        <h6 class="card-subtitle">Task name</h6>
-                                        <div>{{time.task_worked_list.task_name}}</div>
-                                      </div>
-
-                                      <div class="col-3">
-                                        <h6 class="card-subtitle">Duration </h6>
-                                        <div>[{{(time.p_start_date * 1000) | date : 'dd/MM/YYYY'}}]  TO  [{{(time.p_closure_date * 1000) | date : 'dd/MM/YYYY'}}]</div>
-                                    </div>
-                                    <div class="col-3">
-                                      <h6 class="card-subtitle">Time</h6>
-                                      <div>{{time.time_spent}}</div>
-                                  </div>
-                                  <div class="col-3">
-                                    <h6 class="card-subtitle">Description</h6>
-                                    <div>{{time.description}}</div>
-                                </div> 
-                                  <div class="col-3">
-                                    <h6 class="card-subtitle">Status</h6>
-                                    <div>{{time.approved_state}}</div>
-                                </div> 
-                                 </div>
-                                 <hr/>
+                          <div class="row mx-0 gx-0">
+                           <div class="col-12 px-0" *ngFor="let timesheet of timesheet">
+                            <div class="row p-1 mx-0 gx-0">
+                              <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col" *ngFor="let time of timesheet['declined']">
+    <div class="card">
+      <div class="row top-row">
+        <div class="col-6 c-1 text-start">
+          <h6 class="card-subtitle">Name</h6>
+          <p class="value-container">{{time.first_name}}</p>
+        </div>
+        <div class="col-6 c-1 text-start">
+          <h6 class="card-subtitle">Client</h6>
+          <p class="value-container">{{time.client_name}}</p>
+        </div>
+      </div>
+     <div class="card-inner declined">
+      <div class="row row-b">
+        <div class="col-6 c-2 text-start">
+          <h6 class="card-subtitle">Project name</h6>
+          <p class="value-container">{{time.p_name}}</p>
+        </div>
+        <div class="col-6 c-2 text-start">
+          <h6 class="card-subtitle">Time</h6>
+          <p class="value-container">{{time.time_spent}}</p>
+        </div>
+       
+    </div>
+    <div class="row row-b">
+      <div class="col-12 c-1 text-start">
+        <h6 class="card-subtitle">Task name</h6>
+        <p class="value-container">{{time.task_worked_list.task_name}}</p>
+      </div>
+      
+    </div>
+    <div class="row row-b">
+      <div class="col-12 c-1 text-start">
+        <h6 class="card-subtitle">Duration</h6>
+        <p class="value-container">{{(time.p_start_date * 1000) | date : 'dd/MM/YYYY'}}  TO  {{(time.p_closure_date * 1000) | date : 'dd/MM/YYYY'}}</p>
+      </div>
+     
+    </div>
+  
+    <div class="row row-b">
+      <div class="col-6 c-1 text-start">
+        <h6 class="card-subtitle">Description</h6>
+        <p class="value-container">{{time.p_description}}</p>
+      </div>
+      <div class="col-6 c-2 text-start">
+        <h6 class="card-subtitle">Status</h6>
+        <p class="value-container">{{time.approved_state}}</p>
+      </div>
+    </div>
+     </div>
+     <!-- <div class="col-12 d-flex">
+      <ng-container *ngFor="let access of timesheetAccess">
+        <button class="btn-approval" mat-raised-button mat-raised-button *ngIf="access ==='APPROVE'" (click)="openDialogue(time,'APPROVED')">Approve <i class="bi bi-check-circle-fill"></i></button>
+        <button class="btn-reject" mat-raised-button mat-raised-button  *ngIf="access ==='REJECT'" (click)="openDialogue(time,'DECLINED')">Reject <i class="bi bi-x-circle"></i></button>  
+        </ng-container>
+    </div> -->
+    </div>
                               </div>
-                            </ng-container>
-                            
+                            </div>
+                           </div>
                           </div>
                           <div *ngIf="timesheet['declined']?.length ===0" class="text-center">No records found !!</div>
                         </mat-tab> 

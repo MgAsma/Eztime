@@ -66,6 +66,7 @@ export class DashboardComponent implements OnInit {
       this.enable = true;
       this.getRecentAddedOrganizationList();
       this.getRecentAddeduserslistData();
+      this.getRecentAddedAdminlistData();
       }
       
     }
@@ -125,7 +126,20 @@ getRecentAddedOrganizationList(){
 
 // Admin List
 getRecentAddedAdminlistData(){
-  
+  let params:any = {
+    page_number:1,
+    data_per_page:5,
+    pagination:'TRUE',
+    organization_id:this.org_id,
+    search_key:'ADMIN',
+    ignore_super_admin:'TRUE'
+   }
+ this.api.getSuperAdminPeoplePage(params).subscribe((data:any)=>{
+    this.adminlistData = data.result.data;
+  },((error)=>{
+    this.api.showError(error.error.error.message)
+  })
+  )
 }
 // users list
 getRecentAddeduserslistData(){

@@ -137,14 +137,11 @@
         } ;let i=index' >
           <div class="card outer-card" >
             <div class="row">
-              <div class="col-3" >
+              <div class="col-6" >
                 <a href="{{item.org_logo_path}}" target="_blank">
-                <img src="{{item.org_logo_path}}" alt=""  class="org-logo">
+                <img src="{{item.org_logo_path}}" alt="" class="org-logo">
                </a>
               </div>
-            </div>
-            <div class="row">
-              <div class="col"></div>
               <div class="col-5 p-0 text-end action-btn">
                 <a> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i></button></a>
                 <a> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"   ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button></a>
@@ -180,7 +177,7 @@
               
                </div>
                <div class="card inner-card">
-                <div class="card-body">
+                <div class="card-body py-0">
                   <div class="row">
                     <div class="col-6">
                       
@@ -195,7 +192,7 @@
                     </div>
                   </div>
                     </div>
-                    <div class="col-6" style="border-left: 1px solid gray;">
+                    <div class="col-6">
                       
                   <div class="row">
                     <div class="col-12">

@@ -20,7 +20,7 @@
                       <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Organization</strong></div>
                    <div class="recently-add-content">
                     <ul>
-                      <li *ngFor="let organization of organizationlistData">{{organization?.org_name}}</li>
+                      <li *ngFor="let organization of organizationlistData">{{organization?.org_name|titlecase}}</li>
                     </ul>
                     <a routerLink="../organization/orgList">See Organization</a>
                    </div> 
@@ -40,11 +40,7 @@
                       <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Admin</strong></div>
                       <div class="recently-add-content">
                         <ul>
-                      <li>Admin 1</li>
-                      <li>Admin 2</li>
-                      <li>Admin 3</li>
-                      <li>Admin 4</li>
-                      <li>Admin 5</li>
+                      <li *ngFor="let admin of adminlistData">{{admin?.u_first_name|titlecase }}</li>
                         </ul>
                         <p>Recently Added</p>
                        </div> 

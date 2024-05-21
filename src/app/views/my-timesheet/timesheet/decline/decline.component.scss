@@ -98,7 +98,7 @@ html{
 .outer-card{
     border: none;
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 8%), 0 6px 20px 0 rgb(0 0 0 / 4%);
-margin: 5px 15px ;
+margin: 5px 0px ;
     border-radius: 10px;
     background: #FFFFFF99 !important;
     position: relative;
@@ -114,12 +114,13 @@ margin: 5px 15px ;
     margin: 10px 20px 20px 20px;
     border-radius: 18px;
     border: 1px solid #FF1313;
+    background: #FFF3F3;
     padding: 10px 0;
     zoom: 90%;
-    background: #FFF3F3;
+    
 
     color: white;
-    line-height: 13px !important;
+    line-height: 15px !important;
     .row{
         padding: 3px !important;
     }
