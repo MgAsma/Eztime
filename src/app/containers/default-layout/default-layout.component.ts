@@ -57,10 +57,15 @@ export class DefaultLayoutComponent {
   constructor(private ngxService: NgxUiLoaderService,
     private api: ApiserviceService, private modalService: NgbModal,
     private router: Router) {
+    this.config = sessionStorage.getItem('user_role_name');
     this.currentUrl = this.router.url;
+    if (this.config === 'SUPER ADMIN') {
+      this.currentUrlName = this.findCurrentRouteName(this.navItems, this.currentUrl);
+    } else {
+      this.currentUrlName = this.findCurrentRouteName(this.sidebarNavItems, this.currentUrl);
+    }
   }
   ngOnInit() {
-    this.config = sessionStorage.getItem('user_role_name');
     this.user_role_Name = sessionStorage.getItem('user_role_name');
     let role_id = sessionStorage.getItem('user_role_id');
     this.user_name = sessionStorage.getItem('user_name');
@@ -82,6 +87,7 @@ export class DefaultLayoutComponent {
     // //console.log(this.access,"ACCESS")
 
     //console.log(this.navItems,"ADMIN NAVITEMS-------")
+  
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
@@ -92,7 +98,6 @@ export class DefaultLayoutComponent {
         this.currentUrlName = this.findCurrentRouteName(this.sidebarNavItems, this.currentUrl);
       }
     });
-    
   }
 
   getUserControls(role_id) {
@@ -346,7 +351,7 @@ export class DefaultLayoutComponent {
       return 'Update Profile';
     }else{
       for (const menuItem of menuItems) {
-        if (menuItem.url === currentUrl) {
+        if (menuItem.url === currentUrl || currentUrl.includes(menuItem.name.toLowerCase())) {
           return menuItem.name;
         } else if (menuItem.children) {
           const foundName = this.findCurrentRouteName(menuItem.children, currentUrl);

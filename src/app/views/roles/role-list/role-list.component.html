@@ -39,10 +39,10 @@
                   <tr>
                     <th scope="col">  S.No</th>
                     
-                    <th scope="col"> Role Name  <i  *ngIf="!arrow" (click)="sort('asc','user_role_name')" class="fa fa-sort-up"></i><i (click)="sort('desc','user_role_name')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                    <th scope="col"> Description <i  *ngIf="!arrow" (click)="sort('asc','description')" class="fa fa-sort-up"></i><i (click)="sort('desc','description')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                    <th scope="col"> Added Date <i  *ngIf="!arrow" (click)="sort('asc','created_time')" class="fa fa-sort-up"></i><i (click)="sort('desc','created_time')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
-                    <th scope="col"> Status <i  *ngIf="!arrow" (click)="sort('asc','role_status')" class="fa fa-sort-up"></i><i (click)="sort('desc','role_status')" *ngIf="arrow" class="fa fa-sort-down"></i></th>
+                    <th scope="col"> Role Name  <i  *ngIf="!arrow" (click)="sort('asc','user_role_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','user_role_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+                    <th scope="col"> Description <i  *ngIf="!arrow" (click)="sort('asc','description')" class="bi bi-arrow-up"></i><i (click)="sort('desc','description')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+                    <th scope="col"> Added Date <i  *ngIf="!arrow" (click)="sort('asc','created_time')" class="bi bi-arrow-up"></i><i (click)="sort('desc','created_time')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+                    <th scope="col"> Status <i  *ngIf="!arrow" (click)="sort('asc','role_status')" class="bi bi-arrow-up"></i><i (click)="sort('desc','role_status')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
                     <th scope="col" *ngIf="role == 'ADMIN'" class="text-center">Accessibilty</th>
                     <th scope="col" *ngIf="role == 'ADMIN'">Action</th>
                   </tr>
