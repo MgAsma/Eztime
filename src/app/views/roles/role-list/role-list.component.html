@@ -58,7 +58,7 @@
                    <td>{{item.description}}</td>
                    <td>{{item.created_time | date : 'dd/MM/yyyy'}}</td>
                    <td>{{item.role_status}}</td>
-                   <td  *ngIf="role == 'ADMIN'" class="text-center"><a routerLink="/role/roles-access/{{item.id}}/{{item.user_role_name}}"><i class="fa fa-cogs" aria-hidden="true" ></i></a></td>
+                   <td  *ngIf="role == 'ADMIN'" class="text-center"><a routerLink="/role/roles-access/{{item.id}}/{{item.user_role_name}}"><i class="fa fa-cogs" aria-hidden="true" style="color:#126EB4 !important" ></i></a></td>
                   
                  
                     <td  *ngIf="role == 'ADMIN'">
@@ -204,7 +204,7 @@
               </div>
               <div class="row">
                 <div class="col-12 value-container"  *ngIf="role == 'ADMIN'">
-                  <a routerLink="/role/roles-access/{{item.id}}/{{item.user_role_name}}"><i class="fa fa-cogs" aria-hidden="true" id="access-icon"></i></a>
+                  <a routerLink="/role/roles-access/{{item.id}}/{{item.user_role_name}}"><i class="fa fa-cogs" aria-hidden="true" style="color:#126EB4 !important" ></i></a>
                 </div>
               </div>
              </div>

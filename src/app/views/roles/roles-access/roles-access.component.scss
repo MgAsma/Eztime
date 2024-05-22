@@ -29,23 +29,29 @@
   .list-group{
     height: 70vh;
     overflow-y: auto;
+    margin: 25px 10px !important;
 }
 
+h1.margin-in-mob{
+  margin-left: 20px;
+}
 }
 @media(min-width:768px){
   .list-group{
-    height: 87vh;
-    overflow-y: auto;
+    height: 70vh;
+    overflow-y: scroll !important;
+    overflow: hidden;
+    margin: 25px 0px;
 }
 
 }
 .bi-arrow-left{
  margin-right: 10px;
 }
-.mobileView{
-  height: 70vh !important;
-  overflow: auto;
-}
+// .mobileView{
+//   height: 70vh !important;
+//   overflow: auto;
+// }
 @media only screen and (min-width: 768px) and (max-width: 1023px){
 .mobileView {
     width: 100% !important;

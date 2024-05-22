@@ -59,11 +59,6 @@ export class DefaultLayoutComponent {
     private router: Router) {
     this.config = sessionStorage.getItem('user_role_name');
     this.currentUrl = this.router.url;
-    if (this.config === 'SUPER ADMIN') {
-      this.currentUrlName = this.findCurrentRouteName(this.navItems, this.currentUrl);
-    } else {
-      this.currentUrlName = this.findCurrentRouteName(this.sidebarNavItems, this.currentUrl);
-    }
   }
   ngOnInit() {
     this.user_role_Name = sessionStorage.getItem('user_role_name');

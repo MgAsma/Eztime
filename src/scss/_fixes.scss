@@ -367,8 +367,8 @@ app-add-on-leave-request,app-applied-approved-leaves,app-timesheet,approval-time
   }
   .scroll-fix{
     height: 88vh !important;
-    // overflow-y: auto;
-    overflow: hidden;
+    overflow-y: scroll !important;
+    overflow: hidden !important;
   
   }
   .mobileView{
