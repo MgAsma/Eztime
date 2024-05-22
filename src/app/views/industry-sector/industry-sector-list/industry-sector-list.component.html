@@ -68,13 +68,13 @@
                             <ng-container *ngFor="let access of permissions">
  
                                 <button mat-raised-button mat-mini-fab  routerLink="/industry/update/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
-                                  <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
+                                  <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
                                 </button>
                                 <button mat-raised-button mat-mini-fab   (click)="open(item.id)" *ngIf="access === 'DELETE'">
                                   <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
                                 </button>
                               </ng-container> 
-                            <!-- <a routerLink="/industry/update/{{item.id}}/{{page}}/{{tableSize}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></a>
+                            <!-- <a routerLink="/industry/update/{{item.id}}/{{page}}/{{tableSize}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i></a>
                             <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item.id)"> 
                                 <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>                                             
                             </button> -->
@@ -115,12 +115,12 @@
   
 
 <div class="container-wrapper mobileView">
-    <div class="row">
+    <div class="row mx-1 my-2">
         <div class="col-sm-6">
-            <h1>Industry/sector list</h1>
+            <!-- <h1>Industry/sector list</h1> -->
         </div>
         <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by industry name/status"aria-describedby="emailHelp"  autocomplete="off">
+            <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by industry name/status"aria-describedby="emailHelp"  autocomplete="off">
             <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
         </div>
     </div>
@@ -137,30 +137,30 @@
                     <div class="row">
                         <div class="col-12 p-1 text-end">
                             <ng-container *ngFor="let access of permissions">
-                            <a *ngIf="access == 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" ></i></button></a>
-                            <a *ngIf="access == 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash"></i></button></a>
+                            <a *ngIf="access == 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" style="color: #000; font-size: 24px;" ></i></button></a>
+                            <a *ngIf="access == 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button></a>
                             </ng-container>
                         </div>
                     </div>
                    
                     <div class="row">
-                        <div class="col-6 r-c">
+                        <div class="col-6 r-c text-start">
                             <h6 class="card-subtitle"> Industry name</h6>
-                            <p>{{item.toi_title}}</p>
+                            <p class="value-container">{{item.toi_title}}</p>
                         </div>
-                        <div class="col-6 c-r">
+                        <div class="col-6 c-r text-start">
                             <h6 class="card-subtitle">Description</h6>
-                            <p>{{item.toi_description ? item.toi_description : "NA"}}</p>
+                            <p class="value-container">{{item.toi_description ? item.toi_description : "NA"}}</p>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-6 r-c">
+                        <div class="col-6 r-c text-start">
                             <h6 class="card-subtitle">Added date</h6>
-                            <p>{{item.toi_c_date | date:'mediumDate'}}</p>
+                            <p class="value-container">{{item.toi_c_date | date:'mediumDate'}}</p>
                         </div>
-                        <div class="col-6 c-r">
+                        <div class="col-6 c-r text-start">
                             <h6 class="card-subtitle">Status</h6>
-                            <p>{{item.toi_status ? item.toi_status :'NA'}}</p>
+                            <p class="value-container">{{item.toi_status ? item.toi_status :'NA'}}</p>
                         </div>
                     </div>
                 </div>

@@ -83,7 +83,7 @@
                            <td>
                             <ng-container *ngFor="let access of permissions">
                               <button mat-raised-button mat-mini-fab  routerLink="/people/updatePeople/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
-                                <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
+                                <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
                               </button>
                               <button mat-raised-button mat-mini-fab   (click)="open(item.people_id)" *ngIf="access === 'DELETE'">
                                 <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
@@ -129,12 +129,12 @@
 
 
   <div class="mobileView">
-    <div class="row">
-      <div class="col-sm-6">
-        <h1>People List</h1>
+    <div class="row mx-1 my-2">
+      <div class="col-sm-6 px-0">
+        <!-- <h1>People List</h1> -->
       </div>
       <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-        <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by name/role/center" aria-describedby="emailHelp"  autocomplete="off">
+        <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by name/role/center" aria-describedby="emailHelp"  autocomplete="off">
         <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
       </div>
     </div> 
@@ -143,34 +143,34 @@
         <ng-container *ngIf="(allPeople) as result">
         <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of allPeople;let i=index' >
             <div class="card inner-card" (click)="cardId(item)">
+              <div class="row img-row">
+                <div class="col-6 img-div">
+                  <a href="{{item.u_profile_path}}" target="_blank">
+                    <img src="{{item.u_profile_path}}" alt="" height="70px" width="27%">
+                  </a>
+                <div class="p-2 pt-4">{{item.u_first_name +" "+ item.u_last_name}}</div> 
+              </div>
+                
+                <div class="col-6 p-2 text-end">
+                  <ng-container *ngFor="let access of permissions">
+                  <a> <button  type="button" class="toolbar-btn" *ngIf="access === 'UPDATE'"  (click)='editCard(item.id)'  ngbTooltip="Edit" ><i class="bi bi-pencil-square" style="color: #000; font-size: 24px;" ></i></button></a>
+                  <a> <button  type="button" class="toolbar-btn" *ngIf="access === 'DELETE'"  (click)="open(item.id)" ngbTooltip="Delete"  ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button></a>
+                  </ng-container>
+                </div>
+              </div>
               <div class="row">
-                <div class="col-6 p-2">
+                <div class="col-12">
                   <div class="row">
                     <div class="col-12">
                       <h6 class="card-subtitle">Status</h6>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 value-container">
                       {{item.u_status?item.u_status:'NA'}}
                     </div>
                   </div>
                 </div>
-                <div class="col-6 p-2 text-end">
-                  <ng-container *ngFor="let access of permissions">
-                  <a> <button  type="button" class="toolbar-btn" *ngIf="access === 'UPDATE'"  (click)='editCard(item.id)'  ngbTooltip="Edit" ><i class="bi bi-pencil-square" ></i></button></a>
-                  <a> <button  type="button" class="toolbar-btn" *ngIf="access === 'DELETE'"  (click)="open(item.id)" ngbTooltip="Delete"  ><i class="bi bi-trash"></i></button></a>
-                  </ng-container>
-                </div>
-              </div>
-              <div class="row img-row">
-                <div class="col img-div">
-                  <a href="{{item.u_profile_path}}" target="_blank">
-                    <img src="{{item.u_profile_path}}" alt="" height="70px" width="27%">
-                  </a>
-                <div class="p-2">{{item.u_first_name +" "+ item.u_last_name}}</div> 
-              </div>
-              
               </div>
 
                 <div class="row">
@@ -182,7 +182,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-12">
+                      <div class="col-12 value-container">
                           {{item.user_role_name}}
                       </div>
                     </div>
@@ -194,7 +194,7 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-12">
+                        <div class="col-12 value-container">
                         {{item.center_name ? item.center_name :'NA'}}
                         </div>
                       </div>
@@ -209,7 +209,7 @@
                      </div>
                   </div>
                   <div class="row">
-                     <div class="col-12">
+                     <div class="col-12 value-container">
                      {{item.u_designation?item.u_designation:"NA"}}
                      </div>
                    </div>
@@ -221,8 +221,8 @@
                    </div>
                  </div>
                  <div class="row">
-                   <div *ngIf="isDate(item.u_date_of_joining)">{{item.u_date_of_joining | date:'YYYY-MM-dd'}}</div> 
-                   <div *ngIf="!isDate(item.u_date_of_joining)">{{item.u_date_of_joining *1000 | date:'YYYY-MM-dd'}}</div> 
+                   <div *ngIf="isDate(item.u_date_of_joining)" class="value-container">{{item.u_date_of_joining | date:'YYYY-MM-dd'}}</div> 
+                   <div *ngIf="!isDate(item.u_date_of_joining)" class="value-container">{{item.u_date_of_joining *1000 | date:'YYYY-MM-dd'}}</div> 
                  </div>
                </div>
                

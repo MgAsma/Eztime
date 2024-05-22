@@ -8,10 +8,12 @@ import { Location } from '@angular/common'
   styleUrls: ['./default-footer.component.scss'],
 })
 export class DefaultFooterComponent extends FooterComponent {
+  config:any;
   constructor(
     private location:Location
   ) {
     super();
+    this.config = sessionStorage.getItem('user_role_name');
   }
    menuToggle=document.querySelector('.menuToggle');
    selectedTab: string = 'home';

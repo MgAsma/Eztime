@@ -77,13 +77,13 @@
       class="py-1 settings-btn"
     ><span><i class="bi bi-gear"></i> Settings</span>
     </button>
-    <ul cDropdownMenu class="pt-0 pr-5 w-auto c-dropClass">
+    <ul cDropdownMenu class="py-2 pr-5 w-auto c-dropClass">
       <li></li>
-      <li *ngFor="let headNav of headerNav" >
+      <li *ngFor="let headNav of headerNav"  style="margin:10px auto">
         <div [ngClass]="getHeaderNavStyles(headNav)" (click)="clearStorage(headNav)">
-          <a [routerLink]="headNav.link" cDropdownItem>
+          <a (click)="navigateTo(headNav)" cDropdownItem>
             <i class="{{headNav.icons}}" id="nav-icon"></i>
-            <span class="title" >{{headNav.page}} </span>
+            <span class="title" >&nbsp;&nbsp;{{headNav.page}} </span>
           </a>
         </div>   
       </li>

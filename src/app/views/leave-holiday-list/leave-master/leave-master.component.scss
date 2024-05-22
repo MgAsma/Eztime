@@ -83,7 +83,7 @@ html{
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 2%), 0 6px 20px 0 rgb(0 0 0 / 9%);
     margin: 10px 15px;
     border-radius: 10px;
-    zoom: 80%;
+    zoom: 90%;
     padding: 10px 10px 0;
     border: 3px solid #d6d6d6;
 }
@@ -100,12 +100,12 @@ html{
 }
 .n-l{
     border: 3px dotted white;
-    background-color: #3d358f;;
+    // background-color: #0a69b1 !important ;;
     border-radius: 3px;
     padding-top: 8px;
     margin-bottom: 6px;
     .card-subtitle,p{
-        color:white !important;
+      text-align: left;
     }
 }
 .card p{

@@ -35,7 +35,7 @@ export class DefaultLayoutComponent {
     {
       link: '/profile',
       page: 'Profile',
-      icons: 'bi bi-person-lines'
+      icons: 'bi bi-person'
     },
     // {
     //   link:'../register',
@@ -45,13 +45,13 @@ export class DefaultLayoutComponent {
     {
       link: '/changePassword',
       page: 'Change Password',
-      icons: 'fa fa-key'
+      icons: 'bi bi-key'
     },
-    // {
-    //   link: '/logout',
-    //   page: 'Logout',
-    //   icons: 'bi bi-power'
-    // }
+    {
+      link: '/logout',
+      page: 'Logout',
+      icons: 'bi bi-power'
+    }
   ]
 
   constructor(private ngxService: NgxUiLoaderService,
@@ -342,16 +342,30 @@ export class DefaultLayoutComponent {
 
 
   findCurrentRouteName(menuItems: any, currentUrl: string): string {
-    for (const menuItem of menuItems) {
-      if (menuItem.url === currentUrl) {
-        return menuItem.name;
-      } else if (menuItem.children) {
-        const foundName = this.findCurrentRouteName(menuItem.children, currentUrl);
-        if (foundName) {
-          return foundName;
-        }
+    if('/profile'===currentUrl){
+      return 'Update Profile';
+    }else{
+      for (const menuItem of menuItems) {
+        if (menuItem.url === currentUrl) {
+          return menuItem.name;
+        } else if (menuItem.children) {
+          const foundName = this.findCurrentRouteName(menuItem.children, currentUrl);
+          if (foundName) {
+            return foundName;
+          }
+        } 
+         
       }
     }
     return '';
   }
+  navigateTo(headNavdata:any){
+if(headNavdata.page==='Logout'){
+  this.openDialogue();
+}else{
+  this.router.navigate([`${headNavdata.link}`]);
+}
+  }
+
+  
 }

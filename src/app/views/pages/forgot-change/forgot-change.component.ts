@@ -11,7 +11,7 @@ import { ApiserviceService } from 'src/app/service/apiservice.service';
 export class ForgotChangeComponent implements OnInit {
   userId: any;
   changePassword: FormGroup;
-
+  passwordType = "password";
   constructor(private builder:FormBuilder, private api:ApiserviceService, private router:Router) { }
 
   ngOnInit(): void {

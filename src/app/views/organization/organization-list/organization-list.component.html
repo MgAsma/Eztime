@@ -73,13 +73,13 @@
                          <td>
                           <ng-container >
                             <button mat-raised-button mat-mini-fab  routerLink="/organization/updateOrg/{{item.id}}" >
-                              <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
+                              <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
                             </button>
                             <button mat-raised-button mat-mini-fab  aria-label="Example icon button with a filter list icon" (click)="open(item.id)" >
                               <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
                             </button>
                           </ng-container> 
-                            <!-- <a routerLink="/organization/updateOrg/{{item.id}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></a>
+                            <!-- <a routerLink="/organization/updateOrg/{{item.id}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i></a>
                             <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item.id)"><i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i></button> -->
                          </td>
                         
@@ -119,16 +119,16 @@
 
 
 <div class="mobileView">
-    <div class="row">
+    <div class="row mx-1 my-2">
       <div class="col-sm-6">
-        <h1>Organization List</h1>
+        <!-- <h1>Organization List</h1> -->
       </div>
       <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-        <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by organization name" aria-describedby="emailHelp"  autocomplete="off">
+        <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by organization name" aria-describedby="emailHelp"  autocomplete="off">
         <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
       </div>
     </div> 
-      <div class="bg row">
+      <div class="bg row mx-0 my-1">
         <ng-container *ngIf="(organizationData) as result">
         <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of result|paginate : {
           itemsPerPage: tableSize,
@@ -137,28 +137,25 @@
         } ;let i=index' >
           <div class="card outer-card" >
             <div class="row">
-              <div class="col-3" >
+              <div class="col-6" >
                 <a href="{{item.org_logo_path}}" target="_blank">
-                <img src="{{item.org_logo_path}}" alt=""  class="org-logo">
+                <img src="{{item.org_logo_path}}" alt="" class="org-logo">
                </a>
               </div>
-            </div>
-            <div class="row">
-              <div class="col"></div>
               <div class="col-5 p-0 text-end action-btn">
-                <a> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i></button></a>
-                <a> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"   ><i class="bi bi-trash"></i></button></a>
+                <a> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i></button></a>
+                <a> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"   ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button></a>
             </div>
             </div>
             <div class="row p-c">
               <div class="col-6">
                 <div class="row">
                     <div class="col-12">
-                      <h6 class="card-subtitle"> Organization</h6>
+                      <h6 class="card-subtitle text-start"> Organization</h6>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 value-container text-start " >
                       {{item.org_name ? item.org_name :'NA' }}
                     </div>
                   </div>
@@ -167,11 +164,11 @@
                  
                   <div class="row">
                     <div class="col-12">
-                      <h6 class="card-subtitle"> Status</h6>
+                      <h6 class="card-subtitle text-start"> Status</h6>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 value-container text-start">
                     {{item.org_status ? item.org_status : 'NA'}}
                     </div>
                   </div>
@@ -180,30 +177,30 @@
               
                </div>
                <div class="card inner-card">
-                <div class="card-body">
+                <div class="card-body py-0">
                   <div class="row">
                     <div class="col-6">
                       
                   <div class="row">
                     <div class="col-12">
-                      <h6 class="card-subtitle"> Email</h6>
+                      <h6 class="card-subtitle text-start"> Email</h6>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 value-container text-start">
                       {{item.org_email ? item.org_email :'NA' }}
                     </div>
                   </div>
                     </div>
-                    <div class="col-6" style="border-left: 1px solid gray;">
+                    <div class="col-6">
                       
                   <div class="row">
                     <div class="col-12">
-                      <h6 class="card-subtitle"> Phone</h6>
+                      <h6 class="card-subtitle text-start"> Phone</h6>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 value-container text-start">
                       <td>{{item.conctact_person_phone_number ? item.conctact_person_phone_number:'NA'}}</td>
                     </div>
                   </div>

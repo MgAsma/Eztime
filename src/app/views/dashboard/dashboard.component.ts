@@ -4,6 +4,7 @@ import { ApiserviceService } from '../../service/apiservice.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   // selector: 'app-admin-dashboard',
@@ -25,6 +26,13 @@ export class DashboardComponent implements OnInit {
   permissionsDepartment: any = [];
   permissionsIndustry: any;
   org_id:any;
+  organizationlistData:any=[];
+  adminlistData:any=[];
+  userslistData:any=[];
+  rolesListData:any=[];
+  departmentsListData:any=[];
+  industriesListData:any=[];
+  pagination:any;
   constructor(private builder:FormBuilder, private api:ApiserviceService,
     private location :Location,
     private route: ActivatedRoute,
@@ -33,15 +41,13 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-     const isloggedIn = sessionStorage.getItem('token')
+     const isloggedIn = sessionStorage.getItem('token');
       if(isloggedIn){
         this.org_id = sessionStorage.getItem('org_id')
         this.getCountDetails(isloggedIn);
       }
-    
     this.user_role_name = sessionStorage.getItem('user_role_name')  
-     
-    this.getUserControls()
+    this.getUserControls();
   }
   getCountDetails(isloggedIn){
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
@@ -51,14 +57,16 @@ export class DashboardComponent implements OnInit {
     }
     this.api.getCount(id,isloggedIn).subscribe((data:any)=>{
       if(data.result){
-      
       this.role = data.result.no_of_roles;
       this.department = data.result.no_of_department;
       this.industry = data.result.no_of_industries;
       this.organization = data.result.no_of_organization;
       this.admin = data.result.no_of_admin;
       this.userCount = data.result.no_of_users
-      this.enable = true
+      this.enable = true;
+      this.getRecentAddedOrganizationList();
+      this.getRecentAddeduserslistData();
+      this.getRecentAddedAdminlistData();
       }
       
     }
@@ -89,18 +97,110 @@ export class DashboardComponent implements OnInit {
       if(accessArr.length > 0){
         accessArr.forEach((element,i) => {
           if(element['ROLES']){
-            this.permissionRoles = element['ROLES']
+            this.permissionRoles = element['ROLES'];
+            this.getRecentAddedRolesListData();
           }if(element['DEPARTMENT']){
-            this.permissionsDepartment = element['DEPARTMENT']
+            this.permissionsDepartment = element['DEPARTMENT'];
+            this.getRecentAddedDepartmentListData();
           }if(element['INDUSTRY/SECTOR']){
-            this.permissionsIndustry = element['INDUSTRY/SECTOR']
+            this.permissionsIndustry = element['INDUSTRY/SECTOR'];
+            this.getRecentAddedindustriesListData();
           }
           
         });
-      }
-      
+      }  
     })
-   
     }
-  
+
+// organization list
+getRecentAddedOrganizationList(){
+  let params:any = `page_number=1&data_per_page=5&pagination=TRUE`;
+  this.api.getData(`${environment.live_url}/${environment.organization}?${params}`).subscribe(res=>{
+    if(res){
+     this.organizationlistData = res['result']['data']
+    }
+  },(error =>{
+    this.api.showError(error.error.error.message)
+  }))
+}
+
+// Admin List
+getRecentAddedAdminlistData(){
+  let params:any = {
+    page_number:1,
+    data_per_page:5,
+    pagination:'TRUE',
+    organization_id:this.org_id,
+    search_key:'ADMIN',
+    ignore_super_admin:'TRUE'
+   }
+ this.api.getSuperAdminPeoplePage(params).subscribe((data:any)=>{
+    this.adminlistData = data.result.data;
+  },((error)=>{
+    this.api.showError(error.error.error.message)
+  })
+  )
+}
+// users list
+getRecentAddeduserslistData(){
+  let params:any = {
+    page_number:1,
+    data_per_page:5,
+    pagination:'TRUE',
+    organization_id:this.org_id,
+   }
+  this.api.getPeopleDetailsPage(params).subscribe((data:any)=>{
+    this.userslistData = data.result.data;
+  },((error)=>{
+    this.api.showError(error.error.error.message)
+  })
+  )
+}
+// Roles list
+getRecentAddedRolesListData(){
+  let params:any = `page_number=1&data_per_page=5&pagination=TRUE&organization_id=${this.org_id}`;
+  this.api.getUserAccess(params).subscribe((data:any)=>{
+    
+    if(data){
+      this.rolesListData = data.result.data
+      }
+  },((error)=>{
+    this.api.showError(error.error.error.message)
+  })
+
+  )
+}
+
+// Department list
+getRecentAddedDepartmentListData(){
+   let params:any = `page_number=1&data_per_page=5&pagination=TRUE&org_ref_id=${this.org_id}`;
+  this.api.getDepartmentDetailsPage(params).subscribe((res:any) =>{
+    if(res){
+      this.departmentsListData= res.result.data;
+    }
+    else{
+      this.api.showError('Error!')
+    }
+
+  },((error)=>{
+    this.api.showError(error.error.error.message)
+  }))
+}
+// industries list
+getRecentAddedindustriesListData(){
+  let params:any = {
+    page_number:1,
+    data_per_page:5,
+    org_ref_id:this.org_id,
+    pagination:'TRUE'
+   }
+  this.api.getIndustryDetailsPage(params).subscribe((data:any)=>{
+    this.industriesListData= data.result.data;
+    },error=>{
+      this.api.showError(error.error.error.message)
+      
+    }
+
+  )
+}
 }

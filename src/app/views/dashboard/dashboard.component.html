@@ -20,12 +20,9 @@
                       <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Organization</strong></div>
                    <div class="recently-add-content">
                     <ul>
-                      <li>Organization 1</li>
-                      <li>Organization 2</li>
-                      <li>Organization 3</li>
-                      <li>Organization 4</li>
+                      <li *ngFor="let organization of organizationlistData">{{organization?.org_name|titlecase}}</li>
                     </ul>
-                    <a routerLink="../role/list">See Organization</a>
+                    <a routerLink="../organization/orgList">See Organization</a>
                    </div> 
                     </div>
 
@@ -43,13 +40,9 @@
                       <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Admin</strong></div>
                       <div class="recently-add-content">
                         <ul>
-                          <li>Admin 1</li>
-                      <li>Admin 2</li>
-                      <li>Admin 3</li>
-                      <li>Admin 4</li>
-                      <li>Admin 5</li>
+                      <li *ngFor="let admin of adminlistData">{{admin?.u_first_name|titlecase }}</li>
                         </ul>
-                        <a routerLink="../role/list">See Admin</a>
+                        <p>Recently Added</p>
                        </div> 
                     </div>        
                   </div>
@@ -67,9 +60,10 @@
                       <div class="text-muted text-uppercase font-weight-bold font-xs"><strong>Users</strong></div>
                       <div class="recently-add-content">
                         <ul>
-                          <li></li>
+                          <li *ngFor="let user of userslistData">{{user?.u_first_name|titlecase}}</li>
                         </ul>
-                        <a routerLink="../role/list">See Users</a>
+                        <!-- <a routerLink="../role/list">See Users</a> -->
+                        <p>Recently Added</p>
                        </div> 
                     </div>        
                   </div>
@@ -92,11 +86,9 @@
                         <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Roles</strong></div>
                         <div class="recently-add-content">
                           <ul>
-                            <li>Roles 1</li>
-                            <li>Roles 2</li>
-                            <li>Roles 3</li>
+                            <li *ngFor="let roles of rolesListData">{{roles?.user_role_name|titlecase}}</li>
                           </ul>
-                          <a  routerLink="../role/list">See Roles</a>
+                          <a  routerLink="../role/list" *ngIf="access === 'VIEW'">See Roles</a>
                          </div> 
                       </div>        
                     </div>
@@ -126,9 +118,9 @@
                         <div class="text-muted text-uppercase font-weight-bold font-xs"><strong>Departments</strong></div>
                         <div class="recently-add-content">
                           <ul>
-                            <li></li>
+                            <li *ngFor="let department of departmentsListData">{{department?.od_name|titlecase}}</li>
                           </ul>
-                          <a routerLink="../department/list">See Departments</a>
+                          <a routerLink="../department/list" *ngIf="access === 'VIEW'">See Departments</a>
                          </div> 
                       </div>
                     </div>
@@ -146,9 +138,9 @@
                         <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Industries</strong></div>
                         <div class="recently-add-content">
                           <ul>
-                            <li></li>
+                            <li *ngFor="let industries of industriesListData">{{industries?.toi_title|titlecase}}</li>
                           </ul>
-                          <a routerLink="../industry/list">See Industries</a>
+                          <a routerLink="../industry/list" *ngIf="access === 'VIEW'">See Industries</a>
                          </div> 
                       </div>
                     </div>

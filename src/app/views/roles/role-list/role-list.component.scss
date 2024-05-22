@@ -99,7 +99,7 @@ html{
 .outer-card{
     border: none;
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 8%), 0 6px 20px 0 rgb(0 0 0 / 4%);
-    margin: 10px 5px; 
+margin: 5px 15px ;
     border-radius: 10px;
     background: #FFFFFF99 !important;
 }
@@ -125,11 +125,11 @@ html{
     color:black;  
 }
 .inner-card{
-    margin: 10px 15px 20px;
+    margin: 10px 20px 20px 20px;
     border-radius: 18px;
     border: 1px solid #126EB4;
     padding: 10px 0;
-    zoom: 80%;
+    zoom: 90%;
     background: #FFFFFFB2;
     color: white;
 }
@@ -140,7 +140,7 @@ html{
 //     }
 // }
 .rc-p{
-    padding: 15px 15px 0;
+    padding: 20px 20px 10px 20px;
 }
 .example-list {
     width: 500px;
@@ -221,7 +221,7 @@ font-weight: bold;
 margin-top:5px;
   }
   .r-1{
-    color: #3d358f;
+    color: #0a69b1 !important ;
   }
   #access-icon{
     color:white;

@@ -89,21 +89,14 @@
 </div>
 
 <div class="container-fluid mobileView">
-    <div class="row">
-      <div class="col-sm-12 col-md-6 col-lg-2">
-        <select class="form-select page-set" aria-label="Default select example" (change)="onTableSizeChange($event)">
-            <option *ngFor="let size of tableSizes" [ngValue]="size">
-                {{ size }}
-              </option>
-          </select>
-    </div>
+    <div class="row mx-1 my-2">
       <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-        <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp" autocomplete="off">
+        <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp" autocomplete="off">
         <i class="bi bi-search" id="search-icon"></i>
       </div>
     </div>
   
-    <div class="bg row">
+    <div class="bg row mx-0 my-1">
       <ng-container *ngIf="(list | filter:term) as result">
         <div class="col-sm-12 col-md-6 p-0" *ngFor="let item of result | filter:term| paginate : {
           itemsPerPage: tableSize,
@@ -127,7 +120,7 @@
               <div class="col-5">
                   <ng-container *ngFor="let approval of accessConfig">
                       <span *ngIf="approval == 'DELETE'" style="float: right;">
-                          <button type="button" class="toolbar-btn "   (click)="open(item)"  ><i class="bi bi-trash"></i></button>
+                          <button type="button" class="toolbar-btn "   (click)="open(item)"  ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button>
                         </span>
                       <!-- <span *ngIf="approval == 'APPROVE'">
                           <button style="border: none;background-color: inherit;" (click)="openDialogue(item.id,'APPROVED')"><i class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>

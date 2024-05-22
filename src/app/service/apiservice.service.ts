@@ -18,7 +18,7 @@ export class ApiserviceService {
   ngOnInit(){
     this.token = sessionStorage.getItem('token')
     this.org_id = sessionStorage.getItem('org_id')
-    this.headers = {'Authorization':this.token} 
+    // this.headers = {'Authorization':this.token} 
   }
  
  
@@ -63,7 +63,7 @@ export class ApiserviceService {
 
   // dashboard
   getCount(data,token){
-    return this.http.post(`${this.baseurl}/dash-board`,data,{headers:token})
+    return this.http.post(`${this.baseurl}/dash-board`,data)
   }
   // dashboard
 
@@ -364,7 +364,10 @@ export class ApiserviceService {
   getPeopleDetailsPage(params){
     return this.http.get(`${this.baseurl}/people?page_number=${params.page_number}&data_per_page=${params.data_per_page}&organization_id=${params.organization_id}&pagination=TRUE`,{headers:this.headers})
   }
- 
+  getSuperAdminPeoplePage(params){
+    return this.http.get(`${this.baseurl}/people?page_number=${params.page_number}&data_per_page=${params.data_per_page}&organization_id=${params.organization_id}&pagination=TRUE&ignore_super_admin=${params.ignore_super_admin}&search_key=${params.search_key}`,{headers:this.headers})
+  }
+
   deletePeopleDetails(id:any){
     return this.http.delete(`${this.baseurl}/people/${id}`,{headers:this.headers})
   }

@@ -82,9 +82,9 @@ html{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     text-align: center;
     margin: 10px 15px;
-    zoom: 80%;
+    // zoom: 90%;
     //background: lightblue;
-    background-color: #3d358f;
+    background-color: rgba(255, 255, 255, 0.6) !important;
     font-size: 13px;
     border:5px solid white;
 }
@@ -96,21 +96,21 @@ h6{
     margin-bottom: 2px;
 }
 .row-b{
-    margin: 0 20px 20px 20px;
-    background-color: #f6f6f6;
+    margin: 0 20px 20px 0px;
+    // background-color: #f6f6f6;
     padding: 2px;
-    border: 1px solid #dddd;
+    // border: 1px solid #dddd;
 }
 .prefix-card p{
     margin: 0;
 }
 .row-b .c-1{
         border-radius: 0px 7px 7px 0px;
-        background-color: white;
+        // background-color: white;
 }
 .row-b .c-2{
-    background-color: #f6f6f6;
-    border-left: 0;
+    // background-color: #f6f6f6;
+    // border-left: 0;
 
 }
 .c-scroll{

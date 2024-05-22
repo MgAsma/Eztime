@@ -56,7 +56,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { RouterModule } from '@angular/router';
 
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-
+import { BasicAuthInterceptor } from './service/basic-auth.interceptor';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -154,7 +154,7 @@ const APP_CONTAINERS = [
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
     },
-  
+    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
     IconSetService,
     Title,
     DatePipe,

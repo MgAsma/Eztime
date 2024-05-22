@@ -64,7 +64,7 @@
                          <td class="text-center">
                             <ng-container *ngFor="let access of permissions">
                                 <button mat-raised-button mat-mini-fab  routerLink="/leave/updateLeaveDetails/{{item.id}}" *ngIf="access === 'UPDATE'">
-                                  <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
+                                  <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
                                 </button>
                                 <button mat-raised-button mat-mini-fab   (click)="open(item.id)" *ngIf="access === 'DELETE'">
                                   <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
@@ -104,12 +104,12 @@
 
 
 <div class="container-wrapper mobileView">
-    <div class="row">
+    <div class="row mx-1 my-2">
         <div class="col-sm-6 col-md-6 col-lg-6">
-            <h1>Master Leave Types</h1>
+            <!-- <h1>Master Leave Types</h1> -->
         </div>
         <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-            <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by leave type"aria-describedby="emailHelp"  autocomplete="off">
+            <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by leave type"aria-describedby="emailHelp"  autocomplete="off">
             <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
         </div>
     </div>
@@ -119,41 +119,38 @@
         <div class="col-sm-12 col-md-6 p-1" *ngFor="let item of result">
             <div class="card" (click)="cardId(item)">
                 <div class="row">
-                    <div class="col-12 p-3 text-end">
+                    <div class="col-6 align-self-center">
+                        <h6 class="card-subtitle">Leave Type</h6>
+                        <p class="value-container">{{item.leave_title}}</p>
+                        </div>
+                    <div class="col-6 p-3 text-end">
                         <ng-container *ngFor="let access of permissions">
-                        <a *ngIf="access == 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" ></i></button></a>
-                        <a *ngIf="access == 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash"></i></button></a>
+                        <a *ngIf="access == 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" style="color: #000; font-size: 24px;" ></i></button></a>
+                        <a *ngIf="access == 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button></a>
                         </ng-container>
                     </div>
                 </div>
             <div class="row">
-                <div class="col-6">
-                <h6 class="card-subtitle">Leave Type</h6>
-                <p>{{item.leave_title}}</p>
-                </div>
-                <div class="col-6">
-                    <h6 class="card-subtitle">Max Encashment</h6>
-                <p>{{item.max_encashments?item.max_encashments:"NA"}}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 text-center">
+                <div class="col-6 text-start">
                     <div class="n-l">
                         <h6 class="card-subtitle">No of Leaves</h6>
-                        <p>{{item.no_of_leaves?item.no_of_leaves:"NA"}}</p>
+                        <p class="value-container">{{item.no_of_leaves?item.no_of_leaves:"NA"}}</p>
                     </div>
                   
                 </div>
-                
+                <div class="col-6">
+                    <h6 class="card-subtitle">Max Encashment</h6>
+                <p class="value-container">{{item.max_encashments?item.max_encashments:"NA"}}</p>
+                </div>
             </div>
             <div class="row">
                 <div class="col-6">
                     <h6 class="card-subtitle">Carry Forward(%)</h6>
-                    <p>{{item.carry_forward_per}}</p>
+                    <p class="value-container">{{item.carry_forward_per}}</p>
                 </div>
                 <div class="col-6">
                     <h6 class="card-subtitle">Graceful Days</h6>
-                <p>{{item.gracefull_days}}</p>
+                <p class="value-container">{{item.gracefull_days}}</p>
                 </div>
             </div>
            

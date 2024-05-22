@@ -110,17 +110,17 @@ html{
     }
 }
 .card-subtitle{
-    color: #212529;
+    color: #0a69b1 !important;
 }
 .inner-card{
-    margin: 10px 15px 20px;
+    margin: 10px 20px 20px 20px;
     border-radius: 18px;
     border: 1px solid #13FF2B;
     padding: 10px 0;
-    zoom: 80%;
+    zoom: 90%;
     background: #F3FFF5;
     color: white;
-    line-height: 13px !important;
+    line-height: 15px !important;
     .row{
         padding: 3px !important;
     }
@@ -133,7 +133,7 @@ html{
 //     }
 // }
 .rc-p{
-    padding: 15px 15px 0;
+    padding: 20px 20px 10px 20px;
 }
 .example-list {
     width: 500px;

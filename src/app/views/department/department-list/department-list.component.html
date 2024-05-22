@@ -59,7 +59,7 @@
                          <td>
                           <ng-container *ngFor="let access of permissions">
                             <button mat-raised-button mat-mini-fab  routerLink="/department/update/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
-                              <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit"></i>
+                              <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
                             </button>
                             <button mat-raised-button mat-mini-fab  aria-label="Example icon button with a filter list icon" (click)="open(item.id)" *ngIf="access === 'DELETE'">
                               <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
@@ -102,16 +102,16 @@
 
 
 <div class="mobileView">
-    <div class="row">
-      <div class="col-sm-12">
-        <h1>Department List</h1>
+    <div class="row mx-1 my-2">
+      <div class="col-sm-6">
+        <!-- <h1>Department List</h1> -->
       </div>
       <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-        <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by department name/status"aria-describedby="emailHelp"  autocomplete="off">
+        <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by department name/status"aria-describedby="emailHelp"  autocomplete="off">
         <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
       </div>
     </div> 
-      <div class="bg row">
+      <div class="bg row mx-0 my-1">
         <ng-container *ngIf="(allDepartmentList) as result">
         <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of result|paginate : {
           itemsPerPage: tableSize,
