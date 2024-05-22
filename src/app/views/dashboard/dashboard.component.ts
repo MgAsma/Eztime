@@ -114,7 +114,7 @@ export class DashboardComponent implements OnInit {
 
 // organization list
 getRecentAddedOrganizationList(){
-  let params:any='page_number=1&data_per_page=5&pagination=TRUE'
+  let params:any = `page_number=1&data_per_page=5&pagination=TRUE`;
   this.api.getData(`${environment.live_url}/${environment.organization}?${params}`).subscribe(res=>{
     if(res){
      this.organizationlistData = res['result']['data']
@@ -158,12 +158,7 @@ getRecentAddeduserslistData(){
 }
 // Roles list
 getRecentAddedRolesListData(){
-  let params:any = {
-    page_number:1,
-    data_per_page:5,
-    organization_id:this.org_id,
-    pagination:'TRUE'
-   }
+  let params:any = `page_number=1&data_per_page=5&pagination=TRUE&organization_id=${this.org_id}`;
   this.api.getUserAccess(params).subscribe((data:any)=>{
     
     if(data){
@@ -178,12 +173,7 @@ getRecentAddedRolesListData(){
 
 // Department list
 getRecentAddedDepartmentListData(){
-  let params:any = {
-    page_number:1,
-    data_per_page:5,
-    org_ref_id:this.org_id,
-    pagination:'TRUE'
-   }
+   let params:any = `page_number=1&data_per_page=5&pagination=TRUE&org_ref_id=${this.org_id}`;
   this.api.getDepartmentDetailsPage(params).subscribe((res:any) =>{
     if(res){
       this.departmentsListData= res.result.data;
