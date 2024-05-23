@@ -41,11 +41,11 @@ export const navItems1: any = [
       {
         name:'Approval Configuration',
         url:'/approvalTimesheet/approvalConfiguration'
+      },
+      {
+        name:'Create new Timesheet',
+        url:'/myTimesheet/create'
       }
-      // {
-      //   name:'Create new Timesheet',
-      //   url:'/myTimesheet/create'
-      // }
     ]
   },
   {

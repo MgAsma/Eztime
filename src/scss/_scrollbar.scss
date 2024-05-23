@@ -3,7 +3,7 @@
   @supports (scrollbar-width: thin) {
     * {
       scrollbar-width: thin;
-      scrollbar-color: #e8e8e8 transparent;
+      scrollbar-color:  #b3d6f1 ;
     }
   }
   
@@ -13,13 +13,13 @@
   
   ::-webkit-scrollbar-track {
     // background: var(--cui-body-bg, #fff);
-     background: transparent !important;
+     background: #b3d6f1 !important;
     border-radius: 100vw;
     margin-block: .2em;
   }
   
   ::-webkit-scrollbar-thumb {
-    background: #b3b3b3;
+    background: #b3d6f1;
     //border:1px solid #999;
     // border: .2em solid var(--cui-body-bg, #fff);
     // border-radius: 100vw;

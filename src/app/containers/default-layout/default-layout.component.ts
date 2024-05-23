@@ -69,11 +69,8 @@ export class DefaultLayoutComponent {
     setTimeout(() => {
       this.ngxService.stop();
     }, 1000);
-
     this.ngxService.startBackground("do-background-things");
-
     this.ngxService.stopBackground("do-background-things");
-
     this.ngxService.startLoader("loader-01");
     setTimeout(() => {
       this.ngxService.stopLoader("loader-01");
@@ -82,7 +79,6 @@ export class DefaultLayoutComponent {
     // //console.log(this.access,"ACCESS")
 
     //console.log(this.navItems,"ADMIN NAVITEMS-------")
-  
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
@@ -353,7 +349,7 @@ export class DefaultLayoutComponent {
           if (foundName) {
             return foundName;
           }
-        } 
+        }
          
       }
     }
