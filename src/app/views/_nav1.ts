@@ -49,6 +49,29 @@ export const navItems1: any = [
     ]
   },
   {
+    name:'Approval TimeSheets',
+    url:'/approvalTimesheet',
+    icon:'bi bi-calendar-event',
+    children:[
+      {
+        name:'Todays Approvals',
+        url:'/approvalTimesheet/todayApproval'
+      },
+      {
+        name:'Deadline Crossed',
+        url:'/approvalTimesheet/deadlineCrossed'
+      },
+      {
+        name:'Month Timesheet',
+        url:'/approvalTimesheet/monthTimesheet'
+      },
+      // {
+      //   name:'Approval Configuration',
+      //   url:'/approvalTimesheet/approvalConfiguration'
+      // }
+    ]
+  },
+  {
     name:'Approvals',
     url:'/review',
     icon:'bi bi-yelp',
@@ -166,29 +189,7 @@ export const navItems1: any = [
     ]
   },
 
-  // {
-  //   name:'Approval TimeSheets',
-  //   url:'/approvalTimesheet',
-  //   icon:'bi bi-calendar-event',
-  //   children:[
-  //     {
-  //       name:'Todays Approvals',
-  //       url:'/approvalTimesheet/todayApproval'
-  //     },
-  //     {
-  //       name:'Deadline Crossed',
-  //       url:'/approvalTimesheet/deadlineCrossed'
-  //     },
-  //     {
-  //       name:'Month Timesheet',
-  //       url:'/approvalTimesheet/monthTimesheet'
-  //     },
-  //     {
-  //       name:'Approval Configuration',
-  //       url:'/approvalTimesheet/approvalConfiguration'
-  //     }
-  //   ]
-  // },
+ 
   // {
   //   name:'Industry/Sector',
   //   url:'/industry',
