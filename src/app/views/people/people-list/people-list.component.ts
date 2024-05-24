@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./people-list.component.scss']
 })
 export class PeopleListComponent implements OnInit {
-  BreadCrumbsTitle:any='Empolyees list';
+  BreadCrumbsTitle:any='Employees list';
   currentIndex = 1;
   allPeople=[];
   page = 1;

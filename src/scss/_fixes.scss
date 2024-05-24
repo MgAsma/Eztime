@@ -179,7 +179,7 @@ body{
   }
  
   .bg{
-    background: transparent !important;
+    background:  #fff!important;
     overflow-x: hidden;
     // height: 82% !important;
     height: 90% !important;
@@ -364,9 +364,10 @@ app-add-on-leave-request,app-applied-approved-leaves,app-timesheet,approval-time
    table{
     // font-size: 11px !important;
     font-size: 1.05vw !important;
+    border: 0.5px solid #dddddd !important;
   }
   .scroll-fix{
-    height: 88vh !important;
+    height: 100vh !important;
     overflow-y: scroll !important;  
   }
   .mobileView{
@@ -381,7 +382,7 @@ app-add-on-leave-request,app-applied-approved-leaves,app-timesheet,approval-time
     overflow-y: auto !important;
     margin: 5px 5px;
     width: 97% !important;
-    background: #f8f8f8 !important;
+    background: #fff !important;
   }
   .generic-form.bg{
     height: 75vh !important;
@@ -396,9 +397,7 @@ app-add-on-leave-request,app-applied-approved-leaves,app-timesheet,approval-time
     padding-left: 20px;
   }
   .p-nav{
-    position: fixed;
-    bottom: 0%;
-    right: 3%;
+    position: relative;
   }
 }
 

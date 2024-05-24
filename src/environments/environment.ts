@@ -4,8 +4,10 @@
 
 export const environment = {
   production: false,
-  live_url:'https://eztime.thestorywallcafe.com/api',
-  media_url:'https://eztime.thestorywallcafe.com/media',
+  // live_url:'https://eztime.thestorywallcafe.com/api',
+  // media_url:'https://eztime.thestorywallcafe.com/media',
+  live_url:'https://eztimedev.thestorywallcafe.com/api',
+  media_url:'https://eztimedev.thestorywallcafe.com/media',
   leave_application:'leave-application',
   timesheetCalender:'time-sheets-calender',
   taskProjectCategories:'task-project-categories',

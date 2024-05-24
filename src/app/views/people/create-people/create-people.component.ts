@@ -12,7 +12,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 })
 export class CreatePeopleComponent implements OnInit {
   peopleForm : FormGroup
-  BreadCrumbsTitle:any='Create empolyee';
+  BreadCrumbsTitle:any='Create employee';
   allDepartment:any=[];
   department:any;
 

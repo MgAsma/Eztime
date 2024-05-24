@@ -13,7 +13,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 })
 export class UpdatePeopleComponent implements OnInit {
   id:any;
-  BreadCrumbsTitle:any='Update empolyee';
+  BreadCrumbsTitle:any='Update employee';
   mediaUrl = environment.media_url;
   allDepartment:any=[];
   department:any;
