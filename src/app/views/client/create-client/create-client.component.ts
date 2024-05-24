@@ -3,13 +3,14 @@ import {  Validators, FormBuilder,FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-create-client',
   templateUrl: './create-client.component.html',
   styleUrls: ['./create-client.component.scss']
 })
 export class CreateClientComponent implements OnInit {
-
+  BreadCrumbsTitle:any='Create client';
   clientForm! : FormGroup
 
   allClient:any=[];
@@ -23,10 +24,11 @@ export class CreateClientComponent implements OnInit {
     private builder:FormBuilder, 
     private api: ApiserviceService,
     private router:Router,
-    private location:Location
+    private location:Location,private common_service:CommonServiceService
     ) { }
 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.getIndustry();
     this.initForm();

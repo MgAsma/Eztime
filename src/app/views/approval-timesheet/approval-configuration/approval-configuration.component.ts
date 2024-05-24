@@ -4,6 +4,7 @@ import { TimesheetService } from 'src/app/service/timesheet.service';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 
 @Component({
   selector: 'app-approval-configuration',
@@ -11,6 +12,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./approval-configuration.component.scss']
 })
 export class ApprovalConfigurationComponent implements OnInit {
+  BreadCrumbsTitle:any='Approval configuration';
 
   configurationForm : FormGroup
   allConfiguration:any=[];
@@ -23,10 +25,12 @@ export class ApprovalConfigurationComponent implements OnInit {
     private builder:FormBuilder, 
     private timesheetService: TimesheetService,
     private api:ApiserviceService,
-    private location:Location
+    private location:Location,
+    private common_service:CommonServiceService
     ) { }
 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
    this.initForm()
    this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
    this.orgId = JSON.parse(sessionStorage.getItem('org_id'))

@@ -3,13 +3,14 @@ import { Component, OnInit } from '@angular/core';
 import {  Validators, FormBuilder,FormGroup } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-add-centers',
   templateUrl: './add-centers.component.html',
   styleUrls: ['./add-centers.component.scss']
 })
 export class AddCentersComponent implements OnInit {
-
+  BreadCrumbsTitle:any='Add center';
   centerForm! : FormGroup
   invalidDate: boolean = false;
   orgId: any;
@@ -18,7 +19,7 @@ export class AddCentersComponent implements OnInit {
     private builder:FormBuilder, 
     private api: ApiserviceService, 
     private datepipe:DatePipe,
-    private location:Location) { }
+    private location:Location,private common_service:CommonServiceService) { }
 
   startDate:any
   endDate:any
@@ -35,6 +36,7 @@ export class AddCentersComponent implements OnInit {
   
   }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.initForm()
   }

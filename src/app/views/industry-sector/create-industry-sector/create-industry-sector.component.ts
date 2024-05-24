@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {  Validators, FormBuilder,FormGroup } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-create-industry-sector',
   templateUrl: './create-industry-sector.component.html',
   styleUrls: ['./create-industry-sector.component.scss']
 })
 export class CreateIndustrySectorComponent implements OnInit {
-
+  BreadCrumbsTitle:any='Create industry';
   industryForm! : FormGroup
 
   allIndustry:any=[];
@@ -18,7 +19,7 @@ export class CreateIndustrySectorComponent implements OnInit {
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
-    private location:Location
+    private location:Location, private common_service:CommonServiceService
     ) {
       this.orgId = sessionStorage.getItem('org_id')
      }
@@ -29,7 +30,8 @@ export class CreateIndustrySectorComponent implements OnInit {
   
   }
   ngOnInit(): void {
-   
+    this.common_service.setTitle(this.BreadCrumbsTitle);
+
     this.initForm()
   }
  initForm(){

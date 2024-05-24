@@ -4,6 +4,7 @@ import { ApiserviceService } from '../../../service/apiservice.service';
 import { DatePipe } from '@angular/common';
 import { error } from 'console';
 import { environment } from 'src/environments/environment';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-create-people',
   templateUrl: './create-people.component.html',
@@ -11,7 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class CreatePeopleComponent implements OnInit {
   peopleForm : FormGroup
-
+  BreadCrumbsTitle:any='Create empolyee';
   allDepartment:any=[];
   department:any;
 
@@ -51,11 +52,13 @@ export class CreatePeopleComponent implements OnInit {
     this.startDate =this.datepipe.transform( event.target.value,'dd/MM/yyyy')
     //console.log(event.target.value, this.startDate)
   }
-  constructor(private builder:FormBuilder, private api: ApiserviceService,private datepipe:DatePipe) {
+  constructor(private builder:FormBuilder, private api: ApiserviceService,
+    private datepipe:DatePipe,private common_service:CommonServiceService) {
     this.org_id = sessionStorage.getItem('org_id')
    }
 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.getAllRoleandDepartment()
     //this.centerId = sessionStorage.getItem('center_Id')
   }

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 
 @Component({
   selector: 'app-update-organization',
@@ -11,6 +12,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./update-organization.component.scss']
 })
 export class UpdateOrganizationComponent implements OnInit {
+  BreadCrumbsTitle:any='Update organization';
   organizationForm:FormGroup;
   uploadFile: any;
   orgData = {}
@@ -27,12 +29,15 @@ export class UpdateOrganizationComponent implements OnInit {
   country: any = [];
   state: any =[];
   city: any = [];
-  constructor( private _fb:FormBuilder,private api:ApiserviceService,private route:ActivatedRoute,
-    private router:Router,private location:Location) {
+  constructor( private _fb:FormBuilder,
+    private api:ApiserviceService,private route:ActivatedRoute,
+    private router:Router,private location:Location,private common_service:CommonServiceService) {
     this.id =this.route.snapshot.paramMap.get('id')
    }
 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
+
     // this.id = sessionStorage.getItem('user_id')
     this.initform();
     this.getOrgDetails();

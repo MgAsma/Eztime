@@ -17,6 +17,7 @@ import { environment } from 'src/environments/environment';
 ]
 })
 export class DepartmentListComponent implements OnInit {
+  BreadCrumbsTitle:any='Department list';
   currentIndex:any = 1;
   public searchText : any;
   allDepartmentList=[];
@@ -50,8 +51,8 @@ export class DepartmentListComponent implements OnInit {
   
 }
   ngOnInit(): void {
-    this.org_id = sessionStorage.getItem('org_id')
-    
+    this.common_service.setTitle(this.BreadCrumbsTitle);
+     this.org_id = sessionStorage.getItem('org_id')
     this.params = {
       page_number : this.page,
       data_per_page : this.tableSize

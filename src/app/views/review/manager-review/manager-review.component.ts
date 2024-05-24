@@ -13,6 +13,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
   styleUrls: ['./manager-review.component.scss']
 })
 export class ManagerReviewComponent implements OnInit {
+  BreadCrumbsTitle:any='Approvals';
   panelOpenState = true;
   user_id: any;
   user_role_id: number;
@@ -38,6 +39,7 @@ export class ManagerReviewComponent implements OnInit {
   this.location.back();
   }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
     this.user_role_id = JSON.parse(sessionStorage.getItem('user_role_id'))
     this.orgId = sessionStorage.getItem('org_id')

@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./tag-list.component.scss']
 })
 export class TagListComponent implements OnInit {
-
+  BreadCrumbsTitle:any='Tag list';
   allTag=[];
   pagination={
     number_of_pages: 0,
@@ -53,7 +53,8 @@ export class TagListComponent implements OnInit {
  
 
   ngOnInit(): void {
-    this.orgId = sessionStorage.getItem('org_id')
+    this.common_service.setTitle(this.BreadCrumbsTitle);
+    this.orgId = sessionStorage.getItem('org_id');
     this.getTag();
     this.enabled = true;
     this.getUserControls()

@@ -13,7 +13,7 @@ import { error } from 'console';
   styleUrls: ['./leave-master.component.scss']
 })
 export class LeaveMasterComponent implements OnInit {
-
+  BreadCrumbsTitle:any='Master leave types';
   leaveMasterList=[];
   currentIndex:any;
   page = 1;
@@ -51,6 +51,7 @@ export class LeaveMasterComponent implements OnInit {
   
   }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.getLeaveType();
     this.enabled = true

@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {  Validators, FormBuilder,FormGroup } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from'@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-create-department',
   templateUrl: './create-department.component.html',
   styleUrls: ['./create-department.component.scss']
 })
 export class CreateDepartmentComponent implements OnInit {
-
+  BreadCrumbsTitle:any='Create department';
   departmentForm! : FormGroup
 
   allDepartment:any=[];
@@ -18,11 +19,13 @@ export class CreateDepartmentComponent implements OnInit {
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
-    private location:Location
-    
+    private location:Location,
+    private common_service:CommonServiceService
+
     ) { }
 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
   this.org_id = sessionStorage.getItem('org_id')
   this.initForm()
   }

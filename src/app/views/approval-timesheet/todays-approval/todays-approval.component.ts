@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesheetService } from 'src/app/service/timesheet.service';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 
 @Component({
   selector: 'app-todays-approval',
@@ -8,6 +9,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./todays-approval.component.scss']
 })
 export class TodaysApprovalComponent implements OnInit {
+  BreadCrumbsTitle:any='Todays approval';
   allDetails:any = [];
   selectedTab: string;
   changes:boolean = false;
@@ -18,7 +20,8 @@ export class TodaysApprovalComponent implements OnInit {
 
   constructor(
     private timesheetService:TimesheetService,
-    private location:Location
+    private location:Location,
+    private common_service:CommonServiceService
     ) { }
   goBack(event)
   {
@@ -27,6 +30,7 @@ export class TodaysApprovalComponent implements OnInit {
   
   }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     let date = new Date();
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
     this.orgId = sessionStorage.getItem('org_id')

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 
 @Component({
   selector: 'app-roles-access',
@@ -8,12 +9,14 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./roles-access.component.scss']
 })
 export class RolesAccessComponent implements OnInit {
+  BreadCrumbsTitle:any='Accessibilty';
   rolesAccessForm:FormGroup
   id: any;
   mainMenu:any =[]
   show = true;
   role: string;
-  constructor(private _fb:FormBuilder,private routes:ActivatedRoute) {
+  constructor(private _fb:FormBuilder,private routes:ActivatedRoute,private common_service:CommonServiceService
+  ) {
     this.id =this.routes.snapshot.paramMap.get('id')
     this.role =this.routes.snapshot.paramMap.get('role')
     sessionStorage.setItem('user_role_id',this.id)
@@ -156,6 +159,8 @@ export class RolesAccessComponent implements OnInit {
   
   
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
+
   // this.mainMenu.forEach(menu =>{
   //  let controlName =menu.controlName
   //   this.rolesAccessForm = this._fb.group({

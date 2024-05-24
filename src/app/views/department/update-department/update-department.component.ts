@@ -3,12 +3,14 @@ import {  Validators, FormBuilder,FormGroup, FormControl } from '@angular/forms'
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from'@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-update-department',
   templateUrl: './update-department.component.html',
   styleUrls: ['./update-department.component.scss']
 })
 export class UpdateDepartmentComponent implements OnInit {
+  BreadCrumbsTitle:any='Update department';
   id:any;
   page: string;
   tableSize: string;
@@ -20,7 +22,9 @@ export class UpdateDepartmentComponent implements OnInit {
      private api: ApiserviceService, 
      private route:ActivatedRoute,
      private router:Router,
-     private location:Location
+     private location:Location,
+     private common_service:CommonServiceService
+
      ) { 
     this.id =this.route.snapshot.paramMap.get('id')
     this.page = this.route.snapshot.paramMap.get('page')
@@ -42,7 +46,8 @@ export class UpdateDepartmentComponent implements OnInit {
   }
   
   ngOnInit(): void {
-   
+    this.common_service.setTitle(this.BreadCrumbsTitle);
+
     this.initForm()
     this.edit();
   }

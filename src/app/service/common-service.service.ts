@@ -11,5 +11,10 @@ export class CommonServiceService {
   constructor(private api:ApiserviceService) {
     
    }
-
+   private titleSubject = new BehaviorSubject<string>('Dashboard');
+   title$ = this.titleSubject.asObservable();
+ 
+   setTitle(title: string) {
+     this.titleSubject.next(title);
+   }
 }

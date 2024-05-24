@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./project-list.component.scss']
 })
 export class ProjectListComponent implements OnInit {
+  BreadCrumbsTitle:any='Project list';
   currentIndex:any;
   allProjectList:any=[];
   page = 1;
@@ -51,6 +52,7 @@ export class ProjectListComponent implements OnInit {
   
   }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.getProject();
     this.enabled = true;

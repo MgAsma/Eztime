@@ -3,12 +3,14 @@ import { Validators, FormBuilder,FormGroup, ValidatorFn, AbstractControl } from 
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-update-leave-details',
   templateUrl: './update-leave-details.component.html',
   styleUrls: ['./update-leave-details.component.scss']
 })
 export class UpdateLeaveDetailsComponent implements OnInit {
+  BreadCrumbsTitle:any='Update leave details';
   id:any;
   isShown: boolean = false; // hidden by default
   allCenter: any;
@@ -25,7 +27,8 @@ export class UpdateLeaveDetailsComponent implements OnInit {
   // }
   
 
-  constructor(private builder:FormBuilder, private api: ApiserviceService, private route:ActivatedRoute,
+  constructor(private builder:FormBuilder, private api: ApiserviceService,
+     private route:ActivatedRoute,private common_service:CommonServiceService,
     private router:Router, private location:Location) { 
     this.id =this.route.snapshot.paramMap.get('id')
     
@@ -39,6 +42,7 @@ export class UpdateLeaveDetailsComponent implements OnInit {
   }
  
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.initForm();
     this.edit();

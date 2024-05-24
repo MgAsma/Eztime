@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class OfficeWorkingDaysComponent implements OnInit {
   officeWorkingDaysForm:FormGroup
- 
+  BreadCrumbsTitle:any='Working days';
  
   submitted: boolean = false;
   permissions: any = [];
@@ -36,6 +36,7 @@ export class OfficeWorkingDaysComponent implements OnInit {
   
     }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.initForm()
     this.getWorkingDays()
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))

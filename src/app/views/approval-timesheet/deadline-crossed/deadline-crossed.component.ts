@@ -13,6 +13,8 @@ import { error } from 'console';
 })
 export class DeadlineCrossedComponent implements OnInit {
   @ViewChild('tabset') tabset: TabsetComponent;
+  BreadCrumbsTitle:any='Deadline crossed';
+
   monthForm: FormGroup;
   selectedTab:any;
   formattedDate: any;
@@ -36,6 +38,7 @@ export class DeadlineCrossedComponent implements OnInit {
     private location:Location) { }
 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.initForm()
     this.user_id = sessionStorage.getItem('user_id')
     this.orgId = sessionStorage.getItem('org_id')

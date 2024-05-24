@@ -13,6 +13,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./category-list.component.scss']
 })
 export class CategoryListComponent implements OnInit {
+  BreadCrumbsTitle:any='Project category';
   categoryList=[];
   currentIndex = 1;
   page = 1;
@@ -46,6 +47,7 @@ export class CategoryListComponent implements OnInit {
   
   }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.getCategory();
     // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));

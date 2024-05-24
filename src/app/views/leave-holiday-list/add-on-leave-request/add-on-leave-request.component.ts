@@ -5,6 +5,7 @@ import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-add-on-leave-request',
   templateUrl: './add-on-leave-request.component.html',
@@ -13,6 +14,7 @@ import { environment } from 'src/environments/environment';
 export class AddOnLeaveRequestComponent implements OnInit {
   @ViewChild('tabset') tabset: TabsetComponent;
   @ViewChild('tabsets') tabsets: TabsetComponent;
+  BreadCrumbsTitle:any='Add on leaves request';
   addOnLeaveForm:FormGroup;
   params:any={};
   AllCardData: any = [];
@@ -31,7 +33,8 @@ export class AddOnLeaveRequestComponent implements OnInit {
     private api:ApiserviceService,
     private datepipe:DatePipe,
     private _fb:FormBuilder,
-    private location:Location
+    private location:Location,
+    private common_service:CommonServiceService
     ) { 
     }
   
@@ -42,6 +45,7 @@ export class AddOnLeaveRequestComponent implements OnInit {
   
 }
   ngOnInit(): void { 
+    this.common_service.setTitle(this.BreadCrumbsTitle);
    this.user_id = sessionStorage.getItem('user_id')
    let c_params={
       module:"LEAVE/HOLIDAY_LIST",

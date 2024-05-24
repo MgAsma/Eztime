@@ -4,6 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators }
 import { Location } from '@angular/common';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 
 
 @Component({
@@ -12,6 +13,8 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+  BreadCrumbsTitle:any='Update profile';
+
   profileForm:FormGroup;
   uploadFile: any;
   url: any;
@@ -28,10 +31,12 @@ export class ProfileComponent implements OnInit {
     private _fb:FormBuilder,
     private api:ApiserviceService,
     private datePipe:DatePipe,
-    private location:Location
+    private location:Location,
+    private common_service : CommonServiceService
     ) { }
 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.user_id = sessionStorage.getItem('user_id')
     this.org_id = sessionStorage.getItem('org_id')
     this.initform()

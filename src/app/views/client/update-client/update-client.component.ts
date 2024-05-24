@@ -3,12 +3,14 @@ import {  Validators, FormBuilder,FormGroup} from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-update-client',
   templateUrl: './update-client.component.html',
   styleUrls: ['./update-client.component.scss']
 })
 export class UpdateClientComponent implements OnInit {
+  BreadCrumbsTitle:any='Update client';
   id:any;
   updateForm:FormGroup
 
@@ -22,7 +24,7 @@ export class UpdateClientComponent implements OnInit {
     private api: ApiserviceService, 
     private route:ActivatedRoute,
     private router:Router,
-    private location:Location
+    private location:Location,private common_service:CommonServiceService
     ) { 
     this.id =this.route.snapshot.paramMap.get('id')
     this.page = this.route.snapshot.paramMap.get('page')
@@ -50,6 +52,7 @@ export class UpdateClientComponent implements OnInit {
   }
  
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.initForm()
     this.getIndustry();

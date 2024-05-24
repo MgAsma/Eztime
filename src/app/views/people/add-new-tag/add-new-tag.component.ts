@@ -3,6 +3,7 @@ import {  Validators, FormBuilder,FormGroup } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
 import { error } from 'console';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-add-new-tag',
   templateUrl: './add-new-tag.component.html',
@@ -11,11 +12,12 @@ import { error } from 'console';
 export class AddNewTagComponent implements OnInit {
   tagForm! : FormGroup
   orgId: any;
-
+  BreadCrumbsTitle:any='Add tag';
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
-    private location:Location) { }
+    private location:Location,
+    private common_service:CommonServiceService) { }
   goBack(event)
   {
     event.preventDefault(); // Prevent default back button behavior
@@ -24,6 +26,7 @@ export class AddNewTagComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
    this.initForm()
   }

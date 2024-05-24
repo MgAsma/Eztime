@@ -5,6 +5,7 @@ import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 
 @Component({
   selector: 'app-applied-approved-leaves',
@@ -14,7 +15,7 @@ import { TabsetComponent } from 'ngx-bootstrap/tabs';
 export class AppliedApprovedLeavesComponent implements OnInit {
   @ViewChild('tabset') tabset: TabsetComponent;
   appliedLeaveForm:FormGroup;
- 
+  BreadCrumbsTitle:any='Applied approved leaves';
   AllCardData: any = [];
   selectedTab: any = '';
   currDate:any;
@@ -37,7 +38,8 @@ export class AppliedApprovedLeavesComponent implements OnInit {
     private api:ApiserviceService,
     private datepipe:DatePipe,
     private _fb:FormBuilder,
-    private location:Location
+    private location:Location,
+    private common_service:CommonServiceService
     ) {}
   goBack(event)
   {
@@ -52,6 +54,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
   })
   }
   ngOnInit(): void { 
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.initForm();
     let params= {

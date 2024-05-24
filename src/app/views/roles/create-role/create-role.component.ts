@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {  Validators, FormBuilder,FormGroup } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-create-role',
   templateUrl: './create-role.component.html',
@@ -9,6 +10,7 @@ import { Location } from '@angular/common';
 })
 export class CreateRoleComponent implements OnInit {
   roleForm : FormGroup 
+  BreadCrumbsTitle:any='Create role';
 
   allRole:any=[];
   role:any;
@@ -17,10 +19,11 @@ export class CreateRoleComponent implements OnInit {
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
-    private location:Location
+    private location:Location,private common_service : CommonServiceService
     ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {  
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId=sessionStorage.getItem('org_id')
  this.initForm();
   }

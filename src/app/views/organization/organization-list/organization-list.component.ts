@@ -16,6 +16,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 ]
 })
 export class OrganizationListComponent implements OnInit {
+  BreadCrumbsTitle:any='Organization list';
   term:any;
   directionValue:any='desc'
   sortValue:any='org_name'
@@ -40,6 +41,7 @@ currentIndex: any;
   
     }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.user_id = sessionStorage.getItem('user_id')
     this.org_id = sessionStorage.getItem('org_id')
     this.params = {

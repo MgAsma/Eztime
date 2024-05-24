@@ -3,12 +3,14 @@ import {  Validators, FormBuilder,FormGroup, FormArray } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-update-task-category',
   templateUrl: './update-task-category.component.html',
   styleUrls: ['./update-task-category.component.scss']
 })
 export class UpdateTaskCategoryComponent implements OnInit {
+  BreadCrumbsTitle:any='Update category';
   id:any;
   uploadFile:any;
   url:any = [];
@@ -33,7 +35,8 @@ export class UpdateTaskCategoryComponent implements OnInit {
     private api: ApiserviceService,
     private route:ActivatedRoute,
     private router:Router,
-    private location:Location
+    private location:Location,
+    private common_service:CommonServiceService
     ) { 
     this.id =this.route.snapshot.paramMap.get('id')
     this.page = this.route.snapshot.paramMap.get('page')
@@ -56,6 +59,7 @@ export class UpdateTaskCategoryComponent implements OnInit {
    
   }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.initForm();
     this.edit()

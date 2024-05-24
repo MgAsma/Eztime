@@ -9,6 +9,7 @@ import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-calender',
   templateUrl: './calender.component.html',
@@ -20,13 +21,16 @@ export class CalenderComponent implements OnInit {
   calendarOptions:CalendarOptions = {};
   user_id: string;
   orgId: any;
+  BreadCrumbsTitle:any='Timesheet calendar';
  constructor(
   private changeDetector: ChangeDetectorRef,
   private api:ApiserviceService,
-  private location:Location) {
+  private location:Location,
+  private common_service:CommonServiceService) {
 }
 initEvent: EventInput[] = []
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.user_id = sessionStorage.getItem('user_id')
     this.orgId = sessionStorage.getItem('org_id')
     this.getAllTimeSheet()

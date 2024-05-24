@@ -4,6 +4,7 @@ import { ApiserviceService } from '../../../service/apiservice.service';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 
 @Component({
   selector: 'app-create-timesheet',
@@ -12,6 +13,7 @@ import { Location } from '@angular/common';
 })
 export class CreateTimesheetComponent implements OnInit {
   @ViewChild('myModal') public myModal;
+  BreadCrumbsTitle:any='Create timesheet';
 
   timeSheetForm! : FormGroup
   task1:any;
@@ -47,11 +49,12 @@ export class CreateTimesheetComponent implements OnInit {
     private builder:FormBuilder, 
     private api: ApiserviceService,
     private datepipe:DatePipe,
-    private location:Location) {
+    private location:Location,private common_service:CommonServiceService) {
       this.user_role_name = sessionStorage.getItem('user_role_name')
      }
 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id') 
     this.userId = JSON.parse(sessionStorage.getItem('user_id'))
     this.manager_id = JSON.parse(sessionStorage.getItem('manager_id'))

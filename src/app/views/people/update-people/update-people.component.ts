@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-update-people',
   templateUrl: './update-people.component.html',
@@ -12,7 +13,7 @@ import { Location } from '@angular/common';
 })
 export class UpdatePeopleComponent implements OnInit {
   id:any;
-
+  BreadCrumbsTitle:any='Update empolyee';
   mediaUrl = environment.media_url;
   allDepartment:any=[];
   department:any;
@@ -69,7 +70,8 @@ export class UpdatePeopleComponent implements OnInit {
     private route:ActivatedRoute, 
     private router:Router,
     private datepipe:DatePipe,
-    private location:Location) { 
+    private location:Location,
+    private common_service:CommonServiceService) { 
     this.id =this.route.snapshot.paramMap.get('id')
     this.page = this.route.snapshot.paramMap.get('page')
     this.tableSize = this.route.snapshot.paramMap.get('tableSize')
@@ -112,6 +114,7 @@ export class UpdatePeopleComponent implements OnInit {
   }
   
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.initForm();
     this.getRole();
     this.getDepartment();

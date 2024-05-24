@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors }
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 
 @Component({
   selector: 'app-create-organization',
@@ -10,6 +11,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./create-organization.component.scss']
 })
 export class CreateOrganizationComponent implements OnInit {
+  BreadCrumbsTitle:any='Create organization';
   organizationForm:FormGroup;
   uploadFile: any;
   url: any;
@@ -24,9 +26,10 @@ export class CreateOrganizationComponent implements OnInit {
   state: any = [];
   city: any = [];
   country: any = [];
-  constructor( private _fb:FormBuilder,private api:ApiserviceService,private location:Location) { }
+  constructor( private _fb:FormBuilder,private api:ApiserviceService,private location:Location,private common_service:CommonServiceService) { }
 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.id = sessionStorage.getItem('user_id')
     this.initform();
     this.getCountry()

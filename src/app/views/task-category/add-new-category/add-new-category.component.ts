@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder,FormGroup, FormArray, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-add-new-category',
   templateUrl: './add-new-category.component.html',
   styleUrls: ['./add-new-category.component.scss']
 })
 export class AddNewCategoryComponent implements OnInit {
+  BreadCrumbsTitle:any='Create category';
   taskCategoryForm! : FormGroup 
 
   allTaskCategory:any=[];
@@ -23,7 +25,8 @@ export class AddNewCategoryComponent implements OnInit {
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
-    private location:Location
+    private location:Location,
+    private common_service:CommonServiceService
     ) { }
 
   initForm(){
@@ -59,6 +62,7 @@ export class AddNewCategoryComponent implements OnInit {
   this.location.back();
   }
   ngOnInit(): void { 
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.initForm();
   }

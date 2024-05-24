@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./prefix-suffix-list.component.scss']
 })
 export class PrefixSuffixListComponent implements OnInit {
-
+  BreadCrumbsTitle:any='Prefix/suffix list';
   allPrefixSuffix=[];
   currentIndex = 1;
   page = 1;
@@ -52,7 +52,8 @@ export class PrefixSuffixListComponent implements OnInit {
      this.location.back();
      }
     ngOnInit(): void {
-    this.orgId = sessionStorage.getItem('org_id')
+    this.orgId = sessionStorage.getItem('org_id');
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.allPrefixSuffix =[]
     this.params = {
       page_number:this.page,

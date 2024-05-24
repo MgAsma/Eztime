@@ -9,6 +9,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
   styleUrls: ['./leave-details.component.scss']
 })
 export class LeaveDetailsComponent implements OnInit {
+  BreadCrumbsTitle:any='Add master leave details';
   isShown: boolean = false; // hidden by default
   allCenter: any;
   params = {
@@ -40,6 +41,7 @@ export class LeaveDetailsComponent implements OnInit {
   
   } 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.initForm()
     this.getCenter()

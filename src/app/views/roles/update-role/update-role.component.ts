@@ -3,12 +3,14 @@ import {  Validators, FormBuilder,FormGroup, FormControl } from '@angular/forms'
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-update-role',
   templateUrl:'./update-role.component.html',
   styleUrls: ['./update-role.component.scss']
 })
 export class UpdateRoleComponent implements OnInit {
+  BreadCrumbsTitle:any='Update role';
   id:any;
   updateForm: FormGroup;
   page: string;
@@ -19,7 +21,8 @@ export class UpdateRoleComponent implements OnInit {
     private api: ApiserviceService, 
     private route:ActivatedRoute,
     private router:Router,
-    private location:Location) { 
+    private location:Location,private common_service : CommonServiceService
+  ) { 
     this.id =this.route.snapshot.paramMap.get('id')
     this.page = this.route.snapshot.paramMap.get('page')
     this.tableSize = this.route.snapshot.paramMap.get('tableSize')
@@ -44,6 +47,7 @@ export class UpdateRoleComponent implements OnInit {
   
   }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.org_id = sessionStorage.getItem('org_id')
    this.edit();
    this.initForm();

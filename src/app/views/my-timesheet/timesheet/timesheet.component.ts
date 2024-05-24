@@ -6,6 +6,7 @@ import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { TimesheetService } from 'src/app/service/timesheet.service';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 
 @Component({
   selector: 'app-timesheet',
@@ -13,6 +14,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./timesheet.component.scss']
 })
 export class TimesheetComponent implements OnInit {
+  BreadCrumbsTitle:any='My timesheets ';
   timeSheetForm:FormGroup
   allDetails: any = [];
   params: any = {};
@@ -35,7 +37,8 @@ export class TimesheetComponent implements OnInit {
     private _fb:FormBuilder,
     private api:ApiserviceService,
     private datepipe:DatePipe,
-    private location:Location) { }
+    private location:Location,
+    private common_service:CommonServiceService) { }
   goBack(event)
   {
     event.preventDefault(); // Prevent default back button behavior
@@ -46,6 +49,7 @@ export class TimesheetComponent implements OnInit {
     return this.timeSheetForm.controls;
   }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     let params={
       module:"TIMESHEET",

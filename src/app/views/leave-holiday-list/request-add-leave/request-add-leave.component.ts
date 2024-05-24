@@ -9,6 +9,7 @@ import * as dayjs from 'dayjs';
 import * as duration from 'dayjs/plugin/duration';
 import * as isBetween from 'dayjs/plugin/isBetween';
 import * as customParseFormat from 'dayjs/plugin/customParseFormat';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 dayjs.extend(duration);
 dayjs.extend(isBetween);
 dayjs.extend(customParseFormat);
@@ -20,7 +21,7 @@ window['dayjs'] = dayjs;
 })
 export class RequestAddLeaveComponent implements OnInit {
   leaveForm : FormGroup
-
+  BreadCrumbsTitle:any='Leave add on application';
   allLeave:any=[];
   leave:any;
   leaveType: any = [];
@@ -39,9 +40,11 @@ export class RequestAddLeaveComponent implements OnInit {
     private builder:FormBuilder, 
     private api: ApiserviceService,
     private datepipe:DatePipe,
-    private location:Location) { }
+    private location:Location,
+    private common_service:CommonServiceService) { }
 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.getLeaveType()
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))

@@ -5,12 +5,14 @@ import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
 import { error } from 'console';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-create-new-project',
   templateUrl: './create-new-project.component.html',
   styleUrls: ['./create-new-project.component.scss']
 })
 export class CreateNewProjectComponent implements OnInit {
+  BreadCrumbsTitle:any='Create project';
   isShown: boolean = false ; // hidden by default
   taskCategories: any = [];
   subTaskCategories: any = [];
@@ -68,7 +70,8 @@ export class CreateNewProjectComponent implements OnInit {
   constructor(private builder:FormBuilder, 
     private api: ApiserviceService,
     private datepipe:DatePipe,
-    private location:Location
+    private location:Location,
+    private common_service:CommonServiceService
     ) { }
   
 
@@ -85,6 +88,7 @@ export class CreateNewProjectComponent implements OnInit {
     }
     
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.getClient();
     this.getManager();

@@ -3,12 +3,14 @@ import {  Validators, FormBuilder, FormGroup} from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-update-prefix-suffix',
   templateUrl: './update-prefix-suffix.component.html',
   styleUrls: ['./update-prefix-suffix.component.scss']
 })
 export class UpdatePrefixSuffixComponent implements OnInit {
+  BreadCrumbsTitle:any='Update prefix/suffix';
   id:any;
   page: string;
   tableSize: string;
@@ -20,7 +22,7 @@ export class UpdatePrefixSuffixComponent implements OnInit {
     private api: ApiserviceService, 
     private route:ActivatedRoute, 
     private router:Router,
-    private location:Location) { 
+    private location:Location,private common_service:CommonServiceService) { 
     this.id =this.route.snapshot.paramMap.get('id')
     this.page = this.route.snapshot.paramMap.get('page')
     this.tableSize = this.route.snapshot.paramMap.get('tableSize')
@@ -39,6 +41,7 @@ export class UpdatePrefixSuffixComponent implements OnInit {
   this.location.back();
   }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.initForm()
     this.edit();
   }

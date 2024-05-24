@@ -14,6 +14,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
   styleUrls: ['./role-list.component.scss']
 })
 export class RoleListComponent implements OnInit {
+  BreadCrumbsTitle:any='Role list';
   allRoleList=[];
   currentIndex:any = 1;
   page = 1;
@@ -55,6 +56,7 @@ export class RoleListComponent implements OnInit {
   
     }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.org_id = sessionStorage.getItem('org_id')
     this.getRole(`page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`)
     this.enabled = true

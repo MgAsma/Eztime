@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./people-list.component.scss']
 })
 export class PeopleListComponent implements OnInit {
+  BreadCrumbsTitle:any='Empolyees list';
   currentIndex = 1;
   allPeople=[];
   page = 1;
@@ -52,6 +53,7 @@ export class PeopleListComponent implements OnInit {
       this.location.back();
      }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.org_id = sessionStorage.getItem('org_id')
     this.getPeople();
     this.enabled = true;

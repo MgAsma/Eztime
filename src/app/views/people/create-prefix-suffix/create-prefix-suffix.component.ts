@@ -2,22 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import {  Validators, FormBuilder,FormGroup } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-create-prefix-suffix',
   templateUrl: './create-prefix-suffix.component.html',
   styleUrls: ['./create-prefix-suffix.component.scss']
 })
 export class CreatePrefixSuffixComponent implements OnInit {
-
+  BreadCrumbsTitle:any='Add prefix/suffix';
   prefixSuffixForm! : FormGroup
   orgId: string;
 
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
-    private location:Location) { }
+    private location:Location,
+    private common_service:CommonServiceService) { }
 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
    this.initForm()
    

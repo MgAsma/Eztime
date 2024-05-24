@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Location } from '@angular/common';
 import { error } from 'console';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-update-centre',
   templateUrl: './update-centre.component.html',
@@ -12,6 +13,7 @@ import { error } from 'console';
 })
 export class UpdateCentreComponent implements OnInit {
   id:any;
+  BreadCrumbsTitle:any='Update centers';
   startDate:any
   endDate:any
   page: string;
@@ -24,7 +26,8 @@ export class UpdateCentreComponent implements OnInit {
     private route:ActivatedRoute, 
     private datepipe:DatePipe,
     private router:Router,
-    private location:Location
+    private location:Location,
+    private common_service:CommonServiceService
     ) { 
     this.id =this.route.snapshot.paramMap.get('id')
     this.page = this.route.snapshot.paramMap.get('page')
@@ -51,6 +54,7 @@ export class UpdateCentreComponent implements OnInit {
       center_status:['',[Validators.required]]
   })
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.edit();
   }

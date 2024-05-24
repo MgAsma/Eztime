@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./industry-sector-list.component.scss']
 })
 export class IndustrySectorListComponent implements OnInit {
+  BreadCrumbsTitle:any='Industry/sector list';
 
   allIndustryList=[];
   currentIndex = 1;
@@ -47,6 +48,8 @@ export class IndustrySectorListComponent implements OnInit {
   
   }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
+
     this.orgId = sessionStorage.getItem('org_id')
     this.getIndustry();
     this.enabled = true;

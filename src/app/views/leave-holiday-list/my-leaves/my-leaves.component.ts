@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 
 @Component({
   selector: 'app-my-leaves',
@@ -9,6 +10,8 @@ import { Location } from '@angular/common';
   styleUrls: ['./my-leaves.component.scss']
 })
 export class MyLeavesComponent implements OnInit {
+  BreadCrumbsTitle:any='Leave details';
+
   leaveBalence: any = [];
   leaveDetails: any = [];
   holidayList: Object;
@@ -16,13 +19,15 @@ export class MyLeavesComponent implements OnInit {
 
   constructor(
     private api:ApiserviceService,
-    private location:Location) { }
+    private location:Location,
+    private common_service:CommonServiceService) { }
   goBack(event){
   event.preventDefault(); // Prevent default back button behavior
   this.location.back();
   
   }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.getAllleaveData();
     this.getappliedLeave()

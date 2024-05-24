@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 })
 export class MonthTimesheetComponent implements OnInit {
   monthForm:FormGroup;
+  BreadCrumbsTitle:any='Month timesheets';
   page: any =1;
   selectedTab:any = 'YET_TO_APPROVED';
   allDetails: any = [];
@@ -49,6 +50,7 @@ export class MonthTimesheetComponent implements OnInit {
   
     }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.initForm()
     this.user_id = sessionStorage.getItem('user_id')
     this.orgId = sessionStorage.getItem('org_id')

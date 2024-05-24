@@ -5,12 +5,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-update-project',
   templateUrl: './update-project.component.html',
   styleUrls: ['./update-project.component.scss']
 })
 export class UpdateProjectComponent implements OnInit {
+  BreadCrumbsTitle:any='Update project';
   id:any;
   isShown: boolean = false ; // hidden by default
   peopleId: any =[];
@@ -64,7 +66,8 @@ export class UpdateProjectComponent implements OnInit {
     private route:ActivatedRoute,
     private datepipe:DatePipe,
     private router:Router,
-    private location:Location
+    private location:Location,
+    private common_service:CommonServiceService
     ) { 
     this.id =this.route.snapshot.paramMap.get('id')
     this.page = this.route.snapshot.paramMap.get('page')
@@ -109,6 +112,7 @@ export class UpdateProjectComponent implements OnInit {
   }
   
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.org_id = sessionStorage.getItem('org_id')
     this.subTaskCategories = []
      this.subTaskSetting ={

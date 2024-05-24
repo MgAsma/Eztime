@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./centers-list.component.scss']
 })
 export class CentersListComponent implements OnInit {
+  BreadCrumbsTitle:any='Center list';
   allCenterList=[];
   result:any = [];
   currentIndex = 1;
@@ -47,6 +48,7 @@ export class CentersListComponent implements OnInit {
   this.location.back();
 }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.getCenter();
     this.enabled = true;
     this.getUserControls()

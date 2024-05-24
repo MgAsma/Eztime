@@ -18,7 +18,7 @@ import { error } from 'console';
 ]
 })
 export class ClientListComponent implements OnInit {
-
+  BreadCrumbsTitle:any='Client list';
   allClientList=[];
   currentIndex = 1;
   page = 1;
@@ -56,6 +56,7 @@ export class ClientListComponent implements OnInit {
   
   }
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.getClient();
     this.enabled = true

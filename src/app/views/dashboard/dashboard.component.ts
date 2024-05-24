@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
   styleUrls:['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-
+  BreadCrumbsTitle:any='Dashboard';
   role:any;
   department:any;
   industry:any;
@@ -41,6 +41,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
      const isloggedIn = sessionStorage.getItem('token');
       if(isloggedIn){
         this.org_id = sessionStorage.getItem('org_id')

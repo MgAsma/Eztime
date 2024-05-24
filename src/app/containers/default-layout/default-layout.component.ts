@@ -7,6 +7,7 @@ import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.co
 import { NavigationEnd, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { filter } from 'rxjs';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 
 @Component({
   selector: 'app-default-layout',
@@ -56,10 +57,10 @@ export class DefaultLayoutComponent {
 
   constructor(private ngxService: NgxUiLoaderService,
     private api: ApiserviceService, private modalService: NgbModal,
-    private router: Router) {
-    this.config = sessionStorage.getItem('user_role_name');
-    this.currentUrl = this.router.url;
-  }
+    private router: Router,private common_service:CommonServiceService) {
+      this.config = sessionStorage.getItem('user_role_name');
+    
+}
   ngOnInit() {
     this.user_role_Name = sessionStorage.getItem('user_role_name');
     let role_id = sessionStorage.getItem('user_role_id');
@@ -79,16 +80,10 @@ export class DefaultLayoutComponent {
     // //console.log(this.access,"ACCESS")
 
     //console.log(this.navItems,"ADMIN NAVITEMS-------")
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      this.currentUrl = event.urlAfterRedirects;
-      if (this.config === 'SUPER ADMIN') {
-        this.currentUrlName = this.findCurrentRouteName(this.navItems, this.currentUrl);
-      } else {
-        this.currentUrlName = this.findCurrentRouteName(this.sidebarNavItems, this.currentUrl);
-      }
+    this.common_service.title$.subscribe(title => {
+      this.currentUrlName = title;
     });
+
   }
 
   getUserControls(role_id) {
@@ -281,11 +276,6 @@ export class DefaultLayoutComponent {
             url: '/dashboards',
             icon: 'bi bi-speedometer',
           });
-          if (this.config === 'SUPER ADMIN') {
-            this.currentUrlName = this.findCurrentRouteName(this.navItems, this.currentUrl);
-          } else {
-            this.currentUrlName = this.findCurrentRouteName(this.sidebarNavItems, this.currentUrl);
-          }
         }
       }
     })
@@ -333,27 +323,6 @@ export class DefaultLayoutComponent {
       case 'Change Password':
         return 'py-1'
     }
-  }
-
-
-
-  findCurrentRouteName(menuItems: any, currentUrl: string): string {
-    if('/profile'===currentUrl){
-      return 'Update Profile';
-    }else{
-      for (const menuItem of menuItems) {
-        if (menuItem.url === currentUrl || currentUrl.includes(menuItem.name.toLowerCase())) {
-          return menuItem.name;
-        } else if (menuItem.children) {
-          const foundName = this.findCurrentRouteName(menuItem.children, currentUrl);
-          if (foundName) {
-            return foundName;
-          }
-        }
-         
-      }
-    }
-    return '';
   }
   navigateTo(headNavdata:any){
 if(headNavdata.page==='Logout'){
