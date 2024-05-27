@@ -22,6 +22,11 @@ authToken:any;
     'https://eztime.thestorywallcafe.com/api/forgot-password-send-otp',
     'https://eztime.thestorywallcafe.com/api/otp-verify-forgot-pass',
     'https://eztime.thestorywallcafe.com/api/password-reset',
+    'https://eztimedev.thestorywallcafe.com/api/login',
+    'https://eztimedev.thestorywallcafe.com/api/register',
+    'https://eztimedev.thestorywallcafe.com/api/forgot-password-send-otp',
+    'https://eztimedev.thestorywallcafe.com/api/otp-verify-forgot-pass',
+    'https://eztimedev.thestorywallcafe.com/api/password-reset',
     ];
     if (skipUrl.indexOf(request.url) === -1) {
       this.authToken=sessionStorage.getItem('token');

@@ -78,14 +78,11 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
   clearStorage(type){
     if(type['page'] === 'Logout'){
       this.openDialogue()
-     
     }
   }
   openDialogue() {
-   
       const modelRef =   this.modalService.open(GenericDeleteComponent, {
-        size: <any>'sm'
-    ,
+        size: <any>'sm',
         backdrop: true,
         centered:true
       });
@@ -95,7 +92,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
         if(resp == "ok"){
           this.api.showSuccess('You have been logged out!')
           this.router.navigate(['/login'])
-          sessionStorage.clear()
+          sessionStorage.clear();
           location.reload();
          modelRef.close();
         }

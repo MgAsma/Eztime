@@ -290,7 +290,6 @@ export class DefaultLayoutComponent {
   clearStorage(type) {
     if (type['page'] === 'Logout') {
       this.openDialogue()
-
     }
   }
   openDialogue() {

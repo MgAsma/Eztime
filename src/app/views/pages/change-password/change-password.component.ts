@@ -15,6 +15,9 @@ export class ChangePasswordComponent implements OnInit {
   eyeIcon = 'bi bi-eye-slash'
   passwordType = "password";
   eyeState: boolean = false;
+  eyeIcon2 = 'bi bi-eye-slash'
+  passwordType2 = "password";
+  eyeState2: boolean = false;
   constructor(
     private builder:FormBuilder, 
     private api:ApiserviceService, 
@@ -86,6 +89,18 @@ export class ChangePasswordComponent implements OnInit {
     else{
       this.eyeIcon = 'bi bi-eye-slash'
       this.passwordType = 'password'
+    }
+    
+  }
+  showPasswordtwo(){
+    this.eyeState2 = !this.eyeState2 
+    if(this.eyeState2 == true){
+      this.eyeIcon2 = 'bi bi-eye'
+      this.passwordType2 = 'text'
+    }
+    else{
+      this.eyeIcon2 = 'bi bi-eye-slash'
+      this.passwordType2 = 'password'
     }
     
   }

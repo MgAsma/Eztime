@@ -80,7 +80,7 @@
     <ul cDropdownMenu class="py-2 pr-5 w-auto c-dropClass">
       <li></li>
       <li *ngFor="let headNav of headerNav"  style="margin:10px auto">
-        <div [ngClass]="getHeaderNavStyles(headNav)" (click)="clearStorage(headNav)">
+        <div [ngClass]="getHeaderNavStyles(headNav)">
           <a (click)="navigateTo(headNav)" cDropdownItem>
             <i class="{{headNav.icons}}" id="nav-icon"></i>
             <span class="title" >&nbsp;&nbsp;{{headNav.page}} </span>
