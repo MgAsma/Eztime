@@ -11,7 +11,9 @@ import { TimesheetService } from 'src/app/service/timesheet.service';
   styleUrls: ['./month-time-sheet.component.scss']
 })
 export class MonthTimeSheetComponent implements OnInit {
-  @Output() buttonClick = new EventEmitter<string>();
+  @Output() buttonClick = new EventEmitter<any>();
+  @Output() filter:any = new EventEmitter<any>();
+
   slno:any;
   date:any;
   people:any;
@@ -22,7 +24,7 @@ export class MonthTimeSheetComponent implements OnInit {
   rejectedby:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
   
   timesheetDataAll:any = []
   params: { status: string; user_id: any; page_number: any; data_per_page: number; timesheets_to_date: string; timesheets_from_date: string; };
@@ -30,7 +32,7 @@ export class MonthTimeSheetComponent implements OnInit {
   page:any = 1;
   timesheetCount = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   count = 0;
   user_id: any;
   accessConfig: any = [];
@@ -94,9 +96,23 @@ export class MonthTimeSheetComponent implements OnInit {
    
     }
   
+
+    filterSearch(){
+      let tableData ={
+        search_key:this.term,
+        page:this.page,
+        tableSize:this.tableSize
+       }
+      this.filter.emit(tableData);
+    }
   onTableDataChange(event:any){
     this.page = event;
-    this.buttonClick.emit(event)
+    let tableData ={
+      search_key:this.term,
+      page:this.page,
+      tableSize:this.tableSize
+     }
+    this.buttonClick.emit(tableData)
   }  
   onTableSizeChange(event:any): void {
     this.tableSize = Number(event.target.value);
@@ -105,7 +121,12 @@ export class MonthTimeSheetComponent implements OnInit {
     if(calculatedPageNo < this.page){
       this.page = 1
     }
-    this.buttonClick.emit(this.page)
+    let tableData ={
+      search_key:this.term,
+      page:this.page,
+      tableSize:this.tableSize
+     }
+    this.buttonClick.emit(tableData)
   } 
   open(content,status) {
     const selectedStatus = status === 'APPROVED' ? 'approve' : 'decline'

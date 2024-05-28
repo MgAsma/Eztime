@@ -13,8 +13,10 @@ import { TimesheetService } from 'src/app/service/timesheet.service';
   styleUrls: ['./approved.component.scss']
 })
 export class ApprovedComponent implements OnInit {
-  @Output() buttonClick:any = new EventEmitter<string>();
-  term:any;
+  @Output() buttonClick:any = new EventEmitter<any>();
+  @Output() filter:any = new EventEmitter<any>();
+
+  term:any='';
   slno:any;
   date:any;
   people:any;
@@ -29,7 +31,7 @@ export class ApprovedComponent implements OnInit {
   page:any = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   entryPoint: any;
   user_id: string;
   accessConfig: any;
@@ -108,7 +110,8 @@ export class ApprovedComponent implements OnInit {
       if(data){
         let tableData ={
           page:this.page,
-          tableSize:this.tableSize
+          tableSize:this.tableSize,
+          search_key:this.term
          }
          this.buttonClick.emit(tableData);
          
@@ -118,11 +121,22 @@ export class ApprovedComponent implements OnInit {
       this.api.showError(error.error.error.message)
     }))
   }
+  filterSearch(){
+    let tableData ={
+      search_key:this.term,
+      page:this.page,
+      tableSize:this.tableSize
+     }
+    this.filter.emit(tableData);
+  }
+
   onTableDataChange(event:any){
     this.page = event;
     let tableData ={
       page:this.page,
-      tableSize:this.tableSize
+      tableSize:this.tableSize,
+      search_key:this.term
+      
      }
     this.buttonClick.emit(tableData);
   }  
@@ -137,7 +151,8 @@ export class ApprovedComponent implements OnInit {
     }
     let tableData ={
       page:this.page,
-      tableSize:this.tableSize
+      tableSize:this.tableSize,
+      search_key:this.term
      }
     this.buttonClick.emit(tableData);
   } 
@@ -210,11 +225,15 @@ export class ApprovedComponent implements OnInit {
       this.api.showSuccess(`${status} updated successfully`)
       let tableData ={
         page:this.page,
-        tableSize:this.tableSize
+        tableSize:this.tableSize,
+        search_key:this.term
        }
       this.buttonClick.emit(tableData);
     }
     
   })
   }
+  getContinuousIndex(index: number):number {
+  return (this.page-1)*this.tableSize+ index + 1;
+}
 }

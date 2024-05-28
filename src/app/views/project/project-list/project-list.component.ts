@@ -18,9 +18,9 @@ export class ProjectListComponent implements OnInit {
   page = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
 
-  term:any;
+  term:any='';
   slno:any;
   project:any;
   client:any;
@@ -76,7 +76,7 @@ export class ProjectListComponent implements OnInit {
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
         //console.log(this.common_service.permission,"PERMISSION")
@@ -111,7 +111,8 @@ export class ProjectListComponent implements OnInit {
     let params = {
       page_number:this.page,
       data_per_page:this.tableSize,
-      organization_id:this.orgId
+      organization_id:this.orgId,
+      search_key:this.term
   }
 
     this.api.getProjectDetailsPage(params).subscribe((data:any)=>{
@@ -200,5 +201,9 @@ export class ProjectListComponent implements OnInit {
       this.directionValue= direction
       this.sortValue= value
     }
+  }
+
+  getContinuousIndex(index: number):number {
+    return (this.page-1)*this.tableSize+ index + 1;
   }
 }

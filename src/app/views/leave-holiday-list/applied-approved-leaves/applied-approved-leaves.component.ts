@@ -65,11 +65,12 @@ export class AppliedApprovedLeavesComponent implements OnInit {
       data_per_page:10,
       user_id:this.user_id,
       pagination:"TRUE",
+      search_key:'',
       approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
     }
     this.getByStatus(params)
   }
-  buttonClick(event){
+  searchFiter(event){
     if(event){
       if(this.changes){
         let params= {
@@ -78,6 +79,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
           method:"VIEW",
           page_number:event.page,
           data_per_page:event.tableSize,
+          search_key:event.search_key,
           user_id:this.user_id,
           pagination:"TRUE",
           approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
@@ -93,6 +95,42 @@ export class AppliedApprovedLeavesComponent implements OnInit {
           method:"VIEW",
           page_number:event.page,
           data_per_page:event.tableSize,
+          search_key:event.search_key,
+          user_id:this.user_id,
+          pagination:"TRUE",
+          approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
+        }
+        this.getByStatus(params)
+      }  
+    }
+    
+  }
+  buttonClick(event){
+    if(event){
+      if(this.changes){
+        let params= {
+          module:"LEAVE/HOLIDAY_LIST",
+          menu:"APPLIED/APPROVIED_LEAVES",
+          method:"VIEW",
+          page_number:event.page,
+          data_per_page:event.tableSize,
+          search_key:event.search_key,
+          user_id:this.user_id,
+          pagination:"TRUE",
+          approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
+          leaveApplication_from_date:this.fromDate,
+          leaveApplication_to_date:this.toDate
+        }
+       this.getAppliedLeaves(params);
+      }
+      else{
+        let params= {
+          module:"LEAVE/HOLIDAY_LIST",
+          menu:"APPLIED/APPROVIED_LEAVES",
+          method:"VIEW",
+          page_number:event.page,
+          data_per_page:event.tableSize,
+          search_key:event.search_key,
           user_id:this.user_id,
           pagination:"TRUE",
           approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
@@ -105,7 +143,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
   return  this.appliedLeaveForm.controls 
   }
   getByStatus(paginate){
-    this.api.getData(`${environment.live_url}/${environment.leave_application}?module=${paginate.module}&menu=${paginate.menu}&method=${paginate.method}&user_id=${paginate.user_id}&page_number=${paginate.page_number}&data_per_page=${paginate.data_per_page}&pagination=${paginate.pagination}&organization_id=${this.orgId}&approved_state=${paginate.approved_state}`).subscribe(res=>{
+    this.api.getData(`${environment.live_url}/${environment.leave_application}?module=${paginate.module}&menu=${paginate.menu}&method=${paginate.method}&user_id=${paginate.user_id}&search_key=${paginate.search_key}&page_number=${paginate.page_number}&data_per_page=${paginate.data_per_page}&pagination=${paginate.pagination}&organization_id=${this.orgId}&approved_state=${paginate.approved_state}`).subscribe(res=>{
       if(res){ 
         this.AllListData = res['result'].data
         this.AllCardData = res['result'].leave_dashboard
@@ -124,7 +162,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
   })
   }
   getAppliedLeaves(paginate){
-    this.api.getData(`${environment.live_url}/${environment.leave_application}?module=${paginate.module}&menu=${paginate.menu}&method=${paginate.method}&user_id=${paginate.user_id}&page_number=${paginate.page_number}&data_per_page=${paginate.data_per_page}&pagination=${paginate.pagination}&organization_id=${this.orgId}&approved_state=${paginate.approved_state}&leaveApplication_from_date=${paginate.leaveApplication_from_date}&leaveApplication_to_date=${paginate.leaveApplication_to_date}`).subscribe(res=>{
+    this.api.getData(`${environment.live_url}/${environment.leave_application}?module=${paginate.module}&menu=${paginate.menu}&method=${paginate.method}&user_id=${paginate.user_id}&search_key=${paginate.search_key}&page_number=${paginate.page_number}&data_per_page=${paginate.data_per_page}&pagination=${paginate.pagination}&organization_id=${this.orgId}&approved_state=${paginate.approved_state}&leaveApplication_from_date=${paginate.leaveApplication_from_date}&leaveApplication_to_date=${paginate.leaveApplication_to_date}`).subscribe(res=>{
         if(res){ 
         this.AllCardData = res['result'].leave_dashboard
         this.AllListData = res['result'].data
@@ -164,6 +202,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
           page_number:1,
           data_per_page:10,
           user_id:this.user_id,
+          search_key:'',
           pagination:"TRUE",
           approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
           leaveApplication_from_date:this.fromDate,
@@ -220,6 +259,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
           method:"VIEW",
           page_number:1,
           data_per_page:10,
+          search_key:'',
           user_id:this.user_id,
           pagination:"TRUE",
           approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
@@ -240,6 +280,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
         method:"VIEW",
         page_number:1,
         data_per_page:10,
+        search_key:'',
         user_id:this.user_id,
         pagination:"TRUE",
         approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',

@@ -12,8 +12,8 @@ import { TimesheetService } from 'src/app/service/timesheet.service';
   styleUrls: ['./yet-to-approve.component.scss']
 })
 export class YetToApproveComponent implements OnInit {
-  @Output() buttonClick:any = new EventEmitter<string>();
-  @Output() filter:any = new EventEmitter<string>();
+  @Output() buttonClick:any = new EventEmitter<any>();
+  @Output() filter:any = new EventEmitter<any>();
   list:any=[];
   slno:any;
   date:any;
@@ -23,10 +23,10 @@ export class YetToApproveComponent implements OnInit {
   savedon:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
   page:any=1;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   count:any = 0
   entryPoint: any;
   user_id: string;
@@ -113,7 +113,8 @@ export class YetToApproveComponent implements OnInit {
       if(data){
         let tableData ={
           page:this.page,
-          tableSize:this.tableSize
+          tableSize:this.tableSize,
+          search_key:this.term
          }
         this.buttonClick.emit(tableData);
        this.ngOnInit()
@@ -184,14 +185,16 @@ export class YetToApproveComponent implements OnInit {
   this._timesheet.updateStatus(data).subscribe(res =>{
     let tableData ={
       page:this.page,
-      tableSize:this.tableSize
+      tableSize:this.tableSize,
+      search_key:this.term
      }
     this.buttonClick.emit(tableData);
     if(res){
       this.api.showSuccess(`${status} updated successfully`)
       let tableData ={
         page:this.page,
-        tableSize:this.tableSize
+        tableSize:this.tableSize,
+        search_key:this.term
        }
       this.buttonClick.emit(tableData);
     }
@@ -202,7 +205,8 @@ onTableDataChange(event: any): void {
   this.page = event;
   let tableData ={
     page:this.page,
-    tableSize:this.tableSize
+    tableSize:this.tableSize,
+    search_key:this.term
    }
   this.buttonClick.emit(tableData);
 }
@@ -217,8 +221,12 @@ onTableSizeChange(event:any): void {
   }
   let tableData ={
     page:this.page,
-    tableSize:this.tableSize
+    tableSize:this.tableSize,
+    search_key:this.term
    }
   this.buttonClick.emit(tableData);
 } 
+getContinuousIndex(index: number):number {
+  return (this.page-1)*this.tableSize+ index + 1;
+}
 }

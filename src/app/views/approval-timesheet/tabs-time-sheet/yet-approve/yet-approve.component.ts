@@ -14,7 +14,7 @@ export class YetApproveComponent implements OnInit {
   savedon:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
   yetToApproveAll:any = [];
   constructor() { }
 

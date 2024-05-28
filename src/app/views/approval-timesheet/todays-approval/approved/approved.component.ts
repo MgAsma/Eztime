@@ -11,7 +11,8 @@ import { TimesheetService } from 'src/app/service/timesheet.service';
   styleUrls: ['./approved.component.scss']
 })
 export class ApprovedComponent implements OnInit {
-  @Output() buttonClick = new EventEmitter<string>();
+  @Output() buttonClick = new EventEmitter<any>();
+  @Output() filter:any = new EventEmitter<any>();
 
   slno:any;
   date:any;
@@ -23,11 +24,11 @@ export class ApprovedComponent implements OnInit {
   approvedby:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
   page:any = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   approvedAll:any = [];
   list:any = [];
   entryPoint: any;
@@ -123,9 +124,22 @@ export class ApprovedComponent implements OnInit {
 
  
 }
+filterSearch(){
+  let tableData ={
+    search_key:this.term,
+    page:this.page,
+    tableSize:this.tableSize
+   }
+  this.filter.emit(tableData);
+}
 onTableDataChange(event:any){
   this.page = event;
-  this.buttonClick.emit(event)
+  let tableData ={
+    search_key:this.term,
+    page:this.page,
+    tableSize:this.tableSize
+   }
+  this.buttonClick.emit(tableData)
 }  
 onTableSizeChange(event:any): void {
   this.tableSize = Number(event.target.value);
@@ -136,7 +150,12 @@ onTableSizeChange(event:any): void {
   if(calculatedPageNo < this.page){
     this.page = 1
   }
-  this.buttonClick.emit(this.page)
+  let tableData ={
+    search_key:this.term,
+    page:this.page,
+    tableSize:this.tableSize
+   }
+  this.buttonClick.emit(tableData)
 } 
 openDialogue(content,status) {
   if(content){
@@ -184,5 +203,8 @@ this._timeSheetService.updateStatus(data).subscribe(res =>{
   }
   
 })
+}
+getContinuousIndex(index: number):number {
+  return (this.page-1)*this.tableSize+ index + 1;
 }
 }

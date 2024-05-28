@@ -24,9 +24,9 @@ export class DepartmentListComponent implements OnInit {
   page = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
 
-  term:any;
+  term:any='';
   selectedId: any;
   enabled: boolean = true;
   // @Input() selectedSortValue1:Subject<any> = new Subject<any>();
@@ -52,12 +52,8 @@ export class DepartmentListComponent implements OnInit {
 }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-     this.org_id = sessionStorage.getItem('org_id')
-    this.params = {
-      page_number : this.page,
-      data_per_page : this.tableSize
-    }
-    this.getDepartment(`page_number=${this.params.page_number}&data_per_page=${this.params.data_per_page}&pagination=TRUE&org_ref_id=${this.org_id}`); 
+     this.org_id = sessionStorage.getItem('org_id');
+    this.getDepartment(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`); 
     this.enabled = true;
     this.getUserControls()
   }
@@ -92,7 +88,7 @@ export class DepartmentListComponent implements OnInit {
    
     }
     filterSearch(){
-      this.api.getData(`${environment.live_url}/${environment.org_department}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&org_ref_id=${this.org_id}`).subscribe((res:any) =>{
+      this.api.getData(`${environment.live_url}/${environment.org_department}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`).subscribe((res:any) =>{
         if(res){
           this.allDepartmentList= res.result.data;
           const noOfPages:number = res['result'].pagination.number_of_pages
@@ -143,7 +139,7 @@ export class DepartmentListComponent implements OnInit {
   }
   onTableDataChange(event:any){
     this.page = event;
-    this.getDepartment(`page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`);
+    this.getDepartment(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`);
   }  
   onTableSizeChange(event:any): void {
     this.tableSize = Number(event.target.value);
@@ -154,8 +150,7 @@ export class DepartmentListComponent implements OnInit {
     if(calculatedPageNo < this.page){
       this.page = 1
     }
-   
-    this.getDepartment(`page_number=${this.page}&data_per_page=${this.tableSize}&pagination=FALSE&org_ref_id=${this.org_id}`);
+    this.getDepartment(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`);
   } 
   arrow:boolean=false
   sort(direction:any,value:any){
@@ -192,5 +187,8 @@ export class DepartmentListComponent implements OnInit {
   
 
   
+}
+getContinuousIndex(index: number):number {
+  return (this.page-1)*this.tableSize+ index + 1;
 }
 }

@@ -22,7 +22,7 @@ export class YetApproveComponent implements OnInit {
     private modalService:NgbModal,
     public common_service:CommonServiceService ) {}
     list:any = [];
-    term:any;
+    term:any='';
     slno:any;
     fromDate:any;
     toDate:any;
@@ -36,7 +36,7 @@ export class YetApproveComponent implements OnInit {
     page:any = 1;
     count;
     tableSize = 10;
-    tableSizes = [10, 25, 50, 100];
+    tableSizes = [10,25,50,100];
     
    
     @Input() set data(value){

@@ -11,7 +11,9 @@ import { TimesheetService } from 'src/app/service/timesheet.service';
   styleUrls: ['./month-approve.component.scss']
 })
 export class MonthApproveComponent implements OnInit{
-  @Output() buttonClick = new EventEmitter<string>();
+  @Output() buttonClick = new EventEmitter<any>();
+  @Output() filter:any = new EventEmitter<any>();
+
   slno:any;
   date:any;
   people:any;
@@ -22,13 +24,13 @@ export class MonthApproveComponent implements OnInit{
   approvedby:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
   approvedAll:any = [];
   userId: any = 1;
   page:any = 1;
   approveCount = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   count = 0;
   accessConfig: any = [];
   user_id: any;
@@ -88,11 +90,23 @@ export class MonthApproveComponent implements OnInit{
   })
 
   }
-
+  filterSearch(){
+    let tableData ={
+      search_key:this.term,
+      page:this.page,
+      tableSize:this.tableSize
+     }
+    this.filter.emit(tableData);
+  }
  
   onTableDataChange(event:any){
     this.page = event;
-    this.buttonClick.emit(event)
+    let tableData ={
+      search_key:this.term,
+      page:this.page,
+      tableSize:this.tableSize
+     }
+    this.buttonClick.emit(tableData)
   }  
   onTableSizeChange(event:any): void {
     this.tableSize = Number(event.target.value);
@@ -101,7 +115,12 @@ export class MonthApproveComponent implements OnInit{
     if(calculatedPageNo < this.page){
       this.page = 1
     }
-    this.buttonClick.emit(this.page)
+    let tableData ={
+      search_key:this.term,
+      page:this.page,
+      tableSize:this.tableSize
+     }
+    this.buttonClick.emit(tableData)
   } 
   
 // open(content,status) {

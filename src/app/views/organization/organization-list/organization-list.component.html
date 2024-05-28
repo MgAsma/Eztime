@@ -32,7 +32,7 @@
         </div>
         <div class="bg">
         <div class="row">
-            <div class="col">
+            <div class="col px-0">
                
                 <table class="table table table-hover">
                     <thead>
@@ -57,7 +57,7 @@
                             totalItems: count
                           };    let i=index' >
                        
-                         <td>{{i + 1 }}</td>
+                          <td>{{getContinuousIndex(i)}}</td>
                          <td>{{item.org_name ? item.org_name :'NA' }}</td>
                          <td>{{item.org_email ? item.org_email :'NA' }}</td>
                          <td class="text-center">{{item.number_of_users_in_organization}}</td>
@@ -94,9 +94,7 @@
             </div>
         </div>
         <div class="row">
-           
-            <div class="col-sm"></div>
-            <div class="col-sm-12" >
+                       <div class="col-sm-12" >
                 <div class="d-flex justify-content-center p-nav">
                     <pagination-controls 
                       previousLabel="Prev" 

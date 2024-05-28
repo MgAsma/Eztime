@@ -18,9 +18,9 @@ export class SubCategoryListComponent implements OnInit {
   page = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
 
-  term:any;
+  term:any='';
   slno:any;
   main:any;
   color:any;

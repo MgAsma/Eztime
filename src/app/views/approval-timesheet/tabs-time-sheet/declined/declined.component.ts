@@ -16,7 +16,7 @@ export class DeclinedComponent implements OnInit {
   rejectedby:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
 
   declinedAll:any = [];
   constructor() { }

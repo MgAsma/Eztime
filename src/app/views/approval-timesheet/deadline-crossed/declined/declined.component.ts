@@ -22,7 +22,7 @@ export class DeadlineDeclinedComponent implements OnInit {
   rejectedby:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
 
   declinedAll:any = [];
   params: { status: string; user_id: any; page_number: any; data_per_page: number; timesheets_to_date: string; timesheets_from_date: string; };
@@ -30,7 +30,7 @@ export class DeadlineDeclinedComponent implements OnInit {
   page:any = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   declinedCount = 0;
   user_id: any;
   accessConfig: any = [];

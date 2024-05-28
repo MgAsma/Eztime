@@ -42,7 +42,8 @@ export class TodaysApprovalComponent implements OnInit {
       page_number:1,
       data_per_page:10,
       status:'YET_TO_APPROVED',
-      organization_id:this.orgId
+      organization_id:this.orgId,
+      search_key:'',
     }
    this.getApprovals(data)
   }
@@ -57,13 +58,29 @@ export class TodaysApprovalComponent implements OnInit {
     if(event){
       let data ={
         user_id:this.user_id,
-        page_number:event,
-        data_per_page:10,
-        status:'YET_TO_APPROVED',
-        organization_id:this.orgId
+        page_number:event.page,
+        data_per_page:event.tableSize,
+        status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
+        organization_id:this.orgId,
+        search_key:event.search_key,
       }
       this.getApprovals(data);
     }
+  }
+
+  searchFiter(event){
+    if(event){
+      let data ={
+        user_id:this.user_id,
+        page_number:event.page,
+        data_per_page:event.tableSize,
+        status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
+        organization_id:this.orgId,
+        search_key:event.search_key,
+      }
+      this.getApprovals(data);
+    }
+    
   }
   tabState(data){
     if(data.heading == 'Approved timesheet'){
@@ -87,7 +104,8 @@ export class TodaysApprovalComponent implements OnInit {
       page_number:1,
       data_per_page:10,
       status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-      organization_id:this.orgId
+      organization_id:this.orgId,
+      search_key:'',
     }
     this.getApprovals(params);
   }

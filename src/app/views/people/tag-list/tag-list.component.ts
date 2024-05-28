@@ -22,9 +22,9 @@ export class TagListComponent implements OnInit {
   page = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
 
-  term:any;
+  term:any='';
   slno:any;
   name:any;
   date:any;
@@ -90,7 +90,8 @@ export class TagListComponent implements OnInit {
       page_number:this.page,
       data_per_page:10,
       pagination:'TRUE',
-      organization_id:this.orgId
+      organization_id:this.orgId,
+      search_key:this.term
     }
     
     this.api.getTagDetailsPage(params).subscribe((data:any)=>{
@@ -104,7 +105,7 @@ export class TagListComponent implements OnInit {
     )
   }
   filterSearch(){
-    this.api.getData(`${environment.live_url}/${environment.tag}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.tag}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((data:any)=>{
       this.allTag = data.result.data;
       this.pagination = data['result'].pagination
       const noOfPages:number = data['result'].pagination.number_of_pages
@@ -142,7 +143,7 @@ export class TagListComponent implements OnInit {
     this.getTag();
   }  
   onTableSizeChange(event:any): void {
-    this.tableSize = event.target.value;
+    this.tableSize = Number(event.target.value);
     // Calculate new page number
     const calculatedPageNo = this.count / this.tableSize 
     if(calculatedPageNo < this.page){
@@ -189,4 +190,9 @@ export class TagListComponent implements OnInit {
 	
 	}
   
-}}
+}
+getContinuousIndex(index: number):number {
+  return (this.page-1)*this.tableSize+ index + 1;
+}
+
+}

@@ -16,7 +16,7 @@
 
   <div class="row p-20 my-2">
     <div class="col-md-6 col-lg-4 search-div px-0">
-      <input type="search" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Role name/Description/Status" aria-describedby="emailHelp"  autocomplete="off">
+      <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Role name/Description/Status" aria-describedby="emailHelp"  autocomplete="off">
       <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i> 
     </div>
   
@@ -32,7 +32,7 @@
   </div>
   <div class="bg">
   <div class="row">
-      <div class="col">
+      <div class="col px-0">
           <div cdkDropList >
             <table class="table table-hover">
               <thead >
@@ -52,7 +52,7 @@
                   <ng-container *ngIf="(allRoleList ) as result">
                   <tr *ngFor='let item of result|customSort:directionValue:sortValue|paginate:config;
                    let i=index' [class.active]="i == currentIndex">
-                   <td>{{i + 1}}</td>
+                   <td>{{getContinuousIndex(i)}}</td>
                   
                    <td>{{item.user_role_name}}</td>
                    <td>{{item.description}}</td>

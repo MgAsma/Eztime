@@ -10,7 +10,8 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
   styleUrls: ['./declined.component.scss']
 })
 export class DeclinedComponent implements OnInit {
-  @Output() buttonClick:any = new EventEmitter<string>();
+  @Output() buttonClick:any = new EventEmitter<any>();
+  @Output() filter:any = new EventEmitter<any>();
   list:any=[];
   slno:any;
   fromDate:any;
@@ -27,11 +28,11 @@ export class DeclinedComponent implements OnInit {
   page:any = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   AllListData: any;
   params: any;
   pagination: any;
-  term;
+  term:any='';
   entryPoint: any;
   user_id: any;
   accessConfig: any;
@@ -101,7 +102,8 @@ export class DeclinedComponent implements OnInit {
       this.api.showWarning('Declined leave deleted successfully!')
       let tableData ={
         page:this.page,
-        tableSize:this.tableSize
+        tableSize:this.tableSize,
+        search_key:this.term
        }
       this.buttonClick.emit(tableData);
     },((error:any)=>{
@@ -132,11 +134,20 @@ export class DeclinedComponent implements OnInit {
   
 
   }
+  filterSearch(){
+    let tableData ={
+      search_key:this.term,
+      page:this.page,
+      tableSize:this.tableSize
+     }
+    this.filter.emit(tableData);
+  }
   onTableDataChange(event:any){
     this.page = event;
     let tableData ={
       page:this.page,
       tableSize:this.tableSize
+      ,search_key:this.term
      }
     this.buttonClick.emit(tableData);
   }  
@@ -151,7 +162,8 @@ export class DeclinedComponent implements OnInit {
     }
     let tableData ={
       page:this.page,
-      tableSize:this.tableSize
+      tableSize:this.tableSize,
+      search_key:this.term
      }
     this.buttonClick.emit(tableData);
   }
@@ -204,7 +216,8 @@ export class DeclinedComponent implements OnInit {
     //console.log('emitt');
     let tableData ={
       page:this.page,
-      tableSize:this.tableSize
+      tableSize:this.tableSize,
+      search_key:this.term
      }
     this.buttonClick.emit(tableData);
     // if(res){
@@ -213,5 +226,8 @@ export class DeclinedComponent implements OnInit {
     // }
  
   })
+  }
+  getContinuousIndex(index: number):number {
+    return (this.page-1)*this.tableSize+ index + 1;
   }
 }

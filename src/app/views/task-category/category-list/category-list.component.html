@@ -32,7 +32,7 @@
         </div>
         <div class="bg">
         <div class="row">
-            <div class="col">
+            <div class="col px-0">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -52,7 +52,7 @@
                             currentPage: page,
                             totalItems: count
                           };let i=index'>
-                            <td>{{i + 1}}</td>
+                            <td>{{getContinuousIndex(i)}}</td>
                             <td>{{item.tpc_name ?item.tpc_name:"NA" }}</td>
                             <td>{{item.tpc_c_date| date:'mediumDate'}}</td>
                             <!-- <td>{{item.tpc_status?item.tpc_status:"NA"}}</td>  -->

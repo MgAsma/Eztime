@@ -9,7 +9,7 @@ import { TimesheetService } from 'src/app/service/timesheet.service';
   styleUrls: ['./approved.component.scss']
 })
 export class ApprovedComponent implements OnInit {
-  term:any;
+  term:any='';
   slno:any;
   date:any;
   people:any;
@@ -24,7 +24,7 @@ export class ApprovedComponent implements OnInit {
   page = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   @Input() set data(value){
     this.list = value
    //console.log(this.list)
@@ -48,7 +48,7 @@ export class ApprovedComponent implements OnInit {
     this.page = event;
   }  
   onTableSizeChange(event:any): void {
-    this.tableSize = event.target.value;
+    this.tableSize = Number(event.target.value);
     this.page = 1;
   } 
   statusExecution(item,status){

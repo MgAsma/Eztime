@@ -31,7 +31,7 @@
         </div>
         <div class="bg">
         <div class="row">
-            <div class="col">
+            <div class="col px-0">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -51,7 +51,7 @@
                             totalItems: count
                           }|customSort:directionValue:sortValue
                             ; let i=index' [class.active]="i == currentIndex">
-                            <td>{{i + 1}}</td>
+                            <td>{{getContinuousIndex(i)}}</td>
                             <td>{{item.tag_name}}</td>
                             <td>{{item.added_date | date:'mediumDate'}}</td>
                             

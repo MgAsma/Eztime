@@ -125,3 +125,9 @@ html{
     font-size: 16px;
     color:black;
 }
+table th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: -15px;
+    z-index: 1; // any positive value, layer order is global
+}

@@ -22,12 +22,12 @@ export class ApprovedComponent implements OnInit {
   approvedDate:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
   delData: any;
   page:any= 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   user_id: any;
   accessConfig: any;
   @Input() set data(value) {

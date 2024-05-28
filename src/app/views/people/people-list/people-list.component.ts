@@ -18,9 +18,9 @@ export class PeopleListComponent implements OnInit {
   page = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   pNav:boolean = true;
-  term:any;
+  term:any='';
   slno:any;
   people_name:any;
   designation:any;
@@ -53,6 +53,7 @@ export class PeopleListComponent implements OnInit {
       this.location.back();
      }
   ngOnInit(): void {
+    this.term='';
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.org_id = sessionStorage.getItem('org_id')
     this.getPeople();
@@ -103,7 +104,8 @@ export class PeopleListComponent implements OnInit {
     let params = {
     page_number:this.page,
     data_per_page:this.tableSize,
-    organization_id:this.org_id
+    organization_id:this.org_id,
+    search_key:this.term
     }
     this.api.getPeopleDetailsPage(params).subscribe((data:any)=>{
       this.allPeople = data.result.data;
@@ -116,7 +118,7 @@ export class PeopleListComponent implements OnInit {
     )
   }
   filterSearch(){
-      this.api.getData(`${environment.live_url}/${environment.people_list}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe((data:any)=>{
+      this.api.getData(`${environment.live_url}/${environment.people_list}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`).subscribe((data:any)=>{
         this.allPeople = data.result.data;
         const noOfPages:number = data['result'].pagination.number_of_pages
         this.count  = noOfPages * this.tableSize
@@ -200,5 +202,8 @@ export class PeopleListComponent implements OnInit {
       this.sortValue= value
     }
    
+  }
+  getContinuousIndex(index: number):number {
+    return (this.page-1)*this.tableSize+ index + 1;
   }
 }

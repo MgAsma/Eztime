@@ -22,7 +22,7 @@ export class RoleListComponent implements OnInit {
   tableSizes = [10,25,50,100];
   show = false
 
-  term:any;
+  term:any='';
   selectedId: any;
   enabled: boolean = true;
   closeResult: string;
@@ -58,7 +58,7 @@ export class RoleListComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.org_id = sessionStorage.getItem('org_id')
-    this.getRole(`page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`)
+    this.getRole(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`)
     this.enabled = true
     this.role = sessionStorage.getItem('user_role_name')
     this.user_id = sessionStorage.getItem('user_id')
@@ -68,7 +68,7 @@ export class RoleListComponent implements OnInit {
   
   }
   filterSearch(){
-    this.getRole(`search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`)
+    this.getRole(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`)
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
@@ -153,7 +153,7 @@ export class RoleListComponent implements OnInit {
   onTableDataChange(event:any){
     this.page = event;
     //console.log(this.page,"EVENT PAGE---")
-    this.getRole(`page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`);
+    this.getRole(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`);
   }  
   onTableSizeChange(event:any): void {
     //console.log(event,"EVENT CHECK")
@@ -165,7 +165,7 @@ export class RoleListComponent implements OnInit {
     if(calculatedPageNo < this.page){
       this.page = 1
     }
-    this.getRole(`page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`);
+    this.getRole(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`);
   }  
 
  
@@ -206,6 +206,9 @@ export class RoleListComponent implements OnInit {
       this.directionValue= direction
       this.sortValue= value
     }
+  }
+  getContinuousIndex(index: number):number {
+    return (this.page-1)*this.tableSize+ index + 1;
   }
 }
  

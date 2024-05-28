@@ -59,6 +59,7 @@ export class TimesheetComponent implements OnInit {
       user_id:this.userId,
       page_number:this.page,
       data_per_page:10,
+      search_key:'',
      }
       this.userId = sessionStorage.getItem('user_id')
       this.initForm()
@@ -72,7 +73,7 @@ export class TimesheetComponent implements OnInit {
  }
   getByStatus(params){
    
-     this.api.getData(`${environment.live_url}/${environment.time_sheets}?user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&approved_state=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
+     this.api.getData(`${environment.live_url}/${environment.time_sheets}?user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&search_key=${params.search_key}&approved_state=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if( res['result'].data.length >0){
         this.allDetails = res['result']['data']
         this.cardData = res['result'].timesheet_dashboard
@@ -85,7 +86,7 @@ export class TimesheetComponent implements OnInit {
   }
 
   getAllTimeSheet(params){ 
-    this.api.getData(`${environment.live_url}/${environment.time_sheets}?user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&approved_state=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&timesheets_from_date=${params.timesheets_from_date}&timesheets_to_date=${params.timesheets_to_date}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.time_sheets}?user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&search_key=${params.search_key}&approved_state=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&timesheets_from_date=${params.timesheets_from_date}&timesheets_to_date=${params.timesheets_to_date}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if( res['result'].data.length >0){
         this.allDetails = res['result']['data']
         this.cardData = res['result'].timesheet_dashboard
@@ -122,6 +123,7 @@ export class TimesheetComponent implements OnInit {
           user_id:this.userId,
           page_number:event.page,
           data_per_page:event.tableSize,
+          search_key:event.search_key,
           timesheets_to_date:this.datepipe.transform(this.toDate,'dd/MM/yyyy'),
           timesheets_from_date:this.datepipe.transform(this.fromDate,'dd/MM/yyyy') 
          }
@@ -136,6 +138,7 @@ export class TimesheetComponent implements OnInit {
         user_id:this.userId,
         page_number:event.page,
         data_per_page:event.tableSize,
+        search_key:event.search_key,
        }
        this.getByStatus(c_params)
     }
@@ -182,6 +185,7 @@ export class TimesheetComponent implements OnInit {
           user_id:this.userId,
           page_number:this.page,
           data_per_page:10,
+          search_key:'',
           timesheets_to_date:this.datepipe.transform(this.toDate,'dd/MM/yyyy') ,
           timesheets_from_date:this.datepipe.transform(this.fromDate,'dd/MM/yyyy') 
          }
@@ -229,6 +233,7 @@ export class TimesheetComponent implements OnInit {
         user_id:this.userId,
         page_number:this.page,
         data_per_page:10,
+        search_key:'',
         timesheets_to_date:this.datepipe.transform(this.toDate,'dd/MM/yyyy') ,
         timesheets_from_date:this.datepipe.transform(this.fromDate,'dd/MM/yyyy') 
        }
@@ -245,6 +250,7 @@ export class TimesheetComponent implements OnInit {
         user_id:this.userId,
         page_number:this.page,
         data_per_page:10,
+        search_key:'',
       }
       this.getByStatus(c_params)
     }

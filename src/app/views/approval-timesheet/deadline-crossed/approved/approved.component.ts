@@ -21,13 +21,13 @@ export class DeadlineApprovedComponent implements OnInit {
   approvedby:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
   approvedAll:any = [];
   userId: any = 1;
   page:any = 1;
   approveCount = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   count = 0;
   accessConfig: any = [];
   user_id: any;

@@ -121,3 +121,10 @@ p{
 // .card-subtitle{
 //     color: #ebedef !important;
 // }
+
+table th {
+    position: sticky;
+     position: -webkit-sticky;
+   top: -15px;
+    z-index: 1; // any positive value, layer order is global
+}

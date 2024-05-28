@@ -21,11 +21,11 @@ export class FlaggedComponent implements OnInit {
   savedon:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
   list:any = [];
   page:any=1;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   count:any = 0
   entryPoint: any;
   user_id: any;

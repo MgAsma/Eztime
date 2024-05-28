@@ -51,6 +51,7 @@ export class DeadlineCrossedComponent implements OnInit {
       user_id:this.user_id,
       page_number:this.page,
       data_per_page:10,
+      search_key:'',
       // timesheets_from_date:this.formattedDate,
       pagination:'TRUE'
     }
@@ -151,6 +152,7 @@ export class DeadlineCrossedComponent implements OnInit {
         user_id:this.user_id,
         page_number:this.page,
         data_per_page:10,
+        search_key:'',
         timesheets_from_date:this.formattedDate,
         pagination:'TRUE'
        }
@@ -169,8 +171,9 @@ export class DeadlineCrossedComponent implements OnInit {
             // approved_state:this.selectedTab,
             user_id:this.user_id,
             organization_id:this.orgId,
-            page_number:event,
-            data_per_page:10,
+            page_number:event.page,
+            data_per_page:event.tableSize,
+            search_key:event.search_key,
             timesheets_from_date:this.formattedDate,
             pagination:'TRUE'
            }
@@ -184,8 +187,9 @@ export class DeadlineCrossedComponent implements OnInit {
             // approved_state:this.selectedTab,
             user_id:this.user_id,
             organization_id:this.orgId,
-            page_number:event,
-            data_per_page:10,
+            page_number:event.page,
+            data_per_page:event.tableSize,
+            search_key:event.search_key,
             pagination:'TRUE'
            }
              this.getByStatus(c_params)
@@ -193,7 +197,43 @@ export class DeadlineCrossedComponent implements OnInit {
        
       }
     }
-  
+    searchFiter(event){
+      this.handleMonthSelection(this.monthForm.value['fromMonth'])
+      if(event){
+        if(this.changes){
+          let c_params={
+            module:"TIMESHEET",
+            menu:"DEAD_LINE_CROSSED",
+            method:"VIEW",
+            // approved_state:this.selectedTab,
+            user_id:this.user_id,
+            organization_id:this.orgId,
+            page_number:event.page,
+            data_per_page:event.tableSize,
+            search_key:event.search_key,
+            timesheets_from_date:this.formattedDate,
+            pagination:'TRUE'
+           }
+             this.getAllTimeSheet(c_params)
+        }
+        else{
+          let c_params={
+            module:"TIMESHEET",
+            menu:"DEAD_LINE_CROSSED",
+            method:"VIEW",
+            // approved_state:this.selectedTab,
+            user_id:this.user_id,
+            organization_id:this.orgId,
+            page_number:event.page,
+            search_key:event.search_key,
+            data_per_page:event.tableSize,
+            pagination:'TRUE'
+           }
+             this.getByStatus(c_params)
+        }
+       
+      }
+    }
 handleMonthSelection(selectedMonth) {
   //console.log(selectedMonth,"MONTHNAME");
   const currentYear = new Date().getFullYear();
@@ -231,6 +271,7 @@ handleMonthSelection(selectedMonth) {
       organization_id:this.orgId,
       page_number:this.page,
       data_per_page:10,
+      search_key:'',
       timesheets_from_date:this.formattedDate,
       pagination:'TRUE'
      }

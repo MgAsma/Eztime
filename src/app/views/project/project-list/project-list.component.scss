@@ -139,3 +139,9 @@ html{
 // .card-subtitle{
 //     color: #f8f8f8 !important;
 // }
+table th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: -15px;
+    z-index: 1; // any positive value, layer order is global
+}

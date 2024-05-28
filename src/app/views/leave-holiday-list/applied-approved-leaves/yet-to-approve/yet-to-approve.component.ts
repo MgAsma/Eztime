@@ -12,9 +12,10 @@ import { error } from 'console';
   styleUrls: ['./yet-to-approve.component.scss']
 })
 export class YetToApproveComponent implements OnInit{
-  @Output() buttonClick:any = new EventEmitter<string>();
+  @Output() buttonClick:any = new EventEmitter<any>();
+  @Output() filter:any = new EventEmitter<any>();
   list:any = [];
-  term:any;
+  term:any='';
   slno:any;
   fromDate:any;
   toDate:any;
@@ -27,7 +28,7 @@ export class YetToApproveComponent implements OnInit{
   delData: any;
   page:any=1;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   count:any = 0
   entryPoint: any;
   user_id: string;
@@ -98,11 +99,20 @@ export class YetToApproveComponent implements OnInit{
     //  console.log(this.accessConfig,"this.accessConfig")
     })
     }
+    filterSearch(){
+      let tableData ={
+        search_key:this.term,
+        page:this.page,
+        tableSize:this.tableSize
+       }
+      this.filter.emit(tableData);
+    }
   onTableDataChange(event: any): void {
     this.page = event;
     let tableData ={
      page:event,
-     tableSize:this.tableSize
+     tableSize:this.tableSize,
+     search_key:this.term
     }
     this.buttonClick.emit(tableData);
   }
@@ -117,7 +127,8 @@ export class YetToApproveComponent implements OnInit{
     }
     let tableData ={
       page:this.page,
-      tableSize:this.tableSize
+      tableSize:this.tableSize,
+      search_key:this.term
      }
     this.buttonClick.emit(tableData);
   }
@@ -133,7 +144,8 @@ export class YetToApproveComponent implements OnInit{
       this.api.showWarning('Yet to approve leave deleted successfully!')
       let tableData ={
         page:this.page,
-        tableSize:this.tableSize
+        tableSize:this.tableSize,
+        search_key:this.term
        }
       this.buttonClick.emit(tableData);
     },((error:any)=>{
@@ -212,7 +224,8 @@ export class YetToApproveComponent implements OnInit{
     
     let tableData ={
       page:this.page,
-      tableSize:this.tableSize
+      tableSize:this.tableSize,
+      search_key:this.term
      }
     this.buttonClick.emit(tableData);
     // if(res){
@@ -222,5 +235,7 @@ export class YetToApproveComponent implements OnInit{
  
   })
   }
- 
+  getContinuousIndex(index: number):number {
+    return (this.page-1)*this.tableSize+ index + 1;
+  }
 }

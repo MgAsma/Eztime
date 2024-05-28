@@ -32,7 +32,7 @@
         </div>
         <div class="bg">
         <div class="row">
-            <div class="col">
+            <div class="col px-0">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -54,7 +54,7 @@
                             currentPage: page,
                             totalItems: count
                           }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
-                            <td>{{i + 1}}</td>
+                            <td>{{getContinuousIndex(i)}}</td>
                             <td>{{item.c_name}}</td>
                             <td>{{item.c_code}}</td>
                             <!-- <td>{{item.toi_ref_id}}</td> -->

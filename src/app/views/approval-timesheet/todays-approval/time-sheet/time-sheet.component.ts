@@ -22,11 +22,11 @@ export class TimeSheetComponent implements OnInit {
   rejectedby:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
   page:any = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   timesheetDataAll:any = []
   entryPoint: any;
   user_id: any;

@@ -12,7 +12,8 @@ import { TimesheetService } from 'src/app/service/timesheet.service';
   styleUrls: ['./decline.component.scss']
 })
 export class DeclineComponent implements OnInit {
-  @Output() buttonClick:any = new EventEmitter<string>();
+  @Output() buttonClick:any = new EventEmitter<any>();
+  @Output() filter:any = new EventEmitter<any>();
   list:any =[];
   slno:any;
   date:any;
@@ -22,10 +23,10 @@ export class DeclineComponent implements OnInit {
   savedon:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
   page:any=1;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   count:any = 0
   entryPoint: any;
   user_id: any;
@@ -101,7 +102,8 @@ export class DeclineComponent implements OnInit {
     if(data){
       let tableData ={
         page:this.page,
-        tableSize:this.tableSize
+        tableSize:this.tableSize,
+        search_key:this.term
        }
       this.buttonClick.emit(tableData);
       this.api.showWarning('Declined deleted successfully!')
@@ -171,18 +173,28 @@ this._timesheet.updateStatus(data).subscribe(res =>{
     this.api.showSuccess(`${status} updated successfully`)
     let tableData ={
       page:this.page,
-      tableSize:this.tableSize
+      tableSize:this.tableSize,
+      search_key:this.term
      }
     this.buttonClick.emit(tableData);
   }
   
 })
 }
+filterSearch(){
+  let tableData ={
+    search_key:this.term,
+    page:this.page,
+    tableSize:this.tableSize
+   }
+  this.filter.emit(tableData);
+}
 onTableDataChange(event:any){
   this.page = event;
   let tableData ={
     page:this.page,
-    tableSize:this.tableSize
+    tableSize:this.tableSize,
+    search_key:this.term
    }
   this.buttonClick.emit(tableData);
 }  
@@ -197,8 +209,13 @@ onTableSizeChange(event:any): void {
   }
   let tableData ={
     page:this.page,
-    tableSize:this.tableSize
+    tableSize:this.tableSize,
+    search_key:this.term
    }
   this.buttonClick.emit(tableData);
 } 
+
+getContinuousIndex(index: number):number {
+  return (this.page-1)*this.tableSize+ index + 1;
+}
 }

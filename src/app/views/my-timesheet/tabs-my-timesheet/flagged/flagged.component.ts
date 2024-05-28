@@ -16,7 +16,7 @@ export class FlaggedComponent implements OnInit {
   savedon:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
   list:any = [];
   constructor(private builder:FormBuilder, private api:ApiserviceService) { }
 

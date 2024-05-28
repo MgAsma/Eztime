@@ -18,11 +18,11 @@ export class CentersListComponent implements OnInit {
   currentIndex = 1;
   page = 1;
   count = 0;
-  tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSize =10;
+  tableSizes = [10,25,50,100];
   enabled = true;
 
-  term:any;
+  term:any='';
   slno:any;
   center:any;
   date:any;
@@ -48,6 +48,7 @@ export class CentersListComponent implements OnInit {
   this.location.back();
 }
   ngOnInit(): void {
+    this.term='';
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.getCenter();
     this.enabled = true;
@@ -84,7 +85,8 @@ export class CentersListComponent implements OnInit {
       page_number:this.page,
       data_per_page:this.tableSize,
       pagination:'TRUE',
-      organization_id:this.orgId
+      organization_id:this.orgId,
+      search_key:this.term,
   }
     this.api.getCenterDetailsPage(params).subscribe((data:any)=>{
       this.allCenterList= data.result.data;
@@ -98,7 +100,7 @@ export class CentersListComponent implements OnInit {
     )
   }
  filterSearch(){
-  this.api.getData(`${environment.live_url}/${environment.center_list}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((data:any)=>{
+  this.api.getData(`${environment.live_url}/${environment.center_list}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((data:any)=>{
     this.allCenterList= data.result.data;
     const noOfPages:number = data['result'].pagination.number_of_pages
     this.count  = noOfPages * this.tableSize
@@ -137,7 +139,7 @@ export class CentersListComponent implements OnInit {
     this.getCenter();
   }  
   onTableSizeChange(event:any): void {
-    this.tableSize = event.target.value;
+    this.tableSize = Number(event.target.value);
     // Calculate new page number
     const calculatedPageNo = this.count / this.tableSize 
     if(calculatedPageNo < this.page){
@@ -186,5 +188,9 @@ export class CentersListComponent implements OnInit {
   
 
  
+}
+
+getContinuousIndex(index: number):number {
+  return (this.page-1)*this.tableSize+ index + 1;
 }
 }

@@ -24,9 +24,9 @@ export class ClientListComponent implements OnInit {
   page = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   
-  term:any;
+  term:any='';
   slno:any;
   code:any;
   name:any;
@@ -93,7 +93,7 @@ export class ClientListComponent implements OnInit {
     })
     }
     filterSearch(){
-      this.api.getData(`${environment.live_url}/${environment.clients}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe((res:any)=>{
+      this.api.getData(`${environment.live_url}/${environment.clients}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe((res:any)=>{
         if(res){
           this.allClientList= res.result.data;
             const noOfPages:number = res['result'].pagination.number_of_pages
@@ -106,9 +106,10 @@ export class ClientListComponent implements OnInit {
   getClient(){
     let params = {
       page_number:this.page,
-      data_per_page:this.tableSize
+      data_per_page:this.tableSize,
+      search_key:this.term
   }
-  this.api.getData(`${environment.live_url}/${environment.clients}?page_number=1&data_per_page=10&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe((res:any)=>{
+  this.api.getData(`${environment.live_url}/${environment.clients}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe((res:any)=>{
       if(res){
         this.allClientList= res.result.data;
         const noOfPages:number = res['result'].pagination.number_of_pages
@@ -197,5 +198,7 @@ export class ClientListComponent implements OnInit {
   
 }
 
-
+getContinuousIndex(index: number):number {
+  return (this.page-1)*this.tableSize+ index + 1;
+}
 }

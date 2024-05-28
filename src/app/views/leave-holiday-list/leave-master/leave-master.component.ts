@@ -19,9 +19,9 @@ export class LeaveMasterComponent implements OnInit {
   page = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
 
-  term:any;
+  term:any='';
   slno:any;
   title:any;
   type:any;
@@ -36,7 +36,7 @@ export class LeaveMasterComponent implements OnInit {
   permissions: any = [];
   user_id: string;
   orgId: any;
-  
+  params:any;
   constructor(
     private modalService:NgbModal, 
     private api:ApiserviceService,
@@ -52,13 +52,14 @@ export class LeaveMasterComponent implements OnInit {
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.orgId = sessionStorage.getItem('org_id')
+    this.orgId = sessionStorage.getItem('org_id');
+    
     this.getLeaveType();
     this.enabled = true
     this.getUserControls()
   }
   filterSearch(){
-    this.api.getData(`${environment.live_url}/${environment.master_leave_list}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.master_leave_list}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res){
         this.leaveMasterList= res.result.data;
         const noOfPages:number = res['result'].pagination.number_of_pages
@@ -104,7 +105,13 @@ export class LeaveMasterComponent implements OnInit {
     })
     }
   getLeaveType(){
-    this.api.getLeaveTypeDetails(this.orgId).subscribe((data:any)=>{
+    let params = {
+      page_number:this.page,
+      data_per_page:this.tableSize,
+      organization_id:this.orgId,
+      search_key:this.term
+      }
+    this.api.getLeaveDetail(params).subscribe((data:any)=>{
       this.leaveMasterList= data.result.data;
 
     },(error=>{
@@ -163,7 +170,12 @@ export class LeaveMasterComponent implements OnInit {
   }  
   onTableSizeChange(event:any): void {
     this.tableSize = Number(event.target.value);
-    this.page = 1;
+    this.count = 0
+    // Calculate new page number
+    const calculatedPageNo = this.count / this.tableSize 
+    if(calculatedPageNo < this.page){
+      this.page = 1
+    }
     this.getLeaveType();
   }  
   open(content) {
@@ -187,5 +199,9 @@ export class LeaveMasterComponent implements OnInit {
 	}
   
 
+  }
+
+  getContinuousIndex(index: number):number {
+    return (this.page-1)*this.tableSize+ index + 1;
   }
 }

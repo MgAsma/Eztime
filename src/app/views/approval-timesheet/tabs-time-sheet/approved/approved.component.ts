@@ -16,7 +16,7 @@ export class ApprovedComponent implements OnInit {
   approvedby:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
 
   approvedAll:any = [];
   constructor() { }

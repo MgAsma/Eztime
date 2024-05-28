@@ -62,6 +62,7 @@ export class MonthTimesheetComponent implements OnInit {
      user_id:this.user_id,
      page_number:this.page,
      data_per_page:10,
+     search_key:'',
      pagination:'TRUE'
     }
    this.getByStatus(c_params)
@@ -134,6 +135,7 @@ export class MonthTimesheetComponent implements OnInit {
         user_id:this.user_id,
         page_number:this.page,
         data_per_page:10,
+        search_key:'',
         timesheets_from_date:this.formattedDate,
         pagination:'TRUE'
        }
@@ -235,6 +237,7 @@ export class MonthTimesheetComponent implements OnInit {
         user_id:this.user_id,
         page_number:this.page,
         data_per_page:10,
+        search_key:'',
         timesheets_from_date:this.formattedDate,
         pagination:'TRUE'
        }
@@ -257,6 +260,7 @@ export class MonthTimesheetComponent implements OnInit {
         user_id:this.user_id,
         page_number:this.page,
         data_per_page:10,
+        search_key:'',
         pagination:'TRUE'
        }
        this.getByStatus(c_params) 
@@ -276,8 +280,9 @@ export class MonthTimesheetComponent implements OnInit {
           method:"VIEW",
           approved_state:this.selectedTab,
           user_id:this.user_id,
-          page_number:event,
-          data_per_page:10,
+          page_number:event.page,
+          data_per_page:event.tableSize,
+          search_key:event.search_key,
           timesheets_from_date:this.formattedDate,
           pagination:'TRUE'
          }
@@ -290,8 +295,45 @@ export class MonthTimesheetComponent implements OnInit {
           method:"VIEW",
           approved_state:this.selectedTab,
           user_id:this.user_id,
-          page_number:event,
-          data_per_page:10,
+          page_number:event.page,
+          search_key:event.search_key,
+          data_per_page:event.tableSize,
+          pagination:'TRUE'
+         }
+           this.getByStatus(c_params)
+      }
+    
+    }
+  }
+
+  searchFiter(event){
+    this.handleMonthSelection(this.monthForm.value['fromMonth'])
+    if(event){
+      if(this.changes){
+        let c_params={
+          module:"TIMESHEET",
+          menu:"MONTH_APPROVAL_TIMESHEET",
+          method:"VIEW",
+          approved_state:this.selectedTab,
+          user_id:this.user_id,
+          page_number:event.page,
+          data_per_page:event.tableSize,
+          search_key:event.search_key,
+          timesheets_from_date:this.formattedDate,
+          pagination:'TRUE'
+         }
+           this.getAllTimeSheet(c_params)
+      }
+      else{
+        let c_params={
+          module:"TIMESHEET",
+          menu:"MONTH_APPROVAL_TIMESHEET",
+          method:"VIEW",
+          approved_state:this.selectedTab,
+          user_id:this.user_id,
+          page_number:event.page,
+          search_key:event.search_key,
+          data_per_page:event.tableSize,
           pagination:'TRUE'
          }
            this.getByStatus(c_params)
@@ -326,6 +368,7 @@ export class MonthTimesheetComponent implements OnInit {
     user_id:this.user_id,
     page_number:1,
     data_per_page:10,
+    search_key:'',
     timesheets_from_date:this.formattedDate,
     pagination:'TRUE'
    }

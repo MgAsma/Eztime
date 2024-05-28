@@ -16,7 +16,7 @@ export class YetToApproveComponent implements OnInit {
   savedon:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
   
   constructor(private builder:FormBuilder, private api:ApiserviceService) { }
 

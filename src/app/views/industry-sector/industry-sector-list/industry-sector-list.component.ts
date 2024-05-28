@@ -19,9 +19,9 @@ export class IndustrySectorListComponent implements OnInit {
   page = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
 
-  term:any;
+  term:any='';
   slno:any;
   name:any;
   date:any;
@@ -58,7 +58,7 @@ export class IndustrySectorListComponent implements OnInit {
   }
   filterSearch(){
    
-    this.api.getData(`${environment.live_url}/${environment.type_of_industries}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.type_of_industries}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe((data:any)=>{
       this.allIndustryList= data.result.data;
         const noOfPages:number = data['result'].pagination.number_of_pages
         this.count  = noOfPages * this.tableSize
@@ -104,6 +104,7 @@ export class IndustrySectorListComponent implements OnInit {
       page_number:this.page,
       data_per_page:this.tableSize,
       org_ref_id:this.orgId,
+      search_key:this.term,
       pagination:'TRUE'
      }
     this.api.getIndustryDetailsPage(params).subscribe((data:any)=>{
@@ -194,4 +195,8 @@ export class IndustrySectorListComponent implements OnInit {
   
 
  
-}}
+}
+getContinuousIndex(index: number):number {
+  return (this.page-1)*this.tableSize+ index + 1;
+}
+}

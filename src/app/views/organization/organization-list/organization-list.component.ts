@@ -17,13 +17,13 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 })
 export class OrganizationListComponent implements OnInit {
   BreadCrumbsTitle:any='Organization list';
-  term:any;
+  term:any='';
   directionValue:any='desc'
   sortValue:any='org_name'
   page = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   url: any;
   organizationData: any = [];
 currentIndex: any;
@@ -43,13 +43,8 @@ currentIndex: any;
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.user_id = sessionStorage.getItem('user_id')
-    this.org_id = sessionStorage.getItem('org_id')
-    this.params = {
-      page_number : this.page,
-      data_per_page : this.tableSize,
-    }
-   
-    this.getOrgDetails(`page_number=${this.params.page_number}&data_per_page=${this.params.data_per_page}&pagination=TRUE`)
+    this.org_id = sessionStorage.getItem('org_id') 
+    this.getOrgDetails(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`)
     // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
 
     // if (accessAction.length) {
@@ -117,7 +112,7 @@ currentIndex: any;
     }))
   }
   filterSearch(){
-    this.api.getData(`${environment.live_url}/${environment.organization}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE`).subscribe((res:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.organization}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`).subscribe((res:any)=>{
       if(res){
         this.organizationData= res.result.data;
         const noOfPages:number = res['result'].pagination.number_of_pages
@@ -129,7 +124,7 @@ currentIndex: any;
   }
   onTableDataChange(event:any){
     this.page = event;
-    this.getOrgDetails(`page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`)
+    this.getOrgDetails(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`)
   }  
   onTableSizeChange(event:any): void {
     this.tableSize = Number(event.target.value);
@@ -140,7 +135,7 @@ currentIndex: any;
     if(calculatedPageNo < this.page){
       this.page = 1
     }
-    this.getOrgDetails(`page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`)
+    this.getOrgDetails(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`)
   } 
   delete(id:any){
     this.api.delete(`${environment.live_url}/${environment.organization}/${id}`).subscribe((data:any)=>{
@@ -179,5 +174,9 @@ currentIndex: any;
     })
 	
 	}
+}
+
+getContinuousIndex(index: number):number {
+  return (this.page-1)*this.tableSize+ index + 1;
 }
 }

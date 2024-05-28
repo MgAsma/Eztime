@@ -19,10 +19,10 @@ export class PrefixSuffixListComponent implements OnInit {
   page = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
 
 
-  term:any;
+  term:any='';
   slno:any;
   prefix:any;
   suffix:any;
@@ -58,7 +58,8 @@ export class PrefixSuffixListComponent implements OnInit {
     this.params = {
       page_number:this.page,
       data_per_page:this.tableSize,
-      organization_id:this.orgId
+      organization_id:this.orgId,
+      search_key:this.term
     }
     this.getPrefixSuffix(this.params);
     this.enabled = true;
@@ -105,7 +106,7 @@ export class PrefixSuffixListComponent implements OnInit {
     )
   }
   filterSearch(){
-    this.api.getData(`${environment.live_url}/${environment.prefix_suffix}?search_key=${this.term}&page_number=1&data_per_page=10&organization_id=${this.orgId}&pagination=TRUE`).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.prefix_suffix}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&organization_id=${this.orgId}&pagination=TRUE`).subscribe((data:any)=>{
       this.allPrefixSuffix   = data.result.data;
       const noOfPages:number = data['result'].pagination.number_of_pages
       this.count  = noOfPages * this.tableSize
@@ -143,7 +144,8 @@ export class PrefixSuffixListComponent implements OnInit {
     this.page = event;
     let params = {
       page_number:this.page,
-      data_per_page:this.tableSize
+      data_per_page:this.tableSize,
+      search_key:this.term
     }
     this.getPrefixSuffix(params);
   }  
@@ -199,7 +201,9 @@ export class PrefixSuffixListComponent implements OnInit {
     })
 	
 	}
-  
+  }
 
-  
-}}
+  getContinuousIndex(index: number):number {
+    return (this.page-1)*this.tableSize+ index + 1;
+  }
+}

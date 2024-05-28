@@ -19,9 +19,9 @@ export class CategoryListComponent implements OnInit {
   page = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
 
-  term:any;
+  term:any='';
   slno:any;
   name:any;
   date:any;
@@ -64,7 +64,7 @@ export class CategoryListComponent implements OnInit {
     this.getUserControls()
   }
   filterSearch(){
-    this.api.getData(`${environment.live_url}/${environment.project_tasks}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe(data=>{
+    this.api.getData(`${environment.live_url}/${environment.project_tasks}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe(data=>{
       
       if(data['result'].data){
         this.categoryList= data['result'].data;
@@ -110,7 +110,8 @@ export class CategoryListComponent implements OnInit {
     let params = {
       page_number:this.page,
       data_per_page:this.tableSize,
-      org_ref_id:this.orgId
+      org_ref_id:this.orgId,
+      search_key:this.term
   }
 
     this.api.getProjectTaskCategoryDetailsPage(params).subscribe(data=>{
@@ -200,6 +201,10 @@ export class CategoryListComponent implements OnInit {
       this.directionValue= direction
       this.sortValue= value
     }
+  }
+
+  getContinuousIndex(index: number):number {
+    return (this.page-1)*this.tableSize+ index + 1;
   }
 }
 

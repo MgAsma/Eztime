@@ -10,7 +10,8 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
   styleUrls: ['./approved.component.scss']
 })
 export class ApprovedComponent implements OnInit {
-  @Output() buttonClick:any = new EventEmitter<string>();
+  @Output() buttonClick:any = new EventEmitter<any>();
+  @Output() filter:any = new EventEmitter<any>();
   list:any=[];
   slno:any;
   fromDate:any;
@@ -22,12 +23,12 @@ export class ApprovedComponent implements OnInit {
   approvedDate:any;
   status:any;
   action:any;
-  term:any;
+  term:any='';
   delData: any;
   page:any =1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSizes = [10,25,50,100];
   params: { approved_state: string; user_id: number; leaveApplication_from_date: string; leaveApplication_to_date: string; };
   pagination: { page_number: number; data_per_page: number; };
   AllListData: any;
@@ -92,7 +93,8 @@ export class ApprovedComponent implements OnInit {
       this.api.showWarning('Approved leave deleted successfully!')
       let tableData ={
         page:this.page,
-        tableSize:this.tableSize
+        tableSize:this.tableSize,
+        search_key:this.term
        }
       this.buttonClick.emit(tableData);
     },((error:any)=>{
@@ -148,7 +150,8 @@ export class ApprovedComponent implements OnInit {
     //console.log('emitt');
     let tableData ={
       page:this.page,
-      tableSize:this.tableSize
+      tableSize:this.tableSize,
+      search_key:this.term
      }
     this.buttonClick.emit(tableData);
     // if(res){
@@ -180,11 +183,20 @@ export class ApprovedComponent implements OnInit {
   
 
   }
+  filterSearch(){
+    let tableData ={
+      search_key:this.term,
+      page:this.page,
+      tableSize:this.tableSize
+     }
+    this.filter.emit(tableData);
+  }
   onTableDataChange(event:any){
     this.page = event;
     let tableData ={
       page:this.page,
-      tableSize:this.tableSize
+      tableSize:this.tableSize,
+      search_key:this.term
      }
     this.buttonClick.emit(tableData);
   }  
@@ -199,8 +211,12 @@ export class ApprovedComponent implements OnInit {
     }
     let tableData ={
       page:this.page,
-      tableSize:this.tableSize
+      tableSize:this.tableSize,
+      search_key:this.term
      }
     this.buttonClick.emit(tableData);
+  }
+  getContinuousIndex(index: number):number {
+    return (this.page-1)*this.tableSize+ index + 1;
   }
 }

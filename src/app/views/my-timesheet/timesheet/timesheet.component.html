@@ -130,7 +130,7 @@
                             </tab>
                             <tab heading="Approved timesheets" (selectTab)="tabState($event)">
                                 <ng-container *ngIf="allDetails[0]?.approved_state ==='APPROVED'">
-                                    <app-approved [data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-approved>
+                                    <app-approved [data]="allDetails" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-approved>
                                 </ng-container>
                                <ng-container *ngIf="allDetails[0]?.approved_state !== 'APPROVED'">
                                 <div class="text-center text-muted no-data py-2" >No records found
@@ -139,7 +139,7 @@
                             </tab>
                             <tab heading="Declined timesheets" (selectTab)="tabState($event)" >
                                 <ng-container *ngIf="allDetails[0]?.approved_state ==='DECLINED'">
-                                    <app-decline  [data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-decline>
+                                    <app-decline  [data]="allDetails" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-decline>
                                 </ng-container>
                                 <ng-container *ngIf="allDetails[0]?.approved_state !== 'DECLINED'">
                                     <div class="text-center text-muted no-data py-2" >No records found
