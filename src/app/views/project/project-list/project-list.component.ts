@@ -59,12 +59,13 @@ export class ProjectListComponent implements OnInit {
     this.getUserControls()
   }
   filterSearch(){
-    this.api.getData(`${environment.live_url}/${environment.project_list}?search_key=${this.term}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.project_list}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((data:any)=>{
       if(data.result){
         this.allProjectList= data.result.data;
         //console.log( this.allProjectList,"ALL")
         const noOfPages:number = data['result'].pagination.number_of_pages
-        this.count  = noOfPages * this.tableSize
+        this.count  = noOfPages * this.tableSize;
+        this.page=data['result'].pagination.current_page;
       }
       
     },((error:any)=>{
@@ -119,8 +120,8 @@ export class ProjectListComponent implements OnInit {
       this.allProjectList= data.result.data;
       //console.log( this.allProjectList,"ALL")
       const noOfPages:number = data['result'].pagination.number_of_pages
-      this.count  = noOfPages * this.tableSize
-
+      this.count  = noOfPages * this.tableSize;
+      this.page=data['result'].pagination.current_page;
     },((error:any)=>{
       this.api.showError(error.error.error.message)
       

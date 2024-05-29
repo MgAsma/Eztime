@@ -8,7 +8,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { filter } from 'rxjs';
 import { CommonServiceService } from 'src/app/service/common-service.service';
-
+import { ChangeDetectorRef } from '@angular/core';
 @Component({
   selector: 'app-default-layout',
   templateUrl: './default-layout.component.html',
@@ -56,8 +56,8 @@ export class DefaultLayoutComponent {
   ]
 
   constructor(private ngxService: NgxUiLoaderService,
-    private api: ApiserviceService, private modalService: NgbModal,
-    private router: Router,private common_service:CommonServiceService) {
+    private api: ApiserviceService, private modalService: NgbModal,private cdref: ChangeDetectorRef,
+    private router: Router) {
       this.config = sessionStorage.getItem('user_role_name');
     
 }
@@ -80,9 +80,7 @@ export class DefaultLayoutComponent {
     // //console.log(this.access,"ACCESS")
 
     //console.log(this.navItems,"ADMIN NAVITEMS-------")
-    this.common_service.title$.subscribe(title => {
-      this.currentUrlName = title;
-    });
+    
 
   }
 

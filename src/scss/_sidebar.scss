@@ -29,6 +29,7 @@
 .sidebar-nav .nav-link.active {
     color: #212529 !important;
     font-weight: 500;
+    font-family: 'Exo FT' !important;
     background: white;
     margin: 0px 5px 0px 0px;
     border-bottom-right-radius: 5px;
@@ -52,11 +53,15 @@
  .sidebar {
     //  --cui-sidebar-width: 15rem;
      font-size: 14px;
+     font-family: 'Exo FT' !important;
+
  }
  .mobileView{
     .sidebar {
         //  --cui-sidebar-width: 15rem;
          font-size: 16px !important;
+         font-family: 'Exo FT' !important;
+
      }
  }
  .sidebar-brand {
@@ -72,10 +77,14 @@
 .sidebar-nav .nav-icon {
     color: rgb(13 107 178);
     font-size: 16px;
+    font-family: 'Exo FT' !important;
+
 }
 .sidebar-nav .nav-link:hover .nav-icon{
     color: rgb(13 107 178) !important;
     font-size: 16px;
+    font-family: 'Exo FT' !important;
+
 }
  .sidebar-nav .nav-link.active .nav-icon {
   color: white !important;

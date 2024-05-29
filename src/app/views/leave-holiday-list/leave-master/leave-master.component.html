@@ -55,12 +55,12 @@
                             totalItems: count
                           }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
                           <td>{{getContinuousIndex(i)}}</td>
-                         <td>{{item.leave_title}}</td>
-                         <td class="text-center">{{item.no_of_leaves?item.no_of_leaves:"NA"}}</td>
-                         <td class="text-center">{{item.carry_forward_per}}</td>
-                         <td class="text-center">{{item.gracefull_days}}</td>
+                         <td>{{item.leave_title |titlecase}}</td>
+                         <td class="text-center">{{item.no_of_leaves?item.no_of_leaves:"NA" |titlecase}}</td>
+                         <td class="text-center">{{item.carry_forward_per|titlecase}}</td>
+                         <td class="text-center">{{item.gracefull_days|titlecase}}</td>
                          <!-- <td>{{item.encashment}}</td> -->
-                         <td class="text-center">{{item.max_encashments?item.max_encashments:"NA"}}</td>
+                         <td class="text-center">{{item.max_encashments?item.max_encashments:"NA"|titlecase}}</td>
                          <td class="text-center">
                             <ng-container *ngFor="let access of permissions">
                                 <button mat-raised-button mat-mini-fab  routerLink="/leave/updateLeaveDetails/{{item.id}}" *ngIf="access === 'UPDATE'">
@@ -119,7 +119,7 @@
                 <div class="row">
                     <div class="col-6 align-self-center">
                         <h6 class="card-subtitle">Leave Type</h6>
-                        <p class="value-container">{{item.leave_title}}</p>
+                        <p class="value-container">{{item.leave_title|titlecase}}</p>
                         </div>
                     <div class="col-6 p-3 text-end">
                         <ng-container *ngFor="let access of permissions">
@@ -132,23 +132,23 @@
                 <div class="col-6 text-start">
                     <div class="n-l">
                         <h6 class="card-subtitle">No of Leaves</h6>
-                        <p class="value-container">{{item.no_of_leaves?item.no_of_leaves:"NA"}}</p>
+                        <p class="value-container">{{item.no_of_leaves?item.no_of_leaves:"NA"|titlecase}}</p>
                     </div>
                   
                 </div>
                 <div class="col-6">
                     <h6 class="card-subtitle">Max Encashment</h6>
-                <p class="value-container">{{item.max_encashments?item.max_encashments:"NA"}}</p>
+                <p class="value-container">{{item.max_encashments?item.max_encashments:"NA"|titlecase}}</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-6">
                     <h6 class="card-subtitle">Carry Forward(%)</h6>
-                    <p class="value-container">{{item.carry_forward_per}}</p>
+                    <p class="value-container">{{item.carry_forward_per|titlecase}}</p>
                 </div>
                 <div class="col-6">
                     <h6 class="card-subtitle">Graceful Days</h6>
-                <p class="value-container">{{item.gracefull_days}}</p>
+                <p class="value-container">{{item.gracefull_days|titlecase}}</p>
                 </div>
             </div>
            

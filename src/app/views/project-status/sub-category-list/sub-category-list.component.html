@@ -55,10 +55,10 @@
                           }|customSort:directionValue:sortValue
                             ; let i=index' >
                             <td>{{i + 1}}</td>
-                            <td>{{item.psmc_name?item.psmc_name:"NA"}}</td>
-                            <td>{{item.pssc_name}}</td>
-                            <td>{{item.color ? item.color : "NA"}}</td>
-                            <td>{{item.pssc_status?item.pssc_status:"NA"}}</td>
+                            <td>{{item.psmc_name?item.psmc_name:"NA | titlecase"}}</td>
+                            <td>{{item.pssc_name | titlecase}}</td>
+                            <td>{{item.color ? item.color : "NA" | titlecase}}</td>
+                            <td>{{item.pssc_status?item.pssc_status:"NA" | titlecase}}</td>
                             <td>
                                 <ng-container *ngFor="let access of permissions">
                                 <button mat-raised-button mat-mini-fab  routerLink="/status/updateSubCategory/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
@@ -138,21 +138,21 @@
          <div class="row r-p">
             <div class="col-4">
                 <h6 class="card-subtitle">Main category</h6>
-                <div class="val-container"><i class="bi bi-card-list"></i> {{item.psmc_name?item.psmc_name:"NA"}}</div>
+                <div class="val-container"><i class="bi bi-card-list"></i> {{item.psmc_name?item.psmc_name:"NA"|titlecase}}</div>
             </div>
             <div class="col-4">
                 <h6 class="card-subtitle">Color</h6>
-                <div class="val-container"><i class="bi bi-view-list"></i> {{item.color ? item.color : "NA"}}</div>
+                <div class="val-container"><i class="bi bi-view-list"></i> {{item.color ? item.color : "NA"|titlecase}}</div>
             </div>
             <div class="col-4">
                 <h6 class="card-subtitle">Status</h6>
-                <div class="val-container"><i class="bi bi-activity"></i>{{item.pssc_status?item.pssc_status:"NA"}}</div>
+                <div class="val-container"><i class="bi bi-activity"></i>{{item.pssc_status?item.pssc_status:"NA"|titlecase}}</div>
             </div>
          </div>
          <div class="row text-center">
             <div class="col-12">
                 <h6 class="card-subtitle">Sub category</h6>
-                <div class="val-container"><i class="bi bi-card-checklist"></i> {{item.pssc_name}}</div>
+                <div class="val-container"><i class="bi bi-card-checklist"></i> {{item.pssc_name|titlecase}}</div>
             </div>
          </div>
          </div>

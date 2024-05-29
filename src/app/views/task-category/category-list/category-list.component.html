@@ -53,8 +53,8 @@
                             totalItems: count
                           };let i=index'>
                             <td>{{getContinuousIndex(i)}}</td>
-                            <td>{{item.tpc_name ?item.tpc_name:"NA" }}</td>
-                            <td>{{item.tpc_c_date| date:'mediumDate'}}</td>
+                            <td>{{item.tpc_name ?item.tpc_name:"NA" | titlecase }}</td>
+                            <td>{{item.tpc_c_date| date:'mediumDate' | titlecase}}</td>
                             <!-- <td>{{item.tpc_status?item.tpc_status:"NA"}}</td>  -->
                             <td>
                                  <ng-container *ngFor="let access of permissions">
@@ -127,7 +127,7 @@
             <div class="row">
               <div class="col-6 text-start">
                 <h6 class="card-subtitle">Category name</h6>
-                <div class="value-container">{{item.tpc_name}}</div>
+                <div class="value-container">{{item.tpc_name|titlecase}}</div>
                 </div>
                 <div class="col-6 p-2 text-end">
                  <ng-container *ngFor="let access of permissions">

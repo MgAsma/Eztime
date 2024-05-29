@@ -1,33 +1,50 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
 export type SortOrder = 'asc' | 'desc';
+
 @Pipe({
   name: 'customSort'
 })
 export class SortPipe implements PipeTransform {
 
   transform(value: any[], sortOrder: SortOrder | string = 'asc', sortKey?: string): any {
-    sortOrder = sortOrder && (sortOrder.toLowerCase() as any);
+    sortOrder = sortOrder && (sortOrder.toLowerCase() as SortOrder);
 
-    if (!value || (sortOrder !== 'asc' && sortOrder !== 'desc')) return value;
-
-    let numberArray = [];
-    let stringArray = [];
+    if (!value || (sortOrder !== 'asc' && sortOrder !== 'desc')) {
+      return value;
+    }
 
     if (!sortKey) {
-      numberArray = value.filter(item => typeof item === 'number').sort();
-      stringArray = value.filter(item => typeof item === 'string').sort();
+      // Handle the case where there is no sort key
+      return this.sortArray(value, sortOrder);
     } else {
-      numberArray = value.filter(item => typeof item[sortKey] === 'number').sort((a, b) => a[sortKey] - b[sortKey]);
-      stringArray = value
-        .filter(item => typeof item[sortKey] === 'string')
-        .sort((a, b) => {
-          if (a[sortKey] < b[sortKey]) return -1;
-          else if (a[sortKey] > b[sortKey]) return 1;
-          else return 0;
-        });
+      // Handle the case where there is a sort key
+      return this.sortArrayByKey(value, sortOrder, sortKey);
     }
-    const sorted = numberArray.concat(stringArray);
-    return sortOrder === 'asc' ? sorted : sorted.reverse();
   }
 
+  private sortArray(array: any[], sortOrder: SortOrder): any[] {
+    const sortedArray = array.slice().sort((a, b) => {
+      if (typeof a === 'number' && typeof b === 'number') {
+        return a - b;
+      } else {
+        return a.toString().localeCompare(b.toString());
+      }
+    });
+    return sortOrder === 'asc' ? sortedArray : sortedArray.reverse();
+  }
+
+  private sortArrayByKey(array: any[], sortOrder: SortOrder, sortKey: string): any[] {
+    const sortedArray = array.slice().sort((a, b) => {
+      const aValue = a[sortKey];
+      const bValue = b[sortKey];
+
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return aValue - bValue;
+      } else {
+        return aValue.toString().localeCompare(bValue.toString());
+      }
+    });
+    return sortOrder === 'asc' ? sortedArray : sortedArray.reverse();
+  }
 }

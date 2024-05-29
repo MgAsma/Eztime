@@ -33,19 +33,15 @@
                       </thead>
                       <tbody id="i-cr">
                        
-                        <ng-container *ngIf="(data | filter:term) as result">
-                        <tr *ngFor='let item of result| filter:term| paginate : {
-                            itemsPerPage: tableSize,
-                            currentPage: page,
-                            totalItems: count
-                        }; let i=index'>
+                        <ng-container *ngIf="(data) as result">
+                        <tr *ngFor='let item of result|paginate:paginationConfig; let i=index'>
                         <td>{{getContinuousIndex(i)}}</td>                            <td class="text-center">{{item.your_applied_leave_from_date}}</td>
                             <td>{{item.your_applied_leave_to_date}}</td>
-                            <td class="text-center">{{item.applied_days}}</td>
+                            <td class="text-center">{{item.applied_days|titlecase}}</td>
                             <td class="text-center">{{item.alloted_leaves}}</td>
                             <td class="text-center">{{item.used_leaves}}</td>
                             <td class="text-center">{{item.applied_date}}</td>
-                            <td class="text-center">{{item.status}}</td>                            
+                            <td class="text-center">{{item.status|titlecase}}</td>                            
                             <!-- <td *ngIf="!entryPoint['approver']">
                                 <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item)"> <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>
                              </td>
@@ -112,12 +108,8 @@
     </div>
   
     <div class="bg row mx-0 my-1">
-      <ng-container *ngIf="(list | filter:term) as result">
-        <div class="col-sm-12 col-md-6 p-0" *ngFor="let item of result | filter:term| paginate : {
-          itemsPerPage: tableSize,
-          currentPage: page,
-          totalItems: count
-          };">
+      <ng-container *ngIf="(list) as result">
+        <div class="col-sm-12 col-md-6 p-0" *ngFor="let item of result|paginate:paginationConfig;">
           <div class="card outer-card" >
             <div class="row rc-p">
               <div class="col-7">
@@ -128,7 +120,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 status-text">
-                    {{ item.approved_state ? item.approved_state : 'Yet to Approve' }}
+                    {{ item.approved_state ? item.approved_state : 'Yet to Approve'|titlecase }}
                   </div>
                 </div>
               </div>
@@ -178,7 +170,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12 val-r">
-                        {{ item.applied_days }}
+                        {{ item.applied_days |titlecase}}
                       </div>
                     </div>
                   </div>
@@ -190,7 +182,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12 val-r">
-                        {{ item.alloted_leaves }}
+                        {{ item.alloted_leaves}}
                       </div>
                     </div>
                   </div>
@@ -204,7 +196,7 @@
                       </div>
                       <div class="row">
                         <div class="col-12 val-r">
-                          {{ item.used_leaves }}
+                          {{ item.used_leaves}}
                         </div>
                       </div>
                     </div>

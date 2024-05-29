@@ -54,10 +54,10 @@
                    let i=index' [class.active]="i == currentIndex">
                    <td>{{getContinuousIndex(i)}}</td>
                   
-                   <td>{{item.user_role_name}}</td>
-                   <td>{{item.description}}</td>
+                   <td>{{item.user_role_name | titlecase}}</td>
+                   <td>{{item.description | titlecase}}</td>
                    <td>{{item.created_time | date : 'dd/MM/yyyy'}}</td>
-                   <td>{{item.role_status}}</td>
+                   <td>{{item.role_status | titlecase}}</td>
                    <td  *ngIf="role == 'ADMIN'" class="text-center"><a routerLink="/role/roles-access/{{item.id}}/{{item.user_role_name}}"><i class="fa fa-cogs" aria-hidden="true" style="color:#126EB4 !important" ></i></a></td>
                   
                  
@@ -136,7 +136,7 @@
             </div>
             <div class="row">
               <div class="col-12 val-r r-1">
-                {{item.user_role_name}}
+                {{item.user_role_name|titlecase}}
               </div>
             </div>
           </div>
@@ -176,7 +176,7 @@
               <div class="row">
                 <div class="col-12 val-r">
                   
-                  {{item.role_status}}
+                  {{item.role_status|titlecase}}
                 </div>
               </div>
             </div>
@@ -191,7 +191,7 @@
               </div>
               <div class="row">
                 <div class="col-12 val-r">
-                  {{item.description}}
+                  {{item.description|titlecase}}
                 </div>
                
               </div>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChange } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
@@ -13,7 +13,6 @@ import { TimesheetService } from 'src/app/service/timesheet.service';
 export class YetApproveComponent implements OnInit {
   @Output() buttonClick = new EventEmitter<any>();
   @Output() filter:any = new EventEmitter<any>();
-
   slno:any;
   date:any;
   people:any;
@@ -25,39 +24,47 @@ export class YetApproveComponent implements OnInit {
   term:any='';
   yetToApproveAll:any = [];
   page:any = 1;
-  count = 0;
+  count:any = 0;
   tableSize = 10;
   tableSizes = [10,25,50,100];
   entryPoint: any;
   user_id: string;
   accessConfig: any = [];
+  orgId:any;
+  @Input() data:any;
+  @Input() totalCount:{ 'pageCount': any, 'currentPage': any };
 
-  @Input() set data(value) {
-    this.yetToApproveAll = value;
-    //console.log(this.yetToApproveAll,"this.yetToApproveAll")
-    // this.count = value['count']
-  }
-
-  get data(): string {
-    return this.yetToApproveAll;
-  }
-  @Input() set totalCount(value){
-    let add:string = '0'
-    let tableCount:string = value
-    this.count = Number(tableCount+add);
-    //console.log(this.count,"COUNT---") 
-  }
+  paginationConfig:any={
+    itemsPerPage: 10,
+    currentPage: 1,
+    totalItems: 0}
   constructor(private api:ApiserviceService,private _timeSheetService:TimesheetService ,private modalService:NgbModal,
-    private _timesheet:TimesheetService,
-    private common_service:CommonServiceService) { }
+    private _timesheet:TimesheetService,private cdref: ChangeDetectorRef,private common_service:CommonServiceService) { }
+
 
   ngOnInit(): void {
    // this.entryPoint = JSON.parse(sessionStorage.getItem('entryPoint'))
-    this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
+    this.user_id = JSON.parse(sessionStorage.getItem('user_id'));
+    this.orgId = sessionStorage.getItem('org_id')
     this.getUserControls()
   }
+
+
+  ngOnChanges(changes:SimpleChange):void{
+if(changes['data'].currentValue){
+  this.yetToApproveAll=changes['data'].currentValue;
+}
+if(changes['totalCount'].currentValue){
+this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
+this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
+this.paginationConfig.itemsPerPage=this.tableSize;
+this.page=changes['totalCount'].currentValue.currentPage;
+this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
+}
+this.cdref.detectChanges();
+  }
   getUserControls(){
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.orgId}&pagination=TRUE`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
         //console.log(this.common_service.permission,"PERMISSION")

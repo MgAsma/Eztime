@@ -14,12 +14,12 @@
     </button>
     <div class="row" >
       <div class="col-sm-12">
-          <h1 class="breadcrumb-title" >{{pageName}}</h1>
+          <h1 class="breadcrumb-title" >{{pageName |titlecase}}</h1>
          <div class="mobile-hide-content" *ngIf="pageName!=''">
           <nav aria-label="breadcrumb ">
             <ol class="breadcrumb ">
               <li class="breadcrumb-item" *ngIf="pageName!='Dashboard'"><a routerLink="/dashboards">Home</a></li>
-              <li class="breadcrumb-item">{{pageName}}</li>
+              <li class="breadcrumb-item">{{pageName |titlecase}}</li>
             </ol>
           </nav>
          </div>

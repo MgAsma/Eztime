@@ -53,9 +53,14 @@
 label,p{
     color:black !important;
     font-weight: 400 !important;
+    font-family: 'Exo FT' !important;
+
 }
 .error-msg{
  color:red !important;
+ font-family: 'Exo FT' !important;
+
+
 }
 .fa-sort-up,.fa-sort-down{
     cursor: pointer !important;
@@ -68,12 +73,16 @@ label,p{
 .fc-col-header-cell-cushion{
     color:white !important;
     text-decoration: none;
+    font-family: 'Exo FT' !important;
+
   }
   .fc .fc-daygrid-day-number {
     font-size: 1em;
     text-decoration: none;
     color: #000;
     font-weight: 600;
+    font-family: 'Exo FT' !important;
+
 }
 // .fc .fc-toolbar-title {
 //     font-size: 1.40em;
@@ -97,7 +106,7 @@ h5{
     margin-bottom: 0px !important;
 }
 .mat-h4, .mat-subheading-1, .mat-typography h4 {
-    font: 400 23px/24px Roboto, "Helvetica Neue", sans-serif;
+    font: 400 23px/24px, "Exo FT";
 }
 .mat-h1, .mat-headline, .mat-typography h1 {
     margin: 16px 0 12px;

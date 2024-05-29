@@ -30,18 +30,18 @@
               <b>Leave type</b>
             </div>
             <div class="value-container">
-             <b> {{items.leave_type }}</b>
+             <b> {{items.leave_type | titlecase}}</b>
             </div>
           </div>
           <div class="col-sm-4 col-4 px-1 leave-count-card">
             <div class="count-section">
-             <b>{{items.leaves_used }}</b>
+             <b>{{items.leaves_used}}</b>
           </div>
           <div>
             <b>Used</b>
           </div>
           <div class="value-container">
-           <b> {{items.leave_type }}</b>
+           <b> {{items.leave_type | titlecase}}</b>
           </div>
         </div>
         <div class="col-sm-4 col-4 px-1 leave-count-card">
@@ -52,7 +52,7 @@
           <b>Balance</b>
         </div>
         <div class="value-container">
-         <b> {{items.leave_type }}</b>
+         <b> {{items.leave_type |titlecase }}</b>
         </div>
       </div>
            </div>
@@ -128,10 +128,10 @@
                       <tbody>
         
                         <tr *ngFor="let items of leaveDetails">
-                         <td>{{items.from_date}}</td>
-                         <td>{{items.to_date}}</td>
-                         <td><span class="badge badge-info" style="color: white;background-color: blue;">{{items.approved_state}}</span></td>
-                         <td>{{items.days}}</td>
+                         <td>{{items.from_date|titlecase}}</td>
+                         <td>{{items.to_date|titlecase}}</td>
+                         <td><span class="badge badge-info" style="color: white;background-color: blue;">{{items.approved_state |titlecase}}</span></td>
+                         <td>{{items.days |titlecase}}</td>
                         </tr>
                        
                       </tbody>
@@ -150,11 +150,11 @@
 <div class="row top-row">
 <div class="col-6 c-2 text-start">
 <h6 class="card-subtitle">From</h6>
-<p class="value-container">{{leave.from_date}}</p>
+<p class="value-container">{{leave.from_date|titlecase}}</p>
 </div>
 <div class="col-6 c-1 text-start">
 <h6 class="card-subtitle">To</h6>
-<p class="value-container">{{leave.to_date}}</p>
+<p class="value-container">{{leave.to_date|titlecase}}</p>
 </div>
 
 </div>
@@ -162,11 +162,11 @@
 <div class="row row-b">
 <div class="col-6 c-1 text-start">
 <h6 class="card-subtitle">Days</h6>
-<p class="value-container">{{leave.days}}</p>
+<p class="value-container">{{leave.days|titlecase}}</p>
 </div>
 <div class="col-6 c-2 text-start">
 <h6 class="card-subtitle">Status</h6>
-<p class="value-container">{{leave.approved_state}}</p>
+<p class="value-container">{{leave.approved_state|titlecase}}</p>
 </div>
 </div>
 </div>
@@ -188,7 +188,7 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let items of holidayList  | keyvalue">
-                     <td>{{items.key}} - {{items?.value }}</td>
+                     <td>{{items.key|titlecase}} - {{items?.value }}</td>
                     
                     </tr>
                     <!-- <tr>No records found</tr> -->

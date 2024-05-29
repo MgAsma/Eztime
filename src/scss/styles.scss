@@ -30,7 +30,10 @@ $enable-rtl: true;
 @import "theme_content.scss";
 @import "cards.scss";
 // @import 'ngx-toastr/toastr';
-
+@font-face {
+  font-family: 'Exo FT';
+  src: url('/assets/fonts/Exo/Exo-VariableFont_wght.ttf');
+}
 .p-error{
     color: red;
     font-size: 8px;
@@ -352,4 +355,10 @@ ul.ngx-pagination>li.pagination-next>span
   background: #FFFFFFCC;
   backdrop-filter: blur(2px);
   box-shadow: 0px -1px 4px 0px #00000040;
+}
+
+table thead tr>th,table thead tr>td{
+  font-family: "Exo FT" !important;
+  font-size: 14px;
+  font-weight: 600;
 }

@@ -131,7 +131,7 @@ export class CreateTimesheetComponent implements OnInit {
       }
      
       this.api.addTimeSheet(data).subscribe(
-        response=>{
+        (response)=>{
           if(response){
             this.api.showSuccess('Time sheet added successfully!!');
             this.timeSheetForm= this.builder.group({
@@ -139,10 +139,10 @@ export class CreateTimesheetComponent implements OnInit {
             });
             this.addTask()
           }
-          else{
-            this.api.showError('Error!')
-          } 
-        }
+          
+        },(error =>{
+          this.api.showError(error.error.error.message)
+        })
       
       )
     }

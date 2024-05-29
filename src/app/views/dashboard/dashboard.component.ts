@@ -192,6 +192,7 @@ getRecentAddedindustriesListData(){
   let params:any = {
     page_number:1,
     data_per_page:5,
+    search_key:'',
     org_ref_id:this.org_id,
     pagination:'TRUE'
    }

@@ -52,10 +52,10 @@
                           }|customSort:directionValue:sortValue
                             ; let i=index' [class.active]="i == currentIndex">
                             <td>{{getContinuousIndex(i)}}</td>
-                            <td>{{item.tag_name}}</td>
+                            <td>{{item.tag_name | titlecase}}</td>
                             <td>{{item.added_date | date:'mediumDate'}}</td>
                             
-                            <td>{{item.tage_status ? item.tage_status : "NA"}}</td>
+                            <td>{{item.tage_status ? item.tage_status : "NA" | titlecase}}</td>
                             <td>
                                 <ng-container *ngFor="let access of permissions">
                                     <button mat-raised-button mat-mini-fab  routerLink="/people/updateTag/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
@@ -125,7 +125,7 @@
         <div class="row top-row">
             <div class="col-7">
                 <h6 class="card-subtitle clr">Name</h6>
-                <span class="clr value-container">{{item.tag_name}}</span>
+                <span class="clr value-container">{{item.tag_name|titlecase}}</span>
             </div>
             <div class="col-5 p-3 text-end">
                 <ng-container *ngFor="let access of permissions">
@@ -138,11 +138,11 @@
       <div class="row">
         <div class="col-6">
             <h6 class="card-subtitle">Added Date</h6>
-            <p class="value-container">{{item.added_date | date:'mediumDate'}}</p>
+            <p class="value-container">{{item.added_date | date:'mediumDate'|titlecase}}</p>
         </div>
         <div class="col-6">
             <h6 class="card-subtitle">Status</h6>
-            <p class="value-container">{{item.tage_status ? item.tage_status : "NA"}}</p>
+            <p class="value-container">{{item.tage_status ? item.tage_status : "NA"|titlecase}}</p>
         </div>
       </div>
      </div>

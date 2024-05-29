@@ -52,9 +52,9 @@
                             totalItems: count
                           }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
                          <td>{{getContinuousIndex(i)}}</td>
-                         <td>{{item.center_name}}</td>
+                         <td>{{item.center_name | titlecase}}</td>
                          <td>{{item.year_start_date *1000 | date:'dd-MM-yyyy'}}</td>
-                          <td>{{item.center_status }}</td>
+                          <td>{{item.center_status | titlecase}}</td>
                           
                           <td>
                             <ng-container *ngFor="let access of permissions">
@@ -122,7 +122,7 @@
             <div class="row">
                 <div class="col-7">
                     <h6 class="card-subtitle">Status</h6>
-                    <p><i class="bi bi-activity"></i> {{item.center_status ? item.center_status : "NA"}}</p>
+                    <p><i class="bi bi-activity"></i> {{item.center_status ? item.center_status : "NA"|titlecase}}</p>
                 </div>
                 <div class="col-5 p-3 text-end">
                     <ng-container *ngFor="let access of permissions">
@@ -134,7 +134,7 @@
             <div class="row">
                 <div class="col-6">
                     <h6 class="card-subtitle"> Center Name</h6>
-                    <p> <i class="bi bi-building"></i> {{item.center_name}}</p>
+                    <p> <i class="bi bi-building"></i> {{item.center_name|titlecase}}</p>
                 </div>
                 <div class="col-6">
                     <h6 class="card-subtitle">Reg Date</h6>

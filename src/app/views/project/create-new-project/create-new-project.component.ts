@@ -135,6 +135,7 @@ export class CreateNewProjectComponent implements OnInit {
       p_closure_date:['',[Validators.required]],
       approve_manager_ref_id:['',[Validators.required]],
       p_task_checklist_status:['',[Validators.required]],
+      p_status:['',[Validators.required]],
       org_ref_id:this.orgId,
       user_ref_id:[''],
       opg_ref_id:[''],

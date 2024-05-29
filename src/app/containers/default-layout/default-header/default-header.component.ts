@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -6,6 +6,7 @@ import { ClassToggleService, HeaderComponent } from '@coreui/angular';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 import { NotificationComponent } from 'src/app/views/pages/notification/notification.component';
 import { environment } from 'src/environments/environment';
 
@@ -55,7 +56,8 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
 
   constructor(private classToggler: ClassToggleService,private modalService :NgbModal,
     private router:Router,
-    private api:ApiserviceService) {
+    private api:ApiserviceService,private cdref: ChangeDetectorRef,
+    private common_service:CommonServiceService) {
     super();
     this.getScreenSize()
   }
@@ -65,7 +67,11 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
     this.user_role_Name = sessionStorage.getItem('user_role_name');
     this.user_name = sessionStorage.getItem('user_name');
     this.getProfiledata()
-    this.getNotification()
+    this.getNotification();
+    this.common_service.title$.subscribe(title => {
+      this.pageName = title;
+      this.cdref.detectChanges();
+    });
   }
   getHeaderNavStyles(type):any{
     switch (type['page']) {

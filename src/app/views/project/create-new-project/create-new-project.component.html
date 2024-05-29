@@ -21,7 +21,7 @@
             <div class="col-sm-12 col-md-12 col-lg-6">
                 <div class="row">
                     <div class="col-sm">
-                        <!-- <h4>Project details</h4> -->
+                        <h4>Project details</h4>
                     </div>
                 </div>
                 
@@ -110,7 +110,21 @@
                     
                 </div>         
             </div>
-           
+            <div class="row">
+                <div class="col-sm-12">
+                    <p>Project Status <span >*</span></p>
+                    <select class="form-select sizeinput" aria-label="Default select example" formControlName="p_status">                       
+                        <option value="" disabled selected>Select Status</option>
+                         <option *ngFor="let status of status" [value]="status.value">{{status.viewValue}}
+                         </option>
+                       </select>
+                       <div *ngIf="f['p_status'].touched && f['p_status'].invalid" >
+                        <div *ngIf="f['p_status'].errors && f['p_status'].errors['required']"><p class="error-msg">Project Status is required</p></div>
+                    
+                  </div>
+                  </div>
+                  </div>
+            
             </div>
             <div class="col-sm-12 col-md-12 col-lg-6">
                 <div class="row">
@@ -209,6 +223,7 @@
                 </div>
                                     
             </div>
+            
             <!-- <div class="row">
                 <div class="col-sm">
                     <p>Project status  <span >*</span></p>
@@ -315,7 +330,6 @@
                         <h4>Project details</h4>
                     </div>
                 </div>
-                
                 <div class="row">
                     <div class="col-sm">
                         <p>Client <span >*</span></p>
@@ -404,14 +418,13 @@
             </div>
            
             </div>
+               
             <div class="col-sm-12 col-md-12 col-lg-6">
                 <div class="row">
                     <div class="col-sm">
                         <h4>Estimation/manager/approver details</h4>
                     </div>
                 </div>
-               
-         
             <div class="row">
                 <div class="col-sm">
                     <p>Estimated hours <span >*</span></p>

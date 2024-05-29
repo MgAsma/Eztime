@@ -53,9 +53,9 @@
                           totalItems: count
                         };let i=index' [class.active]="i == currentIndex">
                         <td>{{getContinuousIndex(i)}}</td>
-                         <td>{{item.od_name }}</td>
+                         <td>{{item.od_name|titlecase }}</td>
                          <td>{{item.od_c_date | date:'mediumDate'}}</td>
-                         <td>{{item.od_status}}</td>
+                         <td>{{item.od_status|titlecase}}</td>
                          <td>
                           <ng-container *ngFor="let access of permissions">
                             <button mat-raised-button mat-mini-fab  routerLink="/department/update/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
@@ -126,7 +126,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12">
-                    {{item.od_status}}
+                    {{item.od_status|titlecase}}
                     </div>
                   </div>
                 </div>
@@ -149,7 +149,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 value-container">
-                        {{item.od_name }}
+                        {{item.od_name|titlecase }}
                     </div>
                   </div>
                 </div>

@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { TimesheetService } from 'src/app/service/timesheet.service';
@@ -41,7 +41,7 @@ export class MonthTimesheetComponent implements OnInit {
     private fb:FormBuilder,
     private api:ApiserviceService,
     private location:Location,
-    private _timesheet:TimesheetService,
+    private _timesheet:TimesheetService,private cdref: ChangeDetectorRef,
     private common_service:CommonServiceService) { }
     goBack(event)
   {
@@ -60,7 +60,7 @@ export class MonthTimesheetComponent implements OnInit {
      method:"VIEW",
      approved_state:'YET_TO_APPROVED',
      user_id:this.user_id,
-     page_number:this.page,
+     page_number:1,
      data_per_page:10,
      search_key:'',
      pagination:'TRUE'
@@ -133,7 +133,7 @@ export class MonthTimesheetComponent implements OnInit {
         method:"VIEW",
         approved_state:'YET_TO_APPROVED',
         user_id:this.user_id,
-        page_number:this.page,
+        page_number:1,
         data_per_page:10,
         search_key:'',
         timesheets_from_date:this.formattedDate,
@@ -165,7 +165,7 @@ export class MonthTimesheetComponent implements OnInit {
         } 
         
         this.allDetails = res['result']['data']
-        this.totalCount = res['result'].pagination.number_of_pages
+        this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
         if(this.allDetails.length <= 0){
           this.api.showWarning('No records found !')
         }
@@ -197,7 +197,7 @@ export class MonthTimesheetComponent implements OnInit {
         } 
         this.allDetails = res['result']['data']
         
-        this.totalCount = res['result'].pagination.number_of_pages
+        this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
         if(this.allDetails.length <= 0){
           this.api.showWarning('No records found !')
         }
@@ -235,7 +235,7 @@ export class MonthTimesheetComponent implements OnInit {
         method:"VIEW",
         approved_state:this.selectedTab,
         user_id:this.user_id,
-        page_number:this.page,
+        page_number:1,
         data_per_page:10,
         search_key:'',
         timesheets_from_date:this.formattedDate,
@@ -258,7 +258,7 @@ export class MonthTimesheetComponent implements OnInit {
         method:"VIEW",
         approved_state:this.selectedTab,
         user_id:this.user_id,
-        page_number:this.page,
+        page_number:1,
         data_per_page:10,
         search_key:'',
         pagination:'TRUE'
@@ -271,8 +271,10 @@ export class MonthTimesheetComponent implements OnInit {
    }
  
    buttonClick(event){
+    console.log(event.page);
     this.handleMonthSelection(this.monthForm.value['fromMonth'])
     if(event){
+      this.cdref.detectChanges();
       if(this.changes){
         let c_params={
           module:"TIMESHEET",
@@ -309,6 +311,7 @@ export class MonthTimesheetComponent implements OnInit {
   searchFiter(event){
     this.handleMonthSelection(this.monthForm.value['fromMonth'])
     if(event){
+      this.cdref.detectChanges();
       if(this.changes){
         let c_params={
           module:"TIMESHEET",

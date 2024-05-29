@@ -31,19 +31,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <ng-container *ngIf="(list | filter:term) as result">
-                  <tr *ngFor='let item of result| filter:term| paginate : {
-                      itemsPerPage: tableSize,
-                      currentPage: page,
-                      totalItems: count
-                  }; let i=index'>
+                  <ng-container *ngIf="(list) as result">
+                  <tr *ngFor='let item of result|paginate:paginationConfig; let i=index'>
                       <td>{{getContinuousIndex(i)}}</td>
                       <td class="text-center">{{item.created_date_time | date :'dd/MM/YYYY'}}</td>
-                      <td class="text-center">{{item.created_by_first_name}}</td>
-                      <td class="text-center">{{item.id ? item.id :'NA'}}</td>
-                      <td class="text-center">{{item.time_spent }}</td>
+                      <td class="text-center">{{item.created_by_first_name|titlecase}}</td>
+                      <td class="text-center">{{item.id ? item.id :'NA'|titlecase}}</td>
+                      <td class="text-center">{{item.time_spent|titlecase }}</td>
                       <td class="text-center">{{item.created_date_time | date :'dd/MM/YYYY'}}</td> 
-                      <td class="text-center">{{item.approved_state ? item.approved_state : 'Yet to Approve'}}</td>
+                      <td class="text-center">{{item.approved_state ? item.approved_state : 'Yet to Approve'|titlecase}}</td>
                        <td class="text-center">
                           <ng-container *ngFor="let approval of accessConfig">
                               <span *ngIf="approval == 'DELETE'">
@@ -96,12 +92,8 @@
 </div>
 
 <div class="bg row mx-0 my-1">
-  <ng-container *ngIf="(list | filter:term) as result">
-    <div class="col-sm-12 col-md-6 p-0" *ngFor="let item of result | filter:term| paginate : {
-      itemsPerPage: tableSize,
-      currentPage: page,
-      totalItems: count
-      };">
+  <ng-container *ngIf="(list) as result">
+    <div class="col-sm-12 col-md-6 p-0" *ngFor="let item of result|paginate:paginationConfig;">
       <div class="card outer-card" >
         <div class="row rc-p">
           <div class="col-7">
@@ -112,7 +104,7 @@
             </div>
             <div class="row">
               <div class="col-12 status-text">
-                {{ item.approved_state ? item.approved_state : 'Yet to Approve' }}
+                {{ item.approved_state ? item.approved_state : 'Yet to Approve'|titlecase }}
               </div>
             </div>
           </div>
@@ -155,7 +147,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 val-r">
-                    {{ item.created_by_first_name }}
+                    {{ item.created_by_first_name|titlecase }}
                   </div>
                 </div>
               </div>
@@ -182,7 +174,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 val-r">
-                    {{ item.time_spent }}
+                    {{ item.time_spent|titlecase }}
                   </div>
                 </div>
               </div>
@@ -194,7 +186,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 val-r">
-                    {{ item.task_worked_list.task_name }}
+                    {{ item.task_worked_list.task_name|titlecase }}
                   </div>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterContentChecked, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChange } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
@@ -37,23 +37,15 @@ export class MonthApproveComponent implements OnInit{
   noOfPages: any;
   org_id: any;
   
-  @Input() set data(value) {
-    this.approvedAll = value;
-    // this.count = value['count']
-  }
-
-  get data(): string {
-    return this.approvedAll;
-  }
-  @Input() set totalCount(value){
-    let add:string = '0'
-    let tableCount:string = value
-    this.count = Number(tableCount+add);
-
-  }
+  @Input() data:any
+  @Input() totalCount:{ 'pageCount': any, 'currentPage': any };
+  paginationConfig:any={
+    itemsPerPage: 10,
+    currentPage: 1,
+    totalItems: 0}
   constructor(private _timesheet:TimesheetService,
     private modalService:NgbModal,
-    private api:ApiserviceService,
+    private api:ApiserviceService,private cdref: ChangeDetectorRef,
     private common_service:CommonServiceService) {
       
    }
@@ -62,6 +54,21 @@ export class MonthApproveComponent implements OnInit{
     this.org_id = sessionStorage.getItem('org_id')
     this.getUserControls()
  }
+
+ 
+ ngOnChanges(changes:SimpleChange):void{
+  if(changes['data'].currentValue){
+    this.approvedAll=changes['data'].currentValue;
+  }
+  if(changes['totalCount'].currentValue){
+    this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
+    this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
+    this.paginationConfig.itemsPerPage=this.tableSize;
+  this.page=changes['totalCount'].currentValue.currentPage;
+  this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
+  }
+  this.cdref.detectChanges();
+    }
  getUserControls(){
   this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.org_id}&pagination=TRUE`).subscribe((res:any)=>{
     if(res.status_code !== '401'){

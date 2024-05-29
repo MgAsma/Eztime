@@ -60,10 +60,10 @@
                           }|customSort:directionValue:sortValue
                           ; let i=index' [class.active]="i == currentIndex">
                           <td>{{getContinuousIndex(i)}}</td>
-                         <td>{{item.toi_title}}</td>
-                         <td>{{item.toi_description ? item.toi_description : "NA" }}</td>
+                         <td>{{item.toi_title | titlecase}}</td>
+                         <td>{{item.toi_description ? item.toi_description : "NA"| titlecase }}</td>
                          <td>{{item.toi_c_date | date:'mediumDate' }}</td>
-                         <td>{{item.toi_status?item.toi_status:"NA" }}</td>
+                         <td>{{item.toi_status?item.toi_status:"NA"| titlecase }}</td>
                          <td>
                             <ng-container *ngFor="let access of permissions">
  
@@ -146,11 +146,11 @@
                     <div class="row">
                         <div class="col-6 r-c text-start">
                             <h6 class="card-subtitle"> Industry name</h6>
-                            <p class="value-container">{{item.toi_title}}</p>
+                            <p class="value-container">{{item.toi_title|titlecase}}</p>
                         </div>
                         <div class="col-6 c-r text-start">
                             <h6 class="card-subtitle">Description</h6>
-                            <p class="value-container">{{item.toi_description ? item.toi_description : "NA"}}</p>
+                            <p class="value-container">{{item.toi_description ? item.toi_description : "NA"|titlecase}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -160,7 +160,7 @@
                         </div>
                         <div class="col-6 c-r text-start">
                             <h6 class="card-subtitle">Status</h6>
-                            <p class="value-container">{{item.toi_status ? item.toi_status :'NA'}}</p>
+                            <p class="value-container">{{item.toi_status ? item.toi_status :'NA'|titlecase}}</p>
                         </div>
                     </div>
                 </div>

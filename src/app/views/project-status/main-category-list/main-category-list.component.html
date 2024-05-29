@@ -50,8 +50,8 @@
                             totalItems: count
                           }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
                             <td>{{i + 1}}</td>
-                            <td>{{item.psmc_name}}</td>
-                            <td>{{item.psmc_color_code}}</td>
+                            <td>{{item.psmc_name|titlecase}}</td>
+                            <td>{{item.psmc_color_code|titlecase}}</td>
                             <td>
                                 <ng-container *ngFor="let access of permissions">
                                     <button mat-raised-button mat-mini-fab  routerLink="/status/updateMainCategory/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
@@ -133,11 +133,11 @@
             <div class="row">
                 <div class="col-6">
                     <h6 class="card-subtitle">Main category</h6>
-                    <div class="content-div">{{item.psmc_name}}</div>
+                    <div class="content-div">{{item.psmc_name|titlecase}}</div>
                 </div>
                 <div class="col-6 column-2">
                     <h6 class="card-subtitle">Color</h6>
-                    <div class="content-div color-column" [ngStyle]="{'background':item.psmc_color_code}">{{item.psmc_color_code}}</div>
+                    <div class="content-div color-column" [ngStyle]="{'background':item.psmc_color_code}">{{item.psmc_color_code|titlecase}}</div>
                 </div>
             </div>
          </div>

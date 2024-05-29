@@ -20,7 +20,7 @@
         <div class="card">
           <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-8">
-              <form [formGroup]="monthForm" (ngSubmit)="submit()">
+              <form [formGroup]="monthForm" (ngSubmit)="submit()" *ngIf="monthForm">
               <div class="row">
                      <div class="col-sm-12 col-md-12 col-lg-4">
                       <mat-form-field >

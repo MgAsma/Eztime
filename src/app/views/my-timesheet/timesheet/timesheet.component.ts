@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
@@ -37,7 +37,7 @@ export class TimesheetComponent implements OnInit {
     private _fb:FormBuilder,
     private api:ApiserviceService,
     private datepipe:DatePipe,
-    private location:Location,
+    private location:Location,private cdref: ChangeDetectorRef,
     private common_service:CommonServiceService) { }
   goBack(event)
   {
@@ -77,7 +77,7 @@ export class TimesheetComponent implements OnInit {
       if( res['result'].data.length >0){
         this.allDetails = res['result']['data']
         this.cardData = res['result'].timesheet_dashboard
-        this.totalCount = res['result'].pagination.number_of_pages
+        this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
       }
       else{
         this.allDetails.length < 0 ? this.api.showWarning('No records found') : ''
@@ -90,8 +90,7 @@ export class TimesheetComponent implements OnInit {
       if( res['result'].data.length >0){
         this.allDetails = res['result']['data']
         this.cardData = res['result'].timesheet_dashboard
-        this.totalCount = res['result'].pagination.number_of_pages
-      
+        this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
         this.timeSheetForm.patchValue({
           from_date:this.datepipe.transform(this.cardData.from_date,'dd/MM/yyyy'),
           to_date:this.datepipe.transform(this.cardData.to_date,'dd/MM/yyyy')
@@ -113,6 +112,7 @@ export class TimesheetComponent implements OnInit {
    }
    buttonClick(event){
     if(event){
+      this.cdref.detectChanges();
       let c_params={}
       if(this.changes){
         c_params={
@@ -147,6 +147,7 @@ export class TimesheetComponent implements OnInit {
   }
   searchFiter(event){
     if(event){
+      this.cdref.detectChanges();
       this.allDetails = []
       this.cardData =""
       this.totalCount = ""
@@ -163,7 +164,7 @@ export class TimesheetComponent implements OnInit {
         if( res['result'].data.length >0){
           this.allDetails = res['result']['data']
           this.cardData = res['result'].timesheet_dashboard
-          this.totalCount = res['result'].pagination.number_of_pages
+          this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
         }
         else{
           this.allDetails.length < 0 ? this.api.showWarning('No records found') : ''

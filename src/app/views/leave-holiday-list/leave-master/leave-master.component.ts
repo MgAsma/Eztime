@@ -113,7 +113,8 @@ export class LeaveMasterComponent implements OnInit {
       }
     this.api.getLeaveDetail(params).subscribe((data:any)=>{
       this.leaveMasterList= data.result.data;
-
+      const noOfPages:number = data['result'].pagination.number_of_pages
+      this.count  = noOfPages * this.tableSize
     },(error=>{
      this.api.showError(error.error.error.message)
       

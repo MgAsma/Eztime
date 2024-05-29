@@ -39,7 +39,8 @@ export class AppliedApprovedLeavesComponent implements OnInit {
     private datepipe:DatePipe,
     private _fb:FormBuilder,
     private location:Location,
-    private common_service:CommonServiceService
+    private common_service:CommonServiceService,
+    private cdref: ChangeDetectorRef,
     ) {}
   goBack(event)
   {
@@ -72,6 +73,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
   }
   searchFiter(event){
     if(event){
+      this.cdref.detectChanges();
       if(this.changes){
         let params= {
           module:"LEAVE/HOLIDAY_LIST",
@@ -107,6 +109,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
   }
   buttonClick(event){
     if(event){
+      this.cdref.detectChanges();
       if(this.changes){
         let params= {
           module:"LEAVE/HOLIDAY_LIST",
@@ -147,7 +150,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
       if(res){ 
         this.AllListData = res['result'].data
         this.AllCardData = res['result'].leave_dashboard
-        this.totalCount  = res['result']['pagination'].number_of_pages
+        this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
       if(this.AllListData.length <= 0){
         this.api.showWarning('No records found')
       }
@@ -166,10 +169,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
         if(res){ 
         this.AllCardData = res['result'].leave_dashboard
         this.AllListData = res['result'].data
-        this.totalCount  = res['result']['pagination'].number_of_pages
-      
-        
-      
+        this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
         if(this.AllListData.length <= 0){
           this.api.showWarning('No records found')
         }

@@ -42,8 +42,8 @@
         >
         </c-avatar>
         <p class="mx-2" [ngClass]="user_role_Name !== 'EMPLOYEE' ? 'nonemployee' : 'employee'">
-          <small class="role-name" *ngIf="user_role_Name !== 'EMPLOYEE'">{{user_role_Name}}</small><br/>
-       {{user_name}}
+          <small class="role-name" *ngIf="user_role_Name !== 'EMPLOYEE'">{{user_role_Name|titlecase}}</small><br/>
+       {{user_name |titlecase}}
      </p>
         
   </div>
@@ -59,7 +59,7 @@
     <!--app-body-->
     <div class="body scroll-fix">
       <mat-card class="body-card">
-        <app-default-header class="d-print-none header header-sticky" position="sticky" sidebarId="sidebar" [pageName]="currentUrlName"></app-default-header>
+        <app-default-header class="d-print-none header header-sticky" position="sticky" sidebarId="sidebar"></app-default-header>
    
         <router-outlet></router-outlet>
       </mat-card>
@@ -83,7 +83,7 @@
         <div [ngClass]="getHeaderNavStyles(headNav)">
           <a (click)="navigateTo(headNav)" cDropdownItem>
             <i class="{{headNav.icons}}" id="nav-icon"></i>
-            <span class="title" >&nbsp;&nbsp;{{headNav.page}} </span>
+            <span class="title" >&nbsp;&nbsp;{{headNav.page |titlecase}} </span>
           </a>
         </div>   
       </li>

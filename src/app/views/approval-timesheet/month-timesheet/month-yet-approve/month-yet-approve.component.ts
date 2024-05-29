@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChange } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
@@ -34,22 +34,14 @@ export class MonthYetApproveComponent implements OnInit {
   accessConfig: any = [];
   org_id: any;
   
-  @Input() set data(value) {
-    this.yetToApproveAll = value;
-    // this.count = value['count']
-  }
-
-  get data(): string {
-    return this.yetToApproveAll;
-  }
-  @Input() set totalCount(value){
-    let add:string = '0'
-    let tableCount:string = value
-    this.count = Number(tableCount+add);
-    //console.log(this.count,"COUNT---") 
-  }
+  @Input() data:any;
+  @Input() totalCount:{ 'pageCount': any, 'currentPage': any };
+  paginationConfig:any={
+    itemsPerPage: 10,
+    currentPage: 1,
+    totalItems: 0}
   constructor(private _timesheet:TimesheetService,
-   private modalService:NgbModal,
+   private modalService:NgbModal,private cdref: ChangeDetectorRef,
    private api:ApiserviceService,
    private common_service:CommonServiceService) { 
   
@@ -60,6 +52,19 @@ export class MonthYetApproveComponent implements OnInit {
    this.org_id = sessionStorage.getItem('org_id')
    this.getUserControls()
     }
+    ngOnChanges(changes:SimpleChange):void{
+      if(changes['data'].currentValue){
+        this.yetToApproveAll=changes['data'].currentValue;
+      }
+      if(changes['totalCount'].currentValue){
+        this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
+        this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
+        this.paginationConfig.itemsPerPage=this.tableSize;
+      this.page=changes['totalCount'].currentValue.currentPage;
+      this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
+      }
+      this.cdref.detectChanges();
+        }
   
     getUserControls(){
       this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.org_id}&pagination=TRUE`).subscribe((res:any)=>{
@@ -119,6 +124,7 @@ export class MonthYetApproveComponent implements OnInit {
         page:this.page,
         tableSize:this.tableSize
        }
+       console.log(this.page,tableData);
       this.buttonClick.emit(tableData)
     } 
   open(content,status) {
@@ -159,7 +165,12 @@ let data= {
  approved_state: status
 }
 this._timesheet.updateStatus(data).subscribe(res =>{
-  this.buttonClick.emit(this.page)
+  let tableData ={
+    search_key:this.term,
+    page:this.page,
+    tableSize:this.tableSize
+   }
+  this.buttonClick.emit(tableData)
  if(res){
   const toasterText = status ===  'DECLINED'?'declined':'approved'
    this.api.showSuccess(`Timesheet ${toasterText} successfully !!`)

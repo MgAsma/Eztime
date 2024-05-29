@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
@@ -35,6 +35,7 @@ export class DeadlineCrossedComponent implements OnInit {
     private fb:FormBuilder,
     private api:ApiserviceService,
     private common_service:CommonServiceService,
+    private cdr: ChangeDetectorRef,
     private location:Location) { }
 
   ngOnInit(): void {
@@ -105,10 +106,10 @@ export class DeadlineCrossedComponent implements OnInit {
    })
     }
     getByStatus(params){
-      this.api.getData(`${environment.live_url}/${environment.time_sheets_deadline_crossed}?user_id=${params.user_id}&organization_id=${params.organization_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res=>{
+      this.api.getData(`${environment.live_url}/${environment.time_sheets_deadline_crossed}?user_id=${params.user_id}&organization_id=${params.organization_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res=>{
         if(res){
           this.allDetails = res['result']['data']
-          this.totalCount = res['result'].pagination.number_of_pages
+          this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
           if(this.allDetails.length === 0){
             this.api.showWarning('No records found')
           }
@@ -120,10 +121,10 @@ export class DeadlineCrossedComponent implements OnInit {
 
 
     getAllTimeSheet(params){ 
-      this.api.getData(`${environment.live_url}/${environment.time_sheets_deadline_crossed}?user_id=${params.user_id}&organization_id=${params.organization_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&timesheets_from_date=${params.timesheets_from_date}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res=>{
+      this.api.getData(`${environment.live_url}/${environment.time_sheets_deadline_crossed}?user_id=${params.user_id}&organization_id=${params.organization_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&timesheets_from_date=${params.timesheets_from_date}&search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res=>{
         if(res){
           this.allDetails = res['result']['data']
-          this.totalCount = res['result'].pagination.number_of_pages
+          this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
           if(this.allDetails.length === 0){
             this.api.showWarning('No records found')
           }

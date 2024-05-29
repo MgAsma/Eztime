@@ -55,11 +55,11 @@
                             totalItems: count
                           }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
                             <td>{{getContinuousIndex(i)}}</td>
-                            <td>{{item.c_name}}</td>
-                            <td>{{item.c_code}}</td>
+                            <td>{{item.c_name|titlecase}}</td>
+                            <td>{{item.c_code|titlecase}}</td>
                             <!-- <td>{{item.toi_ref_id}}</td> -->
                             <!-- <td>{{item.c_type}}</td> -->
-                            <td>{{item.c_contact_person}}</td>
+                            <td>{{item.c_contact_person|titlecase}}</td>
                             <!-- <td>{{item.project ? item.project :"NA"}}</td> -->
                             <td>{{item.c_c_timestamp | date:'mediumDate'}}</td>
                             
@@ -131,7 +131,7 @@
                     <div class="row">
                         <div class="col-6 b-b">
                             <h6 class="card-subtitle"><i class="bi bi-person-circle"></i> Client name</h6>
-                            <div class="value-container">{{item.c_name}}</div>
+                            <div class="value-container">{{item.c_name |titlecase}}</div>
                         </div>
                         <div class="col-6 p-2 text-end">
                         <ng-container *ngFor="let access of permissions">
@@ -153,7 +153,7 @@
                         </div>
                         <div class="col-6">
                             <h6 class="card-subtitle"><i class="bi bi-upc-scan"></i> Code</h6>
-                            <div class="value-container">{{item.c_code}}</div>
+                            <div class="value-container">{{item.c_code|titlecase}}</div>
                         </div>
                     </div>
                     <div class="row">
@@ -165,7 +165,7 @@
                             <!-- <h6 class="card-subtitle"><i class="bi bi-text-wrap"></i> Type</h6>
                             <div class="value-container">{{item.c_type}}</div> -->
                             <h6 class="card-subtitle"><i class="bi bi-person-rolodex"></i> Contact person</h6>
-                            <div class="value-container">{{item.c_contact_person}}</div>
+                            <div class="value-container">{{item.c_contact_person|titlecase}}</div>
                         </div>
                     </div>
               

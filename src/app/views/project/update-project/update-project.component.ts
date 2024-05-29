@@ -98,6 +98,7 @@ export class UpdateProjectComponent implements OnInit {
       reporting_manager_ref_id:['',[Validators.required]],
       approve_manager_ref_id:['',[Validators.required]],
       p_task_checklist_status:[''],
+      p_status:['',[Validators.required]],
         pc_ref_id: [''],
         user_ref_id:[''],
         opg_ref_id:[''],

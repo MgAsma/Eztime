@@ -57,14 +57,14 @@
                           }
                            ; let i=index' [class.active]="i == currentIndex">
                             <td>{{getContinuousIndex(i)}}</td>
-                            <td>{{item.p_name}}</td>
-                            <td>{{item.project_related_task_list_converted}}</td>
-                            <td>{{item.client_name}}</td>
-                            <td>{{item.reporting_manager_first_name}}</td>
-                            <td>{{item.approver_manager_first_name}}</td>
+                            <td>{{item.p_name | titlecase}}</td>
+                            <td>{{item.project_related_task_list_converted | titlecase}}</td>
+                            <td>{{item.client_name| titlecase}}</td>
+                            <td>{{item.reporting_manager_first_name| titlecase}}</td>
+                            <td>{{item.approver_manager_first_name| titlecase}}</td>
                             <td *ngIf="item.p_start_date !== ''">{{item.p_start_date*1000 | date:'dd-MM-yyyy'}}</td>
                             <td *ngIf="item.p_closure_date !== ''">{{item.p_closure_date*1000 | date:'dd-MM-yyyy'}}</td>
-                            <td>{{item.p_status?item.p_status:"NA"}}</td>
+                            <td>{{item.p_status?item.p_status:"NA"| titlecase}}</td>
                            
                             
                             <td>
@@ -181,13 +181,13 @@
                     <h6 class="card-subtitle">
                         <!-- <i class="bi bi-person-check"></i> -->
                         Reporter</h6>
-                    <div class="value-container">{{item.reporting_manager_first_name}}</div>
+                    <div class="value-container">{{item.reporting_manager_first_name|titlecase}}</div>
                     </div>
                     <div class="col-6 bg-secondary">
                         <h6 class="card-subtitle">
                             <!-- <i class="bi bi-person-gear"></i> -->
                             Approver</h6>
-                        <div class="value-container">{{item.approver_manager_first_name}}</div>
+                        <div class="value-container">{{item.approver_manager_first_name|titlecase}}</div>
                     </div>
                  </div>
 
@@ -196,13 +196,13 @@
                         <h6 class="card-subtitle">
                             <!-- <i class="bi bi-person-lines"></i> -->
                             Client</h6>
-                        <div class="value-container">{{item.client_name}}</div>
+                        <div class="value-container">{{item.client_name|titlecase}}</div>
                     </div>
                     <div class="col-6">
                         <h6 class="card-subtitle">
                             <!-- <i class="bi bi-radioactive"></i> -->
                             Status</h6>
-                        <div class="value-container">{{item.p_status?item.p_status:"NA"}}</div>
+                        <div class="value-container">{{item.p_status?item.p_status:"NA"|titlecase}}</div>
                     </div>
                  </div>
             </div>

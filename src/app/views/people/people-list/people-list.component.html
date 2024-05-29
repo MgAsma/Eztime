@@ -58,11 +58,11 @@
                             totalItems: count
                         }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
                             <td>{{getContinuousIndex(i)}}</td>
-                            <td>{{item.u_first_name +" "+ item.u_last_name}}</td>
-                            <td>{{item.u_designation?item.u_designation:"NA"}}</td>
+                            <td>{{item.u_first_name +" "+ item.u_last_name | titlecase}}</td>
+                            <td>{{item.u_designation?item.u_designation:"NA" | titlecase}}</td>
                             
                             <td style="width: 10% !important;">
-                              {{item.tag_list_converted ? item.tag_list_converted :'NA'}}  
+                              {{item.tag_list_converted ? item.tag_list_converted :'NA' | titlecase}}  
                             </td>
                            
                             <!-- <td *ngIf="item.u_date_of_joining === null">{{'NA'}}</td> -->
@@ -70,7 +70,7 @@
                             <td *ngIf="!isDate(item.u_date_of_joining)">{{item.u_date_of_joining *1000 | date:'YYYY-MM-dd'}}</td> 
                             
                             <td>{{item.user_role_name}}</td>
-                            <td style="padding-left: 15px !important;">{{item.center_name ? item.center_name :'NA'}}</td>
+                            <td style="padding-left: 15px !important;">{{item.center_name ? item.center_name :'NA' | titlecase}}</td>
                             <td class="p-r">
                               
                               <img src="{{item.u_profile_path}}" alt="NAN" height="25px" width="50px">
@@ -80,7 +80,7 @@
                             
                             </td>
                             
-                            <td>{{item.u_status?item.u_status:'NA'}}</td>                                                      
+                            <td>{{item.u_status?item.u_status:'NA' | titlecase}}</td>                                                      
                            <td>
                             <ng-container *ngFor="let access of permissions">
                               <button mat-raised-button mat-mini-fab  routerLink="/people/updatePeople/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
@@ -149,7 +149,7 @@
                   <a href="{{item.u_profile_path}}" target="_blank">
                     <img src="{{item.u_profile_path}}" alt="" height="70px" width="27%">
                   </a>
-                <div class="p-2 pt-4">{{item.u_first_name +" "+ item.u_last_name}}</div> 
+                <div class="p-2 pt-4">{{item.u_first_name +" "+ item.u_last_name |titlecase}}</div> 
               </div>
                 
                 <div class="col-6 p-2 text-end">
@@ -168,7 +168,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 value-container">
-                      {{item.u_status?item.u_status:'NA'}}
+                      {{item.u_status?item.u_status:'NA'|titlecase}}
                     </div>
                   </div>
                 </div>
@@ -184,7 +184,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12 value-container">
-                          {{item.user_role_name}}
+                          {{item.user_role_name|titlecase}}
                       </div>
                     </div>
                   </div>
@@ -196,7 +196,7 @@
                       </div>
                       <div class="row">
                         <div class="col-12 value-container">
-                        {{item.center_name ? item.center_name :'NA'}}
+                        {{item.center_name ? item.center_name :'NA'|titlecase}}
                         </div>
                       </div>
                     </div>
@@ -211,7 +211,7 @@
                   </div>
                   <div class="row">
                      <div class="col-12 value-container">
-                     {{item.u_designation?item.u_designation:"NA"}}
+                     {{item.u_designation?item.u_designation:"NA"|titlecase}}
                      </div>
                    </div>
                  </div>

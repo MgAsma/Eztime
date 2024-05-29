@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TimesheetService } from 'src/app/service/timesheet.service';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
-
 @Component({
   selector: 'app-todays-approval',
   templateUrl: './todays-approval.component.html',
@@ -21,7 +20,8 @@ export class TodaysApprovalComponent implements OnInit {
   constructor(
     private timesheetService:TimesheetService,
     private location:Location,
-    private common_service:CommonServiceService
+    private common_service:CommonServiceService,
+    private cdr: ChangeDetectorRef
     ) { }
   goBack(event)
   {
@@ -49,13 +49,13 @@ export class TodaysApprovalComponent implements OnInit {
   }
   getApprovals(params){ 
     this.timesheetService.getTodaysApprovalTimesheet(params).subscribe(res=>{
-      this.allDetails = res['result'].data
-      this.totalCount = res['result']['pagination'].number_of_pages
-      //console.log(res,"RESAPPROVALS")
+      this.allDetails = res['result'].data;
+      this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
     })
   }
   buttonClick(event){
     if(event){
+      this.cdr.detectChanges();
       let data ={
         user_id:this.user_id,
         page_number:event.page,
@@ -70,6 +70,7 @@ export class TodaysApprovalComponent implements OnInit {
 
   searchFiter(event){
     if(event){
+      this.cdr.detectChanges();
       let data ={
         user_id:this.user_id,
         page_number:event.page,
