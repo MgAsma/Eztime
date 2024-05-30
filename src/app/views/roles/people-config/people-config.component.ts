@@ -184,7 +184,7 @@ export class PeopleConfigComponent implements OnInit {
     if (permissionIndex !== -1) {
       item.module_name.splice(permissionIndex, 1);
       item.permissions.splice(permissionIndex, 1);
-      // Add PEOPLE to module_name array at index 0
+      // Add Employee to module_name array at index 0
       item.module_name.unshift("PEOPLE");
 
       // Add permissions object at index 0 in permissions array
@@ -192,7 +192,7 @@ export class PeopleConfigComponent implements OnInit {
       item.permissions.unshift({...selectedOptions, ...newProperties[0], ...newProperties[1], ...newProperties[2]});
     }
     else{
-       // Add PEOPLE to module_name array at index 0
+       // Add Employee to module_name array at index 0
        item.module_name.unshift("PEOPLE");
 
        // Add permissions object at index 0 in permissions array

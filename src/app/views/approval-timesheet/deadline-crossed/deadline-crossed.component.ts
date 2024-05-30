@@ -107,12 +107,11 @@ export class DeadlineCrossedComponent implements OnInit {
     }
     getByStatus(params){
       this.api.getData(`${environment.live_url}/${environment.time_sheets_deadline_crossed}?user_id=${params.user_id}&organization_id=${params.organization_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res=>{
-        if(res){
+        if(res && res['result']['data'].length>=1){
           this.allDetails = res['result']['data']
           this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
-          if(this.allDetails.length === 0){
-            this.api.showWarning('No records found')
-          }
+        }else{
+          this.api.showWarning('No records found');
         }
       },(error =>{
         this.api.showError(error.error.error.message)
@@ -122,12 +121,11 @@ export class DeadlineCrossedComponent implements OnInit {
 
     getAllTimeSheet(params){ 
       this.api.getData(`${environment.live_url}/${environment.time_sheets_deadline_crossed}?user_id=${params.user_id}&organization_id=${params.organization_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&timesheets_from_date=${params.timesheets_from_date}&search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res=>{
-        if(res){
+        if(res && res['result']['data'].length>=1){
           this.allDetails = res['result']['data']
           this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
-          if(this.allDetails.length === 0){
-            this.api.showWarning('No records found')
-          }
+        }else{
+          this.api.showWarning('No records found');
         }
       },(error =>{
         this.api.showError(error.error.error.message)

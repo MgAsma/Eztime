@@ -61,7 +61,9 @@ export class IndustrySectorListComponent implements OnInit {
     this.api.getData(`${environment.live_url}/${environment.type_of_industries}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe((data:any)=>{
       this.allIndustryList= data.result.data;
         const noOfPages:number = data['result'].pagination.number_of_pages
-        this.count  = noOfPages * this.tableSize
+        this.count  = noOfPages * this.tableSize;
+        this.page=data['result'].pagination.current_page;
+
       },((error:any)=>{
         this.api.showError(error.error.error.message)
       })
@@ -110,7 +112,9 @@ export class IndustrySectorListComponent implements OnInit {
     this.api.getIndustryDetailsPage(params).subscribe((data:any)=>{
       this.allIndustryList= data.result.data;
         const noOfPages:number = data['result'].pagination.number_of_pages
-        this.count  = noOfPages * this.tableSize
+        this.count  = noOfPages * this.tableSize;
+        this.page=data['result'].pagination.current_page;
+
       },error=>{
         this.api.showError(error.error.error.message)
         

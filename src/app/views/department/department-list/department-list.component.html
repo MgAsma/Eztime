@@ -77,18 +77,19 @@
                    
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm" >
-                <div class="d-flex justify-content-center p-nav">
-                    <pagination-controls 
-                      previousLabel="Prev" 
-                      nextLabel="Next" 
-                      (pageChange)="onTableDataChange($event)">
-                    </pagination-controls>
-                  </div>
-            </div>
-        </div>
+      
     </div>
+    <div class="row">
+      <div class="col-sm" >
+          <div class="d-flex justify-content-center p-nav">
+              <pagination-controls 
+                previousLabel="Prev" 
+                nextLabel="Next" 
+                (pageChange)="onTableDataChange($event)">
+              </pagination-controls>
+            </div>
+      </div>
+  </div>
     <ng-container *ngFor="let access of permissions">
     <button  mat-fab color="primary" *ngIf="access == 'CREATE'" routerLink="/department/create" class="createbtn" placement="top" container="body" ngbTooltip="Add department">
       <i class="fa fa-plus"></i>

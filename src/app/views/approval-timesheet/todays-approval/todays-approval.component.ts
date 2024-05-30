@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TimesheetService } from 'src/app/service/timesheet.service';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { ApiserviceService } from 'src/app/service/apiservice.service';
 @Component({
   selector: 'app-todays-approval',
   templateUrl: './todays-approval.component.html',
@@ -21,7 +22,8 @@ export class TodaysApprovalComponent implements OnInit {
     private timesheetService:TimesheetService,
     private location:Location,
     private common_service:CommonServiceService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private api:ApiserviceService,
     ) { }
   goBack(event)
   {
@@ -49,8 +51,12 @@ export class TodaysApprovalComponent implements OnInit {
   }
   getApprovals(params){ 
     this.timesheetService.getTodaysApprovalTimesheet(params).subscribe(res=>{
-      this.allDetails = res['result'].data;
-      this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
+      if(res['result']['data'].length>=1){
+        this.allDetails = res['result'].data;
+        this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
+      }else{
+        this.api.showWarning('No records found !')
+      }
     })
   }
   buttonClick(event){

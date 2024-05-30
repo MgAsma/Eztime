@@ -92,7 +92,9 @@ export class DepartmentListComponent implements OnInit {
         if(res){
           this.allDepartmentList= res.result.data;
           const noOfPages:number = res['result'].pagination.number_of_pages
-          this.count  = noOfPages * this.tableSize
+          this.count  = noOfPages * this.tableSize;
+          this.page=res['result'].pagination.current_page;
+
         }
         else{
           this.api.showError('Error!')
@@ -107,7 +109,9 @@ export class DepartmentListComponent implements OnInit {
       if(res){
         this.allDepartmentList= res.result.data;
         const noOfPages:number = res['result'].pagination.number_of_pages
-        this.count  = noOfPages * this.tableSize
+        this.count  = noOfPages * this.tableSize;
+        this.page=res['result'].pagination.current_page;
+
       }
       else{
         this.api.showError('Error!')

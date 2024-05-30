@@ -100,6 +100,12 @@ this.cdref.detectChanges();
    }
     this._timeSheetService.deleteTodaysApproval(item.id,params).subscribe((data:any)=>{
       this.api.showWarning('Deleted successfully')
+      let tableData ={
+        search_key:this.term,
+        page:this.page,
+        tableSize:this.tableSize
+       }
+      this.buttonClick.emit(tableData)
     },error=>{
       //console.log(error);
       
@@ -207,7 +213,12 @@ this._timesheet.updateStatus(data).subscribe(res =>{
   if(res){
     const toastText = status === 'DECLINED' ? 'declined' : 'approved'
     this.api.showSuccess(`Timesheet ${toastText} successfully`)
-    this.buttonClick.emit(this.page)
+    let tableData ={
+      search_key:this.term,
+      page:this.page,
+      tableSize:this.tableSize
+     }
+    this.buttonClick.emit(tableData)
   }
   
 })

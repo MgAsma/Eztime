@@ -37,7 +37,7 @@
                     <thead>
                         <tr> 
                           <th scope="col">S.No</th>
-                          <th scope="col">People Name <i  *ngIf="!arrow" (click)="sort('asc','u_first_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','u_first_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+                          <th scope="col">Employee Name <i  *ngIf="!arrow" (click)="sort('asc','u_first_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','u_first_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
                           <th scope="col">Designation <i  *ngIf="!arrow" (click)="sort('asc','u_designation')" class="bi bi-arrow-up"></i><i (click)="sort('desc','u_designation')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
                           <th scope="col">Tags <i  *ngIf="!arrow" (click)="sort('asc','tag_list_converted')" class="bi bi-arrow-up"></i><i (click)="sort('desc','tag_list_converted')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
                           <th scope="col">DOJ <i  *ngIf="!arrow" (click)="sort('asc','u_date_of_joining')" class="bi bi-arrow-up"></i><i (click)="sort('desc','u_date_of_joining')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
@@ -103,23 +103,23 @@
                   
             </div>
         </div>
-        <div class="row">
-           
-            <div class="col-sm"></div>
-            <div class="col-sm-12" *ngIf="allPeople.length > 0">
-                <div class="d-flex justify-content-center p-nav">
-                    <pagination-controls 
-                      previousLabel="Prev" 
-                      nextLabel="Next" 
-                      (pageChange)="onTableDataChange($event)">
-                    </pagination-controls>
-                  </div>
-            </div>
-        </div>
+       
     </div>
-    
+    <div class="row">
+           
+      <div class="col-sm"></div>
+      <div class="col-sm-12" *ngIf="allPeople.length > 0">
+          <div class="d-flex justify-content-center p-nav">
+              <pagination-controls 
+                previousLabel="Prev" 
+                nextLabel="Next" 
+                (pageChange)="onTableDataChange($event)">
+              </pagination-controls>
+            </div>
+      </div>
+  </div>
   <ng-container *ngFor="let access of permissions">
-    <button mat-fab color="primary" routerLink="/register" *ngIf="access == 'CREATE'"  class="createbtn" placement="top" container="body"  ngbTooltip="Add people">
+    <button mat-fab color="primary" routerLink="/register" *ngIf="access == 'CREATE'"  class="createbtn" placement="top" container="body"  ngbTooltip="Add Employee">
       <i class="fa fa-plus"></i>
   
     </button>

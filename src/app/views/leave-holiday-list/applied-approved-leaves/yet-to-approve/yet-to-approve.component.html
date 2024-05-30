@@ -3,8 +3,8 @@
             
          
     <div class="col-sm-4 search-div px-0">
-        <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by leave type" aria-describedby="emailHelp"  autocomplete="off">
-        <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
+        <!-- <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by leave type" aria-describedby="emailHelp"  autocomplete="off">
+        <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i> -->
     </div>
     <div class="col-sm"></div>
     <div class="col-md-4 col-lg-3 text-center align-self-center">
@@ -76,20 +76,20 @@
             </div>
         </div>
         
-        <div class="row">        
-            <div class="col-sm-12">
-                <div class="d-flex justify-content-center p-nav">
-                    <pagination-controls 
-                      previousLabel="Prev" 
-                      nextLabel="Next" 
-                      (pageChange)="onTableDataChange($event)">
-                    </pagination-controls>
-                  </div>
-            </div>
-    </div>
+       
    
 </div>
-
+<div class="row">        
+  <div class="col-sm-12">
+      <div class="d-flex justify-content-center p-nav">
+          <pagination-controls 
+            previousLabel="Prev" 
+            nextLabel="Next" 
+            (pageChange)="onTableDataChange($event)">
+          </pagination-controls>
+        </div>
+  </div>
+</div>
 
 </div> 
 <div class="container-fluid mobileView">
@@ -102,9 +102,8 @@
           </select>
     </div>
       <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-        <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp" autocomplete="off">
-        <i class="bi bi-search" id="search-icon"></i>
-      </div>
+        <!-- <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp" autocomplete="off">
+        <i class="bi bi-search" id="search-icon" (click)="filterSearch()" ></i>      </div> -->
     </div>
   
     <div class="bg row mx-0 my-1">

@@ -70,8 +70,8 @@ export class CategoryListComponent implements OnInit {
         this.categoryList= data['result'].data;
         //console.log(this.categoryList,"CATEGORY")
         const noOfPages:number = data['result'].pagination.number_of_pages
-        this.count  = noOfPages * this.tableSize
-      }
+        this.count  = noOfPages * this.tableSize;
+        this.page=data['result'].pagination.current_page;      }
       
     },((error)=>{
       this.api.showError(error.error.error.message)
@@ -119,8 +119,8 @@ export class CategoryListComponent implements OnInit {
       if(data['result'].data){
         this.categoryList = data['result'].data;
         const noOfPages:number = data['result'].pagination.number_of_pages
-        this.count  = noOfPages * this.tableSize
-      }
+        this.count  = noOfPages * this.tableSize;
+        this.page=data['result'].pagination.current_page;      }
       
     },((error)=>{
       this.api.showError(error.error.error.message)

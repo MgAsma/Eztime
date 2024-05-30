@@ -80,21 +80,21 @@
                  
             </div>
         </div>
-        <div class="row">
-           
-            <div class="col-sm"></div>
-            <div class="col-sm-12" *ngIf="allCenterList.length > 0">
-                <div class="d-flex justify-content-center p-nav">
-                    <pagination-controls 
-                      previousLabel="Prev" 
-                      nextLabel="Next" 
-                      (pageChange)="onTableDataChange($event)">
-                    </pagination-controls>
-                  </div>
-            </div>
-        </div>
+        
     </div>
-    
+    <div class="row">
+           
+      <div class="col-sm"></div>
+      <div class="col-sm-12" *ngIf="allCenterList.length > 0">
+          <div class="d-flex justify-content-center p-nav">
+              <pagination-controls 
+                previousLabel="Prev" 
+                nextLabel="Next" 
+                (pageChange)="onTableDataChange($event)">
+              </pagination-controls>
+            </div>
+      </div>
+  </div>
  <ng-container *ngFor="let access of permissions">
     <button mat-raised-button mat-fab color="primary" *ngIf="access == 'CREATE'" routerLink="/people/add-centers" class="createbtn" placement="top" container="body" ngbTooltip="Add center">
       <i class="fa fa-plus"></i>

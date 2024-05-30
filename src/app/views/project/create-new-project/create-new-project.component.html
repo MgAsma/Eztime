@@ -96,7 +96,7 @@
             <div class="row">
                 <div class="col-sm">
                    
-                    <p >People list <span >*</span></p>
+                    <p >Employee list <span >*</span></p>
                     <div style="margin: 0;" class="row container-fluid"  >
                         <ng-multiselect-dropdown  [placeholder]="'Select people list'"  [settings]="peopleListSetting"
                         [data]="allPeopleGroup" (onSelect)="onPeopleGroupSelect($event)"  (onSelectAll)="onPeopleGroupSelectAll($event)" 
@@ -104,7 +104,7 @@
                         </ng-multiselect-dropdown>
                         
                         <div *ngIf="f['people_ref_list'].touched && f['people_ref_list'].invalid" >
-                            <div *ngIf="f['people_ref_list'].errors && f['people_ref_list'].errors['required']" ><p class="error-msg">People list is required</p></div>
+                            <div *ngIf="f['people_ref_list'].errors && f['people_ref_list'].errors['required']" ><p class="error-msg">Employee list is required</p></div>
                         </div> 
                     </div>
                     
@@ -402,7 +402,7 @@
             <div class="row">
                 <div class="col-sm">
                   
-                    <p id="divshow">People list <span >*</span></p>
+                    <p id="divshow">Employee list <span >*</span></p>
                     <div style="margin: 0;" class="row container-fluid"  id="divshow">
                         <ng-multiselect-dropdown  [placeholder]="'Select people list'"  [settings]="peopleListSetting"
                         [data]="allPeopleGroup" (onSelect)="onPeopleGroupSelect($event)"  (onSelectAll)="onPeopleGroupSelectAll($event)" 
@@ -410,7 +410,7 @@
                         </ng-multiselect-dropdown>
                         
                         <div *ngIf="f['people_ref_list'].touched && f['people_ref_list'].invalid" >
-                            <div *ngIf="f['people_ref_list'].errors && f['people_ref_list'].errors['required']" ><p class="error-msg">People list is required</p></div>
+                            <div *ngIf="f['people_ref_list'].errors && f['people_ref_list'].errors['required']" ><p class="error-msg">Employee list is required</p></div>
                         </div> 
                     </div>
                     

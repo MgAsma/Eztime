@@ -105,7 +105,9 @@ currentIndex: any;
       if(res){
        this.organizationData = res['result']['data']
        const noOfPages:number = res['result'].pagination.number_of_pages
-       this.count  = noOfPages * this.tableSize
+       this.count  = noOfPages * this.tableSize;
+       this.page=res['result'].pagination.current_page;
+
       }
     },(error =>{
       this.api.showError(error.error.error.message)
@@ -116,7 +118,9 @@ currentIndex: any;
       if(res){
         this.organizationData= res.result.data;
         const noOfPages:number = res['result'].pagination.number_of_pages
-        this.count  = noOfPages * this.tableSize
+        this.count  = noOfPages * this.tableSize;
+        this.page=res['result'].pagination.current_page;
+
       }
     },((error:any)=>{
       this.api.showError(error.error.error.message)

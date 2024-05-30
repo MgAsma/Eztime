@@ -111,6 +111,7 @@ export class RoleListComponent implements OnInit {
         this.sortedRolls = this.allRoleList
           const noOfPages:number = data['result'].pagination.number_of_pages
            this.totalCount  = noOfPages * this.tableSize
+           this.page=data['result'].pagination.current_page;
             this.config = { 
               currentPage: this.page,
               itemsPerPage: this.tableSize,

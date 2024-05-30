@@ -23,9 +23,9 @@
             <ng-container *ngFor="let task of createdtasks.controls; let i=index">
               <ng-container [formGroupName]="i">
                 <div class="row">
-                  <ng-container *ngIf="i==0">
+                  <!-- <ng-container *ngIf="i==0">
                     <div class="col-sm-12 col-md-6 col-lg-4 p-0" *ngIf="user_role_name === 'ADMIN' || user_role_name === 'MANAGER' ">
-                      <p>Add People<span >*</span></p>
+                      <p>Add Employee<span ></span></p>
                       
                       <ng-multiselect-dropdown [placeholder]="'Select People'"  [settings]="ccSetting"
                       [data]="allPeopleGroup" (onSelect)="onPeopleSelect($event)"  
@@ -33,7 +33,7 @@
                       </ng-multiselect-dropdown>
                       
                      </div>
-                  </ng-container>
+                  </ng-container> -->
              
               <div class="col-sm-12 col-md-6 col-lg-4 p-0">
               <label>Client <span>*</span></label>
@@ -161,7 +161,7 @@
           <div [formGroupName]="i">
             <div style="padding-right: 3px;" *ngIf="i==0">
               <div class="col-sm-12 col-md-6 col-lg-4" *ngIf="user_role_name === 'ADMIN' || user_role_name === 'MANAGER'">
-                <p>Add People<span >*</span></p>
+                <p>Add Employee<span >*</span></p>
                
                 <ng-multiselect-dropdown [placeholder]="'Select People'"  [settings]="ccSetting"
                 [data]="allPeopleGroup" (onSelect)="onPeopleSelect($event)"  (onSelectAll)="onPeopleSelectAll($event)" 

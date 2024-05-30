@@ -56,7 +56,9 @@ export class MainCategoryListComponent implements OnInit {
       this.selectedColor = this.allMainCategoryList.map(cr => cr.psmc_color_code)
      
       const noOfPages:number = res['result'].pagination.number_of_pages
-      this.count  = noOfPages * this.tableSize
+      this.count  = noOfPages * this.tableSize;
+      this.page=res['result'].pagination.current_page;
+
       }
     },((error:any)=>{
       this.api.showError(error.error.error.message)
@@ -102,7 +104,9 @@ export class MainCategoryListComponent implements OnInit {
       this.selectedColor = this.allMainCategoryList.map(cr => cr.psmc_color_code)
      
       const noOfPages:number = data['result'].pagination.number_of_pages
-      this.count  = noOfPages * this.tableSize
+      this.count  = noOfPages * this.tableSize;
+      this.page=data['result'].pagination.current_page;
+
     },((error:any)=>{
       this.api.showError(error.error.error.message)
     })
@@ -187,4 +191,8 @@ export class MainCategoryListComponent implements OnInit {
   
 
   
-}}
+}
+getContinuousIndex(index: number):number {
+  return (this.page-1)*this.tableSize+ index + 1;
+}
+}

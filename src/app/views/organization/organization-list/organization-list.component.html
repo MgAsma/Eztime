@@ -60,7 +60,7 @@
                           <td>{{getContinuousIndex(i)}}</td>
                          <td>{{item.org_name ? item.org_name :'NA' | titlecase }}</td>
                          <td>{{item.org_email ? item.org_email :'NA' | titlecase}}</td>
-                         <td class="text-center">{{item.number_of_users_in_organization | titlecase}}</td>
+                         <td class="text-center">{{item.number_of_users_in_organization }}</td>
                          <td>{{item.conctact_person_phone_number ? item.conctact_person_phone_number:'NA' | titlecase}}</td>
                          <td class="p-r">   
                             <img src="{{item.org_logo_path}}" alt="" height="25px" width="50px">
@@ -93,18 +93,19 @@
                    
             </div>
         </div>
-        <div class="row">
-                       <div class="col-sm-12" >
-                <div class="d-flex justify-content-center p-nav">
-                    <pagination-controls 
-                      previousLabel="Prev" 
-                      nextLabel="Next" 
-                      (pageChange)="onTableDataChange($event)">
-                    </pagination-controls>
-                  </div>
-            </div>
-        </div>
+       
     </div>
+    <div class="row">
+      <div class="col-sm-12" >
+<div class="d-flex justify-content-center p-nav">
+   <pagination-controls 
+     previousLabel="Prev" 
+     nextLabel="Next" 
+     (pageChange)="onTableDataChange($event)">
+   </pagination-controls>
+ </div>
+</div>
+</div>
     <ng-container>
       <button mat-raised-button mat-fab color="primary"  routerLink="/organization/createOrg" class="createbtn" placement="top" container="body" ngbTooltip="Add organization">
         <i class="fa fa-plus"></i>
@@ -203,6 +204,21 @@
                     </div>
                   </div>
                     </div>
+                   </div>
+                   <div class="row">
+                    <div class="col-6">
+                      
+                      <div class="row">
+                        <div class="col-12">
+                          <h6 class="card-subtitle text-start"> No of Users</h6>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 value-container text-start">
+                          {{item.number_of_users_in_organization?item.number_of_users_in_organization:'NA' }}
+                        </div>
+                      </div>
+                        </div>
                    </div>
                 </div>
                </div>

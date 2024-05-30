@@ -88,18 +88,19 @@
                   </table>
             </div>
         </div>
-        <div class="row">
+     
+    </div>
+    <div class="row">
            
-            <div class="col-sm"></div>
-            <div class="col-sm-12">
-                <div class="d-flex justify-content-center p-nav">
-                    <pagination-controls 
-                      previousLabel="Prev" 
-                      nextLabel="Next" 
-                      (pageChange)="onTableDataChange($event)">
-                    </pagination-controls>
-                  </div>
-            </div>
+        <div class="col-sm"></div>
+        <div class="col-sm-12">
+            <div class="d-flex justify-content-center p-nav">
+                <pagination-controls 
+                  previousLabel="Prev" 
+                  nextLabel="Next" 
+                  (pageChange)="onTableDataChange($event)">
+                </pagination-controls>
+              </div>
         </div>
     </div>
     <ng-container *ngFor="let access of permissions">

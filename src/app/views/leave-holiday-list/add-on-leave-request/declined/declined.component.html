@@ -73,18 +73,19 @@
           
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm"></div>
-        <div class="col-sm">
-            <div class="d-flex justify-content-end ">
-                <pagination-controls 
-                  previousLabel="Prev" 
-                  nextLabel="Next" 
-                  (pageChange)="onTableDataChange($event)">
-                </pagination-controls>
-              </div>
+
+</div>
+<div class="row">
+  <div class="col-sm"></div>
+  <div class="col-sm">
+      <div class="d-flex justify-content-end ">
+          <pagination-controls 
+            previousLabel="Prev" 
+            nextLabel="Next" 
+            (pageChange)="onTableDataChange($event)">
+          </pagination-controls>
         </div>
-    </div>
+  </div>
 </div>
 </div>
 
@@ -100,8 +101,7 @@
     </div>
       <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
         <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp" autocomplete="off">
-        <i class="bi bi-search" id="search-icon"></i>
-      </div>
+        <i class="bi bi-search" id="search-icon" ></i>      </div>
     </div>
   
     <div class="bg row mx-0 my-1">

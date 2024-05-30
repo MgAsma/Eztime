@@ -79,20 +79,21 @@
                   
             </div>
         </div>
-        <div class="row">
-           
-            <div class="col-sm"></div>
-            <div class="col-sm-12" *ngIf="categoryList.length > 0">
-                <div class="d-flex justify-content-center p-nav">
-                    <pagination-controls 
-                      previousLabel="Prev" 
-                      nextLabel="Next" 
-                      (pageChange)="onTableDataChange($event)">
-                    </pagination-controls>
-                  </div>
-            </div>
-        </div>
+
     </div>
+    <div class="row">
+           
+      <div class="col-sm"></div>
+      <div class="col-sm-12" *ngIf="categoryList.length > 0">
+          <div class="d-flex justify-content-center p-nav">
+              <pagination-controls 
+                previousLabel="Prev" 
+                nextLabel="Next" 
+                (pageChange)="onTableDataChange($event)">
+              </pagination-controls>
+            </div>
+      </div>
+  </div>
     <ng-container *ngFor="let access of permissions">
         <button mat-raised-button mat-fab color="primary" *ngIf="access == 'CREATE'" routerLink="/task/add" class="createbtn" placement="top" container="body" ngbTooltip="Add category/checklist">
           <i class="fa fa-plus"></i>

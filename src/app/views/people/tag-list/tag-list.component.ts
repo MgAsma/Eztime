@@ -99,6 +99,8 @@ export class TagListComponent implements OnInit {
       this.pagination = data['result'].pagination
       const noOfPages:number = data['result'].pagination.number_of_pages
       this.count  = noOfPages * this.tableSize
+      this.page=data['result'].pagination.current_page;
+
     },((error)=>{
       this.api.showError(error.error.error.message)
     })
@@ -109,7 +111,9 @@ export class TagListComponent implements OnInit {
       this.allTag = data.result.data;
       this.pagination = data['result'].pagination
       const noOfPages:number = data['result'].pagination.number_of_pages
-      this.count  = noOfPages * this.tableSize
+      this.count  = noOfPages * this.tableSize;
+      this.page=data['result'].pagination.current_page;
+
     },((error)=>{
       this.api.showError(error.error.error.message)
     })

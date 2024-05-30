@@ -98,7 +98,9 @@ export class PrefixSuffixListComponent implements OnInit {
     this.api.getPrefixSuffixDetailsPage(params).subscribe((data:any)=>{
       this.allPrefixSuffix   = data.result.data;
       const noOfPages:number = data['result'].pagination.number_of_pages
-      this.count  = noOfPages * this.tableSize
+      this.count  = noOfPages * this.tableSize;
+      this.page=data['result'].pagination.current_page;
+
     },(error=>{
       this.api.showError(error.error.error.message)
     })
@@ -109,7 +111,9 @@ export class PrefixSuffixListComponent implements OnInit {
     this.api.getData(`${environment.live_url}/${environment.prefix_suffix}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&organization_id=${this.orgId}&pagination=TRUE`).subscribe((data:any)=>{
       this.allPrefixSuffix   = data.result.data;
       const noOfPages:number = data['result'].pagination.number_of_pages
-      this.count  = noOfPages * this.tableSize
+      this.count  = noOfPages * this.tableSize;
+      this.page=data['result'].pagination.current_page;
+
     },(error=>{
       this.api.showError(error.error.error.message)
     })

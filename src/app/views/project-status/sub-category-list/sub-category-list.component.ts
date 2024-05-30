@@ -64,7 +64,9 @@ export class SubCategoryListComponent implements OnInit {
     this.api.getData(`${environment.live_url}/${environment.sub_category}?search_key=${this.term}&page_number=1&data_per_page=10`).subscribe((data:any)=>{
       this.allSubCategoryList= data.result.data;
       const noOfPages:number = data['result'].pagination.number_of_pages
-       this.count  = noOfPages * this.tableSize
+       this.count  = noOfPages * this.tableSize;
+       this.page=data['result'].pagination.current_page;
+
     },((error:any)=>{
       this.api.showError(error.error.error.message)  
     })
@@ -110,7 +112,9 @@ export class SubCategoryListComponent implements OnInit {
     this.api.getSubCategoryDetailsPage(params).subscribe((data:any)=>{
       this.allSubCategoryList= data.result.data;
       const noOfPages:number = data['result'].pagination.number_of_pages
-       this.count  = noOfPages * this.tableSize
+       this.count  = noOfPages * this.tableSize;
+       this.page=data['result'].pagination.current_page;
+
     },((error:any)=>{
       this.api.showError(error.error.error.message)  
     })
@@ -191,5 +195,8 @@ export class SubCategoryListComponent implements OnInit {
 	}
   
 
+}
+getContinuousIndex(index: number):number {
+  return (this.page-1)*this.tableSize+ index + 1;
 }
 }

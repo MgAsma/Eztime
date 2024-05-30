@@ -51,6 +51,7 @@ export class TimesheetComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
+    this.userId = sessionStorage.getItem('user_id')
     let params={
       module:"TIMESHEET",
       menu:"PEOPLE_TIMESHEET",
@@ -60,8 +61,9 @@ export class TimesheetComponent implements OnInit {
       page_number:this.page,
       data_per_page:10,
       search_key:'',
+      organization_id:this.orgId
      }
-      this.userId = sessionStorage.getItem('user_id')
+     
       this.initForm()
       this.getByStatus(params)
   }
@@ -74,20 +76,20 @@ export class TimesheetComponent implements OnInit {
   getByStatus(params){
    
      this.api.getData(`${environment.live_url}/${environment.time_sheets}?user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&search_key=${params.search_key}&approved_state=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
-      if( res['result'].data.length >0){
+      if( res['result'].data.length >=1){
         this.allDetails = res['result']['data']
         this.cardData = res['result'].timesheet_dashboard
         this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
       }
       else{
-        this.allDetails.length < 0 ? this.api.showWarning('No records found') : ''
+        res['result']['data'].length <=0 ? this.api.showWarning('No records found') : ''
        }
      })
   }
 
   getAllTimeSheet(params){ 
     this.api.getData(`${environment.live_url}/${environment.time_sheets}?user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&search_key=${params.search_key}&approved_state=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&timesheets_from_date=${params.timesheets_from_date}&timesheets_to_date=${params.timesheets_to_date}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
-      if( res['result'].data.length >0){
+      if( res['result'].data.length >=1){
         this.allDetails = res['result']['data']
         this.cardData = res['result'].timesheet_dashboard
         this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
@@ -98,7 +100,7 @@ export class TimesheetComponent implements OnInit {
         //this.month   = this.cardData.from_date
       }
       else{
-        this.allDetails.length < 0 ? this.api.showWarning('No records found') :''
+        res['result']['data'].length <= 0 ? this.api.showWarning('No records found') :''
        }
       
     })
@@ -124,6 +126,7 @@ export class TimesheetComponent implements OnInit {
           page_number:event.page,
           data_per_page:event.tableSize,
           search_key:event.search_key,
+          organization_id:this.orgId,
           timesheets_to_date:this.datepipe.transform(this.toDate,'dd/MM/yyyy'),
           timesheets_from_date:this.datepipe.transform(this.fromDate,'dd/MM/yyyy') 
          }
@@ -136,6 +139,7 @@ export class TimesheetComponent implements OnInit {
         method:"VIEW",
         status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
         user_id:this.userId,
+        organization_id:this.orgId,
         page_number:event.page,
         data_per_page:event.tableSize,
         search_key:event.search_key,
@@ -148,28 +152,38 @@ export class TimesheetComponent implements OnInit {
   searchFiter(event){
     if(event){
       this.cdref.detectChanges();
-      this.allDetails = []
-      this.cardData =""
-      this.totalCount = ""
-     let c_params={
+      let c_params={}
+      if(this.changes){
+        c_params={
+          module:"TIMESHEET",
+          menu:"PEOPLE_TIMESHEET",
+          method:"VIEW",
+          status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
+          user_id:this.userId,
+          page_number:event.page,
+          data_per_page:event.tableSize,
+          search_key:event.search_key,
+          organization_id:this.orgId,
+          timesheets_to_date:this.datepipe.transform(this.toDate,'dd/MM/yyyy'),
+          timesheets_from_date:this.datepipe.transform(this.fromDate,'dd/MM/yyyy') 
+         }
+         this.getAllTimeSheet(c_params);
+      }
+    else{
+      c_params={
         module:"TIMESHEET",
         menu:"PEOPLE_TIMESHEET",
         method:"VIEW",
         status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
         user_id:this.userId,
+        organization_id:this.orgId,
         page_number:event.page,
         data_per_page:event.tableSize,
+        search_key:event.search_key,
        }
-       this.api.getData(`${environment.live_url}/${environment.time_sheets}?search_key=${event.search_key}&user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&approved_state=${c_params.status}&page_number=${c_params.page_number}&data_per_page=${c_params.data_per_page}&pagination=TRUE`).subscribe((res:any)=>{
-        if( res['result'].data.length >0){
-          this.allDetails = res['result']['data']
-          this.cardData = res['result'].timesheet_dashboard
-          this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
-        }
-        else{
-          this.allDetails.length < 0 ? this.api.showWarning('No records found') : ''
-         }
-       })
+       this.getByStatus(c_params)
+    }
+    
     }
     
   }
@@ -184,6 +198,7 @@ export class TimesheetComponent implements OnInit {
           method:"VIEW",
           status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
           user_id:this.userId,
+          organization_id:this.orgId,
           page_number:this.page,
           data_per_page:10,
           search_key:'',
@@ -232,6 +247,7 @@ export class TimesheetComponent implements OnInit {
         method:"VIEW",
         status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
         user_id:this.userId,
+        organization_id:this.orgId,
         page_number:this.page,
         data_per_page:10,
         search_key:'',
@@ -249,6 +265,7 @@ export class TimesheetComponent implements OnInit {
         method:"VIEW",
         status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
         user_id:this.userId,
+        organization_id:this.orgId,
         page_number:this.page,
         data_per_page:10,
         search_key:'',

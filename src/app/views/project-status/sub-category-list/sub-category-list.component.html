@@ -54,7 +54,7 @@
                             totalItems: count
                           }|customSort:directionValue:sortValue
                             ; let i=index' >
-                            <td>{{i + 1}}</td>
+                            <td>{{getContinuousIndex(i)}}</td>
                             <td>{{item.psmc_name?item.psmc_name:"NA | titlecase"}}</td>
                             <td>{{item.pssc_name | titlecase}}</td>
                             <td>{{item.color ? item.color : "NA" | titlecase}}</td>
@@ -82,18 +82,19 @@
                    
             </div>
         </div>
-        <div class="row">
+        
+    </div>
+    <div class="row">
            
-            <div class="col-sm"></div>
-            <div class="col-sm-12" *ngIf="allSubCategoryList.length > 0">
-                <div class="d-flex justify-content-center p-nav">
-                    <pagination-controls 
-                      previousLabel="Prev" 
-                      nextLabel="Next" 
-                      (pageChange)="onTableDataChange($event)">
-                    </pagination-controls>
-                  </div>
-            </div>
+        <div class="col-sm"></div>
+        <div class="col-sm-12" *ngIf="allSubCategoryList.length > 0">
+            <div class="d-flex justify-content-center p-nav">
+                <pagination-controls 
+                  previousLabel="Prev" 
+                  nextLabel="Next" 
+                  (pageChange)="onTableDataChange($event)">
+                </pagination-controls>
+              </div>
         </div>
     </div>
     <ng-container *ngFor="let access of permissions">

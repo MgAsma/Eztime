@@ -110,7 +110,7 @@ export class CreateTimesheetComponent implements OnInit {
      // console.log(selectedArr, "SELECTED");
      let managerId:any;
      if(this.user_role_name === 'ADMIN' || this.user_role_name === 'MANAGER' ){
-      managerId = this.peopleId
+      managerId = this.manager_id
      }else{
       managerId = this.manager_id 
      }
