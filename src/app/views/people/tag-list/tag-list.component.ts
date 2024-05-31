@@ -88,7 +88,7 @@ export class TagListComponent implements OnInit {
   getTag(){
     let params = {
       page_number:this.page,
-      data_per_page:10,
+      data_per_page:this.tableSize,
       pagination:'TRUE',
       organization_id:this.orgId,
       search_key:this.term

@@ -16,7 +16,7 @@
   </div> -->
   <div class="generic-form bg mx-1 leave-details-content"> 
     <div class="row">
-      <div class="col-sm-12 col-md-12 col-lg-8">
+      <div class="col-sm-12 col-md-12 col-lg-12">
         <h6 class="mb-3"> Leave Balance</h6>
         <mat-card>
 
@@ -109,72 +109,78 @@
       </mat-card>
 
 
-        <!-----------Leave details--------------->
-        <h6 class="my-3">Leave details</h6>
-        <mat-card class="d-none d-sm-none d-md-none d-lg-block d-xl-block">
-          <div class="row">
-            <div class="col-md-12 ">
-                
-                <table class="table" *ngIf="leaveDetails.length > 0">
-                    <thead>
-                        <tr>
-                          
-                          <th scope="col">From</th>
-                          <th scope="col">To</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Days</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-        
-                        <tr *ngFor="let items of leaveDetails">
-                         <td>{{items.from_date|titlecase}}</td>
-                         <td>{{items.to_date|titlecase}}</td>
-                         <td><span class="badge badge-info" style="color: white;background-color: blue;">{{items.approved_state |titlecase}}</span></td>
-                         <td>{{items.days |titlecase}}</td>
-                        </tr>
-                       
-                      </tbody>
-                  </table>
-
-                 
-                  <div *ngIf="leaveDetails.length == 0" class="text-center">
-                    No records found !
-                   </div>
-            </div>
-          </div>
-        </mat-card>
-        <div class="row p-1 mx-0 gx-0 d-block d-sm-block d-md-block d-lg-none d-xl-none">
-          <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col" *ngFor="let leave of leaveDetails">
-<div class="card">
-<div class="row top-row">
-<div class="col-6 c-2 text-start">
-<h6 class="card-subtitle">From</h6>
-<p class="value-container">{{leave.from_date|titlecase}}</p>
-</div>
-<div class="col-6 c-1 text-start">
-<h6 class="card-subtitle">To</h6>
-<p class="value-container">{{leave.to_date|titlecase}}</p>
-</div>
-
-</div>
-<div class="card-inner normal">
-<div class="row row-b">
-<div class="col-6 c-1 text-start">
-<h6 class="card-subtitle">Days</h6>
-<p class="value-container">{{leave.days|titlecase}}</p>
-</div>
-<div class="col-6 c-2 text-start">
-<h6 class="card-subtitle">Status</h6>
-<p class="value-container">{{leave.approved_state|titlecase}}</p>
-</div>
-</div>
-</div>
-</div>
-          </div>
-        </div>
+    
       </div>
     
+     
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-8">
+            <!-----------Leave details--------------->
+            <h6 class="my-3">Leave details</h6>
+            <mat-card class="d-none d-sm-none d-md-none d-lg-block d-xl-block">
+              <div class="row">
+                <div class="col-md-12 ">
+                    
+                    <table class="table" *ngIf="leaveDetails.length > 0">
+                        <thead>
+                            <tr>
+                              
+                              <th scope="col">From</th>
+                              <th scope="col">To</th>
+                              <th scope="col">Status</th>
+                              <th scope="col">Days</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+            
+                            <tr *ngFor="let items of leaveDetails">
+                             <td>{{items.from_date|titlecase}}</td>
+                             <td>{{items.to_date|titlecase}}</td>
+                             <td><span class="badge badge-info" style="color: white;background-color: blue;">{{items.approved_state |titlecase}}</span></td>
+                             <td>{{items.days |titlecase}}</td>
+                            </tr>
+                           
+                          </tbody>
+                      </table>
+    
+                     
+                      <div *ngIf="leaveDetails.length == 0" class="text-center">
+                        No records found !
+                       </div>
+                </div>
+              </div>
+            </mat-card>
+            <div class="row p-1 mx-0 gx-0 d-block d-sm-block d-md-block d-lg-none d-xl-none">
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col" *ngFor="let leave of leaveDetails">
+    <div class="card">
+    <div class="row top-row">
+    <div class="col-6 c-2 text-start">
+    <h6 class="card-subtitle">From</h6>
+    <p class="value-container">{{leave.from_date|titlecase}}</p>
+    </div>
+    <div class="col-6 c-1 text-start">
+    <h6 class="card-subtitle">To</h6>
+    <p class="value-container">{{leave.to_date|titlecase}}</p>
+    </div>
+    
+    </div>
+    <div class="card-inner normal">
+    <div class="row row-b">
+    <div class="col-6 c-1 text-start">
+    <h6 class="card-subtitle">Days</h6>
+    <p class="value-container">{{leave.days|titlecase}}</p>
+    </div>
+    <div class="col-6 c-2 text-start">
+    <h6 class="card-subtitle">Status</h6>
+    <p class="value-container">{{leave.approved_state|titlecase}}</p>
+    </div>
+    </div>
+    </div>
+    </div>
+              </div>
+            </div>
+      </div>
       <div class="col-sm-12 col-md-12 col-lg-4">
         <div class="row my-2">
           <div class="col-md-12">
@@ -200,7 +206,6 @@
         </div>
       </div>
     </div>
-    
   </div>
   
 </div>

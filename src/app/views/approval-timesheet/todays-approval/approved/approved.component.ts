@@ -59,7 +59,7 @@ export class ApprovedComponent implements OnInit {
     if(changes['totalCount'].currentValue){
       this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
 this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
-this.paginationConfig.itemsPerPage=this.tableSize;
+    this.paginationConfig.itemsPerPage=this.tableSize;
     this.page=changes['totalCount'].currentValue.currentPage;
     this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
     }
@@ -207,7 +207,12 @@ this._timeSheetService.updateStatus(data).subscribe(res =>{
   if(res){
     const toastText = status === 'DECLINED' ? 'declined' : 'approved'
     this.api.showSuccess(`Timesheet ${toastText} successfully`)
-    this.buttonClick.emit(this.page)
+    let tableData ={
+      search_key:this.term,
+      page:this.page,
+      tableSize:this.tableSize
+     }
+    this.buttonClick.emit(tableData)
   }
   
 })

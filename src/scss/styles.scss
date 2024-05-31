@@ -362,3 +362,7 @@ table thead tr>th,table thead tr>td{
   font-size: 14px;
   font-weight: 600;
 }
+button,
+.title,input.form-control[type=text]::placeholder{
+  font-family: "Exo FT" !important;
+}

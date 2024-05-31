@@ -141,6 +141,7 @@ export class DeadlineCrossedComponent implements OnInit {
     }
     else{
       this.submited = true;
+      this.allDetails = []
       this.handleMonthSelection(this.monthForm.value['fromMonth'])
       let c_params={
         module:"TIMESHEET",

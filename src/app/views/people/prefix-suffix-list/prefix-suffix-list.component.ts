@@ -45,14 +45,15 @@ export class PrefixSuffixListComponent implements OnInit {
     private api:ApiserviceService,
     private router:Router,
     private location:Location,
-    private common_service:CommonServiceService) { }
+    private common_service:CommonServiceService) { 
+      this.orgId = sessionStorage.getItem('org_id');
+    }
 
     goBack(event){
       event.preventDefault(); // Prevent default back button behavior
      this.location.back();
      }
     ngOnInit(): void {
-    this.orgId = sessionStorage.getItem('org_id');
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.allPrefixSuffix =[]
     this.params = {
@@ -149,6 +150,7 @@ export class PrefixSuffixListComponent implements OnInit {
     let params = {
       page_number:this.page,
       data_per_page:this.tableSize,
+      organization_id:this.orgId,
       search_key:this.term
     }
     this.getPrefixSuffix(params);
@@ -162,8 +164,10 @@ export class PrefixSuffixListComponent implements OnInit {
       this.page = 1
     }
    let params = {
-      page_number:this.page,
-      data_per_page:this.tableSize
+    page_number:this.page,
+    data_per_page:this.tableSize,
+    organization_id:this.orgId,
+    search_key:this.term
     }
     this.getPrefixSuffix(params);
   }  

@@ -249,6 +249,7 @@ $br-color: #d6d6d6;
 h6{
     font-weight: 700;
     color:#454545;
+    margin-left: 10px;
 
 }
 .value-container{
@@ -277,6 +278,16 @@ h6{
     padding: 20px 0px;
     justify-content: center;
     text-align: center;
-    margin: 5px auto;
-    width: 28%;
+    margin: 5px 5px;
+    width: 30%;
 }
+// @media (min-width:769px) and (max-width:1022px){
+//     .leave-count-card{
+//         width: 45% !important;
+//     }  
+// }
+// @media (min-width:280px) and (max-width:768px){
+//     .leave-count-card{
+//         width: 95% !important;
+//     }  
+// }

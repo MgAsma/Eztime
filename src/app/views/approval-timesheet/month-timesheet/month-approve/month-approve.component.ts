@@ -62,8 +62,8 @@ export class MonthApproveComponent implements OnInit{
   }
   if(changes['totalCount'].currentValue){
     this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
-    this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
-    this.paginationConfig.itemsPerPage=this.tableSize;
+this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
+  this.paginationConfig.itemsPerPage=this.tableSize;
   this.page=changes['totalCount'].currentValue.currentPage;
   this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
   }
@@ -172,4 +172,8 @@ export class MonthApproveComponent implements OnInit{
 //   }
 // })
 // }
+
+getContinuousIndex(index: number):number {
+  return (this.page-1)*this.tableSize+ index + 1;
+}
 }

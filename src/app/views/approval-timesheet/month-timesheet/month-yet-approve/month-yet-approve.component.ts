@@ -179,4 +179,7 @@ this._timesheet.updateStatus(data).subscribe(res =>{
  
 })
 }
+getContinuousIndex(index: number):number {
+  return (this.page-1)*this.tableSize+ index + 1;
+}
 }

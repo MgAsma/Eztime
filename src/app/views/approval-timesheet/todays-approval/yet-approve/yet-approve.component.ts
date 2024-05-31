@@ -224,6 +224,7 @@ this._timesheet.updateStatus(data).subscribe(res =>{
 })
 }
 getContinuousIndex(index: number):number {
+  console.log((this.page-1)*this.tableSize+ index + 1);
   return (this.page-1)*this.tableSize+ index + 1;
 }
 }
