@@ -15,13 +15,13 @@ Angular 14 requires `Node.js` version `^14.15` or `^16.10`.
 ###### Angular CLI
 Install the Angular CLI globally using a terminal/console window.
 ```bash
-npm install -g @angular/cli
+npm install -g @angular/cli   
 ```
 
 ### Installation
 
 ``` powershell or cmd
-$ npm install
+$ npm install  OR npm install --force
 ```
 
 ### Basic usage
@@ -46,7 +46,7 @@ $ npm run build
 Within the download you'll find the following directories and files, logically grouping common assets and providing both compiled and minified variations. You'll see something like this:
 
 ```
-coreui-free-angular-admin-template
+Projectace-angular-admin-template
 ├── src/                         # project root
 │   ├── app/                     # main app directory
 |   │   ├── containers/          # layout containers
