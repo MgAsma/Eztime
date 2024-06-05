@@ -64,10 +64,9 @@ export class UpdateIndustryComponent implements OnInit {
       org_ref_id:this.orgId
   }
     this.api.getCurrentIndustryDetails(this.id,params).subscribe((data:any)=>{
-      this.updateForm.patchValue({toi_title:data.result.data[0].toi_title,
-        toi_description:data.result.data[0].toi_description,
-        toi_status:data.result.data[0].toi_status,
-      })
+      this.updateForm.patchValue({toi_title:data.result.data[0].toi_title})
+      this.updateForm.patchValue({toi_description:data.result.data[0].toi_description})
+      this.updateForm.patchValue({toi_status:data.result.data[0].toi_status})
      
     })
   }
