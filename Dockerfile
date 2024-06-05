@@ -8,5 +8,5 @@ RUN npm install -g serve
 # Build the Angular application
 RUN npm run build
 EXPOSE 4200
-# Serve the application
+# Serve the application.
 CMD ["serve", "-s", "dist/coreui-free-angular-admin-template", "-l", "4200"]
