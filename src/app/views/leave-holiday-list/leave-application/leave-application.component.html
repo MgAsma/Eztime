@@ -84,7 +84,7 @@
             <div class="row">
                 <div class="col-sm">
                     <p>File attachment</p>
-                    <input type="file" class="form-control p-4-0 sizeinput"  accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" formControlName="leave_application_file_attachment" placeholder="File Attachment" aria-describedby="emailHelp"  autocomplete="off"
+                    <input type="file" class="form-control p-4-0 sizeinput"  accept="image/*;capture=camera" formControlName="leave_application_file_attachment" placeholder="File Attachment" aria-describedby="emailHelp"  autocomplete="off"
                     (change)="uploadImageFile($event)">
                 </div> 
                 <div class="error-msg" *ngIf="f['leave_application_file_attachment'].errors && f['leave_application_file_attachment'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</div>
@@ -99,7 +99,7 @@
                 </div>
             </div>
           
-          <div class="row">
+        <div class="row">
                 <div class="col-sm">
                     <p>From date <span >*</span></p> 
                     <input class="form-control size-input" [min]="min"  type="date" name="date-input" placeholder="date"  formControlName="leaveApplication_from_date" [readonly]="disableTextbox" (change)="toggleDisable('from_date')">  
@@ -112,7 +112,7 @@
                     </div>--->
                     
                 </div>
-            </div> 
+            </div>   
             
                 
             <!-- <div class="row">
@@ -298,7 +298,7 @@
             <div class="row">
                 <div class="col-sm">
                     <p>File attachment</p>
-                    <input type="file" class="form-control p-4-0 sizeinput"  accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" formControlName="leave_application_file_attachment" placeholder="File Attachment" aria-describedby="emailHelp"  autocomplete="off"
+                    <input type="file" class="form-control p-4-0 sizeinput"  accept="image/*;capture=camera" formControlName="leave_application_file_attachment" placeholder="File Attachment" aria-describedby="emailHelp"  autocomplete="off"
                     (change)="uploadImageFile($event)">
                 </div> 
                 <div class="error-msg" *ngIf="f['leave_application_file_attachment'].errors && f['leave_application_file_attachment'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</div>
@@ -313,27 +313,24 @@
                     <h4>Leave details</h4>
                 </div>
             </div>
-          
             <div class="row">
                 <div class="col-sm">
                     <p>From date <span >*</span></p> 
-                    <input class="size-input date-pic"
-                      type="date" name="date-input" placeholder="date" [min]="min" formControlName="leaveApplication_from_date" [readonly]="disableTextbox" (change)="toggleDisable('from_date')">  
+                    <input class="form-control size-input" [min]="min"  type="date" name="date-input" placeholder="date"  formControlName="leaveApplication_from_date" [readonly]="disableTextbox" (change)="toggleDisable('from_date')">  
                     <p id="statusMessage"></p>
-                    <div  *ngIf="f['leaveApplication_from_date'].touched && f['leaveApplication_from_date'].invalid" >
+                    <div id="reservationDate" name="reservationDate"  *ngIf="f['leaveApplication_from_date'].touched && f['leaveApplication_from_date'].invalid" >
                         <div *ngIf="f['leaveApplication_from_date'].errors && f['leaveApplication_from_date'].errors['required'] " ><p class="error-msg">From date is required</p></div>
                     </div>
                     <!-- <div *ngIf="f['leave_type_id'].invalid && f['leaveApplication_from_date'].valid">
                         <p class="error-msg">Leave type id is required</p>
-                    </div> -->
+                    </div>--->
                     
                 </div>
-            </div>
-       
+            </div> 
             <div class="row">
                 <div class="col-sm">
                     <p>From session <span >*</span></p> 
-                    <select class="form-select" aria-label="Default select example" formControlName="from1_session" (change)="toggleDisable('from1_session')">
+                    <select class="form-select" aria-label="Default select example" formControlName="from1_session" >
                         <option value="" selected disabled>Select from session</option>
                         <option value="1">1 st Half</option>
                         <option value="2">2 nd Half</option>
@@ -344,9 +341,9 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm">
+                <div class="col-sm-12">
                     <p>To date <span >*</span></p> 
-                    <input class="size-input date-pic"  [min]="leaveForm.value.leaveApplication_from_date" type="date"  name="date-input" placeholder="date" formControlName="leaveApplication_to_date" [readonly]="disableTextbox2" (change)="endDateValidator()">  
+                    <input class="form-control size-input"  [min]="leaveForm.value.leaveApplication_from_date"  type="date"  name="date-input" placeholder="date" formControlName="leaveApplication_to_date" [readonly]="disableTextbox2" (change)="endDateValidator()">  
                     <div *ngIf="f['leaveApplication_to_date'].touched && f['leaveApplication_to_date'].invalid" >
                         <div *ngIf="f['leaveApplication_to_date'].errors && f['leaveApplication_to_date'].errors['required'] " ><p class="error-msg">To date is required</p></div>
                     </div>
@@ -355,7 +352,7 @@
                     </div>
                 </div>
             </div>
-            
+         
             <div class="row">
                 <div class="col-sm">
                     <p>To session <span >*</span></p> 

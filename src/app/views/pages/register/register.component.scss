@@ -331,6 +331,9 @@ margin-bottom: 10px;
     background-color:#f8f8f8!important;
     border-radius: 10px;
 }
+::ng-deep .mat-step-header{
+    display: block !important;
+}
 }
 
 @media all and (min-width: 768px) and (max-width: 1023px) {
@@ -340,5 +343,11 @@ margin-bottom: 10px;
     .app-logo-content{
         margin-left: -10px !important;
 }
+::ng-deep .mat-step-header{
+    display: block !important;
 
 }
+
+}
+
+

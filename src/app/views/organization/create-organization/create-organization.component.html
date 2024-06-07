@@ -132,7 +132,7 @@
                              <div class="row">
                                 <div class="col-12">
                                 <label class="my-1 f-label">Logo <b class="r-star">*</b></label>
-                                <input [type]="type" class="form-control  sizeinput"[ngClass]="setBgColor(f['org_logo'])" accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" formControlName="org_logo" placeholder="Logo" aria-describedby="emailHelp"  autocomplete="off"
+                                <input [type]="type" class="form-control  sizeinput"[ngClass]="setBgColor(f['org_logo'])" accept="image/*;capture=camera" formControlName="org_logo" placeholder="Logo" aria-describedby="emailHelp"  autocomplete="off"
                                 (change)="uploadImageFile($event)" (focus)="onFocus()" >
                                 <div *ngIf="f['org_logo'].touched && f['org_logo'].invalid" class="error-text">
                                     <span *ngIf="f['org_logo'].errors && f['org_logo'].errors['required']">Logo is required</span>
@@ -396,7 +396,7 @@
                              <div class="row">
                                 <div class="col-12">
                                 <label class="my-1 f-label">Logo <b class="r-star">*</b></label>
-                                <input [type]="type" class="form-control  sizeinput"[ngClass]="setBgColor(f['org_logo'])" accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" formControlName="org_logo" placeholder="Logo" aria-describedby="emailHelp"  autocomplete="off"
+                                <input [type]="type" class="form-control  sizeinput"[ngClass]="setBgColor(f['org_logo'])" accept="image/*;capture=camera" formControlName="org_logo" placeholder="Logo" aria-describedby="emailHelp"  autocomplete="off"
                                 (change)="uploadImageFile($event)" (focus)="onFocus()" >
                                 <div *ngIf="f['org_logo'].touched && f['org_logo'].invalid" class="error-text">
                                     <span *ngIf="f['org_logo'].errors && f['org_logo'].errors['required']">Logo is required</span>

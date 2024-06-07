@@ -118,7 +118,7 @@
                             <!-- <div class="col-sm">
                                 <img [src]="url" alt=""  class="profile-img">
                             </div> -->
-                            <input [type]="type"  class="form-control p-4-0 sizeinput" formControlName="profile_base64"  accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" placeholder="profile_base64" aria-describedby="emailHelp"  autocomplete="off" (focus)="onFocus()" (change)="uploadImageFile($event)">
+                            <input [type]="type"  class="form-control p-4-0 sizeinput" formControlName="profile_base64"  accept="image/*;capture=camera" placeholder="profile_base64" aria-describedby="emailHelp"  autocomplete="off" (focus)="onFocus()" (change)="uploadImageFile($event)">
                             <div *ngIf="f['profile_base64'].touched && f['profile_base64'].invalid" >
                                 <div *ngIf="f['profile_base64'].errors && f['profile_base64'].errors['required']" ><p class="error-msg">Photo is required</p></div>
                             </div>
@@ -295,7 +295,7 @@
 <div class="container-fluid mobileView">
     <div class="row mx-1 my-2">
         <div class="col-sm-6">
-            <h1><i  class="bi bi-arrow-left" (click)="goBack($event)"></i> Add Employee</h1>
+            <h1><i  class="bi bi-arrow-left" (click)="goBack($event)"></i> Employee Details</h1>
         </div>
     </div>
     <div class="generic-form bg mx-1">
@@ -402,7 +402,7 @@
                             <!-- <div class="col-sm">
                                 <img [src]="url" alt=""  class="profile-img">
                             </div> -->
-                            <input [type]="type"  class="form-control p-4-0 sizeinput" formControlName="profile_base64"  accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" placeholder="profile_base64" aria-describedby="emailHelp"  autocomplete="off" (focus)="onFocus()" (change)="uploadImageFile($event)">
+                            <input [type]="type"  class="form-control p-4-0 sizeinput" formControlName="profile_base64"  accept="image/*;capture=camera" placeholder="profile_base64" aria-describedby="emailHelp"  autocomplete="off" (focus)="onFocus()" (change)="uploadImageFile($event)">
                             <div *ngIf="f['profile_base64'].touched && f['profile_base64'].invalid" >
                                 <div *ngIf="f['profile_base64'].errors && f['profile_base64'].errors['required']" ><p class="error-msg">Photo is required</p></div>
                             </div>

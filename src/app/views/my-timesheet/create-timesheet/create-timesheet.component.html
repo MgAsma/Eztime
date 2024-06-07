@@ -159,7 +159,7 @@
         <div class="row">
         <div *ngFor="let task of createdtasks.controls; let i=index">
           <div [formGroupName]="i">
-            <div style="padding-right: 3px;" *ngIf="i==0">
+            <!-- <div style="padding-right: 3px;" *ngIf="i==0">
               <div class="col-sm-12 col-md-6 col-lg-4" *ngIf="user_role_name === 'ADMIN' || user_role_name === 'MANAGER'">
                 <p>Add Employee<span >*</span></p>
                
@@ -169,7 +169,7 @@
                 </ng-multiselect-dropdown> 
                   
             </div>
-          </div>
+          </div> -->
               <div class="col-sm-12 col-md-6 col-lg-2 p-0">
               <label>Client <span>*</span></label>
               <select class="form-select sizeinput" (change)="getProject($event.target['value'], i)" [(value)]="client" aria-label="Default select example"

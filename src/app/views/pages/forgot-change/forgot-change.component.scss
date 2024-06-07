@@ -331,6 +331,10 @@ margin-bottom: 10px;
     right: 15px;
     font-size: 10px;
 }
+.input-fieldset legend
+{
+    background:#f8f8f8 !important;
+}
 }
 
 @media all and (min-width: 768px) and (max-width: 1023px) {
@@ -344,5 +348,9 @@ margin-bottom: 10px;
     position: absolute;
     top: 15px;
     right: 15px;
+}
+.input-fieldset legend
+{
+    background:#f8f8f8 !important;
 }
 }

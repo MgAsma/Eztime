@@ -391,6 +391,10 @@ margin-bottom: 10px;
 .left-content-img{
   width: 70% !important;
 }
+.input-fieldset legend
+{
+    background:#f8f8f8 !important;
+}
 }
 
 @media all and (min-width: 768px) and (max-width: 1023px) {
@@ -400,5 +404,8 @@ margin-bottom: 10px;
   .app-logo-content{
     margin-left: 0px;
 }
-
+.input-fieldset legend
+{
+    background:#f8f8f8 !important;
+}
 }

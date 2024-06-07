@@ -164,7 +164,7 @@
                     <div class="row">
                         <div class="col-12">
                         <label class="my-2 f-label">User profile photo <span class="r-star">*</span></label>
-                        <input [type]="profileimg" class="form-control  sizeinput" (focus)="onFocusPhoto()" accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" formControlName="user_profile_photo"  aria-describedby="emailHelp"  autocomplete="off" (change)="uploadImageFile($event)">
+                        <input [type]="profileimg" class="form-control  sizeinput" (focus)="onFocusPhoto()" accept="image/*;capture=camera" formControlName="user_profile_photo"  aria-describedby="emailHelp"  autocomplete="off" (change)="uploadImageFile($event)">
                         </div>
                         <label *ngIf="f['user_profile_photo'].touched && f['user_profile_photo'].invalid" class="error-text">
                             <span *ngIf="f['user_profile_photo'].errors['required']" >User profile photo is required</span>
@@ -356,7 +356,7 @@
                     <div class="row">
                         <div class="col-12">
                         <label class="my-2 f-label">User profile photo <span class="r-star">*</span></label>
-                        <input [type]="profileimg" class="form-control  sizeinput" (focus)="onFocusPhoto()" accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" formControlName="user_profile_photo"  aria-describedby="emailHelp"  autocomplete="off" (change)="uploadImageFile($event)">
+                        <input [type]="profileimg" class="form-control  sizeinput" (focus)="onFocusPhoto()" accept="image/*;capture=camera" formControlName="user_profile_photo"  aria-describedby="emailHelp"  autocomplete="off" (change)="uploadImageFile($event)">
                         </div>
                         <label *ngIf="f['user_profile_photo'].touched && f['user_profile_photo'].invalid" class="error-text">
                             <span *ngIf="f['user_profile_photo'].errors['required']" >User profile photo is required</span>

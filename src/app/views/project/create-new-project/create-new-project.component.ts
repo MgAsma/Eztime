@@ -236,7 +236,6 @@ export class CreateNewProjectComponent implements OnInit {
   selectedTask = []
   addProject(){
     this.projectForm.patchValue({people_ref_id:this.peopleId});
-    
     const startDate = this.projectForm.value.p_start_date
     const EndDate   = this.projectForm.value.p_closure_date
     // this.projectForm.patchValue({project_related_task_list:this.subTaskValue})

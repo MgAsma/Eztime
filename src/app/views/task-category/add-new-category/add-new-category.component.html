@@ -51,7 +51,7 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-4 py-0">
                         <label class="p-0">Photo <b style="color:red">*</b></label>
-                        <input type="file" formControlName="file_base_64" accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" class="form-control sizeinput" (change)="uploadImageFile($event,i)" (ngModelChange)="uploadImageFile($event,i)">
+                        <input type="file" formControlName="file_base_64" accept="image/*;capture=camera" class="form-control sizeinput" (change)="uploadImageFile($event,i)" (ngModelChange)="uploadImageFile($event,i)">
                         <div *ngIf="file.get('file_base_64').invalid && (file.get('file_base_64').dirty || file.get('file_base_64').touched)">
                             <div class="feedback" *ngIf="file.get('file_base_64').errors.required">
                               Photo is required.
@@ -201,7 +201,7 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-4 py-0">
                         <label class="p-0">Photo <b style="color:red">*</b></label>
-                        <input type="file" formControlName="file_base_64" accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" class="form-control sizeinput" (change)="uploadImageFile($event,i)" (ngModelChange)="uploadImageFile($event,i)">
+                        <input type="file" formControlName="file_base_64" accept="image/*;capture=camera" class="form-control sizeinput" (change)="uploadImageFile($event,i)" (ngModelChange)="uploadImageFile($event,i)">
                         <div *ngIf="file.get('file_base_64').invalid && (file.get('file_base_64').dirty || file.get('file_base_64').touched)">
                             <div class="feedback" *ngIf="file.get('file_base_64').errors.required">
                               Photo is required.
