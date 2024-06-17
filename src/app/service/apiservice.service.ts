@@ -267,7 +267,7 @@ export class ApiserviceService {
     return this.http.get(`${this.baseurl}/master-leave-types?search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&organization_id=${params.organization_id}`,{headers:this.headers})
   }
   getLeaveTypeDetails(params){
-    return this.http.get(`${this.baseurl}/master-leave-types?page_number=1&data_per_page=2&pagination=FALSE&organization_id=${params}`,{headers:this.headers})
+    return this.http.get(`${this.baseurl}/master-leave-types?page_number=1&data_per_page=2&pagination=FALSE&organization_id=${params.orgId}&master-leave-types=${params.master_leave_types}`,{headers:this.headers})
   }
   deleteLeaveTypeDetails(id:any){
     return this.http.delete(`${this.baseurl}/master-leave-types/${id}?page_number=1&data_per_page=2&pagination=FALSE`,{headers:this.headers})
@@ -434,7 +434,7 @@ export class ApiserviceService {
     return this.http.get(`${this.baseurl}/users-leave-details?user_id=${id}&page_number=1&data_per_page=2&pagination=${params.pagination}`,{headers:this.headers})
   }
   getLeaveBalance(params,data){
-    return this.http.get(`${this.baseurl}/emp-balance-leave?user_id=${params.user_id}&days=${params.days}&leave_type_id=${params.leave_type_id}`,data)
+    return this.http.get(`${this.baseurl}/emp-balance-leave?user_id=${params.user_id}&days=${params.days}&leave_type_id=${params.leave_type_id}&from_date=${params.from_date}&to_data=${params.to_data}&from_session=${params.from_session}&to_session=${params.to_session}`,data)
   }
   getLeaveData(params,pagination){
     return this.http.get(`${this.baseurl}/leave-application?approved_state=${params.approved_state}&user_id=${params.user_id}&leaveApplication_from_date=${params.leaveApplication_from_date}&leaveApplication_to_date=${params.leaveApplication_to_date}&page_number=${pagination.page_number}&data_per_page=${pagination.data_per_page}`,{headers:this.headers})

@@ -156,7 +156,7 @@
                     <div class="col-sm">
                         <p>Estimated billing <span >*</span></p>
                        
-                            <input type="number" appHypen onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" oninput="this.value = this.value.replace('.', '').replace(/[^\d]/g, '');" class="form-control" formControlName="p_estimated_cost" placeholder="Enter estimated billing" aria-label="Username" aria-describedby="basic-addon1" >
+                            <input type="number" onkeydown="return event.keyCode !== 69" class="form-control" formControlName="p_estimated_cost" placeholder="Enter estimated billing" aria-label="Username" aria-describedby="basic-addon1" >
                           
                           <div *ngIf="f['p_estimated_cost'].touched && f['p_estimated_cost'].invalid" >
                             <div *ngIf="f['p_estimated_cost'].errors && f['p_estimated_cost'].errors['required']" ><p class="error-msg">Estimated billing is required</p></div>

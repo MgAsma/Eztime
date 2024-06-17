@@ -82,7 +82,10 @@ export class TimesheetComponent implements OnInit {
         this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
       }
       else{
-        res['result']['data'].length <=0 ? this.api.showWarning('No records found') : ''
+        res['result']['data'].length <=0 ? this.api.showWarning('No records found') : '';
+        if(res['result'] && res['result'].timesheet_dashboard){
+          this.cardData = res['result'].timesheet_dashboard    
+        }
        }
      })
   }
@@ -101,6 +104,9 @@ export class TimesheetComponent implements OnInit {
       }
       else{
         res['result']['data'].length <= 0 ? this.api.showWarning('No records found') :''
+        if(res['result'] && res['result'].timesheet_dashboard){
+          this.cardData = res['result'].timesheet_dashboard    
+        }
        }
       
     })

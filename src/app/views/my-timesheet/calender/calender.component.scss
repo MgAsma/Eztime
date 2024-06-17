@@ -139,13 +139,30 @@ h2 {
   b.ng-star-inserted {
     display: none !important;
 }
+
+i.approve-status.ng-star-inserted{
+  border: 1px solid #13FF2B !important;
+  background: #F3FFF5 !important;
+  color: #20852a !important;
+  
+}
+i.yet-to-approve-status.ng-star-inserted{
+  border: 1px solid #FFAF13 !important;
+    background:#FFFCF3 !important;
+    color: #FFAF13 !important;
+}
+i.declined-status.ng-star-inserted{
+  border: 1px solid #FF1313 !important;
+  background: #FFF3F3 !important;
+  color: #FF1313 !important;
+}
 i.ng-star-inserted {
   font-weight: 700;
   font-size: 12px;
   font-style: normal;
   width: 100%;
-  color:white;
-  background: black;
+  color:inherit;
+  background:inherit;
   text-align: center;
  // position: relative;
 }

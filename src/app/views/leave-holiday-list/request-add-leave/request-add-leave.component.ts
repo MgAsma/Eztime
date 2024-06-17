@@ -157,7 +157,8 @@ export class RequestAddLeaveComponent implements OnInit {
    
   }
   getLeaveType(){
-    this.api.getLeaveTypeDetails(this.orgId).subscribe((data:any)=>{
+    let params:any={'orgId':this.orgId,'master-leave-types':sessionStorage.getItem('center_id')};
+    this.api.getLeaveTypeDetails(params).subscribe((data:any)=>{
       this.leaveType= data.result.data;
       //console.log(this.leaveType,"dfsfs")
     },(error =>{
@@ -218,7 +219,11 @@ export class RequestAddLeaveComponent implements OnInit {
   let params={
     user_id:this.user_id,
     days:workingdays,
-    leave_type_id:this.leaveForm.value.leaveType
+    leave_type_id:this.leaveForm.value.leaveType,
+    from_date:this.leaveForm.value.leaveApplication_from_date,
+    to_data:this.leaveForm.value.leaveApplication_to_date,
+    from_session:this.leaveForm.value.ula_from_session,
+    to_session:this.leaveForm.value.ula_to_session
   }
   // //console.log(this.leaveForm.value.days,"workingdays")
   this.api.getLeaveBalance(params,data).subscribe(res=>{

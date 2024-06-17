@@ -63,7 +63,7 @@
       <full-calendar *ngIf='calendarVisible' [options]='calendarOptions'>
         <ng-template #eventContent let-arg>
           <b>{{ arg.timeText }}</b>
-          <i>{{ arg.event.title }}</i>
+          <i [ngClass]="{'approve-status':arg.event.title==='APPROVED','yet-to-approve-status':arg.event.title==='YET_TO_APPROVED','declined-status':arg.event.title==='DECLINED'}">{{ arg.event.title }}</i>
         </ng-template>
       </full-calendar>
     </div>
@@ -89,7 +89,7 @@
     <full-calendar *ngIf='calendarVisible' [options]='calendarOptions'>
       <ng-template #eventContent let-arg>
         <b>{{ arg.timeText }}</b>
-        <i>{{ arg.event.title }}</i>
+        <i [ngClass]="{'approve-status':arg.event.title==='APPROVED','yet-to-approve-status':arg.event.title==='YET_TO_APPROVED','declined-status':arg.event.title==='DECLINED'}">{{ arg.event.title }}</i>
       </ng-template>
     </full-calendar>
   </div>

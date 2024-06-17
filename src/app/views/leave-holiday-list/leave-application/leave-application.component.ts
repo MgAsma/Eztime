@@ -166,7 +166,8 @@ export class LeaveApplicationComponent implements OnInit {
     }
   }
   getLeaveType() {
-    this.api.getLeaveTypeDetails(this.orgId).subscribe(
+    let params:any={'orgId':this.orgId,'master_leave_types':sessionStorage.getItem('center_id')};
+    this.api.getLeaveTypeDetails(params).subscribe(
       (data: any) => {
         this.leaveType = data.result.data;
       },
@@ -262,6 +263,10 @@ export class LeaveApplicationComponent implements OnInit {
       user_id: this.user_id,
       days: workingdays,
       leave_type_id: this.leaveForm.value.leave_type_id,
+      from_date:this.leaveForm.value.leaveApplication_from_date,
+      to_data:this.leaveForm.value.leaveApplication_to_date,
+      from_session:this.leaveForm.value.from1_session,
+      to_session:this.leaveForm.value.to1_session
     };
     this.api.getLeaveBalance(params, data).subscribe(
       (res) => {
@@ -351,7 +356,6 @@ export class LeaveApplicationComponent implements OnInit {
     const fromDate = dayjs(new Date(startDate));
     const toDate = dayjs(new Date(endDate)).subtract(1, 'day');
     const fromToDuration = dayjs.duration(toDate.diff(fromDate)).asDays()
-
     const fromDaySession = fromDate.subtract(
       selectedFrom === '1' ? 24 : 12,
       'hours'
@@ -361,8 +365,6 @@ export class LeaveApplicationComponent implements OnInit {
     const daysDiff = dayjs.duration(diffMS).asDays();
     const holidays = Object.values(_holidays?.message[0]);
     let daysDiffWithHolidays = daysDiff
-
-
     // Exclude weekends from the leaves
     console.log(daysDiff)
     for(let i=0; i<daysDiff;i++){
