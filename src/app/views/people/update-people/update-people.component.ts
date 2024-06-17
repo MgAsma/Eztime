@@ -319,16 +319,13 @@ export class UpdatePeopleComponent implements OnInit {
     }
   }
   onFocus(){
-    this.type = 'file'
-    this.updateForm.patchValue({
-      profile_base64:''
-    })
+    this.type = 'file';
+    this.updateForm.get('profile_base64')?.reset();
   }
 
 
   uploadImageFile(event:any){
     //console.log(event,"EVENT")
-    
     this.uploadFile =  event.target.files[0];
     if(event.target.files && event.target.files[0]){
       const reader =new FileReader();

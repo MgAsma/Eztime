@@ -153,13 +153,8 @@ export class UpdateOrganizationComponent implements OnInit {
     }))
   }
   onFocus(){
-    this.type = 'file'
-    this.organizationForm.patchValue({
-      org_logo:''
-    })
-    this.f['org_logo'].markAsDirty()
-    this.f['org_logo'].markAsTouched()
-    
+    this.type = 'file';
+    this.organizationForm.get('org_logo')?.reset();
   }
   getCountry(){
     let data = {

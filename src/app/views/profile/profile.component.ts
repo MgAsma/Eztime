@@ -193,9 +193,7 @@ export class ProfileComponent implements OnInit {
   }
   onFocusPhoto(){
     this.profileimg='file';
-    this.profileForm.patchValue({
-      user_profile_photo:''
-    })
+    this.profileForm.get('user_profile_photo')?.reset();
   }
   updateProfile(){
     // this.profileForm.patchValue({

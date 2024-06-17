@@ -132,9 +132,30 @@
                                  <div class="row">
                                     <div class="col-12">
                                     <label class="my-1 f-label">Logo <b class="r-star">*</b></label>
-                                    <input [type]="type" class="form-control  sizeinput"[ngClass]="setBgColor(f['org_logo'])" accept="image/*;capture=camera" formControlName="org_logo" placeholder="Logo" aria-describedby="emailHelp"  autocomplete="off"
-                                    (change)="uploadImageFile($event)" (focus)="onFocus()" >
-                                    <div *ngIf="f['org_logo'].touched && f['org_logo'].invalid" class="error-text">
+                                    <ng-container *ngIf="type === 'url'; else fileInput">
+                                        <input 
+                                          type="url"
+                                          class="form-control  sizeinput" [ngClass]="setBgColor(f['org_logo'])" 
+                                          formControlName="org_logo" 
+                                          placeholder="org_logo" 
+                                          aria-describedby="emailHelp"  
+                                          autocomplete="off" 
+                                          (focus)="onFocus()">
+                                      </ng-container>
+                                      
+                                      <ng-template #fileInput>
+                                        <input 
+                                          type="file"
+                                          class="form-control  sizeinput" [ngClass]="setBgColor(f['org_logo'])" 
+                                          formControlName="org_logo" 
+                                          capture="camera" 
+                                          accept="image/*" 
+                                          placeholder="org_logo" 
+                                          aria-describedby="emailHelp"  
+                                          autocomplete="off" 
+                                          (change)="uploadImageFile($event)">
+                                      </ng-template>
+                                      <div *ngIf="f['org_logo'].touched && f['org_logo'].invalid" class="error-text">
                                         <span *ngIf="f['org_logo'].errors && f['org_logo'].errors['required']">Logo is required</span>
                                     </div> 
                                     <span class="error-text" *ngIf="f['org_logo'].errors && f['org_logo'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</span>
@@ -386,8 +407,31 @@
                                      <div class="row">
                                         <div class="col-12">
                                         <label class="my-1 f-label">Logo <b class="r-star">*</b></label>
-                                        <input [type]="type" class="form-control  sizeinput"[ngClass]="setBgColor(f['org_logo'])" accept="image/*;capture=camera" formControlName="org_logo" placeholder="Logo" aria-describedby="emailHelp"  autocomplete="off"
-                                        (change)="uploadImageFile($event)" (focus)="onFocus()" >
+                                        <!-- <input [type]="type" class="form-control  sizeinput"[ngClass]="setBgColor(f['org_logo'])" accept="image/*" formControlName="org_logo" placeholder="Logo" aria-describedby="emailHelp"  autocomplete="off"
+                                        (change)="uploadImageFile($event)" (focus)="onFocus()" > -->
+                                        <ng-container *ngIf="type === 'url'; else fileInput">
+                                            <input 
+                                              type="url"
+                                              class="form-control  sizeinput" [ngClass]="setBgColor(f['org_logo'])" 
+                                              formControlName="org_logo" 
+                                              placeholder="org_logo" 
+                                              aria-describedby="emailHelp"  
+                                              autocomplete="off" 
+                                              (focus)="onFocus()">
+                                          </ng-container>
+                                          
+                                          <ng-template #fileInput>
+                                            <input 
+                                              type="file"
+                                              class="form-control  sizeinput" [ngClass]="setBgColor(f['org_logo'])" 
+                                              formControlName="org_logo" 
+                                              capture="camera" 
+                                              accept="image/*" 
+                                              placeholder="org_logo" 
+                                              aria-describedby="emailHelp"  
+                                              autocomplete="off" 
+                                              (change)="uploadImageFile($event)">
+                                          </ng-template>
                                         <div *ngIf="f['org_logo'].touched && f['org_logo'].invalid" class="error-text">
                                             <span *ngIf="f['org_logo'].errors && f['org_logo'].errors['required']">Logo is required</span>
                                         </div> 

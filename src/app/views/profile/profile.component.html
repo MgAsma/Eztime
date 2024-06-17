@@ -164,8 +164,29 @@
                     <div class="row">
                         <div class="col-12">
                         <label class="my-2 f-label">User profile photo <span class="r-star">*</span></label>
-                        <input [type]="profileimg" class="form-control  sizeinput" (focus)="onFocusPhoto()" accept="image/*;capture=camera" formControlName="user_profile_photo"  aria-describedby="emailHelp"  autocomplete="off" (change)="uploadImageFile($event)">
-                        </div>
+                        <ng-container *ngIf="profileimg === 'url'; else fileInput">
+                            <input 
+                              type="url"
+                              class="form-control sizeinput" 
+                              formControlName="user_profile_photo" 
+                              placeholder="user_profile_photo" 
+                              aria-describedby="emailHelp"  
+                              autocomplete="off" 
+                              (focus)="onFocusPhoto()">
+                          </ng-container>
+                          
+                          <ng-template #fileInput>
+                            <input 
+                              type="file"
+                              class="form-control sizeinput" 
+                              formControlName="user_profile_photo" 
+                              capture="camera" 
+                              accept="image/*" 
+                              placeholder="user_profile_photo" 
+                              aria-describedby="emailHelp"  
+                              autocomplete="off" 
+                              (change)="uploadImageFile($event)">
+                          </ng-template></div>
                         <label *ngIf="f['user_profile_photo'].touched && f['user_profile_photo'].invalid" class="error-text">
                             <span *ngIf="f['user_profile_photo'].errors['required']" >User profile photo is required</span>
                         </label>
@@ -356,7 +377,30 @@
                     <div class="row">
                         <div class="col-12">
                         <label class="my-2 f-label">User profile photo <span class="r-star">*</span></label>
-                        <input [type]="profileimg" class="form-control  sizeinput" (focus)="onFocusPhoto()" accept="image/*;capture=camera" formControlName="user_profile_photo"  aria-describedby="emailHelp"  autocomplete="off" (change)="uploadImageFile($event)">
+                        <ng-container *ngIf="profileimg === 'url'; else fileInput">
+                            <input 
+                              type="url"
+                              class="form-control sizeinput" 
+                              formControlName="user_profile_photo" 
+                              placeholder="user_profile_photo" 
+                              aria-describedby="emailHelp"  
+                              autocomplete="off" 
+                              (focus)="onFocusPhoto()">
+                          </ng-container>
+                          
+                          <ng-template #fileInput>
+                            <input 
+                              type="file"
+                              class="form-control sizeinput" 
+                              formControlName="user_profile_photo" 
+                              capture="camera" 
+                              accept="image/*" 
+                              placeholder="user_profile_photo" 
+                              aria-describedby="emailHelp"  
+                              autocomplete="off" 
+                              (change)="uploadImageFile($event)">
+                          </ng-template>
+                        <!-- <input [type]="profileimg" class="form-control  sizeinput" (focus)="onFocusPhoto()" accept="image/*"formControlName="user_profile_photo"  aria-describedby="emailHelp"  autocomplete="off" (change)="uploadImageFile($event)"> -->
                         </div>
                         <label *ngIf="f['user_profile_photo'].touched && f['user_profile_photo'].invalid" class="error-text">
                             <span *ngIf="f['user_profile_photo'].errors['required']" >User profile photo is required</span>

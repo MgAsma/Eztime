@@ -94,11 +94,9 @@ export class RegisterComponent {
       // organization_id:['',Validators.required]
     })
   }
-  onFocusProfileImg(){
-    this.thirdFormGroup.patchValue({
-      profile_base64:''
-    })
-  }
+  // onFocusProfileImg(){
+  //   this.thirdFormGroup.get('profile_base64')?.reset();
+  // }
   fileFormatValidator(control: AbstractControl): ValidationErrors | null {
     const allowedFormats = ['.jpg', '.jpeg', '.png', '.JPG', '.JPEG', '.PNG'];
     const file = control.value;
