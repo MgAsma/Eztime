@@ -117,7 +117,7 @@
                 <div class="row">
                     <div class="col-sm">
                         <p>Photo <span >*</span></p>
-                        <input type="file" class="form-control p-4-0 sizeinput" formControlName="profile_base64"   accept="image/*" placeholder="profile_base64" aria-describedby="emailHelp"  autocomplete="off" (change)="uploadImageFile($event)" >
+                        <input type="file" class="form-control p-4-0 sizeinput" formControlName="profile_base64"   accept="image/*;capture=camera" placeholder="profile_base64" aria-describedby="emailHelp"  autocomplete="off" (change)="uploadImageFile($event)" >
                         <div *ngIf="f['profile_base64'].touched && f['profile_base64'].invalid" >
                             <div *ngIf="f['profile_base64'].errors && f['profile_base64'].errors['required']" ><p class="error-msg">Photo is required</p></div>
                         </div>

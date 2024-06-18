@@ -180,8 +180,7 @@
                               type="file"
                               class="form-control sizeinput" 
                               formControlName="user_profile_photo" 
-                              capture="camera" 
-                              accept="image/*" 
+                              accept="image/*;capture=camera" 
                               placeholder="user_profile_photo" 
                               aria-describedby="emailHelp"  
                               autocomplete="off" 
@@ -393,14 +392,13 @@
                               type="file"
                               class="form-control sizeinput" 
                               formControlName="user_profile_photo" 
-                              capture="camera" 
-                              accept="image/*" 
+                              accept="image/*;capture=camera" 
                               placeholder="user_profile_photo" 
                               aria-describedby="emailHelp"  
                               autocomplete="off" 
                               (change)="uploadImageFile($event)">
                           </ng-template>
-                        <!-- <input [type]="profileimg" class="form-control  sizeinput" (focus)="onFocusPhoto()" accept="image/*"formControlName="user_profile_photo"  aria-describedby="emailHelp"  autocomplete="off" (change)="uploadImageFile($event)"> -->
+                        <!-- <input [type]="profileimg" class="form-control  sizeinput" (focus)="onFocusPhoto()" accept="image/*;capture=camera"formControlName="user_profile_photo"  aria-describedby="emailHelp"  autocomplete="off" (change)="uploadImageFile($event)"> -->
                         </div>
                         <label *ngIf="f['user_profile_photo'].touched && f['user_profile_photo'].invalid" class="error-text">
                             <span *ngIf="f['user_profile_photo'].errors['required']" >User profile photo is required</span>

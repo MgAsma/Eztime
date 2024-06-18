@@ -142,7 +142,7 @@ export class UpdateProjectComponent implements OnInit {
 
   createSubTask(): FormGroup {
     return this.builder.group({
-      taskName: '',
+      task_Name: '',
       status: '',
       assignee: ''
     });

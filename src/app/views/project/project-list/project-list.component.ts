@@ -54,12 +54,13 @@ export class ProjectListComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
+    this.user_id = sessionStorage.getItem('user_id');
     this.getProject();
     this.enabled = true;
     this.getUserControls()
   }
   filterSearch(){
-    this.api.getData(`${environment.live_url}/${environment.project_list}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.project_list}?user_id=${this.user_id}&search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((data:any)=>{
       if(data.result){
         this.allProjectList= data.result.data;
         //console.log( this.allProjectList,"ALL")
@@ -76,7 +77,6 @@ export class ProjectListComponent implements OnInit {
     )
   }
   getUserControls(){
-    this.user_id = sessionStorage.getItem('user_id')
     this.api.getUserRoleById(`user_id=${this.user_id}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
         this.common_service.permission.next(res['data'][0]['permissions'])
@@ -113,7 +113,8 @@ export class ProjectListComponent implements OnInit {
       page_number:this.page,
       data_per_page:this.tableSize,
       organization_id:this.orgId,
-      search_key:this.term
+      search_key:this.term,
+      user_id:this.user_id
   }
 
     this.api.getProjectDetailsPage(params).subscribe((data:any)=>{

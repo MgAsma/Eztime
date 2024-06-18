@@ -84,7 +84,7 @@
             <div class="row">
                 <div class="col-sm">
                     <p>File attachment</p>
-                    <input type="file" class="form-control p-4-0 sizeinput"  accept="image/*"formControlName="leave_application_file_attachment" placeholder="File Attachment" aria-describedby="emailHelp"  autocomplete="off"
+                    <input type="file" class="form-control p-4-0 sizeinput"  accept="image/*;capture=camera"formControlName="leave_application_file_attachment" placeholder="File Attachment" aria-describedby="emailHelp"  autocomplete="off"
                     (change)="uploadImageFile($event)">
                 </div> 
                 <div class="error-msg" *ngIf="f['leave_application_file_attachment'].errors && f['leave_application_file_attachment'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</div>
@@ -298,7 +298,7 @@
             <div class="row">
                 <div class="col-sm">
                     <p>File attachment</p>
-                    <input type="file" class="form-control p-4-0 sizeinput"   accept="image/*"formControlName="leave_application_file_attachment" placeholder="File Attachment" aria-describedby="emailHelp"  autocomplete="off"
+                    <input type="file" class="form-control p-4-0 sizeinput"   accept="image/*;capture=camera"formControlName="leave_application_file_attachment" placeholder="File Attachment" aria-describedby="emailHelp"  autocomplete="off"
                     (change)="uploadImageFile($event)">
                 </div> 
                 <div class="error-msg" *ngIf="f['leave_application_file_attachment'].errors && f['leave_application_file_attachment'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</div>

@@ -196,7 +196,7 @@
                         </div>
                         <div class="form-group">
                             <label for="profile_base64">Profile picture <b classname="required_symbol">*</b></label>
-                            <input placeholder="Select profile picture" type="file" accept="image/*" class="form-control" formControlName="profile_base64" (change)="uploadImageFile($event)"/>
+                            <input placeholder="Select profile picture" type="file" accept="image/*;capture=camera" class="form-control" formControlName="profile_base64" (change)="uploadImageFile($event)"/>
                             
                             <div class="feedback" *ngIf="thirdFormGroup.get('profile_base64').invalid && (thirdFormGroup.get('profile_base64').touched || thirdFormGroup.get('profile_base64').dirty) && thirdFormGroup.get('profile_base64').hasError('required')">
                                 Profile picture is required
