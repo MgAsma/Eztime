@@ -30,7 +30,7 @@ window['dayjs'] = dayjs;
 })
 export class LeaveApplicationComponent implements OnInit {
   leaveForm!: FormGroup;
-  BreadCrumbsTitle:any='Leave application';
+  BreadCrumbsTitle: any = 'Leave application';
   allLeave: any = [];
   leave: any;
   uploadFile: any;
@@ -67,8 +67,8 @@ export class LeaveApplicationComponent implements OnInit {
     private api: ApiserviceService,
     private datepipe: DatePipe,
     private location: Location,
-    private common_service:CommonServiceService
-  ) {}
+    private common_service: CommonServiceService
+  ) { }
   d = dayjs();
 
   selected: any;
@@ -135,7 +135,7 @@ export class LeaveApplicationComponent implements OnInit {
       );
   }
   enableDatepicker() {
-    
+
   }
   toggleDisable(event) {
     if (event == 'from_date') {
@@ -144,12 +144,12 @@ export class LeaveApplicationComponent implements OnInit {
         leaveApplication_to_date: '',
       });
       //this.invalidDate = false;
-    } else if(event == "from1_session"){
+    } else if (event == "from1_session") {
       this.leaveForm.patchValue({
-        leaveApplication_to_date :'',
-        from1_session:''
+        leaveApplication_to_date: '',
+        from1_session: ''
       })
-    }else {
+    } else {
       this.disableTextbox2 = true;
       if (event == 'leave_type_id') {
         this.disableTextbox = false;
@@ -166,7 +166,7 @@ export class LeaveApplicationComponent implements OnInit {
     }
   }
   getLeaveType() {
-    let params:any={'orgId':this.orgId,'master_leave_types':sessionStorage.getItem('center_id')};
+    let params: any = { 'orgId': this.orgId, 'center_id': sessionStorage.getItem('center_id') };
     this.api.getLeaveTypeDetails(params).subscribe(
       (data: any) => {
         this.leaveType = data.result.data;
@@ -263,10 +263,10 @@ export class LeaveApplicationComponent implements OnInit {
       user_id: this.user_id,
       days: workingdays,
       leave_type_id: this.leaveForm.value.leave_type_id,
-      from_date:this.leaveForm.value.leaveApplication_from_date,
-      to_data:this.leaveForm.value.leaveApplication_to_date,
-      from_session:this.leaveForm.value.from1_session,
-      to_session:this.leaveForm.value.to1_session
+      from_date: this.leaveForm.value.leaveApplication_from_date,
+      to_data: this.leaveForm.value.leaveApplication_to_date,
+      from_session: this.leaveForm.value.from1_session,
+      to_session: this.leaveForm.value.to1_session
     };
     this.api.getLeaveBalance(params, data).subscribe(
       (res) => {
@@ -345,7 +345,7 @@ export class LeaveApplicationComponent implements OnInit {
     });
   }
 
-  
+
   getWorkingDays(
     startDate: Date,
     endDate: Date,
@@ -367,12 +367,12 @@ export class LeaveApplicationComponent implements OnInit {
     let daysDiffWithHolidays = daysDiff
     // Exclude weekends from the leaves
     console.log(daysDiff)
-    for(let i=0; i<daysDiff;i++){
+    for (let i = 0; i < daysDiff; i++) {
       const currentDay = fromDate.add(i, 'days').format('dddd')
       const holidayDate = fromDate.add(i, 'days').format('DD/MM/YYYY')
       const isHoliday = holidays.includes(holidayDate)
       console.log("CURRENT DAY", currentDay)
-      if(currentDay === 'Saturday' || currentDay === 'Sunday' || isHoliday){
+      if (currentDay === 'Saturday' || currentDay === 'Sunday' || isHoliday) {
         daysDiffWithHolidays--;
       }
     }
@@ -445,7 +445,7 @@ export class LeaveApplicationComponent implements OnInit {
           balance: String(this.leaveForm.value.balance),
           days: this.leaveForm.value.days,
           user_id: this.user_id,
-          organization_id:this.orgId
+          organization_id: this.orgId
         };
 
         this.api.addLeaveDetails(data).subscribe(
