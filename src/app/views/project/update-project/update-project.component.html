@@ -666,6 +666,23 @@
                     </div>
                 </div> -->
                     <div class="row">
+                        <div class="col-sm-12">
+                            <p>Project Status<span>*</span></p>
+                            <select class="form-select sizeinput" aria-label="Default select example"
+                                formControlName="p_status">
+                                <option value="" disabled selected>Select Status</option>
+                                <option *ngFor="let status of status" [value]="status.value">{{status.viewValue}}
+                                </option>
+                            </select>
+                            <div *ngIf="f['p_status'].touched && f['p_status'].invalid">
+                                <div *ngIf="f['p_status'].errors && f['p_status'].errors['required']">
+                                    <p class="error-msg">Project Status is required</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
 
                         <div class="col-12">
                             <button mat-button type="button" class="add-task" (click)="addTask()"><i
