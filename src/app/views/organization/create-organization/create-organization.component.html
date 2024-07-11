@@ -16,187 +16,253 @@
     </div> -->
 
     <div class="generic-form bg mx-1">
-        <form [formGroup]='organizationForm' (ngSubmit)='organizationSubmit()' >
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-6">
-                <h4>Organization details</h4>
-                 <!----COLUMN LEFT---->
-          
-                <div class="row">
-                  <div class="col-12">
-                      <!--OrganizationName-->
-                    
-                      <div class="row">
-                          <div class="col-12">
-                              <label class="my-1 f-label">Organization name <b class="r-star">*</b></label>
-                              <input type="text" class="form-control p-3 sizeinput" formControlName="org_name" placeholder="Enter organization name" aria-describedby="emailHelp"  autocomplete="off"
-                              [ngClass]="setBgColor(f['org_name'])">
-                              <div *ngIf="f['org_name'].touched && f['org_name'].invalid" class="error-text">
-                                <span *ngIf="f['org_name'].errors && f['org_name'].errors['required']">Organization name is required</span>
-                            </div>
-                            <div *ngIf="f['org_name'].invalid && f['org_name'].hasError('pattern')" class="error-text">
-                                <span>Cannot start with a space.</span>
-                            </div>
-                          </div>
-                      </div>
-                   <!--OrganizationName-->
-                     <!--Email Id-->
-                   
-                     <div class="row">
-                      <div class="col-12">
-                          <label class="my-1 f-label">Email Id <b class="r-star">*</b></label>
-                          <input type="text" class="form-control p-3 sizeinput" formControlName="org_email" placeholder="Enter email Id " aria-describedby="emailHelp"  autocomplete="off"
-                          [ngClass]="setBgColor(f['org_email'])">
-                          <div *ngIf="f['org_email'].touched && f['org_email'].invalid" class="error-text">
-                            <span *ngIf="f['org_email'].errors && f['org_email'].errors['required']">Email Id is required</span>
-                            <span *ngIf="f['org_email'].invalid && f['org_email'].errors['email']" >Invalid email Id </span>
-                        </div>
-                      </div>
-                  </div> 
-                     <!--Email Id-->
-                     <!---Country-->
-                     <div class="row">
-                      <div class="col-12">
-                          <label class="my-1 f-label" >Country <b class="r-star">*</b></label>
-                         
-                         <select class="form-select p-3 sizeinput" formControlName="org_country" [ngClass]="setBgColor(f['org_country'])" (change)="getState($event.target['value'])" (focus)="onFocusCountry()">
-                            <option value="" selected disabled>Select country</option>
-                            <option *ngFor="let country of country" [value]="country.country_name"> {{country.country_name}}</option>
-                         </select>
-                          <div *ngIf="f['org_country'].touched && f['org_country'].invalid" class="error-text">
-                            <span *ngIf="f['org_country'].errors && f['org_country'].errors['required']">Country is required</span>
-                        </div>
-                      </div>
-                  </div> 
-                    <!---Country -->
-                        <!---State-->
-                        <div class="row">
-                          <div class="col-12">
-                              <label class="my-1 f-label">State<b class="r-star">*</b></label>
-                              
-                              <select class="form-select p-3 sizeinput" formControlName="org_state" [ngClass]="setBgColor(f['org_country'])" (change)="getCity($event.target['value'])">
-                                <option value="" selected disabled>Select state</option>
-                                <option *ngFor="let state of state" [value]="state.state_name">{{state.state_name}}</option>
-                             </select>
-                              <div *ngIf="f['org_state'].touched && f['org_state'].invalid" class="error-text">
-                                <span *ngIf="f['org_state'].errors && f['org_state'].errors['required']">State is required</span>
-                            </div>
-                          </div>
-                      </div> 
-                        <!---State -->
+        <form [formGroup]='organizationForm' (ngSubmit)='organizationSubmit()'>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <h4>Organization details</h4>
+                    <!----COLUMN LEFT---->
 
-                         <!--City -->
-                         <div class="row">
-                            <div class="col-12">
-                            <label class="my-1 f-label">City <span class="r-star">*</span></label>
-                            <select type="text" class="form-select p-3 sizeinput" formControlName="org_city"  aria-describedby="emailHelp"  autocomplete="off"
-                            [ngClass]="setBgColor(f['org_city'])">
-                                <option value="" selected disabled>Select city</option>
-                            <option *ngFor="let city of city" [value]="city.city_name">{{city.city_name}}</option>
-                            </select>
-                            <div *ngIf="f['org_city'].touched && f['org_city'].invalid" class="error-text">
-                                <span *ngIf="f['org_city'].errors['required']" >City is Required</span>
+                    <div class="row">
+                        <div class="col-12">
+                            <!--OrganizationName-->
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-1 f-label">Organization name <b class="r-star">*</b></label>
+                                    <input type="text" class="form-control p-3 sizeinput" formControlName="org_name"
+                                        placeholder="Enter organization name" aria-describedby="emailHelp"
+                                        autocomplete="off" [ngClass]="setBgColor(f['org_name'])">
+                                    <div *ngIf="f['org_name'].touched && f['org_name'].invalid" class="error-text">
+                                        <span
+                                            *ngIf="f['org_name'].errors && f['org_name'].errors['required']">Organization
+                                            name is required</span>
+                                    </div>
+                                    <div *ngIf="f['org_name'].invalid && f['org_name'].hasError('pattern')"
+                                        class="error-text">
+                                        <span>Cannot start with a space.</span>
+                                    </div>
+                                </div>
                             </div>
-                          
+                            <!--OrganizationName-->
+                            <!--Email Id-->
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-1 f-label">Email Id <b class="r-star">*</b></label>
+                                    <input type="text" class="form-control p-3 sizeinput" formControlName="org_email"
+                                        placeholder="Enter email Id " aria-describedby="emailHelp" autocomplete="off"
+                                        [ngClass]="setBgColor(f['org_email'])">
+                                    <div *ngIf="f['org_email'].touched && f['org_email'].invalid" class="error-text">
+                                        <span *ngIf="f['org_email'].errors && f['org_email'].errors['required']">Email
+                                            Id is required</span>
+                                        <span *ngIf="f['org_email'].invalid && f['org_email'].errors['email']">Invalid
+                                            email Id </span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            <!--Email Id-->
+                            <!---Country-->
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-1 f-label">Country <b class="r-star">*</b></label>
+
+                                    <select class="form-select p-3 sizeinput" formControlName="org_country"
+                                        [ngClass]="setBgColor(f['org_country'])"
+                                        (change)="getState($event.target['value'])" (focus)="onFocusCountry()">
+                                        <option value="" selected disabled>Select country</option>
+                                        <option *ngFor="let country of country" [value]="country.country_name">
+                                            {{country.country_name}}</option>
+                                    </select>
+                                    <div *ngIf="f['org_country'].touched && f['org_country'].invalid"
+                                        class="error-text">
+                                        <span
+                                            *ngIf="f['org_country'].errors && f['org_country'].errors['required']">Country
+                                            is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---Country -->
+                            <!---State-->
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-1 f-label">State<b class="r-star">*</b></label>
+
+                                    <select class="form-select p-3 sizeinput" formControlName="org_state"
+                                        [ngClass]="setBgColor(f['org_country'])"
+                                        (change)="getCity($event.target['value'])">
+                                        <option value="" selected disabled>Select state</option>
+                                        <option *ngFor="let state of state" [value]="state.state_name">
+                                            {{state.state_name}}</option>
+                                    </select>
+                                    <div *ngIf="f['org_state'].touched && f['org_state'].invalid" class="error-text">
+                                        <span *ngIf="f['org_state'].errors && f['org_state'].errors['required']">State
+                                            is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---State -->
+
+                            <!--City -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-1 f-label">City <span class="r-star">*</span></label>
+                                    <select type="text" class="form-select p-3 sizeinput" formControlName="org_city"
+                                        aria-describedby="emailHelp" autocomplete="off"
+                                        [ngClass]="setBgColor(f['org_city'])">
+                                        <option value="" selected disabled>Select city</option>
+                                        <option *ngFor="let city of city" [value]="city.city_name">{{city.city_name}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="f['org_city'].touched && f['org_city'].invalid" class="error-text">
+                                        <span *ngIf="f['org_city'].errors['required']">City is Required</span>
+                                    </div>
+
+                                </div>
+                            </div>
                             <!--City -->
                             <!--Address-->
                             <div class="row">
                                 <div class="col-12">
-                                <label class="my-1 f-label">Address  <b class="r-star">*</b></label>
-                                <textarea type="text" col="2" class="form-control p-3 sizeinput" formControlName="org_address" placeholder="Enter your address here..." aria-describedby="emailHelp"  autocomplete="off"
-                                [ngClass]="setBgColor(f['org_address'])"></textarea>
-                                <div *ngIf="f['org_address'].touched && f['org_address'].invalid" class="error-text">
-                                    <span *ngIf="f['org_address'].errors && f['org_address'].errors['required']">Address is required</span>
-                                </div>
-                                <div *ngIf="f['org_address'].invalid && f['org_address'].hasError('pattern')" class="error-text">
-                                    <span>Cannot start with a space.</span>
-                                </div>
+                                    <label class="my-1 f-label">Address <b class="r-star">*</b></label>
+                                    <textarea type="text" col="2" class="form-control p-3 sizeinput"
+                                        formControlName="org_address" placeholder="Enter your address here..."
+                                        aria-describedby="emailHelp" autocomplete="off"
+                                        [ngClass]="setBgColor(f['org_address'])"></textarea>
+                                    <div *ngIf="f['org_address'].touched && f['org_address'].invalid"
+                                        class="error-text">
+                                        <span
+                                            *ngIf="f['org_address'].errors && f['org_address'].errors['required']">Address
+                                            is required</span>
+                                    </div>
+                                    <div *ngIf="f['org_address'].invalid && f['org_address'].hasError('pattern')"
+                                        class="error-text">
+                                        <span>Cannot start with a space.</span>
+                                    </div>
                                 </div>
                             </div>
-                              <!--Address-->
+                            <!--Address-->
                             <!--Postal Code-->
                             <div class="row">
                                 <div class="col-12">
-                                <label class="my-1 f-label">Postal code <b class="r-star">*</b></label>
-                                <input type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" maxlength="6" class="form-control p-3 sizeinput" formControlName="org_postal_code" placeholder="Enter postal code" aria-describedby="emailHelp"  autocomplete="off"
-                                [ngClass]="setBgColor(f['org_postal_code'])">
-                                <div *ngIf="f['org_postal_code'].touched && f['org_postal_code'].invalid" class="error-text">
-                                    <span *ngIf="f['org_postal_code'].errors && f['org_postal_code'].errors['required']">Postal code is required</span>
+                                    <label class="my-1 f-label">Postal code <b class="r-star">*</b></label>
+                                    <input type="number" onkeydown="return event.keyCode !== 69"
+                                        onKeyPress="if(this.value.length==6) return false;" maxlength="6"
+                                        class="form-control p-3 sizeinput" formControlName="org_postal_code"
+                                        placeholder="Enter postal code" aria-describedby="emailHelp" autocomplete="off"
+                                        [ngClass]="setBgColor(f['org_postal_code'])">
+                                    <div *ngIf="f['org_postal_code'].touched && f['org_postal_code'].invalid"
+                                        class="error-text">
+                                        <span
+                                            *ngIf="f['org_postal_code'].errors && f['org_postal_code'].errors['required']">Postal
+                                            code is required</span>
+                                    </div>
                                 </div>
                             </div>
-                            </div>
-                             <!--Postal Code-->
-                             <!--Company Logo-->
-                             <div class="row">
+                            <!--Postal Code-->
+                            <!--Company Logo-->
+                            <div class="row">
                                 <div class="col-12">
-                                <label class="my-1 f-label">Logo <b class="r-star">*</b></label>
-                                <input [type]="type" class="form-control  sizeinput"[ngClass]="setBgColor(f['org_logo'])" accept="image/*;capture=camera"formControlName="org_logo" placeholder="Logo" aria-describedby="emailHelp"  autocomplete="off"
-                                (change)="uploadImageFile($event)" (focus)="onFocus()" >
-                                <div *ngIf="f['org_logo'].touched && f['org_logo'].invalid" class="error-text">
-                                    <span *ngIf="f['org_logo'].errors && f['org_logo'].errors['required']">Logo is required</span>
-                                </div> 
-                                <span class="error-text" *ngIf="f['org_logo'].errors && f['org_logo'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</span>
-                            </div>
+                                    <label class="my-1 f-label">Logo <b class="r-star">*</b></label>
+                                    <input [type]="type" class="form-control  sizeinput"
+                                        [ngClass]="setBgColor(f['org_logo'])" accept="image/*;capture=camera"
+                                        formControlName="org_logo" placeholder="Logo" aria-describedby="emailHelp"
+                                        autocomplete="off" (change)="uploadImageFile($event)" (focus)="onFocus()">
+                                    <div *ngIf="f['org_logo'].touched && f['org_logo'].invalid" class="error-text">
+                                        <span *ngIf="f['org_logo'].errors && f['org_logo'].errors['required']">Logo is
+                                            required</span>
+                                    </div>
+                                    <span class="error-text"
+                                        *ngIf="f['org_logo'].errors && f['org_logo'].errors['accept']">Invalid file
+                                        format. Only .jpg, .jpeg, .png formats are allowed.</span>
+                                </div>
                             </div>
                             <!--Company Logo-->
                         </div>
-                        </div> 
                     </div>
-               <!----COLUMN LEFT---->
-           
-            <div class="col-sm-12 col-md-12 col-lg-6">
-                <h4>Contact person details</h4>
-                  <!----COLUMN RIGHT---->
-                  <div class="row">
-                    <div class="col-12">
-                        <label class="my-1 f-label">Contact person name <b class="r-star">*</b></label>
-                          <input type="text" class="form-control p-3 sizeinput" formControlName="conctact_person_name" placeholder="Enter contact person name" aria-describedby="emailHelp"  autocomplete="off"
-                          [ngClass]="setBgColor(f['conctact_person_name'])">
-                          <div *ngIf="f['conctact_person_name'].touched && f['conctact_person_name'].invalid" class="error-text">
-                            <span *ngIf="f['conctact_person_name'].errors && f['conctact_person_name'].errors['required']">Contact person name is required</span>
-                        </div> 
-                        <div *ngIf="f['conctact_person_name'].invalid && f['conctact_person_name'].hasError('pattern')" class="error-text">
-                            <span>Cannot start with a space.</span>
-                        </div>
+                </div>
+                <!----COLUMN LEFT---->
+
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <h4>Contact person details</h4>
+                    <!----COLUMN RIGHT---->
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="my-1 f-label">Contact person name <b class="r-star">*</b></label>
+                            <input type="text" class="form-control p-3 sizeinput" formControlName="conctact_person_name"
+                                placeholder="Enter contact person name" aria-describedby="emailHelp" autocomplete="off"
+                                [ngClass]="setBgColor(f['conctact_person_name'])">
+                            <div *ngIf="f['conctact_person_name'].touched && f['conctact_person_name'].invalid"
+                                class="error-text">
+                                <span
+                                    *ngIf="f['conctact_person_name'].errors && f['conctact_person_name'].errors['required']">Contact
+                                    person name is required</span>
+                            </div>
+                            <div *ngIf="f['conctact_person_name'].invalid && f['conctact_person_name'].hasError('pattern')"
+                                class="error-text">
+                                <span>Cannot start with a space.</span>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <label class="my-1 f-label">Email Id  <b class="r-star">*</b></label>
-                            <input type="text" class="form-control p-3 sizeinput" formControlName="conctact_person_email" placeholder="Enter email Id " aria-describedby="emailHelp"  autocomplete="off"
-                            [ngClass]="setBgColor(f['conctact_person_email'])">
-                            <div *ngIf="f['conctact_person_email'].touched && f['conctact_person_email'].invalid" class="error-text">
-                                <span *ngIf="f['conctact_person_email'].invalid && f['conctact_person_email'].errors['email']" >Invalid email Id </span>
-                                <span *ngIf="f['conctact_person_email'].invalid && f['conctact_person_email'].errors['required']" >Email Id is required</span>
+                            <label class="my-1 f-label">Email Id <b class="r-star">*</b></label>
+                            <input type="text" class="form-control p-3 sizeinput"
+                                formControlName="conctact_person_email" placeholder="Enter email Id "
+                                aria-describedby="emailHelp" autocomplete="off"
+                                [ngClass]="setBgColor(f['conctact_person_email'])">
+                            <div *ngIf="f['conctact_person_email'].touched && f['conctact_person_email'].invalid"
+                                class="error-text">
+                                <span
+                                    *ngIf="f['conctact_person_email'].invalid && f['conctact_person_email'].errors['email']">Invalid
+                                    email Id </span>
+                                <span
+                                    *ngIf="f['conctact_person_email'].invalid && f['conctact_person_email'].errors['required']">Email
+                                    Id is required</span>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="row">
                         <div class="col-12 p-r">
-                            <label >Password <b class="r-star">*</b></label>
-                            <input [type]="passwordType" class="form-control p-3 sizeinput" formControlName="conctact_person_password" placeholder="Enter password" aria-describedby="emailHelp"  autocomplete="off"
-                            [ngClass]="setBgColor(f['conctact_person_password'])">
+                            <label>Password <b class="r-star">*</b></label>
+                            <input [type]="passwordType" class="form-control p-3 sizeinput"
+                                formControlName="conctact_person_password" placeholder="Enter password"
+                                aria-describedby="emailHelp" autocomplete="off"
+                                [ngClass]="setBgColor(f['conctact_person_password'])">
                             <i [class]="eyeIcon" id="eye-icon" (click)="showPassword()"></i>
-                            <div *ngIf="f['conctact_person_password'].touched && f['conctact_person_password'].invalid" class="error-text">
-                                <span *ngIf="f['conctact_person_password'].errors && f['conctact_person_password'].errors['required']" >Password is required </span>
+                            <div *ngIf="f['conctact_person_password'].touched && f['conctact_person_password'].invalid"
+                                class="error-text">
+                                <span
+                                    *ngIf="f['conctact_person_password'].errors && f['conctact_person_password'].errors['required']">Password
+                                    is required </span>
+                            </div>
+                            <div *ngIf="f['conctact_person_password'].errors && f['conctact_person_password'].hasError('pattern')"
+                                class="error-text">
+                                Password should
+                                contain at least one special character,one number,one uppercase and one
+                                lowercase, and be at least 8 characters long
                             </div>
                         </div>
-                    </div> 
-                  
+                    </div>
+
                     <div class="row">
                         <div class="col-12">
-                            <label class="my-1 f-label">Phone number  <b class="r-star">*</b></label>
-                            <input type="number" onkeydown="return event.keyCode !== 69"  class="form-control p-3 sizeinput"  formControlName="conctact_person_phone_number" placeholder="Enter phone number" aria-describedby="emailHelp"  autocomplete="off"
-                            [ngClass]="setBgColor(f['conctact_person_phone_number'])">
+                            <label class="my-1 f-label">Phone number <b class="r-star">*</b></label>
+                            <input type="number" onkeydown="return event.keyCode !== 69"
+                                class="form-control p-3 sizeinput" formControlName="conctact_person_phone_number"
+                                placeholder="Enter phone number" aria-describedby="emailHelp" autocomplete="off"
+                                [ngClass]="setBgColor(f['conctact_person_phone_number'])">
                         </div>
-                        <div *ngIf="f['conctact_person_phone_number'].touched && f['conctact_person_phone_number'].invalid" class="error-text">
-                            <span *ngIf="f['conctact_person_phone_number'].invalid && f['conctact_person_phone_number'].errors['required']" >Phone number is required</span>
-                         </div>
-                        <span *ngIf="f['conctact_person_phone_number'].invalid && organizationForm.get('conctact_person_phone_number').hasError('phoneNumberLength')" class="error-text">Please enter 10 digits</span>
-                       
-                    </div> 
+                        <div *ngIf="f['conctact_person_phone_number'].touched && f['conctact_person_phone_number'].invalid"
+                            class="error-text">
+                            <span
+                                *ngIf="f['conctact_person_phone_number'].invalid && f['conctact_person_phone_number'].errors['required']">Phone
+                                number is required</span>
+                        </div>
+                        <span
+                            *ngIf="f['conctact_person_phone_number'].invalid && organizationForm.get('conctact_person_phone_number').hasError('phoneNumberLength')"
+                            class="error-text">Please enter 10 digits</span>
+
+                    </div>
                     <!-- <div class="row">
                         <div class="col-12">
                             <label class="my-1 f-label">Number of Users  <b class="r-star">*</b></label>
@@ -209,42 +275,48 @@
                     </div>  -->
                     <div class="row">
                         <div class="col-12">
-                        <label class="my-1 f-label">Status <span class="r-star">*</span></label>
-                        <select type="text" class="form-select p-3 sizeinput" formControlName="org_status"  aria-describedby="emailHelp"  autocomplete="off"
-                        [ngClass]="setBgColor(f['org_status'])">
-                            <option value="" selected disabled>Select status</option>
-                            <option value="Active">Active</option>
-                            <option value="Inactive">Inactive</option>
-                           
-                        </select>
-                        <div *ngIf="f['org_status'].touched && f['org_status'].invalid" class="error-text">
-                            <span *ngIf="f['org_status'].errors['required']" >Status is required</span>
-                        </div>
-                      
+                            <label class="my-1 f-label">Status <span class="r-star">*</span></label>
+                            <select type="text" class="form-select p-3 sizeinput" formControlName="org_status"
+                                aria-describedby="emailHelp" autocomplete="off" [ngClass]="setBgColor(f['org_status'])">
+                                <option value="" selected disabled>Select status</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+
+                            </select>
+                            <div *ngIf="f['org_status'].touched && f['org_status'].invalid" class="error-text">
+                                <span *ngIf="f['org_status'].errors['required']">Status is required</span>
+                            </div>
+
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <label class="my-1 f-label">Designation <b class="r-star">*</b></label>
-                            <input type="text" class="form-control p-3 sizeinput" formControlName="conctact_person_designation" placeholder="Enter designation" aria-describedby="emailHelp"  autocomplete="off"
-                            [ngClass]="setBgColor(f['conctact_person_designation'])">
-                            <div *ngIf="f['conctact_person_designation'].touched && f['conctact_person_designation'].invalid" class="error-text">
-                                <span *ngIf="f['conctact_person_designation'].invalid && f['conctact_person_designation'].errors['required']" >Designation is required</span>
+                            <input type="text" class="form-control p-3 sizeinput"
+                                formControlName="conctact_person_designation" placeholder="Enter designation"
+                                aria-describedby="emailHelp" autocomplete="off"
+                                [ngClass]="setBgColor(f['conctact_person_designation'])">
+                            <div *ngIf="f['conctact_person_designation'].touched && f['conctact_person_designation'].invalid"
+                                class="error-text">
+                                <span
+                                    *ngIf="f['conctact_person_designation'].invalid && f['conctact_person_designation'].errors['required']">Designation
+                                    is required</span>
                             </div>
-                            <div *ngIf="f['conctact_person_designation'].invalid && f['conctact_person_designation'].hasError('pattern')" class="error-text">
+                            <div *ngIf="f['conctact_person_designation'].invalid && f['conctact_person_designation'].hasError('pattern')"
+                                class="error-text">
                                 <span>Cannot start with a space.</span>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="col-sm-2 update-btn">
                         <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Submit</button>
                     </div>
-                    </div>
-                  
-                 <!----COLUMN RIGHT---->
                 </div>
-           
-           <!-- <div class="row">
+
+                <!----COLUMN RIGHT---->
+            </div>
+
+            <!-- <div class="row">
              <div class="row">
                 <div class="col-sm-12 col-md-6 col-lg-6">
                     <hr>
@@ -263,9 +335,9 @@
 <div class="container-fluid mobileView">
     <div class="row mx-1 my-2">
         <div class="col-sm-12">
-            <h1><i  class="bi bi-arrow-left" (click)="goBack($event)
+            <h1><i class="bi bi-arrow-left" (click)="goBack($event)
   
-  "></i>  Add organization details</h1>
+  "></i> Add organization details</h1>
         </div>
         <!-- <div class="col-sm-5 text-end">
             <nav aria-label="breadcrumb">
@@ -276,190 +348,253 @@
                 </ol>
               </nav>
         </div> -->
-        
+
     </div>
 
     <div class="generic-form bg mx-1">
-        <form [formGroup]='organizationForm' (ngSubmit)='organizationSubmit()' >
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-6">
-                <!-- <h4>Organization details</h4> -->
-                 <!----COLUMN LEFT---->
-          
-                <div class="row">
-                  <div class="col-12">
-                      <!--OrganizationName-->
-                    
-                      <div class="row">
-                          <div class="col-12">
-                              <label class="my-1 f-label">Organization name <b class="r-star">*</b></label>
-                              <input type="text" class="form-control p-3 sizeinput" formControlName="org_name" placeholder="Enter organization name" aria-describedby="emailHelp"  autocomplete="off"
-                              [ngClass]="setBgColor(f['org_name'])">
-                              <div *ngIf="f['org_name'].touched && f['org_name'].invalid" class="error-text">
-                                <span *ngIf="f['org_name'].errors && f['org_name'].errors['required']">Organization name is required</span>
-                            </div>
-                            <div *ngIf="f['org_name'].invalid && f['org_name'].hasError('pattern')" class="error-text">
-                                <span>Cannot start with a space.</span>
-                            </div>
-                          </div>
-                      </div>
-                   <!--OrganizationName-->
-                     <!--Email Id-->
-                   
-                     <div class="row">
-                      <div class="col-12">
-                          <label class="my-1 f-label">Email Id <b class="r-star">*</b></label>
-                          <input type="text" class="form-control p-3 sizeinput" formControlName="org_email" placeholder="Enter email Id " aria-describedby="emailHelp"  autocomplete="off"
-                          [ngClass]="setBgColor(f['org_email'])">
-                          <div *ngIf="f['org_email'].touched && f['org_email'].invalid" class="error-text">
-                            <span *ngIf="f['org_email'].errors && f['org_email'].errors['required']">Email Id is required</span>
-                            <span *ngIf="f['org_email'].invalid && f['org_email'].errors['email']" >Invalid email Id </span>
-                        </div>
-                      </div>
-                  </div> 
-                     <!--Email Id-->
-                     <!---Country-->
-                     <div class="row">
-                      <div class="col-12">
-                          <label class="my-1 f-label" >Country <b class="r-star">*</b></label>
-                         
-                         <select class="form-select p-3 sizeinput" formControlName="org_country" [ngClass]="setBgColor(f['org_country'])" (change)="getState($event.target['value'])">
-                            <option value="" selected disabled>Select country</option>
-                            <option *ngFor="let country of country" [value]="country.country_name"> {{country.country_name}}</option>
-                         </select>
-                          <div *ngIf="f['org_country'].touched && f['org_country'].invalid" class="error-text">
-                            <span *ngIf="f['org_country'].errors && f['org_country'].errors['required']">Country is required</span>
-                        </div>
-                      </div>
-                  </div> 
-                    <!---Country -->
-                        <!---State-->
-                        <div class="row">
-                          <div class="col-12">
-                              <label class="my-1 f-label">State<b class="r-star">*</b></label>
-                              
-                              <select class="form-select p-3 sizeinput" formControlName="org_state" [ngClass]="setBgColor(f['org_country'])" (change)="getCity($event.target['value'])">
-                                <option value="" selected disabled>Select state</option>
-                                <option *ngFor="let state of state" [value]="state.state_name">{{state.state_name}}</option>
-                             </select>
-                              <div *ngIf="f['org_state'].touched && f['org_state'].invalid" class="error-text">
-                                <span *ngIf="f['org_state'].errors && f['org_state'].errors['required']">State is required</span>
-                            </div>
-                          </div>
-                      </div> 
-                        <!---State -->
+        <form [formGroup]='organizationForm' (ngSubmit)='organizationSubmit()'>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <!-- <h4>Organization details</h4> -->
+                    <!----COLUMN LEFT---->
 
-                         <!--City -->
-                         <div class="row">
-                            <div class="col-12">
-                            <label class="my-1 f-label">City <span class="r-star">*</span></label>
-                            <select type="text" class="form-select p-3 sizeinput" formControlName="org_city"  aria-describedby="emailHelp"  autocomplete="off"
-                            [ngClass]="setBgColor(f['org_city'])">
-                                <option value="" selected disabled>Select city</option>
-                            <option *ngFor="let city of city" [value]="city.city_name">{{city.city_name}}</option>
-                            </select>
-                            <div *ngIf="f['org_city'].touched && f['org_city'].invalid" class="error-text">
-                                <span *ngIf="f['org_city'].errors['required']" >City is Required</span>
+                    <div class="row">
+                        <div class="col-12">
+                            <!--OrganizationName-->
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-1 f-label">Organization name <b class="r-star">*</b></label>
+                                    <input type="text" class="form-control p-3 sizeinput" formControlName="org_name"
+                                        placeholder="Enter organization name" aria-describedby="emailHelp"
+                                        autocomplete="off" [ngClass]="setBgColor(f['org_name'])">
+                                    <div *ngIf="f['org_name'].touched && f['org_name'].invalid" class="error-text">
+                                        <span
+                                            *ngIf="f['org_name'].errors && f['org_name'].errors['required']">Organization
+                                            name is required</span>
+                                    </div>
+                                    <div *ngIf="f['org_name'].invalid && f['org_name'].hasError('pattern')"
+                                        class="error-text">
+                                        <span>Cannot start with a space.</span>
+                                    </div>
+                                </div>
                             </div>
-                          
+                            <!--OrganizationName-->
+                            <!--Email Id-->
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-1 f-label">Email Id <b class="r-star">*</b></label>
+                                    <input type="text" class="form-control p-3 sizeinput" formControlName="org_email"
+                                        placeholder="Enter email Id " aria-describedby="emailHelp" autocomplete="off"
+                                        [ngClass]="setBgColor(f['org_email'])">
+                                    <div *ngIf="f['org_email'].touched && f['org_email'].invalid" class="error-text">
+                                        <span *ngIf="f['org_email'].errors && f['org_email'].errors['required']">Email
+                                            Id is required</span>
+                                        <span *ngIf="f['org_email'].invalid && f['org_email'].errors['email']">Invalid
+                                            email Id </span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            <!--Email Id-->
+                            <!---Country-->
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-1 f-label">Country <b class="r-star">*</b></label>
+
+                                    <select class="form-select p-3 sizeinput" formControlName="org_country"
+                                        [ngClass]="setBgColor(f['org_country'])"
+                                        (change)="getState($event.target['value'])">
+                                        <option value="" selected disabled>Select country</option>
+                                        <option *ngFor="let country of country" [value]="country.country_name">
+                                            {{country.country_name}}</option>
+                                    </select>
+                                    <div *ngIf="f['org_country'].touched && f['org_country'].invalid"
+                                        class="error-text">
+                                        <span
+                                            *ngIf="f['org_country'].errors && f['org_country'].errors['required']">Country
+                                            is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---Country -->
+                            <!---State-->
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-1 f-label">State<b class="r-star">*</b></label>
+
+                                    <select class="form-select p-3 sizeinput" formControlName="org_state"
+                                        [ngClass]="setBgColor(f['org_country'])"
+                                        (change)="getCity($event.target['value'])">
+                                        <option value="" selected disabled>Select state</option>
+                                        <option *ngFor="let state of state" [value]="state.state_name">
+                                            {{state.state_name}}</option>
+                                    </select>
+                                    <div *ngIf="f['org_state'].touched && f['org_state'].invalid" class="error-text">
+                                        <span *ngIf="f['org_state'].errors && f['org_state'].errors['required']">State
+                                            is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---State -->
+
+                            <!--City -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-1 f-label">City <span class="r-star">*</span></label>
+                                    <select type="text" class="form-select p-3 sizeinput" formControlName="org_city"
+                                        aria-describedby="emailHelp" autocomplete="off"
+                                        [ngClass]="setBgColor(f['org_city'])">
+                                        <option value="" selected disabled>Select city</option>
+                                        <option *ngFor="let city of city" [value]="city.city_name">{{city.city_name}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="f['org_city'].touched && f['org_city'].invalid" class="error-text">
+                                        <span *ngIf="f['org_city'].errors['required']">City is Required</span>
+                                    </div>
+
+                                </div>
+                            </div>
                             <!--City -->
                             <!--Address-->
                             <div class="row">
                                 <div class="col-12">
-                                <label class="my-1 f-label">Address  <b class="r-star">*</b></label>
-                                <textarea type="text" col="2" class="form-control p-3 sizeinput" formControlName="org_address" placeholder="Enter your address here..." aria-describedby="emailHelp"  autocomplete="off"
-                                [ngClass]="setBgColor(f['org_address'])"></textarea>
-                                <div *ngIf="f['org_address'].touched && f['org_address'].invalid" class="error-text">
-                                    <span *ngIf="f['org_address'].errors && f['org_address'].errors['required']">Address is required</span>
-                                </div>
-                                <div *ngIf="f['org_address'].invalid && f['org_address'].hasError('pattern')" class="error-text">
-                                    <span>Cannot start with a space.</span>
-                                </div>
+                                    <label class="my-1 f-label">Address <b class="r-star">*</b></label>
+                                    <textarea type="text" col="2" class="form-control p-3 sizeinput"
+                                        formControlName="org_address" placeholder="Enter your address here..."
+                                        aria-describedby="emailHelp" autocomplete="off"
+                                        [ngClass]="setBgColor(f['org_address'])"></textarea>
+                                    <div *ngIf="f['org_address'].touched && f['org_address'].invalid"
+                                        class="error-text">
+                                        <span
+                                            *ngIf="f['org_address'].errors && f['org_address'].errors['required']">Address
+                                            is required</span>
+                                    </div>
+                                    <div *ngIf="f['org_address'].invalid && f['org_address'].hasError('pattern')"
+                                        class="error-text">
+                                        <span>Cannot start with a space.</span>
+                                    </div>
                                 </div>
                             </div>
-                              <!--Address-->
+                            <!--Address-->
                             <!--Postal Code-->
                             <div class="row">
                                 <div class="col-12">
-                                <label class="my-1 f-label">Postal code <b class="r-star">*</b></label>
-                                <input type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" maxlength="6" class="form-control p-3 sizeinput" formControlName="org_postal_code" placeholder="Enter postal code" aria-describedby="emailHelp"  autocomplete="off"
-                                [ngClass]="setBgColor(f['org_postal_code'])">
-                                <div *ngIf="f['org_postal_code'].touched && f['org_postal_code'].invalid" class="error-text">
-                                    <span *ngIf="f['org_postal_code'].errors && f['org_postal_code'].errors['required']">Postal code is required</span>
+                                    <label class="my-1 f-label">Postal code <b class="r-star">*</b></label>
+                                    <input type="number" onkeydown="return event.keyCode !== 69"
+                                        onKeyPress="if(this.value.length==6) return false;" maxlength="6"
+                                        class="form-control p-3 sizeinput" formControlName="org_postal_code"
+                                        placeholder="Enter postal code" aria-describedby="emailHelp" autocomplete="off"
+                                        [ngClass]="setBgColor(f['org_postal_code'])">
+                                    <div *ngIf="f['org_postal_code'].touched && f['org_postal_code'].invalid"
+                                        class="error-text">
+                                        <span
+                                            *ngIf="f['org_postal_code'].errors && f['org_postal_code'].errors['required']">Postal
+                                            code is required</span>
+                                    </div>
                                 </div>
                             </div>
-                            </div>
-                             <!--Postal Code-->
-                             <!--Company Logo-->
-                             <div class="row">
+                            <!--Postal Code-->
+                            <!--Company Logo-->
+                            <div class="row">
                                 <div class="col-12">
-                                <label class="my-1 f-label">Logo <b class="r-star">*</b></label>
-                                <input [type]="type" class="form-control  sizeinput"[ngClass]="setBgColor(f['org_logo'])" accept="image/*;capture=camera"formControlName="org_logo" placeholder="Logo" aria-describedby="emailHelp"  autocomplete="off"
-                                (change)="uploadImageFile($event)" (focus)="onFocus()" >
-                                <div *ngIf="f['org_logo'].touched && f['org_logo'].invalid" class="error-text">
-                                    <span *ngIf="f['org_logo'].errors && f['org_logo'].errors['required']">Logo is required</span>
-                                </div> 
-                                <span class="error-text" *ngIf="f['org_logo'].errors && f['org_logo'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</span>
-                            </div>
+                                    <label class="my-1 f-label">Logo <b class="r-star">*</b></label>
+                                    <input [type]="type" class="form-control  sizeinput"
+                                        [ngClass]="setBgColor(f['org_logo'])" accept="image/*;capture=camera"
+                                        formControlName="org_logo" placeholder="Logo" aria-describedby="emailHelp"
+                                        autocomplete="off" (change)="uploadImageFile($event)" (focus)="onFocus()">
+                                    <div *ngIf="f['org_logo'].touched && f['org_logo'].invalid" class="error-text">
+                                        <span *ngIf="f['org_logo'].errors && f['org_logo'].errors['required']">Logo is
+                                            required</span>
+                                    </div>
+                                    <span class="error-text"
+                                        *ngIf="f['org_logo'].errors && f['org_logo'].errors['accept']">Invalid file
+                                        format. Only .jpg, .jpeg, .png formats are allowed.</span>
+                                </div>
                             </div>
                             <!--Company Logo-->
                         </div>
-                        </div> 
                     </div>
-               <!----COLUMN LEFT---->
-           
-            <div class="col-sm-12 col-md-12 col-lg-6">
-                <h4>Contact person details</h4>
-                  <!----COLUMN RIGHT---->
-                  <div class="row">
-                    <div class="col-12">
-                        <label class="my-1 f-label">Contact person name <b class="r-star">*</b></label>
-                          <input type="text" class="form-control p-3 sizeinput" formControlName="conctact_person_name" placeholder="Enter contact person name" aria-describedby="emailHelp"  autocomplete="off"
-                          [ngClass]="setBgColor(f['conctact_person_name'])">
-                          <div *ngIf="f['conctact_person_name'].touched && f['conctact_person_name'].invalid" class="error-text">
-                            <span *ngIf="f['conctact_person_name'].errors && f['conctact_person_name'].errors['required']">Contact person name is required</span>
-                        </div> 
-                        <div *ngIf="f['conctact_person_name'].invalid && f['conctact_person_name'].hasError('pattern')" class="error-text">
-                            <span>Cannot start with a space.</span>
-                        </div>
+                </div>
+                <!----COLUMN LEFT---->
+
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <h4>Contact person details</h4>
+                    <!----COLUMN RIGHT---->
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="my-1 f-label">Contact person name <b class="r-star">*</b></label>
+                            <input type="text" class="form-control p-3 sizeinput" formControlName="conctact_person_name"
+                                placeholder="Enter contact person name" aria-describedby="emailHelp" autocomplete="off"
+                                [ngClass]="setBgColor(f['conctact_person_name'])">
+                            <div *ngIf="f['conctact_person_name'].touched && f['conctact_person_name'].invalid"
+                                class="error-text">
+                                <span
+                                    *ngIf="f['conctact_person_name'].errors && f['conctact_person_name'].errors['required']">Contact
+                                    person name is required</span>
+                            </div>
+                            <div *ngIf="f['conctact_person_name'].invalid && f['conctact_person_name'].hasError('pattern')"
+                                class="error-text">
+                                <span>Cannot start with a space.</span>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <label class="my-1 f-label">Email Id  <b class="r-star">*</b></label>
-                            <input type="text" class="form-control p-3 sizeinput" formControlName="conctact_person_email" placeholder="Enter email Id " aria-describedby="emailHelp"  autocomplete="off"
-                            [ngClass]="setBgColor(f['conctact_person_email'])">
-                            <div *ngIf="f['conctact_person_email'].touched && f['conctact_person_email'].invalid" class="error-text">
-                                <span *ngIf="f['conctact_person_email'].invalid && f['conctact_person_email'].errors['email']" >Invalid email Id </span>
-                                <span *ngIf="f['conctact_person_email'].invalid && f['conctact_person_email'].errors['required']" >Email Id is required</span>
+                            <label class="my-1 f-label">Email Id <b class="r-star">*</b></label>
+                            <input type="text" class="form-control p-3 sizeinput"
+                                formControlName="conctact_person_email" placeholder="Enter email Id "
+                                aria-describedby="emailHelp" autocomplete="off"
+                                [ngClass]="setBgColor(f['conctact_person_email'])">
+                            <div *ngIf="f['conctact_person_email'].touched && f['conctact_person_email'].invalid"
+                                class="error-text">
+                                <span
+                                    *ngIf="f['conctact_person_email'].invalid && f['conctact_person_email'].errors['email']">Invalid
+                                    email Id </span>
+                                <span
+                                    *ngIf="f['conctact_person_email'].invalid && f['conctact_person_email'].errors['required']">Email
+                                    Id is required</span>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="row">
                         <div class="col-12 p-r">
-                            <label >Password <b class="r-star">*</b></label>
-                            <input [type]="passwordType" class="form-control p-3 sizeinput" formControlName="conctact_person_password" placeholder="Enter password" aria-describedby="emailHelp"  autocomplete="off"
-                            [ngClass]="setBgColor(f['conctact_person_password'])">
+                            <label>Password <b class="r-star">*</b></label>
+                            <input [type]="passwordType" class="form-control p-3 sizeinput"
+                                formControlName="conctact_person_password" placeholder="Enter password"
+                                aria-describedby="emailHelp" autocomplete="off"
+                                [ngClass]="setBgColor(f['conctact_person_password'])">
                             <i [class]="eyeIcon" id="eye-icon" (click)="showPassword()"></i>
-                            <div *ngIf="f['conctact_person_password'].touched && f['conctact_person_password'].invalid" class="error-text">
-                                <span *ngIf="f['conctact_person_password'].errors && f['conctact_person_password'].errors['required']" >Password is required </span>
+                            <div *ngIf="f['conctact_person_password'].touched && f['conctact_person_password'].invalid"
+                                class="error-text">
+                                <span
+                                    *ngIf="f['conctact_person_password'].errors && f['conctact_person_password'].errors['required']">Password
+                                    is required </span>
                             </div>
                         </div>
-                    </div> 
-                  
+                    </div>
+
                     <div class="row">
                         <div class="col-12">
-                            <label class="my-1 f-label">Phone number  <b class="r-star">*</b></label>
-                            <input type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control p-3 sizeinput" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" formControlName="conctact_person_phone_number" placeholder="Enter phone number" aria-describedby="emailHelp"  autocomplete="off"
-                            [ngClass]="setBgColor(f['conctact_person_phone_number'])">
+                            <label class="my-1 f-label">Phone number <b class="r-star">*</b></label>
+                            <input type="number" onkeydown="return event.keyCode !== 69"
+                                onKeyPress="if(this.value.length==10) return false;" class="form-control p-3 sizeinput"
+                                onkeydown="return event.keyCode !== 69"
+                                onKeyPress="if(this.value.length==10) return false;"
+                                formControlName="conctact_person_phone_number" placeholder="Enter phone number"
+                                aria-describedby="emailHelp" autocomplete="off"
+                                [ngClass]="setBgColor(f['conctact_person_phone_number'])">
                         </div>
-                        <div *ngIf="f['conctact_person_phone_number'].touched && f['conctact_person_phone_number'].invalid" class="error-text">
-                            <span *ngIf="f['conctact_person_phone_number'].invalid && f['conctact_person_phone_number'].errors['required']" >Phone number is required</span>
+                        <div *ngIf="f['conctact_person_phone_number'].touched && f['conctact_person_phone_number'].invalid"
+                            class="error-text">
+                            <span
+                                *ngIf="f['conctact_person_phone_number'].invalid && f['conctact_person_phone_number'].errors['required']">Phone
+                                number is required</span>
                         </div>
-                        <span *ngIf="f['conctact_person_phone_number'].invalid && organizationForm.get('conctact_person_phone_number').hasError('phoneNumberLength')" class="error-text">Please enter 10 digits</span>
-                    </div> 
+                        <span
+                            *ngIf="f['conctact_person_phone_number'].invalid && organizationForm.get('conctact_person_phone_number').hasError('phoneNumberLength')"
+                            class="error-text">Please enter 10 digits</span>
+                    </div>
                     <!-- <div class="row">
                         <div class="col-12">
                             <label class="my-1 f-label">Number of Users  <b class="r-star">*</b></label>
@@ -472,42 +607,48 @@
                     </div>  -->
                     <div class="row">
                         <div class="col-12">
-                        <label class="my-1 f-label">Status <span class="r-star">*</span></label>
-                        <select type="text" class="form-select p-3 sizeinput" formControlName="org_status"  aria-describedby="emailHelp"  autocomplete="off"
-                        [ngClass]="setBgColor(f['org_status'])">
-                            <option value="" selected disabled>Select status</option>
-                            <option value="Active">Active</option>
-                            <option value="Inactive">Inactive</option>
-                           
-                        </select>
-                        <div *ngIf="f['org_status'].touched && f['org_status'].invalid" class="error-text">
-                            <span *ngIf="f['org_status'].errors['required']" >Status is required</span>
-                        </div>
-                      
+                            <label class="my-1 f-label">Status <span class="r-star">*</span></label>
+                            <select type="text" class="form-select p-3 sizeinput" formControlName="org_status"
+                                aria-describedby="emailHelp" autocomplete="off" [ngClass]="setBgColor(f['org_status'])">
+                                <option value="" selected disabled>Select status</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+
+                            </select>
+                            <div *ngIf="f['org_status'].touched && f['org_status'].invalid" class="error-text">
+                                <span *ngIf="f['org_status'].errors['required']">Status is required</span>
+                            </div>
+
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <label class="my-1 f-label">Designation <b class="r-star">*</b></label>
-                            <input type="text" class="form-control p-3 sizeinput" formControlName="conctact_person_designation" placeholder="Enter designation" aria-describedby="emailHelp"  autocomplete="off"
-                            [ngClass]="setBgColor(f['conctact_person_designation'])">
-                            <div *ngIf="f['conctact_person_designation'].touched && f['conctact_person_designation'].invalid" class="error-text">
-                                <span *ngIf="f['conctact_person_designation'].invalid && f['conctact_person_designation'].errors['required']" >Designation is required</span>
+                            <input type="text" class="form-control p-3 sizeinput"
+                                formControlName="conctact_person_designation" placeholder="Enter designation"
+                                aria-describedby="emailHelp" autocomplete="off"
+                                [ngClass]="setBgColor(f['conctact_person_designation'])">
+                            <div *ngIf="f['conctact_person_designation'].touched && f['conctact_person_designation'].invalid"
+                                class="error-text">
+                                <span
+                                    *ngIf="f['conctact_person_designation'].invalid && f['conctact_person_designation'].errors['required']">Designation
+                                    is required</span>
                             </div>
-                            <div *ngIf="f['conctact_person_designation'].invalid && f['conctact_person_designation'].hasError('pattern')" class="error-text">
+                            <div *ngIf="f['conctact_person_designation'].invalid && f['conctact_person_designation'].hasError('pattern')"
+                                class="error-text">
                                 <span>Cannot start with a space.</span>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="col-sm-2 update-btn">
                         <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Submit</button>
                     </div>
-                    </div>
-                  
-                 <!----COLUMN RIGHT---->
                 </div>
-           
-           <!-- <div class="row">
+
+                <!----COLUMN RIGHT---->
+            </div>
+
+            <!-- <div class="row">
              <div class="row">
                 <div class="col-sm-12 col-md-6 col-lg-6">
                     <hr>

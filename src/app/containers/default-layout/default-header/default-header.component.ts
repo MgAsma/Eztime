@@ -15,20 +15,20 @@ import { environment } from 'src/environments/environment';
   templateUrl: './default-header.component.html',
   styleUrls: ['./default-header.component.scss'],
 })
-export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
-  user_role_Name:any;
+export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
+  user_role_Name: any;
 
   @Input() sidebarId: string = "sidebar";
-@Input() pageName:any;
+  @Input() pageName: any;
   public newMessages = new Array(4)
   public newTasks = new Array(5)
   public newNotifications = new Array(5)
-  
+
   headerNav = [
     {
-      link:'/profile',
-      page:'Profile',
-      icons:'bi bi-person-lines'
+      link: '/profile',
+      page: 'Profile',
+      icons: 'bi bi-person-lines'
     },
     // {
     //   link:'../register',
@@ -36,14 +36,14 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
     //   icons:'bi bi-person-add'
     // },
     {
-      link:'/changePassword',
-      page:'Change Password',
-      icons:'fa fa-key'
+      link: '/changePassword',
+      page: 'Change Password',
+      icons: 'fa fa-key'
     },
     {
-      link:'/logout',
-      page:'Logout',
-      icons:'bi bi-power'
+      link: '/logout',
+      page: 'Logout',
+      icons: 'bi bi-power'
     }
   ]
   user_id: string;
@@ -52,12 +52,12 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
   notes: any;
   screenWidth: number;
   orgId: any;
-  
 
-  constructor(private classToggler: ClassToggleService,private modalService :NgbModal,
-    private router:Router,
-    private api:ApiserviceService,private cdref: ChangeDetectorRef,
-    private common_service:CommonServiceService) {
+
+  constructor(private classToggler: ClassToggleService, private modalService: NgbModal,
+    private router: Router,
+    private api: ApiserviceService, private cdref: ChangeDetectorRef,
+    private common_service: CommonServiceService) {
     super();
     this.getScreenSize()
   }
@@ -73,89 +73,89 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
       this.cdref.detectChanges();
     });
   }
-  getHeaderNavStyles(type):any{
+  getHeaderNavStyles(type): any {
     switch (type['page']) {
       case 'Logout':
-      return 'title-logout'
+        return 'title-logout'
       case 'Change Password':
-        return'py-1'
+        return 'py-1'
     }
   }
-  clearStorage(type){
-    if(type['page'] === 'Logout'){
+  clearStorage(type) {
+    if (type['page'] === 'Logout') {
       this.openDialogue()
     }
   }
   openDialogue() {
-      const modelRef =   this.modalService.open(GenericDeleteComponent, {
-        size: <any>'sm',
-        backdrop: true,
-        centered:true
-      });
-      modelRef.componentInstance.title = `Are you sure do you want to logout`;
-      modelRef.componentInstance.message = `Logout`;
-      modelRef.componentInstance.status.subscribe(resp => {
-        if(resp == "ok"){
-          this.api.showSuccess('You have been logged out!')
-          this.router.navigate(['/login'])
-          sessionStorage.clear();
-          location.reload();
-         modelRef.close();
-        }
-        else{
-          modelRef.close();
-        }
+    const modelRef = this.modalService.open(GenericDeleteComponent, {
+      size: <any>'sm',
+      backdrop: true,
+      centered: true
+    });
+    modelRef.componentInstance.title = `Are you sure do you want to logout`;
+    modelRef.componentInstance.message = `Logout`;
+    modelRef.componentInstance.status.subscribe(resp => {
+      if (resp == "ok") {
+        this.api.showSuccess('You have been logged out!')
+        this.router.navigate(['/login'])
+        sessionStorage.clear();
+        location.reload();
+        modelRef.close();
+      }
+      else {
+        modelRef.close();
+      }
     })
   }
   @HostListener('window:resize', ['$event'])
   getScreenSize(_event?: Event) {
     this.screenWidth = window.innerWidth;
   }
-  openNotification(){
-    if(this.notes?.length > 0){
-      const modelRef =   this.modalService.open(NotificationComponent, {
+  openNotification() {
+    if (this.notes?.length > 0) {
+      const modelRef = this.modalService.open(NotificationComponent, {
         size: <any>'md',
         backdrop: true,
-        centered:this.screenWidth < 1023 ? true :false,
-        modalDialogClass:'c_class'
+        centered: this.screenWidth < 1023 ? true : false,
+        modalDialogClass: 'c_class'
       });
-     
+
       modelRef.componentInstance.status.subscribe(resp => {
-        if(resp == "ok"){
-        //  this.delete(content);
-         modelRef.close();
-        }
-        else{
+        if (resp == "ok") {
+          //  this.delete(content);
           modelRef.close();
         }
-    })
-	
-    }else{
+        else {
+          modelRef.close();
+        }
+      })
+
+    } else {
       this.api.showWarning('No data found !!')
     }
-    
 
 
-  
-}
-  getProfiledata(){
-    this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
-   // console.log(res,'PROFILE GET API RESPONSE')
-      if(res.result.data){
+
+
+  }
+  getProfiledata() {
+    this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res: any) => {
+      // console.log(res,'PROFILE GET API RESPONSE')
+      if (res.result.data) {
         this.profileImg = res.result.data[0].u_profile_path
-      
+
       }
-    },(error=>{
+    }, (error => {
       this.api.showError(error.error.error.message)
     }))
   }
-  getNotification(){
+  getNotification() {
     let params = `${environment.live_url}/${environment.notification_center}?organization_id=${this.orgId}`
-    this.api.getData(params).subscribe((res:any)=>{
-      if(res.result.data){
+    this.api.getData(params).subscribe((res: any) => {
+      if (res.result.data) {
         this.notes = res.result.data
       }
-    },((error:any)=>{
+    }, ((error: any) => {
       this.api.showError(error.error.error.message)
     }))
   }

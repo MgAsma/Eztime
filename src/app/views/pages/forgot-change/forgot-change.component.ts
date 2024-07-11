@@ -17,27 +17,27 @@ export class ForgotChangeComponent implements OnInit {
   eyeIcon2 = 'bi bi-eye-slash'
   passwordType2 = "password";
   eyeState2: boolean = false;
-    constructor(private builder:FormBuilder, private api:ApiserviceService, private router:Router) { }
+  constructor(private builder: FormBuilder, private api: ApiserviceService, private router: Router) { }
 
   ngOnInit(): void {
     // this.userId =  JSON.parse(sessionStorage.getItem('user_id'))
     // this.changePassword = this.builder.group({
     //   username:['',[Validators.required]],
     //   password:['',[Validators.required]],
-      
+
     // },{
     //   validators: this.passwordMatchValidator
     // })
     const userName = sessionStorage.getItem('email_id')
     this.changePassword = this.builder.group({
-      username:[userName,[Validators.required]],
-      password:['',[Validators.required]],
-      old_password:['',[Validators.required]]
-    },{
+      username: [userName, [Validators.required]],
+      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
+      old_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]]
+    }, {
       validators: this.passwordMatchValidator
     })
   }
-  
+
   passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
     const newPassword = control.get('password');
     const confirmPassword = control.get('old_password');
@@ -49,64 +49,64 @@ export class ForgotChangeComponent implements OnInit {
     return null;
   }
 
-  
 
-  get f(){
+
+  get f() {
     return this.changePassword.controls;
   }
- 
 
 
 
-  sendChangePassword(){
-    if(this.changePassword.invalid){
+
+  sendChangePassword() {
+    if (this.changePassword.invalid) {
       this.api.showError('Invalid!')
       this.changePassword.markAllAsTouched()
       //console.log(this.changePassword.value)
     }
-    else{
+    else {
       this.api.forgotPassword(this.changePassword.value).subscribe(
-        (response:any)=>{
-          if(response){
+        (response: any) => {
+          if (response) {
             //console.log(response)
-           
+
             this.router.navigate(['../login']);
             this.api.showSuccess("Password changed successfully !");
-           }
-          else{
+          }
+          else {
             this.api.showError('Error !')
           }
-         
-        },(error =>{
-          this.api.showError(error? error.error.error.message : 'Error !')
+
+        }, (error => {
+          this.api.showError(error ? error.error.error.message : 'Error !')
         })
-        
+
       )
     }
 
   }
-  showPassword(){
-    this.eyeState = !this.eyeState 
-    if(this.eyeState == true){
+  showPassword() {
+    this.eyeState = !this.eyeState
+    if (this.eyeState == true) {
       this.eyeIcon = 'bi bi-eye'
       this.passwordType = 'text'
     }
-    else{
+    else {
       this.eyeIcon = 'bi bi-eye-slash'
       this.passwordType = 'password'
     }
-    
+
   }
-  showPasswordtwo(){
-    this.eyeState2 = !this.eyeState2 
-    if(this.eyeState2 == true){
+  showPasswordtwo() {
+    this.eyeState2 = !this.eyeState2
+    if (this.eyeState2 == true) {
       this.eyeIcon2 = 'bi bi-eye'
       this.passwordType2 = 'text'
     }
-    else{
+    else {
       this.eyeIcon2 = 'bi bi-eye-slash'
       this.passwordType2 = 'password'
     }
-    
+
   }
 }

@@ -8,20 +8,20 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import {
   PERFECT_SCROLLBAR_CONFIG,
   PerfectScrollbarConfigInterface,
   PerfectScrollbarModule,
 } from 'ngx-perfect-scrollbar';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 // Import routing module
 import { AppRoutingModule } from './app-routing.module';
 
 // Import app component
 import { AppComponent } from './app.component';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 // Import containers
 import {
   DefaultFooterComponent,
@@ -44,7 +44,7 @@ import {
   ListGroupModule,
   NavModule,
   ProgressModule,
-  
+
   SidebarModule,
   TabsModule,
   UtilitiesModule,
@@ -61,7 +61,7 @@ import { BasicAuthInterceptor } from './service/basic-auth.interceptor';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
 };
-import{ VirtualScrollDirective } from './virtualscroll.directive';
+import { VirtualScrollDirective } from './virtualscroll.directive';
 import { SharedModule } from './shared/shared.module';
 import { NgxUiLoaderHttpModule, NgxUiLoaderModule } from "ngx-ui-loader";
 import { ActivateChildGuard } from './activate-child.guard';
@@ -73,17 +73,17 @@ const APP_CONTAINERS = [
   DefaultFooterComponent,
   DefaultHeaderComponent,
   DefaultLayoutComponent,
-  
+
 ];
 
 @NgModule({
   declarations: [
-    AppComponent, 
+    AppComponent,
     LoginComponent,
     ...APP_CONTAINERS,
     VirtualScrollDirective,
-   
-    
+
+
   ],
   imports: [
     // ChartsModule,
@@ -126,21 +126,21 @@ const APP_CONTAINERS = [
     DragDropModule,
     ToastrModule.forRoot({
       timeOut: 5000,
-      positionClass:"toast-top-right",
+      positionClass: "toast-top-right",
       preventDuplicates: true,
-      closeButton:true,
+      closeButton: true,
 
     }),
     NgxDaterangepickerMd.forRoot(),
     // FullCalendarModule
     NgxUiLoaderModule,
     NgxUiLoaderHttpModule.forRoot({
-      showForeground:true
+      showForeground: true
     })
   ],
-  exports:[
-  FormsModule,
-  ReactiveFormsModule,
+  exports: [
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     // {
@@ -158,7 +158,7 @@ const APP_CONTAINERS = [
     IconSetService,
     Title,
     DatePipe,
-    ],
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {

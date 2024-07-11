@@ -98,7 +98,7 @@
  .toast-top-right {
    top: 12px;
    right: 12px;
-   width: 80% !important;
+   width: 98% !important;
  }
 
  .toast-bottom-right {
@@ -171,11 +171,11 @@
  }
 
  .toast-container .ngx-toastr {
-   position: relative;
+   position: fixed;
    overflow: hidden;
    margin: 0 0 6px;
    padding: 15px 15px 15px 50px;
-   width: 300px;
+   width: 25em !important;
    border-radius: 3px 3px 3px 3px;
    background-position: 15px center;
    background-repeat: no-repeat;
@@ -261,11 +261,15 @@
      width: 11em !important;
    }
 
+
+
    .toast-container .toast-close-button {
      right: -0.2em;
      top: -0.2em;
    }
  }
+
+ @media all and (min-width: 241px) and (max-width: 319px) {}
 
  @media all and (min-width: 241px) and (max-width: 480px) {
    .toast-container .ngx-toastr.div {
@@ -289,11 +293,20 @@
    }
  }
 
+ @media all and (min-width: 241px) and (max-width: 374px) {
+   .toast-container .ngx-toastr {
+     margin-left: 0%;
+     width: 18em;
+   }
+ }
+
  @media all and (min-width: 481px) and (max-width: 768px) {
    .toast-container .ngx-toastr.div {
      padding: 15px 15px 15px 50px;
      width: 25em;
    }
+
+
 
    .body {
      padding: 0px !important;
@@ -306,28 +319,51 @@
    }
  }
 
- @media(max-width:768px) {
+ @media(max-width:767px) {
    .toast-top-right {
-     top: 12px;
+     top: 50px;
      right: 2px;
      left: 2px;
      width: 98% !important;
+     z-index: 1;
    }
+
+
  }
 
- @media (min-width:769px) and (max-width:1022px) {
+ @media (min-width:768px) and (max-width:1022px) {
    .toast-top-right {
      top: 12px;
      right: 12px;
-     width: 35% !important;
+     width: 98% !important;
+   }
+
+   .toast-container .ngx-toastr {
+     margin-left: 55%;
    }
  }
 
- @media(min-width:1023px) {
+ @media(min-width:1023px) and (max-width:1279px) {
    .toast-top-right {
      top: 12px;
      right: 12px;
-     width: 20% !important;
+     width: 98% !important;
+   }
+
+   .toast-container .ngx-toastr {
+     margin-left: 65%;
+   }
+ }
+
+ @media(min-width:1280px) {
+   .toast-top-right {
+     top: 12px;
+     right: 12px;
+     width: 98% !important;
+   }
+
+   .toast-container .ngx-toastr {
+     margin-left: 70%;
    }
  }
 
@@ -419,7 +455,7 @@
    font-family: "Exo FT" !important;
    font-size: 14px;
    font-weight: 600;
-   min-width: 120px;
+   min-width: 130px;
    max-width: max-content;
    text-align: center;
  }

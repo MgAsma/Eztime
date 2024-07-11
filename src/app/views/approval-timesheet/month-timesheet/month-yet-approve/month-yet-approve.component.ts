@@ -12,174 +12,175 @@ import { TimesheetService } from 'src/app/service/timesheet.service';
 })
 export class MonthYetApproveComponent implements OnInit {
   @Output() buttonClick = new EventEmitter<any>();
-  @Output() filter:any = new EventEmitter<any>();
-  slno:any;
-  date:any;
-  people:any;
- 
-  time:any;
-  savedon:any;
-  status:any;
-  action:any;
-  term:any='';
-  yetToApproveAll:any = [];
+  @Output() filter: any = new EventEmitter<any>();
+  slno: any;
+  date: any;
+  people: any;
+
+  time: any;
+  savedon: any;
+  status: any;
+  action: any;
+  term: any = '';
+  yetToApproveAll: any = [];
   params: { status: string; user_id: any; page_number: any; data_per_page: number; timesheets_to_date: string; timesheets_from_date: string; };
   //userId: any = 1;
-  page:any = 1;
+  page: any = 1;
   count = 0;
   tableSize = 10;
-  tableSizes = [10,25,50,100];
+  tableSizes = [10, 25, 50, 100];
   yetcount = 0;
   user_id: any;
   accessConfig: any = [];
   org_id: any;
-  
-  @Input() data:any;
-  @Input() totalCount:{ 'pageCount': any, 'currentPage': any };
-  paginationConfig:any={
+
+  @Input() data: any;
+  @Input() totalCount: { 'pageCount': any, 'currentPage': any };
+  paginationConfig: any = {
     itemsPerPage: 10,
     currentPage: 1,
-    totalItems: 0}
-  constructor(private _timesheet:TimesheetService,
-   private modalService:NgbModal,private cdref: ChangeDetectorRef,
-   private api:ApiserviceService,
-   private common_service:CommonServiceService) { 
-  
+    totalItems: 0
+  }
+  constructor(private _timesheet: TimesheetService,
+    private modalService: NgbModal, private cdref: ChangeDetectorRef,
+    private api: ApiserviceService,
+    private common_service: CommonServiceService) {
+
   }
 
   ngOnInit(): void {
-   this.user_id = sessionStorage.getItem('user_id')
-   this.org_id = sessionStorage.getItem('org_id')
-   this.getUserControls()
+    this.user_id = sessionStorage.getItem('user_id')
+    this.org_id = sessionStorage.getItem('org_id')
+    this.getUserControls()
+  }
+  ngOnChanges(changes: SimpleChange): void {
+    if (changes['data'].currentValue) {
+      this.yetToApproveAll = changes['data'].currentValue;
     }
-    ngOnChanges(changes:SimpleChange):void{
-      if(changes['data'].currentValue){
-        this.yetToApproveAll=changes['data'].currentValue;
+    if (changes['totalCount'].currentValue) {
+      this.paginationConfig.totalItems = changes['totalCount'].currentValue.pageCount * this.tableSize;
+      this.paginationConfig.currentPage = changes['totalCount'].currentValue.currentPage;
+      this.paginationConfig.itemsPerPage = this.tableSize;
+      this.page = changes['totalCount'].currentValue.currentPage;
+      this.count = changes['totalCount'].currentValue.pageCount * this.tableSize;
+    }
+    this.cdref.detectChanges();
+  }
+
+  getUserControls() {
+    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.org_id}&pagination=TRUE`).subscribe((res: any) => {
+      if (res.status_code !== '401') {
+        this.common_service.permission.next(res['data'][0]['permissions'])
+        //console.log(this.common_service.permission,"PERMISSION")
       }
-      if(changes['totalCount'].currentValue){
-        this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
-        this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
-        this.paginationConfig.itemsPerPage=this.tableSize;
-      this.page=changes['totalCount'].currentValue.currentPage;
-      this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
+      else {
+        this.api.showError("ERROR !")
       }
-      this.cdref.detectChanges();
-        }
-  
-    getUserControls(){
-      this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.org_id}&pagination=TRUE`).subscribe((res:any)=>{
-        if(res.status_code !== '401'){
-          this.common_service.permission.next(res['data'][0]['permissions'])
-          //console.log(this.common_service.permission,"PERMISSION")
-        }
-        else{
-          this.api.showError("ERROR !")
-        }
-        //console.log(res,'resp from yet');
-        
+      //console.log(res,'resp from yet');
+
+    }
+
+    )
+
+    this.common_service.permission.subscribe(res => {
+      const accessArr = res
+      if (accessArr.length > 0) {
+        accessArr.forEach((element, i) => {
+          if (element['MONTH_APPROVAL_TIMESHEET']) {
+            this.accessConfig = element['MONTH_APPROVAL_TIMESHEET']
+          }
+
+        });
       }
-    
-      )
-    
-      this.common_service.permission.subscribe(res=>{
-        const accessArr = res
-        if(accessArr.length > 0){
-          accessArr.forEach((element,i) => {
-            if(element['MONTH_APPROVAL_TIMESHEET']){
-              this.accessConfig = element['MONTH_APPROVAL_TIMESHEET']
-            }
-            
-          });
-        }
-     
-      })
-     
-      }
-      filterSearch(){
-        let tableData ={
-          search_key:this.term,
-          page:this.page,
-          tableSize:this.tableSize
-         }
-        this.filter.emit(tableData);
-      }
-    onTableDataChange(event:any){
-      this.page = event;
-      let tableData ={
-        search_key:this.term,
-        page:this.page,
-        tableSize:this.tableSize
-       }
-      this.buttonClick.emit(tableData)
-    }  
-    onTableSizeChange(event:any): void {
-      this.tableSize = Number(event.target.value);
-      this.count = 0
-      const calculatedPageNo = this.count / this.tableSize
-      if(calculatedPageNo < this.page){
-        this.page = 1
-      }
-      let tableData ={
-        search_key:this.term,
-        page:this.page,
-        tableSize:this.tableSize
-       }
-       console.log(this.page,tableData);
-      this.buttonClick.emit(tableData)
-    } 
-  open(content,status) {
+
+    })
+
+  }
+  filterSearch() {
+    let tableData = {
+      search_key: this.term,
+      page: this.page,
+      tableSize: this.tableSize
+    }
+    this.filter.emit(tableData);
+  }
+  onTableDataChange(event: any) {
+    this.page = event;
+    let tableData = {
+      search_key: this.term,
+      page: this.page,
+      tableSize: this.tableSize
+    }
+    this.buttonClick.emit(tableData)
+  }
+  onTableSizeChange(event: any): void {
+    this.tableSize = Number(event.target.value);
+    this.count = 0
+    const calculatedPageNo = this.count / this.tableSize
+    if (calculatedPageNo < this.page) {
+      this.page = 1
+    }
+    let tableData = {
+      search_key: this.term,
+      page: this.page,
+      tableSize: this.tableSize
+    }
+    console.log(this.page, tableData);
+    this.buttonClick.emit(tableData)
+  }
+  open(content, status) {
     const selectedStatus = status === 'APPROVED' ? 'approve' : 'decline'
-    const confirmText  = status === 'APPROVED' ? 'Approve' :'Decline'
-    if(content){
-      const modelRef =   this.modalService.open(GenericDeleteComponent, {
+    const confirmText = status === 'APPROVED' ? 'Approve' : 'Decline'
+    if (content) {
+      const modelRef = this.modalService.open(GenericDeleteComponent, {
         size: <any>'md',
         backdrop: true,
-        centered:true
+        centered: true
       });
       modelRef.componentInstance.title = `Are you sure do you want to ${selectedStatus}`;
       modelRef.componentInstance.message = `${confirmText} confirmation`;
       modelRef.componentInstance.status.subscribe(resp => {
-        if(resp == "ok"){
-         this.updateStatus(content,status);
-         modelRef.close();
-        }
-        else{
+        if (resp == "ok") {
+          this.updateStatus(content, status);
           modelRef.close();
         }
-    })
-	
-	}
-}
+        else {
+          modelRef.close();
+        }
+      })
 
-updateStatus(content,status){
-let currMethod =  status === 'DECLINED'?'REJECT':'ACCEPT'
-let data= {
- user_id:this.user_id,
- update:"TRUE",
- approved_by_manager_id:this.user_id,
- module:"TIMESHEET",
- menu:"MONTH_APPROVAL_TIMESHEET",
- method:currMethod,
- time_sheet_id_list:[],
- time_sheet_id:content,
- approved_state: status
-}
-this._timesheet.updateStatus(data).subscribe(res =>{
-  let tableData ={
-    search_key:this.term,
-    page:this.page,
-    tableSize:this.tableSize
-   }
-  this.buttonClick.emit(tableData)
- if(res){
-  const toasterText = status ===  'DECLINED'?'declined':'approved'
-   this.api.showSuccess(`Timesheet ${toasterText} successfully !!`)
-   this.ngOnInit();
- }
- 
-})
-}
-getContinuousIndex(index: number):number {
-  return (this.page-1)*this.tableSize+ index + 1;
-}
+    }
+  }
+
+  updateStatus(content, status) {
+    let currMethod = status === 'DECLINED' ? 'REJECT' : 'ACCEPT'
+    let data = {
+      user_id: this.user_id,
+      update: "TRUE",
+      approved_by_manager_id: this.user_id,
+      module: "TIMESHEET",
+      menu: "MONTH_APPROVAL_TIMESHEET",
+      method: currMethod,
+      time_sheet_id_list: [],
+      time_sheet_id: content,
+      approved_state: status
+    }
+    this._timesheet.updateStatus(data).subscribe(res => {
+      let tableData = {
+        search_key: this.term,
+        page: this.page,
+        tableSize: this.tableSize
+      }
+      this.buttonClick.emit(tableData);
+      if (res) {
+        const toasterText = status === 'DECLINED' ? 'declined' : 'approved'
+        this.api.showSuccess(`Timesheet ${toasterText} successfully !!`)
+        this.ngOnInit();
+      }
+
+    })
+  }
+  getContinuousIndex(index: number): number {
+    return (this.page - 1) * this.tableSize + index + 1;
+  }
 }

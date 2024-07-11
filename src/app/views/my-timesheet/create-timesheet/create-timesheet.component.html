@@ -17,13 +17,13 @@
   </div> -->
   <div class="generic-form bg mx-1">
     <form [formGroup]="timeSheetForm" (ngSubmit)="addTimeSheet()">
-      
-          <div formArrayName="response" class="p-2 mb-0">
-            
-            <ng-container *ngFor="let task of createdtasks.controls; let i=index">
-              <ng-container [formGroupName]="i">
-                <div class="row">
-                  <!-- <ng-container *ngIf="i==0">
+
+      <div formArrayName="response" class="p-2 mb-0">
+
+        <ng-container *ngFor="let task of createdtasks.controls; let i=index">
+          <ng-container [formGroupName]="i">
+            <div class="row">
+              <!-- <ng-container *ngIf="i==0">
                     <div class="col-sm-12 col-md-6 col-lg-4 p-0" *ngIf="user_role_name === 'ADMIN' || user_role_name === 'MANAGER' ">
                       <p>Add Employee<span ></span></p>
                       
@@ -34,60 +34,59 @@
                       
                      </div>
                   </ng-container> -->
-             
+
               <div class="col-sm-12 col-md-6 col-lg-4 p-0">
-              <label>Client <span>*</span></label>
-              <select class="form-select sizeinput" (change)="getProject($event.target['value'], i)" [(value)]="client" aria-label="Default select example"
-              formControlName="client_id">
-              <option value="" selected disabled>Select client</option>
-              <option *ngFor="let item of allClient" [value]="item.id">{{item.c_name}}</option>
-               </select>
-               <div
-                *ngIf="task.get('client_id').invalid && (task.get('client_id').dirty || task.get('client_id').touched)">
-                <div class="feedback" *ngIf="task.get('client_id').errors['required']">
-                  Client name is required.</div>
-              </div>
+                <label>Client <span>*</span></label>
+                <select class="form-select sizeinput" (change)="getProject($event.target['value'], i)"
+                  [(value)]="client" aria-label="Default select example" formControlName="client_id">
+                  <option value="" selected disabled>Select client</option>
+                  <option *ngFor="let item of allClient" [value]="item.id">{{item.c_name}}</option>
+                </select>
+                <div
+                  *ngIf="task.get('client_id').invalid && (task.get('client_id').dirty || task.get('client_id').touched)">
+                  <div class="feedback" *ngIf="task.get('client_id').errors['required']">
+                    Client name is required.</div>
+                </div>
               </div>
 
               <div class="col-sm-12 col-md-6 col-lg-4 p-0">
                 <label>Project <span>*</span></label>
-                <select class="form-select sizeinput"  (change)="getTask($event.target['value'],i)"  [(value)]='project' aria-label="Default select example"
-                formControlName="project_id">
-                <option value="" selected disabled>Select project</option>
-                <option *ngFor="let item of createdtasks.value[i]?.projectList" [value]="item.id">
-                  {{item.p_name}}
-                </option>
-              </select>
-              <div
-                *ngIf="task.get('project_id').invalid && (task.get('project_id').dirty || task.get('project_id').touched)">
-                <div class="feedback" *ngIf="task.get('project_id').errors['required']">
-                  Project name is required.</div>
+                <select class="form-select sizeinput" (change)="getTask($event.target['value'],i)" [(value)]='project'
+                  aria-label="Default select example" formControlName="project_id">
+                  <option value="" selected disabled>Select project</option>
+                  <option *ngFor="let item of createdtasks.value[i]?.projectList" [value]="item.id">
+                    {{item.p_name}}
+                  </option>
+                </select>
+                <div
+                  *ngIf="task.get('project_id').invalid && (task.get('project_id').dirty || task.get('project_id').touched)">
+                  <div class="feedback" *ngIf="task.get('project_id').errors['required']">
+                    Project name is required.</div>
+                </div>
               </div>
-              </div>
-             
-             
+
+
               <div class="col-sm-12 col-md-6 col-lg-4 p-0">
                 <label>Task <span>*</span></label>
-                <select class="form-select sizeinput" (change)="getTimeSpent($event.target['value'],i)" [(value)]='task1' aria-label="Default select example"
-                formControlName="task_id">
-                <option value="" selected disabled>Select task</option>
-                <ng-container *ngFor="let item of createdtasks.value[i]?.taskList" >
-                <option  *ngIf="item.task_name" [value]="item.id" >
-                  {{item.task_name}}
-                </option>
-              </ng-container>
-                <!-- <ng-container *ngFor="let item of createdtasks.value[i]?.taskList" >
+                <select class="form-select sizeinput" (change)="getTimeSpent($event.target['value'],i)"
+                  [(value)]='task1' aria-label="Default select example" formControlName="task_id">
+                  <option value="" selected disabled>Select task</option>
+                  <ng-container *ngFor="let item of createdtasks.value[i]?.taskList">
+                    <option *ngIf="item.task_name" [value]="item.id">
+                      {{item.task_name}}
+                    </option>
+                  </ng-container>
+                  <!-- <ng-container *ngFor="let item of createdtasks.value[i]?.taskList" >
                   <option *ngIf="item.taskName"  [value]="item.id">
                     {{item.taskName}}
                   </option>
                 </ng-container> -->
-                
-              </select>
-              <div
-                *ngIf="task.get('task_id').invalid && (task.get('task_id').dirty || task.get('task_id').touched)">
-                <div class="feedback" *ngIf="task.get('task_id').errors['required']">
-                  Task name is required.</div>
-              </div>
+
+                </select>
+                <div *ngIf="task.get('task_id').invalid && (task.get('task_id').dirty || task.get('task_id').touched)">
+                  <div class="feedback" *ngIf="task.get('task_id').errors['required']">
+                    Task name is required.</div>
+                </div>
               </div>
               <div class="col-sm-12 col-md-6 col-lg-4 p-0">
                 <label>Time <span>*</span></label>
@@ -102,41 +101,39 @@
                     Time is required.</div>
                 </div>
               </div>
-              <div class="col-sm-12 col-md-6 col-lg-4 p-0">
+              <!-- <div class="col-sm-12 col-md-6 col-lg-4 p-0">
                 <label>Date <span>*</span></label>
                 <input class="form-control sizeinput" type="date" />
-              </div>
+              </div> -->
               <div class="col-sm-12 col-md-6 col-lg-3 p-0">
                 <label>Description </label>
-                <textarea class="form-control" formControlName="description" placeholder="Enter description"
-                ></textarea>
-                <div
-                  *ngIf="task.get('description').invalid && task.get('description').hasError('pattern')">
+                <textarea class="form-control" formControlName="description" placeholder="Enter description"></textarea>
+                <div *ngIf="task.get('description').invalid && task.get('description').hasError('pattern')">
                   <div class="feedback">
                     Cannot start with a space.</div>
                 </div>
-                
+
+              </div>
+              <div class="col-sm-12 col-md-6 col-lg-1 p-0">
+                <label>Action</label>
+                <button mat-raised-button type="button" class="btn btn-danger" (click)="removeTask(i)">Delete </button>
+              </div>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-1 p-0">
-              <label>Action</label>
-              <button mat-raised-button type="button" class="btn btn-danger" (click)="removeTask(i)">Delete </button>
-            </div>
-          </div>
-              </ng-container> 
-            </ng-container>
-        
+          </ng-container>
+        </ng-container>
+
       </div>
-        <div class="row">
-          <div class="col">
-            <!-- <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p> -->
-          </div>
-          <div class="col-sm-3 col-md-3 col-lg-2">
-            <button mat-raised-button (click)="addTask()" [disabled]="timeSheetForm.invalid"
-              [ngClass]="timeSheetForm.invalid? 'add_diabled':'proceedbtn'" class="mat-btn-s"> + Add More</button>
-          </div>
-          <div class="col-sm-2 col-md-3 col-lg-2">
-            <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Save</button>
-          </div>
+      <div class="row">
+        <div class="col">
+          <!-- <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p> -->
+        </div>
+        <div class="col-sm-3 col-md-3 col-lg-2">
+          <button mat-raised-button (click)="addTask()" [disabled]="timeSheetForm.invalid"
+            [ngClass]="timeSheetForm.invalid? 'add_diabled':'proceedbtn'" class="mat-btn-s"> + Add More</button>
+        </div>
+        <div class="col-sm-2 col-md-3 col-lg-2">
+          <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Save</button>
+        </div>
       </div>
     </form>
 
@@ -153,13 +150,13 @@
   </div>
   <div class="generic-form bg mx-1">
     <form [formGroup]="timeSheetForm" (ngSubmit)="addTimeSheet()">
-      
-     
+
+
       <div formArrayName="response" class="p-2">
         <div class="row">
-        <div *ngFor="let task of createdtasks.controls; let i=index">
-          <div [formGroupName]="i">
-            <!-- <div style="padding-right: 3px;" *ngIf="i==0">
+          <div *ngFor="let task of createdtasks.controls; let i=index">
+            <div [formGroupName]="i">
+              <!-- <div style="padding-right: 3px;" *ngIf="i==0">
               <div class="col-sm-12 col-md-6 col-lg-4" *ngIf="user_role_name === 'ADMIN' || user_role_name === 'MANAGER'">
                 <p>Add Employee<span >*</span></p>
                
@@ -171,49 +168,48 @@
             </div>
           </div> -->
               <div class="col-sm-12 col-md-6 col-lg-2 p-0">
-              <label>Client <span>*</span></label>
-              <select class="form-select sizeinput" (change)="getProject($event.target['value'], i)" [(value)]="client" aria-label="Default select example"
-              formControlName="client_id">
-              <option value="" selected disabled>Select client</option>
-              <option *ngFor="let item of allClient" [value]="item.id">{{item.c_name}}</option>
-               </select>
-               <div
-                *ngIf="task.get('client_id').invalid && (task.get('client_id').dirty || task.get('client_id').touched)">
-                <div class="feedback" *ngIf="task.get('client_id').errors['required']">
-                  Client name is required.</div>
-              </div>
+                <label>Client <span>*</span></label>
+                <select class="form-select sizeinput" (change)="getProject($event.target['value'], i)"
+                  [(value)]="client" aria-label="Default select example" formControlName="client_id">
+                  <option value="" selected disabled>Select client</option>
+                  <option *ngFor="let item of allClient" [value]="item.id">{{item.c_name}}</option>
+                </select>
+                <div
+                  *ngIf="task.get('client_id').invalid && (task.get('client_id').dirty || task.get('client_id').touched)">
+                  <div class="feedback" *ngIf="task.get('client_id').errors['required']">
+                    Client name is required.</div>
+                </div>
               </div>
               <div class="col-sm-12 col-md-6 col-lg-2 p-0">
                 <label>Project <span>*</span></label>
-                <select class="form-select sizeinput"  (change)="getTask($event.target['value'],i)"  [(value)]='project' aria-label="Default select example"
-                formControlName="project_id">
-                <option value="" selected disabled>Select project</option>
-                <option *ngFor="let item of createdtasks.value[i]?.projectList" [value]="item.id">
-                  {{item.p_name}}
-                </option>
-              </select>
-              <div
-                *ngIf="task.get('project_id').invalid && (task.get('project_id').dirty || task.get('project_id').touched)">
-                <div class="feedback" *ngIf="task.get('project_id').errors['required']">
-                  Project name is required.</div>
+                <select class="form-select sizeinput" (change)="getTask($event.target['value'],i)" [(value)]='project'
+                  aria-label="Default select example" formControlName="project_id">
+                  <option value="" selected disabled>Select project</option>
+                  <option *ngFor="let item of createdtasks.value[i]?.projectList" [value]="item.id">
+                    {{item.p_name}}
+                  </option>
+                </select>
+                <div
+                  *ngIf="task.get('project_id').invalid && (task.get('project_id').dirty || task.get('project_id').touched)">
+                  <div class="feedback" *ngIf="task.get('project_id').errors['required']">
+                    Project name is required.</div>
+                </div>
               </div>
-              </div>
-               
-        
+
+
               <div class="col-sm-12 col-md-6 col-lg-2 p-0">
                 <label>Task <span>*</span></label>
-                <select class="form-select sizeinput" (change)="getTimeSpent($event.target['value'],i)" [(value)]='task1' aria-label="Default select example"
-                formControlName="task_id">
-                <option value="" selected disabled>Select task</option>
-                <option *ngFor="let item of createdtasks.value[i]?.taskList" [value]="item.id">
-                  {{item.task_name}}
-                </option>
-              </select>
-              <div
-                *ngIf="task.get('task_id').invalid && (task.get('task_id').dirty || task.get('task_id').touched)">
-                <div class="feedback" *ngIf="task.get('task_id').errors['required']">
-                  Task name is required.</div>
-              </div>
+                <select class="form-select sizeinput" (change)="getTimeSpent($event.target['value'],i)"
+                  [(value)]='task1' aria-label="Default select example" formControlName="task_id">
+                  <option value="" selected disabled>Select task</option>
+                  <option *ngFor="let item of createdtasks.value[i]?.taskList" [value]="item.id">
+                    {{item.task_name}}
+                  </option>
+                </select>
+                <div *ngIf="task.get('task_id').invalid && (task.get('task_id').dirty || task.get('task_id').touched)">
+                  <div class="feedback" *ngIf="task.get('task_id').errors['required']">
+                    Task name is required.</div>
+                </div>
               </div>
               <div class="col-sm-12 col-md-6 col-lg-2 p-0">
                 <label>Time <span>*</span></label>
@@ -228,43 +224,42 @@
                     Time is required.</div>
                 </div>
               </div>
-              <div class="col-sm-12 col-md-6 col-lg-4 p-0">
+              <!-- <div class="col-sm-12 col-md-6 col-lg-4 p-0">
                 <label>Date <span>*</span></label>
                 <input class="form-control sizeinput" type="date" />
-              </div>
+              </div> -->
               <div class="col-sm-12 col-md-6 col-lg-3 p-0">
                 <label>Description </label>
                 <textarea class="form-control" formControlName="description" placeholder="Enter description"
-                style="height: 60px !important"></textarea>
-                <div
-                  *ngIf="task.get('description').invalid && task.get('description').hasError('pattern')">
+                  style="height: 60px !important"></textarea>
+                <div *ngIf="task.get('description').invalid && task.get('description').hasError('pattern')">
                   <div class="feedback">
                     Cannot start with a space.</div>
                 </div>
-                
+
+              </div>
+
+              <div class="col-sm-12 col-md-6 col-lg-1 p-0">
+                <label>Action</label><br />
+                <button mat-raised-button type="button" class="btn btn-danger" (click)="removeTask(i)">Delete </button>
+              </div>
+
+
             </div>
-            
-            <div class="col-sm-12 col-md-6 col-lg-1 p-0">
-              <label>Action</label><br/>
-              <button mat-raised-button type="button" class="btn btn-danger" (click)="removeTask(i)">Delete </button>
-             </div>
-              
-            
           </div>
         </div>
       </div>
-      </div> 
-        <div class="row">
-          <div class="col-sm-7">
-            <!-- <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p> -->
-          </div>
-          <div class="col-sm-3 col-md-3 col-lg-2">
-            <button mat-raised-button (click)="addTask()" [disabled]="timeSheetForm.invalid"
-              [ngClass]="timeSheetForm.invalid? 'add_diabled':'proceedbtn'" class="mat-btn-s"> + Add More</button>
-          </div>
-          <div class="col-sm-2">
-            <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Save</button>
-          </div>
+      <div class="row">
+        <div class="col-sm-7">
+          <!-- <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p> -->
+        </div>
+        <div class="col-sm-3 col-md-3 col-lg-2">
+          <button mat-raised-button (click)="addTask()" [disabled]="timeSheetForm.invalid"
+            [ngClass]="timeSheetForm.invalid? 'add_diabled':'proceedbtn'" class="mat-btn-s"> + Add More</button>
+        </div>
+        <div class="col-sm-2">
+          <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Save</button>
+        </div>
       </div>
     </form>
   </div>
