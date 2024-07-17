@@ -58,11 +58,12 @@ export class MonthYetApproveComponent implements OnInit {
       this.yetToApproveAll = changes['data'].currentValue;
     }
     if (changes['totalCount'].currentValue) {
-      this.paginationConfig.totalItems = changes['totalCount'].currentValue.pageCount * this.tableSize;
+      this.paginationConfig.totalItems = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
       this.paginationConfig.currentPage = changes['totalCount'].currentValue.currentPage;
-      this.paginationConfig.itemsPerPage = this.tableSize;
+      this.paginationConfig.itemsPerPage = changes['totalCount'].currentValue.itemsPerPage;
+      this.tableSize = changes['totalCount'].currentValue.itemsPerPage;
       this.page = changes['totalCount'].currentValue.currentPage;
-      this.count = changes['totalCount'].currentValue.pageCount * this.tableSize;
+      this.count = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
     }
     this.cdref.detectChanges();
   }
@@ -125,7 +126,6 @@ export class MonthYetApproveComponent implements OnInit {
       page: this.page,
       tableSize: this.tableSize
     }
-    console.log(this.page, tableData);
     this.buttonClick.emit(tableData)
   }
   open(content, status) {

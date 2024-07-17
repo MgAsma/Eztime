@@ -455,9 +455,24 @@
    font-family: "Exo FT" !important;
    font-size: 14px;
    font-weight: 600;
-   min-width: 130px;
-   max-width: max-content;
    text-align: center;
+   white-space: nowrap;
+ }
+
+ th:first-child,
+ td:first-child {
+   width: 50px !important;
+ }
+
+ th:last-child,
+ td:last-child {
+   width: 100px !important;
+ }
+
+ th:not(:first-child),
+ td:not(:first-child):not(:last-child) {
+   min-width: max-content !important;
+   max-width: 100% !important;
  }
 
 
@@ -469,4 +484,8 @@
 
  table tr>th {
    font-size: 12px !important;
+ }
+
+ .profile-settings-content {
+   cursor: pointer !important;
  }

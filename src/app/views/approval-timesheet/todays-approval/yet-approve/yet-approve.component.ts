@@ -56,11 +56,12 @@ export class YetApproveComponent implements OnInit {
       this.yetToApproveAll = changes['data'].currentValue;
     }
     if (changes['totalCount'].currentValue) {
-      this.paginationConfig.totalItems = changes['totalCount'].currentValue.pageCount * this.tableSize;
+      this.paginationConfig.totalItems = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
       this.paginationConfig.currentPage = changes['totalCount'].currentValue.currentPage;
-      this.paginationConfig.itemsPerPage = this.tableSize;
+      this.paginationConfig.itemsPerPage = changes['totalCount'].currentValue.itemsPerPage;
+      this.tableSize = changes['totalCount'].currentValue.itemsPerPage;
       this.page = changes['totalCount'].currentValue.currentPage;
-      this.count = changes['totalCount'].currentValue.pageCount * this.tableSize;
+      this.count = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
     }
     this.cdref.detectChanges();
   }
@@ -135,9 +136,7 @@ export class YetApproveComponent implements OnInit {
   onTableSizeChange(event: any): void {
     this.tableSize = Number(event.target.value);
     this.count = 0
-    // Calculate new page number
     const calculatedPageNo = this.count / this.tableSize
-
     if (calculatedPageNo < this.page) {
       this.page = 1
     }
@@ -151,7 +150,7 @@ export class YetApproveComponent implements OnInit {
   open(content) {
     if (content) {
       const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: <any>'sm',
+        size: <any>'md',
         backdrop: true,
         centered: true
       });

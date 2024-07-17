@@ -120,7 +120,7 @@
 
                             <div *ngIf="isListShown" style="margin: 0;" class="row container-fluid" id="divshow">
                                 <!-- <input  type="text" class="form-control p-3 sizeinput" formControlName=" people_ref_list" placeholder="Employee list" aria-describedby="emailHelp"  autocomplete="off"> -->
-                                <ng-multiselect-dropdown [placeholder]="'Select people list'"
+                                <ng-multiselect-dropdown [placeholder]="'Select employee list'"
                                     [settings]="peopleListSetting" [data]="allPeopleGroup"
                                     (onSelect)="onPeopleGroupSelect($event)"
                                     (onSelectAll)="onPeopleGroupSelectAll($event)" formControlName="people_ref_list">
@@ -184,7 +184,7 @@
                         <div class="col-sm">
                             <p>Estimated billing <span>*</span></p>
 
-                            <input type="number" onkeydown="return event.keyCode !== 69" class="form-control"
+                            <input type="number" min="0" onkeydown="return restrictInput(event)" class="form-control"
                                 formControlName="p_estimated_cost" placeholder="Enter estimated billing"
                                 aria-label="Username" aria-describedby="basic-addon1">
 
@@ -497,7 +497,7 @@
 
                             <div *ngIf="isListShown" style="margin: 0;" class="row">
 
-                                <ng-multiselect-dropdown [placeholder]="'Select people list'"
+                                <ng-multiselect-dropdown [placeholder]="'Select employee list'"
                                     [settings]="peopleListSetting" [data]="allPeopleGroup"
                                     (onSelect)="onPeopleGroupSelect($event)"
                                     (onSelectAll)="onPeopleGroupSelectAll($event)" formControlName="people_ref_list">

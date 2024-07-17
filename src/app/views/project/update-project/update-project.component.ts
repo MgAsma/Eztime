@@ -406,4 +406,20 @@ export class UpdateProjectComponent implements OnInit {
       this.invalidDate = false;
     }
   }
+  restrictInput(event) {
+    const allowedKeys = [
+      '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.',
+      'Backspace', 'Tab', 'Enter', 'Escape', 'Delete', 'ArrowLeft', 'ArrowRight', 'Home', 'End'
+    ];
+
+    if (allowedKeys.includes(event.key) || (event.ctrlKey && (event.key === 'v' || event.key === 'c' || event.key === 'a'))) {
+      return true;
+    }
+
+    if (event.key === 'e' || event.key === '-' || event.keyCode === 69 || event.keyCode === 189) {
+      return false;
+    }
+
+    return false;
+  }
 }

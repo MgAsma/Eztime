@@ -1,94 +1,76 @@
 <!--sidebar-->
-<c-sidebar
-  #sidebar="cSidebar"
-  class="d-print-none sidebar sidebar-fixed"
-  id="sidebar"
-  visible
->
+<c-sidebar #sidebar="cSidebar" class="d-print-none sidebar sidebar-fixed" id="sidebar" visible>
 
- <c-sidebar-brand > 
-  <!-- <b style="color: #3F51B5;
+  <c-sidebar-brand>
+    <!-- <b style="color: #3F51B5;
   
   font-family: sans-serif;" class="industry-title" [ngStyle]="!iconSize ? {'font-size':'1.7rem'}:{'font-size':'1rem'}">
   <i class="bi bi-clock-history" style="color:blue" *ngIf="!iconSize"></i> EZTIME</b> -->
-  <!-- <img src="../../../assets/images/eztime_logo.svg" class="sidebar-logo"/> -->
-  <!-- <img src="../../../assets/images/Project Ace logo-04.png" class="sidebar-logo"/> -->
-  <img src="../../../assets/images/logo.svg"  width="170px" height="65px" class="sidebar-logo"/>
- </c-sidebar-brand>
-    <perfect-scrollbar [config]="perfectScrollbarConfig">
-  <!--  [perfectScrollbar]="perfectScrollbarConfig"-->
-  <c-sidebar-nav
-    [navItems]="config == 'SUPER ADMIN'? navItems : sidebarNavItems"
-    dropdownMode="close"
-  >
-  
-  </c-sidebar-nav>
-    </perfect-scrollbar>
+    <!-- <img src="../../../assets/images/eztime_logo.svg" class="sidebar-logo"/> -->
+    <!-- <img src="../../../assets/images/Project Ace logo-04.png" class="sidebar-logo"/> -->
+    <img src="../../../assets/images/logo.svg" width="170px" height="65px" class="sidebar-logo" />
+  </c-sidebar-brand>
+  <perfect-scrollbar [config]="perfectScrollbarConfig">
+    <!--  [perfectScrollbar]="perfectScrollbarConfig"-->
+    <c-sidebar-nav [navItems]="config == 'SUPER ADMIN'? navItems : sidebarNavItems" dropdownMode="close">
+
+    </c-sidebar-nav>
+  </perfect-scrollbar>
   <!-- <c-sidebar-toggler
     *ngIf="!sidebar.narrow"
     toggle="unfoldable"
     cSidebarToggle="sidebar"
    (click)="iconSize = !iconSize"></c-sidebar-toggler> -->
-   <!-- <div class="user-id">WELCOME !</div> -->
-      
-      <mat-card class="profile-settings-card">
-        <div class="d-flex">
-          <c-avatar
-          cTextColor="primary"
-          shape="rounded-1"
-          size="md"
-          src="./assets/img/avatars/8.jpg"
-          status="success"
-        >
-        </c-avatar>
-        <p class="mx-2" [ngClass]="user_role_Name !== 'EMPLOYEE' ? 'nonemployee' : 'employee'">
-          <small class="role-name" *ngIf="user_role_Name !== 'EMPLOYEE'">{{user_role_Name|titlecase}}</small><br/>
-       {{user_name |titlecase}}
-     </p>
-        
-  </div>
-  <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
-      </mat-card>
+  <!-- <div class="user-id">WELCOME !</div> -->
+
+  <mat-card class="profile-settings-card">
+    <div class="d-flex">
+      <c-avatar cTextColor="primary" shape="rounded-1" size="md" src="./assets/img/avatars/8.jpg" status="success">
+      </c-avatar>
+      <p class="mx-2" [ngClass]="user_role_Name !== 'EMPLOYEE' ? 'nonemployee' : 'employee'">
+        <small class="role-name" *ngIf="user_role_Name !== 'EMPLOYEE'">{{user_role_Name|titlecase}}</small><br />
+        {{user_name |titlecase}}
+      </p>
+
+    </div>
+    <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
+  </mat-card>
 
 </c-sidebar>
 
 <!--main-->
-<div class="wrapper d-flex flex-column dark:bg-transparent" >
+<div class="wrapper d-flex flex-column dark:bg-transparent">
   <!--app-header-->
-    <ngx-ui-loader fgsColor="#1d2a6e" pbColor="#1d2a6e" text="Please wait..."></ngx-ui-loader>
-    <!--app-body-->
-    <div class="body scroll-fix">
-      <mat-card class="body-card">
-        <app-default-header class="d-print-none header header-sticky" position="sticky" sidebarId="sidebar"></app-default-header>
-   
-        <router-outlet></router-outlet>
-      </mat-card>
-    </div>
-    <!--app footer-->
-    <app-default-footer class="mobileView"></app-default-footer>
-  
+  <ngx-ui-loader fgsColor="#1d2a6e" pbColor="#1d2a6e" text="Please wait..."></ngx-ui-loader>
+  <!--app-body-->
+  <div class="body scroll-fix">
+    <mat-card class="body-card">
+      <app-default-header class="d-print-none header header-sticky" position="sticky"
+        sidebarId="sidebar"></app-default-header>
+
+      <router-outlet></router-outlet>
+    </mat-card>
+  </div>
+  <!--app footer-->
+  <app-default-footer class="mobileView"></app-default-footer>
+
 </div>
 
 <ng-template #userDropdown>
   <c-dropdown alignment="end" variant="nav-item">
-      <button 
-      [caret]="false"
-      cDropdownToggle
-      class="py-1 settings-btn"
-    ><span><i class="bi bi-gear"></i> Settings</span>
+    <button [caret]="false" cDropdownToggle class="py-1 settings-btn"><span><i class="bi bi-gear"></i> Settings</span>
     </button>
     <ul cDropdownMenu class="py-2 pr-5 w-auto c-dropClass">
       <li></li>
-      <li *ngFor="let headNav of headerNav"  style="margin:10px auto">
+      <li *ngFor="let headNav of headerNav" style="margin:10px auto">
         <div [ngClass]="getHeaderNavStyles(headNav)">
-          <a (click)="navigateTo(headNav)" cDropdownItem>
+          <a (click)="navigateTo(headNav)" cDropdownItem class="profile-settings-content">
             <i class="{{headNav.icons}}" id="nav-icon"></i>
-            <span class="title" >&nbsp;&nbsp;{{headNav.page |titlecase}} </span>
+            <span class="title">&nbsp;&nbsp;{{headNav.page |titlecase}} </span>
           </a>
-        </div>   
+        </div>
       </li>
     </ul>
-   
+
   </c-dropdown>
 </ng-template>
-

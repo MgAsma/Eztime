@@ -122,8 +122,9 @@
                                     </div>
 
                                     <div class="action-btn-link-content">
-                                        <a routerLink="/dashboards" class="login-links"><i class="bi bi-arrow-left"></i>
-                                            Dashboard</a>
+                                        <a (click)="goBackPreviousPage()" class="login-links"><i
+                                                class="bi bi-arrow-left"></i>
+                                            Go Back</a>
                                         <button mat-button matStepperNext class="proceedbtn"
                                             (click)="checkValidation('step1')">Next</button>
 

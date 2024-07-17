@@ -68,6 +68,7 @@ import { ActivateChildGuard } from './activate-child.guard';
 import { AuthGuard } from './auth.guard';
 import { OrgAuthGuard } from './org-auth.guard';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { CommonModule } from '@angular/common';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -87,6 +88,7 @@ const APP_CONTAINERS = [
   ],
   imports: [
     // ChartsModule,
+    CommonModule,
     NgbTooltipModule,
     Ng2SearchPipeModule,
     NgxPaginationModule,

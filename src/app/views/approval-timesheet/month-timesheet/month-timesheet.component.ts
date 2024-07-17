@@ -28,6 +28,7 @@ export class MonthTimesheetComponent implements OnInit {
   acceptOption: boolean = false;
   rejectOption: boolean = false;
   c_params: {};
+  itemPerPageCount: any = 10;
   @ViewChild('tabset') tabset: TabsetComponent;
   @ViewChild('tabsets') tabsets: TabsetComponent;
 
@@ -49,7 +50,6 @@ export class MonthTimesheetComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    this.api.showSuccess(`Timesheet updated successfully`)
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.initForm()
     this.user_id = sessionStorage.getItem('user_id')
@@ -61,7 +61,7 @@ export class MonthTimesheetComponent implements OnInit {
       approved_state: 'YET_TO_APPROVED',
       user_id: this.user_id,
       page_number: 1,
-      data_per_page: 10,
+      data_per_page: this.itemPerPageCount,
       search_key: '',
       pagination: 'TRUE'
     }
@@ -134,7 +134,7 @@ export class MonthTimesheetComponent implements OnInit {
         approved_state: 'YET_TO_APPROVED',
         user_id: this.user_id,
         page_number: 1,
-        data_per_page: 10,
+        data_per_page: this.itemPerPageCount,
         search_key: '',
         timesheets_from_date: this.formattedDate,
         pagination: 'TRUE'
@@ -158,7 +158,7 @@ export class MonthTimesheetComponent implements OnInit {
             this.exebtn = true;
           });
           this.allDetails = res['result']['data']
-          this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: 10 };
+          this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
 
         }
         else {
@@ -166,7 +166,7 @@ export class MonthTimesheetComponent implements OnInit {
             this.allListDataids.push(res['result']['data'][0].id)
             this.exebtn = true;
             this.allDetails = res['result']['data']
-            this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: 10 };
+            this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
 
           }
         }
@@ -191,14 +191,14 @@ export class MonthTimesheetComponent implements OnInit {
             this.exebtn = true;
           });
           this.allDetails = res['result']['data']
-          this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: 10 };
+          this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
         }
         else {
           if (res['result']['data'].length === 1) {
             this.allListDataids.push(res['result']['data'][0].id)
             this.exebtn = true;
             this.allDetails = res['result']['data']
-            this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: 10 };
+            this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
           }
         }
       } else {
@@ -238,7 +238,7 @@ export class MonthTimesheetComponent implements OnInit {
         approved_state: this.selectedTab,
         user_id: this.user_id,
         page_number: 1,
-        data_per_page: 10,
+        data_per_page: this.itemPerPageCount,
         search_key: '',
         timesheets_from_date: this.formattedDate,
         pagination: 'TRUE'
@@ -261,7 +261,7 @@ export class MonthTimesheetComponent implements OnInit {
         approved_state: this.selectedTab,
         user_id: this.user_id,
         page_number: 1,
-        data_per_page: 10,
+        data_per_page: this.itemPerPageCount,
         search_key: '',
         pagination: 'TRUE'
       }
@@ -276,7 +276,7 @@ export class MonthTimesheetComponent implements OnInit {
     console.log(event.page);
     this.handleMonthSelection(this.monthForm.value['fromMonth'])
     if (event) {
-      this.cdref.detectChanges();
+      this.itemPerPageCount = event.tableSize;
       if (this.changes) {
         let c_params = {
           module: "TIMESHEET",
@@ -285,7 +285,7 @@ export class MonthTimesheetComponent implements OnInit {
           approved_state: this.selectedTab,
           user_id: this.user_id,
           page_number: event.page,
-          data_per_page: event.tableSize,
+          data_per_page: this.itemPerPageCount,
           search_key: event.search_key,
           timesheets_from_date: this.formattedDate,
           pagination: 'TRUE'
@@ -301,7 +301,7 @@ export class MonthTimesheetComponent implements OnInit {
           user_id: this.user_id,
           page_number: event.page,
           search_key: event.search_key,
-          data_per_page: event.tableSize,
+          data_per_page: this.itemPerPageCount,
           pagination: 'TRUE'
         }
         this.getByStatus(c_params)
@@ -313,7 +313,7 @@ export class MonthTimesheetComponent implements OnInit {
   searchFiter(event) {
     this.handleMonthSelection(this.monthForm.value['fromMonth'])
     if (event) {
-      this.cdref.detectChanges();
+      this.itemPerPageCount = event.tableSize;
       if (this.changes) {
         let c_params = {
           module: "TIMESHEET",
@@ -322,7 +322,7 @@ export class MonthTimesheetComponent implements OnInit {
           approved_state: this.selectedTab,
           user_id: this.user_id,
           page_number: event.page,
-          data_per_page: event.tableSize,
+          data_per_page: this.itemPerPageCount,
           search_key: event.search_key,
           timesheets_from_date: this.formattedDate,
           pagination: 'TRUE'
@@ -372,7 +372,7 @@ export class MonthTimesheetComponent implements OnInit {
         approved_state: this.selectedTab,
         user_id: this.user_id,
         page_number: 1,
-        data_per_page: 10,
+        data_per_page: this.itemPerPageCount,
         search_key: '',
         timesheets_from_date: this.formattedDate,
         pagination: 'TRUE'

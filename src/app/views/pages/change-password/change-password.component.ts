@@ -103,5 +103,7 @@ export class ChangePasswordComponent implements OnInit {
     }
 
   }
-
+  getRedirectLink() {
+    this.location.back();
+  }
 }

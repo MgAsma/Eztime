@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
 
@@ -41,6 +42,7 @@ export class RegisterComponent {
   orgId: any;
   constructor(
     private formBuilder: FormBuilder,
+    private location: Location,
     private api: ApiserviceService,
     private router: Router) { }
 
@@ -302,7 +304,9 @@ export class RegisterComponent {
       //console.log(error,"ERROR")
     })
   }
-
+  goBackPreviousPage() {
+    this.location.back();
+  }
 }
 
 

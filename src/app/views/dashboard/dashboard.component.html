@@ -5,96 +5,96 @@
     </div>
     <div class="col-sm"></div>
 </div> -->
-    <div class="container" *ngIf="enable">
-      <div class="bg">
+  <div class="container" *ngIf="enable">
+    <div class="bg">
       <ng-container *ngIf="user_role_name === 'SUPER ADMIN'">
-        <div class="row" >
+        <div class="row">
           <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
             <!-- <a routerLink="../role/list"> -->
-                <div class="card dashboard-card">
-                  <div class="c-icon">
-                    <i class="bi bi-person-vcard"></i>
-                  </div>
-                    <div class="card-body p-3">
-                      <div class="h5 heading mb-0 mt-2">{{organization ? organization :'0'}}</div>
-                      <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Organization</strong></div>
-                   <div class="recently-add-content">
-                    <ul>
-                      <li *ngFor="let organization of organizationlistData">{{organization?.org_name|titlecase}}</li>
-                    </ul>
-                    <a routerLink="../organization/orgList">See Organization</a>
-                   </div> 
-                    </div>
+            <div class="card dashboard-card">
+              <div class="c-icon">
+                <i class="bi bi-person-vcard"></i>
+              </div>
+              <div class="card-body p-3">
+                <div class="h5 heading mb-0 mt-2">{{organization ? organization :'0'}}</div>
+                <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Organization</strong></div>
+                <div class="recently-add-content">
+                  <ul>
+                    <li *ngFor="let organization of organizationlistData">{{organization?.org_name|titlecase}}</li>
+                  </ul>
+                  <a routerLink="../organization/orgList">See Organizations</a>
+                </div>
+              </div>
 
-                  </div>
-               <!-- </a> -->
+            </div>
+            <!-- </a> -->
           </div>
           <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
             <!-- <a routerLink="../role/list"> -->
-                <div class="card dashboard-card">
-                  <div class="c-icon" id="bi-microsoft">
-                    <i class="bi bi-microsoft"></i>
-                  </div>
-                    <div class="card-body p-3">
-                      <div class="h5 heading mb-0 mt-2">{{admin ? admin :'0'}}</div>
-                      <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Admin</strong></div>
-                      <div class="recently-add-content">
-                        <ul>
-                      <li *ngFor="let admin of adminlistData">{{admin?.u_first_name|titlecase }}</li>
-                        </ul>
-                        <p>Recently Added</p>
-                       </div> 
-                    </div>        
-                  </div>
-               <!-- </a> -->
+            <div class="card dashboard-card">
+              <div class="c-icon" id="bi-microsoft">
+                <i class="bi bi-microsoft"></i>
+              </div>
+              <div class="card-body p-3">
+                <div class="h5 heading mb-0 mt-2">{{admin ? admin :'0'}}</div>
+                <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Admins</strong></div>
+                <div class="recently-add-content">
+                  <ul>
+                    <li *ngFor="let admin of adminlistData">{{admin?.u_first_name|titlecase }}</li>
+                  </ul>
+                  <p>Recently Added</p>
+                </div>
+              </div>
+            </div>
+            <!-- </a> -->
           </div>
 
           <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
             <!-- <a routerLink="../role/list"> -->
-                <div class="card dashboard-card">
-                  <div class="c-icon">
-                    <i class="bi bi-list-task"></i>
-                  </div>
-                    <div class="card-body p-3">
-                      <div class="h5 heading mb-0 mt-2">{{userCount ? userCount:'0'}}</div>
-                      <div class="text-muted text-uppercase font-weight-bold font-xs"><strong>Users</strong></div>
-                      <div class="recently-add-content">
-                        <ul>
-                          <li *ngFor="let user of userslistData">{{user?.u_first_name|titlecase}}</li>
-                        </ul>
-                        <!-- <a routerLink="../role/list">See Users</a> -->
-                        <p>Recently Added</p>
-                       </div> 
-                    </div>        
-                  </div>
-               <!-- </a> -->
+            <div class="card dashboard-card">
+              <div class="c-icon">
+                <i class="bi bi-list-task"></i>
+              </div>
+              <div class="card-body p-3">
+                <div class="h5 heading mb-0 mt-2">{{userCount ? userCount:'0'}}</div>
+                <div class="text-muted text-uppercase font-weight-bold font-xs"><strong>Users</strong></div>
+                <div class="recently-add-content">
+                  <ul>
+                    <li *ngFor="let user of userslistData">{{user?.u_first_name|titlecase}}</li>
+                  </ul>
+                  <!-- <a routerLink="../role/list">See Users</a> -->
+                  <p>Recently Added</p>
+                </div>
+              </div>
+            </div>
+            <!-- </a> -->
           </div>
         </div>
-        </ng-container>
-        <ng-container *ngIf="user_role_name !== 'SUPER ADMIN'">
-        <div class="row" >
+      </ng-container>
+      <ng-container *ngIf="user_role_name !== 'SUPER ADMIN'">
+        <div class="row">
           <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
             <ng-container *ngFor="let access of permissionRoles">
-             
+
               <!-- <a *ngIf="user_role_name !== 'EMPLOYEE'" > -->
-                  <div class="card dashboard-card" *ngIf="access === 'VIEW'">
-                    <div class="c-icon">
-                      <i class="bi bi-person-vcard"></i>
-                    </div>
-                      <div class="card-body p-3">
-                        <div class="h5 heading mb-0 mt-2">{{role ? role:'0'}}</div>
-                        <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Roles</strong></div>
-                        <div class="recently-add-content">
-                          <ul>
-                            <li *ngFor="let roles of rolesListData">{{roles?.user_role_name|titlecase}}</li>
-                          </ul>
-                          <a  routerLink="../role/list" *ngIf="access === 'VIEW'">See Roles</a>
-                         </div> 
-                      </div>        
-                    </div>
+              <div class="card dashboard-card" *ngIf="access === 'VIEW'">
+                <div class="c-icon">
+                  <i class="bi bi-person-vcard"></i>
+                </div>
+                <div class="card-body p-3">
+                  <div class="h5 heading mb-0 mt-2">{{role ? role:'0'}}</div>
+                  <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Roles</strong></div>
+                  <div class="recently-add-content">
+                    <ul>
+                      <li *ngFor="let roles of rolesListData">{{roles?.user_role_name|titlecase}}</li>
+                    </ul>
+                    <a routerLink="../role/list" *ngIf="access === 'VIEW'">See Roles</a>
+                  </div>
+                </div>
+              </div>
             </ng-container>
-              <!-- </a> -->
-              <!-- <div *ngIf="user_role_name === 'EMPLOYEE'" >
+            <!-- </a> -->
+            <!-- <div *ngIf="user_role_name === 'EMPLOYEE'" >
                 <div class="card card-role">
                   <div class="c-icon">
                     <i class="bi bi-person-vcard"></i>
@@ -105,50 +105,50 @@
                     </div>        
                   </div>
             </div> -->
-            </div>
-
-            <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
-              <ng-container *ngFor="let access of permissionsDepartment">
-                  <div class="card dashboard-card " *ngIf="access === 'VIEW'">
-                    <div class="c-icon" id="bi-microsoft">
-                      <i class="bi bi-microsoft"></i>
-                    </div>
-                      <div class="card-body p-3">
-                        <div class="h5 heading mb-0 mt-2">{{department ? department:'0'}}</div>
-                        <div class="text-muted text-uppercase font-weight-bold font-xs"><strong>Departments</strong></div>
-                        <div class="recently-add-content">
-                          <ul>
-                            <li *ngFor="let department of departmentsListData">{{department?.od_name|titlecase}}</li>
-                          </ul>
-                          <a routerLink="../department/list" *ngIf="access === 'VIEW'">See Departments</a>
-                         </div> 
-                      </div>
-                    </div>
-
-              </ng-container>             
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
-              <ng-container *ngFor="let access of permissionsIndustry">
-                  <div class="card dashboard-card" *ngIf="access === 'VIEW'">
-                    <div class="c-icon">
-                      <i class="bi bi-list-task"></i>
-                    </div>
-                      <div class="card-body p-3">
-                        <div class="h5 heading mb-0 mt-2">{{industry ? industry:'0'}}</div>
-                        <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Industries</strong></div>
-                        <div class="recently-add-content">
-                          <ul>
-                            <li *ngFor="let industries of industriesListData">{{industries?.toi_title|titlecase}}</li>
-                          </ul>
-                          <a routerLink="../industry/list" *ngIf="access === 'VIEW'">See Industries</a>
-                         </div> 
-                      </div>
-                    </div>
-
-              </ng-container>
-            </div> 
           </div>
-         </ng-container>
-      </div>
+
+          <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
+            <ng-container *ngFor="let access of permissionsDepartment">
+              <div class="card dashboard-card " *ngIf="access === 'VIEW'">
+                <div class="c-icon" id="bi-microsoft">
+                  <i class="bi bi-microsoft"></i>
+                </div>
+                <div class="card-body p-3">
+                  <div class="h5 heading mb-0 mt-2">{{department ? department:'0'}}</div>
+                  <div class="text-muted text-uppercase font-weight-bold font-xs"><strong>Departments</strong></div>
+                  <div class="recently-add-content">
+                    <ul>
+                      <li *ngFor="let department of departmentsListData">{{department?.od_name|titlecase}}</li>
+                    </ul>
+                    <a routerLink="../department/list" *ngIf="access === 'VIEW'">See Departments</a>
+                  </div>
+                </div>
+              </div>
+
+            </ng-container>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
+            <ng-container *ngFor="let access of permissionsIndustry">
+              <div class="card dashboard-card" *ngIf="access === 'VIEW'">
+                <div class="c-icon">
+                  <i class="bi bi-list-task"></i>
+                </div>
+                <div class="card-body p-3">
+                  <div class="h5 heading mb-0 mt-2">{{industry ? industry:'0'}}</div>
+                  <div class="text-muted text-uppercase font-weight-bold font-xs"><strong> Industries</strong></div>
+                  <div class="recently-add-content">
+                    <ul>
+                      <li *ngFor="let industries of industriesListData">{{industries?.toi_title|titlecase}}</li>
+                    </ul>
+                    <a routerLink="../industry/list" *ngIf="access === 'VIEW'">See Industries</a>
+                  </div>
+                </div>
+              </div>
+
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
     </div>
+  </div>
 </section>

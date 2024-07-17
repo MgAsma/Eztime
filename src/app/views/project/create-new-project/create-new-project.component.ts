@@ -140,7 +140,7 @@ export class CreateNewProjectComponent implements OnInit {
       opg_ref_id: [''],
       p_code: [''],
       p_people_type: [''],
-      people_ref_list: ['', [Validators.required]],
+      people_ref_list: ['', Validators.required],
       p_activation_status: [''],
       c_ref_id: ['', [Validators.required]],
       project_related_task_list: ['', [Validators.required]],
@@ -244,7 +244,6 @@ export class CreateNewProjectComponent implements OnInit {
     }
     else {
       if (this.invalidDate == false) {
-        console.log(this.subTaskValue, "subTaskValue")
         this.selectedTask.push(this.subTaskValue, this.taskForm.value)
         let flattenedData = this.selectedTask.flatMap(item => {
           if (Array.isArray(item)) {
@@ -297,13 +296,13 @@ export class CreateNewProjectComponent implements OnInit {
               opg_ref_id: '',
               p_code: '',
               p_people_type: '',
-              people_ref_list: '',
               p_activation_status: '',
               c_ref_id: '',
               project_related_task_list: '',
               task_project_category_list: ''
             });
             this.taskForm.get('subTasks').reset();
+            this.projectForm.get('people_ref_list').reset();
 
             this.api.showSuccess('Project added successfully!');
             this.initForm()
@@ -331,7 +330,10 @@ export class CreateNewProjectComponent implements OnInit {
     })
   }
   getSubTask(event: any) {
-    this.subTaskValue = ""
+    this.subTaskValue = "";
+    this.projectForm.patchValue({
+      project_related_task_list: ''
+    })
     this.api.getSubTaskByProjectTaskCategory(event.target.value, this.orgId).subscribe(
       (resp: any) => {
         if (resp.result.data[0].task_list[0].task_name) {
@@ -399,4 +401,21 @@ export class CreateNewProjectComponent implements OnInit {
       this.selectedValue = '';
     }
   }
+  restrictInput(event) {
+    const allowedKeys = [
+      '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.',
+      'Backspace', 'Tab', 'Enter', 'Escape', 'Delete', 'ArrowLeft', 'ArrowRight', 'Home', 'End'
+    ];
+
+    if (allowedKeys.includes(event.key) || (event.ctrlKey && (event.key === 'v' || event.key === 'c' || event.key === 'a'))) {
+      return true;
+    }
+
+    if (event.key === 'e' || event.key === '-' || event.keyCode === 69 || event.keyCode === 189) {
+      return false;
+    }
+
+    return false;
+  }
+
 }

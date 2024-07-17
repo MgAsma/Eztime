@@ -162,7 +162,8 @@
                             <!--Company Logo-->
                             <div class="row">
                                 <div class="col-12">
-                                    <label class="my-1 f-label">Logo <b class="r-star">*</b></label>
+                                    <label class="my-1 f-label"><i class="fas fa-file-import"></i> Logo <b
+                                            class="r-star">*</b></label>
                                     <input [type]="type" class="form-control  sizeinput"
                                         [ngClass]="setBgColor(f['org_logo'])" accept="image/*;capture=camera"
                                         formControlName="org_logo" placeholder="Logo" aria-describedby="emailHelp"
@@ -249,8 +250,8 @@
                             <label class="my-1 f-label">Phone number <b class="r-star">*</b></label>
                             <input type="number" onkeydown="return event.keyCode !== 69"
                                 class="form-control p-3 sizeinput" formControlName="conctact_person_phone_number"
-                                placeholder="Enter phone number" aria-describedby="emailHelp" autocomplete="off"
-                                [ngClass]="setBgColor(f['conctact_person_phone_number'])">
+                                placeholder="Enter phone number" max="10" aria-describedby="emailHelp"
+                                autocomplete="off" [ngClass]="setBgColor(f['conctact_person_phone_number'])">
                         </div>
                         <div *ngIf="f['conctact_person_phone_number'].touched && f['conctact_person_phone_number'].invalid"
                             class="error-text">

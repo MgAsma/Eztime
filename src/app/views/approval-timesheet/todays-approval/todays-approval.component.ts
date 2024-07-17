@@ -17,7 +17,7 @@ export class TodaysApprovalComponent implements OnInit {
   currDate: any;
   user_id: string;
   orgId: any;
-
+  itemPerPageCount: any = 10;
   constructor(
     private timesheetService: TimesheetService,
     private location: Location,
@@ -41,7 +41,7 @@ export class TodaysApprovalComponent implements OnInit {
     let data = {
       user_id: this.user_id,
       page_number: 1,
-      data_per_page: 10,
+      data_per_page: this.itemPerPageCount,
       status: 'YET_TO_APPROVED',
       organization_id: this.orgId,
       search_key: '',
@@ -49,10 +49,11 @@ export class TodaysApprovalComponent implements OnInit {
     this.getApprovals(data)
   }
   getApprovals(params) {
+    this.allDetails = [];
     this.timesheetService.getTodaysApprovalTimesheet(params).subscribe(res => {
       if (res['result']['data'].length >= 1) {
         this.allDetails = res['result'].data;
-        this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: 10 };
+        this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
       } else {
         this.api.showWarning('No records found !')
       }
@@ -60,11 +61,11 @@ export class TodaysApprovalComponent implements OnInit {
   }
   buttonClick(event) {
     if (event) {
-      this.cdr.detectChanges();
+      this.itemPerPageCount = event.tableSize;
       let data = {
         user_id: this.user_id,
         page_number: event.page,
-        data_per_page: event.tableSize,
+        data_per_page: this.itemPerPageCount,
         status: this.selectedTab ? this.selectedTab : 'YET_TO_APPROVED',
         organization_id: this.orgId,
         search_key: event.search_key,
@@ -74,13 +75,12 @@ export class TodaysApprovalComponent implements OnInit {
   }
 
   searchFiter(event) {
-    console.log("event:", event)
     if (event) {
-      this.cdr.detectChanges();
+      this.itemPerPageCount = event.tableSize;
       let data = {
         user_id: this.user_id,
         page_number: event.page,
-        data_per_page: event.tableSize,
+        data_per_page: this.itemPerPageCount,
         status: this.selectedTab ? this.selectedTab : 'YET_TO_APPROVED',
         organization_id: this.orgId,
         search_key: event.search_key,
@@ -109,7 +109,7 @@ export class TodaysApprovalComponent implements OnInit {
     let params = {
       user_id: this.user_id,
       page_number: 1,
-      data_per_page: 10,
+      data_per_page: this.itemPerPageCount,
       status: this.selectedTab ? this.selectedTab : 'YET_TO_APPROVED',
       organization_id: this.orgId,
       search_key: '',

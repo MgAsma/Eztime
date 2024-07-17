@@ -23,7 +23,7 @@ import { MonthYetApproveComponent } from './month-timesheet/month-yet-approve/mo
 import { MonthApproveComponent } from './month-timesheet/month-approve/month-approve.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatCardModule } from '@angular/material/card';
-import { MatRippleModule} from '@angular/material/core';
+import { MatRippleModule } from '@angular/material/core';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -45,7 +45,7 @@ import { DeadlineYettoApproveComponent } from './deadline-crossed/deadline-yetto
     MonthYetApproveComponent,
     MonthApproveComponent,
     DeadlineYettoApproveComponent,
-    
+
 
   ],
   imports: [
@@ -54,8 +54,8 @@ import { DeadlineYettoApproveComponent } from './deadline-crossed/deadline-yetto
     TabsModule.forRoot(),
     TabsTimeSheetModule,
     HttpClientModule,
-    ReactiveFormsModule,
     FormsModule,
+    ReactiveFormsModule,
     ToastrModule.forRoot(),
     Ng2SearchPipeModule,
     NgxPaginationModule,

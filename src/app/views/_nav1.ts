@@ -2,68 +2,66 @@ import { INavData } from '@coreui/angular';
 
 export const navItems1: any = [
   {
-    name:'Dashboard',
-    url:'/dashboards',
-    icon:'bi bi-speedometer',
-  }, 
+    name: 'Dashboard',
+    url: '/dashboards',
+    icon: 'bi bi-speedometer',
+  },
   {
-    name:'Project',
-    url:'/project',
-    icon:'bi bi-stack',
-    children:[
+    name: 'Project',
+    icon: 'bi bi-stack',
+    children: [
       {
-        name:'Projects',
-        url:'/project/list'
+        name: 'Projects',
+        url: '/project/list'
       },
       {
-        name:'Project Category ',
-        url:'/task/list'
+        name: 'Project Category ',
+        url: '/task/list'
       },
       {
-        name:'Clients',
-        url:'/client/list'
+        name: 'Clients',
+        url: '/client/list'
       },
     ]
-  }, 
+  },
   {
-    name:'My Time Sheet',
-    url:'/myTimesheet',
-    icon:'bi bi-calendar4-week',
-    children:[
+    name: 'My Time Sheet',
+    icon: 'bi bi-calendar4-week',
+    children: [
       {
-        name:'Timesheets',
-        url:'/myTimesheet/timesheet'
+        name: 'Timesheets',
+        url: '/myTimesheet/timesheet'
       },
       {
-        name:'Timesheet Calender',
-        url:'/myTimesheet/calender'
+        name: 'Timesheet Calender',
+        url: '/myTimesheet/calender'
       },
       {
-        name:'Approval Configuration',
-        url:'/approvalTimesheet/approvalConfiguration'
+        name: 'Approval Configuration',
+        url: '/approvalTimesheet/approvalConfiguration'
       },
       {
-        name:'Create new Timesheet',
-        url:'/myTimesheet/create'
+        name: 'Create new Timesheet',
+        url: '/myTimesheet/create'
       }
     ]
   },
   {
-    name:'Approval TimeSheets',
-    url:'/approvalTimesheet',
-    icon:'bi bi-calendar-event',
-    children:[
+    name: 'Approval TimeSheets',
+    // url: '/approvalTimesheet',
+    icon: 'bi bi-calendar-event',
+    children: [
       {
-        name:'Todays Approvals',
-        url:'/approvalTimesheet/todayApproval'
+        name: 'Todays Approvals',
+        url: '/approvalTimesheet/todayApproval'
       },
       {
-        name:'Deadline Crossed',
-        url:'/approvalTimesheet/deadlineCrossed'
+        name: 'Deadline Crossed',
+        url: '/approvalTimesheet/deadlineCrossed'
       },
       {
-        name:'Month Timesheet',
-        url:'/approvalTimesheet/monthTimesheet'
+        name: 'Month Timesheet',
+        url: '/approvalTimesheet/monthTimesheet'
       },
       // {
       //   name:'Approval Configuration',
@@ -72,26 +70,25 @@ export const navItems1: any = [
     ]
   },
   {
-    name:'Approvals',
-    url:'/review',
-    icon:'bi bi-yelp',
+    name: 'Approvals',
+    url: '/review',
+    icon: 'bi bi-yelp',
   },
   {
-    name:'Employee',
-    url:'/people',
-    icon:'bi bi-file-person',
-    children:[
+    name: 'Employee',
+    icon: 'bi bi-file-person',
+    children: [
       {
-        name:'Employees',
-        url:'/people/people-list'
+        name: 'Employees',
+        url: '/people/people-list'
       },
       // {
       //   name:'Create People',
       //   url:'/people/create-people'
       // },
       {
-        name:'Prefix/Suffix List',
-        url:'/people/prefix-suffix-list'
+        name: 'Prefix/Suffix List',
+        url: '/people/prefix-suffix-list'
       },
       // {
       //   name:'Create Prefix/Suffix',
@@ -102,9 +99,9 @@ export const navItems1: any = [
       //   url:'/people/add-centers'
       // },
       {
-        name:'Tag List',
-        url:'/people/tag-list'
-      }, 
+        name: 'Tag List',
+        url: '/people/tag-list'
+      },
       // {
       //   name:'Add New Tag',
       //   url:'/people/add-tag-list'
@@ -112,13 +109,12 @@ export const navItems1: any = [
     ]
   },
   {
-    name:'Accounts',
-    url:'/accounts',
-    icon:'bi bi-wallet',
-    children:[
+    name: 'Accounts',
+    icon: 'bi bi-wallet',
+    children: [
       {
-        name:'Subscription',
-        url:'/accounts/subscription',
+        name: 'Subscription',
+        url: '/accounts/subscription',
 
       }
     ]
@@ -156,46 +152,46 @@ export const navItems1: any = [
   // },
 
 
- 
+
   {
-    name:'Leave/Holiday List',
-    url:'/leave',
-    icon:'bi bi-file-text',
-    children:[
+    name: 'Leave/Holiday List',
+    // url: '/leave',
+    icon: 'bi bi-file-text',
+    children: [
       {
-        name:'My Leaves',
-        url:'/leave/myLeaves'
+        name: 'My Leaves',
+        url: '/leave/myLeaves'
       },
       {
-        name:'Leave Application',
-        url:'/leave/leaveApplication'
+        name: 'Leave Application',
+        url: '/leave/leaveApplication'
       },
       {
-        name:'Applied Approved Leaves',
-        url:'/leave/appliedApprovedLeaves'
+        name: 'Applied Approved Leaves',
+        url: '/leave/appliedApprovedLeaves'
       },
       // {
       //   name:'Add On Leaves Request',
       //   url:'/leave/addOnLeaveRequest'
       // },
       {
-        name:'Leave Master',
-        url:'/leave/leaveMaster'
+        name: 'Leave Master',
+        url: '/leave/leaveMaster'
       },
       {
-        name:'Office Working Day',
-        url:'/leave/officeWorkingDays'
+        name: 'Office Working Day',
+        url: '/leave/officeWorkingDays'
       }
     ]
   },
 
- 
+
   // {
   //   name:'Industry/Sector',
   //   url:'/industry',
   //   icon:'bi bi-buildings',
   //   children:[
-      
+
   //     {
   //       name:'Create Industry/Sector',
   //       url:'/industry/create'
@@ -230,7 +226,7 @@ export const navItems1: any = [
   //       name:'Sub Project Category ',
   //       url:'/status/sublist'
   //     },
-      
+
   //   ]
   // },
   // {
@@ -245,28 +241,27 @@ export const navItems1: any = [
   //   ]
   // },
   {
-    name:'Company',
-    // url:'/department',
-    icon:'bi bi-amd',
-    children:[
+    name: 'Company',
+    icon: 'bi bi-amd',
+    children: [
       {
-        name:'Industry/Sector List',
-        url:'/industry/list'
+        name: 'Industry/Sector List',
+        url: '/industry/list'
       },
       {
-        name:'Department List',
-        url:'/department/list'
+        name: 'Department List',
+        url: '/department/list'
       },
       {
-        name:'Role List',
-        url:'/role/list'
+        name: 'Role List',
+        url: '/role/list'
       },
-      
+
       {
-        name:'Centers',
-        url:'/people/centers-list'
+        name: 'Centers',
+        url: '/people/centers-list'
       },
     ]
   },
- 
+
 ];

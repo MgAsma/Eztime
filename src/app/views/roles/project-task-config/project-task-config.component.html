@@ -5,7 +5,8 @@
                 <div id="accessibilitydetailstable">
                     <span class="user-role">ROLE : {{userRole}}</span>
                     <span class="checkbox-custom checkbox-primary" style="float:right">
-                        <input class="selectable-all" type="checkbox" [(ngModel)]="checkAll" (change)="checkAllOptions()">
+                        <input class="selectable-all" type="checkbox" [(ngModel)]="checkAll"
+                            (change)="checkAllOptions()">
                         <label>Select All</label>
                     </span>
                     <form>
@@ -21,15 +22,17 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let projectTask of data">
-                                <td>{{projectTask.names}}</td>
-                                <td *ngFor="let items of projectTask.projectTaskCategories">
-                                    <div class="checkbox-custom checkbox-primary" style="text-align: inherit;" *ngIf="items.value !== 'NA'">
-                                        <input type="checkbox" class="minimal" [name]="items.names" id="permission"
-                                            [value]="items.value" [(ngModel)]="items.checked"  (change)="singleSelection(items.names,items.arrnames,0)">
-                                    </div>
-                                    <div *ngIf="items.value == 'NA'">NA</div>
-                                </td>
-                                <!-- <td *ngFor="let items of projectTask.categoriesFileTemplate">
+                                    <td>{{projectTask.names}}</td>
+                                    <td *ngFor="let items of projectTask.projectTaskCategories">
+                                        <div class="checkbox-custom checkbox-primary" style="text-align: inherit;"
+                                            *ngIf="items.value !== 'NA'">
+                                            <input type="checkbox" class="minimal" [name]="items.names" id="permission"
+                                                [value]="items.value" [(ngModel)]="items.checked"
+                                                (change)="singleSelection(items.names,items.arrnames,0)">
+                                        </div>
+                                        <div *ngIf="items.value == 'NA'">NA</div>
+                                    </td>
+                                    <!-- <td *ngFor="let items of projectTask.categoriesFileTemplate">
                                     <div class="checkbox-custom checkbox-primary" style="text-align: inherit;" *ngIf="items.value !== 'NA'">
                                         <input type="checkbox" class="minimal" [name]="items.names" id="permission"
                                             [value]="items.value" [(ngModel)]="items.checked">
@@ -51,11 +54,12 @@
                                     <div *ngIf="items.value == 'NA'">NA</div>
                                 </td> -->
                                 </tr>
-                               
+
                             </tbody>
                         </table>
                         <div class="update-btn">
-                            <button mat-raised-button type="submit" class="btn btn-primary waves-effect waves-classic" id="btnSubmit"
+                            <button mat-raised-button type="submit"
+                                class="btn proceedbtn text-white waves-effect waves-classic" id="btnSubmit"
                                 style="display:show" (click)="UPDATE()">Update</button>
                         </div>
 
