@@ -199,3 +199,10 @@ i.ng-star-inserted:hover {
 }
 
 /* padding: 3px 0; */
+
+th.fc-col-header-cell {
+  min-width: 50px !important;
+  max-width: 100px !important;
+  width: 100px !important;
+  padding: 0px !important;
+}

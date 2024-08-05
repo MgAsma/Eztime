@@ -249,9 +249,11 @@
                         <div class="col-12">
                             <label class="my-1 f-label">Phone number <b class="r-star">*</b></label>
                             <input type="number" onkeydown="return event.keyCode !== 69"
-                                class="form-control p-3 sizeinput" formControlName="conctact_person_phone_number"
-                                placeholder="Enter phone number" max="10" aria-describedby="emailHelp"
-                                autocomplete="off" [ngClass]="setBgColor(f['conctact_person_phone_number'])">
+                                onKeyPress="if(this.value.length==10) return false;" class="form-control p-3 sizeinput"
+                                onkeydown="return event.keyCode !== 69" class="form-control p-3 sizeinput"
+                                formControlName="conctact_person_phone_number" placeholder="Enter phone number"
+                                aria-describedby="emailHelp" autocomplete="off"
+                                [ngClass]="setBgColor(f['conctact_person_phone_number'])">
                         </div>
                         <div *ngIf="f['conctact_person_phone_number'].touched && f['conctact_person_phone_number'].invalid"
                             class="error-text">
@@ -571,6 +573,12 @@
                                 <span
                                     *ngIf="f['conctact_person_password'].errors && f['conctact_person_password'].errors['required']">Password
                                     is required </span>
+                            </div>
+                            <div *ngIf="f['conctact_person_password'].errors && f['conctact_person_password'].hasError('pattern')"
+                                class="error-text">
+                                Password should
+                                contain at least one special character,one number,one uppercase and one
+                                lowercase, and be at least 8 characters long
                             </div>
                         </div>
                     </div>

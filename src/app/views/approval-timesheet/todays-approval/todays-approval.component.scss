@@ -1,19 +1,24 @@
-ol{
+ol {
     background-color: inherit;
 }
-a{
-    color: #3F51B5;
-    text-decoration: none;
+
+a {
+    color: #3F51B5 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
 }
-li{
-    
+
+li {
+
     list-style: none;
     color: grey;
 }
-ul{
+
+ul {
     padding: 0px;
 }
-.bg{
+
+.bg {
     background-color: white;
     height: 100%;
     width: 100%;
@@ -22,7 +27,7 @@ ul{
     overflow-x: auto !important;
 }
 
-.proceedbtn{
+.proceedbtn {
     background-color: #3F51B5;
     border-radius: 5px;
     border: none;
@@ -31,7 +36,8 @@ ul{
     color: white;
     margin: 10px 0px;
 }
-.printbtn{
+
+.printbtn {
     background-color: #00BCD4;
     border-radius: 5px;
     border: none;
@@ -40,21 +46,26 @@ ul{
     color: white;
     margin: 10px 0px;
 }
-.row{
+
+.row {
     padding: 5px;
 }
-i{
+
+i {
     padding: 0px 5px 0px 0px;
 }
-.btnicon{
+
+.btnicon {
     display: none;
 }
-button:hover .btnicon{
+
+button:hover .btnicon {
     display: block;
 }
+
 ::ng-deep .mat-form-field {
     height: 55px;
-    width: 95%!important;
+    width: 95% !important;
     background-color: #ffff;
     border-radius: 50px;
     border: solid gray;
@@ -63,20 +74,25 @@ button:hover .btnicon{
 ::ng-deep .mat-form-field-underline {
     display: none;
 }
-select{
+
+select {
     width: 100%;
     height: 30px;
-    
+
 }
-span{
+
+span {
     color: red;
 }
-p{
+
+p {
     color: grey;
 }
-html{
+
+html {
     position: relative;
 }
+
 // .createbtn{
 //     background-color: #3F51B5;
 //     border: none;
@@ -93,10 +109,10 @@ html{
 //     bottom: 10%;
 
 // }
-.no-data{
- font-style: italic;
- font-size: small;
- font-weight: 500;
+.no-data {
+    font-style: italic;
+    font-size: small;
+    font-weight: 500;
 }
 
 // @media(max-width:768px){
@@ -124,33 +140,39 @@ html{
     background: #f8f8f8;
     padding-bottom: 7rem !important;
 }
-@media(max-width:767px){
-    .custom-scroll{
+
+@media(max-width:767px) {
+    .custom-scroll {
         height: 60vh;
         overflow: scroll;
         overflow-x: hidden;
         padding: 0;
     }
-    .s-padd{
-        padding: 0  !important;
+
+    .s-padd {
+        padding: 0 !important;
     }
-    .date-label{
+
+    .date-label {
         margin: 10px 0px !important;
-      }
+    }
 }
-@media(max-width:1023px){
+
+@media(max-width:1023px) {
     .p-20 {
-      padding: 5px 5px 0 !important;
+        padding: 5px 5px 0 !important;
     }
-  }
-  @media(min-width:1024px){
+}
+
+@media(min-width:1024px) {
     .p-20 {
-      padding: 14px 12px 0 !important;
+        padding: 14px 12px 0 !important;
     }
-  }
-  table th {
+}
+
+table th {
     position: sticky;
-     position: -webkit-sticky;
-   top: -15px;
+    position: -webkit-sticky;
+    top: -15px;
     z-index: 1; // any positive value, layer order is global
 }

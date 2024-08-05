@@ -139,7 +139,7 @@ export class DeclinedComponent implements OnInit {
       page: this.page,
       tableSize: this.tableSize
     }
-    this.filter.emit(tableData);
+    this.buttonClick.emit(tableData)
   }
   onTableDataChange(event: any) {
     this.page = event;

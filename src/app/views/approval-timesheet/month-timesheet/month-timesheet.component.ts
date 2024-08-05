@@ -386,4 +386,19 @@ export class MonthTimesheetComponent implements OnInit {
       }
     })
   }
+  refershPage() {
+    let c_params = {
+      module: "TIMESHEET",
+      menu: "MONTH_APPROVAL_TIMESHEET",
+      method: "VIEW",
+      approved_state: this.selectedTab,
+      user_id: this.user_id,
+      page_number: 1,
+      data_per_page: this.itemPerPageCount,
+      search_key: '',
+      timesheets_from_date: this.formattedDate,
+      pagination: 'TRUE'
+    }
+    this.getByStatus(c_params);
+  }
 }

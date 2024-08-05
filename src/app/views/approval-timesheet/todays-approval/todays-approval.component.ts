@@ -116,5 +116,15 @@ export class TodaysApprovalComponent implements OnInit {
     }
     this.getApprovals(params);
   }
-
+  refershPage() {
+    let data = {
+      user_id: this.user_id,
+      page_number: 1,
+      data_per_page: this.itemPerPageCount,
+      status: this.selectedTab ? this.selectedTab : 'YET_TO_APPROVED',
+      organization_id: this.orgId,
+      search_key: '',
+    }
+    this.getApprovals(data);
+  }
 }

@@ -35,6 +35,8 @@
                       <app-time-sheet *ngIf="allDetails[0]?.approved_state === 'TIMESHEET'" [data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-time-sheet>    
                     </tab> -->
           <div class="text-center text-muted no-data py-2" *ngIf="allDetails.length === 0">No records found
+            !!<br><a (click)="refershPage()"><b>Refersh <i class="fa fa-refresh" aria-hidden="true"></i>
+              </b></a>
           </div>
         </tabset>
       </div>
@@ -69,6 +71,8 @@
                     <app-time-sheet *ngIf="allDetails[0]?.approved_state === 'TIMESHEET'" [data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-time-sheet>    
                   </tab> -->
           <div class="text-center text-muted no-data py-2" *ngIf="allDetails.length === 0">No records found
+            !!<br><a (click)="refershPage()"><b>Refersh <i class="fa fa-refresh" aria-hidden="true"></i>
+              </b></a>
           </div>
         </tabset>
       </div>

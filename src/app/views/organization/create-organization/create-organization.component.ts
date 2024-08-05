@@ -66,24 +66,21 @@ export class CreateOrganizationComponent implements OnInit {
       page: [''],
       conctact_person_email: ['', [Validators.required, Validators.email]],
       conctact_person_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
-      conctact_person_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator()]],
+      conctact_person_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator]],
       org_logo: ['', [Validators.required, this.fileFormatValidator]],
       // number_of_users_in_organization:['',[Validators.required]]
     })
 
   }
-  phoneNumberLengthValidator() {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const phoneNumber: string = control.value;
-
-      // Check if the input is a valid number and has a length of 10
-      if (phoneNumber && !/^\d{10}$/.test(phoneNumber)) {
-        return { 'phoneNumberLength': true };
-      }
-
+  phoneNumberLengthValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const phoneNumber = control.value;
+    if (phoneNumber && !/^\d{10}$/.test(phoneNumber)) {
+      return { 'phoneNumberLength': true };
+    } else {
       return null;
-    };
+    }
   }
+
   fileFormatValidator(control: AbstractControl): ValidationErrors | null {
     const allowedFormats = ['.jpg', '.jpeg', '.png', '.JPG', '.JPEG', '.PNG'];
     const file = control.value;
