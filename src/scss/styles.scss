@@ -65,7 +65,12 @@
  }
 
  /* based on angular-toastr css https://github.com/Foxandxss/angular-toastr/blob/cb508fe6801d6b288d3afc525bb40fee1b101650/dist/angular-toastr.css */
-
+ .default-header-card{
+  border-radius: 20px 20px 0 0 !important;
+  mat-card{
+    border-radius:20px 20px 0 0 !important;
+  }
+ }
  /* position */
  .toast-center-center {
    top: 50%;
@@ -76,7 +81,7 @@
  .toast-top-center {
    top: 30px !important;
    //right: 0 !important;
-   left: 50%;
+   left: 50% !important;
    transform: translate(-50%, -50%);
    width: 100% !important;
  }
@@ -180,24 +185,29 @@
  }
 
  .toast-container .ngx-toastr {
-   position: fixed;
+  //  position: fixed;
    overflow: hidden;
    margin: 0 0 6px;
-   padding: 15px 15px 15px 50px;
-   width: 25em !important;
+  //  padding: 15px 15px 15px 50px;
+   padding: 10px 5em;
+   width: fit-content !important;
+   text-align: center;
    border-radius: 3px 3px 3px 3px;
    background-position: 15px center;
    background-repeat: no-repeat;
-   background-size: 24px;
+   //background-size: 20px;
    box-shadow: 0 0 12px #999999;
-   color: #FFFFFF;
+   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+   font-weight:600;
+   background-position: 10%;
+  //  color: #FFFFFF;
  }
 
- .toast-container .ngx-toastr:hover {
-   box-shadow: 0 0 12px #000000;
-   opacity: 1;
-   cursor: pointer;
- }
+//  .toast-container .ngx-toastr:hover {
+//    box-shadow: 0 0 12px #000000;
+//    opacity: 1;
+//    cursor: pointer;
+//  }
 
  /* https://github.com/FortAwesome/Font-Awesome-Pro/blob/master/advanced-options/raw-svg/regular/info-circle.svg */
  .toast-info {
@@ -206,22 +216,22 @@
 
  /* https://github.com/FortAwesome/Font-Awesome-Pro/blob/master/advanced-options/raw-svg/regular/times-circle.svg */
  .toast-error {
-   background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMic+PHBhdGggZmlsbD0ncmdiKDI1NSwyNTUsMjU1KScgZD0nTTI1NiA4QzExOSA4IDggMTE5IDggMjU2czExMSAyNDggMjQ4IDI0OCAyNDgtMTExIDI0OC0yNDhTMzkzIDggMjU2IDh6bTEyMS42IDMxMy4xYzQuNyA0LjcgNC43IDEyLjMgMCAxN0wzMzggMzc3LjZjLTQuNyA0LjctMTIuMyA0LjctMTcgMEwyNTYgMzEybC02NS4xIDY1LjZjLTQuNyA0LjctMTIuMyA0LjctMTcgMEwxMzQuNCAzMzhjLTQuNy00LjctNC43LTEyLjMgMC0xN2w2NS42LTY1LTY1LjYtNjUuMWMtNC43LTQuNy00LjctMTIuMyAwLTE3bDM5LjYtMzkuNmM0LjctNC43IDEyLjMtNC43IDE3IDBsNjUgNjUuNyA2NS4xLTY1LjZjNC43LTQuNyAxMi4zLTQuNyAxNyAwbDM5LjYgMzkuNmM0LjcgNC43IDQuNyAxMi4zIDAgMTdMMzEyIDI1Nmw2NS42IDY1LjF6Jy8+PC9zdmc+");
+   background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiBjbGFzcz0iYmkgYmktZXhjbGFtYXRpb24tdHJpYW5nbGUiIHZpZXdCb3g9IjAgMCAxNiAxNiI+CiAgPHBhdGggZD0iTTcuOTM4IDIuMDE2QS4xMy4xMyAwIDAgMSA4LjAwMiAyYS4xMy4xMyAwIDAgMSAuMDYzLjAxNi4xNS4xNSAwIDAgMSAuMDU0LjA1N2w2Ljg1NyAxMS42NjdjLjAzNi4wNi4wMzUuMTI0LjAwMi4xODNhLjIuMiAwIDAgMS0uMDU0LjA2LjEuMSAwIDAgMS0uMDY2LjAxN0gxLjE0NmEuMS4xIDAgMCAxLS4wNjYtLjAxNy4yLjIgMCAwIDEtLjA1NC0uMDYuMTguMTggMCAwIDEgLjAwMi0uMTgzTDcuODg0IDIuMDczYS4xNS4xNSAwIDAgMSAuMDU0LS4wNTdtMS4wNDQtLjQ1YTEuMTMgMS4xMyAwIDAgMC0xLjk2IDBMLjE2NSAxMy4yMzNjLS40NTcuNzc4LjA5MSAxLjc2Ny45OCAxLjc2N2gxMy43MTNjLjg4OSAwIDEuNDM4LS45OS45OC0xLjc2N3oiLz4KICA8cGF0aCBkPSJNNy4wMDIgMTJhMSAxIDAgMSAxIDIgMCAxIDEgMCAwIDEtMiAwTTcuMSA1Ljk5NWEuOTA1LjkwNSAwIDEgMSAxLjggMGwtLjM1IDMuNTA3YS41NTIuNTUyIDAgMCAxLTEuMSAweiIvPgo8L3N2Zz4=");
  }
 
  /* https://github.com/FortAwesome/Font-Awesome-Pro/blob/master/advanced-options/raw-svg/regular/check.svg */
  .toast-success {
-   background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMic+PHBhdGggZmlsbD0ncmdiKDI1NSwyNTUsMjU1KScgZD0nTTE3My44OTggNDM5LjQwNGwtMTY2LjQtMTY2LjRjLTkuOTk3LTkuOTk3LTkuOTk3LTI2LjIwNiAwLTM2LjIwNGwzNi4yMDMtMzYuMjA0YzkuOTk3LTkuOTk4IDI2LjIwNy05Ljk5OCAzNi4yMDQgMEwxOTIgMzEyLjY5IDQzMi4wOTUgNzIuNTk2YzkuOTk3LTkuOTk3IDI2LjIwNy05Ljk5NyAzNi4yMDQgMGwzNi4yMDMgMzYuMjA0YzkuOTk3IDkuOTk3IDkuOTk3IDI2LjIwNiAwIDM2LjIwNGwtMjk0LjQgMjk0LjQwMWMtOS45OTggOS45OTctMjYuMjA3IDkuOTk3LTM2LjIwNC0uMDAxeicvPjwvc3ZnPg==");
+   background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiBjbGFzcz0iYmkgYmktY2hlY2syLWFsbCIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNMTIuMzU0IDQuMzU0YS41LjUgMCAwIDAtLjcwOC0uNzA4TDUgMTAuMjkzIDEuODU0IDcuMTQ2YS41LjUgMCAxIDAtLjcwOC43MDhsMy41IDMuNWEuNS41IDAgMCAwIC43MDggMHptLTQuMjA4IDctLjg5Ni0uODk3LjcwNy0uNzA3LjU0My41NDMgNi42NDYtNi42NDdhLjUuNSAwIDAgMSAuNzA4LjcwOGwtNyA3YS41LjUgMCAwIDEtLjcwOCAwIi8+CiAgPHBhdGggZD0ibTUuMzU0IDcuMTQ2Ljg5Ni44OTctLjcwNy43MDctLjg5Ny0uODk2YS41LjUgMCAxIDEgLjcwOC0uNzA4Ii8+Cjwvc3ZnPg==");
  }
 
  /* https://github.com/FortAwesome/Font-Awesome-Pro/blob/master/advanced-options/raw-svg/regular/exclamation-triangle.svg */
  .toast-warning {
-   background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1NzYgNTEyJyB3aWR0aD0nNTc2JyBoZWlnaHQ9JzUxMic+PHBhdGggZmlsbD0ncmdiKDI1NSwyNTUsMjU1KScgZD0nTTU2OS41MTcgNDQwLjAxM0M1ODcuOTc1IDQ3Mi4wMDcgNTY0LjgwNiA1MTIgNTI3Ljk0IDUxMkg0OC4wNTRjLTM2LjkzNyAwLTU5Ljk5OS00MC4wNTUtNDEuNTc3LTcxLjk4N0wyNDYuNDIzIDIzLjk4NWMxOC40NjctMzIuMDA5IDY0LjcyLTMxLjk1MSA4My4xNTQgMGwyMzkuOTQgNDE2LjAyOHpNMjg4IDM1NGMtMjUuNDA1IDAtNDYgMjAuNTk1LTQ2IDQ2czIwLjU5NSA0NiA0NiA0NiA0Ni0yMC41OTUgNDYtNDYtMjAuNTk1LTQ2LTQ2LTQ2em0tNDMuNjczLTE2NS4zNDZsNy40MTggMTM2Yy4zNDcgNi4zNjQgNS42MDkgMTEuMzQ2IDExLjk4MiAxMS4zNDZoNDguNTQ2YzYuMzczIDAgMTEuNjM1LTQuOTgyIDExLjk4Mi0xMS4zNDZsNy40MTgtMTM2Yy4zNzUtNi44NzQtNS4wOTgtMTIuNjU0LTExLjk4Mi0xMi42NTRoLTYzLjM4M2MtNi44ODQgMC0xMi4zNTYgNS43OC0xMS45ODEgMTIuNjU0eicvPjwvc3ZnPg==");
- }
+   background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iY3VycmVudENvbG9yIiBjbGFzcz0iYmkgYmktZXhjbGFtYXRpb24tdHJpYW5nbGUiIHZpZXdCb3g9IjAgMCAxNiAxNiI+CiAgPHBhdGggZD0iTTcuOTM4IDIuMDE2QS4xMy4xMyAwIDAgMSA4LjAwMiAyYS4xMy4xMyAwIDAgMSAuMDYzLjAxNi4xNS4xNSAwIDAgMSAuMDU0LjA1N2w2Ljg1NyAxMS42NjdjLjAzNi4wNi4wMzUuMTI0LjAwMi4xODNhLjIuMiAwIDAgMS0uMDU0LjA2LjEuMSAwIDAgMS0uMDY2LjAxN0gxLjE0NmEuMS4xIDAgMCAxLS4wNjYtLjAxNy4yLjIgMCAwIDEtLjA1NC0uMDYuMTguMTggMCAwIDEgLjAwMi0uMTgzTDcuODg0IDIuMDczYS4xNS4xNSAwIDAgMSAuMDU0LS4wNTdtMS4wNDQtLjQ1YTEuMTMgMS4xMyAwIDAgMC0xLjk2IDBMLjE2NSAxMy4yMzNjLS40NTcuNzc4LjA5MSAxLjc2Ny45OCAxLjc2N2gxMy43MTNjLjg4OSAwIDEuNDM4LS45OS45OC0xLjc2N3oiLz4KICA8cGF0aCBkPSJNNy4wMDIgMTJhMSAxIDAgMSAxIDIgMCAxIDEgMCAwIDEtMiAwTTcuMSA1Ljk5NWEuOTA1LjkwNSAwIDEgMSAxLjggMGwtLjM1IDMuNTA3YS41NTIuNTUyIDAgMCAxLTEuMSAweiIvPgo8L3N2Zz4=");
+  }
 
  .toast-container.toast-top-center .ngx-toastr,
  .toast-container.toast-bottom-center .ngx-toastr {
-   width: 300px;
+   width: 500px;
    margin-left: auto !important;
    margin-right: auto !important;
  }
@@ -239,19 +249,22 @@
  }
 
  .toast-success {
-   background-color: #51A351;
+   background-color: #C5FFD6 !important;
+   color:#009921;
  }
 
  .toast-error {
-   background-color: #BD362F;
+   background-color: #FFE4E4 !important;
+   color:#990000;
  }
 
  .toast-info {
-   background-color: #2F96B4;
+   background-color: #2F96B4 !important;
  }
 
  .toast-warning {
-   background-color: #F89406;
+   background-color: #FFFEC5;
+   color:#859900;
  }
 
  .toast-progress {
@@ -302,32 +315,36 @@
    }
  }
 
- @media all and (min-width: 241px) and (max-width: 374px) {
-   .toast-container .ngx-toastr {
-     margin-left: 0%;
-     width: 18em;
-   }
- }
+//  @media all and (min-width: 241px) and (max-width: 374px) {
+//    .toast-container .ngx-toastr {
+//      margin-left: 0%;
+//      width: 18em;
+//    }
+//  }
 
- @media all and (min-width: 481px) and (max-width: 768px) {
-   .toast-container .ngx-toastr.div {
-     padding: 15px 15px 15px 50px;
-     width: 25em;
-   }
+//  @media all and (min-width: 481px) and (max-width: 768px) {
+//    .toast-container .ngx-toastr.div {
+//      padding: 15px 15px 15px 50px;
+//      width: 25em;
+//    }
 
 
 
-   .body {
-     padding: 0px !important;
-   }
+//    .body {
+//      padding: 0px !important;
+//    }
 
-   .body-card {
-     padding: 0px !important;
-     border-radius: 0px !important;
-     background: #d7efff !important;
-   }
- }
-
+//    .body-card {
+//      padding: 0px !important;
+//      border-radius: 0px !important;
+//      background: #d7efff !important;
+//    }
+//  }
+ .toast-container .ngx-toastr {
+     position: unset !important;
+     margin: auto !important;
+    
+  }
  @media(max-width:767px) {
    .toast-top-right {
      top: 50px;
@@ -336,7 +353,10 @@
      width: 98% !important;
      z-index: 1;
    }
-
+   .toast-container .ngx-toastr {
+      width:80% !important;
+      background-position: 20%;
+    }
 
  }
 
@@ -347,9 +367,10 @@
      width: 98% !important;
    }
 
-   .toast-container .ngx-toastr {
-     margin-left: 55%;
-   }
+  // .toast-container .ngx-toastr {
+  // //    margin-left: 25%;
+  //   background-position: 25%;
+  // }
  }
 
  @media(min-width:1023px) and (max-width:1279px) {
@@ -359,9 +380,10 @@
      width: 98% !important;
    }
 
-   .toast-container .ngx-toastr {
-     margin-left: 65%;
-   }
+  //  .toast-container .ngx-toastr {
+  //   //    margin-left: 25%;
+  //     background-position: 15%;
+  //   }
  }
 
  @media(min-width:1280px) {
@@ -371,9 +393,10 @@
      width: 98% !important;
    }
 
-   .toast-container .ngx-toastr {
-     margin-left: 70%;
-   }
+  //  .toast-container .ngx-toastr {
+  //   //    margin-left: 25%;
+  //     background-position: 35%;
+  //   }
  }
 
  /* Target the password input field */

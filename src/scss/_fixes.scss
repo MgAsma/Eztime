@@ -37,7 +37,9 @@ app-yet-to-approve {
     font-size: 14px !important;
   }
 }
-
+.bi-arrow-up,.bi-arrow-down{
+  cursor: pointer !important;
+}
 .page-set {
   width: 100px !important;
 }
@@ -582,7 +584,7 @@ app-default-header {
     position: absolute;
     right: 10px;
     top: 10px;
-    font-size: 20px !important;
+    font-size: 15px !important;
     color: grey;
   }
 

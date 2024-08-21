@@ -130,7 +130,7 @@ const APP_CONTAINERS = [
       timeOut: 5000,
       positionClass: "toast-top-right",
       preventDuplicates: true,
-      closeButton: true,
+      // closeButton: true,
 
     }),
     NgxDaterangepickerMd.forRoot(),
