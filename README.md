@@ -4,7 +4,7 @@
 - Clone the repo: `git clone https://github.com/MgAsma/Eztime.git`
 
 #### <i>Prerequisites</i>
-Before you begin, make sure your development environment includes `Node.js®` and an `npm` package manager.
+Before you begin, make the sure your development environment includes `Node.js®` and an `npm` package manager.
 
 ###### Node.js
 Angular 14 requires `Node.js` version `^14.15` or `^16.10`.
