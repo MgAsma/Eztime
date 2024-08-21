@@ -106,7 +106,10 @@ export class CreateOrganizationComponent implements OnInit {
       reader.onload = (event: any) => {
         this.url = event.target.result;
         this.fileUrl = reader.result
-        this.organizationForm.patchValue({ org_logo: this.fileUrl })
+        if(reader.result){
+          this.organizationForm.patchValue({ org_logo: this.fileUrl })
+        }
+       
       }
     }
   }
@@ -156,34 +159,34 @@ export class CreateOrganizationComponent implements OnInit {
   organizationSubmit() {
     if (this.organizationForm.invalid) {
       this.organizationForm.markAllAsTouched()
-      this.api.showError("Error !")
+      this.api.showError("Please enter the mandatory fields !")
     }
     else {
       let orgData = {}
       orgData = this.organizationForm.value
       //console.log(this.organizationForm.value,"VALUE")
-      if (this.type == 'url') {
-        fetch(this.url)
-          .then(response => response.blob())
-          .then(blob => {
-            // Create a FileReader to read the blob as a base64 string
-            const reader = new FileReader();
-            reader.readAsDataURL(blob);
-            reader.onloadend = () => {
-              // Extract the base64 string from the result
-              const base64WithPrefix = reader.result?.toString();
-              ////console.log(base64WithPrefix);
-              this.organizationForm.patchValue({
-                org_logo_path: this.url
-              })
-              this.base64String = base64WithPrefix
-              //console.log(this.organizationForm.value.org_logo_path,"jhjjhkjk")
-              orgData['org_logo_path'] = this.base64String
-              //console.log(this.base64String,"BASE");
-            };
-          });
+      // if (this.type == 'url') {
+      //   fetch(this.url)
+      //     .then(response => response.blob())
+      //     .then(blob => {
+      //       // Create a FileReader to read the blob as a base64 string
+      //       const reader = new FileReader();
+      //       reader.readAsDataURL(blob);
+      //       reader.onloadend = () => {
+      //         // Extract the base64 string from the result
+      //         const base64WithPrefix = reader.result?.toString();
+      //         ////console.log(base64WithPrefix);
+      //         this.organizationForm.patchValue({
+      //           org_logo_path: this.url
+      //         })
+      //         this.base64String = base64WithPrefix
+      //         //console.log(this.organizationForm.value.org_logo_path,"jhjjhkjk")
+      //         orgData['org_logo_path'] = this.base64String
+      //         //console.log(this.base64String,"BASE");
+      //       };
+      //     });
 
-      }
+      // }
       this.api.postData(`${environment.live_url}/${environment.organization}`, orgData).subscribe(res => {
         // this.api.updateOrganisationDetails(4,orgData).subscribe(res=>{
         if (res['result'].status) {
