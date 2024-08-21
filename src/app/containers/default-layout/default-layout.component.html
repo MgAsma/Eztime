@@ -44,10 +44,12 @@
   <ngx-ui-loader fgsColor="#1d2a6e" pbColor="#1d2a6e" text="Please wait..."></ngx-ui-loader>
   <!--app-body-->
   <div class="body scroll-fix">
-    <mat-card class="body-card">
-      <app-default-header class="d-print-none header header-sticky" position="sticky"
+   
+    <mat-card class="body-card p-0 default-header-card">
+      <mat-card class="py-0 mb-1"> 
+        <app-default-header class="d-print-none header header-sticky" position="sticky"
         sidebarId="sidebar"></app-default-header>
-
+       </mat-card>
       <router-outlet></router-outlet>
     </mat-card>
   </div>
