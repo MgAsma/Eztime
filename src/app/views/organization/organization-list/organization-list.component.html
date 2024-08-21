@@ -1,34 +1,15 @@
 <div class="container-wrapper webView">
-    <!-- <div class="row">
-        <div class="col-sm-6">
-            <h1>Organization list</h1>
-        </div>
-        <div class="col-sm"></div>
-        <div class="col-sm-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">Organization list</li>
-                </ol>
-              </nav>
-        </div>
-        
-    </div> -->
-
-        <div class="row p-20">
-           
-           
-            <div class="col-sm-4 search-div px-0">
-                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search by organization name" aria-describedby="emailHelp"  autocomplete="off">
+        <div class="row p-20 pt-3">
+            <div class="col-sm-4 search-div px-2">
+                <input type="search" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search by organization name" aria-describedby="emailHelp"  autocomplete="off">
                 <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>       
               </div>
               <div class="col-sm"></div>
-              <div class="col-md-4 col-lg-3 text-center align-self-center">
-                <div class="d-flex justify-content-center pg-bg">
-                  <button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
-                >{{size}}</button>
-                </div>
-                        </div>
+              <div class="col-md-3 col-lg-3 text-center align-self-center p-0">
+               
+                  <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/organization/createOrg" type="submit">Create Organization</button>
+                  
+            </div>
         </div>
         <div class="bg">
         <div class="row">
@@ -65,7 +46,7 @@
                          <td class="p-r">   
                             <img src="{{item.org_logo_path}}" alt="" height="25px" width="50px">
                             <a href="{{item.org_logo_path}}" target="_blank">
-                             <i class="bi bi-eye" id="eye-btn"></i>
+                             <i class="bi bi-eye" id="eye-btn"   container="body" ngbTooltip="View" ></i>
                           </a>
                           </td>
                          <td>{{item.org_status ? item.org_status : 'NA'| titlecase }}</td>
@@ -96,20 +77,28 @@
        
     </div>
     <div class="row">
-      <div class="col-sm-12" >
-<div class="d-flex justify-content-center p-nav">
-   <pagination-controls 
-     previousLabel="Prev" 
-     nextLabel="Next" 
-     (pageChange)="onTableDataChange($event)">
-   </pagination-controls>
- </div>
+      <div class="col-md-12" >
+    <div class="text-center p-nav">
+      <pagination-controls 
+        previousLabel="Prev" 
+        nextLabel="Next" 
+        (pageChange)="onTableDataChange($event)">
+      </pagination-controls>
+      
+    </div>
+    
+    </div>
+<div class="col-md-3 text-end align-self-center">
+  <div class="d-flex justify-content-center pg-bg">
+    <button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
+  >{{size}}</button>
+  </div>
 </div>
 </div>
     <ng-container>
-      <button mat-raised-button mat-fab color="primary"  routerLink="/organization/createOrg" class="createbtn" placement="top" container="body" ngbTooltip="Add organization">
+      <!-- <button mat-raised-button mat-fab color="primary"  routerLink="/organization/createOrg" class="createbtn" placement="top" container="body" ngbTooltip="Add organization">
         <i class="fa fa-plus"></i>
-      </button>
+      </button> -->
     </ng-container>
         <!-- <a routerLink="/organization/createOrg"> <button mat-raised-button type="button"  class="createbtn" placement="top" container="body" ngbTooltip="Add Department"><i class="fa fa-plus"></i>
   </button></a> -->
