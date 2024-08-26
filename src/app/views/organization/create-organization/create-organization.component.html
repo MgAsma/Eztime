@@ -164,7 +164,7 @@
                                 <div class="col-12">
                                     <label class="my-1 f-label"><i class="fas fa-file-import"></i> Logo <b
                                             class="r-star">*</b></label>
-                                    <input [type]="type" class="form-control  sizeinput"
+                                    <input type="file" class="form-control  sizeinput"
                                         [ngClass]="setBgColor(f['org_logo'])" accept="image/*;capture=camera"
                                         formControlName="org_logo" placeholder="Logo" aria-describedby="emailHelp"
                                         autocomplete="off" (change)="uploadImageFile($event)" (focus)="onFocus()">
