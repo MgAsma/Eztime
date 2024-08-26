@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     this.getWelomeMessage();
     this.loginForm = this.builder.group({
       username: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
+      password: ['', [Validators.required]],
     })
   }
 
@@ -115,5 +115,11 @@ export class LoginComponent implements OnInit {
       this.passwordType = 'password'
     }
 
+  }
+
+  preventSpace(event: KeyboardEvent): void {
+    if (event.key === ' ') {
+      event.preventDefault();
+    }
   }
 }
