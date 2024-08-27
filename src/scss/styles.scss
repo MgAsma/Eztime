@@ -29,7 +29,7 @@
  @import "_sidebar.scss";
  @import "theme_content.scss";
  @import "cards.scss";
-
+ @import "_material_input.scss";
  // @import 'ngx-toastr/toastr';
  @font-face {
    font-family: 'Exo FT';
@@ -48,7 +48,7 @@
    appearance: none;
    margin: 0;
  }
-
+ 
  .mat-h6,
  .mat-typography h6 {
    //  font: 400 calc(22px * 0.67)/20px Roboto, "Helvetica Neue", sans-serif;
@@ -66,9 +66,11 @@
 
  /* based on angular-toastr css https://github.com/Foxandxss/angular-toastr/blob/cb508fe6801d6b288d3afc525bb40fee1b101650/dist/angular-toastr.css */
  .default-header-card{
-  border-radius: 20px 20px 0 0 !important;
+  border-radius: 20px 20px !important;
+  transform: scale(0.95);
   mat-card{
     border-radius:20px 20px 0 0 !important;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px !important;
   }
  }
  /* position */
@@ -521,3 +523,4 @@
  .profile-settings-content {
    cursor: pointer !important;
  }
+ 
