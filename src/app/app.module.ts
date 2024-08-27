@@ -70,6 +70,7 @@ import { OrgAuthGuard } from './org-auth.guard';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { CommonModule } from '@angular/common';
 
+
 const APP_CONTAINERS = [
   DefaultFooterComponent,
   DefaultHeaderComponent,
@@ -83,8 +84,7 @@ const APP_CONTAINERS = [
     LoginComponent,
     ...APP_CONTAINERS,
     VirtualScrollDirective,
-
-
+    
   ],
   imports: [
     // ChartsModule,

@@ -18,7 +18,7 @@ import {MatBadgeModule} from '@angular/material/badge';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import {MatRadioModule} from '@angular/material/radio';
-
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 @NgModule({
   declarations: [
     SortPipe,
@@ -41,7 +41,8 @@ import {MatRadioModule} from '@angular/material/radio';
     MatBadgeModule,
     MatCardModule,
     MatIconModule,
-    MatRadioModule
+    MatRadioModule,
+    MatSlideToggleModule
   ],
   exports:[
     SortPipe,
@@ -61,7 +62,8 @@ import {MatRadioModule} from '@angular/material/radio';
     MatBadgeModule,
     MatCardModule,
     MatIconModule,
-    MatRadioModule
+    MatRadioModule,
+    MatSlideToggleModule
    ],
   
 })
