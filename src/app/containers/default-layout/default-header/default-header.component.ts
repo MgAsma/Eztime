@@ -40,11 +40,11 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
       page: 'Change Password',
       icons: 'fa fa-key'
     },
-    {
-      link: '/logout',
-      page: 'Logout',
-      icons: 'bi bi-power'
-    }
+    // {
+    //   link: '/logout',
+    //   page: 'Logout',
+    //   icons: 'bi bi-power'
+    // }
   ]
   user_id: string;
   user_name: string;
@@ -131,7 +131,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
       })
 
     } else {
-      this.api.showWarning('No data found !!')
+      this.api.showWarning('No new notifications')
     }
 
 

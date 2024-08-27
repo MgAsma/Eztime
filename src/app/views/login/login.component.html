@@ -186,7 +186,7 @@
                                 <div class="col custome-column">
                                     <fieldset class="input-fieldset">
                                         <input type="text" class="form-control p-3  mb-3 accordion-header"
-                                            formControlName='username' placeholder="Email Address"
+                                            formControlName='username' placeholder="Email Address" (keypress)="preventSpace($event)"
                                             aria-describedby="emailHelp" autocomplete="off" id="emailId">
                                         <legend for="emailId">Email Address <span>*</span></legend>
                                     </fieldset>
@@ -203,7 +203,7 @@
                                 <div class="col custome-column p-r">
                                     <fieldset class="input-fieldset">
                                         <input [type]="passwordType" class="form-control p-3 mb-3 sizeinput"
-                                            formControlName='password' placeholder="Password"
+                                            formControlName='password' placeholder="Password" minlength="8"
                                             aria-describedby="emailHelp" autocomplete="off" id="password">
                                         <legend for="password">Password <span>*</span></legend>
                                     </fieldset>
@@ -214,12 +214,12 @@
                                             <p class="error-msg">Password is required.</p>
                                         </div>
                                     </div>
-                                    <div *ngIf="f['password'].errors && f['password'].hasError('pattern')"
+                                    <!-- <div *ngIf="f['password'].errors && f['password'].hasError('pattern')"
                                         class="error-msg">
                                         Password should
                                         contain at least one special character,one number,one uppercase and one
                                         lowercase, and be at least 8 characters long
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="action-btn-link-content">

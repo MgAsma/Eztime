@@ -16,419 +16,471 @@
     </div> -->
 
     <div class="generic-form bg mx-1">
-        <form [formGroup]='profileForm' (ngSubmit)='updateProfile()' >
-        <div class="row">
-            <div class="col-sm-6">
-                <h4>Profile details</h4>
+        <form [formGroup]='profileForm'  (ngSubmit)='updateProfile()'>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h4>Profile details</h4>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-6">
-              <div class="row">
-                <div class="col-12">
-                  
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-6">
                     <div class="row">
                         <div class="col-12">
-                            <label class="my-2 f-label">First name <span class="r-star">*</span></label>
-                            <input type="text" class="form-control p-2 sizeinput" formControlName="first_name" placeholder="Enter first name" aria-describedby="emailHelp"  autocomplete="off">
-                            <label *ngIf="f['first_name'].touched && f['first_name'].invalid" class="error-text">
-                                <span *ngIf="f['first_name'].errors['required']" >First name is Required</span>
-                            </label>
-                            <label *ngIf="f['first_name'].invalid && f['first_name'].hasError('pattern')" class="error-text">
-                                <span>First name cannot contain spaces,numbers and special characters.</span>
-                            </label>
-                        </div>
-                    </div>
-                 
-                 
-                <div class="row">
-                    <div class="col-12">
-                        <label class="my-2 f-label">Last name <span class="r-star">*</span></label>
-                        <input type="text" class="form-control p-2 sizeinput" formControlName="last_name" placeholder="Enter last name" aria-describedby="emailHelp"  autocomplete="off">
-                        <label *ngIf="f['last_name'].touched && f['last_name'].invalid" class="error-text">
-                            <span *ngIf="f['last_name'].errors['required']" >Last name is required</span>
-                        </label>
-                        <label *ngIf="f['last_name'].invalid && f['last_name'].hasError('pattern')" class="error-text">
-                            <span>Last name cannot contain spaces,nmbers and special characters.</span>
-                        </label>
-                    </div>
-                </div> 
-                   
-                   <div class="row">
-                    <div class="col-12">
-                        <label class="my-2 f-label">Designation <span class="r-star">*</span></label>
-                        <input type="text" class="form-control p-2 sizeinput" formControlName="designation" placeholder="Enter designation" aria-describedby="emailHelp"  autocomplete="off">
-                        <label *ngIf="f['designation'].touched && f['designation'].invalid" class="error-text">
-                            <span *ngIf="f['designation'].errors['required']" >Designation is required</span>
-                        </label>
-                        <label *ngIf="f['designation'].invalid && f['designation'].hasError('pattern')" class="error-text">
-                            <span>Cannot start with a space.</span>
-                        </label>
-                    </div>
-                </div> 
-                 
-                  <div class="row ">
-                    <div class="col-12">
-                        <label class="my-2 f-label">Email Id  <span class="r-star">*</span></label>
-                        <input type="text" class="form-control p-2 sizeinput d-able" formControlName="email_id" placeholder="Enter email Id " aria-describedby="emailHelp"  autocomplete="off" readonly >
-                        <label *ngIf="f['email_id'].touched && f['email_id'].invalid" class="error-text">
-                            <span *ngIf="f['email_id'].errors['required']" >Email Id  is required</span>
-                            <span *ngIf="f['email_id'].invalid && f['email_id'].errors['email']" >Invalid email Id </span>
-                        </label>
-                    </div>
-                </div> 
-                 
-                  <div class="row">
-                    <div class="col-12">
-                        <label class="my-2 f-label">Phone no  <span class="r-star">*</span></label>
-                        <input type="text" onkeydown="return event.keyCode !== 69"   class="form-control p-2 sizeinput" formControlName="phone_number" placeholder="Enter phone number" aria-describedby="emailHelp"  autocomplete="off" on-keyup="validationChecks()">
-                        <label *ngIf="f['phone_number'].touched && f['phone_number'].invalid">
-                            <span *ngIf="profileForm.get('phone_number').hasError('required') && profileForm.get('phone_number').touched" class="error-text">
-                                Phone number is required
-                              </span>
-                              <span *ngIf="profileForm.get('phone_number').hasError('pattern') && profileForm.get('phone_number').touched" class="error-text">
-                                Phone number should contain only numbers
-                               </span>
-                               <span *ngIf="profileForm.get('phone_number').hasError('phoneNumberLength')" class="error-text">
-                                Please enter 10 digits.
-                              </span>
-                            </label>
-                    </div>
-                </div> 
-                   
-                   <div class="row">
-                    <div class="col-12">
-                        <label class="my-2 f-label">Date of birth<span class="r-star">*</span></label>
-                        <input [type]="date" class="form-control p-2 sizeinput" formControlName="dob" (focus)="onFocusDate()" placeholder="Enter date of birth" aria-describedby="emailHelp"  autocomplete="off">
-                        <label *ngIf="f['dob'].touched && f['dob'].invalid" class="error-text">
-                            <span *ngIf="f['dob'].errors['required']" >Date of birth is required</span>
-                        </label>
-                          
-                    </div>
-                </div> 
-                  
-                   <!-- <div class="row">
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-2 f-label">First name <span class="r-star">*</span></label>
+                                    <input type="text" class="form-control p-2 sizeinput" formControlName="first_name"
+                                        placeholder="Enter first name" aria-describedby="emailHelp" autocomplete="off">
+                                    <label *ngIf="f['first_name'].touched && f['first_name'].invalid"
+                                        class="error-text">
+                                        <span *ngIf="f['first_name'].errors['required']">First name is Required</span>
+                                    </label>
+                                    <label *ngIf="f['first_name'].invalid && f['first_name'].hasError('pattern')"
+                                        class="error-text">
+                                        <span>First name cannot contain spaces,numbers and special characters.</span>
+                                    </label>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-2 f-label">Last name <span class="r-star">*</span></label>
+                                    <input type="text" class="form-control p-2 sizeinput" formControlName="last_name"
+                                        placeholder="Enter last name" aria-describedby="emailHelp" autocomplete="off">
+                                    <label *ngIf="f['last_name'].touched && f['last_name'].invalid" class="error-text">
+                                        <span *ngIf="f['last_name'].errors['required']">Last name is required</span>
+                                    </label>
+                                    <label *ngIf="f['last_name'].invalid && f['last_name'].hasError('pattern')"
+                                        class="error-text">
+                                        <span>Last name cannot contain spaces,nmbers and special characters.</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-2 f-label">Designation <span class="r-star">*</span></label>
+                                    <input type="text" class="form-control p-2 sizeinput" formControlName="designation"
+                                        placeholder="Enter designation" aria-describedby="emailHelp" autocomplete="off">
+                                    <label *ngIf="f['designation'].touched && f['designation'].invalid"
+                                        class="error-text">
+                                        <span *ngIf="f['designation'].errors['required']">Designation is required</span>
+                                    </label>
+                                    <label *ngIf="f['designation'].invalid && f['designation'].hasError('pattern')"
+                                        class="error-text">
+                                        <span>Cannot start with a space.</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row ">
+                                <div class="col-12">
+                                    <label class="my-2 f-label">Email Id <span class="r-star">*</span></label>
+                                    <input type="text" class="form-control p-2 sizeinput d-able"
+                                        formControlName="email_id" placeholder="Enter email Id "
+                                        aria-describedby="emailHelp" autocomplete="off" readonly>
+                                    <label *ngIf="f['email_id'].touched && f['email_id'].invalid" class="error-text">
+                                        <span *ngIf="f['email_id'].errors['required']">Email Id is required</span>
+                                        <span *ngIf="f['email_id'].invalid && f['email_id'].errors['email']">Invalid
+                                            email Id </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-2 f-label">Phone no <span class="r-star">*</span></label>
+                                    <input type="text" onkeydown="return event.keyCode !== 69"
+                                        class="form-control p-2 sizeinput" formControlName="phone_number"
+                                        placeholder="Enter phone number" aria-describedby="emailHelp" autocomplete="off"
+                                        on-keyup="validationChecks()">
+                                    <label *ngIf="f['phone_number'].touched && f['phone_number'].invalid">
+                                        <span
+                                            *ngIf="profileForm.get('phone_number').hasError('required') && profileForm.get('phone_number').touched"
+                                            class="error-text">
+                                            Phone number is required
+                                        </span>
+                                        <span
+                                            *ngIf="profileForm.get('phone_number').hasError('pattern') && profileForm.get('phone_number').touched"
+                                            class="error-text">
+                                            Phone number should contain only numbers
+                                        </span>
+                                        <span *ngIf="profileForm.get('phone_number').hasError('phoneNumberLength')"
+                                            class="error-text">
+                                            Please enter 10 digits.
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-2 f-label">Date of birth<span class="r-star">*</span></label>
+                                    <input type="date" class="form-control p-2 sizeinput" formControlName="dob"
+                                         placeholder="Enter date of birth"
+                                        aria-describedby="emailHelp" autocomplete="off">
+                                    <label *ngIf="f['dob'].touched && f['dob'].invalid" class="error-text">
+                                        <span *ngIf="f['dob'].errors['required']">Date of birth is required</span>
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <!-- <div class="row">
                     <div class="col-12">
                         <label class="my-2 f-label">Tags </label>
                         <input type="text" class="form-control p-2 sizeinput" formControlName="tags" placeholder="Enter Tag" aria-describedby="emailHelp"  autocomplete="off">   
                     </div>
                 </div>  -->
-                  
+
+                        </div>
+                    </div>
+
                 </div>
-              </div>
-              
-            </div>
-             
-                <div class="col-sm-12 col-md-12 col-lg-6"> 
+
+                <div class="col-sm-12 col-md-12 col-lg-6">
                     <div class="row">
                         <div class="col-12">
-                        <label class="my-2 f-label">Country <span class="r-star">*</span></label>
-                        <select type="text" class="form-select  sizeinput" formControlName="country" placeholder="Enter Country" aria-describedby="emailHelp"  autocomplete="off" (change)="getState($event.target['value'])" (focus)="onFocusCountry()">
-                            <option value="" selected disabled>Select country</option>
-                            <option *ngFor="let country of country" [value]="country.country_name"> {{country.country_name}}</option>
-                        </select>
-                        <label *ngIf="f['country'].touched && f['country'].invalid" class="error-text">
-                            <span *ngIf="f['country'].errors['required']" >Country is required</span>
-                        </label>
-                        </div>
-                    </div> 
-                    
-                      <div class="row">
-                        <div class="col-12">
-                        <label class="my-2 f-label">State <span class="r-star">*</span></label>
-                        <select type="text" class="form-select  sizeinput" formControlName="state"  aria-describedby="emailHelp"  autocomplete="off"  (change)="getCity($event.target['value'])">
-                            <option value="" selected disabled>Select state</option>
-                           <option *ngFor="let state of state" [value]="state.state_name">{{state.state_name}}</option>
-                        </select>
-                        <label *ngIf="f['state'].touched && f['state'].invalid" class="error-text">
-                            <span *ngIf="f['state'].errors['required']" >State is required</span>
-                        </label>
-                       
+                            <label class="my-2 f-label">Country <span class="r-star">*</span></label>
+                            <select type="text" class="form-select  sizeinput" formControlName="country"
+                                placeholder="Enter Country" aria-describedby="emailHelp" autocomplete="off"
+                                (change)="getState($event.target['value'])" (focus)="onFocusCountry()">
+                                <option value="" selected disabled>Select country</option>
+                                <option *ngFor="let country of country" [value]="country.country_name">
+                                    {{country.country_name}}</option>
+                            </select>
+                            <label *ngIf="f['country'].touched && f['country'].invalid" class="error-text">
+                                <span *ngIf="f['country'].errors['required']">Country is required</span>
+                            </label>
                         </div>
                     </div>
-                     
-                       <div class="row">
-                        <div class="col-12">
-                        <label class="my-2 f-label">City <span class="r-star">*</span></label>
-                        <select type="text" class="form-select  sizeinput" formControlName="city"  aria-describedby="emailHelp"  autocomplete="off">
-                            <option value="" selected disabled>Select city</option>
-                            <option *ngFor="let city of city" [value]="city.city_name">{{city.city_name}}</option>
-                        </select>
-                        <label *ngIf="f['city'].touched && f['city'].invalid" class="error-text">
-                            <span *ngIf="f['city'].errors['required']" >City is required</span>
-                        </label>
-                      
-                        </div>
-                    </div>
-                     
+
                     <div class="row">
                         <div class="col-12">
-                        <label class="my-2 f-label">User profile photo <span class="r-star">*</span></label>
-                        <ng-container *ngIf="profileimg === 'url'; else fileInput">
-                            <input 
-                              type="url"
-                              class="form-control sizeinput" 
-                              formControlName="user_profile_photo" 
-                              placeholder="user_profile_photo" 
-                              aria-describedby="emailHelp"  
-                              autocomplete="off" 
-                              (focus)="onFocusPhoto()">
-                          </ng-container>
-                          
-                          <ng-template #fileInput>
-                            <input 
-                              type="file"
-                              class="form-control sizeinput" 
-                              formControlName="user_profile_photo" 
-                              accept="image/*;capture=camera" 
-                              placeholder="user_profile_photo" 
-                              aria-describedby="emailHelp"  
-                              autocomplete="off" 
-                              (change)="uploadImageFile($event)">
-                          </ng-template></div>
-                        <label *ngIf="f['user_profile_photo'].touched && f['user_profile_photo'].invalid" class="error-text">
-                            <span *ngIf="f['user_profile_photo'].errors['required']" >User profile photo is required</span>
+                            <label class="my-2 f-label">State <span class="r-star">*</span></label>
+                            <select type="text" class="form-select  sizeinput" formControlName="state"
+                                aria-describedby="emailHelp" autocomplete="off"
+                                (change)="getCity($event.target['value'])">
+                                <option value="" selected disabled>Select state</option>
+                                <option *ngFor="let state of state" [value]="state.state_name">{{state.state_name}}
+                                </option>
+                            </select>
+                            <label *ngIf="f['state'].touched && f['state'].invalid" class="error-text">
+                                <span *ngIf="f['state'].errors['required']">State is required</span>
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="my-2 f-label">City <span class="r-star">*</span></label>
+                            <select type="text" class="form-select  sizeinput" formControlName="city"
+                                aria-describedby="emailHelp" autocomplete="off">
+                                <option value="" selected disabled>Select city</option>
+                                <option *ngFor="let city of city" [value]="city.city_name">{{city.city_name}}</option>
+                            </select>
+                            <label *ngIf="f['city'].touched && f['city'].invalid" class="error-text">
+                                <span *ngIf="f['city'].errors['required']">City is required</span>
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="my-2 f-label">User profile photo <span class="r-star">*</span></label>
+                            <ng-container *ngIf="profileimg === 'url'; else fileInput">
+                                <input type="url" class="form-control sizeinput" formControlName="user_profile_photo"
+                                    placeholder="user_profile_photo" aria-describedby="emailHelp" autocomplete="off"
+                                    (focus)="onFocusPhoto()">
+                            </ng-container>
+
+                            <ng-template #fileInput>
+                                <input type="file" class="form-control sizeinput" formControlName="user_profile_photo"
+                                    accept="image/*;capture=camera" placeholder="user_profile_photo"
+                                    aria-describedby="emailHelp" autocomplete="off" (change)="uploadImageFile($event)">
+                            </ng-template>
+                        </div>
+                        <label *ngIf="f['user_profile_photo'].touched && f['user_profile_photo'].invalid"
+                            class="error-text">
+                            <span *ngIf="f['user_profile_photo'].errors['required']">User profile photo is
+                                required</span>
                         </label>
-                        <label class="error-text" *ngIf="f['user_profile_photo'].errors && f['user_profile_photo'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</label>
-                       </div>
-                         
-                        <div class="row">
-                            <div class="col-12">
+                        <label class="error-text"
+                            *ngIf="f['user_profile_photo'].errors && f['user_profile_photo'].errors['accept']">Invalid
+                            file format. Only .jpg, .jpeg, .png formats are allowed.</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
                             <label class="my-2 f-label">Postal code</label>
-                            <input type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;"  class="form-control p-2 sizeinput" formControlName="postal_code" placeholder="Enter postal code" aria-describedby="emailHelp"  autocomplete="off">
-                            </div>
+                            <input type="number" onkeydown="return event.keyCode !== 69"
+                                onKeyPress="if(this.value.length==6) return false;" class="form-control p-2 sizeinput"
+                                formControlName="postal_code" placeholder="Enter postal code"
+                                aria-describedby="emailHelp" autocomplete="off">
                         </div>
-                        
-                        
-                        <div class="row">
-                            <div class="col-12">
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-12">
                             <label class="my-2 f-label">Address </label>
-                            <textarea type="text" col="2" class="form-control p-2 sizeinput" formControlName="address" placeholder="Enter your address here" aria-describedby="emailHelp"  autocomplete="off"></textarea>
+                            <textarea type="text" col="2" class="form-control p-2 sizeinput" formControlName="address"
+                                placeholder="Enter your address here" aria-describedby="emailHelp"
+                                autocomplete="off"></textarea>
                             <label *ngIf="f['address'].invalid && f['address'].hasError('pattern')" class="error-text">
                                 <span>Cannot start with a space.</span>
                             </label>
                         </div>
-                        </div>
-                        
-                        <div class="col-sm-2 update-btn">
-                            <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Update</button>
-                        </div>
+                    </div>
+
+                    <div class="col-sm-2 update-btn">
+                        <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Update</button>
+                    </div>
                 </div>
-        </div>
+            </div>
         </form>
     </div>
 </div>
 <div class="container mobileView px-0">
-    <div class="row mx-1 my-2 gx-0">  
+    <div class="row mx-1 my-2 gx-0">
         <div class="col-sm-6">
-            <h1> <b><i  class="bi bi-arrow-left" (click)="goBack($event)
+            <h1> <b><i class="bi bi-arrow-left" (click)="goBack($event)
   
                 "></i> Update Profile </b></h1>
         </div>
     </div>
 
     <div class="generic-form bg mx-1">
-        <form [formGroup]='profileForm' (ngSubmit)='updateProfile()' >
-        <div class="row">
-            <div class="col-sm-6">
-                <h4>Profile details</h4>
+        <form [formGroup]='profileForm' (ngSubmit)='updateProfile()'>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h4>Profile details</h4>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-6">
-              <div class="row">
-                <div class="col-12">
-                  
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-6">
                     <div class="row">
                         <div class="col-12">
-                            <label class="my-2 f-label">First name <span class="r-star">*</span></label>
-                            <input type="text" class="form-control p-2 sizeinput" formControlName="first_name" placeholder="Enter first name" aria-describedby="emailHelp"  autocomplete="off">
-                            <label *ngIf="f['first_name'].touched && f['first_name'].invalid" class="error-text">
-                                <span *ngIf="f['first_name'].errors['required']" >First name is Required</span>
-                            </label>
-                            <label *ngIf="f['first_name'].invalid && f['first_name'].hasError('pattern')" class="error-text">
-                                <span>First name cannot contain spaces,numbers and special characters.</span>
-                            </label>
-                        </div>
-                    </div>
-                 
-                 
-                <div class="row">
-                    <div class="col-12">
-                        <label class="my-2 f-label">Last name <span class="r-star">*</span></label>
-                        <input type="text" class="form-control p-2 sizeinput" formControlName="last_name" placeholder="Enter last name" aria-describedby="emailHelp"  autocomplete="off">
-                        <label *ngIf="f['last_name'].touched && f['last_name'].invalid" class="error-text">
-                            <span *ngIf="f['last_name'].errors['required']" >Last name is required</span>
-                        </label>
-                        <label *ngIf="f['last_name'].invalid && f['last_name'].hasError('pattern')" class="error-text">
-                            <span>Last name cannot contain spaces,nmbers and special characters.</span>
-                        </label>
-                    </div>
-                </div> 
-                   
-                   <div class="row">
-                    <div class="col-12">
-                        <label class="my-2 f-label">Designation <span class="r-star">*</span></label>
-                        <input type="text" class="form-control p-2 sizeinput" formControlName="designation" placeholder="Enter designation" aria-describedby="emailHelp"  autocomplete="off">
-                        <label *ngIf="f['designation'].touched && f['designation'].invalid" class="error-text">
-                            <span *ngIf="f['designation'].errors['required']" >Designation is required</span>
-                        </label>
-                        <label *ngIf="f['designation'].invalid && f['designation'].hasError('pattern')" class="error-text">
-                            <span>Cannot start with a space.</span>
-                        </label>
-                    </div>
-                </div> 
-                 
-                  <div class="row ">
-                    <div class="col-12">
-                        <label class="my-2 f-label">Email Id  <span class="r-star">*</span></label>
-                        <input type="text" class="form-control p-2 sizeinput d-able" formControlName="email_id" placeholder="Enter email Id " aria-describedby="emailHelp"  autocomplete="off" readonly >
-                        <label *ngIf="f['email_id'].touched && f['email_id'].invalid" class="error-text">
-                            <span *ngIf="f['email_id'].errors['required']" >Email Id  is required</span>
-                            <span *ngIf="f['email_id'].invalid && f['email_id'].errors['email']" >Invalid email Id </span>
-                        </label>
-                    </div>
-                </div> 
-                 
-                  <div class="row">
-                    <div class="col-12">
-                        <label class="my-2 f-label">Phone no  <span class="r-star">*</span></label>
-                        <input type="text" class="form-control p-2 sizeinput" formControlName="phone_number" placeholder="Enter phone number" aria-describedby="emailHelp"  autocomplete="off" on-keyup="validationChecks()">
-                        <label *ngIf="f['phone_number'].touched && f['phone_number'].invalid">
-                            <span *ngIf="profileForm.get('phone_number').hasError('required') && profileForm.get('phone_number').touched" class="error-text">
-                                Phone number is required
-                              </span>
-                              <span *ngIf="profileForm.get('phone_number').hasError('pattern') && profileForm.get('phone_number').touched" class="error-text">
-                                Phone number should contain only numbers
-                               </span>
-                               <span *ngIf="profileForm.get('phone_number').hasError('phoneNumberLength')" class="error-text">
-                                Please enter 10 digits.
-                              </span>
-                            </label>
-                    </div>
-                </div> 
-                   
-                   <div class="row">
-                    <div class="col-12">
-                        <label class="my-2 f-label">Date of birth<span class="r-star">*</span></label>
-                        <input [type]="date" class="form-control p-2 sizeinput" formControlName="dob" (focus)="onFocusDate()" placeholder="Enter date of birth" aria-describedby="emailHelp"  autocomplete="off">
-                        <label *ngIf="f['dob'].touched && f['dob'].invalid" class="error-text">
-                            <span *ngIf="f['dob'].errors['required']" >Date of birth is required</span>
-                        </label>
-                          
-                    </div>
-                </div> 
-                  
-                   <!-- <div class="row">
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-2 f-label">First name <span class="r-star">*</span></label>
+                                    <input type="text" class="form-control p-2 sizeinput" formControlName="first_name"
+                                        placeholder="Enter first name" aria-describedby="emailHelp" autocomplete="off">
+                                    <label *ngIf="f['first_name'].touched && f['first_name'].invalid"
+                                        class="error-text">
+                                        <span *ngIf="f['first_name'].errors['required']">First name is Required</span>
+                                    </label>
+                                    <label *ngIf="f['first_name'].invalid && f['first_name'].hasError('pattern')"
+                                        class="error-text">
+                                        <span>First name cannot contain spaces,numbers and special characters.</span>
+                                    </label>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-2 f-label">Last name <span class="r-star">*</span></label>
+                                    <input type="text" class="form-control p-2 sizeinput" formControlName="last_name"
+                                        placeholder="Enter last name" aria-describedby="emailHelp" autocomplete="off">
+                                    <label *ngIf="f['last_name'].touched && f['last_name'].invalid" class="error-text">
+                                        <span *ngIf="f['last_name'].errors['required']">Last name is required</span>
+                                    </label>
+                                    <label *ngIf="f['last_name'].invalid && f['last_name'].hasError('pattern')"
+                                        class="error-text">
+                                        <span>Last name cannot contain spaces,nmbers and special characters.</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-2 f-label">Designation <span class="r-star">*</span></label>
+                                    <input type="text" class="form-control p-2 sizeinput" formControlName="designation"
+                                        placeholder="Enter designation" aria-describedby="emailHelp" autocomplete="off">
+                                    <label *ngIf="f['designation'].touched && f['designation'].invalid"
+                                        class="error-text">
+                                        <span *ngIf="f['designation'].errors['required']">Designation is required</span>
+                                    </label>
+                                    <label *ngIf="f['designation'].invalid && f['designation'].hasError('pattern')"
+                                        class="error-text">
+                                        <span>Cannot start with a space.</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row ">
+                                <div class="col-12">
+                                    <label class="my-2 f-label">Email Id <span class="r-star">*</span></label>
+                                    <input type="text" class="form-control p-2 sizeinput d-able"
+                                        formControlName="email_id" placeholder="Enter email Id "
+                                        aria-describedby="emailHelp" autocomplete="off" readonly>
+                                    <label *ngIf="f['email_id'].touched && f['email_id'].invalid" class="error-text">
+                                        <span *ngIf="f['email_id'].errors['required']">Email Id is required</span>
+                                        <span *ngIf="f['email_id'].invalid && f['email_id'].errors['email']">Invalid
+                                            email Id </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-2 f-label">Phone no <span class="r-star">*</span></label>
+                                    <input type="text" class="form-control p-2 sizeinput" formControlName="phone_number"
+                                        placeholder="Enter phone number" aria-describedby="emailHelp" autocomplete="off"
+                                        on-keyup="validationChecks()">
+                                    <label *ngIf="f['phone_number'].touched && f['phone_number'].invalid">
+                                        <span
+                                            *ngIf="profileForm.get('phone_number').hasError('required') && profileForm.get('phone_number').touched"
+                                            class="error-text">
+                                            Phone number is required
+                                        </span>
+                                        <span
+                                            *ngIf="profileForm.get('phone_number').hasError('pattern') && profileForm.get('phone_number').touched"
+                                            class="error-text">
+                                            Phone number should contain only numbers
+                                        </span>
+                                        <span *ngIf="profileForm.get('phone_number').hasError('phoneNumberLength')"
+                                            class="error-text">
+                                            Please enter 10 digits.
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="my-2 f-label">Date of birth<span class="r-star">*</span></label>
+                                    <input type="date" class="form-control p-2 sizeinput" formControlName="dob"
+                                         placeholder="Enter date of birth"
+                                        aria-describedby="emailHelp" autocomplete="off">
+                                    <label *ngIf="f['dob'].touched && f['dob'].invalid" class="error-text">
+                                        <span *ngIf="f['dob'].errors['required']">Date of birth is required</span>
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <!-- <div class="row">
                     <div class="col-12">
                         <label class="my-2 f-label">Tags </label>
                         <input type="text" class="form-control p-2 sizeinput" formControlName="tags" placeholder="Enter Tag" aria-describedby="emailHelp"  autocomplete="off">   
                     </div>
                 </div>  -->
-                  
+
+                        </div>
+                    </div>
+
                 </div>
-              </div>
-              
-            </div>
-             
-                <div class="col-sm-12 col-md-12 col-lg-6"> 
+
+                <div class="col-sm-12 col-md-12 col-lg-6">
                     <div class="row">
                         <div class="col-12">
-                        <label class="my-2 f-label">Country <span class="r-star">*</span></label>
-                        <select type="text" class="form-select  sizeinput" formControlName="country" placeholder="Enter Country" aria-describedby="emailHelp"  autocomplete="off" (change)="getState($event.target['value'])" (focus)="onFocusCountry()">
-                            <option value="" selected disabled>Select country</option>
-                            <option *ngFor="let country of country" [value]="country.country_name"> {{country.country_name}}</option>
-                        </select>
-                        <label *ngIf="f['country'].touched && f['country'].invalid" class="error-text">
-                            <span *ngIf="f['country'].errors['required']" >Country is required</span>
-                        </label>
-                        </div>
-                    </div> 
-                    
-                      <div class="row">
-                        <div class="col-12">
-                        <label class="my-2 f-label">State <span class="r-star">*</span></label>
-                        <select type="text" class="form-select  sizeinput" formControlName="state"  aria-describedby="emailHelp"  autocomplete="off"  (change)="getCity($event.target['value'])">
-                            <option value="" selected disabled>Select state</option>
-                           <option *ngFor="let state of state" [value]="state.state_name">{{state.state_name}}</option>
-                        </select>
-                        <label *ngIf="f['state'].touched && f['state'].invalid" class="error-text">
-                            <span *ngIf="f['state'].errors['required']" >State is required</span>
-                        </label>
-                       
+                            <label class="my-2 f-label">Country <span class="r-star">*</span></label>
+                            <select type="text" class="form-select  sizeinput" formControlName="country"
+                                placeholder="Enter Country" aria-describedby="emailHelp" autocomplete="off"
+                                (change)="getState($event.target['value'])" (focus)="onFocusCountry()">
+                                <option value="" selected disabled>Select country</option>
+                                <option *ngFor="let country of country" [value]="country.country_name">
+                                    {{country.country_name}}</option>
+                            </select>
+                            <label *ngIf="f['country'].touched && f['country'].invalid" class="error-text">
+                                <span *ngIf="f['country'].errors['required']">Country is required</span>
+                            </label>
                         </div>
                     </div>
-                     
-                       <div class="row">
-                        <div class="col-12">
-                        <label class="my-2 f-label">City <span class="r-star">*</span></label>
-                        <select type="text" class="form-select  sizeinput" formControlName="city"  aria-describedby="emailHelp"  autocomplete="off">
-                            <option value="" selected disabled>Select city</option>
-                            <option *ngFor="let city of city" [value]="city.city_name">{{city.city_name}}</option>
-                        </select>
-                        <label *ngIf="f['city'].touched && f['city'].invalid" class="error-text">
-                            <span *ngIf="f['city'].errors['required']" >City is required</span>
-                        </label>
-                      
-                        </div>
-                    </div>
-                     
+
                     <div class="row">
                         <div class="col-12">
-                        <label class="my-2 f-label">User profile photo <span class="r-star">*</span></label>
-                        <ng-container *ngIf="profileimg === 'url'; else fileInput">
-                            <input 
-                              type="url"
-                              class="form-control sizeinput" 
-                              formControlName="user_profile_photo" 
-                              placeholder="user_profile_photo" 
-                              aria-describedby="emailHelp"  
-                              autocomplete="off" 
-                              (focus)="onFocusPhoto()">
-                          </ng-container>
-                          
-                          <ng-template #fileInput>
-                            <input 
-                              type="file"
-                              class="form-control sizeinput" 
-                              formControlName="user_profile_photo" 
-                              accept="image/*;capture=camera" 
-                              placeholder="user_profile_photo" 
-                              aria-describedby="emailHelp"  
-                              autocomplete="off" 
-                              (change)="uploadImageFile($event)">
-                          </ng-template>
-                        <!-- <input [type]="profileimg" class="form-control  sizeinput" (focus)="onFocusPhoto()" accept="image/*;capture=camera"formControlName="user_profile_photo"  aria-describedby="emailHelp"  autocomplete="off" (change)="uploadImageFile($event)"> -->
+                            <label class="my-2 f-label">State <span class="r-star">*</span></label>
+                            <select type="text" class="form-select  sizeinput" formControlName="state"
+                                aria-describedby="emailHelp" autocomplete="off"
+                                (change)="getCity($event.target['value'])">
+                                <option value="" selected disabled>Select state</option>
+                                <option *ngFor="let state of state" [value]="state.state_name">{{state.state_name}}
+                                </option>
+                            </select>
+                            <label *ngIf="f['state'].touched && f['state'].invalid" class="error-text">
+                                <span *ngIf="f['state'].errors['required']">State is required</span>
+                            </label>
+
                         </div>
-                        <label *ngIf="f['user_profile_photo'].touched && f['user_profile_photo'].invalid" class="error-text">
-                            <span *ngIf="f['user_profile_photo'].errors['required']" >User profile photo is required</span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="my-2 f-label">City <span class="r-star">*</span></label>
+                            <select type="text" class="form-select  sizeinput" formControlName="city"
+                                aria-describedby="emailHelp" autocomplete="off">
+                                <option value="" selected disabled>Select city</option>
+                                <option *ngFor="let city of city" [value]="city.city_name">{{city.city_name}}</option>
+                            </select>
+                            <label *ngIf="f['city'].touched && f['city'].invalid" class="error-text">
+                                <span *ngIf="f['city'].errors['required']">City is required</span>
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="my-2 f-label">User profile photo <span class="r-star">*</span></label>
+                            <ng-container *ngIf="profileimg === 'url'; else fileInput">
+                                <input type="url" class="form-control sizeinput" formControlName="user_profile_photo"
+                                    placeholder="user_profile_photo" aria-describedby="emailHelp" autocomplete="off"
+                                    (focus)="onFocusPhoto()">
+                            </ng-container>
+
+                            <ng-template #fileInput>
+                                <input type="file" class="form-control sizeinput" formControlName="user_profile_photo"
+                                    accept="image/*;capture=camera" placeholder="user_profile_photo"
+                                    aria-describedby="emailHelp" autocomplete="off" (change)="uploadImageFile($event)">
+                            </ng-template>
+                            <!-- <input [type]="profileimg" class="form-control  sizeinput" (focus)="onFocusPhoto()" accept="image/*;capture=camera"formControlName="user_profile_photo"  aria-describedby="emailHelp"  autocomplete="off" (change)="uploadImageFile($event)"> -->
+                        </div>
+                        <label *ngIf="f['user_profile_photo'].touched && f['user_profile_photo'].invalid"
+                            class="error-text">
+                            <span *ngIf="f['user_profile_photo'].errors['required']">User profile photo is
+                                required</span>
                         </label>
-                        <label class="error-text" *ngIf="f['user_profile_photo'].errors && f['user_profile_photo'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</label>
-                       </div>
-                         
-                        <div class="row">
-                            <div class="col-12">
+                        <label class="error-text"
+                            *ngIf="f['user_profile_photo'].errors && f['user_profile_photo'].errors['accept']">Invalid
+                            file format. Only .jpg, .jpeg, .png formats are allowed.</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
                             <label class="my-2 f-label">Postal code</label>
-                            <input type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;"  class="form-control p-2 sizeinput" formControlName="postal_code" placeholder="Enter postal code" aria-describedby="emailHelp"  autocomplete="off">
-                            </div>
+                            <input type="number" onkeydown="return event.keyCode !== 69"
+                                onKeyPress="if(this.value.length==6) return false;" class="form-control p-2 sizeinput"
+                                formControlName="postal_code" placeholder="Enter postal code"
+                                aria-describedby="emailHelp" autocomplete="off">
                         </div>
-                        
-                        
-                        <div class="row">
-                            <div class="col-12">
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-12">
                             <label class="my-2 f-label">Address </label>
-                            <textarea type="text" col="2" class="form-control p-2 sizeinput" formControlName="address" placeholder="Enter your address here" aria-describedby="emailHelp"  autocomplete="off"></textarea>
+                            <textarea type="text" col="2" class="form-control p-2 sizeinput" formControlName="address"
+                                placeholder="Enter your address here" aria-describedby="emailHelp"
+                                autocomplete="off"></textarea>
                             <label *ngIf="f['address'].invalid && f['address'].hasError('pattern')" class="error-text">
                                 <span>Cannot start with a space.</span>
                             </label>
                         </div>
-                        </div>
-                        
-                        <div class="col-sm-12 update-btn-mobile">
-                            <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Update</button>
-                        </div>
+                    </div>
+
+                    <div class="col-sm-12 update-btn-mobile">
+                        <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Update</button>
+                    </div>
                 </div>
-        </div>
+            </div>
         </form>
     </div>
 </div>

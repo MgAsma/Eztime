@@ -31,8 +31,9 @@ export class OtpComponent implements OnInit {
     })
   }
   sendOTP() {
-    let int = this.otpForm.value.num1
-    const otp: string = int.concat(this.otpForm.value.num2, this.otpForm.value.num3, this.otpForm.value.num4, this.otpForm.value.num5, this.otpForm.value.num6)
+    // let int = this.otpForm.value.num1
+    // const otp: string = int.concat(this.otpForm.value.num2, this.otpForm.value.num3, this.otpForm.value.num4, this.otpForm.value.num5, this.otpForm.value.num6)
+    const otp: string = Object.values(this.otpForm.value).join('');
     const userName = sessionStorage.getItem('email_id')
     const otpdata = {
       OTP: otp,
@@ -65,8 +66,8 @@ export class OtpComponent implements OnInit {
 
 
   handleBackspace(event, currentControlName) {
-    //console.log(event,event.key,"EVENT>KEY")
-    if (event.keyCode === 8 || event.keyCode === 46) {
+    console.log(event,event.key,"EVENT>KEY")
+    if (event.keyCode === 8 && event.target.value =='') {
       event.preventDefault();
       const currentControl = this.otpForm.get(currentControlName);
       currentControl.setValue("");

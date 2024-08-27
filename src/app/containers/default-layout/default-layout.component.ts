@@ -48,11 +48,11 @@ export class DefaultLayoutComponent {
       page: 'Change Password',
       icons: 'bi bi-key'
     },
-    {
-      link: '/logout',
-      page: 'Logout',
-      icons: 'bi bi-power'
-    }
+    // {
+    //   link: '/logout',
+    //   page: 'Logout',
+    //   icons: 'bi bi-power'
+    // }
   ]
 
   constructor(private ngxService: NgxUiLoaderService,
