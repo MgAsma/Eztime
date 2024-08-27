@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
@@ -29,6 +29,10 @@ export class UpdateOrganizationComponent implements OnInit {
   country: any = [];
   state: any = [];
   city: any = [];
+  adminList: any =[];
+  fileDataUrl: null;
+  status:boolean = false;
+  @ViewChild('fileInput') fileInput: ElementRef;
   constructor(private _fb: FormBuilder,
     private api: ApiserviceService, private route: ActivatedRoute,
     private router: Router, private location: Location, private common_service: CommonServiceService) {
@@ -47,32 +51,35 @@ export class UpdateOrganizationComponent implements OnInit {
     this.location.back();
 
   }
+  deleteAdmin(index: number) {
+    this.adminList.splice(index, 1);
+  }
   initform() {
     this.organizationForm = this._fb.group({
       org_qr_uniq_id: ['22121'],
       org_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
       conctact_person_designation: ['', [Validators.required, Validators.pattern(/^\S.*$/)]],
-      conctact_person_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      admin_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
       org_address: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
       org_email: ['', [Validators.required, Validators.email]],
-      org_phone: [''],
-      org_mobile: [''],
-      org_fax: [''],
-      org_website: [''],
+      //org_phone: [''],
+      //org_mobile: [''],
+      //org_fax: [''],
+     // org_website: [''],
       org_city: ['', [Validators.required]],
       org_state: ['', [Validators.required]],
       org_country: ['', [Validators.required]],
       org_postal_code: ['', [Validators.required]],
-      org_profile_updated_status: [''],
-      org_default_currency_type: [''],
-      org_status: ['', [Validators.required]],
-      org_subscription_plan: [''],
-      org_logo_path: [''],
-      org_logo_base_url: [''],
-      page: [''],
-      conctact_person_email: ['', [Validators.required, Validators.email]],
-      conctact_person_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
-      conctact_person_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator()]],
+      //org_profile_updated_status: [''],
+      //org_default_currency_type: [''],
+      admin_status: ['', [Validators.required]],
+      //org_subscription_plan: [''],
+      //org_logo_path: [''],
+      //org_logo_base_url: [''],
+     // page: [''],
+      admin_email: ['', [Validators.required, Validators.email]],
+      //conctact_person_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
+      admin_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator()]],
       org_logo: ['', [Validators.required, this.fileFormatValidator]],
       // number_of_users_in_organization:['',[Validators.required]]
     })
@@ -91,7 +98,26 @@ export class UpdateOrganizationComponent implements OnInit {
     };
   }
 
-
+  addAdmin() {
+    if (this.organizationForm?.value['admin_name'] && this.organizationForm?.value['admin_email'] && this.organizationForm?.value['admin_phone_number'] ) {
+     const data = {
+       admin_name:this.organizationForm?.value['admin_name'],
+       admin_email:this.organizationForm?.value['admin_email'],
+       admin_phone_number:this.organizationForm?.value['admin_phone_number'],
+       admin_status:this.organizationForm?.value['admin_status']
+     }
+     this.adminList.push(data);
+     
+     this.f['admin_name'].reset();
+     this.f['admin_email'].reset();
+     this.f['admin_phone_number'].reset();
+     this.f['admin_status'].reset();
+   }else{
+     
+     
+     this.organizationForm.markAllAsTouched()
+   }
+   }
 
   fileFormatValidator(control: AbstractControl): ValidationErrors | null {
     const allowedFormats = ['.jpg', '.jpeg', '.png', '.JPG', '.JPEG', '.PNG'];
@@ -118,29 +144,29 @@ export class UpdateOrganizationComponent implements OnInit {
           org_qr_uniq_id: currentOrg['org_qr_uniq_id'],
           org_name: currentOrg['org_name'],
           org_email: currentOrg['org_email'],
-          org_phone: currentOrg['org_phone'],
-          org_mobile: currentOrg['org_mobile'],
-          org_fax: currentOrg['org_fax'],
-          org_website: currentOrg['org_website'],
+          // org_phone: currentOrg['org_phone'],
+          // org_mobile: currentOrg['org_mobile'],
+          // org_fax: currentOrg['org_fax'],
+          // org_website: currentOrg['org_website'],
           org_address: currentOrg['org_address'],
           org_city: currentOrg['org_city'],
           org_state: currentOrg['org_state'],
           org_country: currentOrg['org_country'],
           org_postal_code: currentOrg['org_postal_code'],
-          org_profile_updated_status: currentOrg['org_profile_updated_status'],
-          org_default_currency_type: currentOrg['org_default_currency_type'],
-          org_status: currentOrg['org_status'],
+          // org_profile_updated_status: currentOrg['org_profile_updated_status'],
+          // org_default_currency_type: currentOrg['org_default_currency_type'],
+          admin_status: currentOrg['org_status'],
           org_subscription_plan: currentOrg['org_subscription_plan'],
           org_logo_path: currentOrg['org_logo_path'],
           org_logo_base_url: currentOrg['org_logo_base_url'],
           //org_logo_base_url:[],
-          page: currentOrg['page'],
-          conctact_person_designation: currentOrg['conctact_person_designation'],
-          conctact_person_name: currentOrg['conctact_person_name'],
-          conctact_person_password: currentOrg['conctact_person_password'],
-          conctact_person_email: currentOrg['conctact_person_email'],
-          number_of_users_in_organization: currentOrg['number_of_users_in_organization'],
-          conctact_person_phone_number: currentOrg['conctact_person_phone_number'],
+          //page: currentOrg['page'],
+         // conctact_person_designation: currentOrg['conctact_person_designation'],
+          //admin_name: currentOrg['conctact_person_name'],
+         // conctact_person_password: currentOrg['conctact_person_password'],
+         //admin_email: currentOrg['conctact_person_email'],
+          //number_of_users_in_organization: currentOrg['number_of_users_in_organization'],
+          //admin_phone_number: currentOrg['conctact_person_phone_number'],
           org_logo: currentOrg['org_logo_path']
         })
         this.getCountry()
@@ -197,30 +223,68 @@ export class UpdateOrganizationComponent implements OnInit {
     }))
 
   }
+  // uploadImageFile(event: any) {
+  //   this.uploadFile = event.target.files[0];
+  //   if (event.target.files && event.target.files[0]) {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(event.target.files[0])
+  //     reader.onload = (event: any) => {
+  //       this.url = event.target.result;
+  //       this.fileUrl = reader.result
+  //       // this.organizationForm.patchValue({org_logo:this.fileUrl})
+  //       //console.log(this.fileUrl)
+  //       this.orgData = this.organizationForm.value
+  //       this.orgData['org_logo'] = this.fileUrl
+  //     }
+  //     // console.log(this.orgData,"FILE URL")
+  //   }
+  // }
   uploadImageFile(event: any) {
-    this.uploadFile = event.target.files[0];
-    if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0])
-      reader.onload = (event: any) => {
-        this.url = event.target.result;
-        this.fileUrl = reader.result
-        // this.organizationForm.patchValue({org_logo:this.fileUrl})
-        //console.log(this.fileUrl)
-        this.orgData = this.organizationForm.value
-        this.orgData['org_logo'] = this.fileUrl
+    const selectedFile = event.target.files[0];
+  
+    if (selectedFile) {
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!allowedTypes.includes(selectedFile.type)) {
+        // Handle invalid file type
+        console.error('Invalid file type. Only .jpg, .jpeg, and .png files are allowed.');
+        this.fileDataUrl = null; // Clear any previously selected image
+        return;
       }
-      // console.log(this.orgData,"FILE URL")
+  
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.fileDataUrl = e.target.result;
+        if(reader.result){
+          this.organizationForm.patchValue({ org_logo: this.fileDataUrl })
+        }
+       
+      };
+      reader.readAsDataURL(selectedFile);
     }
+  }
+  triggerFileInput() {
+    this.fileInput?.nativeElement?.click();
   }
   organizationSubmit() {
     if (this.organizationForm.invalid) {
       this.organizationForm.markAllAsTouched()
-      this.api.showError("Error !")
+      this.api.showError("Please enter the mandatory fields !")
     }
     else {
 
       this.orgData = this.organizationForm.value
+      const data = {
+        org_qr_uniq_id: this.f['org_qr_uniq_id'].value,
+        org_name: this.f['org_name'].value,
+        org_address: this.f['org_address'].value,
+        org_email: this.f['org_email'].value,
+        org_city: this.f['org_city'].value,
+        org_state: this.f['org_state'].value,
+        org_country: this.f['org_country'].value,
+        org_postal_code: this.f['org_postal_code'].value,
+        org_logo:this.f['org_logo'].value,
+        admin_details:this.adminList
+      }
       //console.log(this.orgData,'this.orgData')
       if (this.type == 'url') {
         // console.log(this.url,'this.url')
@@ -232,7 +296,8 @@ export class UpdateOrganizationComponent implements OnInit {
               const base64String = fileReader.result.split(',')[1]; // Extract the base64 string without the data URL prefix
               this.orgData['org_logo'] = 'data:image/png;base64,' + base64String; // Prepend 'data:image/png;base64,' to the base64 string
               // this.orgData['org_logo'] =  base64String; 
-              this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`, this.orgData).subscribe(
+             
+              this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`, data).subscribe(
                 res => {
                   if (res['result'].status) {
                     this.api.showSuccess("Organization updated successfully!!")
@@ -284,7 +349,7 @@ export class UpdateOrganizationComponent implements OnInit {
       // }
 
       else {
-        this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`, this.orgData).subscribe(res => {
+        this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`, data).subscribe(res => {
           if (res['result'].status) {
             this.api.showSuccess("Organization updated successfully !!")
             this.router.navigate(['organization/orgList'])
