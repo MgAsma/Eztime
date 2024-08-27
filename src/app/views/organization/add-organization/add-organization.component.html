@@ -1,0 +1,249 @@
+
+<div class="container p-20">
+<div class="generic-form bg mx-1" >
+    <form [formGroup]='organizationForm' (ngSubmit)='organizationSubmit()'>
+      <!-- <mat-card class="org-card"> -->
+      <div class="row" >
+        <!-- Organization Details Section -->
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <h5 class="py-3"><b>Organization details</b></h5>
+  
+          <!-- Organization Name -->
+          <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-6" >
+              <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
+                <mat-label>Organization name <b class="r-star">*</b></mat-label>
+                <input matInput placeholder="Enter organization name"  formControlName="org_name" autocomplete="off">
+                <mat-error *ngIf="f['org_name']?.touched && f['org_name']?.invalid">
+                  <span *ngIf="f['org_name'].errors?.['required']">Organization name is required</span>
+                  <span *ngIf="f['org_name'].errors?.['pattern']">Cannot start with a space.</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+         
+          <!-- Email Id -->
+         
+            <div class="col-sm-12 col-md-6 col-lg-3">
+              <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                <mat-label>Email Id <b class="r-star">*</b></mat-label>
+                <input matInput type="email" placeholder="Enter email Id" formControlName="org_email" autocomplete="off">
+                <mat-error *ngIf="f['org_email']?.touched && f['org_email']?.invalid">
+                  <span *ngIf="f['org_email'].errors?.['required']">Email Id is required</span>
+                  <span *ngIf="f['org_email'].errors?.['email']">Invalid email Id</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          
+          <!-- Country -->
+       
+            <div class="col-sm-12 col-md-6 col-lg-3">
+              <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                <mat-label>Country <b class="r-star">*</b></mat-label>
+                <mat-select formControlName="org_country" (selectionChange)="getState($event.value)" autocomplete="off">
+                  <mat-option *ngFor="let country of country" [value]="country.country_name">
+                    {{country.country_name}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="f['org_country']?.touched && f['org_country']?.invalid">
+                  <span *ngIf="f['org_country'].errors?.['required']">Country is required</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          
+  
+          <!-- State -->
+         
+            <div class="col-sm-12 col-md-6 col-lg-3">
+              <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                <mat-label>State <b class="r-star">*</b></mat-label>
+                <mat-select formControlName="org_state" (selectionChange)="getCity($event.value)" autocomplete="off" [attr.disabled]="!f['org_country']?.value" [ngbTooltip]="!f['org_country']?.value ? 'Please select country' :''">
+                  <mat-option *ngFor="let state of state" [value]="state.state_name">
+                    {{state.state_name}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="f['org_state']?.touched && f['org_state']?.invalid">
+                  <span *ngIf="f['org_state'].errors?.['required']">State is required</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+         
+          <!-- City -->
+         
+            <div class="col-sm-12 col-md-6 col-lg-3">
+              <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                <mat-label>City <b class="r-star">*</b></mat-label>
+                <mat-select formControlName="org_city" autocomplete="off"  [ngbTooltip]="!f['org_state']?.value ? 'Please select state' :''"  [attr.disabled]="!f['org_state']?.value">
+                  <mat-option *ngFor="let city of city" [value]="city.city_name">{{city.city_name}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="f['org_city']?.touched && f['org_city']?.invalid">
+                  <span *ngIf="f['org_city'].errors?.['required']">City is required</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          
+          <!-- Address -->
+          
+            <div class="col-sm-12 col-md-6 col-lg-3">
+              <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
+                <mat-label>Postal code </mat-label>
+                <input matInput type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" formControlName="org_postal_code" placeholder="Enter postal code" autocomplete="off">
+              </mat-form-field>
+            </div>
+          </div>
+  
+          <!-- Postal Code -->
+          <div class="row"> 
+           
+            <div class="col-sm-12 col-md-6 col-lg-6">
+              <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
+                <mat-label>Address</mat-label>
+                <textarea matInput formControlName="org_address" placeholder="Enter your address here..." autocomplete="off"></textarea>
+                <mat-error *ngIf="f['org_address']?.touched && f['org_name']?.invalid">
+                  
+                  <span *ngIf="f['org_address'].errors?.['pattern']">Cannot start with a space.</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          
+          <!-- Company Logo -->
+         
+            <div class="col-sm-12 col-md-6 col-lg-3" >
+                <div class="select-img-div"  *ngIf="!fileDataUrl">
+                  
+                    <button type="button" mat-button class="choose-file"  (click)="triggerFileInput()">Choose Photo</button>
+                    <mat-label>Photo<b class="r-star">*</b></mat-label>
+                    
+                </div>
+                <input type="file" accept="image/*" formControlName="org_logo" #fileInput (change)="uploadImageFile($event)" hidden>
+                 
+                    <div *ngIf="fileDataUrl" class="image-container" >
+                      <img id="imagePreview" [src]="fileDataUrl" alt="Image Preview" >
+                      <button type="button" mat-icon-button (click)="triggerFileInput()" style="top: -15px;right: 35px;">
+                        <mat-icon class="img-clear" >clear</mat-icon>
+                      </button>
+                      <div class="img-container-label" >Photo<b class="r-star">*</b></div>
+                    </div>
+                  
+              
+                <div *ngIf="f['org_logo']?.touched && f['org_logo']?.invalid">
+                  <span *ngIf="f['org_logo'].errors?.['required']" class="error-msg">Logo is required</span>
+                  <span *ngIf="f['org_logo'].errors?.['accept']" class="error-msg">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</span>
+                </div>
+                
+            </div> 
+          </div>
+        </div>
+  
+      
+      </div>
+      <h5 class="py-3"><b>Create Admin</b></h5>
+      <h6>Create Multiple Admin</h6>
+      
+      <div class="row">
+        <div class="col-11">
+          <div class="row-container" >
+            <!-- <div class="column">
+              <mat-form-field  class="">
+                <input matInput type="text" value="{{ i + 1 }}" readonly />
+              </mat-form-field>
+            </div> -->
+            <div class="column">
+              <!-- <mat-form-field  class="w-100 custom-mat-form-field"> -->
+                <!-- <mat-label>Admin Name</mat-label> -->
+              <!-- <input type="text" matInput formControlName="admin_name" placeholder="Enter Admin Name"  autocomplete="off"/>
+            -->
+            <input type="text" matInput formControlName="admin_name" placeholder="Admin Name"  autocomplete="off"/>
+              <div *ngIf="f['admin_name'].touched && f['admin_name'].invalid"
+              class="error-text">
+              <span
+                  *ngIf="f['admin_name'].errors && f['admin_name'].errors['required']">Admin
+                   name is required
+              </span>
+            
+          </div>
+          <div *ngIf="f['admin_name'].invalid && f['admin_name'].hasError('pattern')"
+              class="error-text">
+              <span>Cannot start with a space.</span>
+          </div>
+        <!-- </mat-form-field> -->
+            </div>
+            <div class="column">
+              <!-- <mat-form-field  class="w-100 custom-mat-form-field"> -->
+                <!-- <mat-label>Email</mat-label> -->
+              <!-- <input type="email" matInput formControlName="admin_email" placeholder="Enter Email"  autocomplete="off"/> -->
+              <input type="email" matInput formControlName="admin_email" placeholder="Email"  autocomplete="off"/> 
+              <div *ngIf="f['admin_email'].touched && f['admin_email'].invalid"
+              class="error-text">
+              <span
+                  *ngIf="f['admin_email'].invalid && f['admin_email'].errors['email']">Invalid
+                  email Id </span>
+              <span
+                  *ngIf="f['admin_email'].invalid && f['admin_email'].errors['required']">Email
+                  Id is required</span>
+              </div>
+            <!-- </mat-form-field> -->
+
+            </div>
+            <div class="column">
+              <!-- <mat-form-field  class="w-100 custom-mat-form-field"> -->
+              <!-- <mat-label>Phone Number</mat-label> -->
+              <!-- <input type="tel" matInput formControlName="admin_phone_number" placeholder="Enter Number"  autocomplete="off"/>
+              -->
+              <input type="tel" matInput formControlName="admin_phone_number" placeholder="Phone Number"  autocomplete="off"/>
+             
+              <div *ngIf="f['admin_phone_number'].touched && f['admin_phone_number'].invalid"
+              class="error-text">
+              <div
+                  *ngIf="f['admin_phone_number'].invalid && f['admin_phone_number'].errors['required']">Phone
+                  number is required
+              </div>
+              </div>
+              <div
+                  *ngIf="f['admin_phone_number'].invalid && organizationForm.get('admin_phone_number').hasError('phoneNumberLength')"
+                  class="error-text">Please enter 10 digits
+              </div>
+            <!-- </mat-form-field> -->
+            </div>
+               
+            <div class="column">
+              
+              <mat-slide-toggle formControlName="admin_status" (change)="status=!status">
+                {{ status ? 'Active' : 'Inactive' }}
+              </mat-slide-toggle>
+              <div *ngIf="f['admin_status'].touched && f['admin_status'].invalid" class="error-text" style="top:33px">
+                <span *ngIf="f['admin_status'].errors['required']">Status is required</span>
+            </div>
+          
+            </div>
+          </div>
+        </div>
+        <div class="col-1 d-flex" (click)="addAdmin()"><i class="bi bi-plus-circle"></i></div>
+      </div>
+      
+   <!-- Display the list of added admins -->
+      <!-- <h6>Admin List</h6> -->
+      <div class="row" *ngFor="let admin of adminList; let i = index" >
+        <div class="col-11 ">
+          <div class="row-container2 my-4">
+            <!-- <div class="column">{{ i + 1 }}</div> -->
+            <div class="column py-2">{{ admin.admin_name }}</div>
+            <div class="column py-2">{{ admin.admin_email }}</div>
+            <div class="column py-2">{{ admin.admin_phone_number }}</div>
+            <div class="column py-2">{{ admin.admin_status }}</div>
+          </div>
+        </div>
+        <div class="col-1 d-flex justify-content-center align-items-center" (click)="deleteAdmin(i)"> <i class="bi bi-trash-fill" style="color: red;font-size: 20px;padding-right: 30px;"></i></div>
+        
+      </div>
+     
+      
+      <!-- Submit Button -->
+      <div class="row">
+        <div class="col-12 py-4">
+          <button mat-raised-button color="primary" >Submit</button>
+        </div>
+      </div>
+    <!-- </mat-card> -->
+    </form>
+  </div>
+</div> 
