@@ -22,8 +22,8 @@ body .sidebar {
   color:white !important;
 }
 .sidebar-nav .nav-link:hover {
-  background-color: #A6D9FF !important;
-  color:#000 !important;
+  background-color: $primay-color !important;
+  color:white !important;
   // margin: 10px 5px 0px 0px;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
@@ -72,11 +72,18 @@ font-family: 'Exo FT';
     padding-right: 10px;
     cursor: pointer;
   }
-  .ngx-pagination .current {
-    padding: 0.1875rem 0.625rem;
-    background: $primay-color !important;
-    // border-radius: 50%;
-   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+//   .ngx-pagination .current {
+//     padding: 0.1875rem 0.625rem;
+//     background: $primay-color !important;
+//     // border-radius: 50%;
+//    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+   
+// }
+.ngx-pagination .current {
+  padding: 0.1875rem 0.625rem;
+  background: transparent !important;
+  color: black !important;
+  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px; */
 }
 .ngx-pagination a, .ngx-pagination button {
     color: $primay-color !important;
