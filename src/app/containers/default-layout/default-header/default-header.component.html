@@ -17,9 +17,9 @@
           <h1 class="breadcrumb-title" >{{pageName |titlecase}}</h1>
          <div class="mobile-hide-content" *ngIf="pageName!=''">
           <nav aria-label="breadcrumb ">
-            <ol class="breadcrumb ">
+            <ol class="breadcrumb mb-2">
               <li class="breadcrumb-item" *ngIf="pageName!='Dashboard'"><a routerLink="/dashboards">Home</a></li>
-              <li class="breadcrumb-item">{{pageName |titlecase}}</li>
+              <li class="breadcrumb-item sub-title" ><a>{{pageName |titlecase}}</a></li>
             </ol>
           </nav>
          </div>
