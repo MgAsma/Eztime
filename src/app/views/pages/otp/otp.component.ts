@@ -66,7 +66,7 @@ export class OtpComponent implements OnInit {
 
 
   handleBackspace(event, currentControlName) {
-    console.log(event,event.key,"EVENT>KEY")
+    // console.log(event,event.key,"EVENT>KEY")
     if (event.keyCode === 8 && event.target.value =='') {
       event.preventDefault();
       const currentControl = this.otpForm.get(currentControlName);

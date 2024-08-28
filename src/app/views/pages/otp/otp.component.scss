@@ -104,6 +104,7 @@ h1 {
 
 .otp_fields .form-control {
   // margin-bottom: 15px;
+  text-align: center;
   width: 50px;
 }
 
@@ -325,12 +326,12 @@ span {
 }
 
 .login-text {
-  margin-left: 20px;
+  // margin-left: 20px;
   margin-top: 20px;
 }
 
 .app-logo-content {
-  margin-left: -10px;
+  // margin-left: -10px;
 }
 
 .login-form-content {
@@ -405,12 +406,22 @@ span {
   .login-main-bg {
     background: #f8f8f8;
   }
+
   .otp_fields .form-control {
     width: 35px !important;
   }
+
   .login-content-bg {
     margin: 0px 20px;
     box-shadow: none;
+  }
+
+  .logo-section {
+    text-align: center;
+  }
+
+  .login-text {
+    text-align: center;
   }
 
   .login-right-content {
@@ -465,5 +476,5 @@ span {
   .input-fieldset legend {
     background: #f8f8f8 !important;
   }
-  
+
 }

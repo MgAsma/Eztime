@@ -16,7 +16,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <h2><b>OTP Verification</b></h2>
+                        <h2 class="login-text"><b>OTP Verification</b></h2>
                     </div>
                 </div>
                 <div class="row">
@@ -25,7 +25,7 @@
                             <div class="row">
                                 <label class="email-text">Enter OTP </label>
                             </div>
-                            <div class="d-flex flex-row mt-4 otp_fields">
+                            <div class="d-flex flex-row my-3 otp_fields">
                                 <input type="text" inputmode="numeric" class="form-control me-1 me-md-2 me-lg-1"
                                     onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="1"
                                     formControlName="num1" on-keyup="valCheck()"
@@ -55,7 +55,7 @@
                         <span class="d-block email-text">Don't receive the code? <span class="cursor fw-bold" (click)="resendOTP()">Resend</span></span>
                     </div> -->
                             <div class="action-btn-link-content">
-                                <a routerLink="../login" class="login-links">Go back to Login</a>
+                                <a routerLink="../login" class="m-0">Go back to Login</a>
                                 <button mat-raised-button class="proceedbtn cursor" type="submit">Submit OTP</button>
                             </div>
                         </form>

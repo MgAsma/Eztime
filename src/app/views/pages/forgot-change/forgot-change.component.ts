@@ -11,10 +11,10 @@ import { ApiserviceService } from 'src/app/service/apiservice.service';
 export class ForgotChangeComponent implements OnInit {
   userId: any;
   changePassword: FormGroup;
-  eyeIcon = 'bi bi-eye-slash'
+  eyeIcon = 'visibility_off'
   passwordType = "password";
   eyeState: boolean = false;
-  eyeIcon2 = 'bi bi-eye-slash'
+  eyeIcon2 = 'visibility_off'
   passwordType2 = "password";
   eyeState2: boolean = false;
   constructor(private builder: FormBuilder, private api: ApiserviceService, private router: Router) { }
@@ -88,11 +88,11 @@ export class ForgotChangeComponent implements OnInit {
   showPassword() {
     this.eyeState = !this.eyeState
     if (this.eyeState == true) {
-      this.eyeIcon = 'bi bi-eye'
+      this.eyeIcon = 'visibility'
       this.passwordType = 'text'
     }
     else {
-      this.eyeIcon = 'bi bi-eye-slash'
+      this.eyeIcon = 'visibility_off'
       this.passwordType = 'password'
     }
 
@@ -100,11 +100,11 @@ export class ForgotChangeComponent implements OnInit {
   showPasswordtwo() {
     this.eyeState2 = !this.eyeState2
     if (this.eyeState2 == true) {
-      this.eyeIcon2 = 'bi bi-eye'
+      this.eyeIcon2 = 'visibility'
       this.passwordType2 = 'text'
     }
     else {
-      this.eyeIcon2 = 'bi bi-eye-slash'
+      this.eyeIcon2 = 'visibility_off'
       this.passwordType2 = 'password'
     }
 

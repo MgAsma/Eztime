@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   message = '';
   error: boolean;
   eyeState: boolean = false;
-  eyeIcon = 'bi bi-eye-slash'
+  eyeIcon = 'visibility_off'
   passwordType = "password";
   minValue = 0.01;
   ngOnInit(): void {
@@ -107,11 +107,11 @@ export class LoginComponent implements OnInit {
   showPassword() {
     this.eyeState = !this.eyeState
     if (this.eyeState == true) {
-      this.eyeIcon = 'bi bi-eye'
+      this.eyeIcon = 'visibility'
       this.passwordType = 'text'
     }
     else {
-      this.eyeIcon = 'bi bi-eye-slash'
+      this.eyeIcon = 'visibility_off'
       this.passwordType = 'password'
     }
 

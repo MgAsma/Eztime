@@ -55,5 +55,10 @@ export class ForgotPasswordComponent implements OnInit {
     }
 
   }
+  preventSpace(event: KeyboardEvent): void {
+    if (event.key === ' ') {
+      event.preventDefault();
+    }
+  }
 
 }
