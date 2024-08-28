@@ -547,7 +547,7 @@
 //   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 // }
 .ngx-pagination .pagination-previous,.pagination-next{
-  padding: 0 3px;
+  padding: 5px 10px !important;
   border-radius: 5px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
