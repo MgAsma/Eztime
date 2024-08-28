@@ -67,7 +67,7 @@
  /* based on angular-toastr css https://github.com/Foxandxss/angular-toastr/blob/cb508fe6801d6b288d3afc525bb40fee1b101650/dist/angular-toastr.css */
  .default-header-card{
   border-radius: 20px 20px !important;
-  transform: scale(0.95);
+  transform: scale(0.97);
   mat-card{
     border-radius:20px 20px 0 0 !important;
     box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px !important;
@@ -425,8 +425,8 @@
  }
 
  .body {
-   background: #f2f2f2;
-   padding: 15px 15px;
+   background: #f6f6f6;
+  //  padding: 15px 15px;
  }
 
  mat-card.profile-settings-card {
@@ -523,4 +523,38 @@
  .profile-settings-content {
    cursor: pointer !important;
  }
- 
+ .mat-badge-medium .mat-badge-content {
+  width: 12px;
+  height: 12px;
+  line-height: 13px;
+  right:0;
+  top:0;
+}
+.mat-badge-medium.mat-badge-overlap.mat-badge-after .mat-badge-content {
+  right: -2px;
+}
+.mat-badge-medium.mat-badge-above .mat-badge-content {
+  top: -4px;
+}
+// .ngx-pagination .pagination-next a::after, .ngx-pagination .pagination-next.disabled::after {
+//   padding: 5px 10px;
+//   border-radius: 5px;
+//   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+// }
+// .ngx-pagination .pagination-previous a::before, .ngx-pagination .pagination-previous.disabled::before {
+//   padding: 5px 10px;
+//   border-radius: 5px;
+//   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+// }
+.ngx-pagination .pagination-previous,.pagination-next{
+  padding: 0 3px;
+  border-radius: 5px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+input[type='search']::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+.sidebar-logo-sidebar{
+  position:absolute ;
+  left: 20px;
+}

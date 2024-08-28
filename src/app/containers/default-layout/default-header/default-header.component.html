@@ -14,79 +14,37 @@
     </button>
     <div class="row" >
       <div class="col-sm-12">
-          <h1 class="breadcrumb-title" >{{pageName |titlecase}}</h1>
+          <h1 class="breadcrumb-title" *ngIf="pageName === 'Create'">{{pageName |titlecase}} {{'Organization'}}</h1>
+          <h1 class="breadcrumb-title" *ngIf="pageName !== 'Create'">{{pageName |titlecase}}</h1>
          <div class="mobile-hide-content" *ngIf="pageName!=''">
           <nav aria-label="breadcrumb ">
             <ol class="breadcrumb mb-2">
-              <li class="breadcrumb-item" *ngIf="pageName!='Dashboard'"><a routerLink="/dashboards">Home</a></li>
+              <li class="breadcrumb-item" *ngIf="pageName !== 'Dashboard'"><a routerLink="/dashboards">Dashboard</a></li>
+              <li class="breadcrumb-item" *ngIf="pageName === 'Create'"><a routerLink="getBack()">{{previousPage}}</a></li>
               <li class="breadcrumb-item sub-title" ><a>{{pageName |titlecase}}</a></li>
             </ol>
           </nav>
          </div>
       </div>
   </div>
-    <!-- <c-header-nav class="d-none d-lg-flex me-auto"> -->
-      <!-- <c-header-nav class="d-lg-flex justify-content-end w-27">
-      <div class="user-id">WELCOME !</div>
-      
-      <div class="user-name" [ngClass]="user_role_Name !== 'EMPLOYEE' ? 'nonemployee' : 'employee'">
-              {{user_name}}<br/>
-        <small class="role-name" *ngIf="user_role_Name !== 'EMPLOYEE'">{{user_role_Name}}</small>
-      </div>
-      
-    </c-header-nav> -->
-    <c-header-nav>
-      <div class="p-r">
+   
+    <c-header-nav class="p-r">
+      <div class="notification-container">
         <i class="bi bi-bell"  [matBadge]="notes?.length"  matBadgeColor="warn" (click)="openNotification()"></i>
       </div>
-      <div class="p-r mobile-hide-content">
+      
+     
+      <div class="mobile-hide-content">
         <button class="settings-btn py-1" type="click" (click)="openDialogue()">
           <i class="bi bi-box-arrow-right"></i> Logout
         </button>
       </div>
     </c-header-nav>
-    <!-- <c-header-nav class="ms-3">
-      <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
-    </c-header-nav> -->
-
+   
   </c-container>
   
 </ng-container>
 <!--</c-header>-->
 
-<!-- <ng-template #userDropdown>
-  <c-dropdown alignment="end" variant="nav-item">
-    <button 
-      cButton
-      color=""
-      [caret]="false"
-      cDropdownToggle
-      class="py-0"
-    >
-      <c-avatar
-        cTextColor="primary"
-        shape="rounded-1"
-        size="md"
-        src="./assets/img/avatars/8.jpg"
-        status="success"
-      >
-      </c-avatar>
-     
-    </button>
-    <mat-card >
-      <ul cDropdownMenu class="pt-0 pr-5 w-auto c-dropClass">
-        <li></li>
-        <li *ngFor="let headNav of headerNav" >
-          <div [ngClass]="getHeaderNavStyles(headNav)" (click)="clearStorage(headNav)">
-            <a [routerLink]="headNav.link" cDropdownItem>
-              <i class="{{headNav.icons}}" id="nav-icon"></i>
-              <span class="title" >{{headNav.page}} </span>
-            </a>
-          </div>   
-        </li>
-      </ul>
-    </mat-card>
-   
-  </c-dropdown>
-</ng-template> -->
+
 

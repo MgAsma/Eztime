@@ -40,8 +40,8 @@
               <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                 <mat-label>Country <b class="r-star">*</b></mat-label>
                 <mat-select formControlName="org_country" (selectionChange)="getState($event.value)" autocomplete="off">
-                  <mat-option *ngFor="let country of country" [value]="country.country_name">
-                    {{country.country_name}}
+                  <mat-option *ngFor="let country of country" [value]="country.name">
+                    {{country.name}}
                   </mat-option>
                 </mat-select>
                 <mat-error *ngIf="f['org_country']?.touched && f['org_country']?.invalid">
@@ -57,8 +57,8 @@
               <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                 <mat-label>State <b class="r-star">*</b></mat-label>
                 <mat-select formControlName="org_state" (selectionChange)="getCity($event.value)" autocomplete="off" [attr.disabled]="!f['org_country']?.value" [ngbTooltip]="!f['org_country']?.value ? 'Please select country' :''">
-                  <mat-option *ngFor="let state of state" [value]="state.state_name">
-                    {{state.state_name}}
+                  <mat-option *ngFor="let state of state" [value]="state.name">
+                    {{state.name}}
                   </mat-option>
                 </mat-select>
                 <mat-error *ngIf="f['org_state']?.touched && f['org_state']?.invalid">
@@ -87,6 +87,9 @@
               <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
                 <mat-label>Postal code </mat-label>
                 <input matInput type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" formControlName="org_postal_code" placeholder="Enter postal code" autocomplete="off">
+                <mat-error *ngIf="f['org_postal_code']?.touched && f['org_postal_code']?.invalid">
+                  <span *ngIf="f['org_postal_code'].errors?.['max']">Please enter 6 digit postal code</span>
+                </mat-error>
               </mat-form-field>
             </div>
           </div>
@@ -136,22 +139,15 @@
   
       
       </div>
-      <h5 class="py-3"><b>Create Admin</b></h5>
+      <h5><b>Create Admin</b></h5>
       <h6>Create Multiple Admin</h6>
       
       <div class="row">
         <div class="col-11">
           <div class="row-container" >
-            <!-- <div class="column">
-              <mat-form-field  class="">
-                <input matInput type="text" value="{{ i + 1 }}" readonly />
-              </mat-form-field>
-            </div> -->
+            
             <div class="column">
-              <!-- <mat-form-field  class="w-100 custom-mat-form-field"> -->
-                <!-- <mat-label>Admin Name</mat-label> -->
-              <!-- <input type="text" matInput formControlName="admin_name" placeholder="Enter Admin Name"  autocomplete="off"/>
-            -->
+              
             <input type="text" matInput formControlName="admin_name" placeholder="Admin Name"  autocomplete="off"/>
               <div *ngIf="f['admin_name'].touched && f['admin_name'].invalid"
               class="error-text">
@@ -165,12 +161,9 @@
               class="error-text">
               <span>Cannot start with a space.</span>
           </div>
-        <!-- </mat-form-field> -->
+       
             </div>
             <div class="column">
-              <!-- <mat-form-field  class="w-100 custom-mat-form-field"> -->
-                <!-- <mat-label>Email</mat-label> -->
-              <!-- <input type="email" matInput formControlName="admin_email" placeholder="Enter Email"  autocomplete="off"/> -->
               <input type="email" matInput formControlName="admin_email" placeholder="Email"  autocomplete="off"/> 
               <div *ngIf="f['admin_email'].touched && f['admin_email'].invalid"
               class="error-text">
@@ -185,10 +178,6 @@
 
             </div>
             <div class="column">
-              <!-- <mat-form-field  class="w-100 custom-mat-form-field"> -->
-              <!-- <mat-label>Phone Number</mat-label> -->
-              <!-- <input type="tel" matInput formControlName="admin_phone_number" placeholder="Enter Number"  autocomplete="off"/>
-              -->
               <input type="tel" matInput formControlName="admin_phone_number" placeholder="Phone Number"  autocomplete="off"/>
              
               <div *ngIf="f['admin_phone_number'].touched && f['admin_phone_number'].invalid"
@@ -202,7 +191,6 @@
                   *ngIf="f['admin_phone_number'].invalid && organizationForm.get('admin_phone_number').hasError('phoneNumberLength')"
                   class="error-text">Please enter 10 digits
               </div>
-            <!-- </mat-form-field> -->
             </div>
                
             <div class="column">
@@ -221,10 +209,10 @@
       </div>
       
    <!-- Display the list of added admins -->
-      <!-- <h6>Admin List</h6> -->
-      <div class="row" *ngFor="let admin of adminList; let i = index" >
+     
+      <div class="row mt-4" *ngFor="let admin of adminList; let i = index" >
         <div class="col-11 ">
-          <div class="row-container2 my-4">
+          <div class="row-container2 ">
             <!-- <div class="column">{{ i + 1 }}</div> -->
             <div class="column py-2">{{ admin.admin_name }}</div>
             <div class="column py-2">{{ admin.admin_email }}</div>
@@ -232,7 +220,7 @@
             <div class="column py-2">{{ admin.admin_status }}</div>
           </div>
         </div>
-        <div class="col-1 d-flex justify-content-center align-items-center" (click)="deleteAdmin(i)"> <i class="bi bi-trash-fill" style="color: red;font-size: 20px;padding-right: 30px;"></i></div>
+        <div class="col-1 d-flex justify-content-center align-items-center" (click)="deleteAdmin(i)"> <i class="bi bi-trash-fill" ></i></div>
         
       </div>
      
@@ -240,7 +228,7 @@
       <!-- Submit Button -->
       <div class="row">
         <div class="col-12 py-4">
-          <button mat-raised-button color="primary" >Submit</button>
+          <button mat-raised-button class="proceedbtn" color="primary" >Submit</button>
         </div>
       </div>
     <!-- </mat-card> -->

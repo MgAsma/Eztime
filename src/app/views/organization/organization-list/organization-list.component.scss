@@ -1,46 +1,22 @@
-ol{
-    background-color: inherit;
+*.row {
+    --bs-gutter-x: 0rem;
 }
-a{
-    color: #3F51B5;
-    text-decoration: none;
+.container-wrapper{
+    transform: scale(0.95);
 }
-li{
-    
-    list-style: none;
-    color: grey;
-}
-ul{
-    padding: 0px;
-}
+
 .bg{
     background-color: white;
     height: 100%;
     width: 100%;
-    padding: 10px;
     border-radius: 5px;
 
 }
-.proceedbtn{
-    background-color: #3F51B5;
-    border-radius: 5px;
-    border: none;
-    height: 40px;
-    width: 100%;
-    color: white;
-    margin: 10px 0px;
-}
-.printbtn{
-    background-color: #00BCD4;
-    border-radius: 5px;
-    border: none;
-    height: 40px;
-    width: 100%;
-    color: white;
-    margin: 10px 0px;
-}
+
+
 .bi-pencil-square,.bi-trash{
-    padding: 3px 5px;
+    padding: 4px 8px;
+    font-size: 15px;
     margin: 2px;
     background: #f6f6f6;
     border-radius: 50%;
@@ -55,50 +31,7 @@ i{
 .btnicon{
     display: none;
 }
-button:hover .btnicon{
-    display: block;
-}
-::ng-deep .mat-form-field {
-    // height: 45px;
-    width: 100% !important;
-    background-color: #ffff;
-    // border-radius: 50px;
-    // border: solid gray;
-}
 
-
-::ng-deep .mat-form-field-underline {
-    display: none;
-}
-select{
-    width: 100%;
-    height: 40px;
-    margin: 1px 1px;
-}
-span{
-    color: red;
-}
-p{
-    color: grey;
-}
-html{
-    position: relative;
-}
-// .createbtn{
-//     background-color: #3F51B5;
-//     border: none;
-//     color: white;
-//     padding: 10px 13px;
-//     text-align: center;
-//     text-decoration: none;
-//     display: inline-block;
-//     font-size: 25px;
-//     margin: 0px 2px;
-//     border-radius: 50%;
-//     position: fixed;
-//     right: 5%;
-//     bottom: 15%;
-// }
 
 .search-color{
     background-color: #f6f6f6;
@@ -126,24 +59,31 @@ html{
     border: 1px solid #126EB4;
     // background: linear-gradient(5deg, #39f, transparent);
 }
-// .p-c{
-//     padding: 15px 1rem 0px 1rem;
-// }
-// .outer-card:hover{
-//     background-color: #dfdfdf;
-// }
+.search-div{
+    .sizeinput{
+        font-size: 15px;
+        width: 80%; 
+    }
+  #search-icon-tab {
+        position: absolute;
+        right: 5rem;
+        top: 9px;
+        font-size: 15px !important;
+        color: grey;
+    }
+}
 .main-col{
     padding: 5px;
 }
 #eye-btn{
     position: absolute;
-    right: 36px;
-    // top: 10px;
+    right: 48px;
     color: #0d6efd;
 }
 .p-r{
     position: relative;
 }
+
 .action-btn{
     margin: 10px 15px 0 !important;
 }
@@ -166,4 +106,33 @@ table th {
 .proceedbtn.mat-btn-s{
  width: fit-content;
  margin: 0;
+}
+.pagination-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .items-per-page-container {
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+  }
+  
+ 
+  
+.page-size{
+    border: 1px solid #e7e7e7;
+    border-radius: 5px;
+    width: 67px;
+    margin-left: 10px;
+    padding: 7px;
+}
+.nodata {
+    width: 200px;
+    position: absolute;
+    text-align: center;
 }

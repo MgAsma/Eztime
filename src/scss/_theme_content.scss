@@ -150,3 +150,20 @@ font-family: 'Exo FT';
   max-width: 180px;
   border-radius: 5px;
 }
+.proceedbtn{
+  background-color: $primay-color !important;
+  color:white;
+}
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb{
+  background-color: $primay-color !important;
+}
+.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  background-color: #c0e4ff;
+}
+.search-div{
+  .form-control:focus{
+    border: 1px solid gray;
+    box-shadow: none;
+    outline: 0;
+  }
+}

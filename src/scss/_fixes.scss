@@ -323,6 +323,9 @@ body {
     font-size: 12px !important;
   }
 }
+.table{
+  margin-bottom: 0 !important;
+}
 
 .table>thead {
   font-size: 12px;
@@ -450,7 +453,7 @@ body {
 
   .scroll-fix {
     height: 100vh !important;
-    overflow-y: scroll !important;
+    overflow-y: auto !important;
   }
 
   .mobileView {
@@ -463,20 +466,16 @@ body {
   }
 
   .bg {
-    height: 60vh !important;
+    height: 67vh !important;
     overflow-y: auto !important;
-    // margin: 5px 5px;
-    width: 99% !important;
+    width: 100% !important;
     overflow-x: hidden;
-    // padding: 15px;
     background: #fff !important;
   }
 
   .generic-form.bg {
-    height: 75vh !important;
-    //height: 100% !important;
+    height: 85vh !important;
     overflow-y: auto !important;
-    // zoom: 95%;
   }
 
   .createbtn {
@@ -585,8 +584,8 @@ app-default-header {
   #search-icon,
   #search-icon-tab {
     position: absolute;
-    right: 10px;
-    top: 10px;
+    right: 15px;
+    top: 9px;
     font-size: 15px !important;
     color: grey;
   }

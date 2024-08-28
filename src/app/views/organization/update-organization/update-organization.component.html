@@ -87,6 +87,9 @@
                   <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
                     <mat-label>Postal code </mat-label>
                     <input matInput type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" formControlName="org_postal_code" placeholder="Enter postal code" autocomplete="off">
+                    <mat-error *ngIf="f['org_postal_code']?.touched && f['org_postal_code']?.invalid">
+                      <span *ngIf="f['org_postal_code'].errors?.['max']">Please enter 6 digit postal code</span>
+                    </mat-error>
                   </mat-form-field>
                 </div>
               </div>
@@ -133,22 +136,13 @@
       
           
           </div>
-          <h5 class="py-3"><b>Create Admin</b></h5>
+          <h5><b>Create Admin</b></h5>
           <h6>Create Multiple Admin</h6>
           
           <div class="row">
             <div class="col-11">
               <div class="row-container" >
-                <!-- <div class="column">
-                  <mat-form-field  class="">
-                    <input matInput type="text" value="{{ i + 1 }}" readonly />
-                  </mat-form-field>
-                </div> -->
                 <div class="column">
-                  <!-- <mat-form-field  class="w-100 custom-mat-form-field"> -->
-                    <!-- <mat-label>Admin Name</mat-label> -->
-                  <!-- <input type="text" matInput formControlName="admin_name" placeholder="Enter Admin Name"  autocomplete="off"/>
-                -->
                 <input type="text" matInput formControlName="admin_name" placeholder="Admin Name"  autocomplete="off"/>
                   <div *ngIf="f['admin_name'].touched && f['admin_name'].invalid"
                   class="error-text">
@@ -162,12 +156,8 @@
                   class="error-text">
                   <span>Cannot start with a space.</span>
               </div>
-            <!-- </mat-form-field> -->
                 </div>
                 <div class="column">
-                  <!-- <mat-form-field  class="w-100 custom-mat-form-field"> -->
-                    <!-- <mat-label>Email</mat-label> -->
-                  <!-- <input type="email" matInput formControlName="admin_email" placeholder="Enter Email"  autocomplete="off"/> -->
                   <input type="email" matInput formControlName="admin_email" placeholder="Email"  autocomplete="off"/> 
                   <div *ngIf="f['admin_email'].touched && f['admin_email'].invalid"
                   class="error-text">
@@ -178,14 +168,10 @@
                       *ngIf="f['admin_email'].invalid && f['admin_email'].errors['required']">Email
                       Id is required</span>
                   </div>
-                <!-- </mat-form-field> -->
-    
+                
                 </div>
                 <div class="column">
-                  <!-- <mat-form-field  class="w-100 custom-mat-form-field"> -->
-                  <!-- <mat-label>Phone Number</mat-label> -->
-                  <!-- <input type="tel" matInput formControlName="admin_phone_number" placeholder="Enter Number"  autocomplete="off"/>
-                  -->
+                 
                   <input type="tel" matInput formControlName="admin_phone_number" placeholder="Phone Number"  autocomplete="off"/>
                  
                   <div *ngIf="f['admin_phone_number'].touched && f['admin_phone_number'].invalid"
@@ -199,12 +185,11 @@
                       *ngIf="f['admin_phone_number'].invalid && organizationForm.get('admin_phone_number').hasError('phoneNumberLength')"
                       class="error-text">Please enter 10 digits
                   </div>
-                <!-- </mat-form-field> -->
                 </div>
                    
                 <div class="column">
                   
-                  <mat-slide-toggle formControlName="admin_status" (change)="status=!status">
+                  <mat-slide-toggle formControlName="admin_status" style="color:gray" (change)="status=!status">
                     {{ status ? 'Active' : 'Inactive' }}
                   </mat-slide-toggle>
                   <div *ngIf="f['admin_status'].touched && f['admin_status'].invalid" class="error-text" style="top:33px">
@@ -221,7 +206,7 @@
           <!-- <h6>Admin List</h6> -->
           <div class="row" *ngFor="let admin of adminList; let i = index" >
             <div class="col-11 ">
-              <div class="row-container2 my-4">
+              <div class="row-container2 mt-4">
                 <!-- <div class="column">{{ i + 1 }}</div> -->
                 <div class="column py-2">{{ admin.admin_name }}</div>
                 <div class="column py-2">{{ admin.admin_email }}</div>
@@ -237,7 +222,7 @@
           <!-- Submit Button -->
           <div class="row">
             <div class="col-12 py-4">
-              <button mat-raised-button color="primary" >Update</button>
+              <button mat-raised-button class="proceedbtn" color="primary" >Update</button>
             </div>
           </div>
         <!-- </mat-card> -->

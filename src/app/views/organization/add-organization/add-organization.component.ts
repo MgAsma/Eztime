@@ -12,7 +12,8 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./add-organization.component.scss']
 })
 export class AddOrganizationComponent implements OnInit {
-  BreadCrumbsTitle: any = 'Create organization';
+  BreadCrumbsTitle: any = 'Create Organization';
+  BreadCrumbsSubTitle:any = 'Organization'
   photoUrl: string | null = null;
   @ViewChild('fileInput') fileInput: ElementRef;
   organizationForm: FormGroup;
@@ -69,6 +70,7 @@ export class AddOrganizationComponent implements OnInit {
   
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
+    this.common_service.setSubTitle(this.BreadCrumbsSubTitle)
     this.id = sessionStorage.getItem('user_id')
     this.initform();
     this.getCountry()
@@ -110,10 +112,8 @@ export class AddOrganizationComponent implements OnInit {
   }
   initform() {
     this.organizationForm = this._fb.group({
-      // user_ref_id:this.id,
       org_qr_uniq_id: ['22121'],
       org_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
-      //conctact_person_designation: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
       admin_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
       org_address: ['', [Validators.pattern(/^\S.*$/)]],
       org_email: ['', [Validators.required, Validators.email]],
@@ -124,7 +124,7 @@ export class AddOrganizationComponent implements OnInit {
       org_city: ['', [Validators.required]],
       org_state: ['', [Validators.required]],
       org_country: ['', [Validators.required]],
-      org_postal_code: [''],
+      org_postal_code: ['',[Validators.max(6)]],
       org_profile_updated_status: [''],
       org_default_currency_type: [''],
       admin_status: [true, [Validators.required]],
@@ -133,10 +133,8 @@ export class AddOrganizationComponent implements OnInit {
       org_logo_base_url: [''],
       page: [''],
       admin_email: ['', [Validators.required, Validators.email]],
-     // conctact_person_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
       admin_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator]],
       org_logo: ['', [Validators.required, this.fileFormatValidator]],
-      // number_of_users_in_organization:['',[Validators.required]]
     })
 
   }
@@ -205,8 +203,7 @@ export class AddOrganizationComponent implements OnInit {
 
   getState(event) {
     let data = {
-      "data_request": "GIVE_COUNTRY_RELATED_STATE",
-      "country_name": event
+      data_request: "GIVE_COUNTRY_RELATED_STATE",
     }
     this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
       // console.log(res,"RES")
@@ -216,9 +213,15 @@ export class AddOrganizationComponent implements OnInit {
     }))
   }
   getCity(event) {
+    //iso2
+    const state_code = this.state
+  .filter((f: any) => f.map((m: any) => m.name === event ? m.iso2 : null))
+  .flat()
+  .filter((code: any) => code !== null);
+alert(state_code)
     let data = {
-      "data_request": "GIVE_STATE_RELATED_CITY",
-      "state_name": event
+      data_request: "GIVE_STATE_RELATED_CITY",
+      state_code: event
     }
     this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
       //  console.log(res,"RES")
@@ -236,30 +239,7 @@ export class AddOrganizationComponent implements OnInit {
     else {
       let orgData = {}
       orgData = this.organizationForm.value
-      //console.log(this.organizationForm.value,"VALUE")
-      // if (this.type == 'url') {
-      //   fetch(this.url)
-      //     .then(response => response.blob())
-      //     .then(blob => {
-      //       // Create a FileReader to read the blob as a base64 string
-      //       const reader = new FileReader();
-      //       reader.readAsDataURL(blob);
-      //       reader.onloadend = () => {
-      //         // Extract the base64 string from the result
-      //         const base64WithPrefix = reader.result?.toString();
-      //         ////console.log(base64WithPrefix);
-      //         this.organizationForm.patchValue({
-      //           org_logo_path: this.url
-      //         })
-      //         this.base64String = base64WithPrefix
-      //         //console.log(this.organizationForm.value.org_logo_path,"jhjjhkjk")
-      //         orgData['org_logo_path'] = this.base64String
-      //         //console.log(this.base64String,"BASE");
-      //       };
-      //     });
-
-      // }
-
+      
       const data = {
         org_qr_uniq_id: this.f['org_qr_uniq_id'].value,
         org_name: this.f['org_name'].value,
@@ -274,11 +254,9 @@ export class AddOrganizationComponent implements OnInit {
       }
       console.log(data,"DATA")
       this.api.postData(`${environment.live_url}/${environment.organization}`, data).subscribe(res => {
-        // this.api.updateOrganisationDetails(4,orgData).subscribe(res=>{
         if (res['result'].status) {
-          this.api.showSuccess("Organization added successfully!!")
+          this.api.showSuccess("Organization added successfully !")
           this.organizationForm.reset()
-          // this.getOrgDetails();
         }
         else {
           this.api.showError("Error !")

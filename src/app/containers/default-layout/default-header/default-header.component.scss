@@ -33,18 +33,11 @@
     font-size: 10px;
     font-weight: bold;
 }
-.bi-bell{
-    color:gray;
-    position: relative;
-    top:10px;
-    right: 20px;
-    cursor: pointer;
-    font-size: large;
-}
-.p-r{
-    position: relative;
-    margin-right: 16px;
-}
+
+// .p-r{
+//     position: relative;
+//     margin-right: 16px;
+// }
 h1.breadcrumb-title{
     margin: 0px !important;
     font-weight: 700;
@@ -121,4 +114,17 @@ mat-card{
 h1.breadcrumb-title{
     font-size: 18px !important;
 } 
+}
+.notification-container{
+    height: 29px;
+    width: 30px;
+    background-color: #f4f4f4;
+    text-align: center;
+    position: absolute;
+    right: 6rem;
+    top: 0.5rem;
+    padding: 6px 0;
+    border-radius: 50%;
+    font-size: 15px;
+    cursor: pointer;
 }

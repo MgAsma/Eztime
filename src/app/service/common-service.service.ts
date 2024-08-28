@@ -7,14 +7,20 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class CommonServiceService {
   permission: any = new BehaviorSubject('');
+  
   user_id = sessionStorage.getItem('user_id')
   constructor(private api:ApiserviceService) {
     
    }
    private titleSubject = new BehaviorSubject<string>('Dashboard');
    title$ = this.titleSubject.asObservable();
- 
+  
+   private previousPage = new BehaviorSubject<string>('')
+   subTitle$ = this.previousPage.asObservable()
    setTitle(title: string) {
      this.titleSubject.next(title);
+   }
+   setSubTitle(subtitle:string){
+    this.previousPage.next(subtitle)
    }
 }

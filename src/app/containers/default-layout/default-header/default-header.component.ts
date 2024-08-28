@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { ChangeDetectorRef, Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -52,12 +53,14 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   notes: any;
   screenWidth: number;
   orgId: any;
+  previousPage: string;
 
 
   constructor(private classToggler: ClassToggleService, private modalService: NgbModal,
     private router: Router,
     private api: ApiserviceService, private cdref: ChangeDetectorRef,
-    private common_service: CommonServiceService) {
+    private common_service: CommonServiceService,
+   private location:Location) {
     super();
     this.getScreenSize()
   }
@@ -72,6 +75,12 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
       this.pageName = title;
       this.cdref.detectChanges();
     });
+    this.common_service.subTitle$.subscribe(subtitle =>{
+      this.previousPage = subtitle
+    })
+  }
+  getBack(){
+    this.location.back()
   }
   getHeaderNavStyles(type): any {
     switch (type['page']) {

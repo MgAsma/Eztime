@@ -58,30 +58,17 @@ export class UpdateOrganizationComponent implements OnInit {
     this.organizationForm = this._fb.group({
       org_qr_uniq_id: ['22121'],
       org_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
-      conctact_person_designation: ['', [Validators.required, Validators.pattern(/^\S.*$/)]],
       admin_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
-      org_address: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      org_address: ['', [Validators.pattern(/^\S.*$/)]],
       org_email: ['', [Validators.required, Validators.email]],
-      //org_phone: [''],
-      //org_mobile: [''],
-      //org_fax: [''],
-     // org_website: [''],
       org_city: ['', [Validators.required]],
       org_state: ['', [Validators.required]],
       org_country: ['', [Validators.required]],
-      org_postal_code: ['', [Validators.required]],
-      //org_profile_updated_status: [''],
-      //org_default_currency_type: [''],
+      org_postal_code: ['', [Validators.max(6)]],
       admin_status: ['', [Validators.required]],
-      //org_subscription_plan: [''],
-      //org_logo_path: [''],
-      //org_logo_base_url: [''],
-     // page: [''],
       admin_email: ['', [Validators.required, Validators.email]],
-      //conctact_person_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
       admin_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator()]],
       org_logo: ['', [Validators.required, this.fileFormatValidator]],
-      // number_of_users_in_organization:['',[Validators.required]]
     })
 
   }
