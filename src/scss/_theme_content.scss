@@ -14,12 +14,31 @@ body .sidebar {
 
     //box-shadow: 0px 3px 2px -1px rgba(0, 0, 0, 0.2), 0px 6px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
 }
-.proceedbtn,.mat-fab.mat-primary,.user-name,.createbtn-new {
+.proceedbtn,.mat-fab.mat-primary,.createbtn-new {
   background-color: $primay-color !important;
 }
 .sidebar-nav .nav-link.active {
   background-color: $primay-color !important;
   color:white !important;
+}
+.dropdown-item, .dropdown-item{
+  i{
+    font-size: large;
+    vertical-align: bottom;
+  }
+  font-weight: 500;
+  color: #454545;
+  &:focus{
+    color: #ffffff !important;
+    background-color: $primay-color !important;
+    border-radius: 5px;
+  }
+  &:hover{
+    color: #ffffff !important;
+    background-color: $primay-color !important;
+    border-radius: 5px;
+  }
+  
 }
 .sidebar-nav .nav-link:hover {
   background-color: $primay-color !important;
@@ -61,10 +80,10 @@ thead tr th{
     color:white !important;
     text-transform: uppercase;
     height: 50px;
-   padding: 16px 20px !important;
-   align-content: center;
-text-align: center;
-font-family: 'Exo FT';
+    padding: 16px 20px !important;
+    align-content: center;
+    text-align: center;
+    font-family: 'Exo FT';
   }
   #register-icon{
     font-size: x-large;
@@ -72,30 +91,38 @@ font-family: 'Exo FT';
     padding-right: 10px;
     cursor: pointer;
   }
-//   .ngx-pagination .current {
-//     padding: 0.1875rem 0.625rem;
-//     background: $primay-color !important;
-//     // border-radius: 50%;
-//    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
-   
-// }
 .ngx-pagination .current {
   padding: 0.1875rem 0.625rem;
-  background: transparent !important;
-  color: black !important;
-  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px; */
+    background: #f4f4f4 !important;
+    // border-radius: 50%;
+    color: black !important;
+    cursor: default;
+    &:hover{
+      opacity: 0.7;
+    }
 }
 .ngx-pagination a, .ngx-pagination button {
-    color: $primay-color !important;
+    // color: $primay-color !important;
     display: block;
     padding: 0.1875rem 0.625rem;
     border-radius: 0;
     text-decoration: none;
+    
 }
-.ngx-pagination .current:hover{
-    // background: $primay-color !important;
-    // border-radius: 50%;
-    opacity: 0.8;  
+// .ngx-pagination a {
+//   span{
+//     &:hover{
+//       border-radius: 50%;
+//     }
+//   }
+  
+// }
+.ngx-pagination .pagination-next,.pagination-previous{
+  // background-color: #f4f4f4;
+  // border-radius: 5px !important;
+  &:hover{
+    border-radius: 5px;
+  }
 }
 .createbtn{
     background: $primay-color !important;

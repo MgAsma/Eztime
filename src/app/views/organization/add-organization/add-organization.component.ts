@@ -73,24 +73,34 @@ export class AddOrganizationComponent implements OnInit {
     this.common_service.setSubTitle(this.BreadCrumbsSubTitle)
     this.id = sessionStorage.getItem('user_id')
     this.initform();
+    this.adminintForm();
     this.getCountry()
    
   }
-  
+  adminintForm(){
+    this.adminForm = this._fb.group({
+      admin_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/),Validators.required]],
+      admin_email: ['', [Validators.required, Validators.email]],
+      admin_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator]],
+      admin_status: [true],
+    })
+  }
   addAdmin() {
-   if (this.organizationForm?.value['admin_name'] && this.organizationForm?.value['admin_email'] && this.organizationForm?.value['admin_phone_number'] ) {
+   if (this.adminForm.valid) {
     const data = {
-      admin_name:this.organizationForm?.value['admin_name'],
-      admin_email:this.organizationForm?.value['admin_email'],
-      admin_phone_number:this.organizationForm?.value['admin_phone_number'],
-      admin_status:this.organizationForm?.value['admin_status']
+      admin_name:this.adminForm?.value['admin_name'],
+      admin_email:this.adminForm?.value['admin_email'],
+      admin_phone_number:this.adminForm?.value['admin_phone_number'],
+      admin_status:this.adminForm?.value['admin_status'] ? 'Active' : 'Inactive'
     }
     this.adminList.push(data);
     
-    this.f['admin_name'].reset();
-    this.f['admin_email'].reset();
-    this.f['admin_phone_number'].reset();
-    this.f['admin_status'].reset();
+    this.a['admin_name'].reset();
+    this.a['admin_email'].reset();
+    this.a['admin_phone_number'].reset();
+    this.adminForm.patchValue({
+      admin_status: [true]
+    })
   }else{
     
     
@@ -113,8 +123,7 @@ export class AddOrganizationComponent implements OnInit {
   initform() {
     this.organizationForm = this._fb.group({
       org_qr_uniq_id: ['22121'],
-      org_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
-      admin_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      org_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/), Validators.required]],
       org_address: ['', [Validators.pattern(/^\S.*$/)]],
       org_email: ['', [Validators.required, Validators.email]],
       org_phone: [''],
@@ -124,16 +133,13 @@ export class AddOrganizationComponent implements OnInit {
       org_city: ['', [Validators.required]],
       org_state: ['', [Validators.required]],
       org_country: ['', [Validators.required]],
-      org_postal_code: ['',[Validators.max(6)]],
+      org_postal_code: ['',[Validators.pattern('^\\d{6}$')]],
       org_profile_updated_status: [''],
-      org_default_currency_type: [''],
-      admin_status: [true, [Validators.required]],
+      org_default_currency_type: [''],    
       org_subscription_plan: [''],
       org_logo_path: [''],
       org_logo_base_url: [''],
       page: [''],
-      admin_email: ['', [Validators.required, Validators.email]],
-      admin_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator]],
       org_logo: ['', [Validators.required, this.fileFormatValidator]],
     })
 
@@ -185,7 +191,7 @@ export class AddOrganizationComponent implements OnInit {
   // }
   getCountry() {
     let data = {
-      "data_request": "GIVE_ALL_COUNTRY"
+      "data_request": "GIVE_ALL_COUNTRY",
     }
     this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
       // console.log(res,"RES")
@@ -202,26 +208,29 @@ export class AddOrganizationComponent implements OnInit {
   }
 
   getState(event) {
+    if(event){
     let data = {
       data_request: "GIVE_COUNTRY_RELATED_STATE",
     }
     this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
-      // console.log(res,"RES")
+      if(res){
       this.state = res.result.data.data
+      this.fileDataUrl = null;
+      // this.getCity(event);
+      }
     }, ((error) => {
       this.api.showError(error.error.error.message)
     }))
   }
+  }
   getCity(event) {
-    //iso2
-    const state_code = this.state
-  .filter((f: any) => f.map((m: any) => m.name === event ? m.iso2 : null))
-  .flat()
-  .filter((code: any) => code !== null);
-alert(state_code)
+    
+    const state_code = this.state.find((state: any) => state.name === event)?.iso2;
+ 
+   
     let data = {
       data_request: "GIVE_STATE_RELATED_CITY",
-      state_code: event
+      state_code: state_code
     }
     this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
       //  console.log(res,"RES")
@@ -232,14 +241,11 @@ alert(state_code)
 
   }
   organizationSubmit() {
-    if (this.organizationForm.invalid) {
-      this.organizationForm.markAllAsTouched()
-      this.api.showError("Please enter the mandatory fields !")
-    }
-    else {
-      let orgData = {}
-      orgData = this.organizationForm.value
-      
+    if (this.organizationForm.valid && this.adminForm.invalid && this.adminList.length) {
+      this.a['admin_name'].reset();
+      this.a['admin_email'].reset();
+      this.a['admin_phone_number'].reset();
+      this.a['admin_status'].reset();
       const data = {
         org_qr_uniq_id: this.f['org_qr_uniq_id'].value,
         org_name: this.f['org_name'].value,
@@ -249,27 +255,45 @@ alert(state_code)
         org_state: this.f['org_state'].value,
         org_country: this.f['org_country'].value,
         org_postal_code: this.f['org_postal_code'].value,
-        org_logo:this.f['org_logo'].value,
-        admin_details:this.adminList
-      }
-      console.log(data,"DATA")
-      this.api.postData(`${environment.live_url}/${environment.organization}`, data).subscribe(res => {
-        if (res['result'].status) {
-          this.api.showSuccess("Organization added successfully !")
-          this.organizationForm.reset()
+        org_logo: this.f['org_logo'].value,
+        admin_details: this.adminList
+      };
+  
+      console.log(data, "DATA");
+  
+      this.api.postData(`${environment.live_url}/${environment.organization}`, data).subscribe(
+        res => {
+          if (res['result'].status) {
+            this.api.showSuccess("Organization added successfully!");
+            this.organizationForm.reset();
+            this.fileDataUrl = null;
+            this.adminList = []; // Clear the admin list after submission
+          } 
+        },
+        error => {
+          this.api.showError(error.error.error.message);
         }
-        else {
-          this.api.showError("Error !")
-        }
-      }, (error => {
-        this.api.showError(error.error.error.message)
-      }))
+      );
     }
+    // If no admins are added and the form is invalid, show an error
+   else{
+      this.organizationForm.markAllAsTouched();
+      if(this.adminForm.invalid && !this.adminList.length){
+        this.adminForm.markAllAsTouched()
+      }
+      //this.adminForm.markAllAsTouched()
+      this.api.showError("Please enter the mandatory fields!");
+    } 
+    
+    
   }
+  
   get f() {
     return this.organizationForm.controls;
   }
-
+  get a(){
+    return this.adminForm.controls;
+  }
   setBgColor(data?): any {
 
     if (data.value) {

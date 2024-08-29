@@ -1,3 +1,5 @@
+$primay-color: #126EB4;
+$secondary-color:#FFFFFF4D;
 .s-w{
     width: 65px;
     padding: 5px;
@@ -22,26 +24,22 @@ p{
     font-size: 15px !important;
     color: #262525 !important;
 }
+button{
+    padding: 0px 30px;
+    width: 100px;
+}
 button.btn-cancel {  
-    background-color: transparent !important;
-    border: 0;
-    color: #2a2a2a;
-    margin: 0;
-    border: 2px solid #495ae6;
+    background-color: lightgray !important;
+    margin-right: 10px;
 }
-button.btn-cancel:hover {
-    border: 2px solid #4959e6df;
-    
-}
+
 button.btn-yes {
-    background-color: #495ae6 !important;
-    border: 1px;
+    background-color: $primay-color;
+    // border: 1px;
     color: #fff;
     margin: 0;
 }
-button.btn-yes:hover {
-    background-color: #4959e6de!important;
-}
+
 .act-btn{
     height: 28px !important;
     width: 75px !important;
@@ -55,11 +53,17 @@ button.btn-yes:hover {
 
 .custom-modal {
    
-    text-align: center;
-    padding: 0 !important;
+    // text-align: center;
+    padding: 30px 18px 0px !important;
 
     .modal-title {
-        padding-bottom: 10px;
+        padding-bottom: 15px;
+        font-weight: 600;
+        font-size: 14px;
+        i{
+            font-size: 16px;
+            color: #000;
+        }
     }
     .title-icon {
         display: flex;

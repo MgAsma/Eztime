@@ -33,10 +33,12 @@ export class UpdateOrganizationComponent implements OnInit {
   fileDataUrl: null;
   status:boolean = false;
   @ViewChild('fileInput') fileInput: ElementRef;
+  adminForm: FormGroup;
   constructor(private _fb: FormBuilder,
     private api: ApiserviceService, private route: ActivatedRoute,
     private router: Router, private location: Location, private common_service: CommonServiceService) {
     this.id = this.route.snapshot.paramMap.get('id')
+    
   }
 
   ngOnInit(): void {
@@ -44,7 +46,9 @@ export class UpdateOrganizationComponent implements OnInit {
 
     // this.id = sessionStorage.getItem('user_id')
     this.initform();
+    this.adminintForm();
     this.getOrgDetails();
+    
   }
   goBack(event) {
     event.preventDefault(); // Prevent default back button behavior
@@ -57,20 +61,56 @@ export class UpdateOrganizationComponent implements OnInit {
   initform() {
     this.organizationForm = this._fb.group({
       org_qr_uniq_id: ['22121'],
-      org_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
-      admin_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      org_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/), Validators.required]],
       org_address: ['', [Validators.pattern(/^\S.*$/)]],
       org_email: ['', [Validators.required, Validators.email]],
+      org_phone: [''],
+      org_mobile: [''],
+      org_fax: [''],
+      org_website: [''],
       org_city: ['', [Validators.required]],
       org_state: ['', [Validators.required]],
       org_country: ['', [Validators.required]],
-      org_postal_code: ['', [Validators.max(6)]],
-      admin_status: ['', [Validators.required]],
-      admin_email: ['', [Validators.required, Validators.email]],
-      admin_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator()]],
+      org_postal_code: ['',[Validators.pattern('^\\d{6}$')]],
+      org_profile_updated_status: [''],
+      org_default_currency_type: [''],    
+      org_subscription_plan: [''],
+      org_logo_path: [''],
+      org_logo_base_url: [''],
+      page: [''],
       org_logo: ['', [Validators.required, this.fileFormatValidator]],
     })
 
+  }
+  adminintForm(){
+    this.adminForm = this._fb.group({
+      admin_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/),Validators.required]],
+      admin_email: ['', [Validators.required, Validators.email]],
+      admin_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator]],
+      admin_status: [true],
+    })
+  }
+  addAdmin() {
+   if (this.adminForm.valid) {
+    const data = {
+      admin_name:this.adminForm?.value['admin_name'],
+      admin_email:this.adminForm?.value['admin_email'],
+      admin_phone_number:this.adminForm?.value['admin_phone_number'],
+      admin_status:this.adminForm?.value['admin_status'] ? 'Active' : 'Inactive'
+    }
+    this.adminList.push(data);
+    
+    this.a['admin_name'].reset();
+    this.a['admin_email'].reset();
+    this.a['admin_phone_number'].reset();
+    this.adminForm.patchValue({
+      admin_status: [true]
+    })
+  }else{
+    
+    
+    this.organizationForm.markAllAsTouched()
+  }
   }
   phoneNumberLengthValidator() {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -85,27 +125,7 @@ export class UpdateOrganizationComponent implements OnInit {
     };
   }
 
-  addAdmin() {
-    if (this.organizationForm?.value['admin_name'] && this.organizationForm?.value['admin_email'] && this.organizationForm?.value['admin_phone_number'] ) {
-     const data = {
-       admin_name:this.organizationForm?.value['admin_name'],
-       admin_email:this.organizationForm?.value['admin_email'],
-       admin_phone_number:this.organizationForm?.value['admin_phone_number'],
-       admin_status:this.organizationForm?.value['admin_status']
-     }
-     this.adminList.push(data);
-     
-     this.f['admin_name'].reset();
-     this.f['admin_email'].reset();
-     this.f['admin_phone_number'].reset();
-     this.f['admin_status'].reset();
-   }else{
-     
-     
-     this.organizationForm.markAllAsTouched()
-   }
-   }
-
+ 
   fileFormatValidator(control: AbstractControl): ValidationErrors | null {
     const allowedFormats = ['.jpg', '.jpeg', '.png', '.JPG', '.JPEG', '.PNG'];
     const file = control.value;
@@ -117,24 +137,26 @@ export class UpdateOrganizationComponent implements OnInit {
     }
     return null;
   }
-  getOrgDetails() {
-    this.api.getData(`${environment.live_url}/${environment.organization}?id=${this.id}&page_number=1&data_per_page=10`).subscribe(res => {
+   getOrgDetails() {
+    this.api.getData(`${environment.live_url}/${environment.organization}?id=${this.id}&page_number=1&data_per_page=10`).subscribe(async res => {
       if (res) {
         let responseData = []
         let currentOrg = []
         responseData = res['result']['data']
         currentOrg = responseData[responseData.length - 1]
-        this.url = currentOrg['org_logo_path']
-        // console.log(currentOrg,"currentOrg RESPONNSE")
+        this.fileDataUrl = currentOrg['org_logo_path']
+        await this.getCountry();
+        await this.getState('')
+        setTimeout(async () => {
+          await this.getCity(currentOrg['org_state'])
+        }, 1000);
+        
         this.organizationForm.patchValue({
           // user_ref_id:currentOrg['user_ref_id'],
           org_qr_uniq_id: currentOrg['org_qr_uniq_id'],
           org_name: currentOrg['org_name'],
           org_email: currentOrg['org_email'],
-          // org_phone: currentOrg['org_phone'],
-          // org_mobile: currentOrg['org_mobile'],
-          // org_fax: currentOrg['org_fax'],
-          // org_website: currentOrg['org_website'],
+          
           org_address: currentOrg['org_address'],
           org_city: currentOrg['org_city'],
           org_state: currentOrg['org_state'],
@@ -147,22 +169,18 @@ export class UpdateOrganizationComponent implements OnInit {
           org_logo_path: currentOrg['org_logo_path'],
           org_logo_base_url: currentOrg['org_logo_base_url'],
           //org_logo_base_url:[],
-          //page: currentOrg['page'],
-         // conctact_person_designation: currentOrg['conctact_person_designation'],
-          //admin_name: currentOrg['conctact_person_name'],
-         // conctact_person_password: currentOrg['conctact_person_password'],
-         //admin_email: currentOrg['conctact_person_email'],
-          //number_of_users_in_organization: currentOrg['number_of_users_in_organization'],
-          //admin_phone_number: currentOrg['conctact_person_phone_number'],
           org_logo: currentOrg['org_logo_path']
         })
-        this.getCountry()
-        this.getState(currentOrg['org_country'])
-        this.getCity(currentOrg['org_state'])
+       
+      
       }
     }, (error => {
       this.api.showError(error.error.error.message)
     }))
+    
+      
+    
+   
   }
   onFocus() {
     this.type = 'file';
@@ -170,7 +188,7 @@ export class UpdateOrganizationComponent implements OnInit {
   }
   getCountry() {
     let data = {
-      "data_request": "GIVE_ALL_COUNTRY"
+      data_request: "GIVE_ALL_COUNTRY"
     }
     this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
       // console.log(res,"RES")
@@ -187,28 +205,38 @@ export class UpdateOrganizationComponent implements OnInit {
   }
   getState(event) {
     let data = {
-      "data_request": "GIVE_COUNTRY_RELATED_STATE",
-      "country_name": event
+      data_request: "GIVE_COUNTRY_RELATED_STATE",
     }
-    this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
+    this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe(async(res: any) => {
+      if(res){
       //console.log(res,"RES")
       this.state = res.result.data.data
+      }
+    }, ((error) => {
+      this.api.showError(error.error.error.message)
+    }))
+  
+  }
+  getCity(event) {
+    if(event){
+      
+      const state_code = this.state?.find((state: any) => state.name === event)?.iso2;
+      let data = {
+        data_request: "GIVE_STATE_RELATED_CITY",
+        state_code: state_code
+      }
+    
+    
+    this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
+      if(res){
+        // console.log(res,"RES")
+        this.city = res.result.data.data
+      }
+     
     }, ((error) => {
       this.api.showError(error.error.error.message)
     }))
   }
-  getCity(event) {
-    let data = {
-      "data_request": "GIVE_STATE_RELATED_CITY",
-      "state_name": event
-    }
-    this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
-      // console.log(res,"RES")
-      this.city = res.result.data.data
-    }, ((error) => {
-      this.api.showError(error.error.error.message)
-    }))
-
   }
   // uploadImageFile(event: any) {
   //   this.uploadFile = event.target.files[0];
@@ -254,7 +282,11 @@ export class UpdateOrganizationComponent implements OnInit {
   }
   organizationSubmit() {
     if (this.organizationForm.invalid) {
-      this.organizationForm.markAllAsTouched()
+      this.organizationForm.markAllAsTouched();
+      if(this.adminForm.invalid && !this.adminList.length){
+        this.adminForm.markAllAsTouched()
+      }
+     
       this.api.showError("Please enter the mandatory fields !")
     }
     else {
@@ -304,36 +336,7 @@ export class UpdateOrganizationComponent implements OnInit {
 
 
       }
-      // if (this.type == 'url') {
-      //   fetch(this.url, { method: 'GET' } as RequestInit)
-      //     .then(response => response.blob())
-      //     .then(blob => {
-      //       // Create a FileReader to read the blob as a base64 string
-      //       const reader = new FileReader();
-      //       reader.readAsDataURL(blob);
-      //       reader.onloadend = () => {
-      //         // Extract the base64 string from the result
-      //         const base64WithPrefix = reader.result?.toString();
-      //         this.orgData['org_logo'] = base64WithPrefix;
-      //         //console.log(base64WithPrefix);
-
-      //         this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`, this.orgData).subscribe(
-      //           res => {
-      //             if (res['result'].status) {
-      //               this.api.showSuccess("Organization Updated Successfully!")
-      //               this.router.navigate(['organization/orgList'])
-      //               this.getOrgDetails();
-      //             } else {
-      //               this.api.showError("Error!")
-      //             }
-      //           },
-      //           (error) => {
-      //             this.api.showError(error.error.error.message)
-      //           }
-      //         );
-      //       };
-      //     });
-      // }
+     
 
       else {
         this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`, data).subscribe(res => {
@@ -356,27 +359,9 @@ export class UpdateOrganizationComponent implements OnInit {
   get f() {
     return this.organizationForm.controls;
   }
-
-  setBgColor(data?): any {
-
-    if (data.value || data.value === 0) {
-      //console.log(data.value)
-      return 'back-color'
-    }
-    else {
-      return ''
-    }
+  get a(){
+    return this.adminForm.controls;
   }
-  showPassword() {
-    this.eyeState = !this.eyeState
-    if (this.eyeState == true) {
-      this.eyeIcon = 'bi bi-eye'
-      this.passwordType = 'text'
-    }
-    else {
-      this.eyeIcon = 'bi bi-eye-slash'
-      this.passwordType = 'password'
-    }
-
-  }
+ 
+  
 }

@@ -2,34 +2,23 @@
 <c-sidebar #sidebar="cSidebar" class="d-print-none sidebar sidebar-fixed" id="sidebar" visible>
 
   <c-sidebar-brand class="p-r">
-    <!-- <b style="color: #3F51B5;
-  
-  font-family: sans-serif;" class="industry-title" [ngStyle]="!iconSize ? {'font-size':'1.7rem'}:{'font-size':'1rem'}">
-  <i class="bi bi-clock-history" style="color:blue" *ngIf="!iconSize"></i> EZTIME</b> -->
-    <!-- <img src="../../../assets/images/eztime_logo.svg" class="sidebar-logo"/> -->
-    <!-- <img src="../../../assets/images/Project Ace logo-04.png" class="sidebar-logo"/> -->
+   
     <img src="../../../assets/images/logo.svg" width="170px" height="65px" class="sidebar-logo-sidebar" />
   </c-sidebar-brand>
   <perfect-scrollbar [config]="perfectScrollbarConfig">
-    <!--  [perfectScrollbar]="perfectScrollbarConfig"-->
+   
     <c-sidebar-nav [navItems]="config == 'SUPER ADMIN'? navItems : sidebarNavItems" dropdownMode="close">
 
     </c-sidebar-nav>
   </perfect-scrollbar>
-  <!-- <c-sidebar-toggler
-    *ngIf="!sidebar.narrow"
-    toggle="unfoldable"
-    cSidebarToggle="sidebar"
-   (click)="iconSize = !iconSize"></c-sidebar-toggler> -->
-  <!-- <div class="user-id">WELCOME !</div> -->
-
+ 
   <mat-card class="profile-settings-card">
     <div class="d-flex">
       <c-avatar cTextColor="primary" shape="rounded-1" size="md" src="./assets/img/avatars/8.jpg" >
       </c-avatar>
-      <p class="mx-2" [ngClass]="user_role_Name !== 'EMPLOYEE' ? 'nonemployee' : 'employee'">
-        <small class="role-name" *ngIf="user_role_Name !== 'EMPLOYEE'">{{user_role_Name|titlecase}}</small><br />
-        {{user_name |titlecase}}
+      <p class="mx-2 text-center" [ngClass]="user_role_Name !== 'EMPLOYEE' ? 'nonemployee' : 'employee'">
+        <small class="user-name" *ngIf="user_role_Name !== 'EMPLOYEE'">{{user_name |titlecase}}</small><br />
+        <mat-label class="user-role">{{user_role_Name|titlecase}}</mat-label>
       </p>
 
     </div>
@@ -59,15 +48,18 @@
 </div>
 
 <ng-template #userDropdown>
-  <c-dropdown alignment="end" variant="nav-item">
-    <button [caret]="false" cDropdownToggle class="py-1 settings-btn"><span><i class="bi bi-gear"></i> Settings</span>
+  <c-dropdown alignment="end" variant="nav-item" >
+    <button mat-stroked-button [caret]="false" cDropdownToggle class="py-1 settings-btn"><i class="bi bi-gear"></i> Settings
     </button>
-    <ul cDropdownMenu class="py-2 pr-5 w-auto c-dropClass">
+    <ul cDropdownMenu class="py-2 pr-5 w-auto c-dropClass" style="padding: 11px !important;background: rgb(225 242 255 / 96%) !important;
+    font-size: 12px !important;position: absolute;inset: auto 0px 0px auto;
+    border: 1px solid #ecfaff;margin: 2px;transform: translate3d(0px, -40.6667px, 0px);">
       <li></li>
-      <li *ngFor="let headNav of headerNav" style="margin:10px auto">
+      <li *ngFor="let headNav of headerNav" >
         <div [ngClass]="getHeaderNavStyles(headNav)">
-          <a (click)="navigateTo(headNav)" cDropdownItem class="profile-settings-content">
-            <i class="{{headNav.icons}}" id="nav-icon"></i>
+          <a (click)="navigateTo(headNav)" cDropdownItem class="profile-settings-content" >
+            <i class="{{headNav.icons}}" id="nav-icon" ></i>
+           
             <span class="title">&nbsp;&nbsp;{{headNav.page |titlecase}} </span>
           </a>
         </div>

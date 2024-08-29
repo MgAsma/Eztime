@@ -136,3 +136,6 @@ table th {
     position: absolute;
     text-align: center;
 }
+::ng-deep .mat-select-placeholder {
+    color: #222020;
+}

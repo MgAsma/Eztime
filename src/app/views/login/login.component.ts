@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
   login() {
 
     if (this.loginForm.invalid) {
-      this.api.showError('Invalid!')
+      this.api.showError('Please enter the mandatory fields')
 
       this.loginForm.markAllAsTouched()
 
@@ -87,7 +87,7 @@ export class LoginComponent implements OnInit {
           //   this.router.navigate(['/dashboards']);
           //  }
           this.router.navigate(['/dashboards']);
-          this.api.showSuccess('Login successfull!!');
+          this.api.showSuccess('Login successful !');
         }
         else {
           //console.log(response)
