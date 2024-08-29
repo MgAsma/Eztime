@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
@@ -26,7 +26,9 @@ export class ProfileComponent implements OnInit {
   state: any = [];
   city: any = [];
   org_id: string;
-
+  fileDataUrl:any= null; 
+  tempStoreProfileImage:any = null;
+  @ViewChild('fileInput') fileInput: ElementRef;
   constructor( 
     private _fb:FormBuilder,
     private api:ApiserviceService,
@@ -89,65 +91,119 @@ export class ProfileComponent implements OnInit {
   get f(){
     return this.profileForm.controls;
   }
-  getCountry(){
-    let data = {
-      "data_request":"GIVE_ALL_COUNTRY"
-    }
+  // getCountry(){
+  //   let data = {
+  //     "data_request":"GIVE_ALL_COUNTRY"
+  //   }
     
-    this.api.postData(`${environment.live_url}/${environment.country_state_city}`,data).subscribe((res:any) =>{
-     // console.log(res,"RES")
-      if(res.result.data.data){
-        this.country = res.result.data.data
-      }
-    },((error)=>{
+  //   this.api.postData(`${environment.live_url}/${environment.country_state_city}`,data).subscribe((res:any) =>{
+  //    // console.log(res,"RES")
+  //     if(res.result.data.data){
+  //       this.country = res.result.data.data
+  //     }
+  //   },((error)=>{
+  //     this.api.showError(error.error.error.message)
+  //   }))
+  // }
+
+  getCountry() {
+    let data = {
+      data_request: "GIVE_ALL_COUNTRY"
+    }
+    this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
+      // console.log(res,"RES")
+      this.country = res.result.data.data
+    }, ((error) => {
       this.api.showError(error.error.error.message)
     }))
   }
+
   onFocusCountry(){
     this.profileForm.patchValue({
       state:'',
       city:''
     })
   }
-  getState(event){
+  // getState(event){
    
-    let data = {
-      "data_request":"GIVE_COUNTRY_RELATED_STATE",
-      "country_name":event
-    }
-    this.api.postData(`${environment.live_url}/${environment.country_state_city}`,data).subscribe((res:any) =>{
-    //  console.log(res,"RES")
-      this.state = res.result.data.data
+  //   let data = {
+  //     "data_request":"GIVE_COUNTRY_RELATED_STATE",
+  //     "country_name":event
+  //   }
+  //   this.api.postData(`${environment.live_url}/${environment.country_state_city}`,data).subscribe((res:any) =>{
+  //   //  console.log(res,"RES")
+  //     this.state = res.result.data.data
      
-    },((error)=>{
-      this.api.showError(error.error.error.message)
-    }))
-  }
-  getCity(event){
-    let data ={
-       data_request:"GIVE_STATE_RELATED_CITY",
-       state_name:event
-   }
-    this.api.postData(`${environment.live_url}/${environment.country_state_city}`,data).subscribe((res:any) =>{
+  //   },((error)=>{
+  //     this.api.showError(error.error.error.message)
+  //   }))
+  // }
+  getState(event) {
+    let data = {
+      data_request: "GIVE_COUNTRY_RELATED_STATE",
+    }
+    this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe(async(res: any) => {
+      if(res){
       //console.log(res,"RES")
-      this.city = res.result.data.data
-    },((error)=>{
+      this.state = res.result.data.data
+      }
+    }, ((error) => {
       this.api.showError(error.error.error.message)
     }))
   
-   
+  }
+
+  // getCity(event){
+  //   let data ={
+  //      data_request:"GIVE_STATE_RELATED_CITY",
+  //      state_name:event
+  //  }
+  //   this.api.postData(`${environment.live_url}/${environment.country_state_city}`,data).subscribe((res:any) =>{
+  //     //console.log(res,"RES")
+  //     this.city = res.result.data.data
+  //   },((error)=>{
+  //     this.api.showError(error.error.error.message)
+  //   }))
+  // }
+  getCity(event) {
+    if(event){
+      
+      const state_code = this.state?.find((state: any) => state.name === event)?.iso2;
+      let data = {
+        data_request: "GIVE_STATE_RELATED_CITY",
+        state_code: state_code
+      }
     
-   
+    
+    this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
+      if(res){
+        // console.log(res,"RES")
+        this.city = res.result.data.data
+      }
+     
+    }, ((error) => {
+      this.api.showError(error.error.error.message)
+    }))
+  }
   }
   
   getProfiledata(){
-    this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe((res:any)=>{
-   // console.log(res,'PROFILE GET API RESPONSE')
+    this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe(async (res:any)=>{
+   console.log(res,'PROFILE GET API RESPONSE')
       if(res.result.data){
         let data = res.result.data
-          this.getCountry()
-         this.getState(data[0].u_country)
-         this.getCity(data[0].u_state)
+        let responseData = []
+        let currentProfileDetails = []
+        responseData = res['result']['data']
+        currentProfileDetails = responseData[responseData.length - 1]
+         this.fileDataUrl = currentProfileDetails['u_profile_photo'];
+         this.tempStoreProfileImage = currentProfileDetails['u_profile_photo'];
+         console.log( this.fileDataUrl)
+        await this.getCountry();
+        await this.getState('')
+        setTimeout(async () => {
+          await this.getCity(currentProfileDetails['u_state'])
+        }, 1000);
        // console.log(data[0].u_city,"CITY")
         this.profileForm.patchValue({
           first_name:data[0].u_first_name,
@@ -161,16 +217,36 @@ export class ProfileComponent implements OnInit {
           state:data[0].u_state,
           city:data[0].u_city,
           address:data[0].u_address,
-          // user_address_details:data[0].,
           postal_code:data[0].u_postal_code,
-          user_profile_photo:data[0].u_profile_path
+          user_profile_photo:data[0].u_profile_photo
         })
-        
+        console.log(this.profileForm.value)
       }
     },(error=>{
       this.api.showError(error.error.error.message)
     }))
   }
+
+  async convertedUrlProfileImg(url: any) {
+    var res:any = await fetch(url);
+    var blob:any = await res.blob();
+    this.getprofileBase64FromUrl(blob)
+    
+  }
+  getprofileBase64FromUrl(data:any){
+    let file = data
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload =  (event) =>{
+      this.fileDataUrl = reader.result;
+      console.log('fileDataUrl',this.fileDataUrl);
+     };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+    }
+
+
   uploadImageFile(event:any){
     this.uploadFile=  event.target.files[0];
     if(event.target.files && event.target.files[0]){
@@ -195,10 +271,10 @@ export class ProfileComponent implements OnInit {
     this.profileimg='file';
     this.profileForm.get('user_profile_photo')?.reset();
   }
+
   updateProfile(){
-    // this.profileForm.patchValue({
-    //   dob:this.datePipe.transform(this.profileForm.value.dob,"dd/MM/yyyy")
-    // })
+    this.profileForm.patchValue({user_profile_photo: 'appi'});
+    console.log(this.profileForm.value,this.fileDataUrl)
 
     if(this.profileForm.invalid){
       this.api.showError("Error !");
@@ -208,6 +284,7 @@ export class ProfileComponent implements OnInit {
       let profileData:any ={}
       profileData = this.profileForm.value
      // console.log(profileData.dob,'DOB____________')
+    //  this.profileForm.patchValue({user_profile_photo:this.fileDataUrl});
       this.date === 'text' ? profileData.dob :this.datePipe.transform(profileData.dob,'dd/MM/yyyy')
       let data ={
       first_name:profileData.first_name,
@@ -223,14 +300,15 @@ export class ProfileComponent implements OnInit {
       address:profileData.address,
       // user_address_details:profileData.user_address_details,
       postal_code:profileData.postal_code,
-      user_profile_photo:this.fileUrl
+      user_profile_photo:this.fileDataUrl
 
       }
-      //console.log(data,"DATA---------------------")
+      console.log(data,"DATA---------------------")
       this.api.updateProfileDetails(this.user_id,data).subscribe(res =>{
         if(res){
           this.api.showSuccess("Profile updated successfully !");
-          this.date = 'text'
+          this.date = 'text';
+          this.ngOnInit();
         }
         },(error=>{
           this.api.showError(error.error.error.message)
@@ -244,4 +322,43 @@ export class ProfileComponent implements OnInit {
     }
   }
  
+  triggerFileInput() {
+    this.fileInput?.nativeElement?.click();
+  }
+
+  uploadProflieImageFile(event: any) {
+    const selectedFile = event.target.files[0];
+  
+    if (selectedFile) {
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!allowedTypes.includes(selectedFile.type)) {
+        // Handle invalid file type
+        console.error('Invalid file type. Only .jpg, .jpeg, and .png files are allowed.');
+        this.api.showError('Invalid file type, only .jpg, .jpeg, and .png files are allowed.')
+        this.fileDataUrl = this.tempStoreProfileImage; // Clear any previously selected image
+        return;
+      }
+  
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.fileDataUrl = e.target.result;
+        this.tempStoreProfileImage = e.target.result;
+        if(reader.result){
+          this.profileForm.patchValue({ user_profile_photo: this.fileDataUrl })
+        }
+       
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  }
+
+  validateKeyPress(event: KeyboardEvent) {
+    // Get the key code of the pressed key
+    const keyCode = event.which || event.keyCode;
+
+    // Allow only digits (0-9), backspace, and arrow keys
+    if ((keyCode < 48 || keyCode > 57) && keyCode !== 8 && keyCode !== 37 && keyCode !== 39) {
+      event.preventDefault(); // Prevent the default action (i.e., entering the character)
+    }
+  }
 }
