@@ -118,10 +118,10 @@
                                                       lowercase, and be at least 8 characters long</span>
                                                 </mat-error>
                                             </mat-form-field>
-                                            <small class="text-danger"
+                                            <div class="px-2"><span class="text-errors"
                                                 *ngIf="f['old_password'].valid && changePassword.hasError('passwordMismatch') && (changePassword.get('old_password').dirty || changePassword.get('old_password').touched)">
                                                 Confirm password is mismatched
-                                            </small>
+                                            </span></div>
                                             
                                         </div>
                                     </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
@@ -12,12 +12,15 @@ import { ApiserviceService } from 'src/app/service/apiservice.service';
 export class ChangePasswordComponent implements OnInit {
   userId
   changePassword: FormGroup;
-  eyeIcon = 'bi bi-eye-slash'
+  eyeIcon = 'visibility_off'
   passwordType = "password";
   eyeState: boolean = false;
-  eyeIcon2 = 'bi bi-eye-slash'
+  eyeIcon2 = 'visibility_off'
   passwordType2 = "password";
   eyeState2: boolean = false;
+  eyeIcon3 = 'visibility_off'
+  passwordType3 = "password";
+  eyeState3: boolean = false;
   constructor(
     private builder: FormBuilder,
     private api: ApiserviceService,
@@ -30,10 +33,25 @@ export class ChangePasswordComponent implements OnInit {
     this.changePassword = this.builder.group({
       old_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
       new_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
+      confirm_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
       user_id: [this.userId, [Validators.required]]
-    })
+    },
+    {
+      validators: this.passwordMatchValidator
+    },
+  )
   }
+  
+  passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const newPassword = control.get('new_password');
+    const confirmPassword = control.get('confirm_password');
 
+    if (newPassword.value !== confirmPassword.value) {
+      return { 'passwordMismatch': true };
+    }
+
+    return null;
+  }
 
   get f() {
     return this.changePassword.controls;
@@ -50,13 +68,14 @@ export class ChangePasswordComponent implements OnInit {
     if (this.changePassword.invalid) {
       this.api.showError('Invalid!')
       this.changePassword.markAllAsTouched()
-      //console.log(this.changePassword.value)
+      console.log(this.changePassword.value)
     }
     else {
       if (this.changePassword.value.old_password === this.changePassword.value.new_password) {
         this.api.showError('Old password and new password both should not be same')
       }
       else {
+        console.log(this.changePassword.value)
         this.api.addChangePassword(this.changePassword.value).subscribe(
           (response: any) => {
             if (response) {
@@ -82,11 +101,11 @@ export class ChangePasswordComponent implements OnInit {
   showPassword() {
     this.eyeState = !this.eyeState
     if (this.eyeState == true) {
-      this.eyeIcon = 'bi bi-eye'
+      this.eyeIcon = 'visibility'
       this.passwordType = 'text'
     }
     else {
-      this.eyeIcon = 'bi bi-eye-slash'
+      this.eyeIcon = 'visibility_off'
       this.passwordType = 'password'
     }
 
@@ -94,12 +113,24 @@ export class ChangePasswordComponent implements OnInit {
   showPasswordtwo() {
     this.eyeState2 = !this.eyeState2
     if (this.eyeState2 == true) {
-      this.eyeIcon2 = 'bi bi-eye'
+      this.eyeIcon2 = 'visibility'
       this.passwordType2 = 'text'
     }
     else {
-      this.eyeIcon2 = 'bi bi-eye-slash'
+      this.eyeIcon2 = 'visibility_off'
       this.passwordType2 = 'password'
+    }
+
+  }
+  showPasswordthree() {
+    this.eyeState3 = !this.eyeState3
+    if (this.eyeState3 == true) {
+      this.eyeIcon3 = 'visibility'
+      this.passwordType3 = 'text'
+    }
+    else {
+      this.eyeIcon3 = 'visibility_off'
+      this.passwordType3 = 'password'
     }
 
   }

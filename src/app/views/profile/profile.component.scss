@@ -63,3 +63,15 @@ form {
     background: #1b64a0;
     border-radius: 12px;
 }
+.temp-style{
+    border: 2px solid #d2cfcf !important;
+}
+.image-background{
+    border-radius: 30px;
+    margin: 2px 0px;
+}
+::ng-deep .mat-form-field-can-float .mat-form-field-should-float .mat-form-field-label {
+    display: block;
+    font-size: medium;
+    font-weight: 600 !important;
+}
