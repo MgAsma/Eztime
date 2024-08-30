@@ -3,6 +3,11 @@ import { CommonModule } from '@angular/common';
 import { ProfileComponent } from './profile.component';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+// import { MatIconModule } from '@angular/material/icon';
+// import {MatButtonModule} from '@angular/material/button';
+// import {MatTooltipModule} from '@angular/material/tooltip';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -13,7 +18,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     ProfileRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbTooltipModule,
+    // MatIconModule,
+    // MatButtonModule,
+    // MatTooltipModule,
+    SharedModule
   ]
 })
 export class ProfileModule { }
