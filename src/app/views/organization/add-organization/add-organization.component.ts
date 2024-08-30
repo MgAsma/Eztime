@@ -241,6 +241,9 @@ export class AddOrganizationComponent implements OnInit {
 
   }
   organizationSubmit() {
+    if(this.adminForm.valid && !this.adminList.length){
+     this.addAdmin()
+    }
     if (this.organizationForm.valid && this.adminForm.invalid && this.adminList.length) {
       this.a['admin_name'].reset();
       this.a['admin_email'].reset();
@@ -264,7 +267,7 @@ export class AddOrganizationComponent implements OnInit {
       this.api.postData(`${environment.live_url}/${environment.organization}`, data).subscribe(
         res => {
           if (res['result'].status) {
-            this.api.showSuccess("Organization added successfully!");
+            this.api.showSuccess("Organization admin created successfully!");
             this.organizationForm.reset();
             this.fileDataUrl = null;
             this.adminList = []; // Clear the admin list after submission

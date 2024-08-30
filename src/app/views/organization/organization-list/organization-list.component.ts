@@ -18,8 +18,16 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 export class OrganizationListComponent implements OnInit {
   BreadCrumbsTitle:any='Organization list';
   term:any='';
-  directionValue:any='desc'
-  sortValue:any='org_name'
+  // directionValue:any='desc'
+  // sortValue:any='org_name'
+  arrowState: { [key: string]: boolean } = {
+    org_name: false,
+    org_email: false,
+    number_of_users_in_organization: false
+  };
+  
+  sortValue: string = '';
+  directionValue: string = '';
   page = 1;
   count = 0;
   tableSize = 10;
@@ -35,9 +43,9 @@ currentIndex: any;
     private router:Router,private location:Location,
     private common_service:CommonServiceService) { }
     goBack(event)
-  {
+     {
       event.preventDefault(); // Prevent default back button behavior
-  this.location.back();
+      this.location.back();
   
     }
   ngOnInit(): void {
@@ -87,19 +95,32 @@ currentIndex: any;
       }
     })
     }
-  arrow:boolean=false
-  sort(direction:any,value:any){
-    if(direction=='asc'){
-      this.arrow=true
-      this.directionValue= direction
-      this.sortValue= value
-    }
-    else{
-      this.arrow=false
-      this.directionValue= direction
-      this.sortValue= value
-    }
-  } 
+  // arrow:boolean=false
+  // sort(direction:any,value:any){
+  //   if(direction=='asc'){
+  //     this.arrow=true
+  //     this.directionValue= direction
+  //     this.sortValue= value
+  //   }
+  //   else{
+  //     this.arrow=false
+  //     this.directionValue= direction
+  //     this.sortValue= value
+  //   }
+  // } 
+  sort(direction: string, column: string) {
+    // Reset the state of all columns except the one being sorted
+    Object.keys(this.arrowState).forEach(key => {
+      this.arrowState[key] = false;
+    });
+  
+    // Update the state of the currently sorted column
+    this.arrowState[column] = direction === 'asc';
+  
+    this.directionValue = direction;
+    this.sortValue = column;
+  }
+  
   getOrgDetails(pagination){
     this.api.getData(`${environment.live_url}/${environment.organization}?${pagination}`).subscribe(res=>{
       if(res){
@@ -119,8 +140,7 @@ currentIndex: any;
         this.organizationData= res.result.data;
         const noOfPages:number = res['result'].pagination.number_of_pages
         this.count  = noOfPages * this.tableSize;
-        this.page=res['result'].pagination.current_page;
-
+        this.page = res['result'].pagination.current_page;
       }
     },((error:any)=>{
       this.api.showError(error.error.error.message)
@@ -142,11 +162,11 @@ currentIndex: any;
     this.getOrgDetails(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`)
   } 
   delete(id:any){
-    this.api.delete(`${environment.live_url}/${environment.organization}/${id}`).subscribe((data:any)=>{
+    this.api.delete(`${environment.live_url}/${environment.organization}/${id}`).subscribe(async(data:any)=>{
       if(data){
         this.organizationData = []
         this.api.showWarning('Organization deleted successfully!!')
-        this.ngOnInit()
+        await this.ngOnInit()
       }
       
     },(error =>{

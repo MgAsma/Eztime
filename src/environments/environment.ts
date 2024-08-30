@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  // live_url:'https://eztime.thestorywallcafe.com/api',
-  // media_url:'https://eztime.thestorywallcafe.com/media',
   live_url: 'https://projectacedev.thestorywallcafe.com/api',
   media_url: 'https://projectacedev.thestorywallcafe.com/media',
+  // live_url: 'https://projectacetest.thestorywallcafe.com/api',
+  // media_url:'https://projectacetest.thestorywallcafe.com/media',
   // live_url: 'https://projectaceuat.thestorywallcafe.com/api',
   // media_url: 'https://projectaceuat.thestorywallcafe.com/media',
   // live_url: 'https://projectaceprod.thestorywallcafe.com/api',

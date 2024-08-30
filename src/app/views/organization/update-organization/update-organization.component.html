@@ -41,7 +41,8 @@
               <div class="col-sm-12 col-md-6 col-lg-3">
                 <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                   <mat-label>Country <b class="r-star">*</b></mat-label>
-                  <mat-select formControlName="org_country" (selectionChange)="getState($event.value)" autocomplete="off">
+                  <mat-select formControlName="org_country" (selectionChange)="getState($event.value)" autocomplete="off"
+                  panelClass="custom-select-panel" [disableOptionCentering]="true">
                     <mat-option *ngFor="let country of country" [value]="country.name">
                       {{country.name}}
                     </mat-option>
@@ -58,7 +59,8 @@
               <div class="col-sm-12 col-md-6 col-lg-3">
                 <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                   <mat-label>State <b class="r-star">*</b></mat-label>
-                  <mat-select formControlName="org_state" (selectionChange)="getCity($event.value)" autocomplete="off" [attr.disabled]="!f['org_country']?.value" [ngbTooltip]="!f['org_country']?.value ? 'Please select country' :''">
+                  <mat-select formControlName="org_state" (selectionChange)="getCity($event.value)" autocomplete="off" [attr.disabled]="!f['org_country']?.value" [ngbTooltip]="!f['org_country']?.value ? 'Please select country' :''" 
+                  panelClass="custom-select-panel" [disableOptionCentering]="true">
                     <mat-option *ngFor="let state of state" [value]="state.name">
                       {{state.name}}
                     </mat-option>
@@ -71,17 +73,20 @@
            
             <!-- City -->
            
-              <div class="col-sm-12 col-md-6 col-lg-3">
-                <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
-                  <mat-label>City <b class="r-star">*</b></mat-label>
-                  <mat-select formControlName="org_city" autocomplete="off"  [ngbTooltip]="!f['org_state']?.value ? 'Please select state' :''"  [attr.disabled]="!f['org_state']?.value">
-                    <mat-option *ngFor="let city of city" [value]="city.name">{{city.name}}</mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="f['org_city']?.touched && f['org_city']?.invalid">
-                    <span *ngIf="f['org_city'].errors?.['required']">City is required</span>
-                  </mat-error>
-                </mat-form-field>
-              </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+              <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                <mat-label>City <b class="r-star">*</b></mat-label>
+                <mat-select formControlName="org_city" autocomplete="off" 
+                            [ngbTooltip]="!f['org_state']?.value ? 'Please select state' :''"  
+                            [attr.disabled]="!f['org_state']?.value"
+                            panelClass="custom-select-panel" [disableOptionCentering]="true">
+                  <mat-option *ngFor="let city of city" [value]="city.name">{{city.name}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="f['org_city']?.touched && f['org_city']?.invalid">
+                  <span *ngIf="f['org_city'].errors?.['required']">City is required</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
             
             <!-- Address -->
             
@@ -188,21 +193,22 @@
                
                 <div *ngIf="a['admin_phone_number']?.touched && a['admin_phone_number']?.invalid"
                 class="error-text">
-                <div
+                <span
                     *ngIf="a['admin_phone_number']?.invalid && a['admin_phone_number']?.errors['required']">Phone
                     number is required
-                </div>
-                </div>
-                <div
+                </span>
+                <span
                     *ngIf="a['admin_phone_number']?.invalid && a['admin_phone_number']?.hasError('phoneNumberLength')"
-                    class="error-text">Please enter 10 digits
-                </div>
+                    >Please enter 10 digits
+                </span>
+              </div>
+                
               </div>
                  
               <div class="column">
                 
-                <mat-slide-toggle formControlName="admin_status" (change)="status=!status">
-                  {{ status ? 'Active' : 'Inactive' }}
+                <mat-slide-toggle formControlName="admin_status" >
+                  {{ a['admin_status']?.value ? 'Active' : 'Inactive' }}
                 </mat-slide-toggle>
                 <div *ngIf="a['admin_status']?.touched && a['admin_status']?.invalid" class="error-text" style="top:33px">
                   <span *ngIf="f['admin_status']?.errors['required']">Status is required</span>
@@ -211,28 +217,83 @@
               </div>
             </div>
           </div>
-          <div class="col-1 d-flex" (click)="addAdmin()"><i class="bi bi-plus-circle"></i></div>
-        
+          <div class="col-1 d-flex" (click)="addAdmin()">
+            <button mat-icon-button class="admin-action-btn">
+            <i class="bi bi-plus-circle"></i>
+          </button></div>
+          
         </div>
       </form>
         
      <!-- Display the list of added admins -->
        
-        <div class="row mt-4" *ngFor="let admin of adminList; let i = index" >
-          <div class="col-11 ">
-            <div class="row-container2 ">
-              <!-- <div class="column">{{ i + 1 }}</div> -->
-              <div class="column py-2">{{ admin.admin_name }}</div>
-              <div class="column py-2">{{ admin.admin_email }}</div>
-              <div class="column py-2">{{ admin.admin_phone_number }}</div>
-              <div class="column py-2">{{ admin.admin_status }}</div>
+     
+        <ng-container *ngFor="let admin of adminList; let i = index">
+          <div class="row mt-4" [formGroup]="getAdminFormGroup(i)">
+            <div class="col-11">
+              <div class="row-container2">
+                <div class="column py-2">
+                  <input matInput formControlName="admin_name" placeholder="First Name" class="w-100">
+                  <div *ngIf="getAdminFormGroup(i)?.get('admin_name').touched && getAdminFormGroup(i)?.get('admin_name').invalid"
+                  class="error-text">
+                  <span
+                      *ngIf="getAdminFormGroup(i)?.get('admin_name').hasError('required')">
+                      Admin name is required
+                  </span>
+                  <span *ngIf="getAdminFormGroup(i)?.get('admin_name').hasError('pattern')">
+                    Invalid name.
+                  </span>
+              </div>
+                </div>
+                <div class="column py-2">
+                  <input matInput formControlName="admin_email" placeholder="First Name" class="w-100">
+                  <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email').hasError('required') && getAdminFormGroup(i)?.get('admin_email').touched">
+                    Email is required
+                  </mat-error>
+                  <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email').hasError('email') && getAdminFormGroup(i)?.get('admin_email').touched">
+                    Invalid email Id . 
+                  </mat-error>
+                </div>
+                <div class="column py-2">
+                  <input type="tel" matInput formControlName="admin_phone_number" placeholder="Phone Number" class="w-100">
+                  
+                  <div *ngIf="getAdminFormGroup(i)?.get('admin_phone_number').touched && getAdminFormGroup(i)?.get('admin_phone_number').invalid"
+                  class="error-text">
+                  <div
+                      *ngIf="getAdminFormGroup(i)?.get('admin_phone_number').hasError('required')">Phone
+                      number is required
+                  </div>
+                  <div *ngIf="getAdminFormGroup(i)?.get('admin_phone_number').touched && getAdminFormGroup(i)?.get('admin_phone_number')?.hasError('phoneNumberLength')">
+                    Please enter 10 digits
+                  </div>
+                  </div>
+                  
+                </div>
+                <div class="column py-2">
+                  <mat-slide-toggle formControlName="admin_status" >
+                    {{ getAdminFormGroup(i)?.get('admin_status').value ? 'Active' : 'Inactive' }}
+                  </mat-slide-toggle>
+                </div>
+                
+              </div>
             </div>
+           
+            <div class="col-1 d-flex justify-content-left align-items-center">
+            <button mat-icon-button  [matMenuTriggerFor]="menu" class="admin-action-btn">
+              <i class="bi bi-three-dots-vertical"></i>
+            </button>
+            </div>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="saveAdmin(i)"> <i class="bi bi-plus-circle-fill me-2" (click)="saveAdmin(i)"></i> Save</button>
+              <button mat-menu-item (click)="deleteAdmin(i)"><i class="bi bi-trash me-2"></i> Delete</button>
+            </mat-menu>
+            
+         
           </div>
-          <div class="col-1 d-flex justify-content-left align-items-center" (click)="deleteAdmin(i)"> <i class="bi bi-trash-fill" ></i></div>
-          
-        </div>
-       
+        </ng-container>
         
+        
+       
         <!-- Submit Button -->
         <div class="row">
           <div class="col-12 py-4">

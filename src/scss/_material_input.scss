@@ -5,6 +5,13 @@
   background-color: #eaeaea;
   border-radius: 50%;
   padding: 4px 7px;
+  cursor: pointer;
+}
+
+.bi-pencil-square{
+  color: black;
+  font-size: 15px;
+  padding: 4px 7px;
 }
 .generic-form{
   padding-right: 3.8em;
@@ -172,5 +179,21 @@
       opacity: 0.8;
     }
     
+    .custom-select-panel {
+      min-width: 80% !important;
+      width: 80% !important;
+      margin-top: 30px !important;
+    }
+  
+    // .mat-form-field {
+    //   position: relative !important; 
+    // }
     
+    // .mat-select-panel {
+    //   margin-top: 0px !important;
+    // }
+    
+    // .custom-mat-form-field {
+    //   z-index: 1000 !important; 
+    // }
   

@@ -39,9 +39,10 @@
           <!-- Country -->
        
             <div class="col-sm-12 col-md-6 col-lg-3">
-              <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+              <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
                 <mat-label>Country <b class="r-star">*</b></mat-label>
-                <mat-select formControlName="org_country" (selectionChange)="getState($event.value)" autocomplete="off">
+                <mat-select formControlName="org_country" (selectionChange)="getState($event.value)" autocomplete="off"
+                panelClass="custom-select-panel" [disableOptionCentering]="true">
                   <mat-option *ngFor="let country of country" [value]="country.name">
                     {{country.name}}
                   </mat-option>
@@ -58,7 +59,9 @@
             <div class="col-sm-12 col-md-6 col-lg-3">
               <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                 <mat-label>State <b class="r-star">*</b></mat-label>
-                <mat-select formControlName="org_state" (selectionChange)="getCity($event.value)" autocomplete="off" [attr.disabled]="!f['org_country']?.value" [ngbTooltip]="!f['org_country']?.value ? 'Please select country' :''">
+                <mat-select formControlName="org_state" (selectionChange)="getCity($event.value)" autocomplete="off" [attr.disabled]="!f['org_country']?.value" 
+                [ngbTooltip]="!f['org_country']?.value ? 'Please select country' :''"
+                panelClass="custom-select-panel" [disableOptionCentering]="true">
                   <mat-option *ngFor="let state of state" [value]="state.name">
                     {{state.name}}
                   </mat-option>
@@ -74,8 +77,9 @@
             <div class="col-sm-12 col-md-6 col-lg-3">
               <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                 <mat-label>City <b class="r-star">*</b></mat-label>
-                <mat-select formControlName="org_city" autocomplete="off"  [ngbTooltip]="!f['org_state']?.value ? 'Please select state' :''"  [attr.disabled]="!f['org_state']?.value">
-                  <mat-option *ngFor="let city of city" [value]="city.name">{{city.name}}</mat-option>
+                <mat-select formControlName="org_city" autocomplete="off"  [ngbTooltip]="!f['org_state']?.value ? 'Please select state' :''"  
+                [attr.disabled]="!f['org_state']?.value" panelClass="custom-select-panel" [disableOptionCentering]="true">
+                <mat-option *ngFor="let city of city" [value]="city.name">{{city.name}}</mat-option>
                 </mat-select>
                 <mat-error *ngIf="f['org_city']?.touched && f['org_city']?.invalid">
                   <span *ngIf="f['org_city'].errors?.['required']">City is required</span>
@@ -211,7 +215,8 @@
             </div>
           </div>
         </div>
-        <div class="col-1 d-flex" (click)="addAdmin()"><i class="bi bi-plus-circle"></i></div>
+        <div class="col-1 d-flex" (click)="addAdmin()"><i class="bi bi-plus-circle" container="body"
+          ngbTooltip="Add"></i></div>
       
       </div>
     </form>
@@ -228,7 +233,8 @@
             <div class="column py-2">{{ admin.admin_status }}</div>
           </div>
         </div>
-        <div class="col-1 d-flex justify-content-left align-items-center" (click)="deleteAdmin(i)"> <i class="bi bi-trash-fill" ></i></div>
+        <div class="col-1 d-flex justify-content-left align-items-center" (click)="deleteAdmin(i)"> <i class="bi bi-trash-fill" container="body"
+          ngbTooltip="Delete"></i></div>
         
       </div>
      
