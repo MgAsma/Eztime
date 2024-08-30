@@ -40,6 +40,7 @@
    color: red;
    font-size: 8px;
  }
+ 
 
  input[type=number]::-webkit-inner-spin-button,
  input[type=number]::-webkit-outer-spin-button {
@@ -63,11 +64,17 @@
  h6 {
    font-family: 'Exo FT' !important;
  }
-
+  .body{
+    background-color: #f6f6f6;
+    height: 100vh;
+  }
  /* based on angular-toastr css https://github.com/Foxandxss/angular-toastr/blob/cb508fe6801d6b288d3afc525bb40fee1b101650/dist/angular-toastr.css */
  .default-header-card{
   border-radius: 20px 20px !important;
-  transform: scale(0.97);
+  transform: scale(0.95);
+  zoom: 93%;
+  margin-top: 10px;
+  height: 98% !important;
   mat-card{
     border-radius:20px 20px 0 0 !important;
     box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px !important;
@@ -306,9 +313,7 @@
      top: -0.2em;
    }
 
-   .body {
-     padding: 0px !important;
-   }
+   
 
    .body-card {
      padding: 0px !important;
@@ -317,31 +322,7 @@
    }
  }
 
-//  @media all and (min-width: 241px) and (max-width: 374px) {
-//    .toast-container .ngx-toastr {
-//      margin-left: 0%;
-//      width: 18em;
-//    }
-//  }
 
-//  @media all and (min-width: 481px) and (max-width: 768px) {
-//    .toast-container .ngx-toastr.div {
-//      padding: 15px 15px 15px 50px;
-//      width: 25em;
-//    }
-
-
-
-//    .body {
-//      padding: 0px !important;
-//    }
-
-//    .body-card {
-//      padding: 0px !important;
-//      border-radius: 0px !important;
-//      background: #d7efff !important;
-//    }
-//  }
  .toast-container .ngx-toastr {
      position: unset !important;
      margin: auto !important;
@@ -369,10 +350,7 @@
      width: 98% !important;
    }
 
-  // .toast-container .ngx-toastr {
-  // //    margin-left: 25%;
-  //   background-position: 25%;
-  // }
+  
  }
 
  @media(min-width:1023px) and (max-width:1279px) {
@@ -382,10 +360,7 @@
      width: 98% !important;
    }
 
-  //  .toast-container .ngx-toastr {
-  //   //    margin-left: 25%;
-  //     background-position: 15%;
-  //   }
+  
  }
 
  @media(min-width:1280px) {
@@ -395,10 +370,7 @@
      width: 98% !important;
    }
 
-  //  .toast-container .ngx-toastr {
-  //   //    margin-left: 25%;
-  //     background-position: 35%;
-  //   }
+  
  }
 
  /* Target the password input field */
@@ -424,10 +396,7 @@
    background: #fff;
  }
 
- .body {
-   background: #f6f6f6;
-  //  padding: 15px 15px;
- }
+ 
 
  mat-card.profile-settings-card {
   background: rgb(237 247 255 / 67%);
@@ -539,21 +508,7 @@
 .mat-badge-medium.mat-badge-above .mat-badge-content {
   top: -4px;
 }
-// .ngx-pagination .pagination-next a::after, .ngx-pagination .pagination-next.disabled::after {
-//   padding: 5px 10px;
-//   border-radius: 5px;
-//   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-// }
-// .ngx-pagination .pagination-previous a::before, .ngx-pagination .pagination-previous.disabled::before {
-//   padding: 5px 10px;
-//   border-radius: 5px;
-//   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-// }
-// .ngx-pagination .pagination-previous,.pagination-next{
-//   padding: 5px 10px !important;
-//   border-radius: 5px;
-//   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-// }
+
 input[type='search']::-webkit-search-cancel-button {
   cursor: pointer;
 }
