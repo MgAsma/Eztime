@@ -139,3 +139,9 @@ table th {
 ::ng-deep .mat-select-placeholder {
     color: #222020;
 }
+.bi-arrow-up,.bi-arrow-down{
+    font-weight: 600;
+    &:hover{
+        opacity: 0.8;
+    }
+}

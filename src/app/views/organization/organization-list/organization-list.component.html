@@ -23,16 +23,21 @@
             <tr>
               <th scope="col"> S.No</th>
               <th scope="col">Logo</th>
-              <th scope="col">Organization<i *ngIf="!arrow" (click)="sort('asc','org_name')"
-                  class="bi bi-arrow-up"></i><i (click)="sort('desc','org_name')" *ngIf="arrow"
-                  class="bi bi-arrow-down"></i></th>
-              <th scope="col">Email <i *ngIf="!arrow" (click)="sort('asc','org_email')" class="bi bi-arrow-up"></i><i
-                  (click)="sort('desc','org_email')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-              <th scope="col" class="text-center">No.Of Admins <i *ngIf="!arrow"
-                  (click)="sort('asc','number_of_users_in_organization')" class="bi bi-arrow-up"></i><i
-                  (click)="sort('desc','number_of_users_in_organization')" *ngIf="arrow" class="bi bi-arrow-down"></i>
+              <th scope="col">
+                Organization
+                <i *ngIf="!arrowState['org_name']" (click)="sort('asc','org_name')" class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','org_name')" *ngIf="arrowState['org_name']" class="bi bi-arrow-down"></i>
               </th>
-
+              <th scope="col">
+                Email
+                <i *ngIf="!arrowState['org_email']" (click)="sort('asc','org_email')" class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','org_email')" *ngIf="arrowState['org_email']" class="bi bi-arrow-down"></i>
+              </th>
+              <th scope="col" class="text-center">
+                No.Of Admins
+                <i *ngIf="!arrowState['admin_count']" (click)="sort('asc','admin_count')" class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','admin_count')" *ngIf="arrowState['admin_count']" class="bi bi-arrow-down"></i>
+              </th>
               <th scope="col">Action </th>
             </tr>
           </thead>
@@ -55,7 +60,7 @@
                 </td>
                 <td>{{item.org_name ? item.org_name :'NA' | titlecase }}</td>
                 <td>{{item.org_email ? item.org_email :'NA' | titlecase}}</td>
-                <td class="text-center">{{item.number_of_users_in_organization }}</td>
+                <td class="text-center">{{item.admin_count }}</td>
 
                 <td>
                   <ng-container>
@@ -199,12 +204,12 @@
 
                   <div class="row">
                     <div class="col-12">
-                      <h6 class="card-subtitle text-start"> No of Users</h6>
+                      <h6 class="card-subtitle text-start"> No.Of Admins </h6>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-12 value-container text-start">
-                      {{item.number_of_users_in_organization?item.number_of_users_in_organization:'NA' }}
+                      {{item?.admin_count || 'NA' }}
                     </div>
                   </div>
                 </div>
@@ -252,19 +257,20 @@
       </div>
     </ng-container>
 
-    <!-- <div class="s-position">
-            <a routerLink="/department/create"> <button mat-raised-button type="button"  class="createbtn-new" placement="top" container="body" ngbTooltip="Add"><i class="fa fa-plus"></i>
-  </button></a>
-          </div> -->
+   
   </div>
-  <div class="row mobile-pagination" *ngIf="organizationData.length !== 0">
-    <div class="col-sm-12">
-      <div class="mobile-pagination-content">
-        <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
-        </pagination-controls>
-        <div><button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size"
-            (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}">{{size}}</button></div>
-      </div>
+ 
+  <div class="pagination-container p-0 pt-2">
+    <!-- Pagination Controls (Center-Aligned) -->
+    <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+    </pagination-controls>
+  
+    <!-- Items Per Page Selector (Right-Aligned) -->
+    <div class="items-per-page-container">
+      <div>Items per page</div>
+      <mat-select (change)="onTableSizeChange($event)" placeholder="10" class="page-size">
+        <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+      </mat-select>
     </div>
   </div>
   <div class="s-position">
