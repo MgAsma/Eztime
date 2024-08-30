@@ -267,7 +267,7 @@ export class AddOrganizationComponent implements OnInit {
       this.api.postData(`${environment.live_url}/${environment.organization}`, data).subscribe(
         res => {
           if (res['result'].status) {
-            this.api.showSuccess("Organization added successfully!");
+            this.api.showSuccess("Organization admin created successfully!");
             this.organizationForm.reset();
             this.fileDataUrl = null;
             this.adminList = []; // Clear the admin list after submission

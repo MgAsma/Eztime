@@ -16,7 +16,7 @@
     <div class="d-flex">
       <c-avatar cTextColor="primary" shape="rounded-1" size="md" src="./assets/img/avatars/8.jpg" >
       </c-avatar>
-      <p class="mx-2 text-center" [ngClass]="user_role_Name !== 'EMPLOYEE' ? 'nonemployee' : 'employee'">
+      <p class="mx-2" [ngClass]="user_role_Name !== 'EMPLOYEE' ? 'nonemployee' : 'employee'">
         <small class="user-name" *ngIf="user_role_Name !== 'EMPLOYEE'">{{user_name |titlecase}}</small><br />
         <mat-label class="user-role">{{user_role_Name|titlecase}}</mat-label>
       </p>
@@ -35,7 +35,7 @@
   <div class="body scroll-fix">
    
     <mat-card class="body-card p-0 default-header-card">
-      <mat-card class="py-0 mb-1"> 
+      <mat-card class="py-2 mb-1"> 
         <app-default-header class="d-print-none header header-sticky" position="sticky"
         sidebarId="sidebar"></app-default-header>
        </mat-card>
@@ -51,7 +51,8 @@
   <c-dropdown alignment="end" variant="nav-item" >
     <button mat-stroked-button [caret]="false" cDropdownToggle class="py-1 settings-btn"><i class="bi bi-gear"></i> Settings
     </button>
-    <ul cDropdownMenu class="py-2 pr-5 w-auto c-dropClass" style="padding: 11px !important;background: rgb(225 242 255 / 96%) !important;
+    <ul cDropdownMenu class="py-2 pr-5 w-auto c-dropClass" 
+    style="padding: 11px !important;background: rgb(255 255 255) !important;
     font-size: 12px !important;position: absolute;inset: auto 0px 0px auto;
     border: 1px solid #ecfaff;margin: 2px;transform: translate3d(0px, -40.6667px, 0px);">
       <li></li>
@@ -59,8 +60,7 @@
         <div [ngClass]="getHeaderNavStyles(headNav)">
           <a (click)="navigateTo(headNav)" cDropdownItem class="profile-settings-content" >
             <i class="{{headNav.icons}}" id="nav-icon" ></i>
-           
-            <span class="title">&nbsp;&nbsp;{{headNav.page |titlecase}} </span>
+            <span class="title">&nbsp;&nbsp;{{headNav.page | titlecase}} </span>
           </a>
         </div>
       </li>

@@ -1,5 +1,5 @@
 
-.bi-trash-fill,.bi-plus,.bi-pencil-square{
+.bi-trash-fill{
   color: red;  
   text-align: center;
   background-color: #eaeaea;
@@ -7,13 +7,7 @@
   padding: 4px 7px;
   cursor: pointer;
 }
-.bi-plus,.bi-pencil-square{
-  color: black;
-  margin-right: 6px;
-  font-size: 20px;
-  font-weight: bolder;
-  padding: 3px;
-}
+
 .bi-pencil-square{
   color: black;
   font-size: 15px;
@@ -185,5 +179,21 @@
       opacity: 0.8;
     }
     
+    .custom-select-panel {
+      min-width: 80% !important;
+      width: 80% !important;
+      margin-top: 30px !important;
+    }
+  
+    // .mat-form-field {
+    //   position: relative !important; 
+    // }
     
+    // .mat-select-panel {
+    //   margin-top: 0px !important;
+    // }
+    
+    // .custom-mat-form-field {
+    //   z-index: 1000 !important; 
+    // }
   
