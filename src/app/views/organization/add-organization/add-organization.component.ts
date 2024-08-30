@@ -241,6 +241,9 @@ export class AddOrganizationComponent implements OnInit {
 
   }
   organizationSubmit() {
+    if(this.adminForm.valid && !this.adminList.length){
+     this.addAdmin()
+    }
     if (this.organizationForm.valid && this.adminForm.invalid && this.adminList.length) {
       this.a['admin_name'].reset();
       this.a['admin_email'].reset();

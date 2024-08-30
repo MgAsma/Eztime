@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
@@ -26,6 +26,7 @@ export class UpdateOrganizationComponent implements OnInit {
   eyeState: boolean = false;
   eyeIcon = 'bi bi-eye-slash'
   passwordType = "password";
+  add:boolean = false;
   country: any = [];
   state: any = [];
   city: any = [];
@@ -34,11 +35,12 @@ export class UpdateOrganizationComponent implements OnInit {
   status:boolean = false;
   @ViewChild('fileInput') fileInput: ElementRef;
   adminForm: FormGroup;
+  adminFormArray: FormArray;
   constructor(private _fb: FormBuilder,
     private api: ApiserviceService, private route: ActivatedRoute,
     private router: Router, private location: Location, private common_service: CommonServiceService) {
     this.id = this.route.snapshot.paramMap.get('id')
-    
+    this.initializeAdminFormArray()
   }
 
   ngOnInit(): void {
@@ -55,7 +57,9 @@ export class UpdateOrganizationComponent implements OnInit {
     this.location.back();
 
   }
+  
   deleteAdmin(index: number) {
+    this.adminFormArray.removeAt(index);
     this.adminList.splice(index, 1);
   }
   initform() {
@@ -82,33 +86,68 @@ export class UpdateOrganizationComponent implements OnInit {
     })
 
   }
+  
   adminintForm(){
     this.adminForm = this._fb.group({
-      admin_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/),Validators.required]],
-      admin_email: ['', [Validators.required, Validators.email]],
-      admin_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator]],
-      admin_status: [true],
+      u_first_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/),Validators.required]],
+      u_email: ['', [Validators.required, Validators.email]],
+      u_phone_no: ['', [Validators.required, this.phoneNumberLengthValidator()]],
+      u_status: [true]
     })
+    
   }
+  getAdminFormGroup(index: number): FormGroup {
+    return this.adminFormArray.at(index) as FormGroup;
+  }
+  saveAdmin(index: number) {
+    const adminForm = this.getAdminFormGroup(index);
+  
+    if (adminForm) {
+      // Mark all controls as touched to trigger validation messages
+      adminForm.markAllAsTouched();
+  
+      // Check if the form is invalid and if so, return early
+      if (adminForm.invalid) {
+        adminForm.markAllAsTouched();
+        console.log("Form is invalid");
+        return;
+      }else{
+        this.adminList[index] = {
+          ...this.adminList[index],
+          u_first_name: adminForm.value.u_first_name,
+          u_email: adminForm.value.u_email,
+          u_phone_no: adminForm.value.u_phone_no,
+          u_status: adminForm.value.u_status
+        };
+        alert(JSON.stringify(this.adminList[index]));
+        console.log(this.adminList[index]);
+      }
+  
+      // Proceed with saving the form values if valid
+     
+   
+      // Optionally save the updated data to the server here
+    }
+  }
+  
+  
   addAdmin() {
    if (this.adminForm.valid) {
     const data = {
-      admin_name:this.adminForm?.value['admin_name'],
-      admin_email:this.adminForm?.value['admin_email'],
-      admin_phone_number:this.adminForm?.value['admin_phone_number'],
-      admin_status:this.adminForm?.value['admin_status'] ? 'Active' : 'Inactive'
+      u_first_name:this.adminForm?.value['u_first_name'],
+      u_email:this.adminForm?.value['u_email'],
+      u_phone_no:this.adminForm?.value['u_phone_no'],
+      u_status:this.adminForm?.value['u_status'] ? 'Active' : 'Inactive'
     }
     this.adminList.push(data);
     
-    this.a['admin_name'].reset();
-    this.a['admin_email'].reset();
-    this.a['admin_phone_number'].reset();
+    this.a['u_first_name'].reset();
+    this.a['u_email'].reset();
+    this.a['u_phone_no'].reset();
     this.adminForm.patchValue({
-      admin_status: [true]
+      u_status: [true]
     })
   }else{
-    
-    
     this.organizationForm.markAllAsTouched()
   }
   }
@@ -146,29 +185,29 @@ export class UpdateOrganizationComponent implements OnInit {
         currentOrg = responseData[responseData.length - 1]
         this.fileDataUrl = currentOrg['org_logo_path']
         await this.getCountry();
-        await this.getState('')
-        setTimeout(async () => {
-          await this.getCity(currentOrg['org_state'])
-        }, 1000);
+        if(currentOrg['org_country'] === 'India'){
+          await this.getState('')
+          setTimeout(async () => {
+            await this.getCity(currentOrg['org_state'])
+          }, 1000);
+        }
         
+        
+        this.adminList = res['result']['data'][0].admin_details
+        this.initializeAdminFormArray();
         this.organizationForm.patchValue({
-          // user_ref_id:currentOrg['user_ref_id'],
           org_qr_uniq_id: currentOrg['org_qr_uniq_id'],
           org_name: currentOrg['org_name'],
           org_email: currentOrg['org_email'],
-          
           org_address: currentOrg['org_address'],
           org_city: currentOrg['org_city'],
           org_state: currentOrg['org_state'],
           org_country: currentOrg['org_country'],
           org_postal_code: currentOrg['org_postal_code'],
-          // org_profile_updated_status: currentOrg['org_profile_updated_status'],
-          // org_default_currency_type: currentOrg['org_default_currency_type'],
-          admin_status: currentOrg['org_status'],
+          u_status: currentOrg['org_status'],
           org_subscription_plan: currentOrg['org_subscription_plan'],
           org_logo_path: currentOrg['org_logo_path'],
           org_logo_base_url: currentOrg['org_logo_base_url'],
-          //org_logo_base_url:[],
           org_logo: currentOrg['org_logo_path']
         })
        
@@ -181,6 +220,20 @@ export class UpdateOrganizationComponent implements OnInit {
       
     
    
+  }
+  initializeAdminFormArray() {
+    this.adminFormArray = this._fb.array(
+      this.adminList.map(admin => this.createAdminFormGroup(admin))
+    );
+  }
+  
+  createAdminFormGroup(admin): FormGroup {
+    return this._fb.group({
+      u_first_name: [admin.u_first_name, [Validators.required, Validators.pattern(/^[A-Za-z\s]*$/)]],
+      u_email: [admin.u_email, [Validators.required, Validators.email]],
+      u_phone_no: [admin.u_phone_no, [Validators.required,this.phoneNumberLengthValidator()]],
+      u_status: [admin.u_status],
+    });
   }
   onFocus() {
     this.type = 'file';

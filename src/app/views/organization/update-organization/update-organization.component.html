@@ -152,60 +152,61 @@
               
               <div class="column">
                 
-              <input type="text" matInput formControlName="admin_name" placeholder="Admin Name"  autocomplete="off"/>
-                <div *ngIf="a['admin_name']?.touched && a['admin_name']?.invalid"
+              <input type="text" matInput formControlName="u_first_name" placeholder="Admin Name"  autocomplete="off"/>
+                <div *ngIf="a['u_first_name']?.touched && a['u_first_name']?.invalid"
                 class="error-text">
                 <span
-                    *ngIf="a['admin_name']?.errors && a['admin_name']?.errors['required']">Admin
+                    *ngIf="a['u_first_name']?.errors && a['u_first_name']?.errors['required']">Admin
                      name is required
                 </span>
-                <span *ngIf="a['admin_name']?.errors?.['pattern']">
+                <span *ngIf="a['u_first_name']?.errors?.['pattern']">
                   Invalid name. Only letters are allowed, and the name must start with a letter.
                 </span>
             </div>
-            <div *ngIf="a['admin_name']?.invalid && a['admin_name']?.hasError('pattern')"
+            <div *ngIf="a['u_first_name']?.invalid && a['u_first_name']?.hasError('pattern')"
                 class="error-text">
                 <span>Cannot start with a space.</span>
             </div>
          
               </div>
               <div class="column">
-                <input type="email" matInput formControlName="admin_email" placeholder="Email"  autocomplete="off"/> 
-                <div *ngIf="a['admin_email']?.touched && a['admin_email']?.invalid"
+                <input type="email" matInput formControlName="u_email" placeholder="Email"  autocomplete="off"/> 
+                <div *ngIf="a['u_email']?.touched && a['u_email']?.invalid"
                 class="error-text">
                 <span
-                    *ngIf="a['admin_email']?.invalid && a['admin_email']?.errors['email']">Invalid
+                    *ngIf="a['u_email']?.invalid && a['u_email']?.errors['email']">Invalid
                     email Id </span>
                 <span
-                    *ngIf="a['admin_email']?.invalid && a['admin_email']?.errors['required']">Email
+                    *ngIf="a['u_email']?.invalid && a['u_email']?.errors['required']">Email
                     Id is required</span>
                 </div>
               <!-- </mat-form-field> -->
   
               </div>
               <div class="column">
-                <input type="tel" matInput formControlName="admin_phone_number" placeholder="Phone Number"  autocomplete="off"/>
+                <input type="tel" matInput formControlName="u_phone_no" placeholder="Phone Number"  autocomplete="off"/>
                
-                <div *ngIf="a['admin_phone_number']?.touched && a['admin_phone_number']?.invalid"
+                <div *ngIf="a['u_phone_no']?.touched && a['u_phone_no']?.invalid"
                 class="error-text">
-                <div
-                    *ngIf="a['admin_phone_number']?.invalid && a['admin_phone_number']?.errors['required']">Phone
+                <span
+                    *ngIf="a['u_phone_no']?.invalid && a['u_phone_no']?.errors['required']">Phone
                     number is required
-                </div>
-                </div>
-                <div
-                    *ngIf="a['admin_phone_number']?.invalid && a['admin_phone_number']?.hasError('phoneNumberLength')"
-                    class="error-text">Please enter 10 digits
-                </div>
+                </span>
+                <span
+                    *ngIf="a['u_phone_no']?.invalid && a['u_phone_no']?.hasError('phoneNumberLength')"
+                    >Please enter 10 digits
+                </span>
+              </div>
+                
               </div>
                  
               <div class="column">
                 
-                <mat-slide-toggle formControlName="admin_status" (change)="status=!status">
-                  {{ status ? 'Active' : 'Inactive' }}
+                <mat-slide-toggle formControlName="u_status" >
+                  {{ a['u_status']?.value ? 'Active' : 'Inactive' }}
                 </mat-slide-toggle>
-                <div *ngIf="a['admin_status']?.touched && a['admin_status']?.invalid" class="error-text" style="top:33px">
-                  <span *ngIf="f['admin_status']?.errors['required']">Status is required</span>
+                <div *ngIf="a['u_status']?.touched && a['u_status']?.invalid" class="error-text" style="top:33px">
+                  <span *ngIf="f['u_status']?.errors['required']">Status is required</span>
               </div>
             
               </div>
@@ -218,21 +219,81 @@
         
      <!-- Display the list of added admins -->
        
-        <div class="row mt-4" *ngFor="let admin of adminList; let i = index" >
+        <!-- <div class="row mt-4" *ngFor="let admin of adminList; let i = index" >
           <div class="col-11 ">
             <div class="row-container2 ">
-              <!-- <div class="column">{{ i + 1 }}</div> -->
-              <div class="column py-2">{{ admin.admin_name }}</div>
-              <div class="column py-2">{{ admin.admin_email }}</div>
-              <div class="column py-2">{{ admin.admin_phone_number }}</div>
-              <div class="column py-2">{{ admin.admin_status }}</div>
+              <!-- <div class="column">{{ i + 1 }}</div> --
+              <div class="column py-2">{{ admin.u_first_name }}</div>
+              <div class="column py-2">{{ admin.u_email }}</div>
+              <div class="column py-2">{{ admin.u_phone_no }}</div>
+              <div class="column py-2">{{ admin.u_status }}</div>
             </div>
           </div>
           <div class="col-1 d-flex justify-content-left align-items-center" (click)="deleteAdmin(i)"> <i class="bi bi-trash-fill" ></i></div>
           
-        </div>
-       
+        </div> -->
+        <ng-container *ngFor="let admin of adminList; let i = index">
+          <div class="row mt-4" [formGroup]="getAdminFormGroup(i)">
+            <div class="col-11">
+              <div class="row-container2">
+                <div class="column py-2">
+                  <input matInput formControlName="u_first_name" placeholder="First Name" class="w-100">
+                  <div *ngIf="getAdminFormGroup(i)?.get('u_first_name').touched && getAdminFormGroup(i)?.get('u_first_name').invalid"
+                  class="error-text">
+                  <span
+                      *ngIf="getAdminFormGroup(i)?.get('u_first_name').hasError('required')">
+                      Admin name is required
+                  </span>
+                  <span *ngIf="getAdminFormGroup(i)?.get('u_first_name').hasError('pattern')">
+                    Invalid name.
+                  </span>
+              </div>
+                </div>
+                <div class="column py-2">
+                  <input matInput formControlName="u_email" placeholder="First Name" class="w-100">
+                  <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('u_email').hasError('required') && getAdminFormGroup(i)?.get('u_email').touched">
+                    Email is required
+                  </mat-error>
+                  <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('u_email').hasError('email') && getAdminFormGroup(i)?.get('u_email').touched">
+                    Invalid email Id . 
+                  </mat-error>
+                </div>
+                <div class="column py-2">
+                  <input type="tel" matInput formControlName="u_phone_no" placeholder="Phone Number" class="w-100">
+                  
+                  <div *ngIf="getAdminFormGroup(i)?.get('u_phone_no').touched && getAdminFormGroup(i)?.get('u_phone_no').invalid"
+                  class="error-text">
+                  <div
+                      *ngIf="getAdminFormGroup(i)?.get('u_phone_no').hasError('required')">Phone
+                      number is required
+                  </div>
+                  <div *ngIf="getAdminFormGroup(i)?.get('u_phone_no').touched && getAdminFormGroup(i)?.get('u_phone_no')?.hasError('phoneNumberLength')">
+                    Please enter 10 digits
+                  </div>
+                  </div>
+                  
+                </div>
+                <div class="column py-2">
+                  <mat-slide-toggle formControlName="u_status" >
+                    {{ getAdminFormGroup(i)?.get('u_status').value ? 'Active' : 'Inactive' }}
+                  </mat-slide-toggle>
+                </div>
+                
+              </div>
+            </div>
+            <div class="col-1 d-flex justify-content-left align-items-center">
+              <i class="bi bi-pencil-square" *ngIf="!add" (click)="add=!add" container="body"
+              ngbTooltip="Add"></i>
+              <i class="bi bi-plus" *ngIf="add" (click)="saveAdmin(i)" container="body"
+              ngbTooltip="Edit"></i>
+              <i class="bi bi-trash-fill ml-2" (click)="deleteAdmin(i)" container="body"
+              ngbTooltip="Delete"></i>
+            </div>
+          </div>
+        </ng-container>
         
+        
+       
         <!-- Submit Button -->
         <div class="row">
           <div class="col-12 py-4">
