@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors, FormArray } from '@angular/forms';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
@@ -34,8 +34,12 @@ export class AddOrganizationComponent implements OnInit {
   dataSource = new MatTableDataSource();
   status:boolean = false;
   adminList: any = [];
-  
-  constructor(private _fb: FormBuilder, private api: ApiserviceService, private location: Location, private common_service: CommonServiceService) { }
+  isAdminForm = false;
+  adminInitiated: boolean = false;
+  adminFormArray: FormArray;
+  constructor(private _fb: FormBuilder, private api: ApiserviceService, private location: Location, private common_service: CommonServiceService) {
+    this.initializeAdminFormArray();
+   }
 
   fileDataUrl: string | ArrayBuffer | null = null; // Make sure this is declared in your component
 
@@ -63,19 +67,31 @@ export class AddOrganizationComponent implements OnInit {
     }
   }
   
-  // triggerFileInput() {
-  //   const fileInput = document.querySelector('#fileInput') as HTMLElement;
-  //   fileInput.click();
-  // }
-  
+ 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.common_service.setSubTitle(this.BreadCrumbsSubTitle)
     this.id = sessionStorage.getItem('user_id')
     this.initform();
-    this.adminintForm();
     this.getCountry()
    
+  }
+  createAdminFormGroup(admin): FormGroup {
+    return this._fb.group({
+      admin_name: [admin.admin_name, [Validators.required, Validators.pattern(/^[A-Za-z\s]*$/)]],
+      admin_email: [admin.admin_email, [Validators.required, Validators.email]],
+      admin_phone_number: [admin.admin_phone_number, [Validators.required,this.phoneNumberLengthValidator]],
+      admin_status: [admin.admin_status],
+    });
+  }
+  initializeAdminFormArray() {
+    this.adminFormArray = this._fb.array(
+      this.adminList.map(admin => this.createAdminFormGroup(admin))
+    );
+  }
+  
+  getAdminFormGroup(index: number): FormGroup {
+    return this.adminFormArray.at(index) as FormGroup;
   }
   adminintForm(){
     this.adminForm = this._fb.group({
@@ -86,30 +102,77 @@ export class AddOrganizationComponent implements OnInit {
     })
   }
   addAdmin() {
-   if (this.adminForm.valid) {
+   if (this.adminForm.invalid) {
+    this.adminForm.markAllAsTouched()
+    this.organizationForm.markAllAsTouched()
+    this.api.showWarning("Please enter the mandatory fields")
+  }else{
     const data = {
       admin_name:this.adminForm?.value['admin_name'],
       admin_email:this.adminForm?.value['admin_email'],
       admin_phone_number:this.adminForm?.value['admin_phone_number'],
-      admin_status:this.adminForm?.value['admin_status'] ? 'Active' : 'Inactive'
+      admin_status:this.adminForm?.value['admin_status'] 
     }
     this.adminList.push(data);
-    
+    this.adminFormArray.push(this.createAdminFormGroup(data));
     this.a['admin_name'].reset();
     this.a['admin_email'].reset();
     this.a['admin_phone_number'].reset();
     this.adminForm.patchValue({
       admin_status: [true]
     })
-  }else{
-    
-    
-    this.organizationForm.markAllAsTouched()
+    this.isAdminForm = !this.isAdminForm;
   }
+  }
+  originalAdminData: any[] = [];
+
+  toggleFormControlState(index: number, isEditing: boolean): void {
+    const adminFormGroup = this.getAdminFormGroup(index);
+    if (isEditing) {
+      // Store the initial values before editing
+      this.originalAdminData[index] = adminFormGroup.value;
+      this.adminList[index].isEditing = true;
+    } else {
+      // Revert to the original values when cancelling
+      adminFormGroup.setValue(this.originalAdminData[index]);
+      this.adminList[index].isEditing = false;
+    }
+  }
+ 
+  saveAdmin(index: number) {
+    const adminForm = this.getAdminFormGroup(index);
+    
+    if (adminForm.invalid) {
+        // Mark all controls as touched to trigger validation messages
+        this.adminFormArray.markAllAsTouched()
+        adminForm.markAllAsTouched();
+        // this.api.showError('Invalid admin form')
+      
+        }else{
+          // If the form is valid, update the admin details
+          this.adminList[index] = {
+            ...this.adminList[index],
+            admin_name: adminForm.value.admin_name,
+            admin_email: adminForm.value.admin_email,
+            admin_phone_number: adminForm.value.admin_phone_number,
+            admin_status: adminForm.value.admin_status 
+          };
+
+          // Show the success message
+          // this.api.showSuccess("Admin details updated successfully!");
+          this.adminList[index].isEditing = false;
+        
+    }
+}
+  openAdminForm(){
+    this.adminintForm();
+    this.isAdminForm=!this.isAdminForm
+    this.adminInitiated = !this.adminInitiated;
   }
   triggerFileInput() {
     this.fileInput?.nativeElement?.click();
   }
+  
   async clearImage() {
   await this.triggerFileInput();
     // this.fileDataUrl = null;
@@ -174,21 +237,7 @@ export class AddOrganizationComponent implements OnInit {
     this.f['org_logo'].markAsDirty()
     this.f['org_logo'].markAsTouched()
   }
-  // uploadImageFile(event: any) {
-  //   this.uploadFile = event.target.files[0];
-  //   if (event.target.files && event.target.files[0]) {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(event.target.files[0])
-  //     reader.onload = (event: any) => {
-  //       this.url = event.target.result;
-  //       this.fileUrl = reader.result
-  //       if(reader.result){
-  //         this.organizationForm.patchValue({ org_logo: this.fileUrl })
-  //       }
-       
-  //     }
-  //   }
-  // }
+  
   getCountry() {
     let data = {
       "data_request": "GIVE_ALL_COUNTRY",
@@ -241,55 +290,59 @@ export class AddOrganizationComponent implements OnInit {
 
   }
   organizationSubmit() {
-    if(this.adminForm.valid && !this.adminList.length){
-     this.addAdmin()
-    }
-    if (this.organizationForm.valid && this.adminForm.invalid && this.adminList.length) {
-      this.a['admin_name'].reset();
-      this.a['admin_email'].reset();
-      this.a['admin_phone_number'].reset();
-      this.a['admin_status'].reset();
-      const data = {
-        org_qr_uniq_id: this.f['org_qr_uniq_id'].value,
-        org_name: this.f['org_name'].value,
-        org_address: this.f['org_address'].value,
-        org_email: this.f['org_email'].value,
-        org_city: this.f['org_city'].value,
-        org_state: this.f['org_state'].value,
-        org_country: this.f['org_country'].value,
-        org_postal_code: this.f['org_postal_code'].value,
-        org_logo: this.f['org_logo'].value,
-        admin_details: this.adminList
-      };
-  
-      console.log(data, "DATA");
-  
-      this.api.postData(`${environment.live_url}/${environment.organization}`, data).subscribe(
-        res => {
-          if (res['result'].status) {
-            this.api.showSuccess("Organization admin created successfully!");
-            this.organizationForm.reset();
-            this.fileDataUrl = null;
-            this.adminList = []; // Clear the admin list after submission
-          } 
-        },
-        error => {
-          this.api.showError(error.error.error.message);
-        }
-      );
-    }
-    // If no admins are added and the form is invalid, show an error
-   else{
+    // Check if the organization form is invalid
+    if (this.organizationForm.invalid || this.adminInitiated && this.adminForm?.invalid) {
       this.organizationForm.markAllAsTouched();
-      if(this.adminForm.invalid && !this.adminList.length){
-        this.adminForm.markAllAsTouched()
-      }
-      //this.adminForm.markAllAsTouched()
+      this.adminForm.markAllAsTouched();
       this.api.showError("Please enter the mandatory fields!");
-    } 
-    
-    
+      return;
+    }
+    // If admin form is invalid and no admins are added, show an error
+    if (this.adminInitiated && this.adminForm?.invalid) {
+      this.adminForm.markAllAsTouched();
+      this.api.showError("Please enter the mandatory fields!");
+      return;
+    }
+    // Check if the admin form is valid but no admins are added
+    if (this.adminInitiated && this.adminForm?.valid) {
+      this.api.showWarning("Please add the admin details before submitting the form");
+      return;
+    }
+  
+    // Prepare data for submission
+    const data = {
+      org_qr_uniq_id: this.f['org_qr_uniq_id'].value,
+      org_name: this.f['org_name'].value,
+      org_address: this.f['org_address'].value,
+      org_email: this.f['org_email'].value,
+      org_city: this.f['org_city'].value,
+      org_state: this.f['org_state'].value,
+      org_country: this.f['org_country'].value,
+      org_postal_code: this.f['org_postal_code'].value,
+      org_logo: this.f['org_logo'].value,
+      admin_details: this.adminList
+    };
+  
+    // If everything is valid, submit the form
+    this.api.postData(`${environment.live_url}/${environment.organization}`, data).subscribe(
+      res => {
+        if (res['result'].status) {
+          this.api.showSuccess("Organization admin created successfully!");
+          this.organizationForm.reset();
+          // this.adminInitiated ?  this.isAdminForm = !this.isAdminForm : this.isAdminForm;
+          this.adminInitiated = !this.adminInitiated;
+          this.fileDataUrl = null;
+          this.adminList = []; // Clear the admin list after submission
+        }
+      },
+      error => {
+        this.api.showError(error.error.error.message);
+      }
+    );
+  
+  
   }
+  
   
   get f() {
     return this.organizationForm.controls;

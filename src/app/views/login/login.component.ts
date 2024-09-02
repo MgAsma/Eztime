@@ -87,7 +87,7 @@ export class LoginComponent implements OnInit {
           //   this.router.navigate(['/dashboards']);
           //  }
           this.router.navigate(['/dashboards']);
-          this.api.showSuccess('Login successful !');
+          this.api.showSuccess('Login successful!');
         }
         else {
           //console.log(response)
