@@ -35,7 +35,7 @@ export class AddOrganizationComponent implements OnInit {
   status:boolean = false;
   adminList: any = [];
   isAdminForm = false;
-  adminInitiated: boolean = false;
+  
   adminFormArray: FormArray;
   constructor(private _fb: FormBuilder, private api: ApiserviceService, private location: Location, private common_service: CommonServiceService) {
     this.initializeAdminFormArray();
@@ -167,7 +167,6 @@ export class AddOrganizationComponent implements OnInit {
   openAdminForm(){
     this.adminintForm();
     this.isAdminForm=!this.isAdminForm
-    this.adminInitiated = !this.adminInitiated;
   }
   triggerFileInput() {
     this.fileInput?.nativeElement?.click();
@@ -291,20 +290,20 @@ export class AddOrganizationComponent implements OnInit {
   }
   organizationSubmit() {
     // Check if the organization form is invalid
-    if (this.organizationForm.invalid || this.adminInitiated && this.adminForm?.invalid) {
+    if (this.organizationForm.invalid || this.isAdminForm && this.adminForm?.invalid) {
       this.organizationForm.markAllAsTouched();
       this.adminForm.markAllAsTouched();
       this.api.showError("Please enter the mandatory fields!");
       return;
     }
     // If admin form is invalid and no admins are added, show an error
-    if (this.adminInitiated && this.adminForm?.invalid) {
+    if (this.isAdminForm && this.adminForm?.invalid) {
       this.adminForm.markAllAsTouched();
       this.api.showError("Please enter the mandatory fields!");
       return;
     }
     // Check if the admin form is valid but no admins are added
-    if (this.adminInitiated && this.adminForm?.valid) {
+    if (this.isAdminForm && this.adminForm?.valid) {
       this.api.showWarning("Please add the admin details before submitting the form");
       return;
     }
@@ -327,10 +326,9 @@ export class AddOrganizationComponent implements OnInit {
     this.api.postData(`${environment.live_url}/${environment.organization}`, data).subscribe(
       res => {
         if (res['result'].status) {
-          this.api.showSuccess("Organization admin created successfully!");
+          this.api.showSuccess("Organization created successfully!");
           this.organizationForm.reset();
-          // this.adminInitiated ?  this.isAdminForm = !this.isAdminForm : this.isAdminForm;
-          this.adminInitiated = !this.adminInitiated;
+          this.isAdminForm = false;
           this.fileDataUrl = null;
           this.adminList = []; // Clear the admin list after submission
         }

@@ -215,12 +215,16 @@
               </div>
             </div>
           </div>
-          <div class="col-1 d-flex" (click)="addAdmin();" [attr.disabled]="adminForm.invalid"><i class="bi bi-plus-circle" container="body"
-            [ngbTooltip]="adminForm.invalid ? 'Add admin details':'Add'"></i></div>
+          <!-- <div class="col-1 d-flex" (click)="addAdmin();" [attr.disabled]="adminForm.invalid"><i class="bi bi-plus-circle" container="body"
+            [ngbTooltip]="adminForm.invalid ? 'Add admin details':'Add'"></i></div> -->
         
-        
+            <div class="col-1 d-flex justify-content-center align-items-center"  [attr.disabled]="adminForm.invalid">
+              <i class="bi bi-plus-circle" style="margin-right: 5px;" container="body" [ngbTooltip]="adminForm.invalid ? 'Add admin details':'Add'" (click)="addAdmin();"></i>
+              <i class="bi bi-x-circle " style="font-size: 22px;color: red;cursor: pointer;"  container="body" ngbTooltip="Cancel" (click)="isAdminForm=!isAdminForm"></i>
+            </div>
           
-        </div>
+        </div> 
+       
         </mat-card>
       </form>
         

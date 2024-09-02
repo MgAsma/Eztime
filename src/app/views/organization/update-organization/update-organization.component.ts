@@ -36,7 +36,6 @@ export class UpdateOrganizationComponent implements OnInit {
   adminForm: FormGroup;
   adminFormArray: FormArray;
   isAdminForm = false;
-  adminInitiated: boolean;
   constructor(private _fb: FormBuilder,
     private api: ApiserviceService, private route: ActivatedRoute,
     private router: Router, private location: Location, private common_service: CommonServiceService,
@@ -57,7 +56,7 @@ export class UpdateOrganizationComponent implements OnInit {
   openAdminForm(){
     this.adminintForm();
     this.isAdminForm=!this.isAdminForm
-    this.adminInitiated = !this.adminInitiated;
+    
   }
   
   goBack(event) {
@@ -405,7 +404,7 @@ export class UpdateOrganizationComponent implements OnInit {
       // Check if the admin form array is valid and has at least one admin
       const isAdminFormValid = this.adminList.length > 0 && this.adminFormArray.valid;
     // Check if the organization form is valid
-    if (this.organizationForm.invalid || this.adminInitiated && this.adminForm?.invalid) {
+    if (this.organizationForm.invalid || this.isAdminForm && this.adminForm?.invalid ) {
       this.organizationForm.markAllAsTouched();
       this.adminForm.markAllAsTouched();
       this.api.showError("Please enter the mandatory fields!");
@@ -425,7 +424,7 @@ export class UpdateOrganizationComponent implements OnInit {
         return;
       }
       // Check if the admin form is valid but no admins are added
-      if (this.adminInitiated && this.adminForm?.valid) {
+      if (this.isAdminForm && this.adminForm?.valid) {
         this.api.showWarning("Please add the admin details before submitting the form");
         return;
       }
@@ -449,7 +448,8 @@ export class UpdateOrganizationComponent implements OnInit {
           if (res['result']) {
             this.api.showSuccess("Organization updated successfully!");
             // this.organizationForm.reset();
-            this.adminForm.reset()
+            this.adminForm.reset();
+            this.isAdminForm=false;
             this.fileDataUrl = null;
             this.adminList = []; // Clear the admin list after submission
             this.getOrgDetails(); // Refresh the organization details
