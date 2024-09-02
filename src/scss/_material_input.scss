@@ -1,12 +1,12 @@
 
-.bi-trash-fill{
-  color: red;  
-  text-align: center;
-  background-color: #eaeaea;
-  border-radius: 50%;
-  padding: 4px 7px;
-  cursor: pointer;
-}
+// .bi-trash-fill{
+//   color: red;  
+//   // text-align: center;
+//  // background-color: #eaeaea;
+//   // border-radius: 50%;
+//   // padding: 4px 7px;
+//   cursor: pointer;
+// }
 
 .bi-pencil-square{
   color: black;
@@ -112,7 +112,8 @@
   }
   .row-container,.row-container2 {
     display: flex;
-    border: 1px solid #ccc;
+    //border: 1px solid #ccc;
+    border: 1px solid #cccccc61;
     border-radius: 5px;
     align-items: center;
     justify-content: space-between;
@@ -185,5 +186,9 @@
       margin-top: 30px !important;
       transform: scale(0.9) !important;
     }
-  
-   
+    .mat-form-field-appearance-outline .mat-form-field-infix {
+      padding: 12px !important; 
+  }
+  .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: .10em 0 !important;
+}

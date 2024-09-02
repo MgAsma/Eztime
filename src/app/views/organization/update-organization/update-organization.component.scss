@@ -1,6 +1,36 @@
 .admin-action-btn{
-    background: rgb(246 246 246);
+    // background: rgb(246 246 246);
     &:hover{
         opacity: 0.8;
     }
 }
+.editable-row {
+    background-color: white;
+    border: 1px solid lightblue;
+  }
+  
+  .row-container2 input[readonly] {
+    background-color: #f9f9f9; /* or any light grey */
+  }
+  
+  .row-container2.editable {
+    background-color: white;
+    border: 1px solid lightblue;
+  }
+  .admin-card {
+    margin: 3px !important;
+    border-radius: 5px !important;
+    padding: 20px;
+   }
+   .add-btn{
+    font-size: 20px;
+   }
+   .bi-check-circle,
+   .bi-x-circle,
+   .bi-trash{
+    cursor: pointer;
+    &:hover{
+      transform: scale(1.2);
+    }
+    
+   }

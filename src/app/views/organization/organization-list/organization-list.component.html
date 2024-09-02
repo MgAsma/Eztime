@@ -6,7 +6,7 @@
       <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>
     </div>
     <div class="col-sm"></div>
-    <div class="col-md-3 col-lg-3 text-end">
+    <div class="col-md-3 col-lg-3 p-1 text-end">
       <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/organization/createOrg" type="submit">Create
         Organization</button>
 
@@ -53,9 +53,9 @@
 
                 <td>{{getContinuousIndex(i)}}</td>
                 <td class="p-r">
-                  <img src="{{item.org_logo_path}}" alt="" height="25px" width="50px">
+                  <img  *ngIf="item.org_logo_path" src="{{item.org_logo_path}}" height="45px" width="45px" style="border-radius: 50%;">
                   <a href="{{item.org_logo_path}}" target="_blank">
-                    <i class="bi bi-eye" id="eye-btn" container="body" ngbTooltip="View"></i>
+                    <i class="bi bi-eye-fill" id="eye-btn" container="body" ngbTooltip="View"></i>
                   </a>
                 </td>
                 <td>{{item.org_name ? item.org_name :'NA' | titlecase }}</td>
