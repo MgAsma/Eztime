@@ -159,104 +159,136 @@
 
 <!-- New Login Design -->
 <div class="container-fluid login-main-bg" style="margin: 0;padding: 5px 0px;">
-    <div class="row login-content-bg">
-        <div
-            class="col-12 col-md-12 col-lg-6 col-xl-6 login-left-content order-2 order-sm-2 order-md-2 order-lg-1 order-xl-1 ">
-            <img src="./../../../assets/images/login-left-content.png" class="left-content-img"
-                alt="left-content-img" />
-        </div>
-        <div class="col-12 col-md-12 col-lg-6 col-xl-6 order-1 order-sm-1 order-md-1 order-lg-2 order-xl-2"
-            style="position: relative; align-self: center;">
-            <div class="login-right-content">
-                <div class="row">
-                    <div class="logo-section">
-                        <img src="./../../../assets/images/logo.svg" alt="logo-img" width="200px" height="65px"
-                            class="app-logo-content" />
+    <div>
+        <div class="row login-content-bg">
+            <div
+                class="col-12 col-md-12 col-lg-6 col-xl-6 login-left-content order-2 order-sm-2 order-md-2 order-lg-1 order-xl-1 ">
+                <img src="./../../../assets/images/login-left-content.png" class="left-content-img"
+                    alt="left-content-img" />
+            </div>
+            <div class="col-12 col-md-12 col-lg-6 col-xl-6 order-1 order-sm-1 order-md-1 order-lg-2 order-xl-2"
+                style="position: relative; align-self: center;">
+                <div class="login-right-content">
+                    <div class="row">
+                        <div class="logo-section">
+                            <img src="./../../../assets/images/logo.svg" alt="logo-img" width="200px" height="65px"
+                                class="app-logo-content" />
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h2 class="login-text"><b>LOGIN</b></h2>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h2 class="login-text"><b>LOGIN</b></h2>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <form [formGroup]='loginForm' (ngSubmit)='login()' class="login-form-content">
-                            <div class="row my-2">
-                                <div class="col custome-column">
-                                    <!-- <fieldset class="input-fieldset">
-                                        <input type="text" class="form-control p-3  mb-3 accordion-header"
-                                            formControlName='username' placeholder="Email Address" (keypress)="preventSpace($event)"
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <form [formGroup]='loginForm' (ngSubmit)='login()' class="login-form-content">
+                                <div class="row my-2">
+                                    <div class="col custome-column">
+                                        <!-- <fieldset class="input-fieldset">
+                                            <input type="text" class="form-control p-3  mb-3 accordion-header"
+                                                formControlName='username' placeholder="Email Address" (keypress)="preventSpace($event)"
+                                                aria-describedby="emailHelp" autocomplete="off" id="emailId">
+                                            <legend for="emailId">Email Address <span>*</span></legend>
+                                        </fieldset> -->
+                                        <!-- <span class="pass-visibility"><i class="bi bi-envelope"></i></span> -->
+                                        <!-- <div *ngIf="f['username'].touched && f['username'].invalid" class="p-r">
+                                            <div *ngIf="f['username'].errors && f['username'].errors['required'] "
+                                                class="error-msg">Email Id is required.</div>
+                                            <div *ngIf="f['username'].errors && f['username'].errors['email']"
+                                                class="error-msg">Email Id is invalid.</div>
+                                        </div> -->
+                                        <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
+                                            <mat-label>Email Address<b class="r-star">*</b></mat-label>
+                                            <input matInput formControlName='username' placeholder="Email Address" (keypress)="preventSpace($event)"
                                             aria-describedby="emailHelp" autocomplete="off" id="emailId">
-                                        <legend for="emailId">Email Address <span>*</span></legend>
-                                    </fieldset> -->
-                                    <!-- <span class="pass-visibility"><i class="bi bi-envelope"></i></span> -->
-                                    <!-- <div *ngIf="f['username'].touched && f['username'].invalid" class="p-r">
-                                        <div *ngIf="f['username'].errors && f['username'].errors['required'] "
-                                            class="error-msg">Email Id is required.</div>
-                                        <div *ngIf="f['username'].errors && f['username'].errors['email']"
-                                            class="error-msg">Email Id is invalid.</div>
-                                    </div> -->
-                                    <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
-                                        <mat-label>Email Address<b class="r-star">*</b></mat-label>
-                                        <input matInput formControlName='username' placeholder="Email Address" (keypress)="preventSpace($event)"
-                                        aria-describedby="emailHelp" autocomplete="off" id="emailId">
-                                        <mat-icon matSuffix>mail_outline</mat-icon>
-                                        <mat-error *ngIf="f['username'].touched && f['username'].invalid">
-                                          <span *ngIf="f['username'].errors && f['username'].errors['required']">Email Id is required.</span>
-                                          <span *ngIf="f['username'].errors && f['username'].errors['email']">Email Id is invalid.</span>
-                                        </mat-error>
-                                      </mat-form-field>
+                                            <mat-icon matSuffix>mail_outline</mat-icon>
+                                            <mat-error *ngIf="f['username'].touched && f['username'].invalid">
+                                              <span *ngIf="f['username'].errors && f['username'].errors['required']">Email Id is required.</span>
+                                              <span *ngIf="f['username'].errors && f['username'].errors['email']">Email Id is invalid.</span>
+                                            </mat-error>
+                                          </mat-form-field>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row my-2">
-                                <div class="col custome-column p-r">
-                                    <!-- <fieldset class="input-fieldset">
-                                        <input [type]="passwordType" class="form-control p-3 mb-3 sizeinput"
-                                            formControlName='password' placeholder="Password" minlength="8"
+                                <div class="row my-2">
+                                    <div class="col custome-column p-r">
+                                        <!-- <fieldset class="input-fieldset">
+                                            <input [type]="passwordType" class="form-control p-3 mb-3 sizeinput"
+                                                formControlName='password' placeholder="Password" minlength="8"
+                                                aria-describedby="emailHelp" autocomplete="off" id="password">
+                                            <legend for="password">Password <span>*</span></legend>
+                                        </fieldset>
+                                        <span class="pass-visibility"><i [ngClass]="eyeIcon"
+                                                (click)="showPassword()"></i></span>
+                                        <div *ngIf="f['password'].touched && f['password'].invalid" class="p-r">
+                                            <div *ngIf="f['password'].errors && f['password'].errors['required']">
+                                                <p class="error-msg">Password is required.</p>
+                                            </div>
+                                        </div> -->
+                                        <!-- <div *ngIf="f['password'].errors && f['password'].hasError('pattern')"
+                                            class="error-msg">
+                                            Password should
+                                            contain at least one special character,one number,one uppercase and one
+                                            lowercase, and be at least 8 characters long
+                                        </div> -->
+                                        <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
+                                            <mat-label>Password<b class="r-star">*</b></mat-label>
+                                            <input matInput [type]="passwordType" formControlName='password' placeholder="Password"
                                             aria-describedby="emailHelp" autocomplete="off" id="password">
-                                        <legend for="password">Password <span>*</span></legend>
-                                    </fieldset>
-                                    <span class="pass-visibility"><i [ngClass]="eyeIcon"
-                                            (click)="showPassword()"></i></span>
-                                    <div *ngIf="f['password'].touched && f['password'].invalid" class="p-r">
-                                        <div *ngIf="f['password'].errors && f['password'].errors['required']">
-                                            <p class="error-msg">Password is required.</p>
-                                        </div>
-                                    </div> -->
-                                    <!-- <div *ngIf="f['password'].errors && f['password'].hasError('pattern')"
-                                        class="error-msg">
-                                        Password should
-                                        contain at least one special character,one number,one uppercase and one
-                                        lowercase, and be at least 8 characters long
-                                    </div> -->
-                                    <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
-                                        <mat-label>Password<b class="r-star">*</b></mat-label>
-                                        <input matInput [type]="passwordType" formControlName='password' placeholder="Password"
-                                        aria-describedby="emailHelp" autocomplete="off" id="password">
-                                        <mat-icon matSuffix  (click)="showPassword()">{{eyeIcon}}</mat-icon>
-                                        <mat-error  *ngIf="f['password'].touched && f['password'].invalid">
-                                          <span *ngIf="f['password'].errors && f['password'].errors['required']">Password is required.</span>
-                                        </mat-error>
-                                      </mat-form-field>
+                                            <mat-icon matSuffix  (click)="showPassword()">{{eyeIcon}}</mat-icon>
+                                            <mat-error  *ngIf="f['password'].touched && f['password'].invalid">
+                                              <span *ngIf="f['password'].errors && f['password'].errors['required']">Password is required.</span>
+                                            </mat-error>
+                                          </mat-form-field>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="action-btn-link-content">
-                                <a routerLink="../forgotPassword" class="m-0">Forgot Password?</a>
-                                <button mat-raised-button class="proceedbtn" type="submit">Login</button>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <a href="https://twitter.com/ekfrazo" target="_blank"><i class="bi bi-twitter"></i></a>
-                                <a href="https://www.facebook.com/ekfrazotechnologies/" target="_blank"><i
-                                        class="bi bi-facebook"></i></a>
+                                <div class="action-btn-link-content">
+                                    <a routerLink="../forgotPassword" class="m-0">Forgot Password?</a>
+                                    <button mat-raised-button class="proceedbtn" type="submit">Login</button>
+                                </div>
+                                <!-- <div class="d-flex justify-content-center">
+                                    <a href="https://twitter.com/ekfrazo" target="_blank"><i class="bi bi-twitter"></i></a>
+                                    <a href="https://www.facebook.com/ekfrazotechnologies/" target="_blank"><i
+                                            class="bi bi-facebook"></i></a>
+                                    <a href="https://www.linkedin.com/company/ekfrazo-technologies/" target="_blank"><i
+                                            class="bi bi-linkedin"></i></a>
+                                </div> -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+            
+        </div>
+        <div class="row login-footer">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 text-center text-md-start">
+                        <p class="">Customer@projectace.com</p>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 text-center">
+                        <p><span><i class="bi bi-c-circle fs-6 p-0"></i></span>  Project Ace. All rights reserved</p>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 text-center text-md-end">
+                        <div class="d-flex  justify-content-evenly justify-content-md-end align-items-center social-media">
+                            <div>
                                 <a href="https://www.linkedin.com/company/ekfrazo-technologies/" target="_blank"><i
-                                        class="bi bi-linkedin"></i></a>
+                                    class="bi bi-linkedin"></i></a>
                             </div>
-                        </form>
+                            <div>
+                                <a href="https://www.facebook.com/ekfrazotechnologies/" target="_blank"><i
+                                    class="bi bi-facebook"></i></a>
+                            </div>
+                            <div>
+                                <a href="https://twitter.com/ekfrazo" target="_blank"><i class="bi bi-twitter-x"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
+    
+    
 </div>

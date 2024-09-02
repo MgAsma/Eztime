@@ -121,7 +121,7 @@
                 <div class="col-sm-12 col-md-6 col-lg-3">
                     <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                       <mat-label>Country <b class="r-star">*</b></mat-label>
-                      <mat-select formControlName="country" (selectionChange)="getState($event.value)" autocomplete="off">
+                      <mat-select formControlName="country" (selectionChange)="getState($event.value)" autocomplete="off" panelClass="custom-select-panel">
                         <mat-option *ngFor="let country of country" [value]="country.name">
                           {{country.name}}
                         </mat-option>
@@ -134,7 +134,8 @@
                 <div class="col-sm-12 col-md-6 col-lg-3">
                     <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                       <mat-label>State <b class="r-star">*</b></mat-label>
-                      <mat-select formControlName="state" (selectionChange)="getCity($event.value)" autocomplete="off" [attr.disabled]="!f['country']?.value" [ngbTooltip]="!f['country']?.value ? 'Please select country' :''">
+                      <mat-select formControlName="state" (selectionChange)="getCity($event.value)" autocomplete="off" panelClass="custom-select-panel"
+                        [attr.disabled]="!f['country']?.value" [ngbTooltip]="!f['country']?.value ? 'Please select country' :''">
                         <mat-option *ngFor="let state of state" [value]="state.name">
                           {{state.name}}
                         </mat-option>

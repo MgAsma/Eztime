@@ -335,6 +335,9 @@ span {
     .login-main-bg {
         background: #f8f8f8;
     }
+    .login-footer{
+        margin: 0px !important;
+    }
 
     .login-content-bg {
         margin: 0px 20px;
@@ -400,6 +403,7 @@ span {
     .login-left-content {
         text-align: center;
     }
+    
 
     .app-logo-content {
         // margin-left: -10px !important;
@@ -412,4 +416,27 @@ span {
     .input-fieldset legend {
         background: #f8f8f8 !important;
     }
+}
+
+.login-footer{
+    margin: 50px 100px;
+}
+
+.social-media a i {
+    // background: #126EB4;
+    // color: white;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+.bi-linkedin::before {
+    color: #126EB4;
+    font-size: 20px;
+}
+.bi-facebook::before {
+    color: #126EB4;
+    font-size: 20px;
+}
+.bi-twitter-x::before {
+    color: #126EB4;
+    font-size: 20px;
 }
