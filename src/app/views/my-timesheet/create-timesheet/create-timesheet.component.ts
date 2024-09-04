@@ -191,6 +191,7 @@ createTask(): FormGroup {
     description: ['',[Validators.pattern(/^\S.*$/)]],
     task_id: ['',Validators.required],
     time_spent: ['',Validators.required],
+    created_date:['',Validators.required]
   });
 }
 

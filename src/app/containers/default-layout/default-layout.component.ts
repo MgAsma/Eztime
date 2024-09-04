@@ -88,8 +88,8 @@ export class DefaultLayoutComponent {
     this.org_id = sessionStorage.getItem('org_id')
     this.api.getUserRoleById(`id=${role_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe(res => {
       if (res) {
-        this.permission = res['data'][0].permissions;
-        if (this.permission.length > 0) {
+        this.permission = res['data'][0]?.permissions;
+        if (this.permission?.length > 0) {
           const modifiedData = this.permission.map(permissionObj => {
             const newObj = {};
 

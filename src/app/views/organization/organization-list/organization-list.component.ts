@@ -77,9 +77,11 @@ currentIndex: any;
       }
       //console.log(res,'resp from yet');
       
-    },(error=>{
-      this.api.showError(error.error.error.message)
-   })
+    },((error:any)=>{
+     
+        this.api.showError(error?.error.error.message)
+    
+    })
   
     )
   

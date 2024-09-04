@@ -1,6 +1,6 @@
 
 <div class="container-fluid p-20">
-  <div class="generic-form bg mx-1" >
+  <div class="generic-form bg mx-1 pb-4" >
       <form [formGroup]='organizationForm' >
         <!-- <mat-card class="org-card"> -->
         <div class="row" >
@@ -136,22 +136,31 @@
           </div> 
             </div>
           </div>
-    
-        
         </div>
       </form>
-        <h5><b>Create Admin</b></h5>
-        <h6>Create Multiple Admin</h6>
-        <div class="row" *ngIf="!isAdminForm">
-          <div class="col-12">
+
+      <div class="row">
+        <div class="col-12" style="padding: 5px 15px 15px;">
+          <button type="button" mat-raised-button class="proceedbtn" color="primary" (click)="organizationSubmit()">Save</button>
+        </div>
+      </div>
+
+      <div style="border: 1px solid #cdcdcd;padding: 20px 10px 26px;border-radius: 5px;">
+        <div class="row">
+          <div class="col-6">
+            <h5><b>Create Admin</b></h5>
+            <h6 class="mb-0">Create Multiple Admin</h6>
+          </div>
+          <div class="col-4"></div>
+          <div class="col-2 text-center" *ngIf="!isAdminForm">
             <button type="button" mat-raised-button class="proceedbtn" color="primary" (click)="openAdminForm()"><mat-icon class="add-btn">add</mat-icon>Add Admin</button>
           </div>
         </div> 
         <form [formGroup]="adminForm" *ngIf="isAdminForm">
-          <mat-card class="admin-card m-1">
-          <div class="row">
-          <div class="col-11">
-            <div class="row-container" >
+         
+          <div class="row me-3 mt-2">
+          <div class="col-11 pe-0">
+            <div class="row-container editable">
               
               <div class="column">
                 
@@ -215,28 +224,28 @@
               </div>
             </div>
           </div>
-          <!-- <div class="col-1 d-flex" (click)="addAdmin();" [attr.disabled]="adminForm.invalid"><i class="bi bi-plus-circle" container="body"
-            [ngbTooltip]="adminForm.invalid ? 'Add admin details':'Add'"></i></div> -->
-        
-            <div class="col-1 d-flex justify-content-center align-items-center"  [attr.disabled]="adminForm.invalid">
-              <i class="bi bi-plus-circle" style="margin-right: 5px;" container="body" [ngbTooltip]="adminForm.invalid ? 'Add admin details':'Add'" (click)="addAdmin();"></i>
-              <i class="bi bi-x-circle " style="font-size: 22px;color: red;cursor: pointer;"  container="body" ngbTooltip="Cancel" (click)="isAdminForm=!isAdminForm"></i>
-            </div>
-          
+         
+          <div class="col-1 p-0 d-flex justify-content-center align-items-center"  [attr.disabled]="adminForm.invalid">
+            <i class="bi bi-check-circle icon-bg" style="color:#50C20D;cursor: pointer;margin-right: 5px;" container="body" [ngbTooltip]="adminForm.invalid ? 'Add admin details':'Add'" (click)="addAdmin();"></i>
+            <i class="bi bi-x-circle icon-bg" style="color: #126EB4;cursor: pointer;"  container="body" ngbTooltip="Cancel" (click)="isAdminForm=!isAdminForm"></i>
+          </div>
+            
         </div> 
        
-        </mat-card>
       </form>
         
      
         <ng-container *ngFor="let admin of adminList; let i = index">
-          <div class="row mt-4" [formGroup]="getAdminFormGroup(i)">
+          <div class="row me-1 mt-4" [formGroup]="getAdminFormGroup(i)">
             <div class="col-11">
-              <div  tabindex="0" class="row-container2" (focusin)="toggleFormControlState(i, true)"  [ngClass]="admin.isEditing ? 'editable': ''" [attr.disabled]="admin.isEditing && getAdminFormGroup(i).invalid? true : false">
+              <div  tabindex="0" class="row-container2"    [ngClass]="{
+                'editable': admin.isEditing
+                
+              }" >
                 
                 <div class="column py-2">
                   <input matInput formControlName="admin_name" placeholder="First Name" class="w-100" 
-                          >
+                  [readonly]="!admin.isEditing">
                           <div *ngIf="getAdminFormGroup(i)?.get('admin_name').touched && getAdminFormGroup(i)?.get('admin_name').invalid"
                           class="error-text">
                        <span *ngIf="getAdminFormGroup(i)?.get('admin_name').hasError('required')">
@@ -250,7 +259,7 @@
                 
                 <div class="column py-2">
                   <input matInput formControlName="admin_email" placeholder="Email" class="w-100"
-                          >
+                  [readonly]="!admin.isEditing">
                     <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email').hasError('required') && getAdminFormGroup(i)?.get('admin_email').touched">
                       Email is required
                     </mat-error>
@@ -261,7 +270,7 @@
                 
                 <div class="column py-2">
                   <input type="tel" matInput formControlName="admin_phone_number" placeholder="Phone Number" class="w-100"
-                          >
+                  [readonly]="!admin.isEditing">
                           <div *ngIf="getAdminFormGroup(i)?.get('admin_phone_number').touched && getAdminFormGroup(i)?.get('admin_phone_number').invalid"
                           class="error-text">
                        <div *ngIf="getAdminFormGroup(i)?.get('admin_phone_number').hasError('required')">
@@ -274,7 +283,7 @@
                 </div>
                 
                 <div class="column py-2">
-                  <mat-slide-toggle formControlName="admin_status">
+                  <mat-slide-toggle formControlName="admin_status"  [attr.disabled]="!admin.isEditing">
                     {{ getAdminFormGroup(i)?.get('admin_status')?.value === true ? 'Active' : 'Inactive' }}
                   </mat-slide-toggle>
                 </div>
@@ -282,23 +291,22 @@
             </div>
             
             <div class="col-1 d-flex align-items-center p-0"  *ngIf="admin?.isEditing">
-              <i class="bi bi-check-circle m-1" container="body" ngbTooltip="Save" style="color:green" (click)="saveAdmin(i)"></i> 
-              <i class="bi bi-x-circle m-1" container="body" ngbTooltip="Cancel" (click)="toggleFormControlState(i, false)"></i> 
-              <!-- <i class="bi bi-trash-fill"></i> -->
-              <i class="bi bi-trash m-1" container="body" style="color:red"  ngbTooltip="Delete" (click)="deleteAdmin(i)"></i>
+              <i class="bi bi-check-circle me-1 icon-bg" container="body" ngbTooltip="Save" style="color:#50C20D;" (click)="saveAdmin(i)"></i> 
+              <i class="bi bi-x-circle icon-bg" container="body" style="color:#126EB4;margin-right: 5px;" ngbTooltip="Cancel" (click)="toggleFormControlState(i, false)"></i> 
+              <i class="bi bi-trash icon-bg" container="body" style="color:red;"  ngbTooltip="Delete" (click)="open(i)"></i>
             </div>
+            <div class="col-1 d-flex align-items-center p-0" (click)="toggleFormControlState(i, true)"  *ngIf="!admin?.isEditing">
+              <i class="bi bi-pencil-square icon-bg"></i>
+            </div>
+           
           </div>
         </ng-container>
         
        
         <!-- Submit Button -->
-        <div class="row">
-          <div class="col-12 py-4">
-            <button type="button" mat-raised-button class="proceedbtn" color="primary" (click)="organizationSubmit()">Submit</button>
-          </div>
-        </div>
+        
       <!-- </mat-card> -->
-      
+    </div>
     </div>
   </div> 
   

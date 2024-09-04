@@ -14,14 +14,13 @@
     </button>
     <div class="row" >
       <div class="col-sm-12">
-          <h1 class="breadcrumb-title" *ngIf="pageName === 'Create'">{{pageName |titlecase}} {{'Organization'}}</h1>
-          <h1 class="breadcrumb-title" *ngIf="pageName !== 'Create'">{{pageName |titlecase}}</h1>
+         
+          <h1 class="breadcrumb-title" *ngIf="pageName" [ngStyle]="{'padding-top': pageName === 'Dashboard' ? '10px' : '0px'}">{{pageName |titlecase}}</h1>
          <div class="mobile-hide-content" *ngIf="pageName!=''">
           <nav aria-label="breadcrumb ">
             <ol class="breadcrumb mb-2">
               <li class="breadcrumb-item" *ngIf="pageName !== 'Dashboard'"><a routerLink="/dashboards">Dashboard</a></li>
-              <li class="breadcrumb-item" *ngIf="pageName === 'Create'"><a routerLink="getBack()">{{previousPage}}</a></li>
-              <li class="breadcrumb-item sub-title" ><a>{{pageName |titlecase}}</a></li>
+              <li class="breadcrumb-item sub-title" *ngIf="pageName !== 'Dashboard'"><a>{{pageName |titlecase}}</a></li>
             </ol>
           </nav>
          </div>

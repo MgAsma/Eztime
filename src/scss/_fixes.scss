@@ -637,7 +637,8 @@ app-organization-list{
   background-color: #126EB4;
   border-radius: 12px;
   padding: 5px;
-  font-size: 13px;
+  font-size: 11px;
+  font-weight: 600;
   color: #FFFFFF;
 }
 
@@ -650,7 +651,6 @@ app-organization-list{
   color: red !important;
 }
 .user-name{
-  padding: 7px;
   font-size: 13px;
   line-height: 2;
 }

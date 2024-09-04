@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-add-organization',
@@ -32,13 +34,16 @@ export class AddOrganizationComponent implements OnInit {
   country: any = [];
   adminForm: FormGroup;
   dataSource = new MatTableDataSource();
-  status:boolean = false;
   adminList: any = [];
-  isAdminForm = false;
+  isAdminForm = true;
   
   adminFormArray: FormArray;
-  constructor(private _fb: FormBuilder, private api: ApiserviceService, private location: Location, private common_service: CommonServiceService) {
+  constructor(private _fb: FormBuilder, private api: ApiserviceService, 
+    private location: Location, 
+    private common_service: CommonServiceService,
+    private modalService:NgbModal) {
     this.initializeAdminFormArray();
+    this.adminintForm();
    }
 
   fileDataUrl: string | ArrayBuffer | null = null; // Make sure this is declared in your component
@@ -67,7 +72,6 @@ export class AddOrganizationComponent implements OnInit {
     }
   }
   
- 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.common_service.setSubTitle(this.BreadCrumbsSubTitle)
@@ -165,7 +169,6 @@ export class AddOrganizationComponent implements OnInit {
     }
 }
   openAdminForm(){
-    this.adminintForm();
     this.isAdminForm=!this.isAdminForm
   }
   triggerFileInput() {
@@ -208,6 +211,9 @@ export class AddOrganizationComponent implements OnInit {
   }
   deleteAdmin(index: number) {
     this.adminList.splice(index, 1);
+    if(!this.adminList.length){
+      this.isAdminForm = !this.isAdminForm;
+    }
   }
   phoneNumberLengthValidator(control: AbstractControl): { [key: string]: boolean } | null {
     const phoneNumber = control.value;
@@ -307,6 +313,11 @@ export class AddOrganizationComponent implements OnInit {
       this.api.showWarning("Please add the admin details before submitting the form");
       return;
     }
+     // Check if the admin form is valid but no admins are added
+     if (this.adminFormArray?.invalid) {
+      this.api.showWarning("Please add the valid admin details.");
+      return;
+    }
   
     // Prepare data for submission
     const data = {
@@ -328,7 +339,7 @@ export class AddOrganizationComponent implements OnInit {
         if (res['result'].status) {
           this.api.showSuccess("Organization created successfully!");
           this.organizationForm.reset();
-          this.isAdminForm = false;
+          this.isAdminForm = true;
           this.fileDataUrl = null;
           this.adminList = []; // Clear the admin list after submission
         }
@@ -348,26 +359,26 @@ export class AddOrganizationComponent implements OnInit {
   get a(){
     return this.adminForm.controls;
   }
-  setBgColor(data?): any {
-
-    if (data.value) {
-      //console.log(data.value)
-      return 'back-color'
+  async open(index) {
+  
+    try {
+      const modalRef = await this.modalService.open(GenericDeleteComponent, {
+        size: 'sm',
+        backdrop: 'static',
+        centered: true
+      });
+      
+      modalRef.componentInstance.status.subscribe(resp => {
+        if (resp === 'ok') {
+          this.deleteAdmin(index);
+          modalRef.dismiss();
+        } else {
+          modalRef.dismiss();
+        }
+      });
+    } catch (error) {
+      console.error('Error opening modal:', error);
     }
-    else {
-      return ''
+    
     }
-  }
-  showPassword() {
-    this.eyeState = !this.eyeState
-    if (this.eyeState == true) {
-      this.eyeIcon = 'bi bi-eye'
-      this.passwordType = 'text'
-    }
-    else {
-      this.eyeIcon = 'bi bi-eye-slash'
-      this.passwordType = 'password'
-    }
-
-  }
 }

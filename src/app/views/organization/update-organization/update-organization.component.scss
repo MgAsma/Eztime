@@ -1,22 +1,16 @@
+.p-20{
+ padding: 0px 9px 20px 25px !important;
+}
 .admin-action-btn{
     // background: rgb(246 246 246);
     &:hover{
         opacity: 0.8;
     }
 }
-.editable-row {
-    background-color: white;
-    border: 1px solid lightblue;
-  }
-  
-  .row-container2 input[readonly] {
-    background-color: #f9f9f9; /* or any light grey */
-  }
-  
-  .row-container2.editable {
-    background-color: white;
-    border: 1px solid lightblue;
-  }
+.row-container2.editable,.row-container.editable {
+  background-color: white !important;
+  border: 2px solid #126EB4 !important;
+}
   .admin-card {
     margin: 3px !important;
     border-radius: 5px !important;
@@ -34,3 +28,13 @@
     // }
     
    }
+   .icon-bg{
+    background: #f4f4f4;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 14px;
+    &:hover{
+      opacity: 0.8;
+    }
+    }
+  

@@ -53,16 +53,14 @@
           
                  <div class="row">
                     <div class="col-sm">
-                        <p>CC to <span >*</span></p>
-                        <!-- <input type="text" class="form-control p-3 sizeinput" placeholder="Enter cc to" formControlName="cc_to" aria-describedby="emailHelp"  autocomplete="off">
-                        <div *ngIf="f['cc_to'].touched && f['cc_to'].invalid" >
-                        </div>  -->
-                        <ng-multiselect-dropdown [placeholder]="'Select CC to'"  [settings]="ccSetting"
+                        <p>Applying To <span >*</span></p>
+                        
+                        <ng-multiselect-dropdown [placeholder]="'Select Applying To'"  [settings]="ccSetting"
                         [data]="allPeopleGroup" (onSelect)="onPeopleSelect($event)"  (onSelectAll)="onPeopleSelectAll($event)" 
                          formControlName="cc_to">
                         </ng-multiselect-dropdown> 
                         <div *ngIf="f['cc_to'].touched && f['cc_to'].invalid" >
-                            <div *ngIf="f['cc_to'].errors && f['cc_to'].errors['required'] " ><p class="error-msg">CC to is required</p></div>
+                            <div *ngIf="f['cc_to'].errors && f['cc_to'].errors['required'] " ><p class="error-msg">Applying To is required</p></div>
                         </div>   
                     </div>   
                    
@@ -88,6 +86,7 @@
                     (change)="uploadImageFile($event)">
                 </div> 
                 <div class="error-msg" *ngIf="f['leave_application_file_attachment'].errors && f['leave_application_file_attachment'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</div>
+                <b *ngIf="!f['leave_application_file_attachment']?.errors">File format. Only .jpg, .jpeg, .png formats are allowed.</b>
             </div>
            
      
@@ -267,16 +266,16 @@
           
                  <div class="row">
                     <div class="col-sm">
-                        <p>CC to <span >*</span></p>
-                        <!-- <input type="text" class="form-control p-3 sizeinput" placeholder="Enter cc to" formControlName="cc_to" aria-describedby="emailHelp"  autocomplete="off">
+                        <p>Applying To <span >*</span></p>
+                        <!-- <input type="text" class="form-control p-3 sizeinput" placeholder="Enter Applying To" formControlName="cc_to" aria-describedby="emailHelp"  autocomplete="off">
                         <div *ngIf="f['cc_to'].touched && f['cc_to'].invalid" >
                         </div>  -->
-                        <ng-multiselect-dropdown [placeholder]="'Select CC to'"  [settings]="ccSetting"
+                        <ng-multiselect-dropdown [placeholder]="'Select applying to'"  [settings]="ccSetting"
                         [data]="allPeopleGroup" (onSelect)="onPeopleSelect($event)"  (onSelectAll)="onPeopleSelectAll($event)" 
                          formControlName="cc_to">
                         </ng-multiselect-dropdown> 
                         <div *ngIf="f['cc_to'].touched && f['cc_to'].invalid" >
-                            <div *ngIf="f['cc_to'].errors && f['cc_to'].errors['required'] " ><p class="error-msg">CC to is required</p></div>
+                            <div *ngIf="f['cc_to'].errors && f['cc_to'].errors['required'] " ><p class="error-msg">Applying to is required</p></div>
                         </div>   
                     </div>   
                    
@@ -302,6 +301,7 @@
                     (change)="uploadImageFile($event)">
                 </div> 
                 <div class="error-msg" *ngIf="f['leave_application_file_attachment'].errors && f['leave_application_file_attachment'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</div>
+                <b *ngIf="!f['leave_application_file_attachment']?.errors">File format. Only .jpg, .jpeg, .png formats are allowed.</b>
             </div>
         
            

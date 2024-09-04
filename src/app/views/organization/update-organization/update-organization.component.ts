@@ -5,6 +5,8 @@ import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-update-organization',
@@ -39,7 +41,8 @@ export class UpdateOrganizationComponent implements OnInit {
   constructor(private _fb: FormBuilder,
     private api: ApiserviceService, private route: ActivatedRoute,
     private router: Router, private location: Location, private common_service: CommonServiceService,
-    private cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef,
+    private modalService:NgbModal) {
     this.id = this.route.snapshot.paramMap.get('id')
     this.initializeAdminFormArray()
   }
@@ -65,10 +68,31 @@ export class UpdateOrganizationComponent implements OnInit {
 
   }
   
-  deleteAdmin(index: number) {
+   deleteAdmin(index: number) {
+    
     this.adminFormArray.removeAt(index);
     this.adminList.splice(index, 1);
-    this.adminList[index].isEditing = false;
+    const data = {
+      admin_details: this.adminList // Use the admin list to submit the data
+    };
+    
+    this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`, data).subscribe(
+      res => {
+        if (res['result']) {
+          this.api.showSuccess("Admin deleted successfully!");
+          // this.organizationForm.reset();
+          this.adminForm.reset();
+          this.isAdminForm=false;
+          this.fileDataUrl = null;
+          this.adminList = []; // Clear the admin list after submission
+          this.getOrgDetails(); // Refresh the organization details
+        }
+      },
+      error => {
+        this.api.showError(error.error.error.message);
+      }
+    );
+  
   }
   initform() {
     this.organizationForm = this._fb.group({
@@ -100,7 +124,8 @@ export class UpdateOrganizationComponent implements OnInit {
       admin_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/),Validators.required]],
       admin_email: ['', [Validators.required, Validators.email]],
       admin_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator()]],
-      admin_status: [true]
+      admin_status: [true],
+      isEditing:false
     })
     
   }
@@ -155,7 +180,8 @@ export class UpdateOrganizationComponent implements OnInit {
             admin_name: adminForm.value.admin_name,
             admin_email: adminForm.value.admin_email,
             admin_phone_number: adminForm.value.admin_phone_number,
-            admin_status: adminForm.value.admin_status 
+            admin_status: adminForm.value.admin_status,
+            isEditing:adminForm.value.isEditing
           };
 
           // Show the success message
@@ -175,14 +201,16 @@ export class UpdateOrganizationComponent implements OnInit {
       admin_status:this.adminForm?.value
     }
     
-    this.adminList.push(data);
-    this.adminFormArray.push(this.createAdminFormGroup(data));
+    this.adminList.unshift(data);
+    this.adminFormArray.insert(0,this.createAdminFormGroup(data));
+    
     this.a['admin_name'].reset();
     this.a['admin_email'].reset();
     this.a['admin_phone_number'].reset();
     this.adminForm.patchValue({
       admin_status: [true]
     })
+    this.isAdminForm = !this.isAdminForm;
   }else{
     this.adminForm.markAllAsTouched()
   }
@@ -251,8 +279,9 @@ export class UpdateOrganizationComponent implements OnInit {
           admin_name: admin.u_first_name,
           admin_email: admin.u_email,
           admin_phone_number: admin.u_phone_no,
-          admin_status: admin.u_status === 'True' ? true : false || admin.u_status === 'Active' ? true : false
-      }));
+          admin_status: admin.u_status === 'True' ? true : false || admin.u_status === 'Active' ? true : false,
+          isEditing:false
+        }));
         this.adminList = transformedAdminDetails 
         // console.log(this.adminList)
         this.initializeAdminFormArray();
@@ -279,18 +308,7 @@ export class UpdateOrganizationComponent implements OnInit {
     }))
    
   }
-  // toggleFormControlState(index: number, isEnabled: boolean): void {
-  //   const admin = this.adminList[index];
-    
-  //   if(this.adminFormArray.invalid){
-  //    this.adminFormArray.markAllAsTouched()
-  //   }else{
-  //     admin.isEditing = isEnabled; // Toggle the editing state
-  //   }
-    
-
-    
-  // }
+ 
   originalAdminData: any[] = [];
 
   toggleFormControlState(index: number, isEditing: boolean): void {
@@ -428,7 +446,11 @@ export class UpdateOrganizationComponent implements OnInit {
         this.api.showWarning("Please add the admin details before submitting the form");
         return;
       }
-    
+      // Check if the admin form is valid but no admins are added
+      // if (this.adminFormArray?.invalid) {
+      //   this.api.showWarning("Please add the valid admin details.");
+      //   return;
+      // }
       // Both forms are valid, proceed with submission
       const data = {
         org_qr_uniq_id: this.f['org_qr_uniq_id'].value,
@@ -469,5 +491,27 @@ export class UpdateOrganizationComponent implements OnInit {
     return this.adminForm.controls;
   }
  
+ async open(index) {
   
+  try {
+    const modalRef = await this.modalService.open(GenericDeleteComponent, {
+      size: 'sm',
+      backdrop: 'static',
+      centered: true
+    });
+    
+    modalRef.componentInstance.status.subscribe(resp => {
+      if (resp === 'ok') {
+        this.deleteAdmin(index);
+        modalRef.dismiss();
+      } else {
+        modalRef.dismiss();
+      }
+    });
+  } catch (error) {
+    console.error('Error opening modal:', error);
+  }
+  
+  }
+
 }
