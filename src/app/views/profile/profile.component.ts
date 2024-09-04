@@ -56,7 +56,7 @@ export class ProfileComponent implements OnInit {
       address: ['', Validators.pattern(/^\S.*$/)],
       designation: ['', [Validators.required, Validators.pattern(/^\S.*$/)]],
       email_id: ['', [Validators.required, Validators.email]],
-      phone_number: ['', [Validators.required, Validators.pattern(/^\d+$/), this.phoneNumberLengthValidator()]],
+      phone_number: ['', [Validators.required]],
       dob: ['', [Validators.required]],
       tags: [''],
       country: ['', Validators.required],
