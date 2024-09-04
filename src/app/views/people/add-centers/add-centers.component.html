@@ -37,7 +37,7 @@
                 </div>
             </div>
             
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-sm-6">
                     <p>Year start date <span >*</span></p>
                     <input class="form-control" formControlName="year_start_date" id="date-input" type="date" name="date-input" placeholder="date" (change)="checkValues($event)">  
@@ -45,12 +45,11 @@
                         <div *ngIf="f['year_start_date'].errors && f['year_start_date'].errors['required'] " ><p class="error-msg">Year start date is required</p></div>
                     </div>
                 </div>
-            </div>
+            </div> -->
           
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-sm-6">
                     <p>Year end date <span >*</span></p>
-                    <!-- <input class="form-control" formControlName="year_end_date"  [min]="startDate"  id="date-input" type="date" name="date-input" placeholder="date" >   -->
                     <input class="form-control"  [min]="centerForm.value.year_start_date" formControlName="year_end_date"  id="date-input" type="date" name="date-input" placeholder="date" (change)="yearEndDateValidator()">
 
                     <div *ngIf="f['year_end_date'].touched && f['year_end_date'].invalid">
@@ -60,7 +59,7 @@
                         <p class="error-msg">Year end date should be greater than year start date</p>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="row">
                 <div class="col-sm-6">
                     <p>Status <span >*</span></p>
@@ -120,7 +119,7 @@
                 </div>
             </div>
             
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-sm-6">
                     <p>Year start date <span >*</span></p>
                     <input class="form-control" formControlName="year_start_date" id="date-input" type="date" name="date-input" placeholder="date" (change)="checkValues($event)">  
@@ -128,12 +127,11 @@
                         <div *ngIf="f['year_start_date'].errors && f['year_start_date'].errors['required'] " ><p class="error-msg">Year start date is required</p></div>
                     </div>
                 </div>
-            </div>
+            </div> -->
           
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-sm-6">
                     <p>Year end date <span >*</span></p>
-                    <!-- <input class="form-control" formControlName="year_end_date"  [min]="startDate"  id="date-input" type="date" name="date-input" placeholder="date" >   -->
                     <input class="form-control"  [min]="centerForm.value.year_start_date" formControlName="year_end_date"  id="date-input" type="date" name="date-input" placeholder="date" (change)="yearEndDateValidator()">
 
                     <div *ngIf="f['year_end_date'].touched && f['year_end_date'].invalid">
@@ -143,7 +141,7 @@
                         <p class="error-msg">Year end date should be greater than year start date</p>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="row">
                 <div class="col-sm-6">
                     <p>Status <span >*</span></p>

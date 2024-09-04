@@ -70,7 +70,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     this.user_role_Name = sessionStorage.getItem('user_role_name');
     this.user_name = sessionStorage.getItem('user_name');
     this.getProfiledata()
-    this.getNotification();
+    // this.getNotification();
     this.common_service.title$.subscribe(title => {
       this.pageName = title;
       this.cdref.detectChanges();

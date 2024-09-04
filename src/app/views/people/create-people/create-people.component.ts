@@ -68,7 +68,7 @@ export class CreatePeopleComponent implements OnInit {
     this.getReportingManager();
     this.getCenter();
     this.getCostCenter()
-    this.getPrefix();
+    // this.getPrefix();
     this.getTag();
     this.user_id = sessionStorage.getItem('user_id')
     
@@ -78,7 +78,7 @@ export class CreatePeopleComponent implements OnInit {
   }
   initForm(){
     this.peopleForm= this.builder.group({
-      prefix_suffix_id:['',[Validators.required]],
+      // prefix_suffix_id:['',[Validators.required]],
       u_email:['',[Validators.required, Validators.email]],
       department_id:['',[Validators.required]],
       u_first_name:['',[Validators.required,Validators.pattern(/^[a-zA-Z]+$/)]],
@@ -280,7 +280,7 @@ export class CreatePeopleComponent implements OnInit {
     else{
    // console.log(this.peopleForm.value.user_role_id,"USER ROLE ID")
      let data =  {
-        prefix_suffix_id: this.peopleForm.value.prefix_suffix_id,
+        // prefix_suffix_id: this.peopleForm.value.prefix_suffix_id,
         u_email: this.peopleForm.value.u_email,
         department_id:this.peopleForm.value.department_id,
         u_first_name: this.peopleForm.value.u_first_name,

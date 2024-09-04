@@ -37,7 +37,7 @@ export class CreateRoleComponent implements OnInit {
    
     this.roleForm= this.builder.group({
       user_role_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      priority:['',Validators.required],
+      // priority:['',Validators.required],
       role_status:['',Validators.required],
       description:['',[Validators.pattern(/^\S.*$/),Validators.required]],
       module_name:[''],
@@ -57,7 +57,7 @@ export class CreateRoleComponent implements OnInit {
     else{
       let data = {
         user_role_name:this.roleForm.value.user_role_name,
-        priority:this.roleForm.value.priority,
+        // priority:this.roleForm.value.priority,
         role_status:this.roleForm.value.role_status,
         description:this.roleForm.value.description,
         module_name:['ROLES'],

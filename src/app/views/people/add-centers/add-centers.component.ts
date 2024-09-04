@@ -43,8 +43,8 @@ export class AddCentersComponent implements OnInit {
   initForm(){
     this.centerForm= this.builder.group({
       center_name:['',[Validators.pattern(/^[a-zA-Z]+$/),Validators.required]],
-      year_start_date:['',[Validators.required]],
-      year_end_date:['',[Validators.required]],
+      // year_start_date:['',[Validators.required]],
+      // year_end_date:['',[Validators.required]],
       center_status:['',[Validators.required]]
     })
   }
@@ -74,8 +74,8 @@ export class AddCentersComponent implements OnInit {
         let endDate = this.centerForm.value.year_end_date
         let data = {
           center_name:this.centerForm.value.center_name,
-          year_start_date:this.datepipe.transform(startDate,'dd/MM/yyyy'),
-          year_end_date:this.datepipe.transform(endDate,'dd/MM/yyyy'),
+          // year_start_date:this.datepipe.transform(startDate,'dd/MM/yyyy'),
+          // year_end_date:this.datepipe.transform(endDate,'dd/MM/yyyy'),
           center_status:this.centerForm.value.center_status,
           organization_id:this.orgId
         }

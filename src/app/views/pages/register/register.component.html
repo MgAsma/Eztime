@@ -156,7 +156,7 @@
                                 Password is required
                             </div>
                             <div *ngIf="secondFormGroup.get('password').hasError('pattern')">Password should contain at least one special character and one number, and be at least 6 characters long</div> -->
-                                        <!-- <div class="feedback" *ngIf="secondFormGroup.get('password').hasError('maxlength')">Password must be at least 6 characters</div>           --->
+                                        <!-- <div class="feedback" *ngIf="secondFormGroup.get('password').hasError('maxlength')">Password must be at least 6 characters</div>           -->
                                         <div class="feedback"
                                             *ngIf="secondFormGroup.get('password').invalid && (secondFormGroup.get('password').touched || secondFormGroup.get('password').dirty)">
                                             <div *ngIf="secondFormGroup.get('password').hasError('required')">Password
@@ -259,7 +259,7 @@
                                             *ngIf="thirdFormGroup.get('profile_base64').errors && thirdFormGroup.get('profile_base64').errors['accept']">Invalid
                                             file format. Only .jpg, .jpeg, .png formats are allowed.</span>
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label for="prefix_suffix_id">Prefix/suffix <b
                                                 class="required_symbol">*</b></label>
                                         <select formControlName="prefix_suffix_id" class="form-select">
@@ -272,7 +272,7 @@
                                             *ngIf="thirdFormGroup.get('prefix_suffix_id').invalid && (thirdFormGroup.get('prefix_suffix_id').touched || thirdFormGroup.get('prefix_suffix_id').dirty) && thirdFormGroup.get('prefix_suffix_id').hasError('required')">
                                             Prefix/suffix is required
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group">
                                         <label for="department_id">Department <b class="required_symbol">*</b></label>
 
@@ -325,7 +325,7 @@
                                             Cost center is required
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label for="tags">Tags <b class="required_symbol">*</b></label>
                                         <select class="form-select" formControlName="tags">
                                             <option value="" selected>Select tag</option>
@@ -337,7 +337,7 @@
                                             *ngIf="fourthFormGroup.get('tags').invalid && (fourthFormGroup.get('tags').touched || fourthFormGroup.get('tags').dirty) && fourthFormGroup.get('tags').hasError('required')">
                                             Tag is required
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group">
                                         <label for="user_status">Status <b class="required_symbol">*</b></label>
                                         <select class="form-select" formControlName="user_status">

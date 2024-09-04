@@ -31,7 +31,7 @@ export class UpdateRoleComponent implements OnInit {
     this.updateForm= this.builder.group({
       user_role_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
       description:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      priority:['',Validators.required],
+      // priority:['',Validators.required],
       role_status:['',Validators.required],
       module_name:[],
       permissions:[],
@@ -63,7 +63,7 @@ export class UpdateRoleComponent implements OnInit {
       this.updateForm.patchValue({
         user_role_name:res.data[0].user_role_name,
         description:res.data[0].description,
-        priority:res.data[0].priority,
+        // priority:res.data[0].priority,
         role_status:res.data[0].role_status,
         module_name:res.data[0].module_name,
         permissions:res.data[0].permissions,

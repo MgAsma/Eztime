@@ -1,19 +1,23 @@
-ol{
+ol {
     background-color: inherit;
 }
-a{
+
+a {
     color: #3F51B5;
     text-decoration: none;
 }
-li{
-    
+
+li {
+
     list-style: none;
     color: grey;
 }
-ul{
+
+ul {
     padding: 0px;
 }
-.bg{
+
+.bg {
     background-color: white;
     height: 100%;
     width: 100%;
@@ -21,7 +25,8 @@ ul{
     border-radius: 5px;
 
 }
-.proceedbtn{
+
+.proceedbtn {
     background-color: #3F51B5;
     border-radius: 5px;
     border: none;
@@ -30,7 +35,8 @@ ul{
     color: white;
     margin: 10px 0px;
 }
-.printbtn{
+
+.printbtn {
     background-color: #00BCD4;
     border-radius: 5px;
     border: none;
@@ -39,26 +45,27 @@ ul{
     color: white;
     margin: 10px 0px;
 }
-.row{
-    padding: 5px;
-}
-i{
+
+i {
     padding: 2px 3px 0px 0px;
-    
+
 }
-.toolbar-btn i{
+
+.toolbar-btn i {
     font-size: 24px;
 }
 
-.btnicon{
+.btnicon {
     display: none;
 }
-button:hover .btnicon{
+
+button:hover .btnicon {
     display: block;
 }
+
 ::ng-deep .mat-form-field {
     height: 55px;
-    width: 95%!important;
+    width: 95% !important;
     background-color: #ffff;
     border-radius: 50px;
     border: solid gray;
@@ -67,20 +74,25 @@ button:hover .btnicon{
 ::ng-deep .mat-form-field-underline {
     display: none;
 }
-select{
+
+select {
     width: 100%;
     height: 40px;
     margin: 1px 0px 0px 1px;
 }
-span{
+
+span {
     color: red;
 }
-p{
+
+p {
     color: grey;
 }
-html{
+
+html {
     position: relative;
 }
+
 // .createbtn{
 //     background-color: #3F51B5;
 //     border: none;
@@ -97,7 +109,7 @@ html{
 //     bottom: 10%;
 // }
 
-.card{
+.card {
     // box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.10);
     padding: 0 16px;
     margin: 10px 20px;
@@ -107,41 +119,138 @@ html{
     background: #FFFFFF99 !important;
     border-radius: 10px;
 }
-.value-container{
+
+.value-container {
     color: gray;
     font-weight: 700;
     font-size: 16px;
     margin-top: 5px;
 }
-.main-col{
+
+.main-col {
     padding: 5px;
 }
-.card .col-6,.col-12{
- border:1px solid white;
- padding: 8px 0px 3px 10px;
+
+.card .col-6,
+.col-12 {
+    border: 1px solid white;
+    padding: 8px 0px 3px 10px;
 }
-.card .value-container{
-    color:black;
-    
+
+.card .value-container {
+    color: black;
+
 }
-.card .bg-secondary .card-subtitle{
-    i{
+
+.card .bg-secondary .card-subtitle {
+    i {
         font-size: 20px;
-        color:black;
+        color: black;
     }
 }
-.card:hover{
-   opacity: 0.9;
+
+.card:hover {
+    opacity: 0.9;
 }
-.bg-secondary{
+
+.bg-secondary {
     background: transparent !important;
 }
+
 // .card-subtitle{
 //     color: #f8f8f8 !important;
 // }
 table th {
-    position: -webkit-sticky;
-    position: sticky;
-    top: -15px;
-    z-index: 1; // any positive value, layer order is global
+    // position: -webkit-sticky;
+    // position: sticky;
+    // top: -15px;
+    // z-index: 1; // any positive value, layer order is global
+}
+
+
+// Arpitha
+
+.container-wrapper {
+    transform: scale(0.95);
+}
+
+.search-div {
+    .sizeinput {
+        font-size: 15px;
+        width: 81%;
+    }
+
+    #search-icon-tab {
+        position: absolute;
+        right: 5rem;
+        top: 9px;
+        font-size: 15px !important;
+        color: grey;
+    }
+}
+
+.proceedbtn.mat-btn-s {
+    width: fit-content;
+    margin: 0;
+}
+
+.pagination-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.items-per-page-container {
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+}
+
+
+
+.page-size {
+    border: 1px solid #e7e7e7;
+    border-radius: 5px;
+    width: 67px;
+    margin-left: 10px;
+    padding: 7px;
+}
+
+.nodata {
+    width: 200px;
+    position: absolute;
+    text-align: center;
+}
+
+::ng-deep .mat-select-placeholder {
+    color: #222020;
+}
+
+.bi-arrow-up,
+.bi-arrow-down {
+    font-weight: 600;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+.bi-pencil-square,.bi-trash{
+    padding: 4px 8px;
+    font-size: 15px;
+    margin: 2px;
+    background: #f6f6f6;
+    border-radius: 50%;
+    cursor: pointer;
+    &:hover{
+        opacity: 0.7;
+    }
+}
+i{
+    padding: 2px 5px 0 0;  
+}
+.row {
+    --bs-gutter-x: 0rem;
 }
