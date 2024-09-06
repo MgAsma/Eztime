@@ -37,7 +37,8 @@
           </div>
         </div>
   
-        <div class="row my-2">
+        <div class="row" [ngClass]="(f['approval_period'].touched && f['approval_period'].invalid) || (f['grce_days_to_approve'].touched && f['grce_days_to_approve'].invalid) ? 'my-3' : 'my-2'">
+
           <div class="col-sm-12 col-md-4">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Auto Approve</mat-label>
