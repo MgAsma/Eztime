@@ -103,9 +103,9 @@
                       <mat-label>Phone No <b class="r-star">*</b></mat-label>
                       <input matInput type="number" placeholder="Enter phone no" formControlName="phone_number" autocomplete="off"
                        maxlength="10" pattern="\d{10}"  onKeyPress="if(this.value.length==10) return false;" (keypress)="validateKeyPress($event)">
-                      <mat-error>
+                      <mat-error *ngIf="f['phone_number']?.touched && f['phone_number']?.invalid">
+                          <span *ngIf="f['phone_number'].errors?.['pattern']">Please enter 10 digits phone number.</span>
                         <span *ngIf="f['phone_number'].errors?.['required']">Phone number is required.</span>
-                        <span *ngIf="f['phone_number'].errors?.['pattern']">Please enter 10 digits phone number.</span>
                       </mat-error>
                     </mat-form-field>
                 </div>

@@ -48,8 +48,8 @@ export class RegisterComponent {
 
   ngOnInit() {
     this.orgId = JSON.parse(sessionStorage.getItem('org_id'))
-    this.getPrefix()
-    this.getTag()
+    // this.getPrefix()
+    // this.getTag()
     this.getCostCenter()
     this.getReportingManager()
     this.getDepartment()
@@ -83,7 +83,7 @@ export class RegisterComponent {
       center_id: ['', Validators.required],
       user_reporting_manager_ref_id: [''],
       profile_base64: ['', [Validators.required, this.fileFormatValidator]],
-      prefix_suffix_id: ['', Validators.required],
+      // prefix_suffix_id: ['', Validators.required],
       department_id: ['', Validators.required],
       role_id: [1],
 
@@ -91,7 +91,7 @@ export class RegisterComponent {
     this.fourthFormGroup = this.formBuilder.group({
       user_role_id: ['', Validators.required],
       cost_center_id: ['', Validators.required],
-      tags: ['', Validators.required],
+      // tags: ['', Validators.required],
       user_status: ['', Validators.required],
       // organization_id:['',Validators.required]
     })
@@ -165,12 +165,12 @@ export class RegisterComponent {
       center_id: this.thirdFormGroup.value.center_id,
       user_reporting_manager_ref_id: this.thirdFormGroup.value.user_reporting_manager_ref_id,
       profile_base64: this.thirdFormGroup.value.profile_base64,
-      prefix_suffix_id: this.thirdFormGroup.value.prefix_suffix_id,
+      // prefix_suffix_id: this.thirdFormGroup.value.prefix_suffix_id,
       department_id: this.thirdFormGroup.value.department_id,
       role_id: this.thirdFormGroup.value.role_id,
       user_role_id: Number(this.fourthFormGroup.value.user_role_id),
       cost_center_id: this.fourthFormGroup.value.cost_center_id,
-      tags: [Number(this.fourthFormGroup.value.tags)],
+      // tags: [Number(this.fourthFormGroup.value.tags)],
       organization_id: this.orgId,
       user_status: this.fourthFormGroup.value.user_status
     }
@@ -178,9 +178,9 @@ export class RegisterComponent {
     if (this.fourthFormGroup.invalid) {
       this.fourthFormGroup.markAllAsTouched()
       //console.log(this.fourthFormGroup.value,"FOURTH FORM")
-      if (this.fourthFormGroup.value.tags == null) {
-        this.submitted = true
-      }
+      // if (this.fourthFormGroup.value.tags == null) {
+      //   this.submitted = true
+      // }
       this.api.showError('Invalid!')
     }
     else {

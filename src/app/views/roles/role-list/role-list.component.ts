@@ -74,6 +74,7 @@ export class RoleListComponent implements OnInit {
     this.user_id = sessionStorage.getItem('user_id')
     this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=FALSE&organization_id=${this.org_id}`).subscribe((res:any)=>{
       if(res.status_code !== '401'){
+        console.log(res,'controlsss')
         this.common_service.permission.next(res['data'][0]['permissions'])
       }
       else{
@@ -102,7 +103,7 @@ export class RoleListComponent implements OnInit {
   }
   getRole(params){
     this.api.getUserAccess(params).subscribe((data:any)=>{
-    
+    console.log(data,'dataaa')
       if(data){
         this.allRoleList = data.result.data
         data.result.data.forEach(res=>{

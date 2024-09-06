@@ -79,7 +79,7 @@ export class UpdatePeopleComponent implements OnInit {
   }
   initForm(){
     this.updateForm= this.builder.group({
-      prefix_suffix_id:['',[Validators.required]],
+      // prefix_suffix_id:['',[Validators.required]],
       u_email:['',[Validators.required, Validators.email]],
       department_id:['',Validators.required],
       u_first_name:['',[Validators.required,Validators.pattern(/^[a-zA-Z]+$/)]],
@@ -161,7 +161,7 @@ export class UpdatePeopleComponent implements OnInit {
       // window.alert(data.result.data[0].user_role_id)
        
        this.updateForm.patchValue({
-        prefix_suffix_id:data.result.data[0].prefix_suffix_id,
+        // prefix_suffix_id:data.result.data[0].prefix_suffix_id,
         u_email:data.result.data[0].u_email,
         department_id:data.result.data[0].department_id,
         u_first_name:data.result.data[0].u_first_name,
@@ -240,7 +240,7 @@ export class UpdatePeopleComponent implements OnInit {
           //console.log(this.updateForm.value.profile_base64,"jhjjhkjk")
           //console.log(this.dateOfJoining,'this.date')
            data ={
-            prefix_suffix_id:this.updateForm.value.prefix_suffix_id,
+            // prefix_suffix_id:this.updateForm.value.prefix_suffix_id,
             u_email:this.updateForm.value.u_email,
             department_id:this.updateForm.value.department_id,
             u_first_name:this.updateForm.value.u_first_name,
@@ -281,7 +281,7 @@ export class UpdatePeopleComponent implements OnInit {
     }
     else{
       data ={
-        prefix_suffix_id:this.updateForm.value.prefix_suffix_id,
+        // prefix_suffix_id:this.updateForm.value.prefix_suffix_id,
         u_email:this.updateForm.value.u_email,
         department_id:this.updateForm.value.department_id,
         u_first_name:this.updateForm.value.u_first_name,

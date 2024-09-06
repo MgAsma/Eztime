@@ -49,8 +49,8 @@ export class UpdateCentreComponent implements OnInit {
   }
   updateForm= this.builder.group({
       center_name:['',[Validators.pattern(/^[a-zA-Z]+$/),Validators.required]],
-      year_start_date:['',[Validators.required]],
-      year_end_date:['',[Validators.required]],
+      // year_start_date:['',[Validators.required]],
+      // year_end_date:['',[Validators.required]],
       center_status:['',[Validators.required]]
   })
   ngOnInit(): void {
@@ -91,8 +91,8 @@ export class UpdateCentreComponent implements OnInit {
           this.endDate = this.datepipe.transform(data.result.data[0].year_end_date *1000,'yyyy-MM-dd')
           
           this.updateForm.patchValue({center_name:data.result.data[0].center_name})
-          this.updateForm.patchValue({year_start_date: this.datepipe.transform(data.result.data[0].year_start_date*1000,'yyyy-MM-dd')})
-          this.updateForm.patchValue({year_end_date:this.datepipe.transform(data.result.data[0].year_end_date*1000,'yyyy-MM-dd')})
+          // this.updateForm.patchValue({year_start_date: this.datepipe.transform(data.result.data[0].year_start_date*1000,'yyyy-MM-dd')})
+          // this.updateForm.patchValue({year_end_date:this.datepipe.transform(data.result.data[0].year_end_date*1000,'yyyy-MM-dd')})
           this.updateForm.patchValue({center_status:data.result.data[0].center_status})
         })
     }
@@ -102,12 +102,12 @@ export class UpdateCentreComponent implements OnInit {
       this.updateForm.markAllAsTouched()
     }
     else{
-      let startDate = this.updateForm.value.year_start_date
-        let endDate = this.updateForm.value.year_end_date
+      // let startDate = this.updateForm.value.year_start_date
+        // let endDate = this.updateForm.value.year_end_date
         let data = {
           center_name:this.updateForm.value.center_name,
-          year_start_date:this.datepipe.transform(startDate,'dd/MM/yyyy'),
-          year_end_date:this.datepipe.transform(endDate,'dd/MM/yyyy'),
+          // year_start_date:this.datepipe.transform(startDate,'dd/MM/yyyy'),
+          // year_end_date:this.datepipe.transform(endDate,'dd/MM/yyyy'),
           center_status:this.updateForm.value.center_status,
           organization_id:this.orgId
         }  
@@ -131,10 +131,10 @@ export class UpdateCentreComponent implements OnInit {
   
   }
   checkValues(event){
-    if(event.target.value){
-      this.updateForm.patchValue({
-        year_end_date:''
-      })
-    }
+    // if(event.target.value){
+    //   this.updateForm.patchValue({
+    //     year_end_date:''
+    //   })
+    // }
   }
 }
