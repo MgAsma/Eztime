@@ -213,8 +213,9 @@ export class RegisterComponent {
     this.api.getUserAccess(`page_number=1&data_per_page=2&pagination=FALSE&organization_id=${this.orgId}`).subscribe((data: any) => {
       if (data.result.data) {
         const role = data.result.data
-        const filteredRole = role.filter(role => role.role_status !== 'Inactive')
+        const filteredRole = role.filter(role => role.role_status !== 'Inactive' && role.user_role_name!='ADMIN')
         this.allRole = filteredRole;
+        console.log(this.allRole,'allroless')
       }
 
     }, (error: any) => {

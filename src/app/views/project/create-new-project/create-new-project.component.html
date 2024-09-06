@@ -1,24 +1,116 @@
-<div class="container-fluid webView">
-    <!-- <div class="row">
-        <div class="col-sm">
-            <h1>
-                Add project </h1>
-        </div>
-        <div class="col-sm"></div>
-        <div class="col-sm-4 text-end">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">
-                    Add project </li>  
-                </ol>
-              </nav>
-        </div>
-    </div> -->
+<div class="container-fluid webView p-20">
     <div class="generic-form bg mx-1">
         <form [formGroup]='projectForm' (ngSubmit)='addProject()'>
             <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-6">
+                <div class="col-sm-12 col-md-12 col-lg-12"> 
+                    <h5 class="py-3"><b>Project details</b></h5>
+                    <div class="row">
+                        <!-- client dropdown -->
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
+                                <mat-label>Select Client <b class="r-star">*</b></mat-label>
+                                <mat-select formControlName="c_ref_id" autocomplete="off" placeholder="Select"
+                                panelClass="custom-select-panel" [disableOptionCentering]="true">
+                                  <mat-option *ngFor="let item of allClientList" [value]="item.id">
+                                    {{item.c_name}}
+                                  </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="f['c_ref_id']?.touched && f['c_ref_id']?.invalid">
+                                  <span *ngIf="f['c_ref_id'].errors?.['required']">Client name is required</span>
+                                </mat-error>
+                              </mat-form-field>
+                        </div>
+                        <!-- project name -->
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
+                                <mat-label>Enter Project Name <b class="r-star">*</b></mat-label>
+                                <input matInput placeholder="Enter project name"  formControlName="p_name" autocomplete="off">
+                                <mat-error *ngIf="f['p_name']?.touched && f['p_name']?.invalid">
+                                  <span *ngIf="f['p_name'].errors && f['p_name'].errors['required'] ">Project name is required</span>
+                                  <span *ngIf="f['p_name'].invalid && f['p_name'].hasError('pattern')">
+                                    Cannot start with a space.
+                                  </span>
+                                </mat-error>
+                              </mat-form-field>
+                        </div>
+                        <!-- start date -->
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field" >
+                                <mat-label>Start Date <b class="r-star">*</b></mat-label>
+                                <input class="pt-1" type="date" matInput placeholder="Enter start date"  formControlName="p_start_date" autocomplete="off" (change)="onChange()">
+                                <mat-error *ngIf="f['p_start_date']?.touched && f['p_start_date']?.invalid">
+                                  <span *ngIf="f['p_start_date'].errors?.['required']">Date of birth is required</span>
+                                </mat-error>
+                              </mat-form-field>
+                        </div>
+                        <!-- end date -->
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field" >
+                                <mat-label>End Date  <b class="r-star">*</b></mat-label>
+                                <input class="pt-1" type="date" matInput placeholder="Enter end date"  formControlName="p_closure_date" 
+                                (change)="yearEndDateValidator()" [min]="projectForm.value.p_start_date">
+                                <mat-error *ngIf="f['p_closure_date']?.touched && f['p_closure_date']?.invalid">
+                                  <span *ngIf="f['p_closure_date'].errors?.['required']">End date is required</span>
+                                </mat-error>
+                              </mat-form-field>
+                        </div>
+                        <!-- select team -->
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field" >
+                                <mat-label>Select Team <b class="r-star">*</b></mat-label>
+                                <mat-select formControlName="people_ref_list" autocomplete="off" placeholder="Select team"
+                                    panelClass="custom-select-panel" [disableOptionCentering]="true" multiple (selectionChange)="matTeamSelect($event)">
+                                    <mat-option *ngFor="let item of allPeopleGroup" [value]="item.id">
+                                        {{item.u_first_name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="f['people_ref_list'].touched && f['people_ref_list'].invalid">
+                                    <span *ngIf="f['people_ref_list'].errors && f['people_ref_list'].errors['required']">Team list is required</span>
+                                  </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!-- project manager -->
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
+                                <mat-label>Project Manager <b class="r-star">*</b></mat-label>
+                                <mat-select formControlName="reporting_manager_ref_id" autocomplete="off" placeholder="Select manager"
+                                  panelClass="custom-select-panel" [disableOptionCentering]="true">
+                                  <mat-option *ngFor="let item of allManager" [value]="item.id">
+                                    {{item.u_first_name +" "+ item.u_last_name}}
+                                  </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="f['reporting_manager_ref_id']?.touched && f['reporting_manager_ref_id']?.invalid">
+                                  <span *ngIf="f['reporting_manager_ref_id'].errors?.['required']">Manager is required</span>
+                                </mat-error>
+                              </mat-form-field>
+                        </div>
+                        <!-- estimated hours -->
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
+                                <mat-label>Estimated Hours <b class="r-star">*</b></mat-label>
+                                <input matInput type="number" onkeydown="return event.keyCode !== 69"
+                                    oninput="this.value = this.value.replace('.', '').replace(/[^\d]/g, '');" appHypen
+                                    formControlName="p_estimated_hours" placeholder="Enter estimated hours">
+                                <mat-error *ngIf="f['p_estimated_hours'].touched && f['p_estimated_hours'].invalid">
+                                  <span *ngIf="f['p_estimated_hours'].errors && f['p_estimated_hours'].errors['required']">Estimated hours is required</span>
+                                </mat-error>
+                              </mat-form-field>
+                        </div>
+                        <!-- billing -->
+                        <div class="col-sm-12 col-md-6 col-lg-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
+                                <mat-label>Estimated Billing <b class="r-star">*</b></mat-label>
+                                <input matInput placeholder="Enter billing amount" onkeydown="return event.keyCode !== 69 "
+                                    formControlName="p_estimated_cost" 
+                                    aria-label="Username" aria-describedby="basic-addon1">
+                                <mat-error *ngIf="f['p_estimated_cost'].touched && f['p_estimated_cost'].invalid">
+                                  <span *ngIf="f['p_estimated_cost'].errors && f['p_estimated_cost'].errors['required']">Estimated billing is required</span>
+                                </mat-error>
+                              </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- old ui -->
+                <!-- <div class="col-sm-12 col-md-12 col-lg-6">
                     <div class="row">
                         <div class="col-sm">
                             <h4>Project details</h4>
@@ -84,8 +176,8 @@
                                 name="date-input" placeholder="date" (change)="onChange()">
                             <div *ngIf="f['p_start_date'].touched && f['p_start_date'].invalid">
                                 <div *ngIf="f['p_start_date'].errors && f['p_start_date'].errors['required'] ">
-                                    <p class="error-msg">Start date is required</p>
-                                </div>
+                                    <p class="error-msg"></p>
+                                </div>Start date is required
                             </div>
                         </div>
                     </div>
@@ -146,16 +238,16 @@
                         </div>
                     </div>
 
-                </div>
+                </div> -->
                 <div class="col-sm-12 col-md-12 col-lg-6">
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-sm">
                             <h4>Estimation/manager/approver details</h4>
                         </div>
-                    </div>
+                    </div> -->
 
 
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-sm">
                             <p>Estimated hours <span>*</span></p>
                             <input type="number" class="form-control p-3 sizeinput"
@@ -170,9 +262,9 @@
                                 <p class="error-msg">Estimated hours is required</p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-sm">
                             <p>Estimated billing <span>*</span></p>
                             <input type="number" class="form-control p-3 sizeinput"
@@ -187,12 +279,10 @@
                             </div>
                         </div>
 
-
-                        <!-- </div> -->
-                    </div>
+                    </div> -->
 
 
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-sm">
                             <p>Reporting manager <span>*</span></p>
                             <select class="form-select sizeinput" [(value)]='reporting_manager'
@@ -209,9 +299,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-sm">
                             <p>Approver <span>*</span></p>
                             <select class="form-select sizeinput" [(value)]='approver_manager'
@@ -228,10 +318,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
 
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-sm">
                             <p> Add task & File templates <span>*</span></p>
                             <select class="form-select sizeinput" (change)="getSubTask($event)"
@@ -249,8 +339,9 @@
                             </div>
                         </div>
 
-                    </div>
-                    <div class="row">
+                    </div> -->
+                    
+                    <!-- <div class="row">
                         <div class="col-sm-12">
                             <p> Sub task <span>*</span></p>
                             <select class="form-select  sizeinput" (change)="subTask($event)"
@@ -272,7 +363,7 @@
 
                         </div>
 
-                    </div>
+                    </div> -->
 
                     <!-- <div class="row">
                 <div class="col-sm">
@@ -364,12 +455,16 @@
                         <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Submit</button>
                     </div>
                 </div>
+                </div>
             </div>
         </form>
 
     </div>
 
 </div>
+
+
+
 <div class="container-fluid mobileView">
     <div class="row mx-1 my-2">
         <div class="col-sm">

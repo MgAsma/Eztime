@@ -104,12 +104,17 @@ export class RoleListComponent implements OnInit {
   getRole(params){
     this.api.getUserAccess(params).subscribe((data:any)=>{
     console.log(data,'dataaa')
+    this.sortedRolls = [];
       if(data){
-        this.allRoleList = data.result.data
+        // this.allRoleList = data.result.data
         data.result.data.forEach(res=>{
           this.permission.push(res)
+          if(res.user_role_name!='ADMIN'){
+            this.sortedRolls.push(res)
+          }
         })
-        this.sortedRolls = this.allRoleList
+        // console.log(this.sortedRolls,'this.sortedRolls')
+        this.allRoleList = this.sortedRolls;
           const noOfPages:number = data['result'].pagination.number_of_pages
            this.totalCount  = noOfPages * this.tableSize
            this.page=data['result'].pagination.current_page;

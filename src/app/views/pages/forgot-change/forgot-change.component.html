@@ -19,7 +19,7 @@
                         <h2 class="login-text"><b>Create New Password</b></h2>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row forgot-password">
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <form [formGroup]='changePassword' (ngSubmit)='sendChangePassword()'>
                             <div class="row">
@@ -42,86 +42,53 @@
                             </div> -->
                                     <div class="row">
                                         <div class="col custome-column p-r mb-3">
-                                            <!-- <fieldset class="input-fieldset">
-                                                <input [type]="passwordType" class="form-control p-3 mb-3 sizeinput"
-                                                    formControlName='password' placeholder="Password"
-                                                    aria-describedby="emailHelp" autocomplete="off" id="password">
-                                                <legend for="password">Password <span>*</span></legend>
-                                            </fieldset> -->
-                                            <!-- <span class="pass-visibility"><i [ngClass]="eyeIcon"
-                                                    (click)="showPassword()"></i></span>
-                                            <div *ngIf="f['password'].touched && f['password'].invalid" class="p-r">
-                                                <div *ngIf="f['password'].errors && f['password'].errors['required']">
-                                                    <p class="error-msg">Password is required.</p>
-                                                </div>
-                                            </div>
-                                            <div *ngIf="f['password'].errors && f['password'].hasError('pattern')"
-                                                class="error-msg">
-                                                Password should
-                                                contain at least one special character,one number,one uppercase and one
-                                                lowercase, and be at least 8 characters long
-                                            </div> -->
-
                                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
                                                 <mat-label>Password<b class="r-star">*</b></mat-label>
                                                 <input matInput [type]="passwordType" formControlName='password' placeholder="Password"
                                                 aria-describedby="emailHelp" autocomplete="off" id="password">
                                                 <mat-icon matSuffix  (click)="showPassword()">{{eyeIcon}}</mat-icon>
-                                                <mat-error  *ngIf="f['password'].touched && f['password'].invalid">
+                                                <!-- <mat-error  *ngIf="f['password'].touched && f['password'].invalid">
                                                   <span *ngIf="f['password'].errors && f['password'].errors['required']">Password is required.</span>
-                                                </mat-error>
-                                                <mat-error>
+                                                </mat-error> -->
+                                                <!-- <mat-error>
                                                     <span class="" *ngIf="f['password'].errors && f['password'].hasError('pattern')"> Password should
                                                         contain at least one special character,one number,one uppercase and one
                                                         lowercase, and be at least 8 characters long</span>
-                                                </mat-error>
+                                                </mat-error> -->
                                             </mat-form-field>
+                                            <div class="px-2" *ngIf="f['password'].touched && f['password'].invalid">
+                                                <span class="text-errors" *ngIf="f['password'].errors && f['password'].errors['required']">Password is required.</span>
+                                                <span class="text-errors" *ngIf="f['password'].errors && f['password'].hasError('pattern')"> Password should
+                                                        contain at least one special character,one number,one uppercase and one
+                                                        lowercase, and be at least 8 characters long</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col custome-column p-r">
-                                            <!-- <fieldset class="input-fieldset">
-                                                <input [type]="passwordType2" class="form-control p-3 mb-3 sizeinput"
-                                                    formControlName='old_password' placeholder="Confirm Password"
-                                                    aria-describedby="emailHelp" autocomplete="off" id="old_password">
-                                                <legend for="old_password">Confirm Password <span>*</span></legend>
-                                            </fieldset> -->
-                                            <!-- <span class="pass-visibility"><i [ngClass]="eyeIcon2"
-                                                    (click)="showPasswordtwo()"></i></span>
-                                            <div *ngIf="f['old_password'].touched && f['old_password'].invalid"
-                                                class="p-r">
-                                                <div
-                                                    *ngIf="f['old_password'].errors && f['old_password'].errors['required']">
-                                                    <p class="error-msg">Password is required.</p>
-                                                </div>
-                                            </div>
-                                            <div *ngIf="f['old_password'].errors && f['old_password'].hasError('pattern')"
-                                                class="error-msg">
-                                                Password should
-                                                contain at least one special character,one number,one uppercase and one
-                                                lowercase, and be at least 8 characters long
-                                            </div> -->
-                                            <!-- <div
-                                                *ngIf="f['old_password'].valid && changePassword.hasError('passwordMismatch') && (changePassword.get('old_password').dirty || changePassword.get('old_password').touched)">
-                                                <p class="error-msg">Confirm password is mismatched</p>
-                                            </div> -->
-
                                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
                                                 <mat-label>Confirm Password<b class="r-star">*</b></mat-label>
                                                 <input matInput [type]="passwordType2" formControlName='old_password' placeholder="Confirm Password"
                                                 aria-describedby="emailHelp" autocomplete="off" id="old_password">
                                                 <mat-icon matSuffix  (click)="showPasswordtwo()">{{eyeIcon2}}</mat-icon>
-                                                <mat-error  *ngIf="f['old_password'].touched && f['old_password'].invalid">
+                                                <!-- <mat-error  *ngIf="f['old_password'].touched && f['old_password'].invalid">
                                                   <span *ngIf="f['old_password'].errors && f['old_password'].errors['required']">Confirm password is required.</span>
                                                   <span  *ngIf="f['old_password'].errors && f['old_password'].hasError('pattern')"> Password should
                                                       contain at least one special character,one number,one uppercase and one
                                                       lowercase, and be at least 8 characters long</span>
-                                                </mat-error>
+                                                </mat-error> -->
                                             </mat-form-field>
-                                            <div class="px-2"><span class="text-errors"
-                                                *ngIf="f['old_password'].valid && changePassword.hasError('passwordMismatch') && (changePassword.get('old_password').dirty || changePassword.get('old_password').touched)">
-                                                Confirm password is mismatched
-                                            </span></div>
+                                            <div class="px-2" *ngIf="f['old_password'].touched && f['old_password'].invalid">
+                                                <span class="text-errors" *ngIf="f['old_password'].errors && f['old_password'].errors['required']">Confirm password is required.</span>
+                                                <span class="text-errors" *ngIf="f['old_password'].errors && f['old_password'].hasError('pattern')"> Password should
+                                                      contain at least one special character,one number,one uppercase and one
+                                                      lowercase, and be at least 8 characters long</span>
+                                            </div>
+                                            <div class="px-2" *ngIf="f['old_password'].valid">
+                                                <span class="text-errors" *ngIf="f['old_password'].valid && changePassword.hasError('passwordMismatch') && (changePassword.get('old_password').dirty || changePassword.get('old_password').touched)">
+                                                 Confirm password is mismatched
+                                                </span>
+                                            </div>
                                             
                                         </div>
                                     </div>
