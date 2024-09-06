@@ -68,30 +68,32 @@ export class UpdateOrganizationComponent implements OnInit {
 
   }
   
-   deleteAdmin(index: number) {
+   deleteAdmin(adminId,index: number) {
     
     this.adminFormArray.removeAt(index);
     this.adminList.splice(index, 1);
     const data = {
       admin_details: this.adminList // Use the admin list to submit the data
     };
-    
-    this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`, data).subscribe(
-      res => {
-        if (res['result']) {
-          this.api.showSuccess("Admin deleted successfully!");
-          // this.organizationForm.reset();
-          this.adminForm.reset();
-          this.isAdminForm=false;
-          this.fileDataUrl = null;
-          this.adminList = []; // Clear the admin list after submission
-          this.getOrgDetails(); // Refresh the organization details
+    if(adminId){
+      this.api.delete(`${environment.live_url}/${environment.organization}/${this.id}?admin_id=${adminId}`, ).subscribe(
+        res => {
+          if (res['result']) {
+            this.api.showSuccess("Admin deleted successfully!");
+            // this.organizationForm.reset();
+            this.adminForm.reset();
+            this.isAdminForm = true;
+            this.fileDataUrl = null;
+            this.adminList = []; // Clear the admin list after submission
+            this.getOrgDetails(); // Refresh the organization details
+          }
+        },
+        error => {
+          this.api.showError(error.error.error.message);
         }
-      },
-      error => {
-        this.api.showError(error.error.error.message);
-      }
-    );
+      );
+    }
+   
   
   }
   initform() {
@@ -125,7 +127,8 @@ export class UpdateOrganizationComponent implements OnInit {
       admin_email: ['', [Validators.required, Validators.email]],
       admin_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator()]],
       admin_status: [true],
-      isEditing:false
+      isEditing:false,
+      id:[]
     })
     
   }
@@ -175,18 +178,47 @@ export class UpdateOrganizationComponent implements OnInit {
       
         }else{
           // If the form is valid, update the admin details
+          const data = {
+            admin_details: []  // Initialize adminList as an empty array or assign it directly
+          };
+          
           this.adminList[index] = {
             ...this.adminList[index],
             admin_name: adminForm.value.admin_name,
             admin_email: adminForm.value.admin_email,
             admin_phone_number: adminForm.value.admin_phone_number,
             admin_status: adminForm.value.admin_status,
-            isEditing:adminForm.value.isEditing
+            isEditing: adminForm.value.isEditing,
+            id: adminForm.value.id
           };
-
+          
+          // Add the updated adminList to the data object
+          data.admin_details = [...this.adminList]; 
+        
           // Show the success message
           // this.api.showSuccess("Admin details updated successfully!");
           this.adminList[index].isEditing = false;
+ // if (this.adminFormArray?.invalid) {
+      //   this.api.showWarning("Please add the valid admin details.");
+      //   return;
+      // }
+      
+      this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`,data).subscribe(
+        res => {
+          if (res['result']) {
+            this.api.showSuccess("Admin details updated successfully!");
+            // this.organizationForm.reset();
+            this.adminForm.reset();
+            this.isAdminForm=false;
+            this.fileDataUrl = null;
+            this.adminList = []; // Clear the admin list after submission
+            this.getOrgDetails(); // Refresh the organization details
+          }
+        },
+        error => {
+          this.api.showError(error.error.error.message);
+        }
+      );
         
     }
 }
@@ -194,15 +226,38 @@ export class UpdateOrganizationComponent implements OnInit {
   
    addAdmin() {
    if (this.adminForm.valid) {
-    const data = {
+    
+    const  data = {
       admin_name:this.adminForm?.value['admin_name'],
       admin_email:this.adminForm?.value['admin_email'],
       admin_phone_number:this.adminForm?.value['admin_phone_number'],
-      admin_status:this.adminForm?.value
+      admin_status:this.adminForm?.value['admin_status'] 
     }
+    
     
     this.adminList.unshift(data);
     this.adminFormArray.insert(0,this.createAdminFormGroup(data));
+    let newadmin = []
+    newadmin.push(data)
+    const addAdmin = {
+      admin_details: newadmin
+    };
+    this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`,addAdmin).subscribe(
+      res => {
+        if (res['result']) {
+          this.api.showSuccess("Admin details updated successfully!");
+          // this.organizationForm.reset();
+          this.adminForm.reset();
+          this.isAdminForm=false;
+          this.fileDataUrl = null;
+          this.adminList = []; // Clear the admin list after submission
+          this.getOrgDetails(); // Refresh the organization details
+        }
+      },
+      error => {
+        this.api.showError(error.error.error.message);
+      }
+    );
     
     this.a['admin_name'].reset();
     this.a['admin_email'].reset();
@@ -211,6 +266,8 @@ export class UpdateOrganizationComponent implements OnInit {
       admin_status: [true]
     })
     this.isAdminForm = !this.isAdminForm;
+
+
   }else{
     this.adminForm.markAllAsTouched()
   }
@@ -329,6 +386,7 @@ export class UpdateOrganizationComponent implements OnInit {
       admin_email: [admin.admin_email, [Validators.required, Validators.email]],
       admin_phone_number: [admin.admin_phone_number, [Validators.required,this.phoneNumberLengthValidator()]],
       admin_status: [admin.admin_status],
+      id:[admin.id]
     });
   }
   
@@ -422,36 +480,12 @@ export class UpdateOrganizationComponent implements OnInit {
       // Check if the admin form array is valid and has at least one admin
       const isAdminFormValid = this.adminList.length > 0 && this.adminFormArray.valid;
     // Check if the organization form is valid
-    if (this.organizationForm.invalid || this.isAdminForm && this.adminForm?.invalid ) {
+    if (this.organizationForm.invalid ) {
       this.organizationForm.markAllAsTouched();
-      this.adminForm.markAllAsTouched();
       this.api.showError("Please enter the mandatory fields!");
       return;
     }
-      // If admin form is empty or invalid, show error
-      if (!isAdminFormValid) {
-        this.adminFormArray.markAllAsTouched();
-        this.api.showError("Please upadte with valid admin details.");
-        return;
-      }
     
-      // Check if the organization form is valid
-      if (this.organizationForm.invalid) {
-        this.organizationForm.markAllAsTouched();
-        this.api.showError("Please enter the mandatory fields!");
-        return;
-      }
-      // Check if the admin form is valid but no admins are added
-      if (this.isAdminForm && this.adminForm?.valid) {
-        this.api.showWarning("Please add the admin details before submitting the form");
-        return;
-      }
-      // Check if the admin form is valid but no admins are added
-      // if (this.adminFormArray?.invalid) {
-      //   this.api.showWarning("Please add the valid admin details.");
-      //   return;
-      // }
-      // Both forms are valid, proceed with submission
       const data = {
         org_qr_uniq_id: this.f['org_qr_uniq_id'].value,
         org_name: this.f['org_name'].value,
@@ -462,9 +496,9 @@ export class UpdateOrganizationComponent implements OnInit {
         org_country: this.f['org_country'].value,
         org_postal_code: this.f['org_postal_code'].value,
         org_logo: this.fileDataUrl,
-        admin_details: this.adminList // Use the admin list to submit the data
+       
       };
-    
+     
       this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`, data).subscribe(
         res => {
           if (res['result']) {
@@ -491,7 +525,7 @@ export class UpdateOrganizationComponent implements OnInit {
     return this.adminForm.controls;
   }
  
- async open(index) {
+ async open(adminId,index) {
   
   try {
     const modalRef = await this.modalService.open(GenericDeleteComponent, {
@@ -502,7 +536,7 @@ export class UpdateOrganizationComponent implements OnInit {
     
     modalRef.componentInstance.status.subscribe(resp => {
       if (resp === 'ok') {
-        this.deleteAdmin(index);
+        this.deleteAdmin(adminId,index);
         modalRef.dismiss();
       } else {
         modalRef.dismiss();

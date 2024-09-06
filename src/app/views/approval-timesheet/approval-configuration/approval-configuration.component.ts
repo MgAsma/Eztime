@@ -56,7 +56,7 @@ export class ApprovalConfigurationComponent implements OnInit {
  
   addConfiguration(){
     if(this.configurationForm.invalid){
-      this.api.showError('Invalid');
+      // this.api.showError('Invalid');
       this.configurationForm.markAllAsTouched();
     }
     else{

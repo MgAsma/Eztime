@@ -153,7 +153,7 @@
           </div>
           <div class="col-4"></div>
           <div class="col-2 text-center" *ngIf="!isAdminForm">
-            <button type="button" mat-raised-button class="proceedbtn" color="primary" (click)="openAdminForm()"><mat-icon class="add-btn">add</mat-icon>Add Admin</button>
+            <button type="button" mat-raised-button class="proceedbtn" color="primary" (click)="openAdminForm()">Add Admin</button>
           </div>
         </div> 
         <form [formGroup]="adminForm" *ngIf="isAdminForm">
@@ -236,7 +236,7 @@
         
      
         <ng-container *ngFor="let admin of adminList; let i = index">
-          <div class="row me-1 mt-4" [formGroup]="getAdminFormGroup(i)">
+          <div class="row me-1 mt-3" [formGroup]="getAdminFormGroup(i)">
             <div class="col-11">
               <div  tabindex="0" class="row-container2"    [ngClass]="{
                 'editable': admin.isEditing
@@ -293,7 +293,7 @@
             <div class="col-1 d-flex align-items-center p-0"  *ngIf="admin?.isEditing">
               <i class="bi bi-check-circle me-1 icon-bg" container="body" ngbTooltip="Save" style="color:#50C20D;" (click)="saveAdmin(i)"></i> 
               <i class="bi bi-x-circle icon-bg" container="body" style="color:#126EB4;margin-right: 5px;" ngbTooltip="Cancel" (click)="toggleFormControlState(i, false)"></i> 
-              <i class="bi bi-trash icon-bg" container="body" style="color:red;"  ngbTooltip="Delete" (click)="open(i)"></i>
+              <i class="bi bi-trash icon-bg" container="body" style="color:red;"  ngbTooltip="Delete" (click)="open(admin.id,i)"></i>
             </div>
             <div class="col-1 d-flex align-items-center p-0" (click)="toggleFormControlState(i, true)"  *ngIf="!admin?.isEditing">
               <i class="bi bi-pencil-square icon-bg"></i>
