@@ -86,10 +86,12 @@ export const navItems1: any = [
       //   name:'Create People',
       //   url:'/people/create-people'
       // },
-      {
-        name: 'Prefix/Suffix List',
-        url: '/people/prefix-suffix-list'
-      },
+
+      // {
+      //   name: 'Prefix/Suffix List',
+      //   url: '/people/prefix-suffix-list'
+      // },
+
       // {
       //   name:'Create Prefix/Suffix',
       //   url:'/people/create-prefix-suffix'
@@ -98,10 +100,12 @@ export const navItems1: any = [
       //   name:'Add Centers',
       //   url:'/people/add-centers'
       // },
-      {
-        name: 'Tag List',
-        url: '/people/tag-list'
-      },
+
+      // {
+      //   name: 'Tag List',
+      //   url: '/people/tag-list'
+      // },
+
       // {
       //   name:'Add New Tag',
       //   url:'/people/add-tag-list'

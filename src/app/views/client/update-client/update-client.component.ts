@@ -43,7 +43,7 @@ export class UpdateClientComponent implements OnInit {
       c_code:['',[Validators.pattern(/^\S.*$/),Validators.required]],
       c_address:['',[Validators.pattern(/^\S.*$/),Validators.required]],
       // c_satus:['',Validators.required],
-      toi_ref_id:['',[Validators.required]],
+      // toi_ref_id:['',[Validators.required]],
       c_type:['',[Validators.required]],
       c_contact_person_email_id:['',[Validators.required,Validators.email]],
       c_contact_person_phone_no:['',[Validators.required ,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
@@ -84,7 +84,7 @@ export class UpdateClientComponent implements OnInit {
       this.updateForm.patchValue({
         c_name:data.result.data[0].c_name,
         c_contact_person:data.result.data[0].c_contact_person,
-        toi_ref_id:data.result.data[0].toi_ref_id,
+        // toi_ref_id:data.result.data[0].toi_ref_id,
         c_code:data.result.data[0].c_code,
         c_address:data.result.data[0].c_address,
         c_type:data.result.data[0].c_type,
