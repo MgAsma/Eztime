@@ -227,7 +227,7 @@
          
           <div class="col-1 p-0 d-flex justify-content-center align-items-center"  [attr.disabled]="adminForm.invalid">
             <i class="bi bi-check-circle icon-bg" style="color:#50C20D;cursor: pointer;margin-right: 5px;" container="body" [ngbTooltip]="adminForm.invalid ? 'Add admin details':'Add'" (click)="addAdmin();"></i>
-            <i class="bi bi-x-circle icon-bg" style="color: #126EB4;cursor: pointer;"  container="body" ngbTooltip="Cancel" (click)="isAdminForm=!isAdminForm"></i>
+            <i class="bi bi-x-circle icon-bg" style="color: #126EB4;cursor: pointer;"  container="body" ngbTooltip="Cancel" *ngIf="adminList.length" (click)="isAdminForm=!isAdminForm"></i>
           </div>
             
         </div> 

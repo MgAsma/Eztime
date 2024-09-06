@@ -296,7 +296,7 @@ export class AddOrganizationComponent implements OnInit {
   }
   organizationSubmit() {
     // Check if the organization form is invalid
-    if (this.organizationForm.invalid || this.isAdminForm && this.adminForm?.invalid) {
+    if (this.organizationForm.invalid && this.adminForm?.invalid) {
       this.organizationForm.markAllAsTouched();
       this.adminForm.markAllAsTouched();
       this.api.showError("Please enter the mandatory fields!");
