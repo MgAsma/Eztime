@@ -91,7 +91,7 @@ export class UpdatePeopleComponent implements OnInit {
       u_marital_status:['',[Validators.required]],
       u_designation:['',[Validators.required,Validators.pattern(/^\S.*$/)]],
       u_date_of_joining:['',Validators.required],
-      tags:['',[Validators.required]],
+      // tags:['',[Validators.required]],
       profile_base64:['',[Validators.required,this.fileFormatValidator]],
    
       cost_center_id:['',Validators.required],
@@ -122,7 +122,7 @@ export class UpdatePeopleComponent implements OnInit {
     this.getCostCenter();
     this.getCenter()
     this.getPrefix();
-    this.getTag();
+    // this.getTag();
     this.user_id = sessionStorage.getItem('user_id')
    
    // this.getOrgDetails(`&page_number=1&data_per_page=2&pagination=FALSE&organization_id=${this.org_id}`)
@@ -204,9 +204,9 @@ export class UpdatePeopleComponent implements OnInit {
     let tagId = []
     tagId = this.updateForm.value.tags
     let selectedId = []
-    tagId.forEach(res => {
-      selectedId.push(Number(res.id))
-    })
+    // tagId.forEach(res => {
+    //   selectedId.push(Number(res.id))
+    // })
 
    // console.log(tagId)
     //data = this.updateForm.value
@@ -218,8 +218,8 @@ export class UpdatePeopleComponent implements OnInit {
     }
     else{
     //this.updateForm.value.tags=this.tagId
-    const selectedTagId = this.tagId.filter(f=> f.id)
-    console.log(selectedTagId,"selectedTagId")
+    // const selectedTagId = this.tagId.filter(f=> f.id)
+    // console.log(selectedTagId,"selectedTagId")
     this.changeYearStartDate(this.updateForm.value.u_date_of_joining)
   //  this.date = this.updateForm.value.u_date_of_joining 
     if(this.type == 'url'){
@@ -252,7 +252,7 @@ export class UpdatePeopleComponent implements OnInit {
             u_marital_status:this.updateForm.value.u_marital_status ,
             u_designation:this.updateForm.value.u_designation,
             u_date_of_joining:this.datepipe.transform(this.date,'dd/MM/yyyy'),
-            tags:selectedId,
+            // tags:selectedId,
             cost_center_id:this.updateForm.value.cost_center_id,
             profile_base64:this.base64String,
             center_id:this.updateForm.value.center_id,

@@ -30,6 +30,7 @@ export class DashboardComponent implements OnInit {
   adminlistData: any = [];
   userslistData: any = [];
   rolesListData: any = [];
+  sortedRolls: any[];
   departmentsListData: any = [];
   industriesListData: any = [];
   pagination: any;
@@ -162,9 +163,15 @@ export class DashboardComponent implements OnInit {
   getRecentAddedRolesListData() {
     let params: any = `page_number=1&data_per_page=5&pagination=TRUE&organization_id=${this.org_id}`;
     this.api.getUserAccess(params).subscribe((data: any) => {
-
+      this.sortedRolls = []
       if (data) {
-        this.rolesListData = data.result.data
+        // this.rolesListData = data.result.data
+        data.result.data.forEach(res=>{
+          if(res.user_role_name!='ADMIN'){
+            this.sortedRolls.push(res)
+          }
+        })
+        this.rolesListData = this.sortedRolls
       }
     }, ((error) => {
       this.api.showError(error.error.error.message)

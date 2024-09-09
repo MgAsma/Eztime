@@ -80,7 +80,7 @@ export class AddNewCategoryComponent implements OnInit {
     // it contains form feild
    return this.builder.group({
       task_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      billable_type:['',Validators.required],
+      // billable_type:['',Validators.required],
       id:['']
   })}
   get fileOption(){
@@ -173,6 +173,26 @@ export class AddNewCategoryComponent implements OnInit {
           this.api.showError(error?.error.error.message)
         })
       )
+    }
+  }
+
+  taskFieldEntering(event:any){
+    if(event.target.value){
+      console.log('present',event.target.value)
+    } else{
+      console.log('no data',event.target.value)
+    }
+  }
+
+  save(){
+    if(this.taskCategoryForm.invalid){
+      this.api.showError('Invalid');
+      this.taskCategoryForm.markAllAsTouched();
+    } else{
+      this.taskCategoryForm.value['task_list'].forEach((element,i) => {
+        element.id = i + 1
+      });
+      console.log( this.taskCategoryForm.value)
     }
   }
 }

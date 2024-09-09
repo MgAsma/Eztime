@@ -326,7 +326,7 @@ export class CreateNewProjectComponent implements OnInit {
   }
   getCategory() {
     this.api.getData(`${environment.live_url}/${environment.taskProjectCategories}?page_number=1&data_per_page=2&pagination=FALSE&org_ref_id=${this.orgId}`).subscribe(data => {
-      //console.log(data,"RESPONSE")
+      console.log(data,"category template")
       this.taskCategories = data['result'].data
     })
   }
