@@ -110,6 +110,7 @@
     color: rgb(165, 165, 165);
     font-size: small !important;
   }
+ 
   .row-container,.row-container2 {
     display: flex;
     //border: 1px solid #ccc;
@@ -133,6 +134,15 @@
         border-right: 0;
       }
       
+      
+      .error-text{
+        position: absolute;
+        top:40px;
+        left:10px;
+        font-size: 11px;
+        color:red;
+      }
+      
       ::ng-deep .mat-form-field-appearance-fill .mat-form-field-underline {
         background-color: gray !important; 
       }
@@ -145,18 +155,10 @@
       ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
         padding: 0; 
     }
-      .error-text{
-        position: absolute;
-        top:40px;
-        left:10px;
-        font-size: 11px;
-        color:red;
-      }
-      
-      mat-form-field {
-        height: 35px;
-        transform: scale(0.5)
-      }
+    mat-form-field {
+      height: 35px;
+      transform: scale(0.5)
+    }
   
       mat-slide-toggle {
         width: 100%;
@@ -165,6 +167,9 @@
         align-items: center;
       }
     }
+    .mat-form-field-appearance-outline .mat-form-field-infix {
+      padding: 12px !important; 
+  }
   }
   .row-container2{
     background-color: #f6f6f6;
@@ -186,9 +191,18 @@
       margin-top: 30px !important;
       transform: scale(0.9) !important;
     }
-    .mat-form-field-appearance-outline .mat-form-field-infix {
-      padding: 12px !important; 
-  }
+   
   .mat-form-field-appearance-outline .mat-form-field-wrapper {
     margin: .10em 0 !important;
+}
+app-timesheet{
+  .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0px !important; 
+}
+.mat-form-field .mat-icon-button {
+  position: absolute;
+  top: -39px;
+  right: 0px;
+}
+
 }

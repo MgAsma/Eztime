@@ -21,6 +21,9 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatTabsModule } from '@angular/material/tabs';
+
 @NgModule({
   declarations: [
     SortPipe,
@@ -46,7 +49,10 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatRadioModule,
     MatSlideToggleModule,
     MatMenuModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTabsModule
+    
   ],
   exports:[
     SortPipe,
@@ -69,7 +75,9 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatRadioModule,
     MatSlideToggleModule,
     MatMenuModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTabsModule
    ],
   
 })

@@ -53,17 +53,7 @@ i{
 button:hover .btnicon{
     display: block;
 }
-::ng-deep .mat-form-field {
-    height: 55px;
-    width: 95%!important;
-    background-color: #ffff;
-    border-radius: 50px;
-    border: solid gray;
-}
 
-::ng-deep .mat-form-field-underline {
-    display: none;
-}
 select{
     width: 100% !important;
     height: 40px;
@@ -99,7 +89,7 @@ html{
 .outer-card{
     border: none;
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 8%), 0 6px 20px 0 rgb(0 0 0 / 4%);
-margin: 5px 0px ;
+    margin: 5px 10px ;
     border-radius: 10px;
     background: #FFFFFF99 !important;
     position: relative;

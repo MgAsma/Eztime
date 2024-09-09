@@ -75,7 +75,7 @@ border-image-source: linear-gradient(286.72deg, #FFFFFF 13.46%, rgba(255, 255, 2
   color: #000 !important; 
   font-weight: 600 !important;
 }
-thead tr th{
+.table-list thead tr th{
     background-color: $primay-color !important;
     color:white !important;
     text-transform: uppercase;
@@ -180,6 +180,9 @@ thead tr th{
 .proceedbtn{
   background-color: $primay-color !important;
   color:white;
+}
+.bi-arrow-up-right-square-fill{
+  color: $primay-color !important;
 }
 .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb{
   background-color: $primay-color !important;

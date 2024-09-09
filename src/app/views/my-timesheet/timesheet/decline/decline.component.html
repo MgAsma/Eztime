@@ -1,8 +1,8 @@
 <div class="container-fluid webView">
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-sm-3 col-md-4 col-lg-4 search-div px-0">
       <!-- <input type="text" class="form-control p-2 sizeinput" placeholder="Search"[(ngModel)]="term" aria-describedby="emailHelp"  autocomplete="off">
-      <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i> -->
+      <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i> --
   </div>
     <div class="col-sm"></div>
     <div class="col-md-4 col-lg-4 text-center align-self-center">
@@ -12,18 +12,18 @@
         </div>
                 </div>
      
-  </div>
+  </div> -->
   
 <div class="bg">
     <div class="row">
         <div class="col px-0">
-            <table class="table table-hover">
+            <table class="table table-hover table-list">
                 <thead>
                     <tr>
                       <th scope="col">S.No</th>
                       <th scope="col" class="text-center">Date </th>
                       <th scope="col" class="text-center">Employee</th>
-                      <th scope="col" class="text-center">Timesheet Id</th>
+                      <th scope="col" class="text-center">Task</th>
                       <th scope="col" class="text-center">Time</th>
                       <th scope="col" class="text-center">Rejected On</th>
                       <th scope="col" class="text-center">Rejected By</th>
@@ -37,24 +37,40 @@
                         <td>{{getContinuousIndex(i)}}</td>
                         <td class="text-center">{{item.created_date_time | date :'dd/MM/YYYY'}}</td>
                         <td class="text-center">{{item.created_by_first_name|titlecase}}</td>
-                        <td class="text-center">{{item.id}}</td>
+                        <!-- <td class="text-center">{{item.id}}</td> -->
+                        <td class="text-center">{{item.task_worked_list.task_name}}</td>
                         <td class="text-center">{{item.time_spent |titlecase}}</td>
                         <td class="text-center">{{item.approved_date ? item.approved_date:"NA"|titlecase}}</td>
                         <td class="text-center">{{item.approved_by_first_name ? item.approved_by_first_name : "NA"|titlecase}}</td>
                         <td class="text-center">{{item.approved_state|titlecase}}</td>                                                    
-                         <td class="text-center">
+                         <!-- <td class="text-center">
                             <ng-container *ngFor="let approval of accessConfig">
                                <span *ngIf="approval == 'DELETE'">
                                    <button   style="border: none;background-color: inherit;" (click)="open(item)"> <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>
                                </span>
-                               <!-- <span *ngIf="approval == 'APPROVE'">
+                                <span *ngIf="approval == 'APPROVE'">
                                    <button  style="border: none;background-color: inherit;" (click)="openDialogue(item.id,'APPROVED')"><i class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>
                                </span>
                                <span *ngIf="approval == 'REJECT'">
                                    <button  style="border: none;background-color: inherit;" (click)="openDialogue(item.id,'DECLINED')"><i class="bi bi-x-circle" container="body" ngbTooltip="Reject" style="color:red"></i></button>
-                               </span> -->
+                               </span> --
                            </ng-container>
-                       </td>
+                       </td> -->
+
+                       <td class="text-center">
+                        <ng-container *ngIf="accessConfig.includes('DELETE'); else noDelete">
+                         <ng-container *ngFor="let approval of accessConfig">
+                           <span *ngIf="approval == 'DELETE'">
+                             <button style="border: none;background-color: inherit;" (click)="open(item)">
+                               <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i>
+                             </button>
+                           </span>
+                         </ng-container>
+                       </ng-container>
+                       <ng-template #noDelete>
+                         <span>NA</span>
+                       </ng-template>
+                        </td>
                     </tr>
                     <tr *ngIf="result.length === 0" class="nodata">
                         <td> No records found!</td>  
@@ -67,15 +83,17 @@
    
     
 </div>
-<div class="row">      
-  <div class="col-sm-12">
-      <div class="d-flex justify-content-center ">
-          <pagination-controls 
-            previousLabel="Prev" 
-            nextLabel="Next" 
-            (pageChange)="onTableDataChange($event)">
-          </pagination-controls>
-        </div>
+<div class="pagination-container p-0 py-2">
+  <!-- Pagination Controls (Center-Aligned) -->
+  <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+  </pagination-controls>
+
+  <!-- Items Per Page Selector (Right-Aligned) -->
+  <div class="items-per-page-container">
+    <div>Items per page</div>
+    <mat-select (change)="onTableSizeChange($event)" placeholder="10" class="page-size">
+      <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+    </mat-select>
   </div>
 </div>
 </div>
@@ -229,19 +247,18 @@
         </div>
       </ng-container>
     </div>
-    <div class="row mobile-pagination" *ngIf="list.length !== 0">
-      <div class="col-sm-12" >
-          <div class="mobile-pagination-content">
-              <pagination-controls 
-                previousLabel="Prev" 
-                nextLabel="Next" 
-                (pageChange)="onTableDataChange($event)">
-              </pagination-controls>
-             <div><button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
-              >{{size}}</button></div>
-            </div>
-      </div>
+    <div class="pagination-container p-0 pt-2">
+      <!-- Pagination Controls (Center-Aligned) -->
+      <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+      </pagination-controls> 
     </div>
+    <div class="pagination-container">
+      <div class="mx-2">Items per page</div>
+      <mat-select (change)="onTableSizeChange($event)" placeholder="10" class="page-size">
+        <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+      </mat-select>
+    </div>
+    
   </div>
 
 

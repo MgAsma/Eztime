@@ -4,7 +4,7 @@
       <form [formGroup]="configurationForm" (ngSubmit)="addConfiguration()">
         <div class="row">
           <div class="col-sm-12 col-md-4">
-            <mat-form-field appearance="outline" class="full-width">
+            <mat-form-field appearance="outline" >
               <mat-label>Approval period</mat-label>
               <mat-select formControlName="approval_period" required 
               panelClass="custom-select-panel" [disableOptionCentering]="true">
@@ -20,7 +20,7 @@
           </div>
   
           <div class="col-sm-12 col-md-4">
-            <mat-form-field appearance="outline" class="full-width">
+            <mat-form-field appearance="outline" >
               <mat-label>Grace day to approve</mat-label>
               <mat-select formControlName="grce_days_to_approve" required
               panelClass="custom-select-panel" [disableOptionCentering]="true">

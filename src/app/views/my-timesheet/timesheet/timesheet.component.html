@@ -1,375 +1,169 @@
-<div class="container-fluid s-padd webView">
-    <!-- <div class="row px-4">
-        <div class="col-sm-12 col-md-12 col-lg-8 px-0 py-1">
-            <h1>
-                My timesheets <b *ngIf="month"> - </b>{{ month | date:'MMMM'}}
-            </h1>
-        </div>
-        <div class="col-sm "></div>
-        <div class="col-6 col-sm-6 col-md-12 col-lg-4 px-0 py-2 text-end">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">
-                    My timesheets <b *ngIf="month"> - </b>{{ month | date:'MMMM'}}</li>
-                </ol>
-              </nav>
-        </div>
-        
-    </div> -->
+<div class="container-fluid s-padd ">
+
     <div class="container-middle p-20">
         <div class="row">
             <div class="col-12">
-                <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-3">
-                        <div class="card text-white ">
-                            <div class="card-body ">
+                <div style="background-color: #f9f9f9;padding: 16px;">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-3">
+                            <mat-card>
                                 <div class="row">
                                     <div class="row">
                                         <div class="col-8">
-                                            <h6 style="display: flex;font-size: 12px!important;"><b><i
-                                                        class="bi bi-check"></i> Approved</b> </h6>
+                                            <h6><b>
+                                            <i class="bi bi-list-ul"></i> Approved</b> </h6>
                                         </div>
-                                        <div class="col-4 text-end">
+                                        <div class="col-4 text-end pe-0">
                                             <h4 class="v-align" style="color: green;">{{cardData?.approved_count}}</h4>
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <p><i class="bi bi-clock"></i> {{cardData ?.approved_hours}} Total Hrs</p>
-                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <!--/.col-->
+                            </mat-card>
+                            <!--/.col-->
 
-                    </div>
-                    <div class="col-sm-12 col-md-12 col-lg-3 ">
-                        <div class="card text-white">
-                            <div class="card-body">
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-3 ">
+                            <mat-card>
                                 <div class="row">
                                     <div class="row">
                                         <div class="col-8">
-                                            <h6 style="display:flex;font-size:12px!important;"><b><i
-                                                        class="bi bi-lightning"></i> Request</b> </h6>
+                                            <h6><b>
+                                             <i class="bi bi-list-ul"></i> Request</b> </h6>
                                         </div>
-                                        <div class="col-4 text-end">
+                                        <div class="col-4 text-end pe-0">
                                             <h4 class="v-align" style="color: #e6b539;">{{cardData ?.request_count}}
                                             </h4>
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <p><i class="bi bi-clock"></i> {{cardData ?.request_hours}} Total Hrs</p>
-                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <!--/.col-->
+                            </mat-card>
+                            <!--/.col-->
 
-                    </div>
-                    <div class="col-sm-12 col-md-12 col-lg-3 ">
-                        <div class="card text-white ">
-                            <div class="card-body ">
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-3 ">
+                            <mat-card>
                                 <div class="row">
                                     <div class="row">
                                         <div class="col-8">
-                                            <h6 style="display:flex;font-size:12px!important;">
-                                                <b><i class="bi bi-x"></i> Declined</b>
+                                            <h6>
+                                                <b><i class="bi bi-list-ul"></i> Declined</b>
                                             </h6>
                                         </div>
-                                        <div class="col-4 text-end">
+                                        <div class="col-4 text-end pe-0">
                                             <h4 class="v-align" style="color: red;">{{cardData ?.declined_count}}</h4>
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <p><i class="bi bi-clock"></i> {{cardData ?.declined_hours}} Total Hrs</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--/.col-->
 
-                    </div>
-                    <div class="col-sm-12 col-md-12 col-lg-3 ">
-                        <div class="card text-white">
-                            <div class="card-body">
+                                </div>
+                            </mat-card>
+
+
+
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-3 ">
+                            <mat-card>
                                 <div class="row">
                                     <div class="row">
                                         <div class="col">
-                                            <h6 style="display: flex;font-size: 12px!important;"><b><i
-                                                        class="bi bi-bar-chart"></i> Total</b> </h6>
+                                            <h6><b>
+                                            <i class="bi bi-list-ul"></i> Total</b> </h6>
                                         </div>
-                                        <div class="col-4 text-end">
+                                        <div class="col-4 text-end pe-0">
                                             <h4 class="v-align" style="color: red;">{{cardData ?.total_count}}</h4>
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <p><i class="bi bi-clock"></i> {{cardData ?.total_hours}} Total Hrs</p>
-                                    </div>
                                 </div>
-                            </div>
+                            </mat-card>
                         </div>
                     </div>
                 </div>
                 <div class="card dt-card">
+
                     <form [formGroup]="timeSheetForm">
-                        <div class="row" style="padding: 0px 0px 10px 0px;">
-                            <div class="col-sm-4 col-md-6 col-lg-4">
-                                <label class="date-label">From date <span>*</span></label>
-                                <input class="form-control date-input" type="date" formControlName="from_date"
-                                    placeholder="date" (change)="changeFormat()">
-                                <div *ngIf="f['from_date'].touched && f['from_date'].invalid" class="error-msg">
-                                    <p *ngIf="f['from_date'].errors['required']">From date is required</p>
-                                </div>
+                        <div class="row">
+                            <div class="col-sm-4 col-md-6 col-lg-3">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>From date</mat-label>
+                                    <input matInput [matDatepicker]="fromDatePicker" formControlName="from_date"
+                                        (dateChange)="changeFormat()" required>
+                                    <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #fromDatePicker></mat-datepicker>
+                                    <mat-error *ngIf="f['from_date'].touched && f['from_date'].invalid">
+                                        From date is required.
+                                    </mat-error>
+                                </mat-form-field>
                             </div>
-                            <div class="col-sm-4 col-md-6 col-lg-4">
-                                <label class="date-label">To date <span>*</span></label>
-                                <input class="form-control date-input" type="date" formControlName="to_date"
-                                    placeholder="date" [min]="timeSheetForm.value.from_date" (change)="changeFormat()">
-                                <div *ngIf="f['to_date'].touched && f['to_date'].invalid" class="error-msg">
-                                    <p *ngIf="f['to_date'].errors['required']">To date is required</p>
-                                </div>
+
+                            <div class="col-sm-4 col-md-6 col-lg-3">
+                                <mat-form-field appearance="outline" [attr.disabled]="!timeSheetForm.value.from_date">
+                                    <mat-label>To date</mat-label>
+                                    <input matInput [matDatepicker]="toDatePicker" formControlName="to_date"
+                                        [min]="timeSheetForm.value.from_date" (dateChange)="changeFormat()" required>
+                                    <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #toDatePicker></mat-datepicker>
+                                    <mat-error *ngIf="f['to_date'].touched && f['to_date'].invalid">
+                                        To date is required.
+                                    </mat-error>
+                                </mat-form-field>
                             </div>
-                            <div class="col-sm-2 col-md-6 col-lg-2 py-3 d-flex align-items-center">
-                                <button mat-raised-button type="submit" class="proceedbtn"
-                                    (click)="submit()">Submit</button>
+
+                            <div class="col-sm-2 col-md-1 col-lg-1 d-flex align-items-center p-0">
+                                <button mat-icon-button type="submit" (click)="submit()" ngbTooltip="Submit">
+                                    <i class="bi bi-arrow-up-right-square-fill"></i>
+                                </button>
                             </div>
                         </div>
                     </form>
 
                 </div>
+
+
                 <div class="animated fadeIn">
                     <div class="row">
                         <div class="col-md-12 mb-4">
-                            <tabset #tabset>
-                                <tab heading="Yet to approved" (selectTab)="tabState($event)">
-                                    <ng-container *ngIf="allDetails[0]?.approved_state ==='YET_TO_APPROVED'">
+                            <mat-tab-group (selectedTabChange)="tabState($event)">
+
+                                <!-- Pending Tab -->
+                                <mat-tab label="Pending">
+                                    <ng-container *ngIf="allDetails[0]?.approved_state === 'YET_TO_APPROVED'">
                                         <app-yet-to-approve [data]="allDetails" [totalCount]="totalCount"
                                             (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)">
                                         </app-yet-to-approve>
                                     </ng-container>
-                                    <ng-container *ngIf="allDetails[0]?.approved_state !== 'YET_TO_APPROVED' ">
-                                        <div class="text-center text-muted no-data py-2">No records found
-                                        </div>
+                                    <ng-container *ngIf="allDetails[0]?.approved_state !== 'YET_TO_APPROVED'">
+                                        <div class="text-center text-muted no-data py-2">No records found</div>
                                     </ng-container>
-                                </tab>
-                                <tab heading="Approved timesheets" (selectTab)="tabState($event)">
-                                    <ng-container *ngIf="allDetails[0]?.approved_state ==='APPROVED'">
+                                </mat-tab>
+
+                                <!-- Approved Tab -->
+                                <mat-tab label="Approved">
+                                    <ng-container *ngIf="allDetails[0]?.approved_state === 'APPROVED'">
                                         <app-approved [data]="allDetails" [totalCount]="totalCount"
-                                            (filter)="searchFiter($event)"
-                                            (buttonClick)="buttonClick($event)"></app-approved>
+                                            (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)">
+                                        </app-approved>
                                     </ng-container>
                                     <ng-container *ngIf="allDetails[0]?.approved_state !== 'APPROVED'">
-                                        <div class="text-center text-muted no-data py-2">No records found
-                                        </div>
+                                        <div class="text-center text-muted no-data py-2">No records found</div>
                                     </ng-container>
-                                </tab>
-                                <tab heading="Declined timesheets" (selectTab)="tabState($event)">
-                                    <ng-container *ngIf="allDetails[0]?.approved_state ==='DECLINED'">
+                                </mat-tab>
+
+                                <!-- Declined Tab -->
+                                <mat-tab label="Declined">
+                                    <ng-container *ngIf="allDetails[0]?.approved_state === 'DECLINED'">
                                         <app-decline [data]="allDetails" [totalCount]="totalCount"
-                                            (filter)="searchFiter($event)"
-                                            (buttonClick)="buttonClick($event)"></app-decline>
+                                            (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)">
+                                        </app-decline>
                                     </ng-container>
                                     <ng-container *ngIf="allDetails[0]?.approved_state !== 'DECLINED'">
-                                        <div class="text-center text-muted no-data py-2">No records found
-                                        </div>
+                                        <div class="text-center text-muted no-data py-2">No records found</div>
                                     </ng-container>
-                                </tab>
-                                <!-- <tab heading="Flagged timesheets" (selectTab)="tabState($event)" >
-                              <ng-container *ngIf="allDetails[0]?.approved_state ==='FLAGGED'">
-                                <app-flagged  [data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)">
-                                </app-flagged>
-                              </ng-container>
-                              <ng-container *ngIf="allDetails[0]?.approved_state !== 'FLAGGED' ">
-                                <div class="text-center text-muted no-data py-2" >No records found
-  </div>  
-                              </ng-container> 
-                            </tab> -->
-                            </tabset>
+                                </mat-tab>
+
+                            </mat-tab-group>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-
-<div class="container-fluid s-padd mobileView">
-    <div class="row px-4 mx-1">
-        <div class="col-sm-12 col-md-12 col-lg-8 px-0 py-1">
-            <h1>
-                My timesheets <b *ngIf="month"> - </b>{{ month | date:'MMMM'}}
-            </h1>
-        </div>
-    </div>
-    <div class="container-middle p-20">
-        <div class="row">
-            <div class="col-12">
-                <div class="row">
-                    <div class="col-6 col-sm-6 col-md-6 col-lg-4">
-                        <div class="card text-white ">
-                            <div class="card-body ">
-                                <div class="row">
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <h6 style="display: flex;font-size: 12px!important;"><i
-                                                    class="bi bi-check"></i><br><b>Approved</b> </h6>
-                                        </div>
-                                        <div class="col-4 text-end">
-                                            <h4 class="v-align" style="color: green;">{{cardData?.approved_count}}</h4>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <p><i class="bi bi-clock"></i> {{cardData ?.approved_hours}} Total Hrs</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--/.col-->
-
-                    </div>
-                    <div class="col-6 col-sm-6 col-md-6 col-lg-4 ">
-                        <div class="card text-white">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <h6 style="display: flex;font-size: 12px!important;"><i
-                                                    class="bi bi-lightning"></i><br><b>Request</b> </h6>
-                                        </div>
-                                        <div class="col-4 text-end">
-                                            <h4 class="v-align" style="color: #e6b539;">{{cardData ?.request_count}}
-                                            </h4>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <p><i class="bi bi-clock"></i> {{cardData ?.request_hours}} Total Hrs</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--/.col-->
-
-                    </div>
-                    <div class="col-6 col-sm-6 col-md-6 col-lg-4 ">
-                        <div class="card text-white ">
-                            <div class="card-body ">
-                                <div class="row">
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <h6 style="display:flex;font-size:12px!important;"><i
-                                                    class="bi bi-x"></i><br><b>Declined</b></h6>
-                                        </div>
-                                        <div class="col-4 text-end">
-                                            <h4 class="v-align" style="color: red;">{{cardData ?.declined_count}}</h4>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <p><i class="bi bi-clock"></i> {{cardData ?.declined_hours}} Total Hrs</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--/.col-->
-
-                    </div>
-                    <div class="col-6 col-sm-6 col-md-6 col-lg-4 ">
-                        <div class="card text-white">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <h6 style="display: flex;font-size: 12px!important;"><i
-                                                    class="bi bi-bar-chart"></i><br><b>Total</b></h6>
-                                        </div>
-                                        <div class="col-4 text-end">
-                                            <h4 class="v-align" style="color: red;">{{cardData ?.total_count}}</h4>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <p><i class="bi bi-clock"></i> {{cardData ?.total_hours}} Total Hrs</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card dt-card">
-                    <form [formGroup]="timeSheetForm">
-                        <div class="row" style="padding: 0px 0px 10px 0px;">
-                            <div class="col-sm-4 col-md-6 col-lg-4">
-                                <label class="date-label">From date <span>*</span></label>
-                                <input class="form-control date-input" type="date" formControlName="from_date"
-                                    placeholder="date" (change)="changeFormat()">
-                                <div *ngIf="f['from_date'].touched && f['from_date'].invalid" class="error-msg">
-                                    <p *ngIf="f['from_date'].errors['required']">From date is required</p>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 col-md-6 col-lg-4">
-                                <label class="date-label">To date <span>*</span></label>
-                                <input class="form-control date-input" type="date" formControlName="to_date"
-                                    placeholder="date" [min]="timeSheetForm.value.from_date" (change)="changeFormat()">
-                                <div *ngIf="f['to_date'].touched && f['to_date'].invalid" class="error-msg">
-                                    <p *ngIf="f['to_date'].errors['required']">To date is required</p>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 col-md-6 col-lg-2 py-3 d-flex align-items-center">
-                                <button mat-raised-button type="submit" class="proceedbtn"
-                                    (click)="submit()">Submit</button>
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-                <div class="animated fadeIn">
-                    <div class="row">
-                        <div class="col-md-12 mb-4">
-                            <tabset #tabset>
-                                <tab heading="Yet to approved" (selectTab)="tabState($event)">
-                                    <ng-container *ngIf="allDetails[0]?.approved_state ==='YET_TO_APPROVED'">
-                                        <app-yet-to-approve [data]="allDetails" [totalCount]="totalCount"
-                                            (buttonClick)="buttonClick($event)">
-                                        </app-yet-to-approve>
-                                    </ng-container>
-                                    <ng-container *ngIf="allDetails[0]?.approved_state !== 'YET_TO_APPROVED' ">
-                                        <div class="text-center text-muted no-data py-2">No records found
-                                        </div>
-                                    </ng-container>
-                                </tab>
-                                <tab heading="Approved timesheets" (selectTab)="tabState($event)">
-                                    <ng-container *ngIf="allDetails[0]?.approved_state ==='APPROVED'">
-                                        <app-approved [data]="allDetails" [totalCount]="totalCount"
-                                            (buttonClick)="buttonClick($event)"></app-approved>
-                                    </ng-container>
-                                    <ng-container *ngIf="allDetails[0]?.approved_state !== 'APPROVED'">
-                                        <div class="text-center text-muted no-data py-2">No records found
-                                        </div>
-                                    </ng-container>
-                                </tab>
-                                <tab heading="Declined timesheets" (selectTab)="tabState($event)">
-                                    <ng-container *ngIf="allDetails[0]?.approved_state ==='DECLINED'">
-                                        <app-decline [data]="allDetails" [totalCount]="totalCount"
-                                            (buttonClick)="buttonClick($event)"></app-decline>
-                                    </ng-container>
-                                    <ng-container *ngIf="allDetails[0]?.approved_state !== 'DECLINED'">
-                                        <div class="text-center text-muted no-data py-2">No records found
-                                        </div>
-                                    </ng-container>
-                                </tab>
-                                <!-- <tab heading="Flagged timesheets" (selectTab)="tabState($event)" >
-                              <ng-container *ngIf="allDetails[0]?.approved_state ==='FLAGGED'">
-                                <app-flagged  [data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)">
-                                </app-flagged>
-                              </ng-container>
-                              <ng-container *ngIf="allDetails[0]?.approved_state !== 'FLAGGED' ">
-                                <div class="text-center text-muted no-data py-2" >No records found
-  </div>  
-                              </ng-container> 
-                            </tab> -->
-                            </tabset>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

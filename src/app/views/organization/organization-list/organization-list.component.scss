@@ -132,14 +132,15 @@ table th {
     margin-left: 10px;
     padding: 7px;
 }
+::ng-deep .mat-select-placeholder {
+    color: #222020;
+}
 .nodata {
     width: 200px;
     position: absolute;
     text-align: center;
 }
-::ng-deep .mat-select-placeholder {
-    color: #222020;
-}
+
 .bi-arrow-up,.bi-arrow-down{
     font-weight: 600;
     &:hover{
