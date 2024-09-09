@@ -178,7 +178,7 @@ export class CreateNewProjectComponent implements OnInit {
   }
   onPeopleGroupSelect(event: any) {
     this.peopleId.push(event.id)
-
+    console.log(this.peopleId)
   }
   onSingleSelect(event) {
     this.task_name.push(event.task_name)
@@ -193,7 +193,7 @@ export class CreateNewProjectComponent implements OnInit {
     event.forEach((element: any) => {
       this.peopleId.push(element.id)
     });
-    //console.log(this.peopleId)
+    // console.log(this.peopleId)
   }
   getPeopleGroup() {
     this.peopleListSetting = {
@@ -235,8 +235,9 @@ export class CreateNewProjectComponent implements OnInit {
   selectedTask = []
   addProject() {
     this.projectForm.patchValue({ people_ref_id: this.peopleId });
-    const startDate = this.projectForm.value.p_start_date
-    const EndDate = this.projectForm.value.p_closure_date
+    const startDate = this.projectForm.value.p_start_date;
+    const EndDate = this.projectForm.value.p_closure_date;
+    console.log(this.projectForm.value);
     // this.projectForm.patchValue({project_related_task_list:this.subTaskValue})
     if (this.projectForm.invalid) {
       this.api.showError('Invalid');
@@ -417,5 +418,11 @@ export class CreateNewProjectComponent implements OnInit {
 
     return false;
   }
+
+  matTeamSelect(event:any){
+    console.log(event);
+    this.peopleId = event.value;
+  }
+
 
 }

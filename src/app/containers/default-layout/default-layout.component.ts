@@ -31,7 +31,7 @@ export class DefaultLayoutComponent {
   access: any = [];
   user_id: any;
   org_id: string;
-
+  profileImage:any = null;
   headerNav = [
     {
       link: '/profile',
@@ -56,15 +56,24 @@ export class DefaultLayoutComponent {
   ]
 
   constructor(private ngxService: NgxUiLoaderService,
-    private api: ApiserviceService, private modalService: NgbModal,private cdref: ChangeDetectorRef,
+    private api: ApiserviceService, private modalService: NgbModal,private cdref: ChangeDetectorRef,private common_service: CommonServiceService,
     private router: Router) {
       this.config = sessionStorage.getItem('user_role_name');
+      this.common_service.profilePhoto$.subscribe(
+        (data:any)=>{
+          console.log(data,'profile picccc');
+          if(data){
+            this.profileImage = data.profile_pic;
+            this.user_name  = data.name
+          }
+        }
+      )
     
 }
   ngOnInit() {
     this.user_role_Name = sessionStorage.getItem('user_role_name');
     let role_id = sessionStorage.getItem('user_role_id');
-    this.user_name = sessionStorage.getItem('user_name');
+    // this.user_name = sessionStorage.getItem('user_name');
     this.getUserControls(role_id)
     this.ngxService.start();
     setTimeout(() => {
@@ -83,10 +92,12 @@ export class DefaultLayoutComponent {
     
 
   }
+  
 
   getUserControls(role_id) {
     this.org_id = sessionStorage.getItem('org_id')
     this.api.getUserRoleById(`id=${role_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe(res => {
+     console.log(res,'oooooooooooooooooo')
       if (res) {
         this.permission = res['data'][0]?.permissions;
         if (this.permission?.length > 0) {

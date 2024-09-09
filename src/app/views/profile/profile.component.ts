@@ -186,11 +186,19 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  profileDataForSidebar: any = {
+    profile_pic: '',
+    name: ''
+  }
+
   getProfiledata() {
     this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe(async (res: any) => {
       console.log(res, 'PROFILE GET API RESPONSE', this.profileimg)
       if (res.result.data) {
         let data = res.result.data
+        this.profileDataForSidebar.profile_pic = res.result.data[0]['u_profile_photo'];
+        this.profileDataForSidebar.name = res.result.data[0].u_first_name;
+        this.common_service.setProfilePhoto(this.profileDataForSidebar)
         let responseData = []
         let currentProfileDetails = []
         responseData = res['result']['data']
@@ -294,15 +302,15 @@ export class ProfileComponent implements OnInit {
 
       }
       console.log(data, "DATA---------------------")
-      this.api.updateProfileDetails(this.user_id,data).subscribe(res =>{
-        if(res){
+      this.api.updateProfileDetails(this.user_id, data).subscribe(res => {
+        if (res) {
           this.api.showSuccess("Profile updated successfully !");
           this.date = 'text';
           this.ngOnInit();
         }
-        },(error=>{
-          this.api.showError(error.error.error.message)
-        }))
+      }, (error => {
+        this.api.showError(error.error.error.message)
+      }))
     }
 
   }

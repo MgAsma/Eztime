@@ -147,12 +147,19 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
 
 
   }
+
+  profileDataForSidebar:any = {
+    profile_pic:'',
+    name:''
+  }
   getProfiledata() {
     this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res: any) => {
-      // console.log(res,'PROFILE GET API RESPONSE')
+      console.log(res,'PROFILE GET API RESPONSE')
       if (res.result.data) {
-        this.profileImg = res?.result?.data[0]?.u_profile_path
-
+        this.profileImg = res?.result?.data[0]?.u_profile_path;
+        this.profileDataForSidebar.profile_pic = res.result.data[0]['u_profile_photo'];
+        this.profileDataForSidebar.name = res.result.data[0].u_first_name; 
+        this.common_service.setProfilePhoto(this.profileDataForSidebar)
       }
     }, (error => {
       this.api.showError(error.error.error.message)
