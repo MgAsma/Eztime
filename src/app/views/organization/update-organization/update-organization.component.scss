@@ -37,4 +37,15 @@
       opacity: 0.8;
     }
     }
-  
+    .p-ab{
+    position:absolute ;
+    top:-2px;
+    }
+    .icon-image{
+      cursor: pointer;
+      height: 25px;
+      margin: 0 2px;
+    }
+    ::ng-deep .mat-form-field-wrapper{
+      padding-bottom: 1em !important;
+    }

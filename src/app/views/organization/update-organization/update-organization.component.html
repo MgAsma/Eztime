@@ -10,7 +10,7 @@
     
             <!-- Organization Name -->
             <div class="row">
-              <div class="col-sm-12 col-md-6 col-lg-6" >
+              <div class="col-sm-12 col-md-6 col-lg-6 mb-2" >
                 <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
                   <mat-label>Organization name <b class="r-star">*</b></mat-label>
                   <input matInput placeholder="Enter organization name"  formControlName="org_name" autocomplete="off">
@@ -25,7 +25,7 @@
            
             <!-- Email Id -->
            
-              <div class="col-sm-12 col-md-6 col-lg-3">
+              <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
                 <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                   <mat-label>Email Id <b class="r-star">*</b></mat-label>
                   <input matInput type="email" placeholder="Enter email Id" formControlName="org_email" autocomplete="off">
@@ -38,7 +38,7 @@
             
             <!-- Country -->
          
-              <div class="col-sm-12 col-md-6 col-lg-3">
+              <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
                 <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                   <mat-label>Country <b class="r-star">*</b></mat-label>
                   <mat-select formControlName="org_country" (selectionChange)="getState($event.value)" autocomplete="off"
@@ -56,7 +56,7 @@
     
             <!-- State -->
            
-              <div class="col-sm-12 col-md-6 col-lg-3">
+              <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
                 <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                   <mat-label>State <b class="r-star">*</b></mat-label>
                   <mat-select formControlName="org_state" (selectionChange)="getCity($event.value)" autocomplete="off" [attr.disabled]="!f['org_country']?.value" [ngbTooltip]="!f['org_country']?.value ? 'Please select country' :''" 
@@ -73,7 +73,7 @@
            
             <!-- City -->
            
-            <div class="col-sm-12 col-md-6 col-lg-3">
+            <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
               <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                 <mat-label>City <b class="r-star">*</b></mat-label>
                 <mat-select formControlName="org_city" autocomplete="off" 
@@ -90,7 +90,7 @@
             
             <!-- Address -->
             
-              <div class="col-sm-12 col-md-6 col-lg-3">
+              <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
                 <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
                   <mat-label>Postal code </mat-label>
                   <input matInput type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" formControlName="org_postal_code" placeholder="Enter postal code" autocomplete="off">
@@ -104,7 +104,7 @@
             <!-- Postal Code -->
             <div class="row"> 
              
-              <div class="col-sm-12 col-md-6 col-lg-6">
+              <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
                 <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
                   <mat-label>Address</mat-label>
                   <textarea matInput formControlName="org_address" placeholder="Enter your address here..." autocomplete="off"></textarea>
@@ -117,13 +117,13 @@
             
             <!-- Company Logo -->
            
-            <div class="col-sm-6 col-md-4 col-lg-2" >
+            <div class="col-sm-6 col-md-4 col-lg-2 mb-2" >
               <input type="file" accept="image/*" formControlName="org_logo" #fileInput (change)="uploadImageFile($event)" hidden>
                   <div  class="image-container w-100 d-flex justify-content-around align-items-center" >
                     <img id="imagePreview" [src]="fileDataUrl? fileDataUrl: '../assets/images/no-profile-pic.png'" alt="profile" >
                    
                     <button type="button" mat-icon-button (click)="triggerFileInput()" >
-                      <mat-icon matTooltip="{{fileDataUrl? 'Edit':'Upload'}}" class="edit-or-upload-icon">{{fileDataUrl? 'edit':'add_a_photo'}}</mat-icon>
+                      <mat-icon matTooltip="{{fileDataUrl? 'Edit':'Upload'}}" class="edit-or-upload-icon">{{fileDataUrl? 'edit':'add_a_photo'}}</mat-icon><b class="r-star px-1">*</b> 
                     </button>
                   
                   </div>
@@ -148,7 +148,7 @@
       <div style="border: 1px solid #cdcdcd;padding: 20px 10px 26px;border-radius: 5px;">
         <div class="row">
           <div class="col-6">
-            <h5><b>Create Admin</b></h5>
+            <h5><b>Create/Update Admin</b></h5>
             <h6 class="mb-0">Create Multiple Admin</h6>
           </div>
           <div class="col-4"></div>
@@ -163,26 +163,25 @@
             <div class="row-container editable">
               
               <div class="column">
-                
-              <input type="text" matInput formControlName="admin_name" placeholder="Admin Name"  autocomplete="off"/>
+                <div class="p-ab">
+                  <label style="font-size:10px;">Admin name</label><b class="r-star" >*</b>
+                </div>
+              <input type="text" class="pt-1" matInput formControlName="admin_name" placeholder="Admin name"  autocomplete="off"/>
                 <div *ngIf="a['admin_name']?.touched && a['admin_name']?.invalid"
                 class="error-text">
                 <span
                     *ngIf="a['admin_name']?.errors && a['admin_name']?.errors['required']">Admin
                      name is required
                 </span>
-                <span *ngIf="a['admin_name']?.errors?.['pattern']">
-                  Invalid name. Only letters are allowed, and the name must start with a letter.
-                </span>
+                <span *ngIf="a['admin_name']?.invalid && a['admin_name']?.hasError('pattern')">Invalid admin name</span>
             </div>
-            <div *ngIf="a['admin_name']?.invalid && a['admin_name']?.hasError('pattern')"
-                class="error-text">
-                <span>Cannot start with a space.</span>
-            </div>
-         
+           
               </div>
               <div class="column">
-                <input type="email" matInput formControlName="admin_email" placeholder="Email"  autocomplete="off"/> 
+                <div class="p-ab">
+                  <label style="font-size:10px;">Email</label><b class="r-star" >*</b>
+                </div>
+                <input type="email" class="pt-1" matInput formControlName="admin_email" placeholder="Email"  autocomplete="off"/> 
                 <div *ngIf="a['admin_email']?.touched && a['admin_email']?.invalid"
                 class="error-text">
                 <span
@@ -192,11 +191,13 @@
                     *ngIf="a['admin_email']?.invalid && a['admin_email']?.errors['required']">Email
                     Id is required</span>
                 </div>
-              <!-- </mat-form-field> -->
-  
+             
               </div>
               <div class="column">
-                <input type="tel" matInput formControlName="admin_phone_number" placeholder="Phone Number"  autocomplete="off"/>
+                <div class="p-ab">
+                  <label style="font-size:10px;">Phone number</label><b class="r-star" >*</b>
+                </div>
+                <input type="tel" class="pt-1" matInput onKeyPress="if(this.value.length==10) return false;" formControlName="admin_phone_number" placeholder="Phone number"  autocomplete="off"/>
                
                 <div *ngIf="a['admin_phone_number']?.touched && a['admin_phone_number']?.invalid"
                 class="error-text">
@@ -213,8 +214,10 @@
               </div>
                  
               <div class="column">
-                
-                <mat-slide-toggle formControlName="admin_status" >
+                <div class="p-ab" style="top:-11px !important;">
+                  <label style="font-size:10px;">Status</label><b class="r-star" >*</b>
+                </div>
+                <mat-slide-toggle class="pt-1" formControlName="admin_status" >
                   {{ a['admin_status']?.value ? 'Active' : 'Inactive' }}
                 </mat-slide-toggle>
                 <div *ngIf="a['admin_status']?.touched && a['admin_status']?.invalid" class="error-text" style="top:33px">
@@ -225,17 +228,16 @@
             </div>
           </div>
          
-          <div class="col-1 p-0 d-flex justify-content-center align-items-center"  [attr.disabled]="adminForm.invalid">
-            <i class="bi bi-check-circle icon-bg" style="color:#50C20D;cursor: pointer;margin-right: 5px;" container="body" [ngbTooltip]="adminForm.invalid ? 'Add admin details':'Add'" (click)="addAdmin();"></i>
-            <i class="bi bi-x-circle icon-bg" style="color: #126EB4;cursor: pointer;"  container="body" ngbTooltip="Cancel" *ngIf="adminList.length" (click)="isAdminForm=!isAdminForm"></i>
+          <div class="col-1  d-flex justify-content-center align-items-center"  [attr.disabled]="adminForm.invalid">
+            <img src="../../../../assets/images/tick.svg" class="icon-image" container="body" [ngbTooltip]="adminForm.invalid ? 'Add admin details':'Add'" (click)="addAdmin();"/>
+            <img src="../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Cancel" *ngIf="adminList.length" (click)="isAdminForm=!isAdminForm"/>
           </div>
-            
         </div> 
        
       </form>
         
      
-        <ng-container *ngFor="let admin of adminList; let i = index">
+        <!-- <ng-container *ngFor="let admin of adminList; let i = index">
           <div class="row me-1 mt-3" [formGroup]="getAdminFormGroup(i)">
             <div class="col-11">
               <div  tabindex="0" class="row-container2"    [ngClass]="{
@@ -244,7 +246,10 @@
               }" >
                 
                 <div class="column py-2">
-                  <input matInput formControlName="admin_name" placeholder="First Name" class="w-100" 
+                  <div class="p-ab">
+                    <label style="font-size:10px;">Admin name</label><b class="r-star" >*</b>
+                  </div>
+                  <input matInput class="pt-1" formControlName="admin_name" placeholder="Admin name"  
                   [readonly]="!admin.isEditing">
                           <div *ngIf="getAdminFormGroup(i)?.get('admin_name').touched && getAdminFormGroup(i)?.get('admin_name').invalid"
                           class="error-text">
@@ -252,13 +257,17 @@
                          Admin name is required
                        </span>
                        <span *ngIf="getAdminFormGroup(i)?.get('admin_name').hasError('pattern')">
-                         Invalid name.
-                       </span>
+                        Invalid admin name.
+                      </span>
                      </div>
+                    
                 </div>
                 
                 <div class="column py-2">
-                  <input matInput formControlName="admin_email" placeholder="Email" class="w-100"
+                  <div class="p-ab">
+                    <label style="font-size:10px;">Email</label><b class="r-star" >*</b>
+                  </div>
+                  <input matInput class="pt-1" formControlName="admin_email" placeholder="Email" 
                   [readonly]="!admin.isEditing">
                     <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email').hasError('required') && getAdminFormGroup(i)?.get('admin_email').touched">
                       Email is required
@@ -269,7 +278,10 @@
                 </div>
                 
                 <div class="column py-2">
-                  <input type="tel" matInput formControlName="admin_phone_number" placeholder="Phone Number" class="w-100"
+                  <div class="p-ab">
+                    <label style="font-size:10px;">Phone number</label><b class="r-star" >*</b>
+                  </div>
+                  <input type="tel" class="pt-1" matInput formControlName="admin_phone_number" onKeyPress="if(this.value.length==10) return false;" placeholder="Phone number" 
                   [readonly]="!admin.isEditing">
                           <div *ngIf="getAdminFormGroup(i)?.get('admin_phone_number').touched && getAdminFormGroup(i)?.get('admin_phone_number').invalid"
                           class="error-text">
@@ -283,7 +295,10 @@
                 </div>
                 
                 <div class="column py-2">
-                  <mat-slide-toggle formControlName="admin_status"  [attr.disabled]="!admin.isEditing">
+                  <div class="p-ab">
+                    <label style="font-size:10px;">Status</label><b class="r-star" >*</b>
+                  </div>
+                  <mat-slide-toggle class="pt-1" formControlName="admin_status"  [disabled]="!admin.isEditing">
                     {{ getAdminFormGroup(i)?.get('admin_status')?.value === true ? 'Active' : 'Inactive' }}
                   </mat-slide-toggle>
                 </div>
@@ -300,8 +315,92 @@
             </div>
            
           </div>
-        </ng-container>
-        
+        </ng-container> -->
+        <ng-container *ngFor="let admin of adminList; let i = index">
+          <form class="row me-1 mt-4" [formGroup]="getAdminFormGroup(i)">
+            <div class="col-11">
+              <div  tabindex="0" class="row-container2"    [ngClass]="{
+                'editable': admin.isEditing
+                
+              }" >
+                
+                <div class="column py-2">
+                  <div class="p-ab">
+                    <label style="font-size:10px;">Admin Name </label><b class="r-star">*</b>
+                  </div>
+                  <input matInput class="pt-1" formControlName="admin_name" placeholder="First Name" 
+                  [readonly]="!admin.isEditing">
+                          <div *ngIf="getAdminFormGroup(i)?.get('admin_name').touched && getAdminFormGroup(i)?.get('admin_name').invalid"
+                          class="error-text">
+                       <span *ngIf="getAdminFormGroup(i)?.get('admin_name').hasError('required')">
+                         Admin name is required
+                       </span>
+                       <span *ngIf="getAdminFormGroup(i)?.get('admin_name').hasError('pattern')">
+                         Invalid name.
+                       </span>
+                     </div>
+                </div>
+                
+                <div class="column py-2">
+                  <div class="p-ab">
+                    <label style="font-size:10px;">Email </label><b class="r-star">*</b>
+                  </div>
+                  <input matInput class="pt-1" formControlName="admin_email" placeholder="Enter email Id" 
+                  [readonly]="!admin.isEditing">
+                    <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email').hasError('required') && getAdminFormGroup(i)?.get('admin_email').touched">
+                      Email is required
+                    </mat-error>
+                    <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email').hasError('email') && getAdminFormGroup(i)?.get('admin_email').touched">
+                      Invalid email Id.
+                    </mat-error>
+                </div>
+                
+                <div class="column py-2">
+                  <div class="p-ab">
+                    <label style="font-size:10px;">Phone number</label><b class="r-star">*</b>
+                  </div>
+                  <input type="tel" class="pt-1" matInput formControlName="admin_phone_number" onKeyPress="if(this.value.length==10) return false;" placeholder="Enter phone number" 
+                  [readonly]="!admin.isEditing">
+                          <div *ngIf="getAdminFormGroup(i)?.get('admin_phone_number').touched && getAdminFormGroup(i)?.get('admin_phone_number').invalid"
+                          class="error-text">
+                       <div *ngIf="getAdminFormGroup(i)?.get('admin_phone_number').hasError('required')">
+                         Phone number is required
+                       </div>
+                       <div *ngIf="getAdminFormGroup(i)?.get('admin_phone_number').hasError('phoneNumberLength')">
+                         Please enter 10 digits
+                       </div>
+                     </div>
+                </div>
+                
+                <div class="column py-2">
+                  <div class="p-ab" style="top:-11px !important">
+                    <label style="font-size:10px;">Status</label><b class="r-star" >*</b>
+                  </div>
+                  <mat-slide-toggle class="pt-1" formControlName="admin_status"  [disabled]="!admin.isEditing">
+                    {{ getAdminFormGroup(i)?.get('admin_status')?.value === true ? 'Active' : 'Inactive' }}
+                  </mat-slide-toggle>
+                </div>
+              </div>
+            </div>
+            
+            <!-- <div class="col-1 d-flex align-items-center p-0"  *ngIf="admin?.isEditing">
+              <i class="bi bi-check-circle me-1 icon-bg" container="body" ngbTooltip="Save" style="color:#50C20D;" (click)="saveAdmin(i)"></i> 
+              <i class="bi bi-x-circle icon-bg" container="body" style="color:#126EB4;margin-right: 5px;" ngbTooltip="Cancel" (click)="toggleFormControlState(i, false)"></i> 
+              <i class="bi bi-trash icon-bg" container="body" style="color:red;"  ngbTooltip="Delete" (click)="open(admin.id,i)"></i>
+            </div>
+            <div class="col-1 d-flex align-items-center p-0" (click)="toggleFormControlState(i, true)"  *ngIf="!admin?.isEditing">
+              <i class="bi bi-pencil-square icon-bg"></i>
+            </div> -->
+            <div class="col-1 d-flex align-items-center p-0"  *ngIf="admin?.isEditing">
+              <img src="../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Save" style="color:#50C20D;" (click)="saveAdmin(i)"/>
+              <img src="../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Cancel" (click)="toggleFormControlState(i, false)"/>
+              <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(admin.id,i)"/>
+            </div>
+            <div class="col-1 d-flex align-items-center p-0" (click)="toggleFormControlState(i, true)"  *ngIf="!admin?.isEditing">
+              <img src="../../../../assets/images/Edit.svg" class="icon-image"  container="body" ngbTooltip="Edit" />
+            </div>
+          </form>
+        </ng-container> 
        
         <!-- Submit Button -->
         

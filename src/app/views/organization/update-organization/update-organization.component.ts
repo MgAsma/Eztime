@@ -170,7 +170,7 @@ export class UpdateOrganizationComponent implements OnInit {
   saveAdmin(index: number) {
     const adminForm = this.getAdminFormGroup(index);
     
-    if (adminForm.invalid) {
+    if (this.adminFormArray.invalid) {
         // Mark all controls as touched to trigger validation messages
         this.adminFormArray.markAllAsTouched()
         adminForm.markAllAsTouched();
@@ -382,7 +382,7 @@ export class UpdateOrganizationComponent implements OnInit {
   }
   createAdminFormGroup(admin): FormGroup {
     return this._fb.group({
-      admin_name: [admin.admin_name, [Validators.required, Validators.pattern(/^[A-Za-z\s]*$/)]],
+      admin_name: [admin.admin_name, [Validators.required, Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/)]],
       admin_email: [admin.admin_email, [Validators.required, Validators.email]],
       admin_phone_number: [admin.admin_phone_number, [Validators.required,this.phoneNumberLengthValidator()]],
       admin_status: [admin.admin_status],
