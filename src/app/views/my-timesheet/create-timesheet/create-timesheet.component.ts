@@ -14,7 +14,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 export class CreateTimesheetComponent implements OnInit {
   @ViewChild('myModal') public myModal;
   BreadCrumbsTitle:any='Create timesheet';
-
+  isAdminForm = false;
   timeSheetForm! : FormGroup
   task1:any;
   allClient:any=[];
@@ -44,7 +44,8 @@ export class CreateTimesheetComponent implements OnInit {
   peopleId: any = [];
   ccSetting: { singleSelection: boolean; idField: string; textField: string; itemsShowLimit: number; allowSearchFilter: boolean; };
   user_role_name: any;
-
+  adminList:string[] = []
+  adminForm:FormGroup;
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
@@ -70,6 +71,9 @@ export class CreateTimesheetComponent implements OnInit {
       reportingManagerRef:[''],
       response: this.builder.array([])
     });
+  }
+  openAdminForm(){
+    this.isAdminForm=!this.isAdminForm
   }
  goBack(event)
   {
@@ -191,7 +195,7 @@ createTask(): FormGroup {
     description: ['',[Validators.pattern(/^\S.*$/)]],
     task_id: ['',Validators.required],
     time_spent: ['',Validators.required],
-    created_date:['',Validators.required]
+    timesheet_applied_datetime:['',Validators.required]
   });
 }
 

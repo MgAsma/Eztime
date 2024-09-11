@@ -207,3 +207,45 @@ button{
   background: #f4f4f4;
   padding-left: 5px;
 }
+.webView .search-div{
+    position: absolute;
+    top:10px !important;
+    right:10px;
+    z-index: 10;
+    padding: 0 20px;
+}
+.mobileView .search-div{
+    position: relative !important;
+    top:0px !important;
+    right:0px;
+    z-index: 10;
+    padding: 0 20px;
+}
+.search-div{
+  
+    #search-icon-tab {
+    position: absolute;
+    right: 30px !important;
+    top: 11px !important;
+    font-size: 15px !important;
+    color: grey;
+    cursor: text !important;
+    }
+    .sizeinput{
+        font-size: 14px;
+    }
+}
+.close-icon{
+    position: absolute;
+    right: -10px;
+    top: 9px;
+    cursor: pointer;
+}
+.no-records {
+    height: 34vh; /* Takes most of the page height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Stacks text and button vertically */
+    font-size: 1rem; /* Optional: Adjust font size for better readability */
+  }

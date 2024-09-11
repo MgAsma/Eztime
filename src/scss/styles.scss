@@ -49,10 +49,15 @@
    appearance: none;
    margin: 0;
  }
- 
+ body,html{
+  font-family: 'Exo FT' !important;
+ }
+
  .mat-h6,
- .mat-typography h6 {
+
+ .mat-typography {
    //  font: 400 calc(22px * 0.67)/20px Roboto, "Helvetica Neue", sans-serif;
+   font-family: 'Exo FT' !important;
    margin: 0 0 12px;
  }
 
@@ -422,6 +427,7 @@
 
  .header-sticky {
    border: none !important;
+   z-index: 1 !important;
  }
 
  .mobile-pagination-content {

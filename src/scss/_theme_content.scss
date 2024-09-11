@@ -197,3 +197,14 @@ border-image-source: linear-gradient(286.72deg, #FFFFFF 13.46%, rgba(255, 255, 2
     outline: 0;
   }
 }
+
+
+.custom-tab-group .mat-tab-label-active {
+  color: $primay-color !important; /* Selected tab text color */
+  border-bottom: 2px solid $primay-color !important; /* Border color for selected tab */
+}
+
+/* Optional: Add hover effect */
+.custom-tab-group .mat-tab-label:hover {
+  opacity: 0.8;
+}

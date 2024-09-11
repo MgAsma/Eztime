@@ -180,3 +180,15 @@ html{
  i{
     font-size: 26px;
  }
+ mat-form-field{
+    border: 0 !important;
+    width: 100%;
+    margin-top: 15px;
+    height: 45px;
+    // margin-bottom: 20px !important;
+}
+.date-picker{
+    .mat-form-field-flex{
+        height: 55px !important;
+    }
+}

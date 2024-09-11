@@ -153,7 +153,8 @@ currentIndex: any;
     this.getOrgDetails(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`)
   }  
   onTableSizeChange(event:any): void {
-    this.tableSize = Number(event.target.value);
+    // this.tableSize = Number(event.target.value);
+    if(event){
     this.count = 0
     // Calculate new page number
     const calculatedPageNo = this.count / this.tableSize
@@ -162,6 +163,7 @@ currentIndex: any;
       this.page = 1
     }
     this.getOrgDetails(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`)
+    }
   } 
   delete(id:any){
     this.api.delete(`${environment.live_url}/${environment.organization}/${id}`).subscribe(async(data:any)=>{

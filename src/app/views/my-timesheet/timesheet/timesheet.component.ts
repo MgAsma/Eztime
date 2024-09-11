@@ -31,8 +31,11 @@ export class TimesheetComponent implements OnInit {
   p_FromDate= '2023-03-03';
   p_ToDate= '2023-03-30';
   totalCount: any;
+  term:string;
+  showSearch=false;
   @ViewChild('tabset') tabset: TabsetComponent;
   orgId: any;
+  tableSize: any = 10;
   constructor(
     private _fb:FormBuilder,
     private api:ApiserviceService,
@@ -59,7 +62,7 @@ export class TimesheetComponent implements OnInit {
       status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
       user_id:this.userId,
       page_number:this.page,
-      data_per_page:10,
+      data_per_page:this.tableSize,
       search_key:'',
       organization_id:this.orgId
      }
@@ -71,7 +74,7 @@ export class TimesheetComponent implements OnInit {
   }
  initForm(){
   this.timeSheetForm = this._fb.group({
-    from_date:[ '',Validators.required],
+    from_date:['',Validators.required],
     to_date:['',Validators.required]
   })
  }
@@ -124,6 +127,7 @@ export class TimesheetComponent implements OnInit {
     if(event){
       this.cdref.detectChanges();
       let c_params={}
+      this.tableSize = event.tableSize
       if(this.changes){
         c_params={
           module:"TIMESHEET",
@@ -168,14 +172,13 @@ export class TimesheetComponent implements OnInit {
           method:"VIEW",
           status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
           user_id:this.userId,
-          page_number:event.page,
-          data_per_page:event.tableSize,
-          search_key:event.search_key,
+          page_number:this.page,
+          data_per_page:this.tableSize,
+          search_key:this.term,
           organization_id:this.orgId,
           timesheets_to_date:this.datepipe.transform(this.toDate,'dd/MM/yyyy'),
           timesheets_from_date:this.datepipe.transform(this.fromDate,'dd/MM/yyyy') 
          }
-         this.getAllTimeSheet(c_params);
       }
     else{
       c_params={
@@ -185,63 +188,66 @@ export class TimesheetComponent implements OnInit {
         status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
         user_id:this.userId,
         organization_id:this.orgId,
-        page_number:event.page,
-        data_per_page:event.tableSize,
-        search_key:event.search_key,
+        page_number:this.page,
+        data_per_page:this.tableSize,
+        search_key:this.term,
        }
-       this.getByStatus(c_params)
+       
     }
-    
+    this.allDetails = []
+    this.getByStatus(c_params)
     }
     
   }
-   submit(){
-      //console.log(this.timeSheetForm.value.from_date)
-      let c_params = {}
-      this.month    = this.timeSheetForm.value.to_date
-      if(this.changes){
-        c_params={
-          module:"TIMESHEET",
-          menu:"PEOPLE_TIMESHEET",
-          method:"VIEW",
-          status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-          user_id:this.userId,
-          organization_id:this.orgId,
-          page_number:this.page,
-          data_per_page:10,
-          search_key:'',
-          timesheets_to_date:this.datepipe.transform(this.toDate,'dd/MM/yyyy') ,
-          timesheets_from_date:this.datepipe.transform(this.fromDate,'dd/MM/yyyy') 
-         }
-         if(this.timeSheetForm.invalid){
-          this.timeSheetForm.markAllAsTouched()
-          //this.api.showWarning('Please enter from date and to date')
-        }
-        else{
-          this.allDetails = []
-          this.getAllTimeSheet(c_params)
-          this.tabset.tabs[0].active = true;
-        }
+  async submit() {
+    let c_params = {};
+    this.month = this.timeSheetForm.value.to_date;
+   
+    // Check if form is valid before proceeding
+    if (this.timeSheetForm.invalid) {
+      this.timeSheetForm.markAllAsTouched(); // Show validation only if form is invalid
+      return; // Exit the function early if invalid
+    }else{
+      // If changes exist and form is valid
+      if (this.changes) {
+        c_params = {
+          module: "TIMESHEET",
+          menu: "PEOPLE_TIMESHEET",
+          method: "VIEW",
+          status: this.selectedTab ? this.selectedTab : 'YET_TO_APPROVED',
+          user_id: this.userId,
+          organization_id: this.orgId,
+          page_number: this.page,
+          data_per_page: this.tableSize,
+          search_key: '',
+          timesheets_to_date: this.datepipe.transform(this.toDate, 'dd/MM/yyyy'),
+          timesheets_from_date: this.datepipe.transform(this.fromDate, 'dd/MM/yyyy')
+        };
+
+        this.allDetails = [];
+        this.getAllTimeSheet(c_params);  // Fetch the data
+        this.timeSheetForm = await this._fb.group({
+          from_date:[''],
+          to_date:['']
+        })
       }
-      else{
-        if(this.timeSheetForm.invalid){
-          this.timeSheetForm.markAllAsTouched()
-          //this.api.showWarning('Please enter from date and to date')
-        }
-      }
-    
     }
+  
+   
+  }
+  
     tabState(data){
-      if(data.heading == 'Approved timesheets'){
+      console.log(data,"DATA")
+      if(data.tab.textLabel == 'Approved'){
         this.selectedTab = 'APPROVED'
       }
-      else if(data.heading == 'Yet to be approved' ){
+      else if(data.tab.textLabel == 'Pending' ){
         this.selectedTab = 'YET_TO_APPROVED' 
       }
-      else if(data.heading == 'Declined timesheets'){
+      else if(data.tab.textLabel == 'Declined'){
         this.selectedTab = 'DECLINED'
       }
-      else if(data.heading == 'Flagged timesheets'){
+      else if(data.tab.textLabel == 'Flagged timesheets'){
         this.selectedTab = 'FLAGGED'
       }
       else{
@@ -257,7 +263,7 @@ export class TimesheetComponent implements OnInit {
         user_id:this.userId,
         organization_id:this.orgId,
         page_number:this.page,
-        data_per_page:10,
+        data_per_page:this.tableSize,
         search_key:'',
         timesheets_to_date:this.datepipe.transform(this.toDate,'dd/MM/yyyy') ,
         timesheets_from_date:this.datepipe.transform(this.fromDate,'dd/MM/yyyy') 
@@ -275,13 +281,27 @@ export class TimesheetComponent implements OnInit {
         user_id:this.userId,
         organization_id:this.orgId,
         page_number:this.page,
-        data_per_page:10,
+        data_per_page:this.tableSize,
         search_key:'',
       }
       this.getByStatus(c_params)
     }
    
     }
-  
+    refershPage(){
+      let params={
+        module:"TIMESHEET",
+        menu:"PEOPLE_TIMESHEET",
+        method:"VIEW",
+        status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
+        user_id:this.userId,
+        page_number:this.page,
+        data_per_page:this.tableSize,
+        search_key:'',
+        organization_id:this.orgId
+       }
+       
+        this.getByStatus(params)
+    }
 
 }

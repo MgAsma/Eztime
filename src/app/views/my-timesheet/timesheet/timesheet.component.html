@@ -1,4 +1,4 @@
-<div class="container-fluid s-padd ">
+<div class="container-fluid s-padd">
 
     <div class="container-middle p-20">
         <div class="row">
@@ -119,51 +119,93 @@
 
 
                 <div class="animated fadeIn">
+                    <div class="row p-r webView">
+                        
+                        <div class="col-sm-4 search-div" >
+                            <button mat-icon-button  class="close-icon" style="top:0" ngbTooltip="Search" *ngIf="!showSearch" (click)="showSearch=!showSearch">
+                                <i class="bi bi-search"></i>
+                            </button>
+                           
+                            <input type="search" *ngIf="showSearch" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+                              placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
+                            <i class="bi bi-search" id="search-icon-tab" *ngIf="showSearch"></i>
+                          
+                            <i class="bi bi-x-circle close-icon" ngbTooltip="Close" *ngIf="showSearch" (click)="showSearch=!showSearch"></i>
+                        </div>
+                          
+                      </div>
+                     
                     <div class="row">
                         <div class="col-md-12 mb-4">
-                            <mat-tab-group (selectedTabChange)="tabState($event)">
-
+                            <mat-tab-group class="custom-tab-group" (selectedTabChange)="tabState($event)">
+                               
                                 <!-- Pending Tab -->
                                 <mat-tab label="Pending">
-                                    <ng-container *ngIf="allDetails[0]?.approved_state === 'YET_TO_APPROVED'">
+                                   
+                                    <ng-container *ngIf="allDetails[0]?.approved_state === 'YET_TO_APPROVED';else noRecords">
+                                        <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
+                                            <div class="col-sm-12 col-md-6 search-div">
+                                                <input type="search" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+                                                  placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
+                                                <i class="bi bi-search" id="search-icon-tab" ></i>
+                                              </div>
+                                           
+                                          </div>
                                         <app-yet-to-approve [data]="allDetails" [totalCount]="totalCount"
                                             (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)">
                                         </app-yet-to-approve>
                                     </ng-container>
-                                    <ng-container *ngIf="allDetails[0]?.approved_state !== 'YET_TO_APPROVED'">
-                                        <div class="text-center text-muted no-data py-2">No records found</div>
-                                    </ng-container>
+                                 
                                 </mat-tab>
 
                                 <!-- Approved Tab -->
                                 <mat-tab label="Approved">
-                                    <ng-container *ngIf="allDetails[0]?.approved_state === 'APPROVED'">
+                                    
+                                    <ng-container *ngIf="allDetails[0]?.approved_state === 'APPROVED';else noRecords">
+                                        <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
+                                            <div class="col-sm-12 col-md-6 search-div">
+                                                <input type="search" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+                                                  placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
+                                                <i class="bi bi-search" id="search-icon-tab" ></i>
+                                              </div>
+                                            </div>
                                         <app-approved [data]="allDetails" [totalCount]="totalCount"
                                             (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)">
                                         </app-approved>
                                     </ng-container>
-                                    <ng-container *ngIf="allDetails[0]?.approved_state !== 'APPROVED'">
-                                        <div class="text-center text-muted no-data py-2">No records found</div>
-                                    </ng-container>
+                                   
                                 </mat-tab>
 
                                 <!-- Declined Tab -->
                                 <mat-tab label="Declined">
-                                    <ng-container *ngIf="allDetails[0]?.approved_state === 'DECLINED'">
+                                    
+                                    <ng-container *ngIf="allDetails[0]?.approved_state === 'DECLINED';else noRecords">
+                                        <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
+                                            <div class="col-sm-12 col-md-6 search-div">
+                                                <input type="search" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+                                                  placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
+                                                <i class="bi bi-search" id="search-icon-tab" ></i>
+                                              </div>
+                                            </div>
                                         <app-decline [data]="allDetails" [totalCount]="totalCount"
                                             (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)">
                                         </app-decline>
                                     </ng-container>
-                                    <ng-container *ngIf="allDetails[0]?.approved_state !== 'DECLINED'">
-                                        <div class="text-center text-muted no-data py-2">No records found</div>
-                                    </ng-container>
+                                 
                                 </mat-tab>
 
                             </mat-tab-group>
+                             <!-- No Records Template -->
+                            <ng-template #noRecords>
+                                <div class="no-records text-center">
+                                No records found !!
+                                    <button mat-button (click)="refershPage()" class="proceedbtn" style="width: fit-content;padding:0 10px;">Refresh <i class="fa fa-refresh" aria-hidden="true"></i></button>
+                                </div>
+                            </ng-template>
                         </div>
                     </div>
                 </div>
-
+               
             </div>
         </div>
     </div>

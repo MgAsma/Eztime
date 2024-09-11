@@ -147,7 +147,9 @@ export class ApprovedComponent implements OnInit {
     this.buttonClick.emit(tableData);
   }  
   onTableSizeChange(event:any): void {
-    this.tableSize = Number(event.target.value);
+    if(event){
+    
+      this.tableSize = this.tableSize
     this.count = 0
     // Calculate new page number
     const calculatedPageNo = this.count / this.tableSize
@@ -161,6 +163,7 @@ export class ApprovedComponent implements OnInit {
       search_key:this.term
      }
     this.buttonClick.emit(tableData);
+    }
   } 
   statusExecution(item,status){
       let data = {
