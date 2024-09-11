@@ -121,7 +121,6 @@ export class YetApproveComponent implements OnInit {
       page: this.page,
       tableSize: this.tableSize
     }
-    console.log(tableData);
     this.buttonClick.emit(tableData)
   }
   onTableDataChange(event: any) {
@@ -134,7 +133,7 @@ export class YetApproveComponent implements OnInit {
     this.buttonClick.emit(tableData)
   }
   onTableSizeChange(event: any): void {
-    this.tableSize = Number(event.target.value);
+    if(event){
     this.count = 0
     const calculatedPageNo = this.count / this.tableSize
     if (calculatedPageNo < this.page) {
@@ -145,7 +144,9 @@ export class YetApproveComponent implements OnInit {
       page: this.page,
       tableSize: this.tableSize
     }
+    alert(tableData.tableSize)
     this.buttonClick.emit(tableData)
+  }
   }
   open(content) {
     if (content) {
@@ -182,7 +183,7 @@ export class YetApproveComponent implements OnInit {
         centered: true
       });
       modelRef.componentInstance.title = `Are you sure do you want to ${selectedStatus}`;
-      modelRef.componentInstance.message = `${confirmText} confirmation`;
+      modelRef.componentInstance.message = `${confirmText}`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {
           this.updateStatus(content, status);

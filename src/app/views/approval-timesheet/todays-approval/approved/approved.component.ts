@@ -152,7 +152,7 @@ export class ApprovedComponent implements OnInit {
     this.buttonClick.emit(tableData)
   }
   onTableSizeChange(event: any): void {
-    this.tableSize = Number(event.target.value);
+   if(event){
     this.count = 0
     const calculatedPageNo = this.count / this.tableSize
     if (calculatedPageNo < this.page) {
@@ -164,6 +164,7 @@ export class ApprovedComponent implements OnInit {
       tableSize: this.tableSize
     }
     this.buttonClick.emit(tableData)
+  }
   }
   openDialogue(content, status) {
     if (content) {
