@@ -30,7 +30,7 @@ export class CreateClientComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
-    this.getIndustry();
+    // this.getIndustry();
     this.initForm();
   }
   goBack(event)
@@ -41,16 +41,17 @@ export class CreateClientComponent implements OnInit {
   }
   initForm(){
     this.clientForm= this.builder.group({
-      c_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      c_contact_person:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      c_code:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      c_address:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      // c_satus:['',Validators.required],
-      // toi_ref_id:['',[Validators.required]],
-      c_type:['',[Validators.required]],
+      c_name:['',[Validators.required]],
+      c_contact_person:['',[Validators.required]],
+      c_type:[true,[Validators.required]],
+      c_contact_person_address:['',[Validators.required,Validators.pattern(/^\S.*$/)]],
       c_contact_person_email_id:['',[Validators.required,Validators.email]],
       c_contact_person_phone_no:['',[Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       org_ref_id:this.orgId
+      // c_code:['',[Validators.pattern(/^\S.*$/),Validators.required]],
+      // c_address:['',[Validators.pattern(/^\S.*$/),Validators.required]],
+      // c_satus:['',Validators.required],
+      // toi_ref_id:['',[Validators.required]],
     })
   }
   get f(){
@@ -75,14 +76,16 @@ export class CreateClientComponent implements OnInit {
   addClient(){
     if(this.clientForm.invalid){
       this.api.showError('Invalid!');
+      console.log(this.clientForm.value)
       this.clientForm.markAllAsTouched();
     }
     else{
+      console.log(this.clientForm.value)
       this.api.addClientDetails(this.clientForm.value).subscribe(response=>{
         if(response){
           this.api.showSuccess('Client added successfully!!');
-          this.clientForm.reset()
-          this.initForm()
+          // this.clientForm.reset();
+          this.ngOnInit();
         }
         else{
           this.api.showError('Error!')
@@ -94,4 +97,20 @@ export class CreateClientComponent implements OnInit {
     }
   }
 
+
+  preventSpace(event: KeyboardEvent): void {
+    if (event.key === ' ') {
+      event.preventDefault();
+    }
+  }
+
+  validateKeyPress(event: KeyboardEvent) {
+    // Get the key code of the pressed key
+    const keyCode = event.which || event.keyCode;
+
+    // Allow only digits (0-9), backspace, and arrow keys
+    if ((keyCode < 48 || keyCode > 57) && keyCode !== 8 && keyCode !== 37 && keyCode !== 39) {
+      event.preventDefault(); // Prevent the default action (i.e., entering the character)
+    }
+  }
 }

@@ -15,7 +15,20 @@
         </div>
         
     </div> -->
-        <div class="row p-20">
+    <div class="row pb-3">
+        <div class="col-sm-4 search-div">
+          <input type="search" (input)="filterSearch()" class="form-control p-2 sizeinput" [(ngModel)]="term"
+            placeholder="Search by client name" aria-describedby="emailHelp" autocomplete="off">
+          <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>
+        </div>
+        <div class="col-sm"></div>
+        <div class="col-md-3 col-lg-3 p-1 text-end create-buttons">
+          <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/client/create" type="submit">
+            <mat-icon>add</mat-icon>Create Clients</button>
+    
+        </div>
+      </div>    
+    <!-- <div class="row p-20">
             
           
             <div class="col-sm-4 search-div px-0">
@@ -29,7 +42,7 @@
                 >{{size}}</button>
                 </div>
                         </div>
-        </div>
+        </div> -->
         <div class="bg">
         <div class="row">
             <div class="col px-0">
@@ -38,7 +51,7 @@
                         <tr>
                           <th scope="col">S.No</th>
                           <th scope="col">Client Name <i  *ngIf="!arrow" (click)="sort('asc','c_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','c_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">Code <i  *ngIf="!arrow" (click)="sort('asc','c_code')" class="bi bi-arrow-up"></i><i (click)="sort('desc','c_code')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+                          <!-- <th scope="col">Code <i  *ngIf="!arrow" (click)="sort('asc','c_code')" class="bi bi-arrow-up"></i><i (click)="sort('desc','c_code')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
                           <!-- <th scope="col">Industry <i  *ngIf="!arrow" (click)="sort('asc','toi_ref_id')" class="bi bi-arrow-up"></i><i (click)="sort('desc','toi_ref_id')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
                           <!-- <th scope="col">Type <i  *ngIf="!arrow" (click)="sort('asc','c_type')" class="bi bi-arrow-up"></i><i (click)="sort('desc','c_type')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
                           <th scope="col">Contact Person <i  *ngIf="!arrow" (click)="sort('asc','c_contact_person')" class="bi bi-arrow-up"></i><i (click)="sort('desc','c_contact_person')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
@@ -56,7 +69,7 @@
                           }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
                             <td>{{getContinuousIndex(i)}}</td>
                             <td>{{item.c_name|titlecase}}</td>
-                            <td>{{item.c_code|titlecase}}</td>
+                            <!-- <td>{{item.c_code|titlecase}}</td> -->
                             <!-- <td>{{item.toi_ref_id}}</td> -->
                             <!-- <td>{{item.c_type}}</td> -->
                             <td>{{item.c_contact_person|titlecase}}</td>
@@ -76,9 +89,9 @@
                                <button style="border: none;background-color: inherit;" (click)="open(item.id)"><i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i></button> -->
                             </td>
                         </tr>
-                        <tr *ngIf="result.length === 0" class="nodata">
-                            <td> No records found!</td>  
-                        </tr>
+                        <div *ngIf="result.length === 0" class="nodata">
+                            <p style="width: 100%;"> No records found! </p>
+                          </div>
                         </ng-container>
                       </tbody>
                   </table>
@@ -122,7 +135,7 @@
     <div class="bg">
         <div class="row">
             <ng-container *ngIf="(allClientList) as result"> 
-            <div class="col-sm-12 col-md-6 c-m" *ngFor='let item of result | paginate : {
+            <div class="col-sm-12 col-md-6 c-m main-col" *ngFor='let item of result | paginate : {
                 itemsPerPage: tableSize,
                 currentPage: page,
                 totalItems: count

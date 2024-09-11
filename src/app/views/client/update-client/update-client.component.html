@@ -1,340 +1,251 @@
-<div class="container-fluid webView">
-    <!-- <div class="row">
-        <div class="col-sm-6">
-            <h1>Update client</h1>
-        </div>
-        <div class="col-sm"></div>
-        <div class="col-sm-3 text-end">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                 <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">Update client</li>
-                  
-                </ol>
-              </nav>
-        </div>
-        
-    </div> -->
-    <div class="generic-form bg mx-1">
+<div class="container-fluid webView p-20">
+    <div class="generic-form bg mx-2">
         <form [formGroup]='updateForm' (ngSubmit)='update()'>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row">
-                        <div class="col-sm">
-                            <h4>Client details</h4>
-                        </div>
+            <div class="row update-client">
+                <div class="col-12">
+                    <div class="py-3">
+                        <h5 class="py-1"><b>Client Details</b></h5>
+                        <!-- <p>Enter the below details!</p> -->
                     </div>
-            
-                    <!-- <div class="row">
-                        <div class="col-sm">
-                            <p>Industry/sector <span >*</span></p> 
-                            <select class="form-select" [(value)]='industry' aria-label="Default select example" formControlName="toi_ref_id">
-                                <option value="" selected disabled>Select industry/sector </option>
-                                <option *ngFor="let item of allIndustry" [value]="item.id">
-                                    {{item.toi_title}}
-                                </option>
-                              </select>
-                              <div *ngIf="f['toi_ref_id'].touched && f['toi_ref_id'].invalid" >
-                                <div *ngIf="f['toi_ref_id'].errors && f['toi_ref_id'].errors['required'] " ><p class="error-msg">Industry/sector is required</p></div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Enter Client Name <b class="r-star">*</b></mat-label>
+                                <input matInput placeholder="Enter client name" formControlName="c_name"
+                                    autocomplete="off" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['c_name']?.touched && f['c_name']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['c_name'].errors && f['c_name'].errors['required'] ">Client name is
+                                    required</span>
+                                <span class="text-errors"
+                                    *ngIf="f['c_name'].invalid && f['c_name'].hasError('pattern')">
+                                    Please remove extra space.
+                                </span>
                             </div>
                         </div>
-                    </div> -->
-            
-                    
-            <div class="row">
-                <div class="col-sm">
-                    <p>Client name <span >*</span></p>
-                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_name" placeholder="Enter client name" aria-describedby="emailHelp"  autocomplete="off">
-                    <div *ngIf="f['c_name'].touched && f['c_name'].invalid" >
-                        <div *ngIf="f['c_name'].errors && f['c_name'].errors['required'] " ><p class="error-msg">Client name is required</p></div>
-                    </div>
-                    <div *ngIf="f['c_name'].invalid && f['c_name'].hasError('pattern')" >
-                        <p class="error-msg">Cannot start with a space.</p>
-                    </div> 
-                </div>
-            </div>
-      
-            <div class="row">
-                <div class="col-sm">
-                    <p>Client code <span >*</span></p>
-                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_code" placeholder="Enter client code" aria-describedby="emailHelp"  autocomplete="off">
-                    <div *ngIf="f['c_code'].touched && f['c_code'].invalid" >
-                        <div *ngIf="f['c_code'].errors && f['c_code'].errors['required'] " ><p class="error-msg">Client code is required</p></div>
-                    </div>
-                    <div *ngIf="f['c_code'].invalid && f['c_code'].hasError('pattern')" >
-                        <p class="error-msg">Cannot start with a space.</p>
-                    </div> 
-                </div>       
-            </div>
-   
-            <div class="row">
-                <div class="col-sm">
-                    <p>Address<span >*</span></p>
-                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_address" placeholder="Enter address" aria-describedby="emailHelp"  autocomplete="off">
-                    <div *ngIf="f['c_address'].touched && f['c_address'].invalid" >
-                        <div *ngIf="f['c_address'].errors && f['c_address'].errors['required'] " ><p class="error-msg">Address is required</p></div>
-                    </div>
-                    <div *ngIf="f['c_address'].invalid && f['c_address'].hasError('pattern')" >
-                        <p class="error-msg">Cannot start with a space.</p>
-                    </div> 
-                </div>         
-            </div>
-     
-            <div class="row">
-                <div class="col-sm">
-                    <p>Billable client <span >*</span></p>
-                    <select class="form-select" aria-label="Default select example" formControlName="c_type">
-                       <option value="" selected disabled>Select billable client</option>
-                        <option value="1">Yes</option>
-                        <option value="2">NO</option>
-                      </select>
-                      <div *ngIf="f['c_type'].touched && f['c_type'].invalid" >
-                        <div *ngIf="f['c_type'].errors && f['c_type'].errors['required']" ><p class="error-msg">Billable client is required</p></div>
-                    </div>
-                </div>
-                         
-            </div>
-            <!-- <div class="row">
-                <div class="col-sm">
-                    <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
-                </div>
-            
-                </div> -->
-                </div>
-                <div class="col-sm-6">
-                    <div class="row">
-                        <div class="col-sm">
-                            <h4>Contact person details</h4>
+                        <div class="py-3">
+                            <h5 class="py-1"><b>Contact Details</b></h5>
                         </div>
-                    </div>
-          
-                    <div class="row">
-                        <div class="col-sm">
-                            <p>Contact person name <span >*</span></p> 
-                            <input type="text" class="form-control p-3 sizeinput" formControlName="c_contact_person" placeholder="Enter contact person name" aria-describedby="emailHelp"  autocomplete="off">
-                            <div *ngIf="f['c_contact_person'].touched && f['c_contact_person'].invalid" >
-                                <div *ngIf="f['c_contact_person'].errors && f['c_contact_person'].errors['required']" ><p class="error-msg">Contact person name is required</p></div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Contact Person Name <b class="r-star">*</b></mat-label>
+                                <input matInput placeholder="Enter contact person name"
+                                    formControlName="c_contact_person" autocomplete="off"
+                                    pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['c_contact_person']?.touched && f['c_contact_person']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person'].errors && f['c_contact_person'].errors['required'] ">Contact
+                                    person name is
+                                    required</span>
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person'].invalid && f['c_contact_person'].hasError('pattern')">
+                                    Please remove extra space.
+                                </span>
                             </div>
-                            <div *ngIf="f['c_contact_person'].invalid && f['c_contact_person'].hasError('pattern')" >
-                                <p class="error-msg">Cannot start with a space.</p>
-                            </div> 
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Email Address<b class="r-star">*</b></mat-label>
+                                <input matInput formControlName='c_contact_person_email_id' placeholder="Email Address"
+                                    (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off"
+                                    id="emailId">
+                            </mat-form-field>
+                            <div class="px-2"
+                                *ngIf="f['c_contact_person_email_id'].touched && f['c_contact_person_email_id'].invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person_email_id'].errors && f['c_contact_person_email_id'].errors['required']">Email
+                                    Id is required.</span>
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person_email_id'].errors && f['c_contact_person_email_id'].errors['email']">Email
+                                    Id is invalid.</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Phone No <b class="r-star">*</b></mat-label>
+                                <input matInput type="number" placeholder="Enter phone no"
+                                    formControlName="c_contact_person_phone_no" autocomplete="off" maxlength="10"
+                                    pattern="\d{10}" onKeyPress="if(this.value.length==10) return false;"
+                                    (keypress)="validateKeyPress($event)">
+                            </mat-form-field>
+                            <div class="px-2"
+                                *ngIf="f['c_contact_person_phone_no']?.touched && f['c_contact_person_phone_no']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person_phone_no'].errors?.['pattern']">Please enter 10 digits
+                                    phone number.</span>
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person_phone_no'].errors?.['required']">Phone number is
+                                    required.</span>
+                            </div>
                         </div>
                     </div>
-                  
-                    
-            <div class="row">
-                <div class="col-sm">
-                    <p>Email Id <span >*</span></p>
-                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_contact_person_email_id" placeholder="Enter email Id " aria-describedby="emailHelp"  autocomplete="off">
-                    <div *ngIf="f['c_contact_person_email_id'].touched && f['c_contact_person_email_id'].invalid" >
-                        <div *ngIf="f['c_contact_person_email_id'].errors['required']" ><p class="error-msg">Email Id is required</p></div>
-                        <div *ngIf="f['c_contact_person_email_id'].errors['email'] " ><p class="error-msg">Email Id is invalid</p></div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Address</mat-label>
+                                <textarea matInput placeholder="Enter address"
+                                    formControlName="c_contact_person_address" autocomplete="off"></textarea>
+                            </mat-form-field>
+                            <div class="px-2"
+                                *ngIf="f['c_contact_person_address']?.touched && f['c_contact_person_address']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person_address'].invalid && f['c_contact_person_address'].hasError('pattern')">Address
+                                    cannot
+                                    start with a
+                                    space.</span>
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person_address'].errors?.['required']">Address is
+                                    required.</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl-2 billable-checkbox">
+                            <input class="checkbox" type="checkbox" formControlName="c_type">
+                            <label for="" class="ps-3 fw-semibold">Billable?</label>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div>
+                                <button type="submit" mat-raised-button class="proceedbtn"
+                                    color="primary">Submit</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-        
-            <div class="row">
-                <div class="col-sm">
-                    <p>Phone number  <span >*</span></p>
-                    <input type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control p-3 sizeinput" formControlName="c_contact_person_phone_no" placeholder="Enter phone number" aria-describedby="emailHelp"  autocomplete="off">
-                    <div *ngIf="f['c_contact_person_phone_no'].touched && f['c_contact_person_phone_no'].invalid" >
-                        <div *ngIf="f['c_contact_person_phone_no'].errors && f['c_contact_person_phone_no'].errors['required'] || f['c_contact_person_phone_no'].errors['pattern'] " ><p class="error-msg">Phone number is required</p></div>
-                    </div>
-                </div>           
-            </div>
-            <!-- <div class="row">
-                <div class="col-sm">
-                    <p>Status <span >*</span></p>
-                    <select formControlName="c_satus" class="form-select p-3 sizeinput">
-                        <option value="" selected disabled>Select An Option</option>
-                        <option value="Active" >Active</option>
-                        <option value="In Active">In Active</option>
-                        </select>
-                    <div *ngIf="f['c_satus'].touched && f['c_satus'].invalid" >
-                        <div *ngIf="f['c_satus'].errors && f['c_satus'].errors['required'] " ><p class="error-msg">Status is required</p></div>
-                    </div>
-                </div>           
-            </div> -->
-            
-            <div class="row">
-                <div class="col-sm-8"></div>
-                <div class="col-sm-4">
-                    <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Update</button>
-                </div>
-            
-                </div>
-            </div>
-    
             </div>
         </form>
-       
+
     </div>
-   
+
 </div>
+
 
 <div class="container-fluid mobileView">
     <div class="row mx-1 my-2">
-        <div class="col-sm-6">
-            <h1><i  class="bi bi-arrow-left" (click)="goBack($event)
-  
-  "></i>  Update client</h1>
+        <div class="col-sm">
+            <h1><i class="bi bi-arrow-left" (click)="goBack($event)"></i> Add client</h1>
         </div>
     </div>
-    <div class="generic-form bg mx-1">
+    <div class="generic-form bg mx-2">
         <form [formGroup]='updateForm' (ngSubmit)='update()'>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row">
-                        <div class="col-sm">
-                            <!-- <h4>Client details</h4> -->
-                        </div>
+            <div class="row mx-0 gx-0 update-client">
+                <div class="col-12 ">
+                    <div class="py-3">
+                        <h5 class="py-1"><b>Client Details</b></h5>
+                        <!-- <p>Enter the below details!</p> -->
                     </div>
-            
-                    <!-- <div class="row">
-                        <div class="col-sm">
-                            <p>Industry/sector <span >*</span></p> 
-                            <select class="form-select" [(value)]='industry' aria-label="Default select example" formControlName="toi_ref_id">
-                                <option value="" selected disabled>Select industry/sector </option>
-                                <option *ngFor="let item of allIndustry" [value]="item.id">
-                                    {{item.toi_title}}
-                                </option>
-                              </select>
-                              <div *ngIf="f['toi_ref_id'].touched && f['toi_ref_id'].invalid" >
-                                <div *ngIf="f['toi_ref_id'].errors && f['toi_ref_id'].errors['required'] " ><p class="error-msg">Industry/sector is required</p></div>
+                    <div class="row mx-0 gx-0">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Enter Client Name <b class="r-star">*</b></mat-label>
+                                <input matInput placeholder="Enter client name" formControlName="c_name"
+                                    autocomplete="off" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['c_name']?.touched && f['c_name']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['c_name'].errors && f['c_name'].errors['required'] ">Client name is
+                                    required</span>
+                                <span class="text-errors"
+                                    *ngIf="f['c_name'].invalid && f['c_name'].hasError('pattern')">
+                                    Please remove extra space.
+                                </span>
                             </div>
                         </div>
-                    </div> -->
-            
-                    
-            <div class="row">
-                <div class="col-sm">
-                    <p>Client name <span >*</span></p>
-                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_name" placeholder="Enter client name" aria-describedby="emailHelp"  autocomplete="off">
-                    <div *ngIf="f['c_name'].touched && f['c_name'].invalid" >
-                        <div *ngIf="f['c_name'].errors && f['c_name'].errors['required'] " ><p class="error-msg">Client name is required</p></div>
-                    </div>
-                    <div *ngIf="f['c_name'].invalid && f['c_name'].hasError('pattern')" >
-                        <p class="error-msg">Cannot start with a space.</p>
-                    </div> 
-                </div>
-            </div>
-      
-            <div class="row">
-                <div class="col-sm">
-                    <p>Client code <span >*</span></p>
-                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_code" placeholder="Enter client code" aria-describedby="emailHelp"  autocomplete="off">
-                    <div *ngIf="f['c_code'].touched && f['c_code'].invalid" >
-                        <div *ngIf="f['c_code'].errors && f['c_code'].errors['required'] " ><p class="error-msg">Client code is required</p></div>
-                    </div>
-                    <div *ngIf="f['c_code'].invalid && f['c_code'].hasError('pattern')" >
-                        <p class="error-msg">Cannot start with a space.</p>
-                    </div> 
-                </div>       
-            </div>
-   
-            <div class="row">
-                <div class="col-sm">
-                    <p>Address<span >*</span></p>
-                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_address" placeholder="Enter address" aria-describedby="emailHelp"  autocomplete="off">
-                    <div *ngIf="f['c_address'].touched && f['c_address'].invalid" >
-                        <div *ngIf="f['c_address'].errors && f['c_address'].errors['required'] " ><p class="error-msg">Address is required</p></div>
-                    </div>
-                    <div *ngIf="f['c_address'].invalid && f['c_address'].hasError('pattern')" >
-                        <p class="error-msg">Cannot start with a space.</p>
-                    </div> 
-                </div>         
-            </div>
-     
-            <div class="row">
-                <div class="col-sm">
-                    <p>Billable client <span >*</span></p>
-                    <select class="form-select" aria-label="Default select example" formControlName="c_type">
-                       <option value="" selected disabled>Select billable client</option>
-                        <option value="1">Yes</option>
-                        <option value="2">NO</option>
-                      </select>
-                      <div *ngIf="f['c_type'].touched && f['c_type'].invalid" >
-                        <div *ngIf="f['c_type'].errors && f['c_type'].errors['required']" ><p class="error-msg">Billable client is required</p></div>
-                    </div>
-                </div>
-                         
-            </div>
-            <!-- <div class="row">
-                <div class="col-sm">
-                    <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
-                </div>
-            
-                </div> -->
-                </div>
-                <div class="col-sm-6">
-                    <div class="row">
-                        <div class="col-sm">
-                            <h4>Contact person details</h4>
+                        <div class="py-3">
+                            <h5 class="py-1"><b>Contact Details</b></h5>
                         </div>
-                    </div>
-          
-                    <div class="row">
-                        <div class="col-sm">
-                            <p>Contact person name <span >*</span></p> 
-                            <input type="text" class="form-control p-3 sizeinput" formControlName="c_contact_person" placeholder="Enter contact person name" aria-describedby="emailHelp"  autocomplete="off">
-                            <div *ngIf="f['c_contact_person'].touched && f['c_contact_person'].invalid" >
-                                <div *ngIf="f['c_contact_person'].errors && f['c_contact_person'].errors['required']" ><p class="error-msg">Contact person name is required</p></div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Contact Person Name <b class="r-star">*</b></mat-label>
+                                <input matInput placeholder="Enter contact person name"
+                                    formControlName="c_contact_person" autocomplete="off"
+                                    pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['c_contact_person']?.touched && f['c_contact_person']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person'].errors && f['c_contact_person'].errors['required'] ">Contact
+                                    person name is
+                                    required</span>
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person'].invalid && f['c_contact_person'].hasError('pattern')">
+                                    Please remove extra space.
+                                </span>
                             </div>
-                            <div *ngIf="f['c_contact_person'].invalid && f['c_contact_person'].hasError('pattern')" >
-                                <p class="error-msg">Cannot start with a space.</p>
-                            </div> 
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Email Address<b class="r-star">*</b></mat-label>
+                                <input matInput formControlName='c_contact_person_email_id' placeholder="Email Address"
+                                    (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off"
+                                    id="emailId">
+                            </mat-form-field>
+                            <div class="px-2"
+                                *ngIf="f['c_contact_person_email_id'].touched && f['c_contact_person_email_id'].invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person_email_id'].errors && f['c_contact_person_email_id'].errors['required']">Email
+                                    Id is required.</span>
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person_email_id'].errors && f['c_contact_person_email_id'].errors['email']">Email
+                                    Id is invalid.</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Phone No <b class="r-star">*</b></mat-label>
+                                <input matInput type="number" placeholder="Enter phone no"
+                                    formControlName="c_contact_person_phone_no" autocomplete="off" maxlength="10"
+                                    pattern="\d{10}" onKeyPress="if(this.value.length==10) return false;"
+                                    (keypress)="validateKeyPress($event)">
+                            </mat-form-field>
+                            <div class="px-2"
+                                *ngIf="f['c_contact_person_phone_no']?.touched && f['c_contact_person_phone_no']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person_phone_no'].errors?.['pattern']">Please enter 10 digits
+                                    phone number.</span>
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person_phone_no'].errors?.['required']">Phone number is
+                                    required.</span>
+                            </div>
                         </div>
                     </div>
-                  
-                    
-            <div class="row">
-                <div class="col-sm">
-                    <p>Email Id <span >*</span></p>
-                    <input type="text" class="form-control p-3 sizeinput" formControlName="c_contact_person_email_id" placeholder="Enter email Id " aria-describedby="emailHelp"  autocomplete="off">
-                    <div *ngIf="f['c_contact_person_email_id'].touched && f['c_contact_person_email_id'].invalid" >
-                        <div *ngIf="f['c_contact_person_email_id'].errors['required']" ><p class="error-msg">Email Id is required</p></div>
-                        <div *ngIf="f['c_contact_person_email_id'].errors['email'] " ><p class="error-msg">Email Id is invalid</p></div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6 mb-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Address</mat-label>
+                                <textarea matInput placeholder="Enter address"
+                                    formControlName="c_contact_person_address" autocomplete="off"></textarea>
+                            </mat-form-field>
+                            <div class="px-2"
+                                *ngIf="f['c_contact_person_address']?.touched && f['c_contact_person_address']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person_address'].invalid && f['c_contact_person_address'].hasError('pattern')">Address
+                                    cannot
+                                    start with a
+                                    space.</span>
+                                <span class="text-errors"
+                                    *ngIf="f['c_contact_person_address'].errors?.['required']">Address is
+                                    required.</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-2 billable-checkbox">
+                            <input class="checkbox" type="checkbox"  formControlName="c_type">
+                            <label for="" class="ps-3 fw-semibold">Billable?</label>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div>
+                                <button type="submit" mat-raised-button class="proceedbtn"
+                                    color="primary">Submit</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-        
-            <div class="row">
-                <div class="col-sm">
-                    <p>Phone number  <span >*</span></p>
-                    <input type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control p-3 sizeinput" formControlName="c_contact_person_phone_no" placeholder="Enter phone number" aria-describedby="emailHelp"  autocomplete="off">
-                    <div *ngIf="f['c_contact_person_phone_no'].touched && f['c_contact_person_phone_no'].invalid" >
-                        <div *ngIf="f['c_contact_person_phone_no'].errors && f['c_contact_person_phone_no'].errors['required'] || f['c_contact_person_phone_no'].errors['pattern'] " ><p class="error-msg">Phone number is required</p></div>
-                    </div>
-                </div>           
-            </div>
-            <!-- <div class="row">
-                <div class="col-sm">
-                    <p>Status <span >*</span></p>
-                    <select formControlName="c_satus" class="form-select p-3 sizeinput">
-                        <option value="" selected disabled>Select An Option</option>
-                        <option value="Active" >Active</option>
-                        <option value="In Active">In Active</option>
-                        </select>
-                    <div *ngIf="f['c_satus'].touched && f['c_satus'].invalid" >
-                        <div *ngIf="f['c_satus'].errors && f['c_satus'].errors['required'] " ><p class="error-msg">Status is required</p></div>
-                    </div>
-                </div>           
-            </div> -->
-            
-            <div class="row">
-                <div class="col-sm-8"></div>
-                <div class="col-sm-4">
-                    <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Update</button>
-                </div>
-            
-                </div>
-            </div>
-    
             </div>
         </form>
-       
+
     </div>
-   
+
 </div>
