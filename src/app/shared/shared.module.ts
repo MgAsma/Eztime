@@ -23,7 +23,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTabsModule } from '@angular/material/tabs';
-
+import {MatExpansionModule} from '@angular/material/expansion';
 @NgModule({
   declarations: [
     SortPipe,
@@ -51,7 +51,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatMenuModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatTabsModule
+    MatTabsModule,
+    MatExpansionModule
     
   ],
   exports:[
@@ -77,7 +78,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatMenuModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatTabsModule
+    MatTabsModule,
+    MatExpansionModule
    ],
   
 })

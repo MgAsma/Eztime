@@ -1,20 +1,11 @@
 
-// .bi-trash-fill{
-//   color: red;  
-//   // text-align: center;
-//  // background-color: #eaeaea;
-//   // border-radius: 50%;
-//   // padding: 4px 7px;
-//   cursor: pointer;
-// }
-
 .bi-pencil-square{
   color: black;
   font-size: 15px;
   padding: 4px 7px;
 }
 .generic-form{
-  padding-right: 3.8em;
+  padding-right:20px;
   width:100% !important;
   ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
     /* padding: 1em 0 1em 0; */
@@ -119,13 +110,13 @@
     align-items: center;
     justify-content: space-between;
     column-gap: 5px;
-    padding: 2px 2px;
+    padding: 6px 2px 0;
     // margin-bottom: 8px;
   
     .column {
       position: relative;
       flex: 1;
-      padding: 0 6px;
+      padding: 5px 6px 0 !important;
       display: flex;
       align-items: center;
       // justify-content: center;
@@ -137,10 +128,10 @@
       
       .error-text{
         position: absolute;
-        top:40px;
-        left:10px;
+        top: 3.2rem;
+        left: 10px;
         font-size: 11px;
-        color:red;
+        color: red;
       }
       
       ::ng-deep .mat-form-field-appearance-fill .mat-form-field-underline {
@@ -155,10 +146,7 @@
       ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
         padding: 0; 
     }
-    mat-form-field {
-      height: 35px;
-      transform: scale(0.5)
-    }
+     
   
       mat-slide-toggle {
         width: 100%;
@@ -203,6 +191,23 @@ app-timesheet{
   position: absolute;
   top: -39px;
   right: 0px;
+}
+
+}
+
+ 
+app-create-timesheet{
+  .date-picker{
+   .mat-form-field-infix {
+    padding: 0px !important; 
+    height: 55px !important;
+   }
+  }
+.mat-form-field .mat-icon-button {
+  position: absolute;
+    top: -2.5rem;
+    right: 0px;
+    padding: 0;
 }
 
 }

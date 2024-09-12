@@ -110,9 +110,7 @@ export class DeadlineCrossedComponent implements OnInit {
       if (res && res['result']['data'].length >= 1) {
         this.allDetails = res['result']['data']
         this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: 10 };
-      } else {
-        this.api.showWarning('No records found');
-      }
+      } 
     }, (error => {
       this.api.showError(error.error.error.message)
     }))
@@ -125,9 +123,7 @@ export class DeadlineCrossedComponent implements OnInit {
       if (res && res['result']['data'].length >= 1) {
         this.allDetails = res['result']['data']
         this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: 10 };
-      } else {
-        this.api.showWarning('No records found');
-      }
+      } 
     }, (error => {
       this.api.showError(error.error.error.message)
     }))

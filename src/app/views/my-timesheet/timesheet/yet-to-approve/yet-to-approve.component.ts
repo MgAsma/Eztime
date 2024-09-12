@@ -38,6 +38,7 @@ export class YetToApproveComponent implements OnInit {
     itemsPerPage: 10,
     currentPage: 1,
     totalItems: 0}
+   
   constructor(private builder:FormBuilder, private api:ApiserviceService,
     private modalService:NgbModal,private _timesheet:TimesheetService,private cdref: ChangeDetectorRef,
     private common_service:CommonServiceService) { }
@@ -219,7 +220,9 @@ onTableDataChange(event: any): void {
   this.buttonClick.emit(tableData);
 }
 onTableSizeChange(event:any): void {
-  this.tableSize = Number(event.target.value);
+  if(event){
+    
+  this.tableSize = this.tableSize
   this.count = 0
   // Calculate new page number
   const calculatedPageNo = this.count / this.tableSize
@@ -232,7 +235,9 @@ onTableSizeChange(event:any): void {
     tableSize:this.tableSize,
     search_key:this.term
    }
+   alert(tableData.tableSize)
   this.buttonClick.emit(tableData);
+  }
 } 
 getContinuousIndex(index: number):number {
   return (this.page-1)*this.tableSize+ index + 1;

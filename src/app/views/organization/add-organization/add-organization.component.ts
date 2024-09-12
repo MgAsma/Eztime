@@ -82,7 +82,7 @@ export class AddOrganizationComponent implements OnInit {
   }
   createAdminFormGroup(admin): FormGroup {
     return this._fb.group({
-      admin_name: [admin.admin_name, [Validators.required, Validators.pattern(/^[A-Za-z\s]*$/)]],
+      admin_name: [admin.admin_name, [Validators.required, Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/)]],
       admin_email: [admin.admin_email, [Validators.required, Validators.email]],
       admin_phone_number: [admin.admin_phone_number, [Validators.required,this.phoneNumberLengthValidator]],
       admin_status: [admin.admin_status],
@@ -110,12 +110,16 @@ export class AddOrganizationComponent implements OnInit {
     this.adminForm.markAllAsTouched()
     this.organizationForm.markAllAsTouched()
     this.api.showWarning("Please enter the mandatory fields")
+    return;
+  }else if((this.f['org_email']?.valid && this.f['org_email']?.value === this.adminForm?.value['admin_email'])){
+    this.adminForm.markAllAsTouched();
+    return;
   }else{
     const data = {
       admin_name:this.adminForm?.value['admin_name'],
       admin_email:this.adminForm?.value['admin_email'],
       admin_phone_number:this.adminForm?.value['admin_phone_number'],
-      admin_status:this.adminForm?.value['admin_status'] 
+      admin_status:this.adminForm?.value['admin_status'] === true ? 'Active' : 'Inactive',
     }
     this.adminList.push(data);
     this.adminFormArray.push(this.createAdminFormGroup(data));
@@ -145,21 +149,18 @@ export class AddOrganizationComponent implements OnInit {
  
   saveAdmin(index: number) {
     const adminForm = this.getAdminFormGroup(index);
-    
-    if (adminForm.invalid) {
-        // Mark all controls as touched to trigger validation messages
-        this.adminFormArray.markAllAsTouched()
-        adminForm.markAllAsTouched();
-        // this.api.showError('Invalid admin form')
-      
-        }else{
+        if (this.adminFormArray.invalid || adminForm.invalid) {
+          this.adminFormArray.markAllAsTouched()
+          adminForm.markAllAsTouched();
+        }
+        else{
           // If the form is valid, update the admin details
           this.adminList[index] = {
             ...this.adminList[index],
             admin_name: adminForm.value.admin_name,
             admin_email: adminForm.value.admin_email,
             admin_phone_number: adminForm.value.admin_phone_number,
-            admin_status: adminForm.value.admin_status 
+            admin_status: adminForm.value.admin_status === true ? 'Active' : 'Inactive',
           };
 
           // Show the success message

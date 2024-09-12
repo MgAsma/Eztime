@@ -1,80 +1,92 @@
-<div class="container-fluid webView">
-  <!-- <div class="row">
-        <div class="col-sm-6">
-          <h1>Todays approval timesheets</h1>
-            <h1>Todays Approval Timesheets: {{allDetails[0]?.created_date_time | date :'mediumDate'}}</h1>
-        </div>
-        <div class="col-sm"></div>
-        <div class="col-sm-4">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">
-                    Todays approval timesheets</li>           
-                </ol>
-              </nav>
-        </div>  
-    </div> -->
-  <div class="container-middle">
+<div class="container-fluid">
+  <div class="container-middle px-4">
+  
     <div class="row">
       <div class="col-sm-12">
-        <tabset>
-          <tab heading="Yet to approved" (selectTab)="tabState($event)">
-            <app-yet-approve *ngIf="allDetails[0]?.approved_state === 'YET_TO_APPROVED'" [data]="allDetails"
-              [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-yet-approve>
-          </tab>
-          <tab heading="Approved timesheet" (selectTab)="tabState($event)">
-            <app-approved *ngIf="allDetails[0]?.approved_state === 'APPROVED'" [data]="allDetails"
-              [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-approved>
-          </tab>
-          <tab heading="Declined timesheet" (selectTab)="tabState($event)">
-            <app-declined *ngIf="allDetails[0]?.approved_state === 'DECLINED'" [data]="allDetails"
-              [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-declined>
-          </tab>
-          <!-- <tab heading="Time sheets" (selectTab)="tabState($event)">
-                      <app-time-sheet *ngIf="allDetails[0]?.approved_state === 'TIMESHEET'" [data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-time-sheet>    
-                    </tab> -->
-          <div class="text-center text-muted no-data py-2" *ngIf="allDetails.length === 0">No records found
-            !!<br><a (click)="refershPage()"><b>Refersh <i class="fa fa-refresh" aria-hidden="true"></i>
-              </b></a>
+        <ng-container >
+          <div class="row p-r webView">
+                        
+            <div class="col-sm-4 search-div" >
+                <button mat-icon-button  class="close-icon" style="top:0" ngbTooltip="Search" *ngIf="!showSearch" (click)="showSearch=!showSearch">
+                    <i class="bi bi-search"></i>
+                </button>
+               
+                <input type="search" *ngIf="showSearch" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+                  placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
+                <i class="bi bi-search" id="search-icon-tab" *ngIf="showSearch"></i>
+              
+                <i class="bi bi-x-circle close-icon" ngbTooltip="Close" *ngIf="showSearch" (click)="showSearch=!showSearch"></i>
+            </div>
+              
           </div>
-        </tabset>
-      </div>
-    </div>
-  </div>
-</div>
+          <mat-tab-group class="custom-tab-group" (selectedTabChange)="tabState($event)">
+            <!-- Pending -->
+            <mat-tab label="Pending">
+              <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
+                <div class="col-sm-12 col-md-6 search-div">
+                    <input type="search" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+                      placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
+                    <i class="bi bi-search" id="search-icon-tab" ></i>
+                  </div>
+               
+              </div>
+              <ng-container *ngIf="allDetails[0]?.approved_state === 'YET_TO_APPROVED'; else noRecords">
+               
+                <app-yet-approve 
+                  [data]="allDetails" 
+                  [totalCount]="totalCount" 
+                  (buttonClick)="buttonClick($event)">
+                </app-yet-approve>
+              </ng-container>
+            </mat-tab>
 
-<div class="container-fluid mobileView">
-  <div class="row mx-1 my-2">
-    <div class="col-sm-12">
-      <!-- <h1>Todays approval timesheets</h1> -->
-      <!-- <h1>Todays Approval Timesheets: {{allDetails[0]?.created_date_time | date :'mediumDate'}}</h1> -->
-    </div>
-  </div>
-  <div class="container-middle">
-    <div class="row">
-      <div class="col-sm-12">
-        <tabset>
-          <tab heading="Yet to approved" (selectTab)="tabState($event)">
-            <app-yet-approve *ngIf="allDetails[0]?.approved_state === 'YET_TO_APPROVED'" [data]="allDetails"
-              [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-yet-approve>
-          </tab>
-          <tab heading="Approved timesheet" (selectTab)="tabState($event)">
-            <app-approved *ngIf="allDetails[0]?.approved_state === 'APPROVED'" [data]="allDetails"
-              [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-approved>
-          </tab>
-          <tab heading="Declined timesheet" (selectTab)="tabState($event)">
-            <app-declined *ngIf="allDetails[0]?.approved_state === 'DECLINED'" [data]="allDetails"
-              [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-declined>
-          </tab>
-          <!-- <tab heading="Time sheets" (selectTab)="tabState($event)">
-                    <app-time-sheet *ngIf="allDetails[0]?.approved_state === 'TIMESHEET'" [data]="allDetails" [totalCount]="totalCount" (buttonClick)="buttonClick($event)"></app-time-sheet>    
-                  </tab> -->
-          <div class="text-center text-muted no-data py-2" *ngIf="allDetails.length === 0">No records found
-            !!<br><a (click)="refershPage()"><b>Refersh <i class="fa fa-refresh" aria-hidden="true"></i>
-              </b></a>
+            <!-- Approved Timesheet Tab -->
+            <mat-tab label="Approved">
+              <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
+                <div class="col-sm-12 col-md-6 search-div">
+                    <input type="search" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+                      placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
+                    <i class="bi bi-search" id="search-icon-tab" ></i>
+                  </div>
+               
+              </div>
+              <ng-container *ngIf="allDetails[0]?.approved_state === 'APPROVED'; else noRecords">
+                <app-approved 
+                  [data]="allDetails" 
+                  [totalCount]="totalCount" 
+                  (buttonClick)="buttonClick($event)">
+                </app-approved>
+              </ng-container>
+            </mat-tab>
+
+            <!-- Declined Timesheet Tab -->
+            <mat-tab label="Declined">
+              <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
+                <div class="col-sm-12 col-md-6 search-div">
+                    <input type="search" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+                      placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
+                    <i class="bi bi-search" id="search-icon-tab" ></i>
+                  </div>
+               
+              </div>
+              <ng-container *ngIf="allDetails[0]?.approved_state === 'DECLINED'; else noRecords">
+                <app-declined 
+                  [data]="allDetails" 
+                  [totalCount]="totalCount" 
+                  (buttonClick)="buttonClick($event)">
+                </app-declined>
+              </ng-container>
+            </mat-tab>
+          </mat-tab-group>
+        </ng-container>
+
+        <!-- No Records Template -->
+        <ng-template #noRecords>
+          <div class="no-records text-center">
+            No records found !!
+              <button mat-button (click)="refershPage()" class="proceedbtn" style="width: fit-content;">Refresh <i class="fa fa-refresh" aria-hidden="true"></i></button>
           </div>
-        </tabset>
+        </ng-template>
       </div>
     </div>
   </div>
