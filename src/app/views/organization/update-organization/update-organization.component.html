@@ -164,7 +164,7 @@
               
               <div class="column">
                 <div class="p-ab">
-                  <label style="font-size:10px;">Admin name</label><b class="r-star" >*</b>
+                  <mat-label class="admin-labels">Admin name</mat-label><b class="r-star" >*</b>
                 </div>
               <input type="text" class="pt-1" matInput formControlName="admin_name" placeholder="Admin name"  autocomplete="off"/>
                 <div *ngIf="a['admin_name']?.touched && a['admin_name']?.invalid"
@@ -179,7 +179,7 @@
               </div>
               <div class="column">
                 <div class="p-ab">
-                  <label style="font-size:10px;">Email</label><b class="r-star" >*</b>
+                  <mat-label class="admin-labels">Email</mat-label><b class="r-star" >*</b>
                 </div>
                 <input type="email" class="pt-1" matInput formControlName="admin_email" placeholder="Email"  autocomplete="off"/> 
                 <div *ngIf="a['admin_email']?.touched && a['admin_email']?.invalid"
@@ -195,7 +195,7 @@
               </div>
               <div class="column">
                 <div class="p-ab">
-                  <label style="font-size:10px;">Phone number</label><b class="r-star" >*</b>
+                  <mat-label class="admin-labels">Phone number</mat-label><b class="r-star" >*</b>
                 </div>
                 <input type="tel" class="pt-1" matInput onKeyPress="if(this.value.length==10) return false;" formControlName="admin_phone_number" placeholder="Phone number"  autocomplete="off"/>
                
@@ -215,7 +215,7 @@
                  
               <div class="column">
                 <div class="p-ab" style="top:-11px !important;">
-                  <label style="font-size:10px;">Status</label><b class="r-star" >*</b>
+                  <mat-label class="admin-labels">Status</mat-label><b class="r-star" >*</b>
                 </div>
                 <mat-slide-toggle class="pt-1" formControlName="admin_status" >
                   {{ a['admin_status']?.value ? 'Active' : 'Inactive' }}
@@ -247,7 +247,7 @@
                 
                 <div class="column py-2">
                   <div class="p-ab">
-                    <label style="font-size:10px;">Admin name</label><b class="r-star" >*</b>
+                    <mat-label style="font-size:10px;">Admin name</mat-label><b class="r-star" >*</b>
                   </div>
                   <input matInput class="pt-1" formControlName="admin_name" placeholder="Admin name"  
                   [readonly]="!admin.isEditing">
@@ -265,7 +265,7 @@
                 
                 <div class="column py-2">
                   <div class="p-ab">
-                    <label style="font-size:10px;">Email</label><b class="r-star" >*</b>
+                    <mat-label style="font-size:10px;">Email</mat-label><b class="r-star" >*</b>
                   </div>
                   <input matInput class="pt-1" formControlName="admin_email" placeholder="Email" 
                   [readonly]="!admin.isEditing">
@@ -279,7 +279,7 @@
                 
                 <div class="column py-2">
                   <div class="p-ab">
-                    <label style="font-size:10px;">Phone number</label><b class="r-star" >*</b>
+                    <mat-label style="font-size:10px;">Phone number</mat-label><b class="r-star" >*</b>
                   </div>
                   <input type="tel" class="pt-1" matInput formControlName="admin_phone_number" onKeyPress="if(this.value.length==10) return false;" placeholder="Phone number" 
                   [readonly]="!admin.isEditing">
@@ -296,7 +296,7 @@
                 
                 <div class="column py-2">
                   <div class="p-ab">
-                    <label style="font-size:10px;">Status</label><b class="r-star" >*</b>
+                    <mat-label style="font-size:10px;">Status</mat-label><b class="r-star" >*</b>
                   </div>
                   <mat-slide-toggle class="pt-1" formControlName="admin_status"  [disabled]="!admin.isEditing">
                     {{ getAdminFormGroup(i)?.get('admin_status')?.value === true ? 'Active' : 'Inactive' }}
@@ -326,7 +326,7 @@
                 
                 <div class="column py-2">
                   <div class="p-ab">
-                    <label style="font-size:10px;">Admin Name </label><b class="r-star">*</b>
+                    <mat-label class="admin-labels">Admin Name </mat-label><b class="r-star">*</b>
                   </div>
                   <input matInput class="pt-1" formControlName="admin_name" placeholder="First Name" 
                   [readonly]="!admin.isEditing">
@@ -343,7 +343,7 @@
                 
                 <div class="column py-2">
                   <div class="p-ab">
-                    <label style="font-size:10px;">Email </label><b class="r-star">*</b>
+                    <mat-label class="admin-labels">Email </mat-label><b class="r-star">*</b>
                   </div>
                   <input matInput class="pt-1" formControlName="admin_email" placeholder="Enter email Id" 
                   [readonly]="!admin.isEditing">
@@ -357,7 +357,7 @@
                 
                 <div class="column py-2">
                   <div class="p-ab">
-                    <label style="font-size:10px;">Phone number</label><b class="r-star">*</b>
+                    <mat-label class="admin-labels">Phone number</mat-label><b class="r-star">*</b>
                   </div>
                   <input type="tel" class="pt-1" matInput formControlName="admin_phone_number" onKeyPress="if(this.value.length==10) return false;" placeholder="Enter phone number" 
                   [readonly]="!admin.isEditing">
@@ -374,7 +374,7 @@
                 
                 <div class="column py-2">
                   <div class="p-ab" style="top:-11px !important">
-                    <label style="font-size:10px;">Status</label><b class="r-star" >*</b>
+                    <mat-label class="admin-labels">Status</mat-label><b class="r-star" >*</b>
                   </div>
                   <mat-slide-toggle class="pt-1" formControlName="admin_status"  [disabled]="!admin.isEditing">
                     {{ getAdminFormGroup(i)?.get('admin_status')?.value === true ? 'Active' : 'Inactive' }}

@@ -49,3 +49,19 @@
     ::ng-deep .mat-form-field-wrapper{
       padding-bottom: 1em !important;
     }
+    .admin-labels{
+      font-size: 10px;
+      margin-right: 2px; 
+    }
+    .column{
+      b{
+        color: rgb(236, 94, 94) !important;
+      }
+    }
+    .edit-or-upload-icon {
+      font-size: 16px;
+      color: white;
+      background: #1b64a0;
+      border-radius: 12px;
+      padding-right: 1px;
+    }

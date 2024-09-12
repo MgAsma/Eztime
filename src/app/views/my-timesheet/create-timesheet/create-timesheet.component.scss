@@ -183,12 +183,101 @@ html{
  mat-form-field{
     border: 0 !important;
     width: 100%;
-    margin-top: 15px;
     height: 45px;
-    // margin-bottom: 20px !important;
+    // margin:15px 0 20px !important;
 }
 .date-picker{
     .mat-form-field-flex{
         height: 55px !important;
     }
 }
+.mat-expansion-panel-header.mat-expanded {
+    height: 40px;
+    padding-bottom: 20px;
+}
+.generic-form{
+    .mat-form-field{
+        
+        input,select,textarea{
+            font-size: 12px !important;
+            // height: 55px;
+        }
+        mat-error{
+            font-size: 11px !important;
+        }
+    }
+}
+.icon-image{
+    cursor: pointer;
+    height: 20px;
+    margin: 0 2px;
+  }
+  .admin-labels{
+    font-size: 10px;
+    margin-right: 3px; 
+  }
+  .column{
+    b{
+      color: rgb(247, 77, 77) !important;
+    }
+  }
+  .p-ab{
+    position:absolute ;
+    top:-2px;
+    }
+    .row-container,.row-container2 {
+        display: flex;
+        //border: 1px solid #ccc;
+        border: 1px solid #cccccc61;
+        border-radius: 5px;
+        align-items: center;
+        justify-content: space-between;
+        column-gap: 5px;
+        // height: 55px;
+      
+        .column {
+          position: relative;
+          flex: 1;
+          padding: 5px 6px 0 !important;
+          display: flex;
+          align-items: center;
+          // justify-content: center;
+          border-right: solid 1px rgba(0, 0, 0, 0.15);
+          &:last-child {
+            border-right: 0;
+          }
+          
+          
+          .error-text{
+            position: absolute;
+            top: 3.2rem;
+            left: 10px;
+            font-size: 11px;
+            color: red;
+          }
+          
+        //   ::ng-deep .mat-form-field-appearance-fill .mat-form-field-underline {
+        //     background-color: gray !important; 
+        //   }
+        //   ::ng-deep .mat-form-field-appearance-fill .mat-form-field-underline::before {
+        //     background-color: gray !important; 
+        // }
+        //   ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+        //     background-color: transparent !important;
+        //   }
+        //   ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+        //     padding: 0; 
+        // }
+         
+      
+          mat-slide-toggle {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+        }
+        .mat-form-field-appearance-outline .mat-form-field-infix {
+          padding: 12px !important; 
+      }
+      }

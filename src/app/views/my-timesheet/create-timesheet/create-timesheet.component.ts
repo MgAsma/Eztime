@@ -16,7 +16,7 @@ export class CreateTimesheetComponent implements OnInit {
   BreadCrumbsTitle:any='Create timesheet';
   isAdminForm = false;
   timeSheetForm! : FormGroup
-  task1:any;
+  
   allClient:any=[];
   client:any;
 
@@ -24,12 +24,13 @@ export class CreateTimesheetComponent implements OnInit {
   project:any;
 
   allTask:any=[];
-  task:any;
+  createdTask:FormArray<any>;
+  createdProject: FormArray<any>;
   params = {
     pagination:"FALSE"
   }
   time_spent:any=[]
-  createdtasks: FormArray<any>;
+
   currDate: Date;
   userId: any;
   manager_id: any;
@@ -44,14 +45,16 @@ export class CreateTimesheetComponent implements OnInit {
   peopleId: any = [];
   ccSetting: { singleSelection: boolean; idField: string; textField: string; itemsShowLimit: number; allowSearchFilter: boolean; };
   user_role_name: any;
-  adminList:string[] = []
-  adminForm:FormGroup;
+  taskForm: FormGroup;
+  createdTaskList:string[]=[];
+  
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
     private datepipe:DatePipe,
     private location:Location,private common_service:CommonServiceService) {
       this.user_role_name = sessionStorage.getItem('user_role_name')
+    
      }
 
   ngOnInit(): void {
@@ -63,12 +66,50 @@ export class CreateTimesheetComponent implements OnInit {
      this.initForm();
     this.getPeopleGroup()
     this.getClient();
-     this.addTask();
-     
+     this.addProjectDetails();
+    this.addTask(); 
   }
+  get tasks(): FormArray {
+    return this.timeSheetForm.get('tasks') as FormArray;
+  }
+ 
+  createTask(): FormGroup {
+    return this.builder.group({
+      task_id: ['', Validators.required], // Task selection
+      time_spent: ['', Validators.required] // Time spent selection
+    });
+  }
+  addTask(): void {
+    this.createdTask = this.timeSheetForm.get('tasks') as FormArray;
+    this.createdTask.push(this.createTask()); 
+    // this.createdTaskList.push(this.taskForm.value)
+    // console.log(this.createdTaskList)
+  }
+  createProjectDetails(): FormGroup {
+    return this.builder.group({
+      client_id: ['',Validators.required],
+      project_id: ['',Validators.required],
+      projectList:[],
+      taskList:[],
+      time:[],
+      reportingManagerRef:[],
+      description: ['',[Validators.pattern(/^\S.*$/)]],
+      timesheet_applied_datetime:['',Validators.required]
+    });
+  }
+  
+  addProjectDetails(): void {
+    this.createdProject = this.timeSheetForm.get('response') as FormArray;
+    this.createdProject.push(this.createProjectDetails());
+  }
+  removeTask(index: number): void {
+    this.createdTask.removeAt(index);
+  }
+
   initForm(){
     this.timeSheetForm = this.builder.group({
       reportingManagerRef:[''],
+      tasks: this.builder.array([]),
       response: this.builder.array([])
     });
   }
@@ -100,9 +141,14 @@ export class CreateTimesheetComponent implements OnInit {
   }
   
   addTimeSheet(){
+    this.createdTask = this.timeSheetForm.get('tasks') as FormArray;
+    console.log(this.timeSheetForm.value)
     if(this.timeSheetForm.invalid){
-      this.api.showError('Invalid!')
       this.timeSheetForm.markAllAsTouched()
+      // this.task.markAllAsTouched()
+      // this.tasks.markAllAsTouched()
+      this.api.showError('Please enter the mandatory fields')
+      
     }
     else{
       let date = new Date()
@@ -134,21 +180,21 @@ export class CreateTimesheetComponent implements OnInit {
         organization_id:this.orgId
       }
      
-      this.api.addTimeSheet(data).subscribe(
-        (response)=>{
-          if(response){
-            this.api.showSuccess('Time sheet added successfully!!');
-            this.timeSheetForm= this.builder.group({
-              response: this.builder.array([])
-            });
-            this.addTask()
-          }
+      // this.api.addTimeSheet(data).subscribe(
+      //   (response)=>{
+      //     if(response){
+      //       this.api.showSuccess('Time sheet added successfully!!');
+      //       this.timeSheetForm= this.builder.group({
+      //         response: this.builder.array([])
+      //       });
+      //       this.addProjectDetails()
+      //     }
           
-        },(error =>{
-          this.api.showError(error.error.error.message)
-        })
+      //   },(error =>{
+      //     this.api.showError(error.error.error.message)
+      //   })
       
-      )
+      // )
     }
   }
   onPeopleSelect(event: any) {
@@ -184,29 +230,13 @@ export class CreateTimesheetComponent implements OnInit {
         }
       );
   }
-createTask(): FormGroup {
-  return this.builder.group({
-    client_id: ['',Validators.required],
-    project_id: ['',Validators.required],
-    projectList:[],
-    taskList:[],
-    time:[],
-    reportingManagerRef:[],
-    description: ['',[Validators.pattern(/^\S.*$/)]],
-    task_id: ['',Validators.required],
-    time_spent: ['',Validators.required],
-    timesheet_applied_datetime:['',Validators.required]
-  });
-}
+  
+  
 
-addTask(): void {
-  this.createdtasks = this.timeSheetForm.get('response') as FormArray;
-  this.createdtasks.push(this.createTask());
-}
 
-removeTask(index: number): void {
-  this.createdtasks = this.timeSheetForm.get('response') as FormArray;
-  this.createdtasks.removeAt(index);
+removeProject(index: number): void {
+  this.createdProject = this.timeSheetForm.get('response') as FormArray;
+  this.createdProject.removeAt(index);
 }
 get mytask(){
   return this.timeSheetForm.get('response') as FormArray
@@ -218,7 +248,7 @@ getProject(event, index){
     if(res){
       this.allProject = res.data
       this.projectList = [...this.allProject]
-      this.createdtasks.at(index).patchValue({projectList: this.projectList})
+      this.createdProject.at(index).patchValue({projectList: this.projectList})
       // ----------------
     }
     else{
@@ -235,7 +265,7 @@ getTask(event,index){
      this.allTask = res.data[0].project_related_task_list
      this.taskList = [...this.allTask]
       //console.log(res.data.project_related_task_list,"RESPONSETASK n/----------------")
-      this.createdtasks.at(index).patchValue({taskList: this.taskList})
+      this.createdProject.at(index).patchValue({taskList: this.taskList})
     }
     else{
       this.api.showError('ERROR!')
@@ -251,7 +281,7 @@ getTimeSpent(event,index){
      this.time_spent = res
      this.timeList = [...this.time_spent]
       //console.log(res,"TIMESPENT n/----------------")
-      this.createdtasks.at(index).patchValue({time: this.timeList})
+      this.createdProject.at(index).patchValue({time: this.timeList})
     }
     else{
       this.api.showError('ERROR!')

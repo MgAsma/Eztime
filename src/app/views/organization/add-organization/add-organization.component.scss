@@ -5,10 +5,11 @@
     border: 2px solid #d2cfcf !important;
 }
 .edit-or-upload-icon {
-    font-size: 17px;
-    color: white;
-    background: #1b64a0;
-    border-radius: 12px;
+  font-size: 16px;
+  color: white;
+  background: #1b64a0;
+  border-radius: 12px;
+  padding-right: 1px;
 }
 
   
@@ -37,11 +38,21 @@ font-size: 14px;
 position:absolute ;
 top:-2px;
 }
+
+::ng-deep .mat-form-field-wrapper{
+  padding-bottom: 1em !important;
+}
 .icon-image{
   cursor: pointer;
   height: 25px;
   margin: 0 2px;
 }
-::ng-deep .mat-form-field-wrapper{
-  padding-bottom: 1em !important;
+.admin-labels{
+  font-size: 10px;
+  margin-right: 3px; 
+}
+.column{
+  b{
+    color: rgb(247, 77, 77) !important;
+  }
 }

@@ -119,7 +119,7 @@ export class AddOrganizationComponent implements OnInit {
       admin_name:this.adminForm?.value['admin_name'],
       admin_email:this.adminForm?.value['admin_email'],
       admin_phone_number:this.adminForm?.value['admin_phone_number'],
-      admin_status:this.adminForm?.value['admin_status'] 
+      admin_status:this.adminForm?.value['admin_status'] === true ? 'Active' : 'Inactive',
     }
     this.adminList.push(data);
     this.adminFormArray.push(this.createAdminFormGroup(data));
@@ -160,7 +160,7 @@ export class AddOrganizationComponent implements OnInit {
             admin_name: adminForm.value.admin_name,
             admin_email: adminForm.value.admin_email,
             admin_phone_number: adminForm.value.admin_phone_number,
-            admin_status: adminForm.value.admin_status 
+            admin_status: adminForm.value.admin_status === true ? 'Active' : 'Inactive',
           };
 
           // Show the success message
