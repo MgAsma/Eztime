@@ -1,230 +1,435 @@
-<div class="container-fluid webView">
-    <!-- <div class="row">
-        <div class="col-sm">
-            <h1>
-                Add project </h1>
-        </div>
-        <div class="col-sm"></div>
-        <div class="col-sm-4 text-end">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">
-                    Add project </li>  
-                </ol>
-              </nav>
-        </div>
-    </div> -->
-    <div class="generic-form bg mx-1">
-        <form [formGroup]='projectForm' (ngSubmit)='addProject()' >
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-6">
-                <div class="row">
-                    <div class="col-sm">
-                        <h4>Project details</h4>
+<div class="container-fluid webView p-20">
+    <div class="generic-form bg mx-2">
+        <form [formGroup]='projectForm' (ngSubmit)='addProject()'>
+            <div class="row create-project">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="py-3">
+                        <h5 class="py-1"><b>Project Details</b></h5>
+                        <p>Lets dig into the project details!</p>
                     </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-sm">
-                        <p>Client <span >*</span></p>
-                        <select class="form-select" [(value)]='client' aria-label="Default select example" formControlName="c_ref_id">                       
-                            <option value="" selected disabled>Select client</option>
-                            <option *ngFor="let item of allClientList" [value]="item.id">
-                                {{item.c_name}}
-                            </option>
-                          </select>
-                         <div *ngIf="f['c_ref_id'].touched && f['c_ref_id'].invalid">
-                            <div *ngIf="f['c_ref_id'].errors && f['c_ref_id'].errors['required']" ><p class="error-msg">Client name is required</p></div>
-                         </div>
-                    </div>
-                    
-                </div>
-            <div class="row">
-                <div class="col-sm">
-                    <p>Project name <span >*</span></p> 
-                    <input type="text" class="form-control p-3 sizeinput" formControlName="p_name" placeholder="Enter project name" aria-describedby="emailHelp"  autocomplete="off">
-                    <div *ngIf="f['p_name'].touched && f['p_name'].invalid" >
-                        <div *ngIf="f['p_name'].errors && f['p_name'].errors['required'] " ><p class="error-msg">Project name is required</p></div>
-                    </div>
-                    <div *ngIf="f['p_name'].invalid && f['p_name'].hasError('pattern')" >
-                        <p class="error-msg">Cannot start with a space.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-sm">
-                    <p>Description </p>
-                    <div class="">
-                        <textarea class="form-control  sizeinput" placeholder="Enter your description.." formControlName="p_description"  style="height: 42px"></textarea>  
-                        <div *ngIf="f['p_description'].touched && f['p_description'].invalid" >
-                            <div *ngIf="f['p_description'].errors && f['p_description'].errors['required'] " ><p class="error-msg">Description is required</p></div>
+                    <div class="row">
+                        <!-- client dropdown -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Select Client <b class="r-star">*</b></mat-label>
+                                <mat-select formControlName="c_ref_id" autocomplete="off" placeholder="Select"
+                                    panelClass="custom-select-panel" [disableOptionCentering]="true">
+                                    <mat-option *ngFor="let item of allClientList" [value]="item.id">
+                                        {{item.c_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['c_ref_id']?.touched && f['c_ref_id']?.invalid">
+                                <span class="text-errors" *ngIf="f['c_ref_id'].errors?.['required']">Client name is
+                                    required</span>
+                            </div>
                         </div>
-                        <div *ngIf="f['p_description'].invalid && f['p_description'].hasError('pattern')" >
-                            <p class="error-msg">Cannot start with a space.</p>
-                        </div>               
-                      </div>
-                </div>          
-            </div>
-           
-            <div class="row pt-0">
-                <div class="col-sm">
-                    <p>Start date<span >*</span></p>
-                    <input class="form-control p-3 sizeinput"  formControlName="p_start_date" type="date"  name="date-input" placeholder="date" (change)="onChange()">  
-                    <div *ngIf="f['p_start_date'].touched && f['p_start_date'].invalid" >
-                        <div *ngIf="f['p_start_date'].errors && f['p_start_date'].errors['required'] " ><p class="error-msg">Start date is required</p></div>
-                    </div>  
-                </div>        
-            </div>
-        
-            <div class="row">
-                <div class="col-sm">
-                    <p>End date<span >*</span></p>
-                    <input class="form-control p-3 sizeinput"  [min]="projectForm.value.p_start_date" formControlName="p_closure_date" type="date" name="date-input" placeholder="date"
-                    (change)="yearEndDateValidator()">  
-                    <div *ngIf="f['p_closure_date'].touched && f['p_closure_date'].invalid" >
-                        <div *ngIf="f['p_closure_date'].errors && f['p_closure_date'].errors['required'] " ><p class="error-msg">End date is required</p></div>
-                    </div> 
-                    <div *ngIf="invalidDate">
-                        <p class="error-msg">End date should be greater than start date.</p>
+                        <!-- project name -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Enter Project Name <b class="r-star">*</b></mat-label>
+                                <input matInput placeholder="Enter project name" formControlName="p_name"
+                                    autocomplete="off">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['p_name']?.touched && f['p_name']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['p_name'].errors && f['p_name'].errors['required'] ">Project name is
+                                    required</span>
+                                <span class="text-errors"
+                                    *ngIf="f['p_name'].invalid && f['p_name'].hasError('pattern')">
+                                    Cannot start with a space.
+                                </span>
+                            </div>
+                        </div>
+                        <!-- start date -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                                <mat-label>Start Date <b class="r-star">*</b></mat-label>
+                                <input class="pt-1" type="date" matInput placeholder="Enter start date"
+                                    formControlName="p_start_date" autocomplete="off" (change)="onChange()">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['p_start_date']?.touched && f['p_start_date']?.invalid">
+                                <span class="text-errors" *ngIf="f['p_start_date'].errors?.['required']">Start date
+                                    is required</span>
+                            </div>
+                        </div>
+                        <!-- end date -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                                <mat-label>End Date <b class="r-star">*</b></mat-label>
+                                <input class="pt-1" type="date" matInput placeholder="Enter end date"
+                                    formControlName="p_closure_date" (change)="yearEndDateValidator()"
+                                    [min]="projectForm.value.p_start_date">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['p_closure_date']?.touched && f['p_closure_date']?.invalid">
+                                <span class="text-errors" *ngIf="f['p_closure_date'].errors?.['required']">End date is
+                                    required</span>
+                            </div>
+                        </div>
+                        <!-- select team -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                                <mat-label>Select Team <b class="r-star">*</b></mat-label>
+                                <mat-select formControlName="people_ref_list" autocomplete="off"
+                                    placeholder="Select team" panelClass="custom-select-panel"
+                                    [disableOptionCentering]="true" multiple (selectionChange)="matTeamSelect($event)">
+                                    <mat-option *ngFor="let item of allPeopleGroup" [value]="item.id">
+                                        {{item.u_first_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['people_ref_list'].touched && f['people_ref_list'].invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['people_ref_list'].errors && f['people_ref_list'].errors['required']">Team
+                                    list is required</span>
+                            </div>
+                        </div>
+                        <!-- project manager -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Project Manager <b class="r-star">*</b></mat-label>
+                                <mat-select formControlName="reporting_manager_ref_id" autocomplete="off"
+                                    placeholder="Select manager" panelClass="custom-select-panel"
+                                    [disableOptionCentering]="true">
+                                    <mat-option *ngFor="let item of allManager" [value]="item.id">
+                                        {{item.u_first_name +" "+ item.u_last_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="px-2"
+                                *ngIf="f['reporting_manager_ref_id']?.touched && f['reporting_manager_ref_id']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['reporting_manager_ref_id'].errors?.['required']">Manager is
+                                    required</span>
+                            </div>
+                        </div>
+                        <!-- estimated hours -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Estimated Hours <b class="r-star">*</b></mat-label>
+                                <input matInput type="number" onkeydown="return event.keyCode !== 69"
+                                    oninput="this.value = this.value.replace('.', '').replace(/[^\d]/g, '');" appHypen
+                                    formControlName="p_estimated_hours" placeholder="Enter estimated hours">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['p_estimated_hours'].touched && f['p_estimated_hours'].invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['p_estimated_hours'].errors && f['p_estimated_hours'].errors['required']">Estimated
+                                    hours is required</span>
+                            </div>
+                        </div>
+                        <!-- billing -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Estimated Billing <b class="r-star">*</b></mat-label>
+                                <input matInput placeholder="Enter billing amount"
+                                    onkeydown="return event.keyCode !== 69 " formControlName="p_estimated_cost"
+                                    aria-label="Username" aria-describedby="basic-addon1">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['p_estimated_cost'].touched && f['p_estimated_cost'].invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['p_estimated_cost'].errors && f['p_estimated_cost'].errors['required']">Estimated
+                                    billing is required</span>
+                            </div>
+                        </div>
                     </div>
-                </div>      
-            </div>
+                    <!-- project template -->
+                    <div class="row px-2 gx-0 task-border">
+                        <div class="col-6 ">
+                            <div class="py-3">
+                                <h5 class="py-1"><b>Add Tasks</b></h5>
+                                <p>Create multiple tasks</p>
+                            </div>
+                        </div>
+                        <div class="col-6 text-end align-content-center">
+                            <div>
+                                <button mat-icon-button class="proceedbtn" color="primary">
+                                    <mat-icon>add</mat-icon>Add Tasks
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-3 mb-3">
+                                    <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                                        <mat-label>Choose Template <b class="r-star">*</b></mat-label>
+                                        <mat-select formControlName="p_task_checklist_status" autocomplete="off"
+                                            placeholder="Select template" panelClass="custom-select-panel"
+                                            [disableOptionCentering]="true" 
+                                            (selectionChange)="getSubTask($event)">
+                                            <mat-option *ngFor="let item of taskCategories" [value]="item.id">
+                                                {{item.tpc_name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <div class="px-2"
+                                        *ngIf="f['p_task_checklist_status'].touched && f['p_task_checklist_status'].invalid">
+                                        <span class="text-errors"
+                                            *ngIf="f['p_task_checklist_status'].errors && f['p_task_checklist_status'].errors['required']">
+                                            Template category is required
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12"></div>
+                    </div>
+                    <!-- old ui -->
+                    <!-- <div class="col-sm-12 col-md-12 col-lg-6">
+                    <div class="row">
+                        <div class="col-sm">
+                            <h4>Project details</h4>
+                        </div>
+                    </div>
 
-         
-            <div class="row">
-                <div class="col-sm">
-                   
-                    <p >Employee list <span >*</span></p>
-                    <div style="margin: 0;" class="row container-fluid"  >
-                        <ng-multiselect-dropdown  [placeholder]="'Select people list'"  [settings]="peopleListSetting"
-                        [data]="allPeopleGroup" (onSelect)="onPeopleGroupSelect($event)"  (onSelectAll)="onPeopleGroupSelectAll($event)" 
-                         formControlName="people_ref_list">
-                        </ng-multiselect-dropdown>
-                        
-                        <div *ngIf="f['people_ref_list'].touched && f['people_ref_list'].invalid" >
-                            <div *ngIf="f['people_ref_list'].errors && f['people_ref_list'].errors['required']" ><p class="error-msg">Employee list is required</p></div>
-                        </div> 
-                    </div>
-                    
-                </div>         
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <p>Project Status <span >*</span></p>
-                    <select class="form-select sizeinput" aria-label="Default select example" formControlName="p_status">                       
-                        <option value="" disabled selected>Select Status</option>
-                         <option *ngFor="let status of status" [value]="status.value">{{status.viewValue}}
-                         </option>
-                       </select>
-                       <div *ngIf="f['p_status'].touched && f['p_status'].invalid" >
-                        <div *ngIf="f['p_status'].errors && f['p_status'].errors['required']"><p class="error-msg">Project Status is required</p></div>
-                    
-                  </div>
-                  </div>
-                  </div>
-            
-            </div>
-            <div class="col-sm-12 col-md-12 col-lg-6">
-                <div class="row">
-                    <div class="col-sm">
-                        <h4>Estimation/manager/approver details</h4>
-                    </div>
-                </div>
-               
-         
-            <div class="row">
-                <div class="col-sm">
-                    <p>Estimated hours <span >*</span></p>
-                        <input type="number" class="form-control p-3 sizeinput" onkeydown="return event.keyCode !== 69" oninput="this.value = this.value.replace('.', '').replace(/[^\d]/g, '');" appHypen class="form-control" formControlName="p_estimated_hours" placeholder="Enter estimated hours" aria-label="Username" aria-describedby="basic-addon1"> 
-                      </div>
-                      <div *ngIf="f['p_estimated_hours'].touched && f['p_estimated_hours'].invalid" >
-                        <div *ngIf="f['p_estimated_hours'].errors && f['p_estimated_hours'].errors['required']" ><p class="error-msg">Estimated hours is required</p></div>
-                    </div>
-            </div>
-   
-            <div class="row">
-                <div class="col-sm">
-                    <p>Estimated billing <span >*</span></p>
-                        <input type="number" class="form-control p-3 sizeinput" onkeydown="return event.keyCode !== 69 " class="form-control" formControlName="p_estimated_cost" placeholder="Enter estimated billing" aria-label="Username" aria-describedby="basic-addon1">
-                      
-                      </div>
-                      <div *ngIf="f['p_estimated_cost'].touched && f['p_estimated_cost'].invalid" >
-                        <div *ngIf="f['p_estimated_cost'].errors && f['p_estimated_cost'].errors['required']" ><p class="error-msg">Estimated billing is required</p></div>
-                    </div>
-                   
-                   
-                <!-- </div> -->
-            </div>
-            
-          
-            <div class="row">
-                <div class="col-sm">
-                    <p>Reporting manager  <span >*</span></p>
-                    <select class="form-select sizeinput"  [(value)]='reporting_manager' aria-label="Default select example" formControlName="reporting_manager_ref_id">                       
-                       <option value="" disabled selected>Select reporting manager</option>
-                        <option *ngFor="let item of allManager" [value]="item.id">
-                            {{item.u_first_name +" "+ item.u_last_name}}
-                        </option>
-                      </select>
-                      <div *ngIf="f['reporting_manager_ref_id'].touched && f['reporting_manager_ref_id'].invalid" >
-                        <div *ngIf="f['reporting_manager_ref_id'].errors && f['reporting_manager_ref_id'].errors['required'] " ><p class="error-msg">Reporting manager is required</p></div>
-                    </div>
-                </div>            
-            </div>
-         
-            <div class="row">
-                <div class="col-sm">
-                    <p>Approver  <span >*</span></p>
-                    <select class="form-select sizeinput" [(value)]='approver_manager' aria-label="Default select example" formControlName="approve_manager_ref_id">                       
-                        <option value="" disabled selected>Select approver</option>
-                        <option *ngFor="let item of allManager" [value]="item.id">
-                            {{item.u_first_name +''+ item.u_last_name}}
-                        </option>
-                      </select>
-                      <div *ngIf="f['approve_manager_ref_id'].touched && f['approve_manager_ref_id'].invalid" >
-                        <div *ngIf="f['approve_manager_ref_id'].errors && f['approve_manager_ref_id'].errors['required']"><p class="error-msg">Approver is required</p></div>
-                    </div>
-                </div>            
-            </div>
-        
-           
-            <div class="row">
-                <div class="col-sm"  >
-                    <p> Add task & File templates <span >*</span></p>
-                    <select class="form-select sizeinput" (change)="getSubTask($event)"  aria-label="Default select example" formControlName="p_task_checklist_status">                       
-                        <option value="" disabled selected>Select task category</option>
-                        <option *ngFor="let item of taskCategories" [value]="item.id">
-                            {{item.tpc_name}}
-                        </option>
-                        </select>
-                        <div *ngIf="f['p_task_checklist_status'].touched && f['p_task_checklist_status'].invalid" >
-                        <div *ngIf="f['p_task_checklist_status'].errors && f['p_task_checklist_status'].errors['required']"><p class="error-msg">Task category is required</p></div>
-                    </div>
-                </div>
-                    
-            </div>
-            <div class="row">
-                <div class="col-sm-12" >
-                   <p > Sub task <span >*</span></p>  
-                        <select class="form-select  sizeinput" (change)="subTask($event)"   aria-label="Default select example" formControlName="project_related_task_list" >                       
-                            <option value="" disabled selected>Select sub task category</option>
-                            <option *ngFor="let item of subTaskCategories" [value]="item?.task_name">
-                                {{item.task_name?item.task_name:"NO RECORDS FOUND"}}
-                            </option>
-                          </select>
-                        
-                          <div *ngIf="f['project_related_task_list'].touched && f['project_related_task_list'].invalid" >
-                            <div *ngIf="f['project_related_task_list'].errors && f['project_related_task_list'].errors['required']"><p class="error-msg">Sub task category is required</p></div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>Client <span>*</span></p>
+                            <select class="form-select" [(value)]='client' aria-label="Default select example"
+                                formControlName="c_ref_id">
+                                <option value="" selected disabled>Select client</option>
+                                <option *ngFor="let item of allClientList" [value]="item.id">
+                                    {{item.c_name}}
+                                </option>
+                            </select>
+                            <div *ngIf="f['c_ref_id'].touched && f['c_ref_id'].invalid">
+                                <div *ngIf="f['c_ref_id'].errors && f['c_ref_id'].errors['required']">
+                                    <p class="error-msg">Client name is required</p>
+                                </div>
+                            </div>
                         </div>
-                    
-                    
-                </div>
-                                    
-            </div>
-            
-            <!-- <div class="row">
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>Project name <span>*</span></p>
+                            <input type="text" class="form-control p-3 sizeinput" formControlName="p_name"
+                                placeholder="Enter project name" aria-describedby="emailHelp" autocomplete="off">
+                            <div *ngIf="f['p_name'].touched && f['p_name'].invalid">
+                                <div *ngIf="f['p_name'].errors && f['p_name'].errors['required'] ">
+                                    <p class="error-msg">Project name is required</p>
+                                </div>
+                            </div>
+                            <div *ngIf="f['p_name'].invalid && f['p_name'].hasError('pattern')">
+                                <p class="error-msg">Cannot start with a space.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>Description </p>
+                            <div class="">
+                                <textarea class="form-control  sizeinput" placeholder="Enter your description.."
+                                    formControlName="p_description" style="height: 42px"></textarea>
+                                <div *ngIf="f['p_description'].touched && f['p_description'].invalid">
+                                    <div *ngIf="f['p_description'].errors && f['p_description'].errors['required'] ">
+                                        <p class="error-msg">Description is required</p>
+                                    </div>
+                                </div>
+                                <div *ngIf="f['p_description'].invalid && f['p_description'].hasError('pattern')">
+                                    <p class="error-msg">Cannot start with a space.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row pt-0">
+                        <div class="col-sm">
+                            <p>Start date<span>*</span></p>
+                            <input class="form-control p-3 sizeinput" formControlName="p_start_date" type="date"
+                                name="date-input" placeholder="date" (change)="onChange()">
+                            <div *ngIf="f['p_start_date'].touched && f['p_start_date'].invalid">
+                                <div *ngIf="f['p_start_date'].errors && f['p_start_date'].errors['required'] ">
+                                    <p class="error-msg"></p>
+                                </div>Start date is required
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>End date<span>*</span></p>
+                            <input class="form-control p-3 sizeinput" [min]="projectForm.value.p_start_date"
+                                formControlName="p_closure_date" type="date" name="date-input" placeholder="date"
+                                (change)="yearEndDateValidator()">
+                            <div *ngIf="f['p_closure_date'].touched && f['p_closure_date'].invalid">
+                                <div *ngIf="f['p_closure_date'].errors && f['p_closure_date'].errors['required'] ">
+                                    <p class="error-msg">End date is required</p>
+                                </div>
+                            </div>
+                            <div *ngIf="invalidDate">
+                                <p class="error-msg">End date should be greater than start date.</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm">
+
+                            <p>Employee list <span>*</span></p>
+                            <div style="margin: 0;" class="row container-fluid">
+                                <ng-multiselect-dropdown [placeholder]="'Select employee list'"
+                                    [settings]="peopleListSetting" [data]="allPeopleGroup"
+                                    (onSelect)="onPeopleGroupSelect($event)"
+                                    (onSelectAll)="onPeopleGroupSelectAll($event)" formControlName="people_ref_list">
+                                </ng-multiselect-dropdown>
+
+                                <div *ngIf="f['people_ref_list'].touched && f['people_ref_list'].invalid">
+                                    <div *ngIf="f['people_ref_list'].errors && f['people_ref_list'].errors['required']">
+                                        <p class="error-msg">Employee list is required</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>Project Status <span>*</span></p>
+                            <select class="form-select sizeinput" aria-label="Default select example"
+                                formControlName="p_status">
+                                <option value="" disabled selected>Select Status</option>
+                                <option *ngFor="let status of status" [value]="status.value">{{status.viewValue}}
+                                </option>
+                            </select>
+                            <div *ngIf="f['p_status'].touched && f['p_status'].invalid">
+                                <div *ngIf="f['p_status'].errors && f['p_status'].errors['required']">
+                                    <p class="error-msg">Project Status is required</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div> -->
+                    <div class="col-sm-12 col-md-12 col-lg-6">
+                        <!-- <div class="row">
+                        <div class="col-sm">
+                            <h4>Estimation/manager/approver details</h4>
+                        </div>
+                    </div> -->
+
+
+                        <!-- <div class="row">
+                        <div class="col-sm">
+                            <p>Estimated hours <span>*</span></p>
+                            <input type="number" class="form-control p-3 sizeinput"
+                                onkeydown="return event.keyCode !== 69"
+                                oninput="this.value = this.value.replace('.', '').replace(/[^\d]/g, '');" appHypen
+                                class="form-control" formControlName="p_estimated_hours"
+                                placeholder="Enter estimated hours" aria-label="Username"
+                                aria-describedby="basic-addon1">
+                        </div>
+                        <div *ngIf="f['p_estimated_hours'].touched && f['p_estimated_hours'].invalid">
+                            <div *ngIf="f['p_estimated_hours'].errors && f['p_estimated_hours'].errors['required']">
+                                <p class="error-msg">Estimated hours is required</p>
+                            </div>
+                        </div>
+                    </div> -->
+
+                        <!-- <div class="row">
+                        <div class="col-sm">
+                            <p>Estimated billing <span>*</span></p>
+                            <input type="number" class="form-control p-3 sizeinput"
+                                onkeydown="return event.keyCode !== 69 " class="form-control"
+                                formControlName="p_estimated_cost" placeholder="Enter estimated billing"
+                                aria-label="Username" aria-describedby="basic-addon1">
+
+                        </div>
+                        <div *ngIf="f['p_estimated_cost'].touched && f['p_estimated_cost'].invalid">
+                            <div *ngIf="f['p_estimated_cost'].errors && f['p_estimated_cost'].errors['required']">
+                                <p class="error-msg">Estimated billing is required</p>
+                            </div>
+                        </div>
+
+                    </div> -->
+
+
+                        <!-- <div class="row">
+                        <div class="col-sm">
+                            <p>Reporting manager <span>*</span></p>
+                            <select class="form-select sizeinput" [(value)]='reporting_manager'
+                                aria-label="Default select example" formControlName="reporting_manager_ref_id">
+                                <option value="" disabled selected>Select reporting manager</option>
+                                <option *ngFor="let item of allManager" [value]="item.id">
+                                    {{item.u_first_name +" "+ item.u_last_name}}
+                                </option>
+                            </select>
+                            <div *ngIf="f['reporting_manager_ref_id'].touched && f['reporting_manager_ref_id'].invalid">
+                                <div
+                                    *ngIf="f['reporting_manager_ref_id'].errors && f['reporting_manager_ref_id'].errors['required'] ">
+                                    <p class="error-msg">Reporting manager is required</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+
+                        <!-- <div class="row">
+                        <div class="col-sm">
+                            <p>Approver <span>*</span></p>
+                            <select class="form-select sizeinput" [(value)]='approver_manager'
+                                aria-label="Default select example" formControlName="approve_manager_ref_id">
+                                <option value="" disabled selected>Select approver</option>
+                                <option *ngFor="let item of allManager" [value]="item.id">
+                                    {{item.u_first_name +''+ item.u_last_name}}
+                                </option>
+                            </select>
+                            <div *ngIf="f['approve_manager_ref_id'].touched && f['approve_manager_ref_id'].invalid">
+                                <div
+                                    *ngIf="f['approve_manager_ref_id'].errors && f['approve_manager_ref_id'].errors['required']">
+                                    <p class="error-msg">Approver is required</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+
+
+                        <!-- <div class="row">
+                        <div class="col-sm">
+                            <p> Add task & File templates <span>*</span></p>
+                            <select class="form-select sizeinput" (change)="getSubTask($event)"
+                                aria-label="Default select example" formControlName="p_task_checklist_status">
+                                <option value="" disabled selected>Select task category</option>
+                                <option *ngFor="let item of taskCategories" [value]="item.id">
+                                    {{item.tpc_name}}
+                                </option>
+                            </select>
+                            <div *ngIf="f['p_task_checklist_status'].touched && f['p_task_checklist_status'].invalid">
+                                <div
+                                    *ngIf="f['p_task_checklist_status'].errors && f['p_task_checklist_status'].errors['required']">
+                                    <p class="error-msg">Task category is required</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> -->
+
+                        <!-- <div class="row">
+                        <div class="col-sm-12">
+                            <p> Sub task <span>*</span></p>
+                            <select class="form-select  sizeinput" (change)="subTask($event)"
+                                aria-label="Default select example" formControlName="project_related_task_list">
+                                <option value="" disabled selected>Select sub task category</option>
+                                <option *ngFor="let item of subTaskCategories" [value]="item?.task_name">
+                                    {{item.task_name?item.task_name:"NO RECORDS FOUND"}}
+                                </option>
+                            </select>
+
+                            <div
+                                *ngIf="f['project_related_task_list'].touched && f['project_related_task_list'].invalid">
+                                <div
+                                    *ngIf="f['project_related_task_list'].errors && f['project_related_task_list'].errors['required']">
+                                    <p class="error-msg">Sub task category is required</p>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div> -->
+
+                        <!-- <div class="row">
                 <div class="col-sm">
                     <p>Project status  <span >*</span></p>
                 <select class="form-select  sizeinput"  aria-label="Default select example" formControlName="p_status">                       
@@ -237,382 +442,299 @@
                 </div>
                 </div>
             </div> -->
-            <!-- <div class="row mobileView">
+                        <!-- <div class="row mobileView">
                 <div class="col-sm-6">
                     <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
                 </div>
             </div> -->
-            
-            
 
-            </div>
-             <div class="row">
-               
-                <div class="col-12">
-                    <button mat-button type="button" class="add-task" (click)="addTask()"><i class="bi bi-check2-circle"></i> Add Task</button>
-                </div>
-            </div>
-          
-            <form [formGroup]="taskForm">
-                <div formArrayName="subTasks">
-                  <div *ngFor="let task of subTasks?.controls; let i = index;">
-                    <div [formGroupName]="i">
-                      <mat-card>
-                        <!-- Form fields for each task --->
-                        <div class="row">
-                          <!-- <div class="col-1 text-center">
+
+
+                    </div>
+                    <div class="row">
+
+                        <div class="col-12">
+                            <button mat-button type="button" class="add-task" (click)="addTask()"><i
+                                    class="bi bi-check2-circle"></i> Add Task</button>
+                        </div>
+                    </div>
+
+                    <form [formGroup]="taskForm">
+                        <div formArrayName="subTasks">
+                            <div *ngFor="let task of subTasks?.controls; let i = index;">
+                                <div [formGroupName]="i">
+                                    <mat-card>
+                                        <!-- Form fields for each task --->
+                                        <div class="row">
+                                            <!-- <div class="col-1 text-center">
                             <mat-radio-button color="primary" class="example-radio-button" value="season"></mat-radio-button>
                           </div> -->
-                          <div class="col-6">
-                            <mat-form-field class="example-form-field">
-                              <mat-label>Add Task Here</mat-label>
-                              <textarea matInput formControlName="task_Name" class="mat-add-input"></textarea>
-                            </mat-form-field>
-                          </div>
-                          <div class="col-3">
-                            <mat-form-field>
-                              <mat-label>Status</mat-label>
-                              <mat-select formControlName="status">
-                              <mat-option *ngFor="let status of status" [value]="status.value">{{status.viewValue}}</mat-option>
-                              </mat-select>
-                            </mat-form-field>
-                          </div>
-                          <div class="col-3">
-                            <mat-form-field>
-                              <mat-label>Assignee</mat-label>
-                              <mat-select formControlName="assignee">
-                                <mat-option *ngFor="let people of allPeopleGroup" [value]="people.id">{{people.u_first_name}}</mat-option>
-                            </mat-select>
-                            </mat-form-field>
-                            
-                            
-                          </div>
-                          <div class="row mb-0 m">
-                               
-                            <div class="col-3">
-                              <button mat-button color="primary" (click)="addTask()" class="add-button">Add</button>
-                              <button mat-button (click)="removeTask(i)" class="cancel-button" >Remove</button>
+                                            <div class="col-6">
+                                                <mat-form-field class="example-form-field">
+                                                    <mat-label>Add Task Here</mat-label>
+                                                    <textarea matInput formControlName="task_name"
+                                                        class="mat-add-input"></textarea>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-3">
+                                                <mat-form-field>
+                                                    <mat-label>Status</mat-label>
+                                                    <mat-select formControlName="status">
+                                                        <mat-option *ngFor="let status of status"
+                                                            [value]="status.value">{{status.viewValue}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-3">
+                                                <mat-form-field>
+                                                    <mat-label>Assignee</mat-label>
+                                                    <mat-select formControlName="assignee">
+                                                        <mat-option *ngFor="let people of allPeopleGroup"
+                                                            [value]="people.id">{{people.u_first_name}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+
+
+                                            </div>
+                                            <div class="row mb-0 m">
+
+                                                <div class="col-3">
+                                                    <button mat-button color="primary" (click)="addTask()"
+                                                        class="add-button">Add</button>
+                                                    <button mat-button (click)="removeTask(i)"
+                                                        class="cancel-button">Remove</button>
+                                                </div>
+                                                <div class="col"></div>
+                                            </div>
+                                        </div>
+                                    </mat-card>
+                                </div>
                             </div>
-                            <div class="col"></div>
-                          </div>
                         </div>
-                      </mat-card>
+                    </form>
+
+                    <div class="row">
+                        <div class="col-sm"></div>
+                        <div class="col-sm-2">
+                            <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Submit</button>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </form>
-             
-            <div class="row">
-                <div class="col-sm"></div>                    
-                <div class="col-sm-2">
-                    <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Submit</button>
-                </div>    
             </div>
-        </div>
-    </form>
-      
+        </form>
+
     </div>
-   
+
 </div>
+
+
+
 <div class="container-fluid mobileView">
-    <div class="row mx-1 my-2">
+    <!-- <div class="row mx-1 my-2">
         <div class="col-sm">
             <h1>
-                <i  class="bi bi-arrow-left" (click)="goBack($event)"></i>  Add project </h1>
+                <i class="bi bi-arrow-left" (click)="goBack($event)"></i> Add project
+            </h1>
         </div>
-    </div>
+    </div> -->
     <div class="generic-form bg mx-1">
-        <form [formGroup]='projectForm' (ngSubmit)='addProject()' >
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-6">
-                <div class="row">
-                    <div class="col-sm">
-                        <h4>Project details</h4>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm">
-                        <p>Client <span >*</span></p>
-                        <select class="form-select" [(value)]='client' aria-label="Default select example" formControlName="c_ref_id">                       
-                            <option value="" selected disabled>Select client</option>
-                            <option *ngFor="let item of allClientList" [value]="item.id">
-                                {{item.c_name}}
-                            </option>
-                          </select>
-                         <div *ngIf="f['c_ref_id'].touched && f['c_ref_id'].invalid">
-                            <div *ngIf="f['c_ref_id'].errors && f['c_ref_id'].errors['required']" ><p class="error-msg">Client name is required</p></div>
-                         </div>
-                    </div>
-                    
-                </div>
+        <form [formGroup]='projectForm' (ngSubmit)='addProject()'>
             <div class="row">
-                <div class="col-sm">
-                    <p>Project name <span >*</span></p> 
-                    <input type="text" class="form-control p-3 sizeinput" formControlName="p_name" placeholder="Enter project name" aria-describedby="emailHelp"  autocomplete="off">
-                    <div *ngIf="f['p_name'].touched && f['p_name'].invalid" >
-                        <div *ngIf="f['p_name'].errors && f['p_name'].errors['required'] " ><p class="error-msg">Project name is required</p></div>
+                <div class="col-12">
+                    <div class="row">
+                        <h4><i class="bi bi-arrow-left mx-2" (click)="goBack($event)"></i>Project details</h4>
                     </div>
-                    <div *ngIf="f['p_name'].invalid && f['p_name'].hasError('pattern')" >
-                        <p class="error-msg">Cannot start with a space.</p>
-                    </div>
-                </div>
-            </div>
-            
-       
-            <div class="row">
-                <div class="col-sm">
-                    <p>Description </p>
-                    <div class="">
-                        <textarea class="form-control" placeholder="Enter your description.." formControlName="p_description"  style="height: 42px"></textarea>  
-                        <div *ngIf="f['p_description'].touched && f['p_description'].invalid" >
-                            <div *ngIf="f['p_description'].errors && f['p_description'].errors['required'] " ><p class="error-msg">Description is required</p></div>
+                    <div class="row mt-3 mx-1">
+                        <!-- client dropdown -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-1">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Select Client <b class="r-star">*</b></mat-label>
+                                <mat-select formControlName="c_ref_id" autocomplete="off" placeholder="Select"
+                                    panelClass="custom-select-panel" [disableOptionCentering]="true">
+                                    <mat-option *ngFor="let item of allClientList" [value]="item.id">
+                                        {{item.c_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['c_ref_id']?.touched && f['c_ref_id']?.invalid">
+                                <span class="text-errors" *ngIf="f['c_ref_id'].errors?.['required']">Client name is
+                                    required</span>
+                            </div>
                         </div>
-                        <div *ngIf="f['p_description'].invalid && f['p_description'].hasError('pattern')" >
-                            <p class="error-msg">Cannot start with a space.</p>
-                        </div>               
-                      </div>
-                </div>          
-            </div>
-           
-            <div class="row">
-                <div class="col-sm">
-                    <p>Start date<span >*</span></p>
-                    <input class="form-control" id="date-input" formControlName="p_start_date" type="date"  name="date-input" placeholder="date" (change)="onChange()">  
-                    <div *ngIf="f['p_start_date'].touched && f['p_start_date'].invalid" >
-                        <div *ngIf="f['p_start_date'].errors && f['p_start_date'].errors['required'] " ><p class="error-msg">Start date is required</p></div>
-                    </div>  
-                </div>        
-            </div>
-        
-            <div class="row">
-                <div class="col-sm">
-                    <p>End date<span >*</span></p>
-                    <input class="form-control" id="date-input" [min]="projectForm.value.p_start_date" formControlName="p_closure_date" type="date" name="date-input" placeholder="date"
-                    (change)="yearEndDateValidator()">  
-                    <div *ngIf="f['p_closure_date'].touched && f['p_closure_date'].invalid" >
-                        <div *ngIf="f['p_closure_date'].errors && f['p_closure_date'].errors['required'] " ><p class="error-msg">End date is required</p></div>
-                    </div> 
-                    <div *ngIf="invalidDate">
-                        <p class="error-msg">End date should be greater than start date.</p>
+                        <!-- project name -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-1">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Enter Project Name <b class="r-star">*</b></mat-label>
+                                <input matInput placeholder="Enter project name" formControlName="p_name"
+                                    autocomplete="off">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['p_name']?.touched && f['p_name']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['p_name'].errors && f['p_name'].errors['required'] ">Project name is
+                                    required</span>
+                                <span class="text-errors"
+                                    *ngIf="f['p_name'].invalid && f['p_name'].hasError('pattern')">
+                                    Cannot start with a space.
+                                </span>
+                            </div>
+                        </div>
+                        <!-- start date -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-1">
+                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                                <mat-label>Start Date <b class="r-star">*</b></mat-label>
+                                <input class="pt-1" type="date" matInput placeholder="Enter start date"
+                                    formControlName="p_start_date" autocomplete="off" (change)="onChange()">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['p_start_date']?.touched && f['p_start_date']?.invalid">
+                                <span class="text-errors" *ngIf="f['p_start_date'].errors?.['required']">Start date
+                                    is required</span>
+                            </div>
+                        </div>
+                        <!-- end date -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-1">
+                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                                <mat-label>End Date <b class="r-star">*</b></mat-label>
+                                <input class="pt-1" type="date" matInput placeholder="Enter end date"
+                                    formControlName="p_closure_date" (change)="yearEndDateValidator()"
+                                    [min]="projectForm.value.p_start_date">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['p_closure_date']?.touched && f['p_closure_date']?.invalid">
+                                <span class="text-errors" *ngIf="f['p_closure_date'].errors?.['required']">End date is
+                                    required</span>
+                            </div>
+                        </div>
+                        <!-- select team -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-1">
+                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                                <mat-label>Select Team <b class="r-star">*</b></mat-label>
+                                <mat-select formControlName="people_ref_list" autocomplete="off"
+                                    placeholder="Select team" panelClass="custom-select-panel"
+                                    [disableOptionCentering]="true" multiple (selectionChange)="matTeamSelect($event)">
+                                    <mat-option *ngFor="let item of allPeopleGroup" [value]="item.id">
+                                        {{item.u_first_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['people_ref_list'].touched && f['people_ref_list'].invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['people_ref_list'].errors && f['people_ref_list'].errors['required']">Team
+                                    list is required</span>
+                            </div>
+                        </div>
+                        <!-- project manager -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-1">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Project Manager <b class="r-star">*</b></mat-label>
+                                <mat-select formControlName="reporting_manager_ref_id" autocomplete="off"
+                                    placeholder="Select manager" panelClass="custom-select-panel"
+                                    [disableOptionCentering]="true">
+                                    <mat-option *ngFor="let item of allManager" [value]="item.id">
+                                        {{item.u_first_name +" "+ item.u_last_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="px-2"
+                                *ngIf="f['reporting_manager_ref_id']?.touched && f['reporting_manager_ref_id']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['reporting_manager_ref_id'].errors?.['required']">Manager is
+                                    required</span>
+                            </div>
+                        </div>
+                        <!-- estimated hours -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-1">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Estimated Hours <b class="r-star">*</b></mat-label>
+                                <input matInput type="number" onkeydown="return event.keyCode !== 69"
+                                    oninput="this.value = this.value.replace('.', '').replace(/[^\d]/g, '');" appHypen
+                                    formControlName="p_estimated_hours" placeholder="Enter estimated hours">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['p_estimated_hours'].touched && f['p_estimated_hours'].invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['p_estimated_hours'].errors && f['p_estimated_hours'].errors['required']">Estimated
+                                    hours is required</span>
+                            </div>
+                        </div>
+                        <!-- billing -->
+                        <div class="col-sm-12 col-md-6 col-lg-3 mb-1">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Estimated Billing <b class="r-star">*</b></mat-label>
+                                <input matInput placeholder="Enter billing amount"
+                                    onkeydown="return event.keyCode !== 69 " formControlName="p_estimated_cost"
+                                    aria-label="Username" aria-describedby="basic-addon1">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['p_estimated_cost'].touched && f['p_estimated_cost'].invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['p_estimated_cost'].errors && f['p_estimated_cost'].errors['required']">Estimated
+                                    billing is required</span>
+                            </div>
+                        </div>
                     </div>
-                </div>      
-            </div>
 
-           
-            <div class="row">
-                <div class="col-sm">
-                  
-                    <p id="divshow">Employee list <span >*</span></p>
-                    <div style="margin: 0;" class="row container-fluid"  id="divshow">
-                        <ng-multiselect-dropdown  [placeholder]="'Select people list'"  [settings]="peopleListSetting"
-                        [data]="allPeopleGroup" (onSelect)="onPeopleGroupSelect($event)"  (onSelectAll)="onPeopleGroupSelectAll($event)" 
-                         formControlName="people_ref_list">
-                        </ng-multiselect-dropdown>
-                        
-                        <div *ngIf="f['people_ref_list'].touched && f['people_ref_list'].invalid" >
-                            <div *ngIf="f['people_ref_list'].errors && f['people_ref_list'].errors['required']" ><p class="error-msg">Employee list is required</p></div>
-                        </div> 
-                    </div>
-                    
-                </div>         
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <p>Project Status <span >*</span></p>
-                    <select class="form-select sizeinput" aria-label="Default select example" formControlName="p_status">                       
-                        <option value="" disabled selected>Select Status</option>
-                         <option *ngFor="let status of status" [value]="status.value">{{status.viewValue}}
-                         </option>
-                       </select>
-                       <div *ngIf="f['p_status'].touched && f['p_status'].invalid" >
-                        <div *ngIf="f['p_status'].errors && f['p_status'].errors['required']"><p class="error-msg">Project Status is required</p></div>
-                    
-                  </div>
-                  </div>
-                  </div>
-            </div>
-               
-            <div class="col-sm-12 col-md-12 col-lg-6">
-                <div class="row">
-                    <div class="col-sm">
-                        <h4>Estimation/manager/approver details</h4>
-                    </div>
-                </div>
-            <div class="row">
-                <div class="col-sm">
-                    <p>Estimated hours <span >*</span></p>
-                    <div class="input-group">
-                        <span class="input-group-text" id="basic-addon1"><i style="color: gray;" class="bi bi-clock"></i></span>
-                        <input type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" oninput="this.value = this.value.replace('.', '').replace(/[^\d]/g, '');" class="form-control" formControlName="p_estimated_hours" placeholder="Enter estimated hours" aria-label="Username" aria-describedby="basic-addon1" appHypen> 
-                      </div>
-                      <div *ngIf="f['p_estimated_hours'].touched && f['p_estimated_hours'].invalid" >
-                        <div *ngIf="f['p_estimated_hours'].errors && f['p_estimated_hours'].errors['required']" ><p class="error-msg">Estimated hours is required</p></div>
-                    </div>
-                </div>
-            </div>
-   
-            <div class="row">
-                <div class="col-sm">
-                    <p>Estimated billing <span >*</span></p>
-                    <div class="input-group">    
-                        <span class="input-group-text" id="basic-addon1"><i style="color: gray;" class="bi bi-currency-rupee"></i></span>
-                        <input type="number"  onkeydown="return event.keyCode !== 69 " class="form-control" formControlName="p_estimated_cost" placeholder="Enter estimated billing" aria-label="Username" aria-describedby="basic-addon1" >
-                      </div>
-                      <div *ngIf="f['p_estimated_cost'].touched && f['p_estimated_cost'].invalid" >
-                        <div *ngIf="f['p_estimated_cost'].errors && f['p_estimated_cost'].errors['required']" ><p class="error-msg">Estimated billing is required</p></div>
-                    </div>
-                </div>
-            </div>
-       
-            <div class="row">
-                <div class="col-sm">
-                    <p>Reporting manager  <span >*</span></p>
-                    <select class="form-select" [(value)]='reporting_manager' aria-label="Default select example" formControlName="reporting_manager_ref_id">                       
-                       <option value="" disabled selected>Select reporting manager</option>
-                        <option *ngFor="let item of allManager" [value]="item.id">
-                            {{item.u_first_name +" "+ item.u_last_name}}
-                        </option>
-                      </select>
-                      <div *ngIf="f['reporting_manager_ref_id'].touched && f['reporting_manager_ref_id'].invalid" >
-                        <div *ngIf="f['reporting_manager_ref_id'].errors && f['reporting_manager_ref_id'].errors['required'] " ><p class="error-msg">Reporting manager is required</p></div>
-                    </div>
-                </div>            
-            </div>
-         
-            <div class="row">
-                <div class="col-sm">
-                    <p>Approver  <span >*</span></p>
-                    <select class="form-select" [(value)]='approver_manager' aria-label="Default select example" formControlName="approve_manager_ref_id">                       
-                        <option value="" disabled selected>Select approver</option>
-                        <option *ngFor="let item of allManager" [value]="item.id">
-                            {{item.u_first_name +''+ item.u_last_name}}
-                        </option>
-                      </select>
-                      <div *ngIf="f['approve_manager_ref_id'].touched && f['approve_manager_ref_id'].invalid" >
-                        <div *ngIf="f['approve_manager_ref_id'].errors && f['approve_manager_ref_id'].errors['required']"><p class="error-msg">Approver is required</p></div>
-                    </div>
-                </div>            
-            </div>
-        
-           
-            <div class="row">
-                <div class="col-sm"  >
-                        <div  class="row container-fluid"  id="divshow">
-                            <p  id="divshow"> Add task & File templates <span >*</span></p>
-                        <select class="form-select" (change)="getSubTask($event)"  aria-label="Default select example" formControlName="p_task_checklist_status">                       
-                            <option value="" disabled selected>Select task category</option>
-                            <option *ngFor="let item of taskCategories" [value]="item.id">
-                                {{item.tpc_name}}
-                            </option>
-                          </select>
-                          <div *ngIf="f['p_task_checklist_status'].touched && f['p_task_checklist_status'].invalid" >
-                            <div *ngIf="f['p_task_checklist_status'].errors && f['p_task_checklist_status'].errors['required']"><p class="error-msg">Task category is required</p></div>
-                        </div>
-                    </div>
-                    
-                </div>         
-            </div>
-            <div class="row">
-                <div class="col-sm" >
-                        <div  class="row container-fluid"  >
-                            <p  id="divshow"> Sub task <span >*</span></p>
-                        <select class="form-select" (change)="subTask($event)"  aria-label="Default select example" formControlName="project_related_task_list">                       
-                            <option value="" disabled selected>Select sub task category</option>
-                            <option *ngFor="let item of subTaskCategories" [value]="item?.task_name">
-                                {{item.task_name?item.task_name:"NO RECORDS FOUND"}}
-                            </option>
-                          </select>
-                         
-                          <div *ngIf="f['project_related_task_list'].touched && f['project_related_task_list'].invalid" >
-                            <div *ngIf="f['project_related_task_list'].errors && f['project_related_task_list'].errors['required']"><p class="error-msg">Sub task category is required</p></div>
-                        </div>
-                    </div>
-                    
-                </div>         
-            </div>
-            <!-- <div class="row">
-                <div class="col-sm">
-                    <p>Project status  <span >*</span></p>
-                <select class="form-select"  aria-label="Default select example" formControlName="p_status">                       
-                    <option value="" disabled selected>Select status</option>
-                    <option value="Open">Open</option>
-                    <option value="Pending" >Pending</option>
-                  </select>
-                <div *ngIf="f['p_status'].touched && f['p_status'].invalid" >
-                    <div *ngIf="f['p_status'].errors && f['p_status'].errors['required']"><p class="error-msg">Status is required</p></div>
-                </div>
-                </div>
-            </div>
-            -->
-            
 
-            </div>
-        </div>
-        <div class="row">
-               
-            <div class="col-12">
-                <button mat-button type="button" class="add-task" (click)="addTask()"><i class="bi bi-check2-circle"></i> Add Task</button>
-            </div>
-        </div>
-      
-        <form [formGroup]="taskForm">
-            <div formArrayName="subTasks">
-              <div *ngFor="let task of subTasks?.controls; let i = index;">
-                <div [formGroupName]="i">
-                  <mat-card>
-                    <!-- Form fields for each task --->
-                    <div class="row mx-0 gx-0">
-                      <!-- <div class="col-1 text-center">
-                        <mat-radio-button color="primary" class="example-radio-button" value="season"></mat-radio-button>
-                      </div> -->
-                      <div class="col-12 px-0">
-                        <mat-form-field class="example-form-field">
-                          <mat-label>Add Task Here</mat-label>
-                          <textarea matInput formControlName="task_Name" class="mat-add-input"></textarea>
-                        </mat-form-field>
-                      </div>
-                      <div class="col-6 px-0">
-                        <mat-form-field>
-                          <mat-label>Status</mat-label>
-                          <mat-select formControlName="status">
-                          <mat-option *ngFor="let status of status" [value]="status.value">{{status.viewValue}}</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
-                      <div class="col-6 px-0">
-                        <mat-form-field>
-                          <mat-label>Assignee</mat-label>
-                          <mat-select formControlName="assignee">
-                            <mat-option *ngFor="let people of allPeopleGroup" [value]="people.id">{{people.u_first_name}}</mat-option>
-                        </mat-select>
-                        </mat-form-field>
-                        
-                        
-                      </div>
-                      <div class="row mb-0 mx-0">
-                           
-                        <div class="col-12 d-flex justify-content-start px-0">
-                          <button mat-button color="primary" (click)="addTask()" class="add-button">Add</button>
-                          <button mat-button (click)="removeTask(i)" class="cancel-button" >Remove</button>
+                    <form [formGroup]="taskForm">
+                        <div formArrayName="subTasks">
+                            <div *ngFor="let task of subTasks?.controls; let i = index;">
+                                <div [formGroupName]="i">
+                                    <mat-card>
+                                        <!-- Form fields for each task --->
+                                        <div class="row mx-0 gx-0">
+                                            <!-- <div class="col-1 text-center">
+                                        <mat-radio-button color="primary" class="example-radio-button" value="season"></mat-radio-button>
+                                    </div> -->
+                                            <div class="col-12 px-0">
+                                                <mat-form-field class="example-form-field">
+                                                    <mat-label>Add Task Here</mat-label>
+                                                    <textarea matInput formControlName="task_name"
+                                                        class="mat-add-input"></textarea>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-6 px-0">
+                                                <mat-form-field>
+                                                    <mat-label>Status</mat-label>
+                                                    <mat-select formControlName="status">
+                                                        <mat-option *ngFor="let status of status"
+                                                            [value]="status.value">{{status.viewValue}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-6 px-0">
+                                                <mat-form-field>
+                                                    <mat-label>Assignee</mat-label>
+                                                    <mat-select formControlName="assignee">
+                                                        <mat-option *ngFor="let people of allPeopleGroup"
+                                                            [value]="people.id">{{people.u_first_name}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+
+
+                                            </div>
+                                            <div class="row mb-0 mx-0">
+
+                                                <div class="col-12 d-flex justify-content-start px-0">
+                                                    <button mat-button color="primary" (click)="addTask()"
+                                                        class="add-button">Add</button>
+                                                    <button mat-button (click)="removeTask(i)"
+                                                        class="cancel-button">Remove</button>
+                                                </div>
+                                                <div class="col"></div>
+                                            </div>
+                                        </div>
+                                    </mat-card>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col"></div>
-                      </div>
+                    </form>
+
+                    <div class="row">
+                        <div class="col-sm"></div>
+                        <div class="col-sm-2">
+                            <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Submit</button>
+                        </div>
                     </div>
-                  </mat-card>
                 </div>
-              </div>
             </div>
-          </form>
-         
-        <div class="row">
-            <div class="col-sm"></div>                    
-            <div class="col-sm-2">
-                <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Submit</button>
-            </div>    
-        </div>
-    </form>
-    
+        </form>
+
     </div>
-   
-</div>
 
+</div>
