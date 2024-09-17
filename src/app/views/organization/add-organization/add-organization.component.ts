@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors, FormArray, ValidatorFn } from '@angular/forms';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
@@ -7,7 +7,6 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 @Component({
   selector: 'app-add-organization',
   templateUrl: './add-organization.component.html',
@@ -83,7 +82,7 @@ export class AddOrganizationComponent implements OnInit {
   createAdminFormGroup(admin): FormGroup {
     return this._fb.group({
       admin_name: [admin.admin_name, [Validators.required, Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/)]],
-      admin_email: [admin.admin_email, [Validators.required, Validators.email]],
+      admin_email: [admin.admin_email, [Validators.required, Validators.email,this.emailMatchValidator()]],
       admin_phone_number: [admin.admin_phone_number, [Validators.required,this.phoneNumberLengthValidator]],
       admin_status: [admin.admin_status],
     });
@@ -100,11 +99,24 @@ export class AddOrganizationComponent implements OnInit {
   adminintForm(){
     this.adminForm = this._fb.group({
       admin_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/),Validators.required]],
-      admin_email: ['', [Validators.required, Validators.email]],
+      admin_email: ['', [Validators.required, Validators.email, this.emailMatchValidator()]],
       admin_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator]],
       admin_status: [true],
     })
   }
+  
+
+ emailMatchValidator(): ValidatorFn {
+  return (adminEmailControl: AbstractControl): { [key: string]: any } | null => {
+    if (!adminEmailControl.value || !this.organizationForm.get('org_email').value) {
+      return null;
+    }
+    return adminEmailControl.value === this.organizationForm.get('org_email').value
+      ? { 'emailMatch': true }
+      : null;
+  };
+}
+
   addAdmin() {
    if (this.adminForm.invalid) {
     this.adminForm.markAllAsTouched()
@@ -215,6 +227,11 @@ export class AddOrganizationComponent implements OnInit {
     if(!this.adminList.length){
       this.isAdminForm = !this.isAdminForm;
     }
+  }
+  resetForm(){
+    this.isAdminForm=!this.isAdminForm;
+   this.adminintForm()
+    
   }
   phoneNumberLengthValidator(control: AbstractControl): { [key: string]: boolean } | null {
     const phoneNumber = control.value;

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
@@ -124,7 +124,7 @@ export class UpdateOrganizationComponent implements OnInit {
   adminintForm(){
     this.adminForm = this._fb.group({
       admin_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/),Validators.required]],
-      admin_email: ['', [Validators.required, Validators.email]],
+      admin_email: ['', [Validators.required, Validators.email,this.emailMatchValidator()]],
       admin_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator()]],
       admin_status: [true],
       isEditing:false,
@@ -272,6 +272,16 @@ export class UpdateOrganizationComponent implements OnInit {
     this.adminForm.markAllAsTouched()
   }
   }
+  emailMatchValidator(): ValidatorFn {
+    return (adminEmailControl: AbstractControl): { [key: string]: any } | null => {
+      if (!adminEmailControl.value || !this.organizationForm.get('org_email').value) {
+        return null;
+      }
+      return adminEmailControl.value === this.organizationForm.get('org_email').value
+        ? { 'emailMatch': true }
+        : null;
+    };
+  }
   phoneNumberLengthValidator() {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const phoneNumber: string = control.value;
@@ -383,7 +393,7 @@ export class UpdateOrganizationComponent implements OnInit {
   createAdminFormGroup(admin): FormGroup {
     return this._fb.group({
       admin_name: [admin.admin_name, [Validators.required, Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/)]],
-      admin_email: [admin.admin_email, [Validators.required, Validators.email]],
+      admin_email: [admin.admin_email, [Validators.required, Validators.email,this.emailMatchValidator()]],
       admin_phone_number: [admin.admin_phone_number, [Validators.required,this.phoneNumberLengthValidator()]],
       admin_status: [admin.admin_status],
       id:[admin.id]

@@ -190,6 +190,10 @@
                 <span
                     *ngIf="a['admin_email']?.invalid && a['admin_email']?.errors['required']">Email
                     Id is required</span>
+                    <span
+                    *ngIf="a['admin_email']?.invalid && a['admin_email']?.errors['emailMatch']">
+                    Admin emails must be unique.
+                </span>
                 </div>
              
               </div>
@@ -353,6 +357,10 @@
                     <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email').hasError('email') && getAdminFormGroup(i)?.get('admin_email').touched">
                       Invalid email Id.
                     </mat-error>
+                    <mat-error class="error-text"
+                    *ngIf="getAdminFormGroup(i)?.get('admin_email').touched && getAdminFormGroup(i)?.get('admin_email')?.errors['emailMatch']">
+                    Admin emails must be unique.
+                </mat-error>
                 </div>
                 
                 <div class="column py-2">
@@ -394,7 +402,7 @@
             <div class="col-1 d-flex align-items-center p-0"  *ngIf="admin?.isEditing">
               <img src="../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Save" style="color:#50C20D;" (click)="saveAdmin(i)"/>
               <img src="../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Cancel" (click)="toggleFormControlState(i, false)"/>
-              <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(admin.id,i)"/>
+              <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(admin.id,i)" *ngIf="adminList.length >1"/>
             </div>
             <div class="col-1 d-flex align-items-center p-0" (click)="toggleFormControlState(i, true)"  *ngIf="!admin?.isEditing">
               <img src="../../../../assets/images/Edit.svg" class="icon-image"  container="body" ngbTooltip="Edit" />

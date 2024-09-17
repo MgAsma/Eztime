@@ -86,7 +86,7 @@
                     (change)="uploadImageFile($event)">
                 </div> 
                 <div class="error-msg" *ngIf="f['leave_application_file_attachment'].errors && f['leave_application_file_attachment'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</div>
-                <b *ngIf="!f['leave_application_file_attachment']?.errors">File format. Only .jpg, .jpeg, .png formats are allowed.</b>
+                <p *ngIf="!f['leave_application_file_attachment']?.errors" style="font-size: 10px;">File format. Only .jpg, .jpeg, .png formats are allowed.</p>
             </div>
            
      
@@ -301,7 +301,7 @@
                     (change)="uploadImageFile($event)">
                 </div> 
                 <div class="error-msg" *ngIf="f['leave_application_file_attachment'].errors && f['leave_application_file_attachment'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</div>
-                <b *ngIf="!f['leave_application_file_attachment']?.errors">File format. Only .jpg, .jpeg, .png formats are allowed.</b>
+                <p *ngIf="!f['leave_application_file_attachment']?.errors" style="font-size: 10px;">File format. Only .jpg, .jpeg, .png formats are allowed.</p>
             </div>
         
            

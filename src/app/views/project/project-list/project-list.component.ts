@@ -112,7 +112,7 @@ export class ProjectListComponent implements OnInit {
       page_number: this.page,
       data_per_page: this.tableSize,
       organization_id: this.orgId,
-      search_key: this.term,
+      // search_key: this.term,
       user_id: this.user_id
     }
 

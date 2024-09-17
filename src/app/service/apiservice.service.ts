@@ -201,7 +201,7 @@ export class ApiserviceService {
     return this.http.get(`${this.baseurl}/projects?page_number=1&data_per_page=2&pagination=${params.pagination}`, { headers: this.headers })
   }
   getProjectDetailsPage(params) {
-    return this.http.get(`${this.baseurl}/projects?user_id=${params.user_id}&search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&organization_id=${params.organization_id}`, { headers: this.headers })
+    return this.http.get(`${this.baseurl}/projects?user_id=${params.user_id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&organization_id=${params.organization_id}`, { headers: this.headers })
   }
   getProjectDetailsByClientId(id: any) {
     return this.http.get(`${this.baseurl}/projectbyclients/?client_id=${id}`, { headers: this.headers })
@@ -220,7 +220,7 @@ export class ApiserviceService {
   //reporting/Aprrover manager
   getManagerDetails(params, orgId) {
     //return this.http.get(`${this.baseurl}/profile-custom-user?page_number=1&data_per_page=2&pagination=${params.pagination}`,{headers:this.headers})
-    return this.http.get(`${this.baseurl}/profile-custom-user?page_number=1&data_per_page=2&pagination=${params.pagination}&filter=MANAGER&organization_id=${orgId}`, { headers: this.headers })
+    return this.http.get(`${this.baseurl}/profile-custom-user?page_number=1&data_per_page=2&pagination=${params.pagination}&organization_id=${orgId}`, { headers: this.headers })
   }
   //reporting/Aprrover manager
 

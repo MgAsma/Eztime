@@ -189,15 +189,12 @@
                       Id is required
                   </span>
                   
-                  
-                  </div>
-                  <div *ngIf="a['admin_email']?.touched"
-                  class="error-text">
                   <span
-                      *ngIf="f['org_email']?.valid && f['org_email']?.value === a['admin_email']?.value">
-                      Same email
-                  </span>
+                  *ngIf="a['admin_email']?.invalid && a['admin_email']?.errors['emailMatch']">
+                  Admin emails must be unique.
+              </span>
                   </div>
+                  
                 </div>
                 <div class="column">
                   <div class="p-ab">
@@ -234,7 +231,7 @@
             </div>
             <div class="col-1  d-flex justify-content-center align-items-center"  [attr.disabled]="adminForm.invalid">
               <img src="../../../../assets/images/tick.svg" class="icon-image" container="body" [ngbTooltip]="adminForm.invalid ? 'Add admin details':'Add'" (click)="addAdmin();"/>
-              <img src="../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Cancel" *ngIf="adminList.length" (click)="isAdminForm=!isAdminForm"/>
+              <img src="../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Cancel" *ngIf="adminList.length" (click)="resetForm()"/>
             </div>
           
           </div>
@@ -244,9 +241,7 @@
       <form class="row me-1 mt-4" [formGroup]="getAdminFormGroup(i)">
         <div class="col-11">
           <div  tabindex="0" class="row-container2"    [ngClass]="{
-            'editable': admin.isEditing
-            
-          }" >
+            'editable': admin.isEditing }" >
             
             <div class="column py-2">
               <div class="p-ab">
@@ -277,6 +272,10 @@
                 <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email').hasError('email') && getAdminFormGroup(i)?.get('admin_email').touched">
                   Invalid email Id.
                 </mat-error>
+                <mat-error class="error-text"
+                *ngIf="getAdminFormGroup(i)?.get('admin_email').touched && getAdminFormGroup(i)?.get('admin_email')?.errors['emailMatch']">
+                Admin emails must be unique.
+            </mat-error>
             </div>
             
             <div class="column py-2">
@@ -301,7 +300,7 @@
                 <mat-label class="admin-labels">Status</mat-label><b class="r-star" >*</b>
               </div>
               <mat-slide-toggle class="pt-1" formControlName="admin_status"  [disabled]="!admin.isEditing">
-                {{ getAdminFormGroup(i)?.get('admin_status')?.value === true ? 'Active' : 'Inactive' }}
+                {{ getAdminFormGroup(i)?.get('admin_status')?.value  ? 'Active' : 'Inactive' }}
               </mat-slide-toggle>
             </div>
           </div>
@@ -310,7 +309,7 @@
         <div class="col-1 d-flex align-items-center p-0"  *ngIf="admin?.isEditing">
           <img src="../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Save" style="color:#50C20D;" (click)="saveAdmin(i)"/>
           <img src="../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Cancel" (click)="toggleFormControlState(i, false)"/>
-          <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(i)"/>
+          <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(i)" *ngIf="adminList.length >1"/>
         </div>
         <div class="col-1 d-flex align-items-center p-0" (click)="toggleFormControlState(i, true)"  *ngIf="!admin?.isEditing">
           <img src="../../../../assets/images/Edit.svg" class="icon-image"  container="body" ngbTooltip="Edit" />
