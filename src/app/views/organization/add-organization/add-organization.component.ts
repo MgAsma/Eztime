@@ -111,7 +111,7 @@ export class AddOrganizationComponent implements OnInit {
     if (!adminEmailControl.value || !this.organizationForm.get('org_email').value) {
       return null;
     }
-    return adminEmailControl.value === this.organizationForm.get('org_email').value
+    return adminEmailControl.value === this.organizationForm.get('org_email').value 
       ? { 'emailMatch': true }
       : null;
   };

@@ -13,6 +13,18 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 })
 export class CreateTimesheetComponent implements OnInit {
   BreadCrumbsTitle: any = 'My Timesheet';
+  isExpanded: boolean = false;
+  panels = [
+    { title: 'Panel 1', subtitle: 'Subtitle 1', content: 'This is the content of Panel 1' },
+    { title: 'Panel 2', subtitle: 'Subtitle 2', content: 'This is the content of Panel 2' },
+    { title: 'Panel 3', subtitle: 'Subtitle 3', content: 'This is the content of Panel 3' }
+  ];
+
+  expandedPanel: number | null = null;
+
+  
+  
+  @ViewChild("panel") panel :MatExpansionPanel;
   timeSheetForm!: FormGroup;
   createdProject!: FormArray;
   taskForm!: FormGroup; 
@@ -34,11 +46,12 @@ export class CreateTimesheetComponent implements OnInit {
   params = {
     pagination: "FALSE"
   };
-  isTaskForm: boolean = false;
+  //isTaskForm: boolean = false;
   originalTaskData: any = [];
   isSaved: boolean = false;
-  showSave: boolean = false;
+  //showSave: boolean = false;
   @ViewChild(MatAccordion) accordion: MatAccordion;
+  isTaskSubmitted: boolean;
   //remainingHours: number;
 
   constructor(
@@ -51,24 +64,15 @@ export class CreateTimesheetComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.initializeForm();
+    this.taskInitForm()
     this.addProjectDetails(); 
     this.getClient();
   }
-
-  expandPanel(matExpansionPanel: MatExpansionPanel, event: any) {
-    event.stopPropagation();
-    if (!this._isExpansionIndicator(event.target)) {
-      matExpansionPanel.close();
-    }
+  
+  togglePanel(index: number): void {
+    this.expandedPanel = this.expandedPanel === index ? null : index;
   }
-
-  private _isExpansionIndicator(target: EventTarget | any): boolean {
-    const expansionIndicatorClass = "mat-expansion-indicator";
-    return (
-      target.classList && target.classList.contains(expansionIndicatorClass)
-    );
-  }
-
+  
   getRemainingHours(i: number): number {
     const totalHours = 8;
     const taskArray = this.getTaskArray(i);
@@ -87,6 +91,9 @@ export class CreateTimesheetComponent implements OnInit {
       response: this.builder.array([])
     });
 
+   
+  }
+  taskInitForm(){
     this.taskForm = this.builder.group({
       task_id: ['', Validators.required],
       time_spent: ['', Validators.required],
@@ -96,10 +103,10 @@ export class CreateTimesheetComponent implements OnInit {
 
   createProjectDetails(): FormGroup {
     return this.builder.group({
-      client_id: ['', Validators.required],
-      project_id: ['', Validators.required],
+      client_id: ['',Validators.required],
+      project_id: ['',Validators.required],
       description: [''],
-      timesheet_applied_datetime: ['', Validators.required],
+      timesheet_applied_datetime: ['',Validators.required],
       projectList: [],
       taskList: [],
       time: [],
@@ -109,6 +116,7 @@ export class CreateTimesheetComponent implements OnInit {
       isSaved:[false]
     });
   }
+  
  
   enableAction(i){
     const projectGroup = this.getProjectControl(i);
@@ -121,50 +129,42 @@ export class CreateTimesheetComponent implements OnInit {
   }
 
   addProjectDetails(): void {
-    this.removeAllValidators()
     this.createdProject = this.timeSheetForm.get('response') as FormArray;
-    
     const projectGroup = this.createProjectDetails();
-    
+  
+    // Add the new form group to the form array
     this.createdProject.push(projectGroup);
-    this.isSaved = false;
     
-  }
-  removeAllValidators() {
-    // Get the FormArray instance
-    const tasksArray = this.timeSheetForm.get('response') as FormArray;
-  
-    // Remove validators from the FormArray itself
-    tasksArray.clearValidators();
-    tasksArray.updateValueAndValidity();
-  
-    // Remove validators from each FormGroup inside the FormArray
-    tasksArray.controls.forEach(control => {
-      if (control instanceof FormGroup) {
-        Object.keys(control.controls).forEach(key => {
-          const formControl = control.get(key);
-          if (formControl) {
-            formControl.clearValidators();
-            formControl.updateValueAndValidity();
-          }
-        });
-      }
+    // Set initial values for the fields, especially required fields
+    projectGroup.patchValue({
+      client_id: [], 
+      project_id: [], 
+      description: '',
+      timesheet_applied_datetime: [],
+      projectList: [],
+      taskList: [],
+      time: [],
+      task_details: []
     });
+  
+    // Mark the form group as untouched and pristine
+    projectGroup.markAsPristine();
+    projectGroup.markAsUntouched();
+  
+    // Optionally clear validation for the whole form array
+    this.createdProject.clearValidators();
+    this.createdProject.clearAsyncValidators();
+    this.isSaved = false
+    console.log(this.createdProject);
   }
+  
+  
   
   getProjectLength(): number {
     return (this.timeSheetForm.get('response') as FormArray).length;
   }
 
-  addTaskToProject(projectIndex: number): void {
-    const taskArray = this.getTaskArray(projectIndex);
-    taskArray.push(this.builder.group({
-      task_id: ['', Validators.required],
-      time_spent: ['', Validators.required],
-      isEditing: [false]
-    }));
-  }
-
+  
   getTaskArray(projectIndex: number): FormArray {
     return this.createdProject.at(projectIndex).get('task_details') as FormArray;
   }
@@ -210,15 +210,18 @@ export class CreateTimesheetComponent implements OnInit {
     const taskArray = this.getTaskArray(projectIndex);
     if (this.taskForm.invalid) {
       this.taskForm.markAllAsTouched();
+       this.isTaskSubmitted = true;
     } else {
       if (this.getRemainingHours(projectIndex) !== 0 && this.extractNumber(this.taskForm.get('time_spent').value) > this.getRemainingHours(projectIndex)) {
         this.api.showError(`You left only ${this.getRemainingHours(projectIndex)} hours`);
         projectGroup.get('isTaskForm').setValue(true);
       } else {
         projectGroup.get('isTaskForm').setValue(false);
-
+        this.isTaskSubmitted = false;
         taskArray.push(this.builder.group(this.taskForm.value));
-        this.resetTaskForm();
+
+        // this.resetTaskForm(projectIndex);
+        this.taskForm.reset();
       }
       }
   
@@ -229,21 +232,37 @@ export class CreateTimesheetComponent implements OnInit {
     return numericValue ? +numericValue[0] : null;
   }
 
-  saveTimesheet(i): void {
-    if (this.timeSheetForm.invalid && this.taskForm.invalid) {
-      this.timeSheetForm.markAllAsTouched();
-      this.taskForm.markAllAsTouched();
+ 
+  saveTimesheet(i: number): void {
+    const projectGroup = this.getProjectControl(i);
+  
+    // Check if the specific project's form controls and task form are valid
+    const isProjectGroupInvalid = projectGroup.invalid;
+    const isTaskFormInvalid = projectGroup.get('isTaskForm').value ? this.taskForm.invalid : false;
+  
+    if (isProjectGroupInvalid || isTaskFormInvalid) {
+      // Mark all controls as touched for the specific index
+      projectGroup.markAllAsTouched();
+      if (projectGroup.get('isTaskForm').value) {
+        this.taskForm.markAllAsTouched();
+      }
+  
       this.api.showWarning('Please select the mandatory fields');
-     this.isSaved = false;
+      this.isSaved = false;
+      this.isTaskSubmitted = true;
     } else {
-      const projectGroup = this.getProjectControl(i);
-      projectGroup.get('showSave').setValue(true);
-      projectGroup.get('isSaved').setValue(true);
-     
-     this.isSaved = true;
+      if ((projectGroup.get('isTaskForm').value && this.taskForm.invalid) || (projectGroup.get('isTaskForm').value && this.taskForm.valid)) {
+        this.api.showWarning('Please add task details before save');
+        this.isTaskSubmitted = true;
+      } else {
+        this.isTaskSubmitted = false;
+        projectGroup.get('showSave').setValue(true);
+        projectGroup.get('isSaved').setValue(true);
+        this.isSaved = true;
+      }
     }
   }
-
+  
   deleteTask(projectIndex: number, taskIndex: number): void {
     const taskArray = this.getTaskArray(projectIndex);
     taskArray.removeAt(taskIndex);
@@ -278,15 +297,13 @@ export class CreateTimesheetComponent implements OnInit {
   
   
 
-  resetTaskForm(): void {
+  resetTaskForm(i): void {
     this.taskForm.reset();
+    const projectGroup = this.getProjectControl(i);
+    projectGroup.get('isTaskForm').setValue(false);
   }
 
-  onProjectImageChange(event: any, projectIndex: number): void {
-    const file = event.target.files[0];
-    const projectFormGroup = this.createdProject.at(projectIndex) as FormGroup;
-    projectFormGroup.patchValue({ project_image: file });
-  }
+ 
 
   addTimeSheet(): void {
     if (this.timeSheetForm.invalid) {

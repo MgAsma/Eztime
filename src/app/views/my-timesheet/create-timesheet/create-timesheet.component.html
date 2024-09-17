@@ -5,11 +5,12 @@
       <button mat-raised-button class="mat-btn-s" type="submit" (click)="addTimeSheet()">Submit Timesheet</button>
     </div>
     <form [formGroup]="timeSheetForm">
-      <mat-accordion>
+      <mat-accordion >
         <div formArrayName="response">
-          <mat-expansion-panel class="my-2" *ngFor="let project of createdProject.controls; let i = index"
+          <mat-expansion-panel class="my-2"  *ngFor="let project of createdProject.controls; let i = index" 
             [formGroupName]="i" >
-            <mat-expansion-panel-header style="box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;" >
+            <mat-expansion-panel-header style="box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;" 
+           >
 
               <!-- <mat-panel-title> -->
                 <div class="row w-100 d-flex align-items-center" style="font-size: 13px;">
@@ -19,16 +20,20 @@
                   </div>
                 </div>
 
-                  
+                <div class="col text-end">
+                  <mat-label class="me-1"><i class="bi bi-clock"></i> 8 Hours</mat-label>
                  
-                  <div class="col text-end">
-                    <mat-label class="me-1"><i class="bi bi-clock"></i> 8 Hours</mat-label>
+                </div>
+                 
+                  <div class="col text-center">
                    
-                    <img src="../../../../assets/images/Option.svg" class="me-1" *ngIf="project.get('showSave').value" (click)="enableAction(i)"/>
+                    <img src="../../../../assets/images/Option.svg" class="me-1 toolbar-btn" style="top:-2px" *ngIf="project.get('showSave').value" (click)="$event.stopPropagation();enableAction(i)"/>
                    
-                    <button mat-button type="button"class="save-btn" *ngIf="!project.get('showSave').value" (click)="saveTimesheet(i)">
+                    <button  mat-button type="button"class="save-btn toolbar-btn" *ngIf="!project.get('showSave').value"  (click)="$event.stopPropagation();saveTimesheet(i)">
                       Save
                     </button>
+
+                    
                   </div>
                 </div>
               
@@ -51,7 +56,8 @@
 
                   <mat-error *ngIf="project.get('client_id').touched && project.get('client_id').invalid">
                     <span class="error-text" *ngIf="project.get('client_id').hasError('required')">Client name is
-                      required.</span>
+                      required.
+                    </span>
                   </mat-error>
                 </mat-form-field>
               </div>
@@ -103,8 +109,8 @@
               </div>
 
             </div>
-
-            <div class="row mb-2 p-2" style="border: 1px solid #cdcdcd;border-radius: 5px;padding: 10px 10px 20px;" [ngClass]="{'disabled-div': timeSheetForm.invalid && isSaved}">
+           
+            <div class="row mb-2 p-2" style="border: 1px solid #cdcdcd;border-radius: 5px;padding: 10px 10px 20px;"  [ngClass]="{'disabled-div': timeSheetForm.invalid && !project.get('isSaved').value }">
               <div class="row">
                 <div class="col-6">
                   <h5><b>Create Task</b></h5>
@@ -169,10 +175,10 @@
                 </div>
 
                 <div class="col-2 d-flex p-0 align-items-center justify-content-left">
-                  <img src="../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Add"
+                  <img src="../../../../assets/images/tick.svg" style="margin-left: 5px;"  class="icon-image"  [ngClass]="{'moonPulse': isTaskSubmitted}" container="body" ngbTooltip="Add"
                     (click)="saveTask(i)" />
                   <img src="../../../../assets/images/Close.svg" class="icon-image" container="body" ngbTooltip="Cancel"
-                    (click)="resetTaskForm()" />
+                    (click)="resetTaskForm(i)" />
                 </div>
               </div>
             
@@ -243,13 +249,6 @@
 
 
             </div>
-
-
-
-          
-
-          
-
 
           </mat-expansion-panel>
         </div>
