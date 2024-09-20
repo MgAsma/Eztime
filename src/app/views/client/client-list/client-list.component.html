@@ -77,17 +77,20 @@
                             <td>{{item.c_c_timestamp | date:'mediumDate'}}</td>
                             
                             <td>
-                                <ng-container *ngFor="let access of permissions">
+                                <!-- <ng-container *ngFor="let access of permissions">
                                     <button mat-mini-fab  routerLink="/client/update/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
                                       <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
                                     </button>
                                     <button mat-mini-fab   (click)="open(item.id)" *ngIf="access === 'DELETE'">
                                       <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
                                     </button>
-                                  </ng-container>  
-                                <!-- <a routerLink="/client/update/{{item.id}}/{{page}}/{{tableSize}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i></a>
-                               <button style="border: none;background-color: inherit;" (click)="open(item.id)"><i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i></button> -->
-                            </td>
+                                  </ng-container>   -->
+                                  <ng-container *ngFor="let access of permissions">
+                                    <img src="../../../../assets/images/Edit.svg" class="icon-image"  *ngIf="access === 'UPDATE'" routerLink="/client/update/{{item.id}}/{{page}}/{{tableSize}}" container="body" ngbTooltip="Edit" />
+                                    <img src="../../../../assets/images/Delete.svg" class="icon-image" *ngIf="access === 'DELETE'" container="body" ngbTooltip="Delete" (click)="open(item.id)"/>
+                                   
+                                </ng-container>
+                             </td>
                         </tr>
                         <div *ngIf="result.length === 0" class="nodata">
                             <p style="width: 100%;"> No records found! </p>
@@ -99,7 +102,7 @@
         </div>
        
     </div>
-    <div class="row">
+    <!-- <div class="row">
            
         <div class="col-sm"></div>
         <div class="col-sm-12">
@@ -111,13 +114,23 @@
                 </pagination-controls>
               </div>
         </div>
+    </div> -->
+    <div class="pagination-container p-0 pt-2">
+      <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+      </pagination-controls>
+      <div class="items-per-page-container">
+        <div>Items per page</div>
+        <mat-select [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10" class="page-size">
+          <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+        </mat-select>
+      </div>
     </div>
- <ng-container *ngFor="let access of permissions">
+ <!-- <ng-container *ngFor="let access of permissions">
     <button mat-fab color="primary" *ngIf="access == 'CREATE'" routerLink="/client/create" class="createbtn" placement="top" container="body" ngbTooltip="Add client">
       <i class="fa fa-plus"></i>
   
     </button>
-  </ng-container>
+  </ng-container> -->
     <!-- <a routerLink="/client/create"> <button type="button"  class="createbtn" placement="top" container="body" ngbTooltip="Add Client"><i class="fa fa-plus"></i>
   </button></a> -->
 </div>
@@ -140,7 +153,7 @@
                 currentPage: page,
                 totalItems: count
               }'>  
-                <div class="card" >
+                <div class="card p-3" >
                     <div class="row">
                         <div class="col-6 b-b">
                             <h6 class="card-subtitle"><i class="bi bi-person-circle"></i> Client name</h6>
@@ -165,8 +178,8 @@
                             <div class="value-container">{{item.c_c_timestamp | date:'mediumDate'}}</div>
                         </div>
                         <div class="col-6">
-                            <h6 class="card-subtitle"><i class="bi bi-upc-scan"></i> Code</h6>
-                            <div class="value-container">{{item.c_code|titlecase}}</div>
+                             <h6 class="card-subtitle"><i class="bi bi-person-rolodex"></i> Contact person</h6>
+                            <div class="value-container">{{item.c_contact_person|titlecase}}</div>
                         </div>
                     </div>
                     <div class="row">
@@ -174,12 +187,10 @@
                             <h6 class="card-subtitle"><i class="bi bi-upc-scan"></i> Industry</h6>
                             <div class="value-container">{{item.toi_ref_id}}</div>
                         </div> -->
-                        <div class="col-6">
-                            <!-- <h6 class="card-subtitle"><i class="bi bi-text-wrap"></i> Type</h6>
-                            <div class="value-container">{{item.c_type}}</div> -->
+                        <!-- <div class="col-6">
                             <h6 class="card-subtitle"><i class="bi bi-person-rolodex"></i> Contact person</h6>
                             <div class="value-container">{{item.c_contact_person|titlecase}}</div>
-                        </div>
+                        </div> -->
                     </div>
               
                 </div>
@@ -190,7 +201,7 @@
             </ng-container>
         </div>
     </div>
-    <div class="row mobile-pagination" *ngIf="allClientList.length !== 0">
+    <!-- <div class="row mobile-pagination" *ngIf="allClientList.length !== 0">
         <div class="col-sm-12" >
             <div class="mobile-pagination-content">
                
@@ -203,6 +214,16 @@
                 >{{size}}</button></div>
               </div>
         </div>
+    </div> -->
+    <div class="pagination-container p-0 pt-2">
+      <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+      </pagination-controls>
+      <div class="items-per-page-container">
+        <div>Items per page</div>
+        <mat-select [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10" class="page-size">
+          <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+        </mat-select>
+      </div>
     </div>
     <div class="s-position">
         <ng-container *ngFor="let access of permissions">
