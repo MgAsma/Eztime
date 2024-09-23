@@ -41,7 +41,14 @@ export class ClientListComponent implements OnInit {
   permissions: any = [];
   user_id: string;
   orgId: any;
+  arrowState: { [key: string]: boolean } = {
+    c_name: false,
+    c_contact_person: false,
+    c_c_timestamp: false
+  };
   
+  sortValue: string = '';
+  directionValue: string = '';
   constructor(
     private modalService:NgbModal, 
     private api:ApiserviceService,
@@ -159,25 +166,30 @@ export class ClientListComponent implements OnInit {
     }
     this.getClient();
   }  
-  arrow:boolean=false
-  directionValue:any='asc'
+  arrow:boolean=false;
+  // sort(direction:any,value:any){
+  //   if(direction=='asc'){
+  //     this.arrow=true
+  //     this.directionValue= direction
+  //     this.sortValue= value
+  //   }
+  //   else{
+  //     this.arrow=false
+  //     this.directionValue= direction
+  //     this.sortValue= value
+  //   }
+  // }
 
-
-
-
-  sortValue:any='c_name'
-  sort(direction:any,value:any){
-    if(direction=='asc'){
-      this.arrow=true
-      this.directionValue= direction
-      this.sortValue= value
-    }
-    else{
-      this.arrow=false
-      this.directionValue= direction
-      this.sortValue= value
-    }
+  sort(direction: string, column: string) {
+    Object.keys(this.arrowState).forEach(key => {
+      this.arrowState[key] = false;
+    });
+    this.arrowState[column] = direction === 'asc';
+    this.directionValue = direction;
+    this.sortValue = column;
   }
+
+
   open(content) {
     if(content){
       const modelRef =   this.modalService.open(GenericDeleteComponent, {
