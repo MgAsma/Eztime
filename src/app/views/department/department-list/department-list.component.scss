@@ -52,13 +52,13 @@ button:hover .btnicon{
 .toolbar-btn i{
     font-size: 24px;
 }
-::ng-deep .mat-form-field {
-    height: 55px;
-    width: 95%!important;
-    background-color: #ffff;
-    border-radius: 50px;
-    border: solid gray;
-}
+// ::ng-deep .mat-form-field {
+//     height: 55px;
+//     width: 95%!important;
+//     background-color: #ffff;
+//     border-radius: 50px;
+//     border: solid gray;
+// }
 
 ::ng-deep .mat-form-field-underline {
     display: none;

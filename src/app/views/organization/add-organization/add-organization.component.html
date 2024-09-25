@@ -190,9 +190,10 @@
                   </span>
                   
                   <span
-                  *ngIf="a['admin_email']?.invalid && a['admin_email']?.errors['emailMatch']">
+                  *ngIf="f['org_email'].value && a['admin_email']?.invalid && a['admin_email']?.errors['emailMatch']">
                   Admin emails must be unique.
               </span>
+              <span *ngIf="a['admin_email'].errors?.['duplicateEmail']">Admin with this email already exists.</span>
                   </div>
                   
                 </div>
@@ -273,8 +274,11 @@
                   Invalid email Id.
                 </mat-error>
                 <mat-error class="error-text"
-                *ngIf="getAdminFormGroup(i)?.get('admin_email').touched && getAdminFormGroup(i)?.get('admin_email')?.errors['emailMatch']">
+                *ngIf="f['org_email']?.value && getAdminFormGroup(i)?.get('admin_email')?.touched && getAdminFormGroup(i)?.get('admin_email')?.errors?.['emailMatch']">
                 Admin emails must be unique.
+            </mat-error>
+            <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email').hasError('duplicateArrEmail') && getAdminFormGroup(i)?.get('admin_email')?.touched && getAdminFormGroup(i)?.get('admin_email')?.invalid">
+                  Admin with this email already exists.
             </mat-error>
             </div>
             

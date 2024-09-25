@@ -79,13 +79,29 @@ export class AddOrganizationComponent implements OnInit {
     this.getCountry()
    
   }
-  createAdminFormGroup(admin): FormGroup {
+  createAdminFormGroup(admin,formArray?): FormGroup {
     return this._fb.group({
       admin_name: [admin.admin_name, [Validators.required, Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/)]],
-      admin_email: [admin.admin_email, [Validators.required, Validators.email,this.emailMatchValidator()]],
+      admin_email: [admin.admin_email, [Validators.required, Validators.email,this.emailMatchValidator(),this.duplicateEmailArrayValidator(formArray)]],
       admin_phone_number: [admin.admin_phone_number, [Validators.required,this.phoneNumberLengthValidator]],
       admin_status: [admin.admin_status],
     });
+  }
+  duplicateEmailArrayValidator(formArray: FormArray): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const currentEmail = control.value;
+      // this.adminFormArray?.push(this.adminList)
+     
+      // Get all email values from the formArray, excluding the current control
+      const emailExists = this.adminFormArray?.controls?.some(
+        (group: AbstractControl) =>
+          group !== control?.parent && // Exclude the current control being validated
+          group.get('admin_email')?.value === currentEmail
+      );
+      
+      // Return the validation error only if the email is a duplicate
+      return emailExists ? { duplicateArrEmail: true } : null;
+    };
   }
   initializeAdminFormArray() {
     this.adminFormArray = this._fb.array(
@@ -99,7 +115,7 @@ export class AddOrganizationComponent implements OnInit {
   adminintForm(){
     this.adminForm = this._fb.group({
       admin_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/),Validators.required]],
-      admin_email: ['', [Validators.required, Validators.email, this.emailMatchValidator()]],
+      admin_email: ['', [Validators.required, Validators.email, this.emailMatchValidator(),this.duplicateEmailValidator(this.adminList)]],
       admin_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator]],
       admin_status: [true],
     })
@@ -116,6 +132,15 @@ export class AddOrganizationComponent implements OnInit {
       : null;
   };
 }
+// Custom validator to check for duplicate admin emails
+duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const emailExists = adminList.some(admin => admin.admin_email === control.value);
+    return emailExists ? { duplicateEmail: true } : null;
+  };
+}
+
+
 
   addAdmin() {
    if (this.adminForm.invalid) {
@@ -134,7 +159,10 @@ export class AddOrganizationComponent implements OnInit {
       admin_status:this.adminForm?.value['admin_status'] === true ? 'Active' : 'Inactive',
     }
     this.adminList.push(data);
-    this.adminFormArray.push(this.createAdminFormGroup(data));
+    this.adminFormArray.push(this.createAdminFormGroup(data,this.adminFormArray));
+
+   
+
     this.a['admin_name'].reset();
     this.a['admin_email'].reset();
     this.a['admin_phone_number'].reset();
@@ -174,7 +202,7 @@ export class AddOrganizationComponent implements OnInit {
             admin_phone_number: adminForm.value.admin_phone_number,
             admin_status: adminForm.value.admin_status === true ? 'Active' : 'Inactive',
           };
-
+           
           // Show the success message
           // this.api.showSuccess("Admin details updated successfully!");
           this.adminList[index].isEditing = false;

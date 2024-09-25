@@ -33,13 +33,33 @@ export class MonthYetApproveComponent implements OnInit {
   user_id: any;
   accessConfig: any = [];
   org_id: any;
-
+  isAllSelected = false;
   @Input() data: any;
   @Input() totalCount: { 'pageCount': any, 'currentPage': any };
   paginationConfig: any = {
     itemsPerPage: 10,
     currentPage: 1,
     totalItems: 0
+  }
+  onCheckboxChange() {
+    // If any checkbox is unchecked, uncheck the "Select All" checkbox
+    const allSelected = this.yetToApproveAll.every(item => item.selected);
+    this.isAllSelected = allSelected;
+  }
+  selectAll(event: any) {
+    const isChecked = event.target.checked;
+    this.yetToApproveAll.forEach(item => item.selected = isChecked);
+  }
+
+  // Function to perform action on selected rows
+  performActionOnSelected() {
+    const selectedItems = this.yetToApproveAll.filter(item => item.selected);
+    if (selectedItems.length) {
+      console.log('Selected Items:', selectedItems);
+      // Add your logic to handle selected items
+    } else {
+      console.log('No items selected');
+    }
   }
   constructor(private _timesheet: TimesheetService,
     private modalService: NgbModal, private cdref: ChangeDetectorRef,
@@ -133,12 +153,12 @@ export class MonthYetApproveComponent implements OnInit {
     const confirmText = status === 'APPROVED' ? 'Approve' : 'Decline'
     if (content) {
       const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: <any>'md',
+        size: <any>'sm',
         backdrop: true,
         centered: true
       });
       modelRef.componentInstance.title = `Are you sure do you want to ${selectedStatus}`;
-      modelRef.componentInstance.message = `${confirmText} confirmation`;
+      modelRef.componentInstance.message = `${confirmText}`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {
           this.updateStatus(content, status);

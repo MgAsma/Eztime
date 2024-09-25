@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
 import { IconSetService } from '@coreui/icons-angular';
@@ -9,6 +9,7 @@ import { Title } from '@angular/platform-browser';
   // tslint:disable-next-line:component-selector
   selector: 'body',
   template: '<router-outlet></router-outlet>',
+
 })
 export class AppComponent implements OnInit {
   title = 'Projectace';

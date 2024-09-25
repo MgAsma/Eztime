@@ -139,7 +139,7 @@ export class UpdateOrganizationComponent implements OnInit {
   
   initializeAdminFormArray() {
     this.adminFormArray = this._fb.array(
-      this.adminList.map(admin => this.createAdminFormGroup(admin))
+      this.adminList.map(admin => this.createAdminFormGroup(admin,this.adminFormArray))
     );
   }
   
@@ -187,7 +187,7 @@ export class UpdateOrganizationComponent implements OnInit {
             admin_name: adminForm.value.admin_name,
             admin_email: adminForm.value.admin_email,
             admin_phone_number: adminForm.value.admin_phone_number,
-            admin_status: adminForm.value.admin_status === true ? 'Active' : 'Inactive',
+            admin_status: adminForm.value.admin_status == true ? 'Active' : 'Inactive',
             isEditing: adminForm.value.isEditing,
             id: adminForm.value.id
           };
@@ -198,6 +198,7 @@ export class UpdateOrganizationComponent implements OnInit {
           // Show the success message
           // this.api.showSuccess("Admin details updated successfully!");
           this.adminList[index].isEditing = false;
+          
  // if (this.adminFormArray?.invalid) {
       //   this.api.showWarning("Please add the valid admin details.");
       //   return;
@@ -231,12 +232,16 @@ export class UpdateOrganizationComponent implements OnInit {
       admin_name:this.adminForm?.value['admin_name'],
       admin_email:this.adminForm?.value['admin_email'],
       admin_phone_number:this.adminForm?.value['admin_phone_number'],
-      admin_status:this.adminForm?.value['admin_status'] === true ? 'Active' : 'Inactive'
+      admin_status:this.adminForm?.value['admin_status'] == true ? 'Active' : 'Inactive'
     }
     
-    
-    this.adminList.unshift(data);
-    this.adminFormArray.insert(0,this.createAdminFormGroup(data));
+    alert(this.adminForm?.value['admin_status'])
+    this.adminList.push(data);
+    // this.adminFormArray.insert(0,this.createAdminFormGroup(data));
+
+    this.adminFormArray.push(this.createAdminFormGroup(data,this.adminFormArray));
+
+   
     let newadmin = []
     newadmin.push(data)
     const addAdmin = {
@@ -341,12 +346,13 @@ export class UpdateOrganizationComponent implements OnInit {
       }
         const adminData = res['result']['data'][0].admin_details
         // this.adminList = res['result']['data'][0].admin_details
+        console.log(adminData)
         const transformedAdminDetails = adminData?.map(admin => ({
           id:admin.id,
           admin_name: admin.u_first_name,
           admin_email: admin.u_email,
           admin_phone_number: admin.u_phone_no,
-          admin_status: admin.u_status === 'True' ? true : false || admin.u_status === 'Active' ? true : false,
+          admin_status: admin.u_status === 'ACTIVE' ? true : false ,
           isEditing:false
         }));
         this.adminList = transformedAdminDetails 
@@ -390,17 +396,69 @@ export class UpdateOrganizationComponent implements OnInit {
       this.adminList[index].isEditing = false;
     }
   }
-  createAdminFormGroup(admin): FormGroup {
+  createAdminFormGroup(admin,formArray?:FormArray): FormGroup {
     return this._fb.group({
       admin_name: [admin.admin_name, [Validators.required, Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/)]],
-      admin_email: [admin.admin_email, [Validators.required, Validators.email,this.emailMatchValidator()]],
-      admin_phone_number: [admin.admin_phone_number, [Validators.required,this.phoneNumberLengthValidator()]],
+      admin_email: [admin.admin_email, [Validators.required, Validators.email,this.emailMatchValidator(),this.duplicateEmailArrayValidator(formArray)]],
+      admin_phone_number: [admin.admin_phone_number, [Validators.required,this.phoneNumberLengthValidator]],
       admin_status: [admin.admin_status],
-      id:[admin.id]
     });
   }
   
+
+  // duplicateEmailArrayValidator(formArray: FormArray): ValidatorFn {
+  //   return (control: AbstractControl): ValidationErrors | null => {
+  //     const currentEmail = control.value;
+  //     console.log(formArray)
+  //     // Check how many times this email appears in the form array
+  //     const emailCount = formArray?.controls.filter(
+  //       (group: FormGroup) => group.get('admin_email')?.value === currentEmail
+  //     ).length;
+  //     debugger;
+  //     // If the email appears more than once, return a duplicate error
+  //     return emailCount > 1 ? { duplicateEmailArr: true } : null;
+  //   };
+  // }
+  duplicateEmailArrayValidator(formArray: FormArray): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const currentEmail = control.value;
+      // this.adminFormArray?.push(this.adminList)
+     
+      // Get all email values from the formArray, excluding the current control
+      const emailExists = this.adminFormArray?.controls?.some(
+        (group: AbstractControl) =>
+          group !== control?.parent && // Exclude the current control being validated
+          group.get('admin_email')?.value === currentEmail
+      );
+      
+      // Return the validation error only if the email is a duplicate
+      return emailExists ? { duplicateArrEmail: true } : null;
+    };
+  }
   
+
+  // duplicateEmailArrayValidator(formArray: FormArray): ValidatorFn {
+  //   return (control: AbstractControl): ValidationErrors | null => {
+  //     const currentEmail = control.value;
+  
+  //     // Check how many times this email appears in the form array, excluding the current control being validated
+  //     const emailCount = formArray.controls.filter(
+  //       (group: FormGroup) => group.get('admin_email')?.value === currentEmail && group !== control.parent
+  //     ).length;
+  
+  //     // If the email appears more than once, return a duplicate error
+  //     return emailCount > 0 ? { duplicateEmail: true } : null;
+  //   };
+  // }
+  
+  // Custom validator to check for duplicate admin emails
+duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const emailExists = adminList.some(admin => admin.admin_email === control.value);
+    return emailExists ? { duplicateEmail: true } : null;
+  };
+}
+
   onFocus() {
     this.type = 'file';
     this.organizationForm.get('org_logo')?.reset();

@@ -20,7 +20,9 @@ export class DeadlineCrossedComponent implements OnInit {
   formattedDate: any;
   page: any = 1;
   user_id: any;
-  allDetails: any = []
+  term:any;
+  showSearch:any;
+  // allDetails: any = []
   accessConfig: any = [];
   c_params: any = {};
   totalCount: any;
@@ -37,7 +39,38 @@ export class DeadlineCrossedComponent implements OnInit {
     private common_service: CommonServiceService,
     private cdr: ChangeDetectorRef,
     private location: Location) { }
-
+    allDetails= [
+      {
+        created_date_time: new Date('2024-09-18T10:30:00'),
+        created_by_first_name: 'John',
+        time_spent: '2 hours',
+        id: 1,
+        approved_state:'YET_TO_APPROVED'
+      },
+      {
+        created_date_time: new Date('2024-09-20T14:00:00'),
+        created_by_first_name: 'Jane',
+        time_spent: '1.5 hours',
+        id: 2,
+        approved_state:'YET_TO_APPROVED'
+      },
+      {
+        created_date_time: new Date('2024-09-21T09:15:00'),
+        created_by_first_name: null, // Will be shown as 'NA'
+        time_spent: '3 hours',
+        id: 3,
+        approved_state:'YET_TO_APPROVED'
+      },
+      {
+        created_date_time: new Date('2024-09-22T16:45:00'),
+        created_by_first_name: 'Alice',
+        time_spent: '4 hours',
+        id: 4,
+        approved_state:'YET_TO_APPROVED'
+      }
+    ];
+    
+    
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.initForm()
@@ -56,8 +89,9 @@ export class DeadlineCrossedComponent implements OnInit {
       // timesheets_from_date:this.formattedDate,
       pagination: 'TRUE'
     }
-    this.getByStatus(params)
+    //this.getByStatus(params,'init')
     this.getUserControls()
+    console.log(this.allDetails)
   }
   goBack(event) {
     event.preventDefault(); // Prevent default back button behavior
@@ -104,7 +138,7 @@ export class DeadlineCrossedComponent implements OnInit {
 
     })
   }
-  getByStatus(params) {
+  getByStatus(params,init?) {
     this.allDetails = [];
     this.api.getData(`${environment.live_url}/${environment.time_sheets_deadline_crossed}?user_id=${params.user_id}&organization_id=${params.organization_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res => {
       if (res && res['result']['data'].length >= 1) {
@@ -112,7 +146,10 @@ export class DeadlineCrossedComponent implements OnInit {
         this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: 10 };
       } 
     }, (error => {
-      this.api.showError(error.error.error.message)
+      if(!init){
+        this.api.showError(error.error.error.message)
+      }
+     
     }))
   }
 

@@ -357,9 +357,13 @@
                     <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email').hasError('email') && getAdminFormGroup(i)?.get('admin_email').touched">
                       Invalid email Id.
                     </mat-error>
+                   
                     <mat-error class="error-text"
-                    *ngIf="getAdminFormGroup(i)?.get('admin_email').touched && getAdminFormGroup(i)?.get('admin_email')?.errors['emailMatch']">
+                    *ngIf="f['org_email'].value && getAdminFormGroup(i)?.get('admin_email').touched && getAdminFormGroup(i)?.get('admin_email')?.errors?.['emailMatch']">
                     Admin emails must be unique.
+                </mat-error>
+                <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email')?.errors?.['duplicateArrEmail'] && getAdminFormGroup(i)?.get('admin_email')?.touched && getAdminFormGroup(i)?.get('admin_email')?.invalid">
+                  Admin with this email already exists.
                 </mat-error>
                 </div>
                 
@@ -385,7 +389,7 @@
                     <mat-label class="admin-labels">Status</mat-label><b class="r-star" >*</b>
                   </div>
                   <mat-slide-toggle class="pt-1" formControlName="admin_status"  [disabled]="!admin.isEditing">
-                    {{ getAdminFormGroup(i)?.get('admin_status')?.value === true ? 'Active' : 'Inactive' }}
+                    {{ getAdminFormGroup(i)?.get('admin_status')?.value == true || 'ACTIVE' ? 'Active' : 'Inactive' }}
                   </mat-slide-toggle>
                 </div>
               </div>

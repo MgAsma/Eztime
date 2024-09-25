@@ -15,6 +15,8 @@ import { environment } from 'src/environments/environment';
 export class MonthTimesheetComponent implements OnInit {
   monthForm: FormGroup;
   BreadCrumbsTitle: any = 'Month timesheets';
+  term:any;
+  showSearch:any;
   page: any = 1;
   selectedTab: any = 'YET_TO_APPROVED';
   allDetails: any = [];
@@ -35,6 +37,9 @@ export class MonthTimesheetComponent implements OnInit {
   monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
+
+ 
+  
   formattedDate: any;
   changes: boolean = false;
   orgId: any;
@@ -65,8 +70,42 @@ export class MonthTimesheetComponent implements OnInit {
       search_key: '',
       pagination: 'TRUE'
     }
-    this.getByStatus(c_params)
+  //  this.getByStatus(c_params)
     this.getUserControls()
+    this.allDetails = [
+      {
+        index: 1,
+        created_date_time: new Date('2024-09-20T00:00:00'), // Date object
+        created_by_name: 'John Doe',
+        id: 12345,
+        time_spent: '8 hours',
+        approved_state: 'Approved'
+      },
+      {
+        index: 2,
+        created_date_time: new Date('2024-09-21T00:00:00'),
+        created_by_name: 'Jane Smith',
+        id: 67890,
+        time_spent: '5 hours',
+        approved_state: 'Pending'
+      },
+      {
+        index: 3,
+        created_date_time: new Date('2024-09-22T00:00:00'),
+        created_by_name: null, // No created_by_name
+        id: null, // No ID
+        time_spent: '6 hours',
+        approved_state: 'Rejected'
+      },
+      {
+        index: 4,
+        created_date_time: new Date('2024-09-23T00:00:00'),
+        created_by_name: 'Alice Cooper',
+        id: 54321,
+        time_spent: '3 hours',
+        approved_state: 'Approved'
+      }
+    ];
   }
   get f() {
     return this.monthForm.controls;

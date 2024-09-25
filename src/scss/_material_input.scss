@@ -202,7 +202,7 @@ app-create-timesheet{
     padding: 0px !important; 
     height: 55px !important;
    }
-   
+ 
   .c-fill.mat-form-field-wrapper {
     padding-bottom: 0 !important; 
    }
@@ -216,5 +216,17 @@ app-create-timesheet{
     right: 0px;
     padding: 0;
 }
-
+.mat-form-field-appearance-outline.mat-form-field-invalid .mat-form-field-outline {
+  color: transparent !important;
+  border:1px solid #cdcdcd;
+  border-radius: 5px; // Hides the red outline for invalid fields
 }
+
+.mat-form-field-invalid .mat-form-field-label {
+  color: #000 !important; // Ensure the label stays visible and in normal color
+}
+.mat-form-field .mat-select.mat-select-invalid .mat-select-arrow {
+  color: #cdcdcd !important;
+}
+}
+

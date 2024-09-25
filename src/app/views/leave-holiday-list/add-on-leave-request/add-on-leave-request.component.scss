@@ -52,13 +52,13 @@ button:hover{
        display: block;
    }
 }
-::ng-deep .mat-form-field {
-    height: 55px;
-    width: 95%!important;
-    background-color: #ffff;
-    border-radius: 50px;
-    border: solid gray;
-}
+// ::ng-deep .mat-form-field {
+//     height: 55px;
+//     width: 95%!important;
+//     background-color: #ffff;
+//     border-radius: 50px;
+//     border: solid gray;
+// }
 
 ::ng-deep .mat-form-field-underline {
     display: none;

@@ -40,6 +40,7 @@ export class DeadlineYettoApproveComponent implements OnInit {
     currentPage: 1,
     totalItems: 0
   }
+ 
   constructor(private _timesheet: TimesheetService,
     private modalService: NgbModal,
     private api: ApiserviceService,
@@ -131,12 +132,12 @@ export class DeadlineYettoApproveComponent implements OnInit {
     const confirmText = status === 'APPROVED' ? 'Approve' : 'Decline'
     if (content) {
       const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: <any>'md',
+        size: <any>'sm',
         backdrop: true,
         centered: true
       });
       modelRef.componentInstance.title = `Are you sure do you want to ${selectedStatus}`;
-      modelRef.componentInstance.message = `${confirmText} confirmation`;
+      modelRef.componentInstance.message = `${confirmText}`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {
           this.updateStatus(content, status);

@@ -1,23 +1,24 @@
 *{
     // font-size:14px;
     font-weight: 400;
-    // input,select{
-        // font-family: 'Exo FT' !important;
-   // }
+    input,select,mat-label{
+        font-family: 'Exo FT' !important;
+   }
+   
 }
 .select-btn{
-  padding: 0;
+  padding: 10px 0;
   // margin: 6px 0 0px !important;
   text-align: left;
   border-radius: 0;
- 
-  &:disabled{
-    background-color: #f6f6f6 !important;
-  }
-  
+  // height: 40px;
+  background-color: transparent !important;
+  border:0px;
+  outline: none;
   &:hover{
-    background-color: #f6f6f6f6 !important;
+    background-color: transparent !important;
   }
+ 
 }
 .mat-select-disabled{
   &:hover{
@@ -38,7 +39,9 @@
     height: 40px;
     width: fit-content;
     color: white !important;
-    
+    &:disabled{
+      opacity: 0.8;
+    }
 }
 
 
@@ -82,9 +85,9 @@
     }
 }
 .icon-image{
-    cursor: pointer;
-    height: 25px;
-    padding: 0 5px;
+  cursor: pointer;
+  height: 27px;
+  padding: 0 3px;
   }
   .task-labels{
     font-size: 10px;
@@ -97,7 +100,7 @@
   }
   .p-ab{
     position: absolute;
-    top: -14px;
+    top: -6px;
     width: 100%;
     }
     .row-container,.row-container2 {
@@ -127,9 +130,7 @@
             top:3.7em;
           }
           
-         .c-h{
-            // padding: 5px 0 !important;
-         }
+         
       
           mat-slide-toggle {
             width: 100%;
@@ -146,6 +147,7 @@
         background-color: white !important;
         border: 2px solid #126EB4 !important;
       }
+      
       .clear-icon {
         position: absolute;
         right: 15px;
@@ -157,17 +159,47 @@
       }
       .disabled-div {
         pointer-events: none;
-        opacity: 0.8;
-        background-color: #fcfcfc;
-        .row-container{
-          background-color:#fcfcfc !important ;
-          opacity: 0.8;
-        }
+        // opacity: 0.8;
+        // background-color: #fcfcfc;
+        
       }
+      .disabled-wrapper {
+        position: relative;
+        display: inline-block;
+      }
+      
+      .disabled-button {
+        pointer-events: none; /* Disables interactions */
+        opacity: 0.5; /* Optional: visually indicate that the button is disabled */
+      }
+      
+      .tooltip {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 5px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%; /* Position above the button */
+        left: 50%;
+        margin-left: -60px; /* Center the tooltip */
+        
+        /* Fade in tooltip */
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      
+      .disabled-wrapper:hover .tooltip {
+        visibility: visible;
+        opacity: 1;
+      }
+      
       .save-btn{
         color:#126EB4;
         background: #f6f6f6;
-        margin-right: 10px;
       }
       .moonPulse{
         animation: pulse 1s linear infinite;
@@ -190,8 +222,146 @@
 
     .toolbar-btn{
       position: absolute;
-      right: 7%;
+      right: 4%;
       top: 5px;
 
     }
+    .header-container {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    
+    .header-title {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      width: 100%;
+    }
+    
+    .title-section {
+      flex: 1;
+    }
+    
+    .hours-section {
+      flex: 2;
+      text-align: right;
+    }
+    
+    .actions-section {
+      flex: 2;
+      text-align: center;
+    }
+    
+    .hours-label {
+      margin-left: 0.5rem;
+    }
+    
+    .toolbar-btn {
+      margin: 0 0.5rem;
+    }
+    
+    .subtitle-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      width: 100%;
+    }
+    .c-shade{
+      box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px !important;
+    }
+   .preview-content{
+    height: 32px;
+   }
+   .preview-label{
+    font-weight: 600;
+   }
+   .p-d{
+    padding: 0 10px;
+   }
+   .arrow-icon,.t-p{
+    position: absolute;
+    top: 17px;
+    right: 19px;
+   }
+    .t-p{
+      top:11px;
+    }
+    .preview-panel-header{
+      height: 20vh;
+    }
+    .panel-header{
+      height: 50px;
+    }
+    mat-label{
+      strong{
+        font-weight: bold;
+        font-size: 16px;
+      }
+    }
+    .delete-toolbar-btn{
+      color:rgb(141, 16, 16);
+    }
+    .w-24p{
+      width: 24%;
+    }
+    .w-20p{
+      width: 20%;
+    }
+    .task-container{
+      border: 1px solid #cdcdcd;
+      border-radius: 5px;
+      padding: 10px 18px 5px 10px;
+
+      margin: auto 10px;
+    }
+    .mat-error{
+    color: #ed0808;
+    font-size: 11px;
+    }
+    .mobi-del{
+    position: absolute;
+    right: 13%;
+    top: 5px;
+    color: red;
+    }
+    mat-expansion-panel{
+      border-radius: 10px !important;
+    }
+    .container-fluid {
+      display: flex;
+      justify-content: space-between; /* Space the columns evenly */
+      align-items: center; /* Align items vertically in the center */
+      padding: 10px;
+    }
+    
+    .timesheet-column {
+      flex: 1; /* This will take up available space */
+      font-weight: bold; /* Optional styling */
+    }
+    
+    .time-save-wrapper {
+      display: flex;
+      align-items: center; /* Vertically aligns items */
+      gap: 10px; /* Adds spacing between items */
+      flex: 1; /* Takes up available space */
+      justify-content: flex-end; /* Aligns items to the right */
+    }
+    
+    .hours {
+      font-size: 14px; /* Customize font size */
+    }
+    .column1{
+      flex:2 !important;
+    }
+    
+    
+    
     
