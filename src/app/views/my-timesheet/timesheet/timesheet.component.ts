@@ -78,22 +78,38 @@ export class TimesheetComponent implements OnInit {
     to_date:['',Validators.required]
   })
  }
+  // getByStatus(params){
+   
+  //    this.api.getData(`${environment.live_url}/${environment.time_sheets}?user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&search_key=${params.search_key}&approved_state=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
+  //     if( res['result'].data.length >=1){
+  //       this.allDetails = res['result']['data']
+  //       this.cardData = res['result'].timesheet_dashboard
+  //       this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
+  //     }
+  //     else{
+  //       res['result']['data'].length <=0 ? this.api.showWarning('No records found') : '';
+  //       if(res['result'] && res['result'].timesheet_dashboard){
+  //         this.cardData = res['result'].timesheet_dashboard    
+  //       }
+  //      }
+  //    })
+  // }
   getByStatus(params){
    
-     this.api.getData(`${environment.live_url}/${environment.time_sheets}?user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&search_key=${params.search_key}&approved_state=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
-      if( res['result'].data.length >=1){
-        this.allDetails = res['result']['data']
-        this.cardData = res['result'].timesheet_dashboard
-        this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
-      }
-      else{
-        res['result']['data'].length <=0 ? this.api.showWarning('No records found') : '';
-        if(res['result'] && res['result'].timesheet_dashboard){
-          this.cardData = res['result'].timesheet_dashboard    
-        }
+    this.api.getData(`${environment.live_url}/${environment.time_sheets}/?status=${params.status}`).subscribe((res:any)=>{
+     if( res['result'].data.length >=1){
+       this.allDetails = res['result']['data']
+       this.cardData = res['result'].timesheet_dashboard
+       this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
+     }
+     else{
+       res['result']['data'].length <=0 ? this.api.showWarning('No records found') : '';
+       if(res['result'] && res['result'].timesheet_dashboard){
+         this.cardData = res['result'].timesheet_dashboard    
        }
-     })
-  }
+      }
+    })
+ }
 
   getAllTimeSheet(params){ 
     this.api.getData(`${environment.live_url}/${environment.time_sheets}?user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&search_key=${params.search_key}&approved_state=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&timesheets_from_date=${params.timesheets_from_date}&timesheets_to_date=${params.timesheets_to_date}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
@@ -105,7 +121,7 @@ export class TimesheetComponent implements OnInit {
           from_date:this.datepipe.transform(this.cardData.from_date,'dd/MM/yyyy'),
           to_date:this.datepipe.transform(this.cardData.to_date,'dd/MM/yyyy')
         });
-        //this.month   = this.cardData.from_date
+        
       }
       else{
         res['result']['data'].length <= 0 ? this.api.showWarning('No records found') :''
@@ -239,19 +255,17 @@ export class TimesheetComponent implements OnInit {
     tabState(data){
       console.log(data,"DATA")
       if(data.tab.textLabel == 'Approved'){
-        this.selectedTab = 'APPROVED'
+        this.selectedTab = 'Approved'
       }
       else if(data.tab.textLabel == 'Pending' ){
-        this.selectedTab = 'YET_TO_APPROVED' 
+        this.selectedTab = 'Pending' 
       }
       else if(data.tab.textLabel == 'Declined'){
-        this.selectedTab = 'DECLINED'
+        this.selectedTab = 'Declined'
       }
-      else if(data.tab.textLabel == 'Flagged timesheets'){
-        this.selectedTab = 'FLAGGED'
-      }
+     
       else{
-        this.selectedTab = 'YET_TO_APPROVED' 
+        this.selectedTab = 'Pending' 
       }
       let c_params = {}
     if(this.changes){

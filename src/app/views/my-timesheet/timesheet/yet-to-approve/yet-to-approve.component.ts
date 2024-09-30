@@ -44,7 +44,7 @@ export class YetToApproveComponent implements OnInit {
     private common_service:CommonServiceService) { }
 
   ngOnInit(): void {
-    this.user_id =sessionStorage.getItem('user_id')
+    this.user_id = sessionStorage.getItem('user_id')
     this.orgId = sessionStorage.getItem('org_id')
     this.getList();
     this.getUserControls();
@@ -70,7 +70,7 @@ export class YetToApproveComponent implements OnInit {
         this.common_service.permission.next(res['data'][0]['permissions'])
       }
       else{
-        this.api.showError("ERROR !")
+        this.api.showError("ERROR!")
       }
     },(error=>{
          this.api.showError(error.error.error.message)
@@ -235,7 +235,7 @@ onTableSizeChange(event:any): void {
     tableSize:this.tableSize,
     search_key:this.term
    }
-   alert(tableData.tableSize)
+  // alert(tableData.tableSize)
   this.buttonClick.emit(tableData);
   }
 } 

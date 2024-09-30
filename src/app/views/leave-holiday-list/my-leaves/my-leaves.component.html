@@ -1,154 +1,40 @@
-<div class="container-fluid ">
-  <!-- <div class="row">
-    <div class="col-sm-6">
-      <h1>Leave details</h1>
-    </div>
-    <div class="col-sm"></div>
-    <div class="col-sm-3">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-          <li class="breadcrumb-item">Leave details</li>
-        </ol>
-      </nav>
-    </div>
-
-  </div> -->
-  <div class="generic-form bg mx-1 leave-details-content"> 
-    <div class="row">
-      <div class="col-sm-12 col-md-12 col-lg-12">
-        <!-- <h6 class="mb-3"> Leave Balance</h6> -->
-        <mat-card>
- 
-          <div class="row p-1 mx-0 gx-0 justify-content-center">
-           
-<div class="card col-12 col-sm-12 col-md-6 col-lg-4 main-col" *ngFor="let items of leaveBalence;let i = index">
-<div class="row top-row">
-<div class="col-12 c-1 text-start">
-<h6 class="card-subtitle heading-text">{{items.leave_type | titlecase}}</h6>
-<p class="value-container">Leave Type</p>
-</div>
-</div>
-<div class="card-inner normal">
-<div class="row row-b">
-<div class="col-4 c-2 text-center">
-<h6 class="card-subtitle count-section">{{items.leave_allotted}}</h6>
-<p class="value-container">Total</p>
-</div>
-<div class="col-4 c-1 text-center">
-<h6 class="card-subtitle count-section">{{items.leaves_used}}</h6>
-<p class="value-container">Used</p>
-</div>
-<div class="col-4 c-1 text-center">
-  <h6 class="card-subtitle count-section">{{items.leave_balance }}</h6>
-  <p class="value-container">Balance</p>
-  </div>
-</div>
-</div>
-</div>
-
-          </div>
-      </mat-card>
-
-
-    
-      </div>
-    
-     
-    </div>
-    <div class="row">
-      <div class="col-sm-12 col-md-12 col-lg-8">
-            <!-----------Leave details--------------->
-            <h6 class="my-3">Leave details</h6>
-            <mat-card class="d-none d-sm-none d-md-none d-lg-block d-xl-block">
-              <div class="row">
-                <div class="col-md-12 ">
-                    
-                    <table class="table" *ngIf="leaveDetails.length > 0">
-                        <thead>
-                            <tr>
-                              
-                              <th scope="col">From</th>
-                              <th scope="col">To</th>
-                              <th scope="col">Status</th>
-                              <th scope="col">Days</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-            
-                            <tr *ngFor="let items of leaveDetails">
-                             <td>{{items.from_date|titlecase}}</td>
-                             <td>{{items.to_date|titlecase}}</td>
-                             <td><span class="badge" [ngClass]="{'approve-status':items.approved_state==='APPROVED','yet-to-approve-status':items.approved_state==='YET_TO_APPROVED','declined-status':items.approved_state==='DECLINED'}">{{items.approved_state |titlecase}}</span></td>
-                             <td>{{items.days |titlecase}}</td>
-                            </tr>
-                           
-                          </tbody>
-                      </table>
-    
-                     
-                      <div *ngIf="leaveDetails.length == 0" class="text-center">
-                        No records found !
-                       </div>
-                </div>
-              </div>
-            </mat-card>
-            <div class="row p-1 mx-0 gx-0 d-block d-sm-block d-md-block d-lg-none d-xl-none">
-              <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col" *ngFor="let leave of leaveDetails">
-    <div class="card">
-    <div class="row top-row">
-    <div class="col-6 c-2 text-start">
-    <h6 class="card-subtitle">From</h6>
-    <p class="value-container">{{leave.from_date|titlecase}}</p>
-    </div>
-    <div class="col-6 c-1 text-start">
-    <h6 class="card-subtitle">To</h6>
-    <p class="value-container">{{leave.to_date|titlecase}}</p>
-    </div>
-    
-    </div>
-    <div class="card-inner normal">
-    <div class="row row-b">
-    <div class="col-6 c-1 text-start">
-    <h6 class="card-subtitle">Days</h6>
-    <p class="value-container">{{leave.days|titlecase}}</p>
-    </div>
-    <div class="col-6 c-2 text-start">
-    <h6 class="card-subtitle">Status</h6>
-    <p class="value-container">{{leave.approved_state|titlecase}}</p>
-    </div>
-    </div>
-    </div>
-    </div>
-              </div>
+<div class="card-container">
+  <div class="row">
+    <div class="col-sm-12 col-md-4" *ngFor="let leave of leaveData">
+      <mat-card >
+        <mat-card-title>{{ leave.type }}</mat-card-title>
+        <mat-progress-bar mode="determinate" [value]="(leave.used / leave.total * 100)"></mat-progress-bar>
+        
+        <div class="row py-3">
+          <div class="col-12">
+            <div>
+              <span class="used-leaves">{{ leave.used }}</span> Used 
             </div>
-      </div>
-      <div class="col-sm-12 col-md-12 col-lg-4">
-        <div class="row my-2">
-          <div class="col-md-12">
-            <h6>Holiday List</h6>
-            <mat-card>
-            <table class="table " *ngIf="holidayList">
-                <thead>
-                    <tr>
-                      <th scope="col">Holiday</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let items of holidayList  | keyvalue">
-                     <td>{{items.key|titlecase}} - {{items?.value }}</td>
-                    
-                    </tr>
-                    <!-- <tr>No records found</tr> -->
-                  </tbody>
-              </table>
-              <div *ngIf="!holidayList">No records found</div>
-            </mat-card>
+            
+          </div>
+         
         </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="total">
+              <div class="leave-counts">{{ leave.total }}</div>
+              <div>Total</div>
+            </div>
+            
+          </div>
+          <div class="col-6">
+            <div class="total" [ngClass]="{
+              'balance3': (leave.total - leave.used <= 3 && leave.total - leave.used > 0),
+              'balance0': (leave.total - leave.used === 0)
+            }">
+              <div class="leave-counts">{{ leave.total - leave.used }}</div>
+              <div>Balance</div>
+            </div>
+          </div>
+          
         </div>
-      </div>
+      </mat-card>
     </div>
   </div>
-  
 </div>
 

@@ -10,13 +10,19 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
   styleUrls: ['./my-leaves.component.scss']
 })
 export class MyLeavesComponent implements OnInit {
-  BreadCrumbsTitle:any='Leave details';
+  BreadCrumbsTitle:any='Overview';
 
   leaveBalence: any = [];
   leaveDetails: any = [];
   holidayList: Object;
   orgId: any;
-
+  leaveData= [
+    { type: 'Earned Leaves', used: 2, total: 5 },
+    { type: 'Casual Leaves', used: 5, total: 5 },
+    { type: 'Sick Leaves', used: 0, total: 5 },
+    { type: 'Maternity Leaves', used: 0, total: 5 },
+    { type: 'Paternity Leaves', used: 5, total: 5 }
+  ];
   constructor(
     private api:ApiserviceService,
     private location:Location,

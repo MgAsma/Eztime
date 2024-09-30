@@ -688,3 +688,9 @@ textarea {
   font-size: medium;
   height: auto;
 }
+.mat-progress-bar-buffer {
+  background-color: #e5e6e7 !important;
+}
+.mat-progress-bar-fill::after {
+  background-color: $primay-color;
+}
