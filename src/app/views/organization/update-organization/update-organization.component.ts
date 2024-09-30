@@ -98,25 +98,15 @@ export class UpdateOrganizationComponent implements OnInit {
   }
   initform() {
     this.organizationForm = this._fb.group({
-      org_qr_uniq_id: ['22121'],
-      org_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/), Validators.required]],
-      org_address: ['', [Validators.pattern(/^\S.*$/)]],
-      org_email: ['', [Validators.required, Validators.email]],
-      org_phone: [''],
-      org_mobile: [''],
-      org_fax: [''],
-      org_website: [''],
-      org_city: ['', [Validators.required]],
-      org_state: ['', [Validators.required]],
-      org_country: ['', [Validators.required]],
-      org_postal_code: ['',[Validators.pattern('^\\d{6}$')]],
-      org_profile_updated_status: [''],
-      org_default_currency_type: [''],    
-      org_subscription_plan: [''],
-      org_logo_path: [''],
-      org_logo_base_url: [''],
-      page: [''],
-      org_logo: []
+      organization_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/), Validators.required]],
+      address: ['', [Validators.pattern(/^\S.*$/)]],
+      email: ['', [Validators.required, Validators.email]],
+     
+      city: ['', [Validators.required]],
+      state: ['', [Validators.required]],
+      country: ['', [Validators.required]],
+      postal_code: ['',[Validators.pattern('^\\d{6}$')]],
+      organization_image: []
     })
 
   }
@@ -124,15 +114,22 @@ export class UpdateOrganizationComponent implements OnInit {
   adminintForm(){
     this.adminForm = this._fb.group({
       admin_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/),Validators.required]],
-      admin_email: ['', [Validators.required, Validators.email,this.emailMatchValidator()]],
+      admin_email_id: ['', [Validators.required, Validators.email,this.emailMatchValidator()]],
       admin_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator()]],
-      admin_status: [true],
+      is_active: [true],
       isEditing:false,
       id:[]
     })
     
   }
-
+//"admin_details": [
+            // {
+            //     "id":25,
+            //     "admin_name": "aparna ek",
+            //     "admin_email_id_id": "aparna@ekfrazo.in",
+            //     "admin_phone_number": 9988899871,
+            //     "is_active": false
+            // },
   getAdminFormGroup(index: number): FormGroup {
     return this.adminFormArray.at(index) as FormGroup;
   }
@@ -185,9 +182,9 @@ export class UpdateOrganizationComponent implements OnInit {
           this.adminList[index] = {
             ...this.adminList[index],
             admin_name: adminForm.value.admin_name,
-            admin_email: adminForm.value.admin_email,
+            admin_email_id: adminForm.value.admin_email_id,
             admin_phone_number: adminForm.value.admin_phone_number,
-            admin_status: adminForm.value.admin_status == true ? 'Active' : 'Inactive',
+            is_active: adminForm.value.is_active == true ? 'Active' : 'Inactive',
             isEditing: adminForm.value.isEditing,
             id: adminForm.value.id
           };
@@ -195,15 +192,8 @@ export class UpdateOrganizationComponent implements OnInit {
           // Add the updated adminList to the data object
           data.admin_details = [...this.adminList]; 
         
-          // Show the success message
-          // this.api.showSuccess("Admin details updated successfully!");
+        
           this.adminList[index].isEditing = false;
-          
- // if (this.adminFormArray?.invalid) {
-      //   this.api.showWarning("Please add the valid admin details.");
-      //   return;
-      // }
-      
       this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`,data).subscribe(
         res => {
           if (res['result']) {
@@ -230,12 +220,12 @@ export class UpdateOrganizationComponent implements OnInit {
     
     const  data = {
       admin_name:this.adminForm?.value['admin_name'],
-      admin_email:this.adminForm?.value['admin_email'],
+      admin_email_id:this.adminForm?.value['admin_email_id'],
       admin_phone_number:this.adminForm?.value['admin_phone_number'],
-      admin_status:this.adminForm?.value['admin_status'] == true ? 'Active' : 'Inactive'
+      is_active:this.adminForm?.value['is_active'] == true ? 'Active' : 'Inactive'
     }
     
-    alert(this.adminForm?.value['admin_status'])
+    alert(this.adminForm?.value['is_active'])
     this.adminList.push(data);
     // this.adminFormArray.insert(0,this.createAdminFormGroup(data));
 
@@ -265,10 +255,10 @@ export class UpdateOrganizationComponent implements OnInit {
     );
     
     this.a['admin_name'].reset();
-    this.a['admin_email'].reset();
+    this.a['admin_email_id'].reset();
     this.a['admin_phone_number'].reset();
     this.adminForm.patchValue({
-      admin_status: [true]
+      is_active: [true]
     })
     this.isAdminForm = !this.isAdminForm;
 
@@ -279,10 +269,10 @@ export class UpdateOrganizationComponent implements OnInit {
   }
   emailMatchValidator(): ValidatorFn {
     return (adminEmailControl: AbstractControl): { [key: string]: any } | null => {
-      if (!adminEmailControl.value || !this.organizationForm.get('org_email').value) {
+      if (!adminEmailControl.value || !this.organizationForm.get('email').value) {
         return null;
       }
-      return adminEmailControl.value === this.organizationForm.get('org_email').value
+      return adminEmailControl.value === this.organizationForm.get('email').value
         ? { 'emailMatch': true }
         : null;
     };
@@ -319,24 +309,24 @@ export class UpdateOrganizationComponent implements OnInit {
         let currentOrg = []
         responseData = res['result']['data']
         currentOrg = responseData[responseData.length - 1]
-        // this.fileDataUrl = currentOrg['org_logo_path']
+        // this.fileDataUrl = currentOrg['organization_image_path']
         await this.getCountry();
-        if(currentOrg['org_country'] === 'India'){
+        if(currentOrg['country'] === 'India'){
           await this.getState('')
           setTimeout(async () => {
-            await this.getCity(currentOrg['org_state'])
+            await this.getCity(currentOrg['state'])
           }, 1000);
         }
-        if (currentOrg['org_logo_path']) {
+        if (currentOrg['organization_image_path']) {
         // console.log(this.url,'this.url')
-        fetch(currentOrg['org_logo_path'])
+        fetch(currentOrg['organization_image_path'])
           .then(response => response.blob())
           .then(blob => {
             const fileReader: any = new FileReader();
             fileReader.onloadend = () => {
               const base64String = fileReader.result.split(',')[1]; // Extract the base64 string without the data URL prefix
               this.fileDataUrl = 'data:image/png;base64,' + base64String; // Prepend 'data:image/png;base64,' to the base64 string
-              // this.orgData['org_logo'] =  base64String; 
+              // this.orgData['organization_image'] =  base64String; 
            
             };
             fileReader.readAsDataURL(blob);
@@ -350,9 +340,9 @@ export class UpdateOrganizationComponent implements OnInit {
         const transformedAdminDetails = adminData?.map(admin => ({
           id:admin.id,
           admin_name: admin.u_first_name,
-          admin_email: admin.u_email,
+          admin_email_id: admin.u_email,
           admin_phone_number: admin.u_phone_no,
-          admin_status: admin.u_status === 'ACTIVE' ? true : false ,
+          is_active: admin.u_status === 'ACTIVE' ? true : false ,
           isEditing:false
         }));
         this.adminList = transformedAdminDetails 
@@ -360,18 +350,18 @@ export class UpdateOrganizationComponent implements OnInit {
         this.initializeAdminFormArray();
         this.organizationForm.patchValue({
           org_qr_uniq_id: currentOrg['org_qr_uniq_id'],
-          org_name: currentOrg['org_name'],
-          org_email: currentOrg['org_email'],
-          org_address: currentOrg['org_address'],
-          org_city: currentOrg['org_city'],
-          org_state: currentOrg['org_state'],
-          org_country: currentOrg['org_country'],
-          org_postal_code: currentOrg['org_postal_code'],
-          admin_status: currentOrg['org_status'],
+          organization_name: currentOrg['organization_name'],
+          email: currentOrg['email'],
+          address: currentOrg['address'],
+          city: currentOrg['city'],
+          state: currentOrg['state'],
+          country: currentOrg['country'],
+          postal_code: currentOrg['postal_code'],
+          is_active: currentOrg['org_status'],
           org_subscription_plan: currentOrg['org_subscription_plan'],
-          org_logo_path: currentOrg['org_logo_path'],
-          org_logo_base_url: currentOrg['org_logo_base_url'],
-          // org_logo: currentOrg['org_logo_path']
+          organization_image_path: currentOrg['organization_image_path'],
+          organization_image_base_url: currentOrg['organization_image_base_url'],
+          // organization_image: currentOrg['organization_image_path']
         })
        
       
@@ -399,26 +389,14 @@ export class UpdateOrganizationComponent implements OnInit {
   createAdminFormGroup(admin,formArray?:FormArray): FormGroup {
     return this._fb.group({
       admin_name: [admin.admin_name, [Validators.required, Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/)]],
-      admin_email: [admin.admin_email, [Validators.required, Validators.email,this.emailMatchValidator(),this.duplicateEmailArrayValidator(formArray)]],
+      admin_email_id: [admin.admin_email_id, [Validators.required, Validators.email,this.emailMatchValidator(),this.duplicateEmailArrayValidator(formArray)]],
       admin_phone_number: [admin.admin_phone_number, [Validators.required,this.phoneNumberLengthValidator]],
-      admin_status: [admin.admin_status],
+      is_active: [admin.is_active],
     });
   }
   
 
-  // duplicateEmailArrayValidator(formArray: FormArray): ValidatorFn {
-  //   return (control: AbstractControl): ValidationErrors | null => {
-  //     const currentEmail = control.value;
-  //     console.log(formArray)
-  //     // Check how many times this email appears in the form array
-  //     const emailCount = formArray?.controls.filter(
-  //       (group: FormGroup) => group.get('admin_email')?.value === currentEmail
-  //     ).length;
-  //     debugger;
-  //     // If the email appears more than once, return a duplicate error
-  //     return emailCount > 1 ? { duplicateEmailArr: true } : null;
-  //   };
-  // }
+ 
   duplicateEmailArrayValidator(formArray: FormArray): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const currentEmail = control.value;
@@ -428,7 +406,7 @@ export class UpdateOrganizationComponent implements OnInit {
       const emailExists = this.adminFormArray?.controls?.some(
         (group: AbstractControl) =>
           group !== control?.parent && // Exclude the current control being validated
-          group.get('admin_email')?.value === currentEmail
+          group.get('admin_email_id')?.value === currentEmail
       );
       
       // Return the validation error only if the email is a duplicate
@@ -437,31 +415,18 @@ export class UpdateOrganizationComponent implements OnInit {
   }
   
 
-  // duplicateEmailArrayValidator(formArray: FormArray): ValidatorFn {
-  //   return (control: AbstractControl): ValidationErrors | null => {
-  //     const currentEmail = control.value;
-  
-  //     // Check how many times this email appears in the form array, excluding the current control being validated
-  //     const emailCount = formArray.controls.filter(
-  //       (group: FormGroup) => group.get('admin_email')?.value === currentEmail && group !== control.parent
-  //     ).length;
-  
-  //     // If the email appears more than once, return a duplicate error
-  //     return emailCount > 0 ? { duplicateEmail: true } : null;
-  //   };
-  // }
   
   // Custom validator to check for duplicate admin emails
 duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
   return (control: AbstractControl): ValidationErrors | null => {
-    const emailExists = adminList.some(admin => admin.admin_email === control.value);
+    const emailExists = adminList.some(admin => admin.admin_email_id === control.value);
     return emailExists ? { duplicateEmail: true } : null;
   };
 }
 
   onFocus() {
     this.type = 'file';
-    this.organizationForm.get('org_logo')?.reset();
+    this.organizationForm.get('organization_image')?.reset();
   }
   getCountry() {
     let data = {
@@ -476,8 +441,8 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
   }
   onFocusCountry() {
     this.organizationForm.patchValue({
-      org_state: '',
-      org_city: ''
+      state: '',
+      city: ''
     })
   }
   getState(event) {
@@ -532,7 +497,7 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
       reader.onload = (e: any) => {
         this.fileDataUrl = e.target.result;
         if(reader.result){
-          this.organizationForm.patchValue({ org_logo: this.fileDataUrl })
+          this.organizationForm.patchValue({ organization_image: this.fileDataUrl })
         }
        
       };
@@ -555,17 +520,34 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
     }
     
       const data = {
-        org_qr_uniq_id: this.f['org_qr_uniq_id'].value,
-        org_name: this.f['org_name'].value,
-        org_address: this.f['org_address'].value,
-        org_email: this.f['org_email'].value,
-        org_city: this.f['org_city'].value,
-        org_state: this.f['org_state'].value,
-        org_country: this.f['org_country'].value,
-        org_postal_code: this.f['org_postal_code'].value,
-        org_logo: this.fileDataUrl,
-       
+        organization_name: this.f['organization_name'].value,
+        address: this.f['address'].value,
+        email: this.f['email'].value,
+        city: this.f['city'].value,
+        state: this.f['state'].value,
+        country: this.f['country'].value,
+        postal_code: this.f['postal_code'].value,
+        organization_image: this.fileDataUrl,
       };
+
+      // {
+      //   "organization_name": "ekfrazo",
+      //   "email": "ek@gmail.com",
+      //   "country": "",
+      //   "state": "",
+      //   "city": "",
+      //   "postal_code": 99765,
+      //   // "address": "1234 Acc Street,Banglore",
+      //   "admin_details": [
+            // {
+            //     "id":25,
+            //     "admin_name": "aparna ek",
+            //     "admin_email_id_id": "aparna@ekfrazo.in",
+            //     "admin_phone_number": 9988899871,
+            //     "is_active": false
+            // },
+      //  ]
+      //}
      
       this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`, data).subscribe(
         res => {
