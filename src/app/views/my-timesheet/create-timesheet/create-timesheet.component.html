@@ -105,7 +105,7 @@
                     <!-- Timesheet Date -->
                     <div class="flex-grow-1">
                       <mat-label class="text-muted">Created Date</mat-label>
-                      <div class="preview-label">{{ project.get('timesheet_applied_datetime')?.value | date }}</div>
+                      <div class="preview-label">{{ project.get('created_date')?.value | date }}</div>
                     </div>
                    
                     <!-- Number of Tasks -->
@@ -163,7 +163,7 @@
                       <!-- Timesheet Date -->
                       <div class="flex-grow-1">
                         <mat-label class="text-muted">Created Date</mat-label>
-                        <div class="preview-label">{{ project.get('timesheet_applied_datetime')?.value | date }}</div>
+                        <div class="preview-label">{{ project.get('created_date')?.value | date }}</div>
                       </div>
                      
                       <!-- Number of Tasks -->
@@ -215,12 +215,12 @@
               <div class="col-sm-12 col-md-6 col-lg-3 p-2">
                 <mat-form-field appearance="outline" class="full-width date-picker">
                   <mat-label>Created Date <span>*</span></mat-label>
-                  <input matInput [matDatepicker]="picker" formControlName="timesheet_applied_datetime" placeholder="Select date"
+                  <input matInput [matDatepicker]="picker" formControlName="created_date" placeholder="Select date"
                   (dateChange)="onDateChange($event.value)" >
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
-                  <mat-error *ngIf="project.get('timesheet_applied_datetime').touched && project.get('timesheet_applied_datetime').invalid">
-                    <span class="error-text" *ngIf="project.get('timesheet_applied_datetime').hasError('required')">Created date is required.</span>
+                  <mat-error *ngIf="project.get('created_date').touched && project.get('created_date').invalid">
+                    <span class="error-text" *ngIf="project.get('created_date').hasError('required')">Created date is required.</span>
                   </mat-error>
                   
                 </mat-form-field>
@@ -281,7 +281,7 @@
                      
                       <button  type="button" class="w-100 select-btn" >
                         <mat-label class="p-ab task-labels">Hours <b class="r-star">*</b></mat-label>
-                        <mat-select formControlName="time_spent"
+                        <mat-select formControlName="hours_to_complete"
                           placeholder="Select hours"
                           panelClass="custom-select-panel" [disableOptionCentering]="true">
                           <mat-option *ngFor="let item of createdProject.value[i]?.time" [value]="item.time">
@@ -290,9 +290,9 @@
                           </mat-option>
                         </mat-select>
                       </button>
-                      <div *ngIf="taskForm.get('time_spent').touched && taskForm.get('time_spent').invalid"
+                      <div *ngIf="taskForm.get('hours_to_complete').touched && taskForm.get('hours_to_complete').invalid"
                         class="error-text">
-                        <span  *ngIf="taskForm.get('time_spent').hasError('required')">
+                        <span  *ngIf="taskForm.get('hours_to_complete').hasError('required')">
                           Hours is required.
                         </span>
                       
@@ -322,7 +322,7 @@
             
            
             
-           <div class="p-0" formArrayName="task_details">
+           <div class="p-0" formArrayName="task_list">
               <div class="row mt-4" style="padding-right: 40px;" *ngFor="let task of getTaskArray(i).controls; let j = index" [formGroupName]="j">
                 <div class="col-11 pe-0">
                   <div class="row-container2" [ngClass]="{ 'editable': task?.get('isEditing').value }">
@@ -350,9 +350,9 @@
                     <div class="column position-relative">
                       <div class="w-100 select-btn">
                         <mat-label class="p-ab task-labels">Hours <b class="r-star">*</b></mat-label>
-                        <!-- <mat-select  formControlName="time_spent" placeholder="Select hours" [disabled]="!task?.get('isEditing').value"
+                        <!-- <mat-select  formControlName="hours_to_complete" placeholder="Select hours" [disabled]="!task?.get('isEditing').value"
                         panelClass="custom-select-panel" [disableOptionCentering]="true" (selectionChange)="getValue(i,j,task?.get('task_spent')?.value,'time')"> -->
-                        <mat-select  formControlName="time_spent" placeholder="Select hours" 
+                        <mat-select  formControlName="hours_to_complete" placeholder="Select hours" 
                         panelClass="custom-select-panel" [disableOptionCentering]="true" (selectionChange)="getValue(i,j,task?.get('task_spent')?.value,'time')">
                         <mat-option *ngFor="let item of createdProject.value[i]?.time" [value]="item.time"
                           [disabled]="item.time > getRemainingHours(i)">
@@ -360,7 +360,7 @@
                           </mat-option>
                         </mat-select>
                       </div>
-                      <mat-error class="error-text" *ngIf="task.get('time_spent').hasError('required') && task.get('time_spent').touched">
+                      <mat-error class="error-text" *ngIf="task.get('hours_to_complete').hasError('required') && task.get('hours_to_complete').touched">
                         Hours are required.
                       </mat-error>
                     </div>

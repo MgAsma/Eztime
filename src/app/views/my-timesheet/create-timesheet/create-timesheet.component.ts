@@ -23,7 +23,7 @@ export class CreateTimesheetComponent implements OnInit {
   userId = 195;
   manager_id = 195;
   orgId = 102;
-  time_spent: any = [];
+  hours_to_complete: any = [];
   timeList: any[] = [];
   project_id: any;
   allClient: any[] = [];
@@ -89,7 +89,7 @@ export class CreateTimesheetComponent implements OnInit {
     const totalHours = 8;
     const taskArray = this.getTaskArray(i);
     const spentHours = taskArray.controls.reduce((sum, task) => {
-      const timeSpent = task.get('time_spent').value;
+      const timeSpent = task.get('hours_to_complete').value;
       return sum + (timeSpent ? parseFloat(timeSpent) : 0);
     }, 0);
     const remainingHours = totalHours - spentHours;
@@ -104,12 +104,12 @@ export class CreateTimesheetComponent implements OnInit {
 
     // Iterate through all projects in the response FormArray
     this.createdProject?.controls?.forEach((projectGroup: FormGroup) => {
-        const taskArray = projectGroup.get('task_details') as FormArray;
+        const taskArray = projectGroup.get('task_list') as FormArray;
 
         // Iterate through all tasks in the current project
         taskArray?.controls?.forEach((taskControl: FormGroup) => {
-            const taskDate = projectGroup.get('timesheet_applied_datetime')?.value;
-            const timeSpent = taskControl.get('time_spent')?.value;
+            const taskDate = projectGroup.get('created_date')?.value;
+            const timeSpent = taskControl.get('hours_to_complete')?.value;
 
             // Add the hours for tasks with the matching selected date
             if (taskDate === selectedDate && timeSpent) {
@@ -154,12 +154,12 @@ get responseArray() {
   return this.timeSheetForm.get('response') as FormArray;
 }
 getValue(i,j,value,type?){
-  const projectGroup = this.getProjectControl(i);
- const taskArray = this.getTaskArray(j)
- console.log(taskArray.value)
-  projectGroup.patchValue({
-      task_details: taskArray.value,  // This patches the task details array
-    });
+//   const projectGroup = this.getProjectControl(i);
+//  const taskArray = this.getTaskArray(j)
+ 
+//   projectGroup.patchValue({
+//       task_list: taskArray.value,  // This patches the task details array
+//     });
  
 
 }
@@ -169,7 +169,7 @@ onDateChange(date: string) {
 
   // Filter the responseArray by matching dates
   const matchedDates = this.responseArray.value.filter((group: any) => 
-    this.datepipe.transform(group.timesheet_applied_datetime, 'dd/MM/yyyy') === selectedDate
+    this.datepipe.transform(group.created_date, 'dd/MM/yyyy') === selectedDate
   );
 
   if (matchedDates.length > 0) {
@@ -177,9 +177,9 @@ onDateChange(date: string) {
     this.totalHoursForDate = 0;
     
     matchedDates.forEach((group: any) => {
-      group.task_details.forEach((task: any) => {
-        // Extract hours from time_spent (assuming "X hr" format)
-        const hours = parseInt(task.time_spent.split(' ')[0], 10);
+      group.task_list.forEach((task: any) => {
+        // Extract hours from hours_to_complete (assuming "X hr" format)
+        const hours = parseInt(task.hours_to_complete.split(' ')[0], 10);
         this.totalHoursForDate += hours;
       });
     });
@@ -201,7 +201,8 @@ onDateChange(date: string) {
   taskInitForm(){
     this.taskForm = this.builder.group({
       task_id: ['', Validators.required],
-      time_spent: ['', Validators.required],
+      hours_to_complete: ['', Validators.required],
+      hours_left:[''],
       isEditing: [false]
     });
   }
@@ -232,7 +233,7 @@ onDateChange(date: string) {
     reversedArray.forEach(control => formArray.push(control));
   }
   getTaskLength(project: AbstractControl): number {
-    const tasks = project.get('task_details') as FormArray;
+    const tasks = project.get('task_list') as FormArray;
     return tasks ? tasks.length : 0;
   }
   getProjectNameById(projectId: number): string {
@@ -251,7 +252,7 @@ onDateChange(date: string) {
 
   
   getTaskArray(projectIndex: number): FormArray {
-  return this.createdProject.at(projectIndex).get('task_details') as FormArray;
+  return this.createdProject.at(projectIndex).get('task_list') as FormArray;
   }
 
  
@@ -259,12 +260,13 @@ onDateChange(date: string) {
     const taskArray = this.getTaskArray(projectIndex);
     const taskFormGroup = taskArray?.at(taskIndex) as FormGroup;
   // console.log(taskArray,'ALL DETAILS')
-    const newTimeSpentValue = this.extractNumber(taskFormGroup.get('time_spent').value);
+  
+    const newTimeSpentValue = this.extractNumber(taskFormGroup.get('hours_to_complete').value);
   
     // Get the original (old) time spent before editing
-  //  const oldTimeSpentValue = this.extractNumber(this.originalTaskData[projectIndex][taskIndex]?.time_spent || 0);
+  //  const oldTimeSpentValue = this.extractNumber(this.originalTaskData[projectIndex][taskIndex]?.hours_to_complete || 0);
   
-    // Calculate the available hours by excluding the current task's old time_spent
+    // Calculate the available hours by excluding the current task's old hours_to_complete
     // const availableHours = this.getRemainingHours(projectIndex) + oldTimeSpentValue;
 
     const availableHours = this.getRemainingHours(projectIndex) ;
@@ -285,9 +287,10 @@ onDateChange(date: string) {
       // this.isTaskSubmitted = false;
       this.timeSheetForm.markAsTouched();
       taskFormGroup?.get('isEditing')?.setValue(false);
+      this.disableTaskDetailsBasedOnEditing(projectIndex, taskIndex,false);
     }
     
-    this.disableTaskDetailsBasedOnEditing(projectIndex, taskIndex);
+  
   }
   
   
@@ -300,8 +303,8 @@ onDateChange(date: string) {
     const taskArray = this.getTaskArray(projectIndex);
     
     taskArray?.controls.forEach(taskControl => {
-      const taskDate = taskControl.get('timesheet_applied_datetime')?.value;
-      const timeSpent = taskControl.get('time_spent')?.value;
+      const taskDate = taskControl.get('created_date')?.value;
+      const timeSpent = taskControl.get('hours_to_complete')?.value;
   
       if (taskDate && timeSpent) {
         const existingDate = this.hoursList.find(item => item.date === taskDate);
@@ -332,7 +335,7 @@ saveTask(projectIndex: number): void {
 
   // Calculate values
   const remainingHours = this.getRemainingHours(projectIndex);
-  const enteredTime = this.extractNumber(this.taskForm.get('time_spent').value);
+  const enteredTime = this.extractNumber(this.taskForm.get('hours_to_complete').value);
   const totalHoursForDate = this.totalHoursForDate || 0; // Default to 0 if undefined
 
   
@@ -342,39 +345,43 @@ saveTask(projectIndex: number): void {
   } 
   // If everything is okay, save the task
   else {
-    taskArray.push(this.builder.group(this.taskForm.value));
-    // projectGroup.patchValue({
-    //   task_details: taskArray.value,  // This patches the task details array
-    //   isTaskForm: false               // Set task form visibility to false (optional)
-    // });
-    taskArray?.controls?.forEach((task:any,i)=>{
-      if(task){
-        task.isEditing = false
-        this.disableTaskDetailsBasedOnEditing(projectIndex, i);
-      }
-    })
-    
+  
+  // Disable the task details based on editing state
+  
+  // Add the new task to the form array
+  //const newTaskGroup = this.builder.group(this.taskForm.value);
+  //taskArray.push(newTaskGroup);
+  taskArray.push(this.builder.group(this.taskForm.value));
+   console.log(taskArray)
+  const taskIndex = taskArray?.length ? taskArray?.length - 1 : 0
+  const task = taskArray.at(taskIndex) as FormGroup;
+  task?.get('task_id')?.disable();
+  task?.get('hours_to_complete')?.disable();
+  // this.disableTaskDetailsBasedOnEditing(projectIndex,taskIndex,false)
     projectGroup.get('isTaskForm').setValue(false);
     this.taskForm.reset();
   }
 }
 
-disableTaskDetailsBasedOnEditing(projectIndex: number, taskIndex: number): void {
+disableTaskDetailsBasedOnEditing(projectIndex: number, taskIndex: number,isEditing:boolean): void {
   const taskArray = this.getTaskArray(projectIndex); // Get the FormArray containing tasks
   const task = taskArray.at(taskIndex) as FormGroup; // Access the specific task form group
 
   // Check if isEditing is true or false
-  const isEditing = task.get('isEditing')?.value;
- 
+  // const isEditing = task?.get('isEditing')?.value;
+  // const isEditingArr  = this.taskDetailsList?.[taskIndex]['isEditing']
+ //console.log(this.taskDetailsList[taskIndex]['isEditing'])
+ alert(isEditing)
   if (isEditing) {
     // If isEditing is true, enable the fields
-    task.get('task_id')?.enable();
-    task.get('time_spent')?.enable();
+    task?.get('task_id')?.enable();
+    task?.get('hours_to_complete')?.enable();
   } else {
     // If isEditing is false, disable the fields
-    task.get('task_id')?.disable();
-    task.get('time_spent')?.disable();
+    task?.get('task_id')?.disable();
+    task?.get('hours_to_complete')?.disable();
   }
+ 
 }
 
 deleteProject(projectIndex: number): void {
@@ -410,7 +417,7 @@ deleteProject(projectIndex: number): void {
     const isTaskFormInvalid = projectGroup.get('isTaskForm').value ? this.taskForm.invalid : false;
     //  const tasks = taskArray.at(i).value
     // const isEditing = tasks.find(element=>element.isEditing);
-    const tasksArray = projectGroup.get('task_details') as FormArray;
+    const tasksArray = projectGroup.get('task_list') as FormArray;
     let isEditing = false;
 
     // Loop through the FormArray
@@ -468,26 +475,28 @@ deleteProject(projectIndex: number): void {
       this.originalTaskData[i][j] = { ...task.value };
       task?.get('isEditing')?.setValue(true);
       this.isTaskSubmitted = true;
+        
+    this.disableTaskDetailsBasedOnEditing(i, j,isEditing);
     } else {
       // Revert to the original task data when cancelling
       const originalData = this.originalTaskData[i]?.[j];
       // if (originalData) {
       //   task?.setValue(originalData);
       // }
-      if (originalData && originalData.task_id && originalData.time_spent) {
+      if (originalData && originalData.task_id && originalData.hours_to_complete) {
         console.log(originalData)
         task?.patchValue(originalData); // Use patchValue to avoid errors
       } else {
-       // alert("Missing data for task_id or time_spent");
+       // alert("Missing data for task_id or hours_to_complete");
       }
   
       // Disable editing mode for this task
       task?.get('isEditing')?.setValue(false);
       this.isTaskSubmitted = false;
-      
+        
+    this.disableTaskDetailsBasedOnEditing(i, j,isEditing);
     }
-    
-    this.disableTaskDetailsBasedOnEditing(i, j);
+  
   }
   
   
@@ -504,12 +513,12 @@ deleteProject(projectIndex: number): void {
       client_id: ['',Validators.required],
       project_id: ['',Validators.required],
       description: [''],
-      timesheet_applied_datetime: ['',Validators.required],
+      created_date: ['',Validators.required],
       clientList:[],
       projectList: [],
       taskList: [],
       time: [],
-      task_details: this.builder.array([]),
+      task_list: this.builder.array([]),
       showSave: [true],  // Add variable to control save button visibility
       isTaskForm: [true], // Add variable to control task form visibility
       isSaved:[false]
@@ -523,34 +532,89 @@ deleteProject(projectIndex: number): void {
       return;
     }
 
-    const selectedArr = this.timeSheetForm.value.response.map(project => {
-      const { client_id, project_id, description, timesheet_applied_datetime, task_details } = project;
+    const selectedArr = this.timeSheetForm.getRawValue().response.map(project => {
+      
+      const { client_id, project_id, description, created_date, task_list } = project;
       return {
         client_id,
         project_id,
         description,
-        timesheet_applied_datetime,
-        task_details: task_details.map(task => ({
-          task_id: task.task_id,
-          time_spent: task.time_spent
+        created_date,
+        task_list: task_list.map(task => ({
+          task_id: task['task_id'],
+          hours_to_complete: task['hours_to_complete'],
+          hours_left:task['hours_left']
         }))
+       
       };
     });
-
+console.log(selectedArr,'MAP')
+    // const data = {
+    //   created_by: this.userId,
+    //   reporting_manager_id: this.manager_id,
+    //   user_id: this.userId,
+    //   status: 'YET_TO_APPROVED',
+    //   module: 'TIMESHEET',
+    //   menu: 'PEOPLE_TIMESHEET',
+    //   method:"CREATE",
+    //   date: this.datepipe.transform(new Date(), 'dd/MM/yyyy'),
+    //   timesheet_status: 'YET_TO_APPROVED',
+    //   data: selectedArr,
+    //   organization_id: this.orgId,
+    // };
     const data = {
       created_by: this.userId,
-      reporting_manager_ref: this.manager_id,
-      user_id: this.userId,
-      status: 'YET_TO_APPROVED',
-      module: 'TIMESHEET',
-      menu: 'PEOPLE_TIMESHEET',
-      method:"CREATE",
-      date: this.datepipe.transform(new Date(), 'dd/MM/yyyy'),
-      timesheet_status: 'YET_TO_APPROVED',
-      response: selectedArr,
+      reporting_manager_id: this.manager_id,
+      data: selectedArr,
       organization_id: this.orgId,
     };
 
+  //   {
+  //     "reporting_manager_id": 4, 
+  //     "created_by": 46,
+  //     "data": [
+  //         {
+  //             "client_id": 1,
+  //             "project_id" : 1,
+  //             "created_date": "24-09-2024",
+  //             "description": "",
+  //             "task_list": [
+  //                 {
+  //                     "task_id": 1,
+  //                     "hours_left": 2,
+  //                     "hours_to_complete":1
+  
+  //                 },
+  //                 {
+  //                     "task_id": 2,
+  //                     "hours_left": 8,
+  //                     "hours_to_complete":1
+  
+  //                 }
+  //             ] 
+  //         },
+  //          {
+  //             "client_id": 1,
+  //             "project_id" : 2,
+  //             "created_date": "24-09-2024",
+  //             "description": "",
+  //             "task_list": [
+  //                 {
+  //                     "task_id": 1,
+  //                     "hours_left": 2,
+  //                     "hours_to_complete":1
+  
+  //                 },
+  //                 {
+  //                     "task_id": 1,
+  //                     "hours_left": 8,
+  //                     "hours_to_complete":1
+  
+  //                 }
+  //             ] 
+  //         }
+  //     ]
+  // }
     this.api.addTimeSheet(data).subscribe(
       (response) => {
         this.api.showSuccess('Timesheet added successfully!');
@@ -620,8 +684,8 @@ deleteProject(projectIndex: number): void {
     //console.log(event)
     this.api.getData(`${environment.live_url}/${environment.get_time_sheet_values}?client_id=${this.client_id}&project_id=${this.project_id}&task_name=${event}`).subscribe((res:any)=>{
       if(res){
-       this.time_spent = res
-       this.timeList = [...this.time_spent]
+       this.hours_to_complete = res
+       this.timeList = [...this.hours_to_complete]
         //console.log(res,"TIMESPENT n/----------------")
         this.createdProject?.at(index)?.patchValue({time: this.timeList})
       }

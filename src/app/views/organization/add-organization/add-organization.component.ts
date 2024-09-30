@@ -63,7 +63,7 @@ export class AddOrganizationComponent implements OnInit {
       reader.onload = (e: any) => {
         this.fileDataUrl = e.target.result;
         if(reader.result){
-          this.organizationForm.patchValue({ org_logo: this.fileDataUrl })
+          this.organizationForm.patchValue({ organization_image: this.fileDataUrl })
         }
        
       };
@@ -82,9 +82,9 @@ export class AddOrganizationComponent implements OnInit {
   createAdminFormGroup(admin,formArray?): FormGroup {
     return this._fb.group({
       admin_name: [admin.admin_name, [Validators.required, Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/)]],
-      admin_email: [admin.admin_email, [Validators.required, Validators.email,this.emailMatchValidator(),this.duplicateEmailArrayValidator(formArray)]],
+      admin_email_id: [admin.admin_email_id, [Validators.required, Validators.email,this.emailMatchValidator(),this.duplicateEmailArrayValidator(formArray)]],
       admin_phone_number: [admin.admin_phone_number, [Validators.required,this.phoneNumberLengthValidator]],
-      admin_status: [admin.admin_status],
+      is_active: [admin.is_active],
     });
   }
   duplicateEmailArrayValidator(formArray: FormArray): ValidatorFn {
@@ -96,7 +96,7 @@ export class AddOrganizationComponent implements OnInit {
       const emailExists = this.adminFormArray?.controls?.some(
         (group: AbstractControl) =>
           group !== control?.parent && // Exclude the current control being validated
-          group.get('admin_email')?.value === currentEmail
+          group.get('admin_email_id')?.value === currentEmail
       );
       
       // Return the validation error only if the email is a duplicate
@@ -115,19 +115,25 @@ export class AddOrganizationComponent implements OnInit {
   adminintForm(){
     this.adminForm = this._fb.group({
       admin_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/),Validators.required]],
-      admin_email: ['', [Validators.required, Validators.email, this.emailMatchValidator(),this.duplicateEmailValidator(this.adminList)]],
+      admin_email_id: ['', [Validators.required, Validators.email, this.emailMatchValidator(),this.duplicateEmailValidator(this.adminList)]],
       admin_phone_number: ['', [Validators.required, this.phoneNumberLengthValidator]],
-      admin_status: [true],
+      is_active: [true],
     })
   }
+//   {
+//     "admin_name": "sandesh ek",
+//     "admin_email_id_id": "sandesh@ekfrazo.in",
+//     "admin_phone_number": 9999990188,
+//     "is_active": true
+// }
   
 
  emailMatchValidator(): ValidatorFn {
   return (adminEmailControl: AbstractControl): { [key: string]: any } | null => {
-    if (!adminEmailControl.value || !this.organizationForm.get('org_email').value) {
+    if (!adminEmailControl.value || !this.organizationForm.get('email').value) {
       return null;
     }
-    return adminEmailControl.value === this.organizationForm.get('org_email').value 
+    return adminEmailControl.value === this.organizationForm.get('email').value 
       ? { 'emailMatch': true }
       : null;
   };
@@ -135,7 +141,7 @@ export class AddOrganizationComponent implements OnInit {
 // Custom validator to check for duplicate admin emails
 duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
   return (control: AbstractControl): ValidationErrors | null => {
-    const emailExists = adminList.some(admin => admin.admin_email === control.value);
+    const emailExists = adminList.some(admin => admin.admin_email_id === control.value);
     return emailExists ? { duplicateEmail: true } : null;
   };
 }
@@ -148,15 +154,15 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
     this.organizationForm.markAllAsTouched()
     this.api.showWarning("Please enter the mandatory fields")
     return;
-  }else if((this.f['org_email']?.valid && this.f['org_email']?.value === this.adminForm?.value['admin_email'])){
+  }else if((this.f['email']?.valid && this.f['email']?.value === this.adminForm?.value['admin_email_id'])){
     this.adminForm.markAllAsTouched();
     return;
   }else{
     const data = {
       admin_name:this.adminForm?.value['admin_name'],
-      admin_email:this.adminForm?.value['admin_email'],
+      admin_email_id:this.adminForm?.value['admin_email_id'],
       admin_phone_number:this.adminForm?.value['admin_phone_number'],
-      admin_status:this.adminForm?.value['admin_status'] === true ? 'Active' : 'Inactive',
+      is_active:this.adminForm?.value['is_active'] === true ? 'Active' : 'Inactive',
     }
     this.adminList.push(data);
     this.adminFormArray.push(this.createAdminFormGroup(data,this.adminFormArray));
@@ -164,10 +170,10 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
    
 
     this.a['admin_name'].reset();
-    this.a['admin_email'].reset();
+    this.a['admin_email_id'].reset();
     this.a['admin_phone_number'].reset();
     this.adminForm.patchValue({
-      admin_status: [true]
+      is_active: [true]
     })
     this.isAdminForm = !this.isAdminForm;
   }
@@ -198,9 +204,9 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
           this.adminList[index] = {
             ...this.adminList[index],
             admin_name: adminForm.value.admin_name,
-            admin_email: adminForm.value.admin_email,
+            admin_email_id: adminForm.value.admin_email_id,
             admin_phone_number: adminForm.value.admin_phone_number,
-            admin_status: adminForm.value.admin_status === true ? 'Active' : 'Inactive',
+            is_active: adminForm.value.is_active === true ? 'Active' : 'Inactive',
           };
            
           // Show the success message
@@ -219,7 +225,7 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
   async clearImage() {
   await this.triggerFileInput();
     // this.fileDataUrl = null;
-    // this.f['org_logo'].reset();
+    // this.f['organization_image'].reset();
   }
   goBack(event) {
     event.preventDefault(); // Prevent default back button behavior
@@ -229,24 +235,24 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
   initform() {
     this.organizationForm = this._fb.group({
       org_qr_uniq_id: ['22121'],
-      org_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/), Validators.required]],
-      org_address: ['', [Validators.pattern(/^\S.*$/)]],
-      org_email: ['', [Validators.required, Validators.email]],
+      organization_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/), Validators.required]],
+      address: ['', [Validators.pattern(/^\S.*$/)]],
+      email: ['', [Validators.required, Validators.email]],
       org_phone: [''],
       org_mobile: [''],
       org_fax: [''],
       org_website: [''],
-      org_city: ['', [Validators.required]],
-      org_state: ['', [Validators.required]],
-      org_country: ['', [Validators.required]],
-      org_postal_code: ['',[Validators.pattern('^\\d{6}$')]],
+      city: ['', [Validators.required]],
+      state: ['', [Validators.required]],
+      country: ['', [Validators.required]],
+      postal_code: ['',[Validators.pattern('^\\d{6}$')]],
       org_profile_updated_status: [''],
       org_default_currency_type: [''],    
       org_subscription_plan: [''],
-      org_logo_path: [''],
-      org_logo_base_url: [''],
+      organization_image_path: [''],
+      organization_image_base_url: [''],
       page: [''],
-      org_logo: ['', [Validators.required, this.fileFormatValidator]],
+      organization_image: ['', [Validators.required, this.fileFormatValidator]],
     })
 
   }
@@ -285,8 +291,8 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
 
   onFocus() {
     this.type = 'file'
-    this.f['org_logo'].markAsDirty()
-    this.f['org_logo'].markAsTouched()
+    this.f['organization_image'].markAsDirty()
+    this.f['organization_image'].markAsTouched()
   }
   
   getCountry() {
@@ -302,8 +308,8 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
   }
   onFocusCountry() {
     this.organizationForm.patchValue({
-      org_state: '',
-      org_city: ''
+      state: '',
+      city: ''
     })
   }
 
@@ -367,18 +373,18 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
   
     // Prepare data for submission
     const data = {
-      org_qr_uniq_id: this.f['org_qr_uniq_id'].value,
-      org_name: this.f['org_name'].value,
-      org_address: this.f['org_address'].value,
-      org_email: this.f['org_email'].value,
-      org_city: this.f['org_city'].value,
-      org_state: this.f['org_state'].value,
-      org_country: this.f['org_country'].value,
-      org_postal_code: this.f['org_postal_code'].value,
-      org_logo: this.f['org_logo'].value,
+      organization_name: this.f['organization_name'].value,
+      address: this.f['address'].value,
+      email: this.f['email'].value,
+      city: this.f['city'].value,
+      state: this.f['state'].value,
+      country: this.f['country'].value,
+      postal_code: this.f['postal_code'].value,
+      organization_image: this.f['organization_image'].value,
       admin_details: this.adminList
     };
   
+
     // If everything is valid, submit the form
     this.api.postData(`${environment.live_url}/${environment.organization}`, data).subscribe(
       res => {
