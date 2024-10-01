@@ -9,6 +9,7 @@ $primay-color: #126EB4;
 //}
 
 mat-card{
+    font-family: "Exo FT" !important;
     border-radius: 10px !important;
     text-align: center;
     background-color: #fcfbfb;
@@ -24,13 +25,17 @@ mat-card{
 }
 .used-leaves{
  background-color: $primay-color;
- padding: 2px 6px;
- color:white;
- border-radius: 5px;
+ 
+padding: 2px 6px;
+color: white;
+border-radius: 5px;
+font-weight: 600;
 }
 .total{
-    background: #E4FFE3;
-    border: 1px solid #0F9508;
+   // background: #E4FFE3;
+    background: #e1f2ff;
+    
+    // border: 1px solid #0F9508;
     line-height: 1.5;
     border-radius: 5px;
     padding: 5px;
@@ -41,9 +46,9 @@ mat-card{
 }
 .balance0{
     background: #FFE9E9;
-    border: 1px solid #FE1A1A;
+  //  border: 1px solid #FE1A1A;
 }
 .balance3{
     background: #FFEDCE;
-    border: 1px solid #C88209;
+   // border: 1px solid #C88209;
 }

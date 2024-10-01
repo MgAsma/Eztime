@@ -14,7 +14,7 @@
                                             <i class="bi bi-list-ul"></i> Approved</b> </h6>
                                         </div>
                                         <div class="col-4 text-end pe-0">
-                                            <h4 class="v-align" style="color: green;">{{cardData?.approved_count}}</h4>
+                                            <h4 class="v-align" style="color: green;">{{cardData?.approved_count || 0}}</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -28,10 +28,10 @@
                                     <div class="row">
                                         <div class="col-8">
                                             <h6><b>
-                                             <i class="bi bi-list-ul"></i> Request</b> </h6>
+                                             <i class="bi bi-list-ul"></i> Pending</b> </h6>
                                         </div>
                                         <div class="col-4 text-end pe-0">
-                                            <h4 class="v-align" style="color: #e6b539;">{{cardData ?.request_count}}
+                                            <h4 class="v-align" style="color: #e6b539;">{{cardData ?.request_count || 0}}
                                             </h4>
                                         </div>
                                     </div>
@@ -50,7 +50,7 @@
                                             </h6>
                                         </div>
                                         <div class="col-4 text-end pe-0">
-                                            <h4 class="v-align" style="color: red;">{{cardData ?.declined_count}}</h4>
+                                            <h4 class="v-align" style="color: red;">{{cardData ?.declined_count || 0}}</h4>
                                         </div>
                                     </div>
 
@@ -69,7 +69,7 @@
                                             <i class="bi bi-list-ul"></i> Total</b> </h6>
                                         </div>
                                         <div class="col-4 text-end pe-0">
-                                            <h4 class="v-align" style="color: red;">{{cardData ?.total_count}}</h4>
+                                            <h4 class="v-align" style="color: #126eb4;">{{cardData ?.total_count || 0}}</h4>
                                         </div>
                                     </div>
                                 </div>

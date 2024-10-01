@@ -27,7 +27,7 @@ export class TimesheetComponent implements OnInit {
   selectedTab: any;
   userId:any;
   count: number;
-  cardData: any;
+  cardData: any = {};
   p_FromDate= '2023-03-03';
   p_ToDate= '2023-03-30';
   totalCount: any;
@@ -44,7 +44,7 @@ export class TimesheetComponent implements OnInit {
     private common_service:CommonServiceService) { }
   goBack(event)
   {
-    event.preventDefault(); // Prevent default back button behavior
+  event.preventDefault(); // Prevent default back button behavior
   this.location.back();
   
   }
@@ -56,15 +56,10 @@ export class TimesheetComponent implements OnInit {
     this.orgId = sessionStorage.getItem('org_id')
     this.userId = sessionStorage.getItem('user_id')
     let params={
-      module:"TIMESHEET",
-      menu:"PEOPLE_TIMESHEET",
-      method:"VIEW",
-      status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-      user_id:this.userId,
+      status:this.selectedTab? this.selectedTab :'Pending',
       page_number:this.page,
       data_per_page:this.tableSize,
       search_key:'',
-      organization_id:this.orgId
      }
      
       this.initForm()
@@ -78,48 +73,46 @@ export class TimesheetComponent implements OnInit {
     to_date:['',Validators.required]
   })
  }
-  // getByStatus(params){
-   
-  //    this.api.getData(`${environment.live_url}/${environment.time_sheets}?user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&search_key=${params.search_key}&approved_state=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
-  //     if( res['result'].data.length >=1){
-  //       this.allDetails = res['result']['data']
-  //       this.cardData = res['result'].timesheet_dashboard
-  //       this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
-  //     }
-  //     else{
-  //       res['result']['data'].length <=0 ? this.api.showWarning('No records found') : '';
-  //       if(res['result'] && res['result'].timesheet_dashboard){
-  //         this.cardData = res['result'].timesheet_dashboard    
-  //       }
-  //      }
-  //    })
-  // }
+  
   getByStatus(params){
    
-    this.api.getData(`${environment.live_url}/${environment.time_sheets}/?status=${params.status}`).subscribe((res:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.time_sheets}/?status=${params.status}&from_date=${params.timesheets_from_date}&to_date=${params.timesheets_to_date}`).subscribe((res:any)=>{
      if( res['result'].data.length >=1){
        this.allDetails = res['result']['data']
-       this.cardData = res['result'].timesheet_dashboard
+    
+    this.cardData = {
+      approved_count:res['result'].approve_count,
+      request_count:res['result'].pending_count,
+      declined_count:res['result'].declined_count,
+      total_count:res['result'].total_status_count,
+    }
+      
        this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
      }
-     else{
-       res['result']['data'].length <=0 ? this.api.showWarning('No records found') : '';
-       if(res['result'] && res['result'].timesheet_dashboard){
-         this.cardData = res['result'].timesheet_dashboard    
-       }
-      }
+    //  else{
+    //    res['result']['data'].length <=0 ? this.api.showWarning('No records found') : '';
+    //    if(res['result'] && res['result'].timesheet_dashboard){
+    //      this.cardData = res['result'].timesheet_dashboard    
+    //    }
+    //   }
     })
  }
 
   getAllTimeSheet(params){ 
-    this.api.getData(`${environment.live_url}/${environment.time_sheets}?user_id=${this.userId}&module=TIMESHEET&menu=PEOPLE_TIMESHEET&method=VIEW&search_key=${params.search_key}&approved_state=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&timesheets_from_date=${params.timesheets_from_date}&timesheets_to_date=${params.timesheets_to_date}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.time_sheets}?search_key=${params.search_key}&status=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&from_date=${params.timesheets_from_date}&to_date=${params.timesheets_to_date}`).subscribe((res:any)=>{
       if( res['result'].data.length >=1){
         this.allDetails = res['result']['data']
-        this.cardData = res['result'].timesheet_dashboard
+       
+        this.cardData = {
+          approved_count:res['result'].total_approve_count,
+          request_count:res['result'].total_pending_count,
+          declined_count:res['result'].total_declined_count,
+          total_count:res['result'].total_status_count,
+        }
         this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
         this.timeSheetForm.patchValue({
-          from_date:this.datepipe.transform(this.cardData.from_date,'dd/MM/yyyy'),
-          to_date:this.datepipe.transform(this.cardData.to_date,'dd/MM/yyyy')
+          from_date:this.datepipe.transform(this.cardData.from_date,'dd-MM-yyyy'),
+          to_date:this.datepipe.transform(this.cardData.to_date,'dd-MM-yyyy')
         });
         
       }
@@ -146,28 +139,19 @@ export class TimesheetComponent implements OnInit {
       this.tableSize = event.tableSize
       if(this.changes){
         c_params={
-          module:"TIMESHEET",
-          menu:"PEOPLE_TIMESHEET",
-          method:"VIEW",
-          status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-          user_id:this.userId,
-          page_number:event.page,
-          data_per_page:event.tableSize,
-          search_key:event.search_key,
-          organization_id:this.orgId,
-          timesheets_to_date:this.datepipe.transform(this.toDate,'dd/MM/yyyy'),
-          timesheets_from_date:this.datepipe.transform(this.fromDate,'dd/MM/yyyy') 
+        
+          status:this.selectedTab? this.selectedTab :'Pending',
+          //page_number:event.page,
+          // data_per_page:event.tableSize,
+          // search_key:event.search_key,
+          timesheets_to_date:this.datepipe.transform(this.toDate,'dd-MM-yyyy'),
+          timesheets_from_date:this.datepipe.transform(this.fromDate,'dd-MM-yyyy') 
          }
          this.getAllTimeSheet(c_params);
       }
     else{
       c_params={
-        module:"TIMESHEET",
-        menu:"PEOPLE_TIMESHEET",
-        method:"VIEW",
-        status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-        user_id:this.userId,
-        organization_id:this.orgId,
+        status:this.selectedTab? this.selectedTab :'Pending',
         page_number:event.page,
         data_per_page:event.tableSize,
         search_key:event.search_key,
@@ -183,27 +167,18 @@ export class TimesheetComponent implements OnInit {
       let c_params={}
       if(this.changes){
         c_params={
-          module:"TIMESHEET",
-          menu:"PEOPLE_TIMESHEET",
-          method:"VIEW",
-          status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-          user_id:this.userId,
-          page_number:this.page,
-          data_per_page:this.tableSize,
+          status:this.selectedTab? this.selectedTab :'Pending',
+          // user_id:this.userId,
+          // page_number:this.page,
+          // data_per_page:this.tableSize,
           search_key:this.term,
-          organization_id:this.orgId,
-          timesheets_to_date:this.datepipe.transform(this.toDate,'dd/MM/yyyy'),
-          timesheets_from_date:this.datepipe.transform(this.fromDate,'dd/MM/yyyy') 
+          timesheets_to_date:this.datepipe.transform(this.toDate,'dd-MM-yyyy'),
+          timesheets_from_date:this.datepipe.transform(this.fromDate,'dd-MM-yyyy') 
          }
       }
     else{
       c_params={
-        module:"TIMESHEET",
-        menu:"PEOPLE_TIMESHEET",
-        method:"VIEW",
-        status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-        user_id:this.userId,
-        organization_id:this.orgId,
+        status:this.selectedTab? this.selectedTab :'Pending',
         page_number:this.page,
         data_per_page:this.tableSize,
         search_key:this.term,
@@ -227,25 +202,21 @@ export class TimesheetComponent implements OnInit {
       // If changes exist and form is valid
       if (this.changes) {
         c_params = {
-          module: "TIMESHEET",
-          menu: "PEOPLE_TIMESHEET",
-          method: "VIEW",
-          status: this.selectedTab ? this.selectedTab : 'YET_TO_APPROVED',
-          user_id: this.userId,
-          organization_id: this.orgId,
-          page_number: this.page,
-          data_per_page: this.tableSize,
-          search_key: '',
-          timesheets_to_date: this.datepipe.transform(this.toDate, 'dd/MM/yyyy'),
-          timesheets_from_date: this.datepipe.transform(this.fromDate, 'dd/MM/yyyy')
+          status: this.selectedTab ? this.selectedTab : 'Pending',
+          // page_number: this.page,
+          // data_per_page: this.tableSize,
+          // search_key: '',
+          timesheets_to_date: this.datepipe.transform(this.toDate, 'dd-MM-yyyy'),
+          timesheets_from_date: this.datepipe.transform(this.fromDate, 'dd-MM-yyyy')
         };
 
         this.allDetails = [];
         this.getAllTimeSheet(c_params);  // Fetch the data
-        this.timeSheetForm = await this._fb.group({
-          from_date:[''],
-          to_date:['']
-        })
+        // this.timeSheetForm.patchValue({
+        //   from_date:[''],
+        //   to_date:['']
+        // })
+       
       }
     }
   
@@ -270,17 +241,13 @@ export class TimesheetComponent implements OnInit {
       let c_params = {}
     if(this.changes){
       c_params={
-        module:"TIMESHEET",
-        menu:"PEOPLE_TIMESHEET",
-        method:"VIEW",
+        
         status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-        user_id:this.userId,
-        organization_id:this.orgId,
-        page_number:this.page,
-        data_per_page:this.tableSize,
-        search_key:'',
-        timesheets_to_date:this.datepipe.transform(this.toDate,'dd/MM/yyyy') ,
-        timesheets_from_date:this.datepipe.transform(this.fromDate,'dd/MM/yyyy') 
+        // page_number:this.page,
+        // data_per_page:this.tableSize,
+        // search_key:'',
+        timesheets_to_date:this.datepipe.transform(this.toDate,'dd-MM-yyyy') ,
+        timesheets_from_date:this.datepipe.transform(this.fromDate,'dd-MM-yyyy') 
        }
       
         this.getAllTimeSheet(c_params)
@@ -288,15 +255,12 @@ export class TimesheetComponent implements OnInit {
     }
     else{
       c_params={
-        module:"TIMESHEET",
-        menu:"PEOPLE_TIMESHEET",
-        method:"VIEW",
+       
         status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-        user_id:this.userId,
-        organization_id:this.orgId,
-        page_number:this.page,
-        data_per_page:this.tableSize,
-        search_key:'',
+       
+        // page_number:this.page,
+        // data_per_page:this.tableSize,
+        // search_key:'',
       }
       this.getByStatus(c_params)
     }
@@ -304,15 +268,11 @@ export class TimesheetComponent implements OnInit {
     }
     refershPage(){
       let params={
-        module:"TIMESHEET",
-        menu:"PEOPLE_TIMESHEET",
-        method:"VIEW",
-        status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-        user_id:this.userId,
-        page_number:this.page,
-        data_per_page:this.tableSize,
-        search_key:'',
-        organization_id:this.orgId
+       
+        status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED', 
+        // page_number:this.page,
+        // data_per_page:this.tableSize,
+        // search_key:'',
        }
        
         this.getByStatus(params)
