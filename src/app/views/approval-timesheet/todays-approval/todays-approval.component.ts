@@ -3,6 +3,7 @@ import { TimesheetService } from 'src/app/service/timesheet.service';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-todays-approval',
   templateUrl: './todays-approval.component.html',
@@ -42,18 +43,19 @@ export class TodaysApprovalComponent implements OnInit {
     //console.log( this.currDate," this.currDate")
 
     let data = {
-      user_id: this.user_id,
-      page_number: 1,
-      data_per_page: this.table_size,
-      status: 'YET_TO_APPROVED',
-      organization_id: this.orgId,
-      search_key: '',
+      // user_id: this.user_id,
+      // page_number: 1,
+      // data_per_page: this.table_size,
+      status: 'Pending',
+      // organization_id: this.orgId,
+      // search_key: '',
     }
     this.getApprovals(data)
   }
   getApprovals(params) {
     this.allDetails = [];
-    this.timesheetService.getTodaysApprovalTimesheet(params).subscribe(res => {
+   // this.timesheetService.getTodaysApprovalTimesheet(params).subscribe(res => {
+      this.api.getData(`${environment.live_url}/${environment.timesheets}/?status=${params.status}&current_date=today`).subscribe(res =>{
       if (res['result']['data'].length >= 1) {
         this.allDetails = res['result'].data;
         this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.table_size };
@@ -67,12 +69,12 @@ export class TodaysApprovalComponent implements OnInit {
       this.table_size = event.tableSize;
       this.page = event.page;
       let data = {
-        user_id: this.user_id,
-        page_number: event.page,
-        data_per_page: event.tableSize,
-        status: this.selectedTab ? this.selectedTab : 'YET_TO_APPROVED',
-        organization_id: this.orgId,
-        search_key: event.search_key,
+        // user_id: this.user_id,
+        // page_number: event.page,
+        // data_per_page: event.tableSize,
+        status: this.selectedTab ? this.selectedTab : 'Pending',
+        // organization_id: this.orgId,
+        //search_key: event.search_key,
       }
       this.getApprovals(data);
     }
@@ -82,12 +84,12 @@ export class TodaysApprovalComponent implements OnInit {
     if (event) {
       // this.table_size = event.tableSize;
       let data = {
-        user_id: this.user_id,
-        page_number: this.page,
-        data_per_page: this.table_size,
-        status: this.selectedTab ? this.selectedTab : 'YET_TO_APPROVED',
-        organization_id: this.orgId,
-        search_key: this.term
+        // user_id: this.user_id,
+        // page_number: this.page,
+        // data_per_page: this.table_size,
+        status: this.selectedTab ? this.selectedTab : 'Pending',
+        // organization_id: this.orgId,
+        // search_key: this.term
       }
       this.getApprovals(data);
     }
@@ -95,39 +97,34 @@ export class TodaysApprovalComponent implements OnInit {
   }
   tabState(data) {
     if(data.tab.textLabel == 'Approved'){
-      this.selectedTab = 'APPROVED'
+      this.selectedTab = 'Approved'
     }
     else if(data.tab.textLabel == 'Pending' ){
-      this.selectedTab = 'YET_TO_APPROVED' 
+      this.selectedTab = 'Pending' 
     }
     else if(data.tab.textLabel == 'Declined'){
-      this.selectedTab = 'DECLINED'
+      this.selectedTab = 'Declined'
     }
-    else if(data.tab.textLabel == 'Flagged timesheets'){
-      this.selectedTab = 'FLAGGED'
-    }
+    
     else{
-      this.selectedTab = 'YET_TO_APPROVED' 
+      this.selectedTab = 'Pending' 
     }
 
     let params = {
-      user_id: this.user_id,
-      page_number: 1,
-      data_per_page: this.table_size,
-      status: this.selectedTab ? this.selectedTab : 'YET_TO_APPROVED',
-      organization_id: this.orgId,
-      search_key: '',
+      // page_number: 1,
+      // data_per_page: this.table_size,
+      status: this.selectedTab ? this.selectedTab : 'Pending',
+      // search_key: '',
     }
     this.getApprovals(params);
   }
   refershPage() {
     let data = {
-      user_id: this.user_id,
       page_number: 1,
       data_per_page: this.table_size,
-      status: this.selectedTab ? this.selectedTab : 'YET_TO_APPROVED',
-      organization_id: this.orgId,
-      search_key: '',
+      status: this.selectedTab ? this.selectedTab : 'Pending',
+      //organization_id: this.orgId,
+      //search_key: '',
     }
     this.getApprovals(data);
   }
