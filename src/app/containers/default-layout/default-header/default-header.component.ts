@@ -162,7 +162,8 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
         this.common_service.setProfilePhoto(this.profileDataForSidebar)
       }
     }, (error => {
-      this.api.showError(error.error.error.message)
+      console.log('from default header',error);
+      // this.api.showError(error.error.error.message)
     }))
   }
   getNotification() {
