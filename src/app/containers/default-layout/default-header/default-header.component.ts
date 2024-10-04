@@ -172,7 +172,8 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
         this.notes = res.result.data
       }
     }, ((error: any) => {
-      this.api.showError(error.error.error.message)
+      console.log('from default header',error)
+      // this.api.showError(error.error.error.message)
     }))
   }
 }

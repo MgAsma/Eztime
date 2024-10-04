@@ -102,7 +102,7 @@ const routes: Routes = [
         path:'profile',loadChildren:()=>import('./views/profile/profile.module').then(m =>m.ProfileModule)
       },
       {
-        path:'organization',canActivate:[OrgAuthGuard],loadChildren:()=>import('./views/organization/organization.module').then(m => m.OrganizationModule)
+        path:'organization',loadChildren:()=>import('./views/organization/organization.module').then(m => m.OrganizationModule)
       },
       {
         path: 'pages',
