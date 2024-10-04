@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 
 export class ApiserviceService {
   baseurl = environment.live_url;
+  newUrl = environment.new_dev_url;
   org_id: any;
   accessArr: any = []
   token: any
@@ -36,8 +37,14 @@ export class ApiserviceService {
     this.toastr.warning(message);
   }
   // Login
+  // loginDetails(data: any) {
+  //   return this.http.post(`${this.baseurl}/login`, data)
+  // }
   loginDetails(data: any) {
-    return this.http.post(`${this.baseurl}/login`, data)
+    return this.http.post(`${this.newUrl}/login/`, data)
+  }
+  userAccess(user_id:any){
+    return this.http.get(`${this.newUrl}/user-access/${user_id}/`)
   }
   // Login
   //Register
@@ -129,9 +136,11 @@ export class ApiserviceService {
   // Industry Sector
 
   // Client
-  addClientDetails(data: any) {
-    return this.http.post(`${this.baseurl}/clients`, data, { headers: this.headers })
-  }
+  
+  // addClientDetails(data: any) {
+  //   return this.http.post(`${this.baseurl}/clients`, data, { headers: this.headers })
+  // }
+ 
   getClientDetails(params, org) {
     return this.http.get(`${this.baseurl}/clients?page_number=1&data_per_page=2&pagination=${params.pagination}&org_ref_id=${org}`, { headers: this.headers })
   }
@@ -146,6 +155,11 @@ export class ApiserviceService {
   }
   updateClient(id: any, data: any) {
     return this.http.put(`${this.baseurl}/clients/${id}`, data, { headers: this.headers })
+  }
+
+        // new pi for client
+  addClientDetails(data: any) {
+    return this.http.post(`${this.newUrl}/client/`, data, { headers: this.headers })
   }
   // Client
 

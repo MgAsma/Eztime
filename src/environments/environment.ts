@@ -42,7 +42,8 @@ export const environment = {
   org_department: `organization-department`,
   approval_config: `time-sheets-approval-config`,
   notification_center: `notification-center`,
-  timesheets:`timesheets`
+  timesheets:`timesheets`,
+  new_dev_url: 'https://projectacedevelop.thestorywallcafe.com/api'
 };
 
 /*

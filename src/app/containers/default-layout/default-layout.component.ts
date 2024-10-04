@@ -74,7 +74,8 @@ export class DefaultLayoutComponent {
     this.user_role_Name = sessionStorage.getItem('user_role_name');
     let role_id = sessionStorage.getItem('user_role_id');
     // this.user_name = sessionStorage.getItem('user_name');
-    this.getUserControls(role_id)
+    this.testingFunction();
+    // this.getUserControls(role_id)
     this.ngxService.start();
     setTimeout(() => {
       this.ngxService.stop();
@@ -93,6 +94,18 @@ export class DefaultLayoutComponent {
 
   }
   
+  testingFunction(){
+    let temp = []
+    this.api.userAccess(sessionStorage.getItem('user_id')).subscribe(
+      (res:any)=>{
+        console.log('default layout', res.access_list)
+        console.log('this.nav1', this.navItems)
+        // const sidebarOptions = filteredNavItems.map((item) => item.name);
+        
+          this.sidebarNavItems = res.access_list;
+      }
+    )
+  }
 
   getUserControls(role_id) {
     this.org_id = sessionStorage.getItem('org_id')
@@ -285,6 +298,7 @@ export class DefaultLayoutComponent {
             url: '/dashboards',
             icon: 'bi bi-speedometer',
           });
+          console.log(this.sidebarNavItems,'this.sidebarNavItems')
         }
       }
     })

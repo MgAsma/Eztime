@@ -6,12 +6,10 @@
     <img src="../../../assets/images/logo.svg" width="170px" height="65px" class="sidebar-logo-sidebar" />
   </c-sidebar-brand>
   <perfect-scrollbar [config]="perfectScrollbarConfig">
-   
-    <c-sidebar-nav [navItems]="config == 'SUPER ADMIN'? navItems : sidebarNavItems" dropdownMode="close">
+    <c-sidebar-nav [navItems]="sidebarNavItems" dropdownMode="close">
 
     </c-sidebar-nav>
   </perfect-scrollbar>
- 
   <mat-card class="profile-settings-card">
     <div class="d-flex">
       <c-avatar cTextColor="primary" shape="rounded-1" size="md"  [src]="profileImage? profileImage: '../assets/images/no-profile-pic.png'" >
@@ -68,3 +66,4 @@
 
   </c-dropdown>
 </ng-template>
+<!-- <c-sidebar-nav [navItems]="config == 'SUPER ADMIN'? navItems : sidebarNavItems" dropdownMode="close"> -->

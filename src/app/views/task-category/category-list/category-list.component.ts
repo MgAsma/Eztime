@@ -32,6 +32,12 @@ export class CategoryListComponent implements OnInit {
   permissions: any = [];
   user_id: string;
   orgId: string;
+  sortValue: string = '';
+  directionValue: string = '';
+  arrowState: { [key: string]: boolean } = {
+    tpc_name: false,
+    tpc_c_date: false,
+  };
 
   constructor(
     private modalService:NgbModal, 
@@ -183,25 +189,14 @@ export class CategoryListComponent implements OnInit {
 	}
 }
 
-  arrow:boolean=false
-  directionValue:any='desc'
-
-
-
-
-  sortValue:any='tpc_name'
-  sort(direction:any,value:any){
-    if(direction=='asc'){
-      this.arrow=true
-      this.directionValue= direction
-      this.sortValue= value
-    }
-    else{
-      this.arrow=false
-      this.directionValue= direction
-      this.sortValue= value
-    }
-  }
+sort(direction: string, column: string) {
+  Object.keys(this.arrowState).forEach(key => {
+    this.arrowState[key] = false;
+  });
+  this.arrowState[column] = direction === 'asc';
+  this.directionValue = direction;
+  this.sortValue = column;
+}
 
   getContinuousIndex(index: number):number {
     return (this.page-1)*this.tableSize+ index + 1;
