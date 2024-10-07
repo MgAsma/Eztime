@@ -46,10 +46,10 @@ export class DashboardComponent implements OnInit {
     const isloggedIn = sessionStorage.getItem('token');
     if (isloggedIn) {
       this.org_id = sessionStorage.getItem('org_id')
-      this.getCountDetails(isloggedIn);
+      // this.getCountDetails(isloggedIn);
     }
     this.user_role_name = sessionStorage.getItem('user_role_name')
-    this.getUserControls();
+    // this.getUserControls();
   }
   getCountDetails(isloggedIn) {
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
@@ -66,9 +66,9 @@ export class DashboardComponent implements OnInit {
         this.admin = data.result.no_of_admin;
         this.userCount = data.result.no_of_users
         this.enable = true;
-        this.getRecentAddedOrganizationList();
-        this.getRecentAddeduserslistData();
-        this.getRecentAddedAdminlistData();
+        // this.getRecentAddedOrganizationList();
+        // this.getRecentAddeduserslistData();
+        // this.getRecentAddedAdminlistData();
       }
 
     }

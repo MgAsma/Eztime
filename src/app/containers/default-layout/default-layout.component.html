@@ -16,7 +16,7 @@
       </c-avatar>
       <p class="mx-2" [ngClass]="user_role_Name !== 'EMPLOYEE' ? 'nonemployee' : 'employee'">
         <small class="user-name" *ngIf="user_role_Name !== 'EMPLOYEE'">{{user_name |titlecase}}</small><br />
-        <mat-label class="user-role">{{user_role_Name|titlecase}}</mat-label>
+        <mat-label class="user-role">{{user_role_Name}}</mat-label>
       </p>
 
     </div>

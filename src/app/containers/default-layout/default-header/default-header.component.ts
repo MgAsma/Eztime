@@ -66,9 +66,9 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   }
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id');
-    this.orgId = sessionStorage.getItem('org_id')
+    // this.orgId = sessionStorage.getItem('org_id')
     this.user_role_Name = sessionStorage.getItem('user_role_name');
-    this.user_name = sessionStorage.getItem('user_name');
+    // this.user_name = sessionStorage.getItem('user_name');
     this.getProfiledata()
     // this.getNotification();
     this.common_service.title$.subscribe(title => {
@@ -153,18 +153,29 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     name:''
   }
   getProfiledata() {
-    this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res: any) => {
-      console.log(res,'PROFILE GET API RESPONSE')
-      if (res.result.data) {
-        this.profileImg = res?.result?.data[0]?.u_profile_path;
-        this.profileDataForSidebar.profile_pic = res.result.data[0]['u_profile_photo'];
-        this.profileDataForSidebar.name = res.result.data[0].u_first_name; 
+    this.api.userAccess(sessionStorage.getItem('user_id')).subscribe(
+      (res:any)=>{
+        console.log('profile details in side bar', res);
+        this.profileImg = res?.user_info[0]?.profile_image;
+        this.profileDataForSidebar.profile_pic = res.user_info[0]['profile_image'];
+        this.profileDataForSidebar.name = res.user_info[0].first_name; 
         this.common_service.setProfilePhoto(this.profileDataForSidebar)
+      },
+      (error => {
+          console.log('from default header',error);
       }
-    }, (error => {
-      console.log('from default header',error);
-      // this.api.showError(error.error.error.message)
-    }))
+    ))
+    // this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res: any) => {
+    //   console.log(res,'PROFILE GET API RESPONSE')
+    //   if (res.result.data) {
+    //     this.profileImg = res?.result?.data[0]?.u_profile_path;
+    //     this.profileDataForSidebar.profile_pic = res.result.data[0]['u_profile_photo'];
+    //     this.profileDataForSidebar.name = res.result.data[0].u_first_name; 
+    //     this.common_service.setProfilePhoto(this.profileDataForSidebar)
+    //   }
+    // }, (error => {
+    //   console.log('from default header',error);
+  
   }
   getNotification() {
     let params = `${environment.live_url}/${environment.notification_center}?organization_id=${this.orgId}`
