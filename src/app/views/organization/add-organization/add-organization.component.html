@@ -41,10 +41,10 @@
             <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
               <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
                 <mat-label>Country <b class="r-star">*</b></mat-label>
-                <mat-select formControlName="country" (selectionChange)="getState($event.value)" autocomplete="off"
+                <mat-select formControlName="country" placeholder="Select country" (selectionChange)="getState($event.value)" autocomplete="off"
                 panelClass="custom-select-panel" [disableOptionCentering]="true">
-                  <mat-option *ngFor="let country of country" [value]="country.name">
-                    {{country.name}}
+                  <mat-option *ngFor="let country of country" [value]="country.id">
+                    {{country.country_name | titlecase}}
                   </mat-option>
                 </mat-select>
                 <mat-error *ngIf="f['country']?.touched && f['country']?.invalid">
@@ -59,12 +59,13 @@
             <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
               <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                 <mat-label>State <b class="r-star">*</b></mat-label>
-                <mat-select formControlName="state" (selectionChange)="getCity($event.value)" autocomplete="off" [attr.disabled]="!f['country']?.value" 
+                <mat-select formControlName="state" placeholder="Select state" (selectionChange)="getCity($event.value)" autocomplete="off" [attr.disabled]="!f['country']?.value" 
                 [ngbTooltip]="!f['country']?.value ? 'Please select country' :''"
                 panelClass="custom-select-panel" [disableOptionCentering]="true">
-                  <mat-option *ngFor="let state of state" [value]="state.name">
-                    {{state.name}}
+                  <mat-option *ngFor="let state of state" [value]="state.id">
+                    {{state.state_name | titlecase}}
                   </mat-option>
+                
                 </mat-select>
                 <mat-error *ngIf="f['state']?.touched && f['state']?.invalid">
                   <span *ngIf="f['state'].errors?.['required']">State is required</span>
@@ -77,9 +78,10 @@
             <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
               <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                 <mat-label>City <b class="r-star">*</b></mat-label>
-                <mat-select formControlName="city" autocomplete="off"  [ngbTooltip]="!f['state']?.value ? 'Please select state' :''"  
+                <mat-select formControlName="city" autocomplete="off" placeholder="Select city"  [ngbTooltip]="!f['state']?.value ? 'Please select state' :''"  
                 [attr.disabled]="!f['state']?.value" panelClass="custom-select-panel" [disableOptionCentering]="true">
-                <mat-option *ngFor="let city of city" [value]="city.name">{{city.name}}</mat-option>
+                <mat-option *ngFor="let city of city" [value]="city.id">{{city.city_name | titlecase }}</mat-option>
+                
                 </mat-select>
                 <mat-error *ngIf="f['city']?.touched && f['city']?.invalid">
                   <span *ngIf="f['city'].errors?.['required']">City is required</span>
@@ -178,22 +180,22 @@
                   <div class="p-ab">
                     <mat-label class="admin-labels">Email </mat-label><b class="r-star">*</b>
                   </div>
-                  <input type="email" matInput class="pt-1" formControlName="admin_email" placeholder="Enter email Id"  autocomplete="off"/> 
-                  <div *ngIf="a['admin_email']?.touched && a['admin_email']?.invalid"
+                  <input type="email" matInput class="pt-1" formControlName="admin_email_id" placeholder="Enter email Id"  autocomplete="off"/> 
+                  <div *ngIf="a['admin_email_id']?.touched && a['admin_email_id']?.invalid"
                   class="error-text">
                   <span
-                      *ngIf="a['admin_email']?.invalid && a['admin_email']?.errors['email']">Invalid
+                      *ngIf="a['admin_email_id']?.invalid && a['admin_email_id']?.errors['email']">Invalid
                       email Id </span>
                   <span
-                      *ngIf="a['admin_email']?.invalid && a['admin_email']?.errors['required']">Email
+                      *ngIf="a['admin_email_id']?.invalid && a['admin_email_id']?.errors['required']">Email
                       Id is required
                   </span>
                   
                   <span
-                  *ngIf="f['email'].value && a['admin_email']?.invalid && a['admin_email']?.errors['emailMatch']">
+                  *ngIf="f['email'].value && a['admin_email_id']?.invalid && a['admin_email_id']?.errors['emailMatch']">
                   Admin emails must be unique.
               </span>
-              <span *ngIf="a['admin_email'].errors?.['duplicateEmail']">Admin with this email already exists.</span>
+              <span *ngIf="a['admin_email_id'].errors?.['duplicateEmail']">Admin with this email already exists.</span>
                   </div>
                   
                 </div>
@@ -265,19 +267,19 @@
               <div class="p-ab">
                 <mat-label class="admin-labels">Email </mat-label><b class="r-star">*</b>
               </div>
-              <input matInput class="pt-1" formControlName="admin_email" placeholder="Enter email Id" 
+              <input matInput class="pt-1" formControlName="admin_email_id" placeholder="Enter email Id" 
               [readonly]="!admin.isEditing">
-                <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email').hasError('required') && getAdminFormGroup(i)?.get('admin_email').touched">
+                <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email_id').hasError('required') && getAdminFormGroup(i)?.get('admin_email_id').touched">
                   Email is required
                 </mat-error>
-                <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email').hasError('email') && getAdminFormGroup(i)?.get('admin_email').touched">
+                <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email_id').hasError('email') && getAdminFormGroup(i)?.get('admin_email_id').touched">
                   Invalid email Id.
                 </mat-error>
                 <mat-error class="error-text"
-                *ngIf="f['email']?.value && getAdminFormGroup(i)?.get('admin_email')?.touched && getAdminFormGroup(i)?.get('admin_email')?.errors?.['emailMatch']">
+                *ngIf="f['email']?.value && getAdminFormGroup(i)?.get('admin_email_id')?.touched && getAdminFormGroup(i)?.get('admin_email_id')?.errors?.['emailMatch']">
                 Admin emails must be unique.
             </mat-error>
-            <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email').hasError('duplicateArrEmail') && getAdminFormGroup(i)?.get('admin_email')?.touched && getAdminFormGroup(i)?.get('admin_email')?.invalid">
+            <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email_id').hasError('duplicateArrEmail') && getAdminFormGroup(i)?.get('admin_email_id')?.touched && getAdminFormGroup(i)?.get('admin_email_id')?.invalid">
                   Admin with this email already exists.
             </mat-error>
             </div>

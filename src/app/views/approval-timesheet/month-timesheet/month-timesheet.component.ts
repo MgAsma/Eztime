@@ -60,52 +60,50 @@ export class MonthTimesheetComponent implements OnInit {
     this.user_id = sessionStorage.getItem('user_id')
     this.orgId = sessionStorage.getItem('org_id')
     let c_params = {
-      module: "TIMESHEET",
-      menu: "MONTH_APPROVAL_TIMESHEET",
-      method: "VIEW",
-      approved_state: 'YET_TO_APPROVED',
+     
       user_id: this.user_id,
       page_number: 1,
       data_per_page: this.itemPerPageCount,
       search_key: '',
       pagination: 'TRUE'
     }
-  //  this.getByStatus(c_params)
-    this.getUserControls()
-    this.allDetails = [
-      {
-        index: 1,
-        created_date_time: new Date('2024-09-20T00:00:00'), // Date object
-        created_by_name: 'John Doe',
-        id: 12345,
-        time_spent: '8 hours',
-        approved_state: 'Approved'
-      },
-      {
-        index: 2,
-        created_date_time: new Date('2024-09-21T00:00:00'),
-        created_by_name: 'Jane Smith',
-        id: 67890,
-        time_spent: '5 hours',
-        approved_state: 'Pending'
-      },
-      {
-        index: 3,
-        created_date_time: new Date('2024-09-22T00:00:00'),
-        created_by_name: null, // No created_by_name
-        id: null, // No ID
-        time_spent: '6 hours',
-        approved_state: 'Rejected'
-      },
-      {
-        index: 4,
-        created_date_time: new Date('2024-09-23T00:00:00'),
-        created_by_name: 'Alice Cooper',
-        id: 54321,
-        time_spent: '3 hours',
-        approved_state: 'Approved'
-      }
-    ];
+   this.getByStatus(c_params)
+    //this.getUserControls()
+    this.allDetails;
+    // this.allDetails = [
+    //   {
+    //     index: 1,
+    //     created_date_time: new Date('2024-09-20T00:00:00'), // Date object
+    //     created_by_name: 'John Doe',
+    //     id: 12345,
+    //     time_spent: '8 hours',
+    //     approved_state: 'Approved'
+    //   },
+    //   {
+    //     index: 2,
+    //     created_date_time: new Date('2024-09-21T00:00:00'),
+    //     created_by_name: 'Jane Smith',
+    //     id: 67890,
+    //     time_spent: '5 hours',
+    //     approved_state: 'Pending'
+    //   },
+    //   {
+    //     index: 3,
+    //     created_date_time: new Date('2024-09-22T00:00:00'),
+    //     created_by_name: null, // No created_by_name
+    //     id: null, // No ID
+    //     time_spent: '6 hours',
+    //     approved_state: 'Rejected'
+    //   },
+    //   {
+    //     index: 4,
+    //     created_date_time: new Date('2024-09-23T00:00:00'),
+    //     created_by_name: 'Alice Cooper',
+    //     id: 54321,
+    //     time_spent: '3 hours',
+    //     approved_state: 'Approved'
+    //   }
+    // ];
   }
   get f() {
     return this.monthForm.controls;
@@ -122,7 +120,7 @@ export class MonthTimesheetComponent implements OnInit {
     const currentYear = new Date().getFullYear();
     const monthIndex = new Date(Date.parse(selectedMonth + ' 1, ' + currentYear)).getMonth() + 1;
     const formattedMonth = ('0' + monthIndex).slice(-2); // Add leading zero if needed
-    this.formattedDate = '01/' + formattedMonth + "/" + currentYear;
+    this.formattedDate = formattedMonth 
   }
   onChanges() {
     this.changes = true
@@ -188,7 +186,8 @@ export class MonthTimesheetComponent implements OnInit {
     this.allListDataids = [];
     this.allDetails = [];
     this.exebtn = false;
-    this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&approved_state=${params.approved_state}&search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&organization_id=${this.orgId}`).subscribe(res => {
+  //  this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&approved_state=${params.approved_state}&search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&organization_id=${this.orgId}`).subscribe(res => {
+      this.api.getData(`${environment.live_url}/${environment.timesheets}/?status=${params.status}&month=${params.timesheets_from_date}`).subscribe(res =>{
       if (res && res['result']['data'].length >= 1) {
         if (res['result']['data'].length > 1) {
           res['result']['data'].forEach(element => {
@@ -221,7 +220,8 @@ export class MonthTimesheetComponent implements OnInit {
     this.allListDataids = []
     this.allDetails = [];
     this.exebtn = false;
-    this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&timesheets_from_date=${params.timesheets_from_date}&approved_state=${params.approved_state}&search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&organization_id=${this.orgId}`).subscribe(res => {
+  //  this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&timesheets_from_date=${params.timesheets_from_date}&approved_state=${params.approved_state}&search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&organization_id=${this.orgId}`).subscribe(res => {
+      this.api.getData(`${environment.live_url}/${environment.timesheets}/?status=${params.status}&month=${params.timesheets_from_date}`).subscribe(res =>{
       if (res && res['result']['data'].length >= 1) {
         if (res['result']['data'].length > 1) {
           res['result']['data'].forEach(element => {

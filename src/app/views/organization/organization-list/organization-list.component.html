@@ -42,7 +42,22 @@
             </tr>
           </thead>
           <tbody>
-
+            <!-- {
+              "organization_name": "test",
+              "email": "eqw@gmail.com",
+              "country_id": 1,
+              "state_id": 1,
+              "city_id": 1,
+              "postal_code": 425235,
+              "address": "",
+              "admin_details": [
+                  {
+                      "admin_name": "wqewq None",
+                      "admin_email_id": "eqe@gmail.com",
+                      "admin_phone_number": 7797979797,
+                      "is_active": true
+                  }
+              ], -->
             <ng-container *ngIf="(organizationData) as result">
               <tr *ngFor='let item of result|customSort:directionValue:sortValue
                            |paginate : {
@@ -53,22 +68,25 @@
 
                 <td>{{getContinuousIndex(i)}}</td>
                 <td class="p-r">
-                  <img  *ngIf="item.org_logo_path" src="{{item.org_logo_path}}" height="45px" width="45px" style="border-radius: 50%;">
-                  <a href="{{item.org_logo_path}}" target="_blank">
+                  <img  *ngIf="item.organization_image" src="{{item.organization_image}}" height="45px" width="45px" style="border-radius: 50%;">
+                  <a href="{{item.organization_image}}" target="_blank">
                     <i class="bi bi-eye-fill" id="eye-btn" container="body" ngbTooltip="View"></i>
                   </a>
                 </td>
-                <td>{{item.org_name ? item.org_name :'NA' | titlecase }}</td>
-                <td>{{item.org_email ? item.org_email :'NA' | titlecase}}</td>
-                <td class="text-center">{{item.admin_count }}</td>
-
+                <td>{{item.organization_name ? item.organization_name :'NA' | titlecase }}</td>
+                <td>{{item.email ? item.email :'NA' | titlecase}}</td>
+                <!-- <td class="text-center">{{item.admin_count }}</td> -->
+                <td class="text-center">{{item.admin_details.length }}</td>
                 <td>
                   <ng-container>
 
-                    <!-- <i class="bi bi-pencil-square" routerLink="/organization/updateOrg/{{item.id}}" container="body"
+                    <!-- <i class="bi bi-pencil-square" routerLink="/organization/updateOrg/{{item.organization_id
+}}" container="body"
                       ngbTooltip="Edit" style="color: #000; "></i> -->
-                      <img src="../../../../assets/images/Edit.svg" class="icon-image" routerLink="/organization/updateOrg/{{item.id}}" container="body" ngbTooltip="Edit" />
-                      <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.id)"/>
+                      <img src="../../../../assets/images/Edit.svg" class="icon-image" routerLink="/organization/updateOrg/{{item.organization_id
+}}" container="body" ngbTooltip="Edit" />
+                      <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.organization_id
+)"/>
                      
                   </ng-container>
 
@@ -133,10 +151,13 @@
               </a>
             </div>
             <div class="col-5 p-0 text-end action-btn">
-              <!-- <a> <button type="button" class="toolbar-btn" (click)='editCard(item.id)'><i class="bi bi-pencil-square"
+              <!-- <a> <button type="button" class="toolbar-btn" (click)='editCard(item.organization_id
+)'><i class="bi bi-pencil-square"
                     container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i></button></a> -->
-                    <img src="../../../../assets/images/Edit.svg" class="icon-image" (click)='editCard(item.id)' container="body" ngbTooltip="Edit" />
-                    <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.id)"/>
+                    <img src="../../../../assets/images/Edit.svg" class="icon-image" (click)='editCard(item.organization_id
+)' container="body" ngbTooltip="Edit" />
+                    <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.organization_id
+)"/>
             </div>
           </div>
           <div class="row p-c">

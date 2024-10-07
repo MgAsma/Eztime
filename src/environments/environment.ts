@@ -4,9 +4,10 @@
 
 export const environment = {
   production: false,
-  live_url: 'https://projectacedev.thestorywallcafe.com/api',
-  media_url: 'https://projectacedev.thestorywallcafe.com/media',
-  // live_url:'https://projectacedevelop.thestorywallcafe.com/api',
+//  live_url: 'https://projectacedev.thestorywallcafe.com/api',
+  //media_url: 'https://projectacedev.thestorywallcafe.com/media',
+  media_url: 'https://projectacedevelop.thestorywallcafe.com/media',
+   live_url:'https://projectacedevelop.thestorywallcafe.com/api',
   // live_url: 'https://projectacetest.thestorywallcafe.com/api',
   // media_url:'https://projectacetest.thestorywallcafe.com/media',
   // live_url: 'https://projectaceuat.thestorywallcafe.com/api',
@@ -43,7 +44,10 @@ export const environment = {
   approval_config: `time-sheets-approval-config`,
   notification_center: `notification-center`,
   timesheets:`timesheets`,
-  new_dev_url: 'https://projectacedevelop.thestorywallcafe.com/api'
+  new_dev_url: 'https://projectacedevelop.thestorywallcafe.com/api',
+  country:`country`,
+  state:`state`,
+  city:`city`
 };
 
 /*

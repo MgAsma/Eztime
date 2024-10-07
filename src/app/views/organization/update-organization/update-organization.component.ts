@@ -51,6 +51,7 @@ export class UpdateOrganizationComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     // this.id = sessionStorage.getItem('user_id')
     this.initform();
+    this.getCountry()
     this.getOrgDetails();
    
   }
@@ -122,14 +123,7 @@ export class UpdateOrganizationComponent implements OnInit {
     })
     
   }
-//"admin_details": [
-            // {
-            //     "id":25,
-            //     "admin_name": "aparna ek",
-            //     "admin_email_id_id": "aparna@ekfrazo.in",
-            //     "admin_phone_number": 9988899871,
-            //     "is_active": false
-            // },
+
   getAdminFormGroup(index: number): FormGroup {
     return this.adminFormArray.at(index) as FormGroup;
   }
@@ -194,7 +188,7 @@ export class UpdateOrganizationComponent implements OnInit {
         
         
           this.adminList[index].isEditing = false;
-      this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`,data).subscribe(
+      this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}/`,data).subscribe(
         res => {
           if (res['result']) {
             this.api.showSuccess("Admin details updated successfully!");
@@ -303,23 +297,24 @@ export class UpdateOrganizationComponent implements OnInit {
     return null;
   }
    getOrgDetails() {
-    this.api.getData(`${environment.live_url}/${environment.organization}?id=${this.id}&page_number=1&data_per_page=10`).subscribe(async res => {
+    //this.api.getData(`${environment.live_url}/${environment.organization}?id=${this.id}&page_number=1&data_per_page=10`).subscribe(async res => {
+      this.api.getData(`${environment.live_url}/${environment.organization}/${this.id}/`).subscribe(async res => {
       if (res) {
         let responseData = []
-        let currentOrg = []
-        responseData = res['result']['data']
-        currentOrg = responseData[responseData.length - 1]
+        let currentOrg:any = {}
+       // responseData = res['result']['data']
+        currentOrg = res
         // this.fileDataUrl = currentOrg['organization_image_path']
-        await this.getCountry();
-        if(currentOrg['country'] === 'India'){
-          await this.getState('')
-          setTimeout(async () => {
-            await this.getCity(currentOrg['state'])
-          }, 1000);
+       
+        if(currentOrg['country_id']){
+         
+          await this.getState(currentOrg['country_id'])
+          await this.getCity(currentOrg['state_id'])
+          
         }
-        if (currentOrg['organization_image_path']) {
+        if (currentOrg['organization_image']) {
         // console.log(this.url,'this.url')
-        fetch(currentOrg['organization_image_path'])
+        fetch(currentOrg['organization_image'])
           .then(response => response.blob())
           .then(blob => {
             const fileReader: any = new FileReader();
@@ -334,15 +329,16 @@ export class UpdateOrganizationComponent implements OnInit {
 
 
       }
-        const adminData = res['result']['data'][0].admin_details
+        const adminData = res['admin_details']
         // this.adminList = res['result']['data'][0].admin_details
         console.log(adminData)
+      
         const transformedAdminDetails = adminData?.map(admin => ({
           id:admin.id,
-          admin_name: admin.u_first_name,
-          admin_email_id: admin.u_email,
-          admin_phone_number: admin.u_phone_no,
-          is_active: admin.u_status === 'ACTIVE' ? true : false ,
+          admin_name: admin.admin_name,
+          admin_email_id: admin.admin_email_id,
+          admin_phone_number: admin.admin_phone_number,
+          is_active: admin.is_active ,
           isEditing:false
         }));
         this.adminList = transformedAdminDetails 
@@ -353,9 +349,9 @@ export class UpdateOrganizationComponent implements OnInit {
           organization_name: currentOrg['organization_name'],
           email: currentOrg['email'],
           address: currentOrg['address'],
-          city: currentOrg['city'],
-          state: currentOrg['state'],
-          country: currentOrg['country'],
+          city: currentOrg['city_id'],
+          state: currentOrg['state_id'],
+          country: currentOrg['country_id'],
           postal_code: currentOrg['postal_code'],
           is_active: currentOrg['org_status'],
           org_subscription_plan: currentOrg['org_subscription_plan'],
@@ -428,31 +424,28 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
     this.type = 'file';
     this.organizationForm.get('organization_image')?.reset();
   }
-  getCountry() {
-    let data = {
-      data_request: "GIVE_ALL_COUNTRY"
-    }
-    this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
-      // console.log(res,"RES")
-      this.country = res.result.data.data
-    }, ((error) => {
-      this.api.showError(error.error.error.message)
-    }))
-  }
   onFocusCountry() {
     this.organizationForm.patchValue({
       state: '',
       city: ''
     })
   }
+  getCountry() {
+    this.api.getData(`${environment.live_url}/${environment.country}/`).subscribe((res: any) => {
+      this.country = res
+    }, ((error) => {
+      this.api.showError(error.error.error.message)
+    }))
+  }
+  
   getState(event) {
-    let data = {
-      data_request: "GIVE_COUNTRY_RELATED_STATE",
-    }
-    this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe(async(res: any) => {
+    let country = event
+
+    this.api.getData(`${environment.live_url}/${environment.state}/?country_id=${event}`).subscribe((res: any) => {
       if(res){
-      //console.log(res,"RES")
-      this.state = res.result.data.data
+      this.state = res
+      this.fileDataUrl = null;
+      // this.getCity(event);
       }
     }, ((error) => {
       this.api.showError(error.error.error.message)
@@ -460,25 +453,13 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
   
   }
   getCity(event) {
-    if(event){
-      
-      const state_code = this.state?.find((state: any) => state.name === event)?.iso2;
-      let data = {
-        data_request: "GIVE_STATE_RELATED_CITY",
-        state_code: state_code
-      }
-    
-    
-    this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
-      if(res){
-        // console.log(res,"RES")
-        this.city = res.result.data.data
-      }
-     
+    let state =  event
+    this.api.getData(`${environment.live_url}/${environment.city}/?state_id=${state}`).subscribe((res: any) => {
+      this.city = res
     }, ((error) => {
       this.api.showError(error.error.error.message)
     }))
-  }
+
   }
   
   uploadImageFile(event: any) {
@@ -549,7 +530,7 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
       //  ]
       //}
      
-      this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`, data).subscribe(
+      this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}/`, data).subscribe(
         res => {
           if (res['result']) {
             this.api.showSuccess("Organization updated successfully!");

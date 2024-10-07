@@ -9,6 +9,7 @@
               <th scope="col">S.No</th>
               <th scope="col" class="text-center">Created Date</th>
               <th scope="col" class="text-center">Employee</th>
+              <th scope="col" class="text-center">Task</th>
               <th scope="col" class="text-center">Time</th>
               <th scope="col" class="text-center">Action</th>
             </tr>
@@ -21,8 +22,9 @@
                 <td class="text-center">{{item['created_date_time'] | date : 'mediumDate'}}</td>
                 <td class="text-center">{{item.created_by_first_name ?item.created_by_first_name :'NA' |titlecase}}</td>
                
-                <td class="text-center">{{item['time_spent'] |titlecase}}</td>
-               
+                <td class="text-center">{{item.task_list.task_name}}</td>
+                <td class="text-center">{{item.task_list.hours_to_complete|titlecase}}</td>
+                <td class="text-center">{{item.created_datetime | date :'dd/MM/YYYY'}}</td>
                 <td class="text-center">
                   <ng-container *ngFor="let approval of accessConfig">
                     <span *ngIf="approval == 'DELETE'">
@@ -38,6 +40,8 @@
                   </ng-container>
                 </td>
               </tr>
+
+          
               <tr *ngIf="result.length === 0" class="nodata">
                 <td> No records found!</td>
               </tr>

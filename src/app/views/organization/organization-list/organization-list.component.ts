@@ -52,7 +52,9 @@ currentIndex: any;
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.user_id = sessionStorage.getItem('user_id')
     this.org_id = sessionStorage.getItem('org_id') 
-    this.getOrgDetails(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`)
+  //  this.getOrgDetails(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`)
+    this.getOrgDetails(``)
+    
     // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
 
     // if (accessAction.length) {
@@ -64,7 +66,7 @@ currentIndex: any;
     //     }
     //   });
     // }
-    this.getUserControls()
+    //this.getUserControls()
   }
   getUserControls(){
     this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe((res:any)=>{
@@ -124,12 +126,12 @@ currentIndex: any;
   }
   
   getOrgDetails(pagination){
-    this.api.getData(`${environment.live_url}/${environment.organization}?${pagination}`).subscribe(res=>{
+    this.api.getData(`${environment.live_url}/${environment.organization}/`).subscribe(res=>{
       if(res){
-       this.organizationData = res['result']['data']
-       const noOfPages:number = res['result'].pagination.number_of_pages
-       this.count  = noOfPages * this.tableSize;
-       this.page=res['result'].pagination.current_page;
+       this.organizationData = res
+      //  const noOfPages:number = res['result'].pagination.number_of_pages
+      //  this.count  = noOfPages * this.tableSize;
+      //  this.page=res['result'].pagination.current_page;
 
       }
     },(error =>{
@@ -166,7 +168,7 @@ currentIndex: any;
     }
   } 
   delete(id:any){
-    this.api.delete(`${environment.live_url}/${environment.organization}/${id}`).subscribe(async(data:any)=>{
+    this.api.delete(`${environment.live_url}/${environment.organization}/${id}/`).subscribe(async(data:any)=>{
       if(data){
         this.organizationData = []
         this.api.showWarning('Organization deleted successfully!!')

@@ -94,11 +94,12 @@
               <tr *ngFor="let item of result | paginate: paginationConfig; let i = index">
                 <td><input type="checkbox" [(ngModel)]="item.selected" (change)="onCheckboxChange()"/></td>
                 <td>{{getContinuousIndex(i)}}</td>
-                <td class="text-center">{{item.created_date_time | date :'mediumDate'}}</td>
-                <td class="text-center">{{item.created_by_name ? item.created_by_name : "NA" | titlecase}}</td>
-                <td class="text-center">{{item.id ? item.id : 'NA' | titlecase}}</td>
-                <td class="text-center">{{item.time_spent | titlecase}}</td>
-                <!-- <td class="text-center">{{item.approved_state | titlecase}}</td> -->
+                <td class="text-center">{{item['created_date_time'] | date : 'mediumDate'}}</td>
+                <td class="text-center">{{item.created_by_first_name ?item.created_by_first_name :'NA' |titlecase}}</td>
+               
+                <td class="text-center">{{item.task_list.task_name}}</td>
+                <td class="text-center">{{item.task_list.hours_to_complete|titlecase}}</td>
+                <td class="text-center">{{item.created_datetime | date :'dd/MM/YYYY'}}</td>
                 <td class="text-center">
                   <ng-container *ngFor="let approval of accessConfig">
                     <span *ngIf="approval == 'REJECT'" >

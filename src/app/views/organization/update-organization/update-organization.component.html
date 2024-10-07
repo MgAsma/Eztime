@@ -41,10 +41,10 @@
               <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
                 <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                   <mat-label>Country <b class="r-star">*</b></mat-label>
-                  <mat-select formControlName="country" (selectionChange)="getState($event.value)" autocomplete="off"
+                  <mat-select formControlName="country" (selectionChange)="getState($event['target'].value)" autocomplete="off"
                   panelClass="custom-select-panel" [disableOptionCentering]="true">
-                    <mat-option *ngFor="let country of country" [value]="country.name">
-                      {{country.name}}
+                    <mat-option *ngFor="let country of country" [value]="country.id">
+                      {{country.country_name}}
                     </mat-option>
                   </mat-select>
                   <mat-error *ngIf="f['country']?.touched && f['country']?.invalid">
@@ -59,10 +59,10 @@
               <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
                 <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                   <mat-label>State <b class="r-star">*</b></mat-label>
-                  <mat-select formControlName="state" (selectionChange)="getCity($event.value)" autocomplete="off" [attr.disabled]="!f['country']?.value" [ngbTooltip]="!f['country']?.value ? 'Please select country' :''" 
+                  <mat-select formControlName="state" (selectionChange)="getCity($event['target'].value)" autocomplete="off" [attr.disabled]="!f['country']?.value" [ngbTooltip]="!f['country']?.value ? 'Please select country' :''" 
                   panelClass="custom-select-panel" [disableOptionCentering]="true">
-                    <mat-option *ngFor="let state of state" [value]="state.name">
-                      {{state.name}}
+                    <mat-option *ngFor="let state of state" [value]="state.id">
+                      {{state.state_name}}
                     </mat-option>
                   </mat-select>
                   <mat-error *ngIf="f['state']?.touched && f['state']?.invalid">
@@ -80,7 +80,7 @@
                             [ngbTooltip]="!f['state']?.value ? 'Please select state' :''"  
                             [attr.disabled]="!f['state']?.value"
                             panelClass="custom-select-panel" [disableOptionCentering]="true">
-                  <mat-option *ngFor="let city of city" [value]="city.name">{{city.name}}</mat-option>
+                  <mat-option *ngFor="let city of city" [value]="city.id">{{city.city_name}}</mat-option>
                 </mat-select>
                 <mat-error *ngIf="f['city']?.touched && f['city']?.invalid">
                   <span *ngIf="f['city'].errors?.['required']">City is required</span>
@@ -389,7 +389,7 @@
                     <mat-label class="admin-labels">Status</mat-label><b class="r-star" >*</b>
                   </div>
                   <mat-slide-toggle class="pt-1" formControlName="is_active"  [disabled]="!admin.isEditing">
-                    {{ getAdminFormGroup(i)?.get('is_active')?.value == true || 'ACTIVE' ? 'Active' : 'Inactive' }}
+                    {{ getAdminFormGroup(i)?.get('is_active')?.value == true  ? 'Active' : 'Inactive' }}
                   </mat-slide-toggle>
                 </div>
               </div>

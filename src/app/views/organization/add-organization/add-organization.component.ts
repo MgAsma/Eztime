@@ -245,7 +245,7 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
       city: ['', [Validators.required]],
       state: ['', [Validators.required]],
       country: ['', [Validators.required]],
-      postal_code: ['',[Validators.pattern('^\\d{6}$')]],
+      postal_code: [null,[Validators.pattern('^\\d{6}$')]],
       org_profile_updated_status: [''],
       org_default_currency_type: [''],    
       org_subscription_plan: [''],
@@ -294,33 +294,26 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
     this.f['organization_image'].markAsDirty()
     this.f['organization_image'].markAsTouched()
   }
-  
-  getCountry() {
-    let data = {
-      "data_request": "GIVE_ALL_COUNTRY",
-    }
-    this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
-      // console.log(res,"RES")
-      this.country = res.result.data.data
-    }, ((error) => {
-      this.api.showError(error.error.error.message)
-    }))
-  }
   onFocusCountry() {
     this.organizationForm.patchValue({
       state: '',
       city: ''
     })
   }
-
+  getCountry() {
+    this.api.getData(`${environment.live_url}/${environment.country}/`).subscribe((res: any) => {
+      this.country = res
+    }, ((error) => {
+      this.api.showError(error.error.error.message)
+    }))
+  }
+  
   getState(event) {
     if(event){
-    let data = {
-      data_request: "GIVE_COUNTRY_RELATED_STATE",
-    }
-    this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
+  
+    this.api.getData(`${environment.live_url}/${environment.state}/?country_id=${this.organizationForm.value.country}`).subscribe((res: any) => {
       if(res){
-      this.state = res.result.data.data
+      this.state = res
       this.fileDataUrl = null;
       // this.getCity(event);
       }
@@ -330,17 +323,8 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
   }
   }
   getCity(event) {
-    
-    const state_code = this.state.find((state: any) => state.name === event)?.iso2;
- 
-   
-    let data = {
-      data_request: "GIVE_STATE_RELATED_CITY",
-      state_code: state_code
-    }
-    this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
-      //  console.log(res,"RES")
-      this.city = res.result.data.data
+    this.api.getData(`${environment.live_url}/${environment.city}/?state_id=${this.organizationForm.value.state}`).subscribe((res: any) => {
+      this.city = res
     }, ((error) => {
       this.api.showError(error.error.error.message)
     }))
@@ -386,9 +370,9 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
   
 
     // If everything is valid, submit the form
-    this.api.postData(`${environment.live_url}/${environment.organization}`, data).subscribe(
+    this.api.postData(`${environment.live_url}/${environment.organization}/`, data).subscribe(
       res => {
-        if (res['result'].status) {
+        if (res) {
           this.api.showSuccess("Organization created successfully!");
           this.organizationForm.reset();
           this.isAdminForm = true;
