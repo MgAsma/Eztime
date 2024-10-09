@@ -145,7 +145,7 @@ export class YetApproveComponent implements OnInit {
       page: this.page,
       tableSize: this.tableSize
     }
-    alert(tableData.tableSize)
+    //alert(tableData.tableSize)
     this.buttonClick.emit(tableData)
   }
   }
