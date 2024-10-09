@@ -162,9 +162,11 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
       admin_name:this.adminForm?.value['admin_name'],
       admin_email_id:this.adminForm?.value['admin_email_id'],
       admin_phone_number:this.adminForm?.value['admin_phone_number'],
-      is_active:this.adminForm?.value['is_active'] === true ? 'Active' : 'Inactive',
+      is_active:this.adminForm?.value['is_active'],
     }
+    this.adminList.forEach((admin:string)=>admin['isEditing'] = false)
     this.adminList.push(data);
+  
     this.adminFormArray.push(this.createAdminFormGroup(data,this.adminFormArray));
 
    
@@ -173,7 +175,7 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
     this.a['admin_email_id'].reset();
     this.a['admin_phone_number'].reset();
     this.adminForm.patchValue({
-      is_active: [true]
+      is_active: true
     })
     this.isAdminForm = !this.isAdminForm;
   }
@@ -206,7 +208,7 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
             admin_name: adminForm.value.admin_name,
             admin_email_id: adminForm.value.admin_email_id,
             admin_phone_number: adminForm.value.admin_phone_number,
-            is_active: adminForm.value.is_active === true ? 'Active' : 'Inactive',
+            is_active: adminForm.value.is_active,
           };
            
           // Show the success message
@@ -216,6 +218,7 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
     }
 }
   openAdminForm(){
+    this.adminList.forEach((admin:string)=>admin['isEditing'] = false)
     this.isAdminForm=!this.isAdminForm
   }
   triggerFileInput() {

@@ -191,7 +191,7 @@
                   <mat-label>Client <span>*</span></mat-label>
                   <mat-select (selectionChange)="getProject($event.value, i)" placeholder="Select client" formControlName="client_id"
                   panelClass="custom-select-panel" [disableOptionCentering]="true">
-                    <mat-option *ngFor="let item of allClient" [value]="item.id">{{ item.c_name }}</mat-option>
+                    <mat-option *ngFor="let item of allClient" [value]="item.id">{{ item.clint_name }}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="project.get('client_id').touched && project.get('client_id').invalid">
                     <span class="error-text" *ngIf="project.get('client_id').hasError('required')">Client name is required.</span>

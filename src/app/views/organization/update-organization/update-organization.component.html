@@ -120,10 +120,10 @@
             <div class="col-sm-6 col-md-4 col-lg-2 mb-2" >
               <input type="file" accept="image/*" formControlName="organization_image" #fileInput (change)="uploadImageFile($event)" hidden>
                   <div  class="image-container w-100 d-flex justify-content-around align-items-center" >
-                    <img id="imagePreview" [src]="fileDataUrl? fileDataUrl: '../assets/images/no-profile-pic.png'" alt="profile" >
-                   
+                    
+                    <img id="imagePreview"  [src]="f['organization_image']?.value? f['organization_image']?.value: '../assets/images/no-profile-pic.png'" alt="profile" >
                     <button type="button" mat-icon-button (click)="triggerFileInput()" >
-                      <mat-icon matTooltip="{{fileDataUrl? 'Edit':'Upload'}}" class="edit-or-upload-icon">{{fileDataUrl? 'edit':'add_a_photo'}}</mat-icon><b class="r-star px-1">*</b> 
+                      <mat-icon matTooltip="{{f['organization_image']?.value? 'Edit':'Upload'}}" class="edit-or-upload-icon">{{f['organization_image']?.value? 'edit':'add_a_photo'}}</mat-icon><b class="r-star px-1">*</b> 
                     </button>
                   
                   </div>

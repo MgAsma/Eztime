@@ -59,8 +59,8 @@ export class UpdateOrganizationComponent implements OnInit {
  
   openAdminForm(){
     this.adminintForm();
-    this.isAdminForm=!this.isAdminForm
-    
+    this.adminList.forEach((admin:string)=>admin['isEditing'] = false)
+    this.isAdminForm=!this.isAdminForm 
   }
   
   goBack(event) {
@@ -77,9 +77,9 @@ export class UpdateOrganizationComponent implements OnInit {
       admin_details: this.adminList // Use the admin list to submit the data
     };
     if(adminId){
-      this.api.delete(`${environment.live_url}/${environment.organization}/${this.id}?admin_id=${adminId}`, ).subscribe(
+      this.api.delete(`${environment.live_url}/${environment.organization}/${this.id}/?admin_id=${adminId}`, ).subscribe(
         res => {
-          if (res['result']) {
+          if (res) {
             this.api.showSuccess("Admin deleted successfully!");
             // this.organizationForm.reset();
             this.adminForm.reset();
@@ -178,7 +178,7 @@ export class UpdateOrganizationComponent implements OnInit {
             admin_name: adminForm.value.admin_name,
             admin_email_id: adminForm.value.admin_email_id,
             admin_phone_number: adminForm.value.admin_phone_number,
-            is_active: adminForm.value.is_active == true ? 'Active' : 'Inactive',
+            is_active: adminForm.value.is_active,
             isEditing: adminForm.value.isEditing,
             id: adminForm.value.id
           };
@@ -186,11 +186,11 @@ export class UpdateOrganizationComponent implements OnInit {
           // Add the updated adminList to the data object
           data.admin_details = [...this.adminList]; 
         
-        
+          
           this.adminList[index].isEditing = false;
       this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}/`,data).subscribe(
         res => {
-          if (res['result']) {
+          if (res) {
             this.api.showSuccess("Admin details updated successfully!");
             // this.organizationForm.reset();
             this.adminForm.reset();
@@ -216,13 +216,13 @@ export class UpdateOrganizationComponent implements OnInit {
       admin_name:this.adminForm?.value['admin_name'],
       admin_email_id:this.adminForm?.value['admin_email_id'],
       admin_phone_number:this.adminForm?.value['admin_phone_number'],
-      is_active:this.adminForm?.value['is_active'] == true ? 'Active' : 'Inactive'
+      is_active:this.adminForm?.value['is_active'],
+      id:this.adminForm?.value['id']
     }
     
-    alert(this.adminForm?.value['is_active'])
+    this.adminList.forEach((admin:string)=>admin['isEditing'] = false)
     this.adminList.push(data);
-    // this.adminFormArray.insert(0,this.createAdminFormGroup(data));
-
+  
     this.adminFormArray.push(this.createAdminFormGroup(data,this.adminFormArray));
 
    
@@ -231,9 +231,9 @@ export class UpdateOrganizationComponent implements OnInit {
     const addAdmin = {
       admin_details: newadmin
     };
-    this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}`,addAdmin).subscribe(
+    this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}/`,addAdmin).subscribe(
       res => {
-        if (res['result']) {
+        if (res) {
           this.api.showSuccess("Admin details updated successfully!");
           // this.organizationForm.reset();
           this.adminForm.reset();
@@ -252,7 +252,7 @@ export class UpdateOrganizationComponent implements OnInit {
     this.a['admin_email_id'].reset();
     this.a['admin_phone_number'].reset();
     this.adminForm.patchValue({
-      is_active: [true]
+      is_active: true
     })
     this.isAdminForm = !this.isAdminForm;
 
@@ -306,28 +306,30 @@ export class UpdateOrganizationComponent implements OnInit {
         currentOrg = res
         // this.fileDataUrl = currentOrg['organization_image_path']
        
-        if(currentOrg['country_id']){
+        this.fileDataUrl = currentOrg['organization_image']
+      //   if (currentOrg['organization_image']) {
          
-          await this.getState(currentOrg['country_id'])
-          await this.getCity(currentOrg['state_id'])
-          
-        }
-        if (currentOrg['organization_image']) {
-        // console.log(this.url,'this.url')
-        fetch(currentOrg['organization_image'])
-          .then(response => response.blob())
-          .then(blob => {
-            const fileReader: any = new FileReader();
-            fileReader.onloadend = () => {
-              const base64String = fileReader.result.split(',')[1]; // Extract the base64 string without the data URL prefix
-              this.fileDataUrl = 'data:image/png;base64,' + base64String; // Prepend 'data:image/png;base64,' to the base64 string
-              // this.orgData['organization_image'] =  base64String; 
+      //   // console.log(this.url,'this.url')
+      //   fetch(currentOrg['organization_image'])
+      //     .then(response => response.blob())
+      //     .then(blob => {
+      //       const fileReader: any = new FileReader();
+      //       fileReader.onloadend = () => {
+      //         const base64String = fileReader.result.split(',')[1]; // Extract the base64 string without the data URL prefix
+      //         this.fileDataUrl = 'data:image/png;base64,' + base64String; // Prepend 'data:image/png;base64,' to the base64 string
+      //         // this.orgData['organization_image'] =  base64String; 
            
-            };
-            fileReader.readAsDataURL(blob);
-          });
+      //       };
+      //       fileReader.readAsDataURL(blob);
+      //     });
 
 
+      // }
+      if(currentOrg['country_id']){
+         
+        await this.getState(currentOrg['country_id'])
+        await this.getCity(currentOrg['state_id'])
+        
       }
         const adminData = res['admin_details']
         // this.adminList = res['result']['data'][0].admin_details
@@ -357,6 +359,7 @@ export class UpdateOrganizationComponent implements OnInit {
           org_subscription_plan: currentOrg['org_subscription_plan'],
           organization_image_path: currentOrg['organization_image_path'],
           organization_image_base_url: currentOrg['organization_image_base_url'],
+          organization_image:currentOrg['organization_image']
           // organization_image: currentOrg['organization_image_path']
         })
        
@@ -388,6 +391,7 @@ export class UpdateOrganizationComponent implements OnInit {
       admin_email_id: [admin.admin_email_id, [Validators.required, Validators.email,this.emailMatchValidator(),this.duplicateEmailArrayValidator(formArray)]],
       admin_phone_number: [admin.admin_phone_number, [Validators.required,this.phoneNumberLengthValidator]],
       is_active: [admin.is_active],
+      id:[admin.id]
     });
   }
   

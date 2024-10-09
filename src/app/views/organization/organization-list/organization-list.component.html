@@ -69,7 +69,7 @@
                 <td>{{getContinuousIndex(i)}}</td>
                 <td class="p-r">
                   <img  *ngIf="item.organization_image" src="{{item.organization_image}}" height="45px" width="45px" style="border-radius: 50%;">
-                  <a href="{{item.organization_image}}" target="_blank">
+                  <a href="{{item.organization_image_url}}" target="_blank">
                     <i class="bi bi-eye-fill" id="eye-btn" container="body" ngbTooltip="View"></i>
                   </a>
                 </td>
@@ -84,9 +84,9 @@
 }}" container="body"
                       ngbTooltip="Edit" style="color: #000; "></i> -->
                       <img src="../../../../assets/images/Edit.svg" class="icon-image" routerLink="/organization/updateOrg/{{item.organization_id
-}}" container="body" ngbTooltip="Edit" />
-                      <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.organization_id
-)"/>
+                        }}" container="body" ngbTooltip="Edit" />
+                                              <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.organization_id
+                        )"/>
                      
                   </ng-container>
 
@@ -146,8 +146,8 @@
         <div class="card outer-card">
           <div class="row">
             <div class="col-6">
-              <a href="{{item.org_logo_path}}" target="_blank">
-                <img src="{{item.org_logo_path}}" alt="" class="org-logo">
+              <a href="{{item.organization_image_url}}" target="_blank">
+                <img src="{{item.organization_image}}" alt="" class="org-logo">
               </a>
             </div>
             <div class="col-5 p-0 text-end action-btn">

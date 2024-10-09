@@ -43,5 +43,6 @@ export const environment = {
   new_dev_url: 'https://projectacedevelop.thestorywallcafe.com/api',
   country:`country`,
   state:`state`,
-  city:`city`
+  city:`city`,
+  client:`client`
 };

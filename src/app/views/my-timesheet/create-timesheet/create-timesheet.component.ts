@@ -371,7 +371,6 @@ disableTaskDetailsBasedOnEditing(projectIndex: number, taskIndex: number,isEditi
   // const isEditing = task?.get('isEditing')?.value;
   // const isEditingArr  = this.taskDetailsList?.[taskIndex]['isEditing']
  //console.log(this.taskDetailsList[taskIndex]['isEditing'])
- alert(isEditing)
   if (isEditing) {
     // If isEditing is true, enable the fields
     task?.get('task_id')?.enable();
@@ -629,9 +628,9 @@ console.log(selectedArr,'MAP')
 
   getClient(i){
     this.currentIndex = i;
-    this.api.getClientDetails(this.params,this.orgId).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.client}/`).subscribe((data:any)=>{
       if(data){
-        this.allClient = data.result.data;
+        this.allClient = data;
         // console.log(this.allClient,'CLIENTLIST')
         const allClient = [...this.allClient]
       
