@@ -41,10 +41,10 @@ export class ApiserviceService {
   //   return this.http.post(`${this.baseurl}/login`, data)
   // }
   loginDetails(data: any) {
-    return this.http.post(`${this.newUrl}/login/`, data)
+    return this.http.post(`${this.baseurl}/login/`, data)
   }
   userAccess(user_id:any){
-    return this.http.get(`${this.newUrl}/user-access/${user_id}/`)
+    return this.http.get(`${this.baseurl}/user-access/${user_id}/`)
   }
   // Login
   //Register
@@ -157,11 +157,23 @@ export class ApiserviceService {
     return this.http.put(`${this.baseurl}/clients/${id}`, data, { headers: this.headers })
   }
 
-        // new pi for client
+  // ================= new pi for client
   addClientDetails(data: any) {
-    return this.http.post(`${this.newUrl}/client/`, data, { headers: this.headers })
+    return this.http.post(`${this.baseurl}/client/`, data, { headers: this.headers })
   }
-  // Client
+  getClientListFromUserId(){
+    return this.http.get(`${this.baseurl}/client/`, { headers: this.headers })
+  }
+  deleteClient(id: any) {
+    return this.http.delete(`${this.baseurl}/client/${id}/`, { headers: this.headers })
+  }
+  getCurrentClient(id: any) {
+    return this.http.get(`${this.baseurl}/client/${id}/`, { headers: this.headers })
+  }
+  updateClientList(id: any, data: any) {
+    return this.http.put(`${this.baseurl}/client/${id}/`, data, { headers: this.headers })
+  }
+  // =================== Client
 
   // Project- Status
   // Sub Category
@@ -319,6 +331,25 @@ export class ApiserviceService {
   }
 
   // Project Task Category 
+
+
+  // new project category
+  postProjCategory(data:any){
+    return this.http.post(`${this.baseurl}/project_category/`,data,{ headers: this.headers })
+  }
+  getProjCategory(){
+    return this.http.get(`${this.baseurl}/project_category/`,{ headers: this.headers })
+  }
+  getProjCategoryById(id:any){
+    return this.http.get(`${this.baseurl}/project_category/${id}/`,{ headers: this.headers })
+  }
+  putProjCategory(id:any,data:any){
+    return this.http.put(`${this.baseurl}/project_category/${id}/`,data,{ headers: this.headers })
+  }
+  deleteProjCategory(id:any){
+    return this.http.delete(`${this.baseurl}/project_category/${id}/`,{ headers: this.headers })
+  }
+  // new project category ends here
 
   // Prefix/suffix
   addPrefixSuffixDetails(data: any) {
@@ -480,6 +511,14 @@ export class ApiserviceService {
     return this.http.get(params, { headers: this.headers })
   }
 
+  // new profile url
+  getProfileDetails(user_id:any){
+    return this.http.get(`${this.baseurl}/user/${user_id}/`, { headers: this.headers })
+  }
+  updateUserProfileDetails(user_id:any,data:any){
+    return this.http.put(`${this.baseurl}/user/${user_id}/`,data,{ headers: this.headers })
+  }
+  // profile ends here
   getDataWithHeaders(params) {
     return this.http.get(params, { headers: this.headers })
   }

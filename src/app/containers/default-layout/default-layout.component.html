@@ -15,7 +15,7 @@
       <c-avatar cTextColor="primary" shape="rounded-1" size="md"  [src]="profileImage? profileImage: '../assets/images/no-profile-pic.png'" >
       </c-avatar>
       <p class="mx-2" [ngClass]="user_role_Name !== 'EMPLOYEE' ? 'nonemployee' : 'employee'">
-        <small class="user-name" *ngIf="user_role_Name !== 'EMPLOYEE'">{{user_name |titlecase}}</small><br />
+        <small class="user-name" *ngIf="user_role_Name !== 'EMPLOYEE'">{{user_name |titlecase}} {{last_name}}</small><br />
         <mat-label class="user-role">{{user_role_Name}}</mat-label>
       </p>
 

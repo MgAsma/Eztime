@@ -17,6 +17,7 @@ export class DefaultLayoutComponent {
   iconSize = false;
   user_role_Name: any;
   user_name: string;
+  last_name:any;
   public navItems = navItems;
   public nav1 = navItems1;
   currentUrl: any = '';
@@ -61,10 +62,11 @@ export class DefaultLayoutComponent {
       this.config = sessionStorage.getItem('user_role_name');
       this.common_service.profilePhoto$.subscribe(
         (data:any)=>{
-          console.log(data,'profile picccc');
+          // console.log(data,'profile picccc');
           if(data){
             this.profileImage = data.profile_pic;
-            this.user_name  = data.name
+            this.user_name  = data.name;
+            this.last_name  = data.last_name;
           }
         }
       )

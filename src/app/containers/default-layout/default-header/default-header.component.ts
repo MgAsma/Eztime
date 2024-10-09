@@ -49,7 +49,6 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   ]
   user_id: string;
   user_name: string;
-  profileImg: any;
   notes: any;
   screenWidth: number;
   orgId: any;
@@ -150,15 +149,18 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
 
   profileDataForSidebar:any = {
     profile_pic:'',
-    name:''
+    name:'',
+    last_name:''
   }
   getProfiledata() {
     this.api.userAccess(sessionStorage.getItem('user_id')).subscribe(
       (res:any)=>{
-        console.log('profile details in side bar', res);
-        this.profileImg = res?.user_info[0]?.profile_image;
-        this.profileDataForSidebar.profile_pic = res.user_info[0]['profile_image'];
+        // console.log('profile details in side bar', res);
+        if(res.user_info[0]['profile_image_path']){
+          this.profileDataForSidebar.profile_pic =environment.new_media_url+res.user_info[0]['profile_image_path'];
+        }
         this.profileDataForSidebar.name = res.user_info[0].first_name; 
+        this.profileDataForSidebar.last_name = res.user_info[0].last_name;
         this.common_service.setProfilePhoto(this.profileDataForSidebar)
       },
       (error => {

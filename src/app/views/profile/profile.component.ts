@@ -14,7 +14,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 })
 export class ProfileComponent implements OnInit {
   BreadCrumbsTitle: any = 'Update profile';
-
+  media_url = environment.new_media_url
   profileForm: FormGroup;
   uploadFile: any;
   url: any;
@@ -40,7 +40,8 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.user_id = sessionStorage.getItem('user_id')
-    this.org_id = sessionStorage.getItem('org_id')
+    // this.org_id = sessionStorage.getItem('org_id')
+    this.getCountry();
     this.initform()
     this.getProfiledata()
   }
@@ -55,16 +56,15 @@ export class ProfileComponent implements OnInit {
       last_name: ['', [Validators.pattern(/^[a-zA-Z]+$/), Validators.required]],
       address: ['', Validators.pattern(/^\S.*$/)],
       designation: ['', [Validators.required, Validators.pattern(/^\S.*$/)]],
-      email_id: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required]],
-      dob: ['', [Validators.required]],
-      tags: [''],
+      date_of_birth: ['', [Validators.required]],
       country: ['', Validators.required],
       state: ['', Validators.required],
       city: ['', Validators.required],
-      user_address_details: [''],
+      role: [''],
       postal_code: [''],
-      user_profile_photo: ['',]
+      profile_image: ['',]
     })
   }
   phoneNumberLengthValidator() {
@@ -90,28 +90,12 @@ export class ProfileComponent implements OnInit {
   get f() {
     return this.profileForm.controls;
   }
-  // getCountry(){
-  //   let data = {
-  //     "data_request":"GIVE_ALL_COUNTRY"
-  //   }
-
-  //   this.api.postData(`${environment.live_url}/${environment.country_state_city}`,data).subscribe((res:any) =>{
-  //    // console.log(res,"RES")
-  //     if(res.result.data.data){
-  //       this.country = res.result.data.data
-  //     }
-  //   },((error)=>{
-  //     this.api.showError(error.error.error.message)
-  //   }))
-  // }
+  
 
   getCountry() {
-    let data = {
-      data_request: "GIVE_ALL_COUNTRY"
-    }
-    this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
-      // console.log(res,"RES")
-      this.country = res.result.data.data
+    this.api.getData(`${environment.live_url}/${environment.country}/`).subscribe((res: any) => {
+      // console.log(res,'country')
+      this.country = res
     }, ((error) => {
       this.api.showError(error.error.error.message)
     }))
@@ -123,144 +107,131 @@ export class ProfileComponent implements OnInit {
       city: ''
     })
   }
-  // getState(event){
-
-  //   let data = {
-  //     "data_request":"GIVE_COUNTRY_RELATED_STATE",
-  //     "country_name":event
-  //   }
-  //   this.api.postData(`${environment.live_url}/${environment.country_state_city}`,data).subscribe((res:any) =>{
-  //   //  console.log(res,"RES")
-  //     this.state = res.result.data.data
-
-  //   },((error)=>{
-  //     this.api.showError(error.error.error.message)
-  //   }))
-  // }
+  
   getState(event) {
-    let data = {
-      data_request: "GIVE_COUNTRY_RELATED_STATE",
-    }
-    this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe(async (res: any) => {
-      if (res) {
-        //console.log(res,"RES")
-        this.state = res.result.data.data
-      }
-    }, ((error) => {
-      this.api.showError(error.error.error.message)
-    }))
-
-  }
-
-  // getCity(event){
-  //   let data ={
-  //      data_request:"GIVE_STATE_RELATED_CITY",
-  //      state_name:event
-  //  }
-  //   this.api.postData(`${environment.live_url}/${environment.country_state_city}`,data).subscribe((res:any) =>{
-  //     //console.log(res,"RES")
-  //     this.city = res.result.data.data
-  //   },((error)=>{
-  //     this.api.showError(error.error.error.message)
-  //   }))
-  // }
-  getCity(event) {
-    if (event) {
-
-      const state_code = this.state?.find((state: any) => state.name === event)?.iso2;
-      let data = {
-        data_request: "GIVE_STATE_RELATED_CITY",
-        state_code: state_code
-      }
-
-
-      this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
-        if (res) {
-          // console.log(res,"RES")
-          this.city = res.result.data.data
+    console.log(event,'country id')
+    if(event){
+      this.api.getData(`${environment.live_url}/${environment.state}/?country_id=${event}`).subscribe((res: any) => {
+        if(res){
+        this.state = res
+        // this.getCity(event);
         }
-
       }, ((error) => {
         this.api.showError(error.error.error.message)
       }))
     }
+
+  }
+
+  
+  getCity(event) {
+    this.api.getData(`${environment.live_url}/${environment.city}/?state_id=${event}`).subscribe((res: any) => {
+      this.city = res
+    }, ((error) => {
+      this.api.showError(error.error.error.message)
+    }))
+    // if (event) {
+
+    //   const state_code = this.state?.find((state: any) => state.name === event)?.iso2;
+    //   let data = {
+    //     data_request: "GIVE_STATE_RELATED_CITY",
+    //     state_code: state_code
+    //   }
+    //   this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
+    //     if (res) {
+    //       this.city = res.result.data.data
+    //     }
+
+    //   }, ((error) => {
+    //     this.api.showError(error.error.error.message)
+    //   }))
+    // }
   }
 
   profileDataForSidebar: any = {
     profile_pic: '',
-    name: ''
+    name: '',
+    last_name:''
   }
 
   getProfiledata() {
-    this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe(async (res: any) => {
-      console.log(res, 'PROFILE GET API RESPONSE', this.profileimg)
-      if (res.result.data) {
-        let data = res.result.data
-        this.profileDataForSidebar.profile_pic = res.result.data[0]['u_profile_photo'];
-        this.profileDataForSidebar.name = res.result.data[0].u_first_name;
-        this.common_service.setProfilePhoto(this.profileDataForSidebar)
-        let responseData = []
-        let currentProfileDetails = []
-        responseData = res['result']['data']
-        currentProfileDetails = responseData[responseData.length - 1]
-        this.fileDataUrl = currentProfileDetails['u_profile_photo'];
-        // this.toBase64UsingPathlink(currentProfileDetails['u_profile_photo'])
-        this.tempStoreProfileImage = currentProfileDetails['u_profile_photo'];
-        console.log(this.fileDataUrl)
-        await this.getCountry();
-        await this.getState('')
-        setTimeout(async () => {
-          await this.getCity(currentProfileDetails['u_state'])
-        }, 1000);
-        // console.log(data[0].u_city,"CITY")
-        this.profileForm.patchValue({
-          first_name: data[0].u_first_name,
-          last_name: data[0].u_last_name,
-          designation: data[0].u_designation,
-          email_id: data[0].u_email,
-          phone_number: data[0].u_phone_no,
-          dob: data[0].u_dob,
-          tags: data[0].tags,
-          country: data[0].u_country,
-          state: data[0].u_state,
-          city: data[0].u_city,
-          address: data[0].u_address,
-          postal_code: data[0].u_postal_code,
-          // user_profile_photo: data[0].u_profile_photo
-        })
-        console.log(this.profileForm.controls)
+    this.api.getProfileDetails(this.user_id).subscribe(
+      async (res:any)=>{
+        console.log('new profile data',res)
+        if (res) {
+          let data = res
+          if(data.country){
+            await this.getState(data.country)
+            await this.getCity(data.state)
+          }
+          let currentProfileDetails = []
+          currentProfileDetails = res
+          if(currentProfileDetails['profile_image']){
+            this.fileDataUrl = this.media_url+currentProfileDetails['profile_image'];
+            this.tempStoreProfileImage = this.media_url+currentProfileDetails['profile_image'];
+          }
+          this.profileDataForSidebar.profile_pic = this.fileDataUrl;
+          this.profileDataForSidebar.name = res.first_name;
+          this.profileDataForSidebar.last_name = res.last_name; 
+          this.common_service.setProfilePhoto(this.profileDataForSidebar)
+          this.profileForm.patchValue({
+            first_name: data.first_name,
+            last_name: data.last_name,
+            designation: data.designation,
+            email: data.email,
+            phone_number: data.phone_number,
+            date_of_birth: data.date_of_birth,
+            country: data.country,
+            state: data.state,
+            city: data.city,
+            address: data.address,
+            postal_code: data.postal_code,
+            role:data.role
+          })
+          console.log(this.profileForm.controls)
+        }
       }
-    }, (error => {
-      this.api.showError(error.error.error.message)
-    }))
+    )
+    // this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe(async (res: any) => {
+    //   console.log(res, 'PROFILE GET API RESPONSE', this.profileimg)
+    //   if (res.result.data) {
+    //     let data = res.result.data
+    //     this.profileDataForSidebar.profile_pic = res.result.data[0]['u_profile_photo'];
+    //     this.profileDataForSidebar.name = res.result.data[0].u_first_name;
+    //     this.common_service.setProfilePhoto(this.profileDataForSidebar)
+    //     let responseData = []
+    //     let currentProfileDetails = []
+    //     responseData = res['result']['data']
+    //     currentProfileDetails = responseData[responseData.length - 1]
+    //     this.fileDataUrl = currentProfileDetails['u_profile_photo'];
+    //     this.tempStoreProfileImage = currentProfileDetails['u_profile_photo'];
+    //     console.log(this.fileDataUrl)
+    //     await this.getCountry();
+    //     await this.getState('')
+    //     setTimeout(async () => {
+    //       await this.getCity(currentProfileDetails['u_state'])
+    //     }, 1000);
+    //     this.profileForm.patchValue({
+    //       first_name: data[0].u_first_name,
+    //       last_name: data[0].u_last_name,
+    //       designation: data[0].u_designation,
+    //       email_id: data[0].u_email,
+    //       phone_number: data[0].u_phone_no,
+    //       dob: data[0].u_dob,
+    //       tags: data[0].tags,
+    //       country: data[0].u_country,
+    //       state: data[0].u_state,
+    //       city: data[0].u_city,
+    //       address: data[0].u_address,
+    //       postal_code: data[0].u_postal_code,
+    //     })
+    //     console.log(this.profileForm.controls)
+    //   }
+    // }, (error => {
+    //   this.api.showError(error.error.error.message)
+    // }))
   }
 
-  // async toBase64UsingPathlink(file: any) {
-  //   console.log(file);
-  //  const parts = file.split('/');
-  //  const fileName = parts[parts.length - 1];
-  //  const data = await fetch(file);
-  //  const blob = await data.blob();
-  //  const files = new File([blob], fileName, { type: blob.type });
-  //  console.log(files,'filesss')
-  //  this.profileForm.patchValue({user_profile_photo:files})
-  // }
-
-
-  uploadImageFile(event: any) {
-    this.uploadFile = event.target.files[0];
-    if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0])
-      reader.onload = (event: any) => {
-        this.url = event.target.result;
-        this.fileUrl = reader.result
-        //this.profileForm.patchValue({user_profile_photo:this.fileUrl})
-        // console.log(this.fileUrl)
-
-      }
-    }
-  }
   onFocusDate() {
     this.date = 'date';
     this.profileForm.patchValue({
@@ -269,42 +240,43 @@ export class ProfileComponent implements OnInit {
   }
   onFocusPhoto() {
     this.profileimg = 'file';
-    this.profileForm.get('user_profile_photo')?.reset();
+    this.profileForm.get('profile_image')?.reset();
   }
 
   updateProfile() {
     console.log(this.profileForm.controls, this.fileDataUrl)
     if (this.profileForm.invalid) {
-      this.api.showError("Error !");
+      this.api.showError("Invalid!");
       this.profileForm.markAllAsTouched()
     }
     else {
       let profileData: any = {}
       profileData = this.profileForm.value
-      // console.log(profileData.dob,'DOB____________')
-      //  this.profileForm.patchValue({user_profile_photo:this.fileDataUrl});
-      this.date === 'text' ? profileData.dob : this.datePipe.transform(profileData.dob, 'dd/MM/yyyy')
+      console.log(this.imageUploaded,'this.imageUploaded')
+      //  this.profileForm.patchValue({profile_image:this.fileDataUrl});
+      this.date === 'text' ? profileData.date_of_birth : this.datePipe.transform(profileData.date_of_birth, 'dd/MM/yyyy')
       let data = {
         first_name: profileData.first_name,
         last_name: profileData.last_name,
         designation: profileData.designation,
-        email_id: profileData.email_id,
-        phone_no: profileData.phone_number,
-        dob: profileData.dob,
-        tags: profileData.tags,
+        email: profileData.email,
+        phone_number: profileData.phone_number,
+        date_of_birth: profileData.date_of_birth,
         country: profileData.country,
         state: profileData.state,
         city: profileData.city,
         address: profileData.address,
-        // user_address_details:profileData.user_address_details,
+        role:profileData.role,
         postal_code: profileData.postal_code,
-        user_profile_photo: this.fileDataUrl
-
+        // profile_image: this.fileDataUrl
+      }
+      if (this.imageUploaded) {
+        data['profile_image'] = this.fileDataUrl;
       }
       console.log(data, "DATA---------------------")
-      this.api.updateProfileDetails(this.user_id, data).subscribe(res => {
+      this.api.updateUserProfileDetails(this.user_id, data).subscribe(res => {
         if (res) {
-          this.api.showSuccess("Profile updated successfully !");
+          this.api.showSuccess("Profile details updated successfully !");
           this.date = 'text';
           this.ngOnInit();
         }
@@ -320,32 +292,43 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  triggerFileInput() {
-    this.profileimg = 'file'
-    this.fileInput?.nativeElement?.click();
-    console.log('this.profileimg', this.profileimg)
+  triggerFileInput(text:any) {
+    console.log(text)
+    if(text=='Upload'){
+      this.profileimg = 'file'
+      this.fileInput?.nativeElement?.click();
+      console.log('this.profileimg', this.profileimg)
+    } 
+    else{
+      this.fileDataUrl = null;
+      this.imageUploaded = true;
+    }
   }
 
+  imageUploaded:boolean = false;
   uploadProflieImageFile(event: any) {
     const selectedFile = event.target.files[0];
-
     if (selectedFile) {
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
       if (!allowedTypes.includes(selectedFile.type)) {
+        this.imageUploaded= false;
         // Handle invalid file type
         console.error('Invalid file type. Only .jpg, .jpeg, and .png files are allowed.');
         this.api.showError('Invalid file type, only .jpg, .jpeg, and .png files are allowed.')
         this.fileDataUrl = this.tempStoreProfileImage; // Clear any previously selected image
         return;
+      } else{
+        this.imageUploaded= true;
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.fileDataUrl = e.target.result;
+          console.log(this.profileForm.value)
+        };
+        reader.readAsDataURL(selectedFile);
       }
 
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.fileDataUrl = e.target.result;
-        this.tempStoreProfileImage = e.target.result;
-        console.log(this.profileForm.value)
-      };
-      reader.readAsDataURL(selectedFile);
+    } else{
+      this.imageUploaded= false;
     }
   }
 
