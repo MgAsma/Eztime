@@ -1,69 +1,77 @@
-<div class="container-fluid webView">
-    <!-- <div class="row">
-        <div class="col-sm-6">
-            <h1>Add department</h1>
-        </div>
-        <div class="col-sm"></div>
-        <div class="col-sm-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">Add department</li>
-                  
-                </ol>
-              </nav>
-        </div>
-        
-    </div> -->
-    <div class="generic-form bg mx-1">
+<div class="container-fluid p-3 p-lg-4">
+    <div class="generic-form bg">
         <form [formGroup]='departmentForm' (ngSubmit)='addDepartment()' >
-            <div class="row">
-                <div class="col-sm-6">
-                    <h4>Department details</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <p>Department name <span >*</span></p> 
-                    <input type="text" class="form-control p-3 sizeinput" formControlName="od_name" placeholder="Enter department name" aria-describedby="emailHelp"  autocomplete="off">
-                    <div *ngIf="f['od_name'].touched && f['od_name'].invalid" >  
-                        <div *ngIf="f['od_name'].errors['required'] " ><p class="error-msg">Department name is required</p></div>
+            <div class="row gx-0 mx-0 create-department">
+                <div class="col-12 mt-lg-2">
+                    <div class="row gx-0 mx-0 mb-3">
+                        <div class="col-sm-12 col-md-6 col-lg-4">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Department name<b class="r-star">*</b></mat-label>
+                                <input matInput placeholder="Enter department name" formControlName="department_name"
+                                    autocomplete="off" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['department_name']?.touched && f['department_name']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['department_name'].errors && f['department_name'].errors['required'] ">Department name is
+                                    required</span>
+                                <span class="text-errors"
+                                    *ngIf="f['department_name'].invalid && f['department_name'].hasError('pattern')">
+                                    Please remove extra space.
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div *ngIf="f['od_name'].touched && f['od_name'].hasError('pattern')" >  
-                        <p class="error-msg">Cannot start with a space.</p>
+                    <div class="row gx-0 mx-0 mb-3">
+                        <div class="col-sm-12 col-md-6 col-lg-4">
+                            <mat-form-field appearance="outline" class="w-100 ">
+                                <mat-label>Description<b class="r-star">*</b></mat-label>
+                                <textarea matInput placeholder="Enter description" formControlName="description"
+                                    autocomplete="off" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$"></textarea>
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['description']?.touched && f['description']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['description'].errors && f['description'].errors['required'] ">Description
+                                    is
+                                    required</span>
+                                <span class="text-errors"
+                                    *ngIf="f['description'].invalid && f['description'].hasError('pattern')">
+                                    Please remove extra space.
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        
-            <div class="row">
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                    <p>Status <span >*</span></p>
-                    <select formControlName="od_status" class="form-select p-3 sizeinput">
-                        <option value="" selected disabled>Select status</option>
-                        <option value="Active" >Active</option>
-                        <option value="Inactive">Inactive</option>
-                        </select>
-                    <div *ngIf="f['od_status'].touched && f['od_status'].invalid" >  
-                        <div *ngIf="f['od_status'].errors['required'] " ><p class="error-msg">Status is required</p></div>
+                    <!-- <div class="row gx-0 mx-0">
+                        <div class="col-sm-12 col-md-6 col-lg-4">
+                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                                <mat-label>Status <b class="r-star">*</b></mat-label>
+                                <mat-select formControlName="od_status" autocomplete="off"
+                                        placeholder="Select status" panelClass="custom-select-panel"
+                                        [disableOptionCentering]="true">
+                                        <mat-option *ngFor="let status of status" [value]="status.value">
+                                        {{status.viewValue}}
+                                        </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['od_status']?.touched && f['od_status']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['od_status'].errors && f['od_status'].errors['required'] ">Status is
+                                    required</span>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="row gx-0 mx-0 mt-3">
+                        <div class="col">
+                            <button mat-button type="button" class="back-button" (click)="backToDepartment()">Back</button>
+                            <button mat-raised-button class="proceedbtn" type="submit">Submit</button>
+                        </div>
                     </div>
-                </div>
-            </div>
-    
-            <div class="row">
-                <!-- <div class="col-sm-3">
-                    <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
-                </div>
-                <div class="col-sm"></div> -->
-                <div class="col-sm-2">
-                    <button mat-raised-button class="proceedbtn" type="submit">Submit</button>
                 </div>
             </div>
         </form>
-       
     </div>
-   
 </div>
-<div class="container-fluid mobileView">
+
+<!-- <div class="container-fluid mobileView">
     <div class="row mx-1 my-2">
         <div class="col-sm-12">
             <h1><i  class="bi bi-arrow-left" (click)="goBack($event)
@@ -106,10 +114,6 @@
             </div>
     
             <div class="row">
-                <!-- <div class="col-sm-3">
-                    <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
-                </div>
-                <div class="col-sm"></div> -->
                 <div class="col-sm-2">
                     <button mat-raised-button class="proceedbtn" type="submit">Submit</button>
                 </div>
@@ -118,6 +122,6 @@
        
     </div>
    
-</div>
+</div> -->
 
 

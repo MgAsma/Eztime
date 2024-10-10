@@ -14,7 +14,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
   styleUrls: ['./role-list.component.scss']
 })
 export class RoleListComponent implements OnInit {
-  BreadCrumbsTitle:any='Role list';
+  BreadCrumbsTitle:any='Designation List';
   allRoleList=[];
   currentIndex:any = 1;
   page = 1;
@@ -57,15 +57,24 @@ export class RoleListComponent implements OnInit {
     }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.org_id = sessionStorage.getItem('org_id')
-    this.getRole(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`)
+    this.org_id = sessionStorage.getItem('organization_id')
+    this.getAllDesignations();
+    // this.getRole(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`)
     this.enabled = true
     this.role = sessionStorage.getItem('user_role_name')
     this.user_id = sessionStorage.getItem('user_id')
     
     
-    this.getUserControls()
+    // this.getUserControls()
   
+  }
+  getAllDesignations(){
+    this.api.getDesignationList(`?organization_id=${this.org_id}`).subscribe(
+      (res:any)=>{
+        console.log('desinations',res);
+        this.allRoleList = res;
+      }
+    )
   }
   filterSearch(){
     this.getRole(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`)
@@ -106,14 +115,12 @@ export class RoleListComponent implements OnInit {
     console.log(data,'dataaa')
     this.sortedRolls = [];
       if(data){
-        // this.allRoleList = data.result.data
         data.result.data.forEach(res=>{
           this.permission.push(res)
           if(res.user_role_name!='ADMIN'){
             this.sortedRolls.push(res)
           }
         })
-        // console.log(this.sortedRolls,'this.sortedRolls')
         this.allRoleList = this.sortedRolls;
           const noOfPages:number = data['result'].pagination.number_of_pages
            this.totalCount  = noOfPages * this.tableSize
@@ -133,11 +140,11 @@ export class RoleListComponent implements OnInit {
   }
 
   delete(id:any){
-    this.api.delete(`${environment.live_url}/${environment.userRole}/${id}`).subscribe((data:any)=>{
+    this.api.deleteDesignationList(id).subscribe((data:any)=>{
       if(data){
         this.allRoleList = []
         this.ngOnInit()
-        this.api.showWarning('Role deleted successfully!')
+        this.api.showWarning('Designation deleted successfully!')
      
       }
     },((error)=>{
@@ -154,9 +161,7 @@ export class RoleListComponent implements OnInit {
     this.delete(this.selectedId)
     this.enabled = true;
   }
-  editCard(){
-    this.router.navigate([`/role/update/${this.selectedId}`])
-  }
+  
   onTableDataChange(event:any){
     this.page = event;
     //console.log(this.page,"EVENT PAGE---")

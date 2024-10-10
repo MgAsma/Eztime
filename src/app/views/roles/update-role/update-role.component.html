@@ -1,91 +1,70 @@
-<div class="container-fluid webView">
-    <!-- <div class="row">
-        <div class="col-sm-6">
-            <h1>Update role</h1>
-        </div>
-        <div class="col-sm"></div>
-        <div class="col-sm-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">Update role</li>
-                  
-                </ol>
-              </nav>
-        </div>
-    </div> -->
-    <div class="generic-form bg mx-1">
+<div class="container-fluid p-3 p-lg-4">
+    <div class="generic-form bg">
         <form [formGroup]='updateForm' (ngSubmit)='update()' >
-            <div class="row">
-                <div class="col-sm-6">
-                    <h4>Role details</h4>
-                </div>
-            </div>
-         
-            <div class="row">
-                <div class="col-sm-6">
-                    <p>Role name <span >*</span></p> 
-                    <input type="text" class="form-control p-3 sizeinput" formControlName="user_role_name" placeholder="Enter role name" aria-describedby="emailHelp"  autocomplete="off">
-                    <div *ngIf="f['user_role_name'].touched && f['user_role_name'].invalid" >
-                        <p *ngIf="f['user_role_name'].errors['required']"  class="error-msg">Role name is required</p>
-                    </div>
-                    <div *ngIf="f['user_role_name'].invalid && f['user_role_name'].hasError('pattern') " >
-                        <p class="error-msg">Cannot start with a space.
-                     </p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <p>Description <span >*</span></p> 
-                        <textarea class="form-control" placeholder="Enter your description here" formControlName="description" id="floatingTextarea2" style="height: 100px"></textarea>
-                        <div *ngIf="f['description'].touched && f['description'].invalid" >
-                            <div *ngIf="f['description'].errors && f['description'].errors['required'] " ><p class="error-msg">Description is required</p></div>
-                        </div>  
-                        <div *ngIf="f['description'].invalid && f['description'].hasError('pattern') " >
-                            <p class="error-msg">Cannot start with a space.</p>
+            <div class="row gx-0 mx-0 update-role">
+                <div class="col-12 mt-lg-2">
+                    <div class="row gx-0 mx-0 mb-3">
+                        <div class="col-sm-12 col-md-6 col-lg-4">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Designation name<b class="r-star">*</b></mat-label>
+                                <input matInput placeholder="Enter designation name" formControlName="designation_name"
+                                    autocomplete="off" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['designation_name']?.touched && f['designation_name']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['designation_name'].errors && f['designation_name'].errors['required'] ">Designation
+                                    name is
+                                    required</span>
+                                <span class="text-errors"
+                                    *ngIf="f['designation_name'].invalid && f['designation_name'].hasError('pattern')">
+                                    Please remove extra space.
+                                </span>
+                            </div>
                         </div>
-                </div>
-            </div>
-            <!-- <div class="row">
-                <div class="col-sm-6">
-                    <p>Priority <span >*</span></p>
-                    <select class="form-select" aria-label="Default select example"  formControlName="priority">
-                        <option value="" disabled selected>Select priority</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                      </select>
-                      <div *ngIf="f['priority'].touched && f['priority'].invalid" >
-                        <div *ngIf="f['priority'].errors && f['priority'].errors['required'] " ><p class="error-msg">Priority is required</p></div>
-                    </div> 
-                </div>
-                
-            </div> -->
-         
-            <div class="row">
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                    <p>Status <span >*</span></p>
-                    <!-- <input type="text" class="form-control p-3 sizeinput" formControlName="or_status"> -->
-                    <select formControlName="role_status" class="form-select p-3 sizeinput">
-                        <option value="" selected disabled>Select status</option>
-                        <option value="Active" >Active</option>
-                        <option value="Inactive">Inactive</option>
-                    </select>
-                    <div *ngIf="f['role_status'].touched && f['role_status'].invalid" >
-                        <div *ngIf="f['role_status'].errors && f['role_status'].errors['required'] " ><p class="error-msg">Status is required</p></div>
-                    </div> 
-                </div>
-            </div>
-            <div class="row">
-                <!-- <div class="col-sm-3">
-                    <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
-                </div>
-                <div class="col-sm"></div> -->
-                <div class="col-sm-2">
-                    <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Update</button>
+                    </div>
+                    <!-- <div class="row gx-0 mx-0 mb-3">
+                        <div class="col-sm-12 col-md-6 col-lg-4">
+                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                                <mat-label>Status <b class="r-star">*</b></mat-label>
+                                <mat-select formControlName="role_status" autocomplete="off" placeholder="Select status"
+                                    panelClass="custom-select-panel" [disableOptionCentering]="true">
+                                    <mat-option *ngFor="let status of status" [value]="status.value">
+                                        {{status.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['role_status']?.touched && f['role_status']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['role_status'].errors && f['role_status'].errors['required'] ">Status is
+                                    required</span>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="row gx-0 mx-0 mb-3">
+                        <div class="col-sm-12 col-md-6 col-lg-4">
+                            <mat-form-field appearance="outline" class="w-100 ">
+                                <mat-label>Description<b class="r-star">*</b></mat-label>
+                                <textarea matInput placeholder="Enter description" formControlName="description"
+                                    autocomplete="off" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$"></textarea>
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['description']?.touched && f['description']?.invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['description'].errors && f['description'].errors['required'] ">Description
+                                    is
+                                    required</span>
+                                <span class="text-errors"
+                                    *ngIf="f['description'].invalid && f['description'].hasError('pattern')">
+                                    Please remove extra space.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row gx-0 mx-0 ">
+                        <div class="col mt-3">
+                            <button mat-button type="button" class="back-button" (click)="BackToRolesList()">Back</button>
+                            <button mat-raised-button class="proceedbtn" type="submit">Submit</button>
+                        </div>
+                    </div>
                 </div>
             </div>
          </form>
@@ -93,29 +72,19 @@
     </div>
    
 </div>
-<div class="container-fluid mobileView">
+
+<!-- <div class="container-fluid mobileView">
     <div class="row mx-1 my-2">
         <div class="col-sm-6">
          <h1><i  class="bi bi-arrow-left" (click)="goBack($event)
   
   "></i>  Update role</h1>
         </div>
-        <!-- <div class="col-sm"></div>
-        <div class="col-sm-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">Update role</li>
-                  
-                </ol>
-              </nav>
-        </div> -->
     </div>
     <div class="generic-form bg mx-1">
         <form [formGroup]='updateForm' (ngSubmit)='update()' >
             <div class="row">
                 <div class="col-sm-6">
-                    <!-- <h4>Role details</h4> -->
                 </div>
             </div>
          
@@ -144,28 +113,10 @@
                         </div>
                 </div>
             </div>
-            <!-- <div class="row">
-                <div class="col-sm-6">
-                    <p>Priority <span >*</span></p>
-                    <select class="form-select" aria-label="Default select example"  formControlName="priority">
-                        <option value="" disabled selected>Select priority</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                      </select>
-                      <div *ngIf="f['priority'].touched && f['priority'].invalid" >
-                        <div *ngIf="f['priority'].errors && f['priority'].errors['required'] " ><p class="error-msg">Priority is required</p></div>
-                    </div> 
-                </div>
-                
-            </div> -->
-         
+           
             <div class="row">
                 <div class="col-sm-12 col-md-6 col-lg-6">
                     <p>Status <span >*</span></p>
-                    <!-- <input type="text" class="form-control p-3 sizeinput" formControlName="or_status"> -->
                     <select formControlName="role_status" class="form-select p-3 sizeinput">
                         <option value="" selected disabled>Select status</option>
                         <option value="Active" >Active</option>
@@ -177,10 +128,6 @@
                 </div>
             </div>
             <div class="row">
-                <!-- <div class="col-sm-3">
-                    <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
-                </div>
-                <div class="col-sm"></div> -->
                 <div class="col-sm-12 col-md-6">
                     <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Update</button>
                 </div>
@@ -189,6 +136,6 @@
        
     </div>
    
-</div>
+</div> -->
 
 

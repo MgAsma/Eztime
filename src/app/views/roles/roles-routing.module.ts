@@ -29,7 +29,7 @@ const routes: Routes = [
         path:'create', component:CreateRoleComponent
       },
       {
-        path:'update/:id/:page/:tableSize', component:UpdateRoleComponent
+        path:'update/:id', component:UpdateRoleComponent
       },
       {
         path:'roles-access/:id/:role', component:RolesAccessComponent,children:[

@@ -16,7 +16,10 @@ export class UpdateDepartmentComponent implements OnInit {
   tableSize: string;
   org_id: any;
   updateForm: FormGroup;
-
+  status = [
+    { value: 'active', viewValue: 'Active' },
+    { value: 'inactive', viewValue: 'Inactive' },
+  ];
   constructor(
     private builder:FormBuilder,
      private api: ApiserviceService, 
@@ -29,7 +32,7 @@ export class UpdateDepartmentComponent implements OnInit {
     this.id =this.route.snapshot.paramMap.get('id')
     this.page = this.route.snapshot.paramMap.get('page')
     this.tableSize = this.route.snapshot.paramMap.get('tableSize')
-    this.org_id = sessionStorage.getItem('org_id')
+    this.org_id = sessionStorage.getItem('organization_id')
   }
   goBack(event)
   {
@@ -39,9 +42,9 @@ export class UpdateDepartmentComponent implements OnInit {
   }
   initForm(){
     this.updateForm= this.builder.group({
-      od_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      od_status:['',Validators.required],
-      organization_id:this.org_id
+      department_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
+      description:['',[Validators.pattern(/^\S.*$/),Validators.required]],
+      organization:this.org_id
     })
   }
   
@@ -60,14 +63,12 @@ export class UpdateDepartmentComponent implements OnInit {
       data_per_page:this.tableSize,
       org_ref_id:this.org_id
     }
-    if(this.org_id){
-      this.api.getCurrentDepartmentDetails(this.id,params).subscribe((data:any)=>{
+      this.api.getByIdDepartmentList(this.id).subscribe((data:any)=>{
         this.updateForm.patchValue({
-          od_name:data.result.data[0].od_name,
-          od_status:data.result.data[0].od_status,
+          department_name:data.department_name,
+          description:data.description,
         })
       })
-    }
    
   }
   update(){
@@ -75,9 +76,9 @@ export class UpdateDepartmentComponent implements OnInit {
     this.updateForm.markAllAsTouched()
   }
   else{
-  this.api.updateDepartmant(this.id,this.updateForm.value).subscribe(res =>{
+  this.api.putDepartmentList(this.id,this.updateForm.value).subscribe(res =>{
     if(res){
-      this.api.showSuccess('Department updated successfully!');
+      this.api.showSuccess(res['message']);
       this.updateForm.reset();
       this.router.navigate(['/department/list']);
     }
@@ -90,4 +91,7 @@ export class UpdateDepartmentComponent implements OnInit {
 }
   }
 
+  backToDepartment(){
+    this.router.navigate(['/department/list'])
+  }
 }
