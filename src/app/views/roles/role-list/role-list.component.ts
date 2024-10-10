@@ -14,7 +14,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
   styleUrls: ['./role-list.component.scss']
 })
 export class RoleListComponent implements OnInit {
-  BreadCrumbsTitle:any='Designation List';
+  BreadCrumbsTitle:any='Designation';
   allRoleList=[];
   currentIndex:any = 1;
   page = 1;
@@ -144,7 +144,7 @@ export class RoleListComponent implements OnInit {
       if(data){
         this.allRoleList = []
         this.ngOnInit()
-        this.api.showWarning('Designation deleted successfully!')
+        this.api.showWarning(data['message'])
      
       }
     },((error)=>{

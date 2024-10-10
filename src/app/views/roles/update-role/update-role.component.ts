@@ -34,7 +34,7 @@ status = [
   initForm(){
     this.updateForm= this.builder.group({
       designation_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      description:['',[Validators.pattern(/^\S.*$/),Validators.required]],
+      description:['',[Validators.pattern(/^\S.*$/)]],
       organization_id:this.org_id
       // priority:['',Validators.required],
       // role_status:['',Validators.required],
@@ -85,7 +85,7 @@ status = [
         if(response){
           this.api.showSuccess(response.message);
           this.updateForm.reset()
-          this.router.navigate(['/role/list'])
+          this.router.navigate(['/designation/list'])
         }
         else{
           this.api.showError('Error!')
@@ -99,6 +99,6 @@ status = [
 
   
   BackToRolesList(){
-    this.router.navigate(['/role/list']);
+    this.router.navigate(['/designation/list']);
   }
 }

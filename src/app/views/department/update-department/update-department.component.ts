@@ -43,7 +43,7 @@ export class UpdateDepartmentComponent implements OnInit {
   initForm(){
     this.updateForm= this.builder.group({
       department_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      description:['',[Validators.pattern(/^\S.*$/),Validators.required]],
+      description:['',[Validators.pattern(/^\S.*$/)]],
       organization:this.org_id
     })
   }

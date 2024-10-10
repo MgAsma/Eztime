@@ -7,7 +7,7 @@
     </div>
     <div class="col-sm"></div>
     <div class="col-md-3 col-lg-3 p-1 text-end create-buttons">
-      <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/role/create" type="submit">
+      <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/designation/create" type="submit">
         <mat-icon>add</mat-icon>Create Designation</button>
 
     </div>
@@ -44,7 +44,7 @@
                   
                    <td>
                     <ng-container >
-                      <img src="../../../../assets/images/Edit.svg" class="icon-image"  routerLink="/role/update/{{item.id}}" container="body" ngbTooltip="Edit" />
+                      <img src="../../../../assets/images/Edit.svg" class="icon-image"  routerLink="/designation/update/{{item.id}}" container="body" ngbTooltip="Edit" />
                       <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.id)"/>
                   </ng-container>
                  </td>

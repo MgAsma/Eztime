@@ -17,7 +17,7 @@ import { environment } from 'src/environments/environment';
 ]
 })
 export class DepartmentListComponent implements OnInit {
-  BreadCrumbsTitle:any='Department list';
+  BreadCrumbsTitle:any='Departments';
   currentIndex:any = 1;
   public searchText : any;
   allDepartmentList=[];

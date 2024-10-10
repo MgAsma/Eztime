@@ -43,7 +43,7 @@ export class CreateRoleComponent implements OnInit {
    
     this.roleForm= this.builder.group({
       designation_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      description:['',[Validators.pattern(/^\S.*$/),Validators.required]],
+      description:['',[Validators.pattern(/^\S.*$/)]],
       organization:this.orgId
       // priority:['',Validators.required],
       // role_status:['',Validators.required],
@@ -92,6 +92,6 @@ export class CreateRoleComponent implements OnInit {
   }
 
   BackToRolesList(){
-    this.router.navigate(['./role/list'])
+    this.router.navigate(['./designation/list'])
   }
 }
