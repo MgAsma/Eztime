@@ -15,7 +15,7 @@ const routes: Routes = [
         path:'list', component:DepartmentListComponent
       },
       {
-        path:'update/:id/:page/:tableSize',component:UpdateDepartmentComponent
+        path:'update/:id',component:UpdateDepartmentComponent
       }
     ]
   }

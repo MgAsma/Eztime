@@ -75,8 +75,9 @@ export class LoginComponent implements OnInit {
         this.api.userAccess(decoded.user_id).subscribe(
           (data:any)=>{
             console.log('user access',data)
-            sessionStorage.setItem('user_role_name', data.user_role)
-            sessionStorage.setItem('permissionArr', JSON.stringify(data.access_list))
+            sessionStorage.setItem('user_role_name', data.user_role);
+            sessionStorage.setItem('permissionArr', JSON.stringify(data.access_list));
+            sessionStorage.setItem('organization_id', data.organization_id);
               let permissionArr: any = []
               permissionArr = JSON.parse(sessionStorage.getItem('permissionArr'));
               this.router.navigate(['/dashboards']);

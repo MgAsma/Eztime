@@ -10,18 +10,22 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
   styleUrls: ['./update-role.component.scss']
 })
 export class UpdateRoleComponent implements OnInit {
-  BreadCrumbsTitle:any='Update role';
+  BreadCrumbsTitle:any='Update Designation';
   id:any;
   updateForm: FormGroup;
   page: string;
   tableSize: string;
   org_id: any;
+status = [
+    { value: 'active', viewValue: 'Active' },
+    { value: 'inactive', viewValue: 'Inactive' },
+  ];
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService, 
     private route:ActivatedRoute,
-    private router:Router,
-    private location:Location,private common_service : CommonServiceService
+    private location:Location,private common_service : CommonServiceService,
+    private router: Router
   ) { 
     this.id =this.route.snapshot.paramMap.get('id')
     this.page = this.route.snapshot.paramMap.get('page')
@@ -29,14 +33,14 @@ export class UpdateRoleComponent implements OnInit {
   }
   initForm(){
     this.updateForm= this.builder.group({
-      user_role_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      description:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      // priority:['',Validators.required],
-      role_status:['',Validators.required],
-      module_name:[],
-      permissions:[],
-      update:'ROLE',
+      designation_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
+      description:['',[Validators.pattern(/^\S.*$/)]],
       organization_id:this.org_id
+      // priority:['',Validators.required],
+      // role_status:['',Validators.required],
+      // module_name:[],
+      // permissions:[],
+      // update:'ROLE',
     })
   }
  
@@ -48,7 +52,7 @@ export class UpdateRoleComponent implements OnInit {
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.org_id = sessionStorage.getItem('org_id')
+    this.org_id = sessionStorage.getItem('organization_id')
    this.edit();
    this.initForm();
   }
@@ -57,16 +61,17 @@ export class UpdateRoleComponent implements OnInit {
   }
   edit(){
     
-    this.api.getUserAccess(`module=ROLES&menu=ROLES&method=VIEW&page_number=1&data_per_page=10&pagination=FALSE&id=${this.id}&organization_id=${this.org_id}`).subscribe((res:any)=>{
+    this.api.getDesignationListById(this.id).subscribe((res:any)=>{
      // console.log(res,"RESPONSE")
      
       this.updateForm.patchValue({
-        user_role_name:res.data[0].user_role_name,
-        description:res.data[0].description,
+        designation_name:res.designation_name,
+        description:res.description,
+        organization:this.org_id
         // priority:res.data[0].priority,
-        role_status:res.data[0].role_status,
-        module_name:res.data[0].module_name,
-        permissions:res.data[0].permissions,
+        // role_status:res.data[0].role_status,
+        // module_name:res.data[0].module_name,
+        // permissions:res.data[0].permissions,
       })
    })
   }
@@ -76,11 +81,11 @@ export class UpdateRoleComponent implements OnInit {
       this.updateForm.markAllAsTouched()
     }
     else{
-      this.api.userAccessConfig(this.id,this.updateForm.value).subscribe(response=>{
+      this.api.putDesignationList(this.id,this.updateForm.value).subscribe((response:any)=>{
         if(response){
-          this.api.showSuccess('Role updated successfully!');
+          this.api.showSuccess(response.message);
           this.updateForm.reset()
-          this.router.navigate(['/role/list'])
+          this.router.navigate(['/designation/list'])
         }
         else{
           this.api.showError('Error!')
@@ -90,6 +95,10 @@ export class UpdateRoleComponent implements OnInit {
        })
     )
     }
+  }
+
   
+  BackToRolesList(){
+    this.router.navigate(['/designation/list']);
   }
 }

@@ -17,7 +17,7 @@ import { environment } from 'src/environments/environment';
 ]
 })
 export class DepartmentListComponent implements OnInit {
-  BreadCrumbsTitle:any='Department list';
+  BreadCrumbsTitle:any='Departments';
   currentIndex:any = 1;
   public searchText : any;
   allDepartmentList=[];
@@ -52,10 +52,19 @@ export class DepartmentListComponent implements OnInit {
 }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-     this.org_id = sessionStorage.getItem('org_id');
-    this.getDepartment(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`); 
+     this.org_id = sessionStorage.getItem('organization_id');
+     this.getAllDepartmentList();
+    // this.getDepartment(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`); 
     this.enabled = true;
-    this.getUserControls()
+    // this.getUserControls()
+  }
+
+  getAllDepartmentList(){
+    this.api.getDepartmentList(`?organization_id=${this.org_id}`).subscribe(
+      (res:any)=>{
+        this.allDepartmentList= res
+      }
+    )
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
@@ -122,7 +131,7 @@ export class DepartmentListComponent implements OnInit {
     }))
   }
   delete(id:any){
-    this.api.deleteDepartmentDetails(id).subscribe((data:any)=>{
+    this.api.deleteDepartmentList(id).subscribe((data:any)=>{
       this.ngOnInit();
       this.api.showWarning('Department deleted successfully!')
       this.ngOnInit()

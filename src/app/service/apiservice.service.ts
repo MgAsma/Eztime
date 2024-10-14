@@ -114,6 +114,24 @@ export class ApiserviceService {
   }
   // Department 
 
+  // new department api
+  postDepartmentList(data:any){
+    return this.http.post(`${this.baseurl}/department/`,data,{ headers: this.headers })
+  }
+  getDepartmentList(params){
+    return this.http.get(`${this.baseurl}/department/${params}`,{ headers: this.headers })
+  }
+  getByIdDepartmentList(id){
+    return this.http.get(`${this.baseurl}/department/${id}/`,{ headers: this.headers })
+  }
+  putDepartmentList(id,data){
+    return this.http.put(`${this.baseurl}/department/${id}/`,data,{ headers: this.headers })
+  }
+  deleteDepartmentList(id){
+    return this.http.delete(`${this.baseurl}/department/${id}/`,{ headers: this.headers })
+  }
+  // new department api end
+
   // Industry Sector
   addIndustryDetails(data: any) {
     return this.http.post(`${this.baseurl}/type-of-industries`, data, { headers: this.headers })
@@ -506,6 +524,23 @@ export class ApiserviceService {
     return this.http.get(`${this.baseurl}/user-role?${id}`)
   }
 
+  // new designation names
+  postDesignationList(data:any){
+    return this.http.post(`${this.baseurl}/designation/`,data,{ headers: this.headers })
+  }
+  getDesignationList(params){
+    return this.http.get(`${this.baseurl}/designation/${params}`,{ headers: this.headers })
+  }
+  getDesignationListById(id:any){
+    return this.http.get(`${this.baseurl}/designation/${id}/`,{ headers: this.headers })
+  }
+  putDesignationList(id:any,data:any){
+    return this.http.put(`${this.baseurl}/designation/${id}/`,data,{ headers: this.headers })
+  }
+  deleteDesignationList(id:any){
+    return this.http.delete(`${this.baseurl}/designation/${id}/`,{ headers: this.headers })
+  }
+// new designation names end here
 
   getData(params) {
     return this.http.get(params, { headers: this.headers })

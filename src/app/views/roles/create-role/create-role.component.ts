@@ -3,6 +3,8 @@ import {  Validators, FormBuilder,FormGroup } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-create-role',
   templateUrl: './create-role.component.html',
@@ -10,21 +12,25 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 })
 export class CreateRoleComponent implements OnInit {
   roleForm : FormGroup 
-  BreadCrumbsTitle:any='Create role';
+  BreadCrumbsTitle:any='Create Designation';
 
   allRole:any=[];
   role:any;
   orgId: any;
-
+  status = [
+    { value: 'active', viewValue: 'Active' },
+    { value: 'inactive', viewValue: 'Inactive' },
+  ];
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
-    private location:Location,private common_service : CommonServiceService
+    private location:Location,private common_service : CommonServiceService,
+    private router: Router
     ) { }
 
   ngOnInit(): void {  
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.orgId=sessionStorage.getItem('org_id')
+    this.orgId=sessionStorage.getItem('organization_id')
  this.initForm();
   }
   goBack(event)
@@ -36,12 +42,13 @@ export class CreateRoleComponent implements OnInit {
   initForm(){
    
     this.roleForm= this.builder.group({
-      user_role_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
+      designation_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
+      description:['',[Validators.pattern(/^\S.*$/)]],
+      organization:this.orgId
       // priority:['',Validators.required],
-      role_status:['',Validators.required],
-      description:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      module_name:[''],
-      permissions:{}
+      // role_status:['',Validators.required],
+      // module_name:[''],
+      // permissions:{}
     })
   }
   
@@ -55,23 +62,23 @@ export class CreateRoleComponent implements OnInit {
       this.roleForm.markAllAsTouched();
     }
     else{
-      let data = {
-        user_role_name:this.roleForm.value.user_role_name,
-        // priority:this.roleForm.value.priority,
-        role_status:this.roleForm.value.role_status,
-        description:this.roleForm.value.description,
-        module_name:['ROLES'],
-        organization_id:this.orgId,
-        permissions:[
-          {
-          "ROLES": [],
-          "ROLES_ACCESSIBILITY": []
-         }
-      ]
-      }
-      this.api.addRoles(data,this.orgId).subscribe(res =>{
+      // let data = {
+      //   designation_name:this.roleForm.value.designation_name,
+      //   // priority:this.roleForm.value.priority,
+      //   role_status:this.roleForm.value.role_status,
+      //   description:this.roleForm.value.description,
+      //   module_name:['ROLES'],
+      //   organization_id:this.orgId,
+      //   permissions:[
+      //     {
+      //     "ROLES": [],
+      //     "ROLES_ACCESSIBILITY": []
+      //    }
+      // ]
+      // }
+      this.api.postDesignationList(this.roleForm.value).subscribe((res:any) =>{
           if(res){
-            this.api.showSuccess('Role added successfully!');
+            this.api.showSuccess(res.message);
             this.roleForm.reset();
             this.initForm();
           }
@@ -82,5 +89,9 @@ export class CreateRoleComponent implements OnInit {
           this.api.showError(error.error.error.message)
       }))
     }
+  }
+
+  BackToRolesList(){
+    this.router.navigate(['./designation/list'])
   }
 }

@@ -3,6 +3,8 @@ import {  Validators, FormBuilder,FormGroup } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from'@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-create-department',
   templateUrl: './create-department.component.html',
@@ -15,18 +17,23 @@ export class CreateDepartmentComponent implements OnInit {
   allDepartment:any=[];
   department:any;
   org_id: string;
+  status = [
+    { value: 'active', viewValue: 'Active' },
+    { value: 'inactive', viewValue: 'Inactive' },
+  ];
 
   constructor(
     private builder:FormBuilder, 
     private api: ApiserviceService,
     private location:Location,
-    private common_service:CommonServiceService
+    private common_service:CommonServiceService,
+    private router:Router
 
     ) { }
 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-  this.org_id = sessionStorage.getItem('org_id')
+  this.org_id = sessionStorage.getItem('organization_id')
   this.initForm()
   }
   goBack(event){
@@ -35,9 +42,10 @@ export class CreateDepartmentComponent implements OnInit {
   }
   initForm(){
     this.departmentForm= this.builder.group({
-      od_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      od_status:['',Validators.required],
-      organization_id:this.org_id
+      department_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
+      description:['',[Validators.pattern(/^\S.*$/)]],
+      organization:this.org_id
+      // od_status:['',Validators.required],
     })
   }
   get f(){
@@ -50,9 +58,9 @@ export class CreateDepartmentComponent implements OnInit {
       this.departmentForm.markAllAsTouched();
     }
     else{
-      this.api.addDepartmentDetails(this.departmentForm.value).subscribe(res=>{
+      this.api.postDepartmentList(this.departmentForm.value).subscribe(res=>{
         if(res){
-          this.api.showSuccess('Department added successfully!');
+          this.api.showSuccess(res['message']);
           this.departmentForm.reset();
           this.initForm();
         }
@@ -63,6 +71,10 @@ export class CreateDepartmentComponent implements OnInit {
         this.api.showError(error.error.error.message ? error.error.error.message : error.error.error.detail)
       })
     }
+  }
+
+  backToDepartment(){
+    this.router.navigate(['/department/list'])
   }
 
 }
