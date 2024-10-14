@@ -121,9 +121,9 @@
               <input type="file" accept="image/*" formControlName="organization_image" #fileInput (change)="uploadImageFile($event)" hidden>
                   <div  class="image-container w-100 d-flex justify-content-around align-items-center" >
                     
-                    <img id="imagePreview"  [src]="f['organization_image']?.value? f['organization_image']?.value: '../assets/images/no-profile-pic.png'" alt="profile" >
+                    <img id="imagePreview"   [src]="logoImage? f['logo']?.value: '../assets/images/no-profile-pic.png'" alt="profile" >
                     <button type="button" mat-icon-button (click)="triggerFileInput()" >
-                      <mat-icon matTooltip="{{f['organization_image']?.value? 'Edit':'Upload'}}" class="edit-or-upload-icon">{{f['organization_image']?.value? 'edit':'add_a_photo'}}</mat-icon><b class="r-star px-1">*</b> 
+                      <mat-icon matTooltip="{{logoImage ? 'Edit':'Upload'}}" class="edit-or-upload-icon">{{logoImage ? 'edit':'add_a_photo'}}</mat-icon><b class="r-star px-1">*</b> 
                     </button>
                   
                   </div>

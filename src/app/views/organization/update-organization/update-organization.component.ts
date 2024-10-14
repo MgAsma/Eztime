@@ -38,6 +38,7 @@ export class UpdateOrganizationComponent implements OnInit {
   adminForm: FormGroup;
   adminFormArray: FormArray;
   isAdminForm = false;
+  logoImage: boolean = false;
   constructor(private _fb: FormBuilder,
     private api: ApiserviceService, private route: ActivatedRoute,
     private router: Router, private location: Location, private common_service: CommonServiceService,
@@ -99,15 +100,16 @@ export class UpdateOrganizationComponent implements OnInit {
   }
   initform() {
     this.organizationForm = this._fb.group({
-      organization_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/), Validators.required]],
-      address: ['', [Validators.pattern(/^\S.*$/)]],
+      organization_name: ['', [ Validators.required,Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/)]],
+      
       email: ['', [Validators.required, Validators.email]],
-     
-      city: ['', [Validators.required]],
-      state: ['', [Validators.required]],
-      country: ['', [Validators.required]],
-      postal_code: ['',[Validators.pattern('^\\d{6}$')]],
-      organization_image: []
+      address: ['', Validators.pattern(/^\S.*$/)],
+      city: ['', Validators.required],
+      state: ['', Validators.required],
+      country: ['', Validators.required],
+      postal_code: [null,Validators.pattern('^\\d{6}$')],
+      organization_image: [],
+      logo:['']
     })
 
   }
@@ -134,28 +136,28 @@ export class UpdateOrganizationComponent implements OnInit {
     );
   }
   
-  isSaveButtonDisabled(): boolean {
-    // Check if the organization form is invalid
-    if (this.organizationForm.invalid) {
-      return true;
-    }
+  // isSaveButtonDisabled(): boolean {
+  //   // Check if the organization form is invalid
+  //   if (this.organizationForm.invalid) {
+  //     return true;
+  //   }
   
-    // Check if the admin form is invalid
-    if (this.adminForm.invalid || this.adminForm.valid) {
-      return true;
-    }
+  //   // Check if the admin form is invalid
+  //   if (this.adminForm.invalid || this.adminForm.valid) {
+  //     return true;
+  //   }
   
-    // Check if any admin form group in the admin list is invalid
-    for (let i = 0; i < this.adminList.length; i++) {
-      const adminFormGroup = this.getAdminFormGroup(i);
-      if (adminFormGroup && adminFormGroup.invalid) {
-        return true;
-      }
-    }
+  //   // Check if any admin form group in the admin list is invalid
+  //   for (let i = 0; i < this.adminList.length; i++) {
+  //     const adminFormGroup = this.getAdminFormGroup(i);
+  //     if (adminFormGroup && adminFormGroup.invalid) {
+  //       return true;
+  //     }
+  //   }
   
-    // If all validations pass, return false (button is enabled)
-    return false;
-  }
+  //   // If all validations pass, return false (button is enabled)
+  //   return false;
+  // }
   
   
   saveAdmin(index: number) {
@@ -300,31 +302,14 @@ export class UpdateOrganizationComponent implements OnInit {
     //this.api.getData(`${environment.live_url}/${environment.organization}?id=${this.id}&page_number=1&data_per_page=10`).subscribe(async res => {
       this.api.getData(`${environment.live_url}/${environment.organization}/${this.id}/`).subscribe(async res => {
       if (res) {
-        let responseData = []
-        let currentOrg:any = {}
-       // responseData = res['result']['data']
-        currentOrg = res
-        // this.fileDataUrl = currentOrg['organization_image_path']
        
-        this.fileDataUrl = currentOrg['organization_image']
-      //   if (currentOrg['organization_image']) {
-         
-      //   // console.log(this.url,'this.url')
-      //   fetch(currentOrg['organization_image'])
-      //     .then(response => response.blob())
-      //     .then(blob => {
-      //       const fileReader: any = new FileReader();
-      //       fileReader.onloadend = () => {
-      //         const base64String = fileReader.result.split(',')[1]; // Extract the base64 string without the data URL prefix
-      //         this.fileDataUrl = 'data:image/png;base64,' + base64String; // Prepend 'data:image/png;base64,' to the base64 string
-      //         // this.orgData['organization_image'] =  base64String; 
-           
-      //       };
-      //       fileReader.readAsDataURL(blob);
-      //     });
-
-
-      // }
+        let currentOrg:any = {}
+       
+        currentOrg = res
+       
+     if(currentOrg['organization_image']){
+      this.logoImage = true
+     }
       if(currentOrg['country_id']){
          
         await this.getState(currentOrg['country_id'])
@@ -347,7 +332,7 @@ export class UpdateOrganizationComponent implements OnInit {
         // console.log(this.adminList)
         this.initializeAdminFormArray();
         this.organizationForm.patchValue({
-          org_qr_uniq_id: currentOrg['org_qr_uniq_id'],
+          
           organization_name: currentOrg['organization_name'],
           email: currentOrg['email'],
           address: currentOrg['address'],
@@ -356,11 +341,9 @@ export class UpdateOrganizationComponent implements OnInit {
           country: currentOrg['country_id'],
           postal_code: currentOrg['postal_code'],
           is_active: currentOrg['org_status'],
-          org_subscription_plan: currentOrg['org_subscription_plan'],
-          organization_image_path: currentOrg['organization_image_path'],
           organization_image_base_url: currentOrg['organization_image_base_url'],
-          organization_image:currentOrg['organization_image']
-          // organization_image: currentOrg['organization_image_path']
+          logo:currentOrg['organization_image']
+          
         })
        
       
@@ -482,7 +465,8 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
       reader.onload = (e: any) => {
         this.fileDataUrl = e.target.result;
         if(reader.result){
-          this.organizationForm.patchValue({ organization_image: this.fileDataUrl })
+          this.logoImage = true
+          this.organizationForm.patchValue({ logo: this.fileDataUrl })
         }
        
       };
@@ -496,14 +480,14 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
     
     organizationSubmit() {
       // Check if the admin form array is valid and has at least one admin
-      const isAdminFormValid = this.adminList.length > 0 && this.adminFormArray.valid;
+      //const isAdminFormValid = this.adminList.length > 0 && this.adminFormArray.valid;
     // Check if the organization form is valid
+    this.getOrgDetails();
     if (this.organizationForm.invalid ) {
+      console.log(this.organizationForm.value)
       this.organizationForm.markAllAsTouched();
       this.api.showError("Please enter the mandatory fields!");
-      return;
-    }
-    
+    }else{
       const data = {
         organization_name: this.f['organization_name'].value,
         address: this.f['address'].value,
@@ -514,35 +498,15 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
         postal_code: this.f['postal_code'].value,
         organization_image: this.fileDataUrl,
       };
-
-      // {
-      //   "organization_name": "ekfrazo",
-      //   "email": "ek@gmail.com",
-      //   "country": "",
-      //   "state": "",
-      //   "city": "",
-      //   "postal_code": 99765,
-      //   // "address": "1234 Acc Street,Banglore",
-      //   "admin_details": [
-            // {
-            //     "id":25,
-            //     "admin_name": "aparna ek",
-            //     "admin_email_id_id": "aparna@ekfrazo.in",
-            //     "admin_phone_number": 9988899871,
-            //     "is_active": false
-            // },
-      //  ]
-      //}
-     
       this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}/`, data).subscribe(
         res => {
-          if (res['result']) {
+          if (res) {
             this.api.showSuccess("Organization updated successfully!");
             // this.organizationForm.reset();
-            this.adminForm.reset();
-            this.isAdminForm=false;
-            this.fileDataUrl = null;
-            this.adminList = []; // Clear the admin list after submission
+            // this.adminForm.reset();
+            // this.isAdminForm=false;
+           // this.fileDataUrl = null;
+           // this.adminList = []; // Clear the admin list after submission
             this.getOrgDetails(); // Refresh the organization details
           }
         },
@@ -550,6 +514,13 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
           this.api.showError(error.error.error.message);
         }
       );
+    }
+    
+    
+
+   
+     
+     
     }
     
  
