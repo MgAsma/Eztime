@@ -21,9 +21,9 @@ export class OrganizationListComponent implements OnInit {
   // directionValue:any='desc'
   // sortValue:any='org_name'
   arrowState: { [key: string]: boolean } = {
-    org_name: false,
-    org_email: false,
-    number_of_users_in_organization: false
+    organization_name: false,
+    email: false,
+    // number_of_users_in_organization: false
   };
   
   sortValue: string = '';
