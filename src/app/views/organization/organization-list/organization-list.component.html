@@ -25,39 +25,22 @@
               <th scope="col">Logo</th>
               <th scope="col">
                 Organization
-                <i *ngIf="!arrowState['org_name']" (click)="sort('asc','org_name')" class="bi bi-arrow-up"></i>
-                <i (click)="sort('desc','org_name')" *ngIf="arrowState['org_name']" class="bi bi-arrow-down"></i>
+                <i *ngIf="!arrowState['organization_name']" (click)="sort('asc','organization_name')" class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','organization_name')" *ngIf="arrowState['organization_name']" class="bi bi-arrow-down"></i>
               </th>
               <th scope="col">
                 Email
-                <i *ngIf="!arrowState['org_email']" (click)="sort('asc','org_email')" class="bi bi-arrow-up"></i>
-                <i (click)="sort('desc','org_email')" *ngIf="arrowState['org_email']" class="bi bi-arrow-down"></i>
+                <i *ngIf="!arrowState['email']" (click)="sort('asc','email')" class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','email')" *ngIf="arrowState['email']" class="bi bi-arrow-down"></i>
               </th>
               <th scope="col" class="text-center">
                 No.Of Admins
-                <!-- <i *ngIf="!arrowState['admin_count']" (click)="sort('asc','admin_count')" class="bi bi-arrow-up"></i>
-                <i (click)="sort('desc','admin_count')" *ngIf="arrowState['admin_count']" class="bi bi-arrow-down"></i> -->
               </th>
               <th scope="col">Action </th>
             </tr>
           </thead>
           <tbody>
-            <!-- {
-              "organization_name": "test",
-              "email": "eqw@gmail.com",
-              "country_id": 1,
-              "state_id": 1,
-              "city_id": 1,
-              "postal_code": 425235,
-              "address": "",
-              "admin_details": [
-                  {
-                      "admin_name": "wqewq None",
-                      "admin_email_id": "eqe@gmail.com",
-                      "admin_phone_number": 7797979797,
-                      "is_active": true
-                  }
-              ], -->
+           
             <ng-container *ngIf="(organizationData) as result">
               <tr *ngFor='let item of result|customSort:directionValue:sortValue
                            |paginate : {
@@ -75,14 +58,11 @@
                 </td>
                 <td>{{item.organization_name ? item.organization_name :'NA' | titlecase }}</td>
                 <td>{{item.email ? item.email :'NA' | titlecase}}</td>
-                <!-- <td class="text-center">{{item.admin_count }}</td> -->
                 <td class="text-center">{{item.admin_details.length }}</td>
                 <td>
                   <ng-container>
 
-                    <!-- <i class="bi bi-pencil-square" routerLink="/organization/updateOrg/{{item.organization_id
-}}" container="body"
-                      ngbTooltip="Edit" style="color: #000; "></i> -->
+ 
                       <img src="../../../../assets/images/Edit.svg" class="icon-image" routerLink="/organization/updateOrg/{{item.organization_id
                         }}" container="body" ngbTooltip="Edit" />
                                               <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.organization_id
@@ -136,6 +116,8 @@
       <i class="bi bi-search" id="search-icon" ></i>
     </div>
   </div>
+
+  
   <div class="bg row mx-0 my-1">
     <ng-container *ngIf="(organizationData) as result">
       <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of result|paginate : {
@@ -143,6 +125,7 @@
           currentPage: page,
           totalItems: count
         } ;let i=index'>
+        
         <div class="card outer-card">
           <div class="row">
             <div class="col-6">
@@ -161,7 +144,7 @@
             </div>
           </div>
           <div class="row p-c">
-            <div class="col-6">
+            <div class="col-12">
               <div class="row">
                 <div class="col-12">
                   <h6 class="card-subtitle text-start"> Organization</h6>
@@ -169,23 +152,11 @@
               </div>
               <div class="row">
                 <div class="col-12 value-container text-start ">
-                  {{item.org_name ? item.org_name :'NA'|titlecase }}
+                  {{item.organization_name ? item.organization_name :'NA'|titlecase }}
                 </div>
               </div>
             </div>
-            <div class="col-6">
-
-              <div class="row">
-                <div class="col-12">
-                  <h6 class="card-subtitle text-start"> Status</h6>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12 value-container text-start">
-                  {{item.org_status ? item.org_status : 'NA'|titlecase}}
-                </div>
-              </div>
-            </div>
+           
 
 
           </div>
@@ -201,25 +172,10 @@
                   </div>
                   <div class="row">
                     <div class="col-12 value-container text-start">
-                      {{item.org_email ? item.org_email :'NA' |titlecase}}
+                      {{item.email ? item.email :'NA' |titlecase}}
                     </div>
                   </div>
                 </div>
-                <div class="col-6">
-
-                  <div class="row">
-                    <div class="col-12">
-                      <h6 class="card-subtitle text-start"> Phone</h6>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12 value-container text-start">
-                      <td>{{item.conctact_person_phone_number ? item.conctact_person_phone_number:'NA'|titlecase}}</td>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
                 <div class="col-6">
 
                   <div class="row">
@@ -229,46 +185,16 @@
                   </div>
                   <div class="row">
                     <div class="col-12 value-container text-start">
-                      {{item?.admin_count || 'NA' }}
+                      {{item?.admin_details.length || 'NA' }}
                     </div>
                   </div>
                 </div>
               </div>
+           
             </div>
           </div>
 
-          <!-- <div class="card inner-card">
-              <div class="card-body">
-               <div class="row">
-                <div class="col-6">
-                   <div class="row">
-                    <div class="col-12">
-                     <h6 class="card-subtitle">Department Name</h6> 
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12">
-                        {{item.od_name }}
-                    </div>
-                  </div>
-                </div>
-                <div class="col-6">
-                  
-                  <div class="row">
-                    <div class="col-12 ">
-                      <h6 class="card-subtitle">Description</h6>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12">
-                        {{item.od_c_date | date:'mediumDate'}}
-                    </div>
-                  </div>
-                </div>
-               </div>
-              
-              </div>
-            </div> -->
+
         </div>
 
       </div>

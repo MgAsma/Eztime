@@ -246,7 +246,7 @@ export class UpdateOrganizationComponent implements OnInit {
         }
       },
       error => {
-        this.api.showError(error.error.error.message);
+        this.api.showError(error.error.message);
       }
     );
     
@@ -511,7 +511,7 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
           }
         },
         error => {
-          this.api.showError(error.error.error.message);
+          this.api.showError(error.error.message);
         }
       );
     }

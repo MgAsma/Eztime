@@ -384,7 +384,7 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
         }
       },
       error => {
-        this.api.showError(error.error.error.message);
+        this.api.showError(error.error.message);
       }
     );
   
