@@ -35,7 +35,7 @@ status = [
     this.updateForm= this.builder.group({
       designation_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
       description:['',[Validators.pattern(/^\S.*$/)]],
-      organization_id:this.org_id
+      organization:this.org_id
       // priority:['',Validators.required],
       // role_status:['',Validators.required],
       // module_name:[],
@@ -91,7 +91,7 @@ status = [
           this.api.showError('Error!')
         }
        },((error)=>{
-        this.api.showError(error.error.error.message)
+        this.api.showError(error.error.message)
        })
     )
     }

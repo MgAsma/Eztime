@@ -56,9 +56,10 @@ export class PeopleListComponent implements OnInit {
     this.term='';
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.org_id = sessionStorage.getItem('org_id')
+    localStorage.clear()
     this.getPeople();
     this.enabled = true;
-   this.getUserControls()
+  //  this.getUserControls()
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')

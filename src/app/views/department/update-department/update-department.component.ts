@@ -86,7 +86,7 @@ export class UpdateDepartmentComponent implements OnInit {
       this.api.showError('Error!')
     }
   },((error)=>{
-    this.api.showError(error.error.error.message)
+    this.api.showError(error.error.message);
   }))
 }
   }

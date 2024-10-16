@@ -68,7 +68,7 @@ export class CreateDepartmentComponent implements OnInit {
           this.api.showError('Error!')
         }
       },(error:any)=>{
-        this.api.showError(error.error.error.message ? error.error.error.message : error.error.error.detail)
+        this.api.showError(error.error.message);
       })
     }
   }

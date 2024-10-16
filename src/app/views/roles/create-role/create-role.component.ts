@@ -82,11 +82,12 @@ export class CreateRoleComponent implements OnInit {
             this.roleForm.reset();
             this.initForm();
           }
-          else{
-            this.api.showError('Error')
-          }
+          // else{
+          //   this.api.showError('Error')
+          // }
       },((error:any) =>{
-          this.api.showError(error.error.error.message)
+          this.api.showError(error.error.message);
+          console.log(error)
       }))
     }
   }
