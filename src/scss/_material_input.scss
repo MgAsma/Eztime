@@ -7,10 +7,15 @@
 .generic-form{
   padding-right:20px;
   width:100% !important;
-  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
-    /* padding: 1em 0 1em 0; */
-    padding: 12px;
 }
+.date-picker .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0px  !important;
+}
+.mat-custom-input .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 3px  !important;
+}
+.date-picker .mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix {
+  top: -5px !important;
 }
   .org-card{
     border-radius: 0 !important;
@@ -179,7 +184,13 @@
       margin-top: 30px !important;
       transform: scale(0.9) !important;
     }
-   
+    .panel-multiselect{
+      position: absolute !important;
+      min-width: 80% !important;
+      width: 80% !important;
+      margin-top: 30px !important;
+      transform: scale(0.9) !important;
+    }
   .mat-form-field-appearance-outline .mat-form-field-wrapper {
     margin: .10em 0 !important;
 }
