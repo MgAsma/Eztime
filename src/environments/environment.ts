@@ -50,7 +50,8 @@ export const environment = {
   state:`state`,
   city:`city`,
   client:`client`,
-  leave_master:`leave-master`
+  leave_master:`leave-master`,
+  employee_leaves:`employee-leaves`
 };
 
 /*

@@ -3,6 +3,7 @@ import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-my-leaves',
@@ -11,18 +12,12 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 })
 export class MyLeavesComponent implements OnInit {
   BreadCrumbsTitle:any='Overview';
-
   leaveBalence: any = [];
   leaveDetails: any = [];
   holidayList: Object;
   orgId: any;
-  leaveData= [
-    { type: 'Earned Leaves', used: 2, total: 5 },
-    { type: 'Casual Leaves', used: 5, total: 5 },
-    { type: 'Sick Leaves', used: 0, total: 5 },
-    { type: 'Maternity Leaves', used: 0, total: 5 },
-    { type: 'Paternity Leaves', used: 5, total: 5 }
-  ];
+  leaveData= [];
+  user_id: string;
   constructor(
     private api:ApiserviceService,
     private location:Location,
@@ -34,37 +29,17 @@ export class MyLeavesComponent implements OnInit {
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.orgId = sessionStorage.getItem('org_id')
-    this.getAllleaveData();
-    this.getappliedLeave()
+    this.user_id = sessionStorage.getItem('user_id')
+    this.getLeaveOverview()
   }
-
-  getAllleaveData(){
-    let params = {
-      pagination:"FALSE"
-    }
-    let user_id = sessionStorage.getItem('user_id')
-    this.api.getData(`${environment.live_url}/${environment.users_leave_details}?user_id=${user_id}&method=VIEW&menu=MY_LEAVES&module=LEAVE/HOLIDAY_LIST&page_number=1&data_per_page=2&pagination=${params.pagination}&organization_id=${this.orgId}`).subscribe(
-      (res:any)=>{
-      this.leaveBalence = res.result.leave_balance.data
-      this.leaveDetails = res.result.leave_details.data
-    },
-    (error)=>{
-     this.api.showError(error.error.error.message)
-    }
-    )
-
+  getLeaveOverview(){
+    this.api.getData(`${environment.live_url}/${environment.employee_leaves}/?employee-id=${this.user_id}`).subscribe((res:any)=>{
+      if(res){
+        this.leaveData = res
+      }
+    },((error:any)=>{
+      this.api.showError(error?.error?.message)
+    }))
   }
-  getappliedLeave() {
-    let holidayParams = {
-      date: '01/01/2023',
-      country: 'IN',
-      state: 'KA',
-    };
-    this.api.getHolidayList(holidayParams).subscribe((res) => {
-      this.holidayList = res['message'][0];
-    
-    });
-  }
-
+ 
 }
