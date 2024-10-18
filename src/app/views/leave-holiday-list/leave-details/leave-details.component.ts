@@ -33,14 +33,14 @@ export class LeaveDetailsComponent implements OnInit {
    }
  
   initForm(){
-    this.leaveTypeForm= this.builder.group({
+    this.leaveTypeForm = this.builder.group({
       leave_title: ['', Validators.required],
       leave_description: [''],
       accruals_or_carry_forward: [''],
-      number_of_leaves: ['', [Validators.required,Validators.min(1)]],
+      number_of_leaves: [null, [Validators.required,Validators.min(1)]],
       cary_forward_percentage: ['',Validators.pattern(/^\d+%?$/)],
-      graceful_days: ['',Validators.min(1)],
-      maximum_enhancement: ['',Validators.min(1)],
+      graceful_days: [null,Validators.min(1)],
+      maximum_enhancement: [null,Validators.min(1)],
       encashment: [false]
     })
 
@@ -57,7 +57,7 @@ export class LeaveDetailsComponent implements OnInit {
   }
   onSubmit(){
     if(this.leaveTypeForm.invalid){
-      // this.leaveTypeForm.markAllAsTouched()
+     this.leaveTypeForm.markAllAsTouched()
     }else{
       const data = {
         leave_title:this.leaveTypeForm.value.leave_title,
@@ -68,24 +68,15 @@ export class LeaveDetailsComponent implements OnInit {
         graceful_days:this.leaveTypeForm.value.graceful_days ,
         maximum_enhancement:this.leaveTypeForm.value.maximum_enhancement ,
       }
-      // this.api.postData(`${environment.live_url}/${environment.leave_master}/`,data).subscribe((res:any)=>{
-      //   if(res){
-      //     this.api.showSuccess('Leave details added successfully!')
-      //     this.leaveTypeForm.reset()
-      //   }
-      // },((error:any)=>{
-      //   this.api.showError(error?.error?.message)
-      // }))
-      this.leaveTypeForm.reset();
-      this.leaveTypeForm.markAsPristine();
-      this.leaveTypeForm.markAsUntouched();
-      this.leaveTypeForm.updateValueAndValidity();
-      const elements = document.querySelectorAll('.mat-form-field');
-      elements.forEach((element) => {
-        this.renderer.removeClass(element, 'ng-touched');
-        this.renderer.removeClass(element, 'ng-dirty');
-        this.renderer.removeClass(element, 'ng-invalid');
-      });
+      this.api.postData(`${environment.live_url}/${environment.leave_master}/`,data).subscribe((res:any)=>{
+        if(res){
+          this.api.showSuccess('Leave details added successfully!')
+          this.leaveTypeForm.reset();
+        }
+      },((error:any)=>{
+        this.api.showError(error?.error?.message)
+      }))
+      
       
     }
   }

@@ -41,10 +41,10 @@ export class UpdateLeaveDetailsComponent implements OnInit {
       leave_title: ['', Validators.required],
       leave_description: [''],
       accruals_or_carry_forward: [''],
-      number_of_leaves: ['', [Validators.required,Validators.min(1)]],
+      number_of_leaves: [null, [Validators.required,Validators.min(1)]],
       cary_forward_percentage: ['',Validators.pattern(/^\d+%?$/)],
-      graceful_days: ['',Validators.min(1)],
-      maximum_enhancement: ['',Validators.min(1)],
+      graceful_days: [null,Validators.min(1)],
+      maximum_enhancement: [null,Validators.min(1)],
       encashment: [false]
     })
 
