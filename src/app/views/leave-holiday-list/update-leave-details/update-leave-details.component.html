@@ -1,359 +1,124 @@
-<div class="container-fluid webView">
-    <!-- <div class="row">
-        <div class="col-sm">
-            <h1>
-             Update leave details</h1>
-        </div>
-        <div class="col-sm-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">
-                    Update leave details</li>
-                </ol>
-              </nav>
-        </div>
-        
-    </div> -->
-    <div class="generic-form bg mx-1">
-       <form  [formGroup]='updateForm' (ngSubmit)='update()' >
-        <div class="row">
-            <div class="col-sm-6">
-                
-        <div class="row">
-            <div class="col-sm">
-                <h4>Leave details</h4>
-            </div>
-        </div>
-      
-        <div class="row">
-            <div class="col-sm">
-                <p>Leave title <span >*</span></p> 
-                <input type="text" class="form-control p-3 sizeinput" formControlName="leave_title" placeholder="Enter leave title" aria-describedby="emailHelp"  autocomplete="off">
-                <div *ngIf="f['leave_title'].touched && f['leave_title'].invalid" >
-                    <div *ngIf="f['leave_title'].errors && f['leave_title'].errors['required'] " ><p class="error-msg">Leave title is required</p></div>
+<div class="container-fluid">
+
+    <div class="generic-form bg mx-1 p-20">
+
+            <form [formGroup]="leaveTypeForm" (ngSubmit)="onSubmit()">
+          
+              <!-- Leave Details Section -->
+              <h5 class="c-header">Leave Details</h5>
+              <div class="row">
+                <div class="col-md-6 mat-custom-input">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Leave Title *</mat-label>
+                    <input matInput formControlName="leave_title" placeholder="Enter leave type Name">
+                    <mat-error *ngIf="leaveTypeForm?.get('leave_title')?.touched && leaveTypeForm.get('leave_title')?.invalid">
+                      Leave title is required.
+                    </mat-error>
+                  </mat-form-field>
                 </div>
-                <div *ngIf="f['leave_title'].invalid && f['leave_title'].hasError('pattern')" >
-                    <p class="error-msg">Cannot start with a space.</p>
+             
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Leave Description </mat-label>
+                      <textarea matInput formControlName="leave_description" placeholder="Enter leave description"></textarea>
+                      <mat-error *ngIf="leaveTypeForm?.get('leave_description')?.touched && leaveTypeForm?.get('leave_description')?.invalid">
+                        Leave description is required.
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mat-custom-input">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Number of Leaves *</mat-label>
+                      <input matInput type="number" formControlName="number_of_leaves" placeholder="Enter number of leaves">
+                      <mat-error *ngIf="leaveTypeForm?.get('number_of_leaves')?.touched && leaveTypeForm?.get('number_of_leaves')?.invalid && !leaveTypeForm.get('number_of_leaves')?.hasError('min')">
+                        Number of leaves is required.
+                      </mat-error>
+                      <mat-error *ngIf="!leaveTypeForm?.get('number_of_leaves')?.hasError('required') && leaveTypeForm.get('number_of_leaves')?.hasError('min')">
+                        Number of leaves must be greater than 1
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+              </div>
+              <!-- Accruals & Carry Forward Section -->
+              <h5 class="c-header">Accruals & Carry Forward</h5>
+              <div class="row">
+                <div class="col-md-4">
+                  
+                    <mat-slide-toggle class="pt-1" formControlName="accruals_or_carry_forward" >
+                        {{ leaveTypeForm?.get('accruals_or_carry_forward')?.value  ? 'Yearly' : 'Monthly' }}
+                    </mat-slide-toggle>
+                    <mat-error *ngIf="leaveTypeForm?.get('accruals_or_carry_forward')?.touched && leaveTypeForm?.get('accruals_or_carry_forward')?.invalid">
+                      This field is required.
+                    </mat-error>
+                  <!-- </mat-form-field> -->
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <p>Description <span >*</span></p>
-                    <textarea class="form-control" formControlName="description"  placeholder="Enter your description"  style="height: 100px"></textarea>    
-                    <div *ngIf="f['description'].touched && f['description'].invalid" >
-                        <div *ngIf="f['description'].errors && f['description'].errors['required']"><p class="error-msg">Description is required</p></div>
-                    </div>
-                    <div *ngIf="f['description'].invalid && f['description'].hasError('pattern')" >
-                        <p class="error-msg">Cannot start with a space.</p>
-                    </div>                
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm"></div>
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <div class="form-check">
-                  <input class="form-check-input" formControlName="accrude_monthly" type="checkbox" value="option1" id="checkbox2" (click)="toggleMonthShow()">
-                  <label class="form-check-label" for="checkbox2">
-                    Accrued monthly?
-                  </label>
-            </div>
-            </div> 
-        </div>
-       
-        <div class="row" *ngIf="updateForm.get('accrude_monthly').value === true">
-            <div class="col-sm">
-                <p >Monthly leaves <span >*</span></p>
-                <input type="number" oninput="if(this.value < 0 ) this.value = 0;" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;"  formControlName="monthly_leaves" class="row container-fluid"   style="margin: 0;"  class="form-control p-3 sizeinput" placeholder="Enter no. of monthly leaves" aria-describedby="emailHelp"  autocomplete="off">
-                <div *ngIf="f['monthly_leaves'].touched && f['monthly_leaves'].invalid && isMonthShown" >
-                    <div *ngIf="f['monthly_leaves'].errors && f['monthly_leaves'].errors['required']"><p class="error-msg">Monthly leaves is required</p></div>
-                <div *ngIf="f['monthly_leaves'].errors && f['monthly_leaves'].errors['pattern']"><p class="error-msg">It accepts only positive values.</p></div>
+              </div>
+             
+              <div class="row">
+                <div class="col-md-4 mat-custom-input">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Carry Forward (in %)</mat-label>
+                    <input matInput type="text" formControlName="cary_forward_percentage" placeholder="Enter carry forward (in %)" (blur)="formatPercentage()">
+                    <!-- <mat-error *ngIf="leaveTypeForm?.get('cary_forward_percentage')?.touched && leaveTypeForm?.get('carry_forward_percentage')?.invalid">
+                      Carry forward percentage is required.
+                    </mat-error> -->
+                    <mat-error *ngIf="leaveTypeForm.get('cary_forward_percentage')?.hasError('pattern')">
+                        Please enter a valid percentage (e.g., 50 or 50%)
+                      </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+          
+              <!-- Graceful/Encashment Days Section -->
+              <h5 class="c-header">Graceful/Encashment Days</h5>
+              <div class="row">
+                <div class="col-md-4 mat-custom-input">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Graceful Days </mat-label>
+                    <input matInput type="number" formControlName="graceful_days" placeholder="Enter graceful days">
+                    <!-- <mat-error *ngIf="leaveTypeForm?.get('graceful_days')?.touched && leaveTypeForm?.get('graceful_days')?.invalid">
+                      Graceful days are required.
+                    </mat-error> -->
+                    <mat-error *ngIf="leaveTypeForm.get('graceful_days')?.hasError('min')">
+                        Graceful days must be greater than 1
+                    </mat-error>
+                  </mat-form-field>
                 </div>
               
-            </div>
-           
-        </div>
-        
-        <div class="row" *ngIf="updateForm.get('accrude_monthly').value === false">
-            <div class="col-sm">
-                <p >Yearly leaves <span >*</span></p>
-                <input type="number" oninput="if(this.value < 0 ) this.value = 0;" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;"  formControlName="yearly_leaves" class="row container-fluid"  style="margin: 0;"  class="form-control p-3 sizeinput" placeholder="Enter no. of yearly leaves" aria-describedby="emailHelp"  autocomplete="off" >
-            </div>
-            <div *ngIf="f['yearly_leaves'].touched && f['yearly_leaves'].invalid && !isMonthShown" >
-                <div *ngIf="f['yearly_leaves'].errors && f['yearly_leaves'].errors['required']"><p class="error-msg">Yearly leaves is required</p></div>
-                <div *ngIf="f['yearly_leaves'].errors && f['yearly_leaves'].errors['pattern']"><p class="error-msg">It accepts only positive values.</p></div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <p>Carry forward (in %) <span >*</span></p>
-                <input type="number"  oninput="if(this.value < 0 ) this.value = 0;" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control p-3 sizeinput" formControlName="carry_forward_per" placeholder="Carry forword (in %)" aria-describedby="emailHelp"  autocomplete="off">
-                <div *ngIf="f['carry_forward_per'].touched && f['carry_forward_per'].invalid" >
-                    <div *ngIf="f['carry_forward_per'].errors && f['carry_forward_per'].errors['required']" ><p class="error-msg">Carry forword is required</p></div>
-                    <div *ngIf="f['carry_forward_per'].errors && f['carry_forward_per'].errors['pattern']"><p class="error-msg">It accepts only positive values.</p></div>
+              </div>
+            
+             <section class="d-flex align-items-center mb-2">
+                <mat-checkbox color="primary" class="example-margin" formControlName="encashment">Encashment</mat-checkbox>
+              </section>
+              <div class="row" *ngIf="leaveTypeForm?.get('encashment')?.value">
+                <div class="col-md-4 mat-custom-input">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Maximum Encashment</mat-label>
+                    <input matInput type="number" formControlName="maximum_enhancement" placeholder="Enter maximum encashment">
+                    <mat-error *ngIf="leaveTypeForm.get('maximum_enhancement')?.hasError('min')">
+                        Maximum encashment must be greater than 1
+                    </mat-error>
+                </mat-form-field>
                 </div>
-            </div>        
-        </div>
-        <div class="row">
-            <div class="col-sm">
-            </div>       
-        </div>
-        <!-- <div class="row">
-            <div class="col-sm">
-                <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
-            </div>
-
-        </div> -->
-            </div>
-            <div class="col-sm-6">       
-        <div class="row">
-            <div class="col-sm">
-                <h4>Gracefull days/encashment details</h4>
-            </div>
-        </div>
-        <!-- <div class="row">
-            <div class="col-sm">
-                <p>Gracefull Days <span >*</span></p> 
-            </div>
-        </div> -->
-        <div class="row">
-            <div class="col-sm">
-                <p>Gracefull days <span >*</span></p> 
-                <input type="number"  oninput="if(this.value < 0 ) this.value = 0;" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control p-3 sizeinput" formControlName="gracefull_days" placeholder="Enter gracefull days " aria-describedby="emailHelp"  autocomplete="off">
-                <div *ngIf="f['gracefull_days'].touched && f['gracefull_days'].invalid" >
-                    <div *ngIf="f['gracefull_days'].errors && f['gracefull_days'].errors['required'] " ><p class="error-msg">Gracefull days is required</p></div>
-                    <div *ngIf="f['gracefull_days'].errors && f['gracefull_days'].errors['pattern']"><p class="error-msg">It accepts only positive values.</p></div>
+              </div>
+          
+              <!-- Buttons -->
+              <div class="row">
+               
+                <div class="col-md-6 text-right">
+                  <button mat-raised-button class="submit-button" type="submit" >Update</button>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <div class="form-check">
-                    <input class="form-check-input" formControlName="encashment" type="checkbox" value="option1" id="checkbox1"  (click)="toggleShow($event)">
-                    <label class="form-check-label" for="checkbox1">
-                      Encashment?
-                    </label>  
-             </div>
-          </div>
-         </div>
-        <div class="row">
-            <div class="col-sm">
-                <div *ngIf="updateForm.get('encashment').value === true"  class="row container-fluid"  id="divshow" style="margin: 0;">
-                    <p >Maximum encashment of leaves <span >*</span></p>
-                    <input type="number" onkeydown="return event.keyCode !== 69" oninput="if(this.value < 0 ) return this.value = 0;"  onKeyPress="if(this.value=='') return this.value='';" class="form-control p-3 sizeinput" formControlName="max_encashments" placeholder="Enter maximum encashment of leaves" aria-describedby="emailHelp"  autocomplete="off">
-                <div *ngIf="f['max_encashments'].touched && f['max_encashments'].invalid" >
-                    <div *ngIf="f['max_encashments'].errors && f['max_encashments'].errors['required']"><p class="error-msg">Maximum encashment of leaves are required</p></div>
-                    <div *ngIf="f['max_encashments'].errors && f['max_encashments'].errors['negativeZero']"><p class="error-msg">Negative number is not allowed.</p></div>
-                </div>
-                </div>
-            </div>
-        </div>
-      
-        <div class="row">
-            <div class="col-sm">
-                <p>Leave applicable for (center)<span >*</span></p>
-                <select class="form-select" aria-label="Default select example" formControlName="leave_applicable_for">
-                    <option value="" selected disabled>Select center</option>
-                    <option *ngFor="let items of allCenter" [value]="items.id">{{items.center_name}}</option>
-                  </select>
-                  <div *ngIf="f['leave_applicable_for'].touched && f['leave_applicable_for'].invalid" >
-                    <div *ngIf="f['leave_applicable_for'].errors && f['leave_applicable_for'].errors['required'] " ><p class="error-msg">Leave Applicable is required</p></div>
-                </div>
-            </div>            
-        </div>
-
-        <div class="row">
-           
-            <div class="col-sm-8"></div>            
-            <div class="col-sm-4">
-                <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Update</button>
-            </div>            
-        </div>
-    
-            </div>
-        </div>
-       </form>
+              </div>
+            </form>
+          
        
     </div>
    
 </div>
 
-<div class="container-fluid mobileView">
-    <div class="row mx-1 my-2">
-        <div class="col-sm">
-            <h1><i  class="bi bi-arrow-left" (click)="goBack($event)
-  
-  "></i>
-             Update leave details</h1>
-        </div>
-    </div>
-    <div class="generic-form bg mx-1">
-       <form  [formGroup]='updateForm' (ngSubmit)='update()' >
-        <div class="row">
-            <div class="col-sm-6">
-                
-        <div class="row">
-            <div class="col-sm">
-                <h4>Leave details</h4>
-            </div>
-        </div>
-      
-        <div class="row">
-            <div class="col-sm">
-                <p>Leave title <span >*</span></p> 
-                <input type="text" class="form-control p-3 sizeinput" formControlName="leave_title" placeholder="Enter leave title" aria-describedby="emailHelp"  autocomplete="off">
-                <div *ngIf="f['leave_title'].touched && f['leave_title'].invalid" >
-                    <div *ngIf="f['leave_title'].errors && f['leave_title'].errors['required'] " ><p class="error-msg">Leave title is required</p></div>
-                </div>
-                <div *ngIf="f['leave_title'].invalid && f['leave_title'].hasError('pattern')" >
-                    <p class="error-msg">Cannot start with a space.</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <p>Description <span >*</span></p>
-                    <textarea class="form-control" formControlName="description"  placeholder="Enter your description"  style="height: 100px"></textarea>    
-                    <div *ngIf="f['description'].touched && f['description'].invalid" >
-                        <div *ngIf="f['description'].errors && f['description'].errors['required']"><p class="error-msg">Description is required</p></div>
-                    </div>
-                    <div *ngIf="f['description'].invalid && f['description'].hasError('pattern')" >
-                        <p class="error-msg">Cannot start with a space.</p>
-                    </div>                
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm"></div>
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <div class="form-check">
-                  <input class="form-check-input" formControlName="accrude_monthly" type="checkbox" value="option1" id="checkbox2" (click)="toggleMonthShow()">
-                  <label class="form-check-label" for="checkbox2">
-                    Accrued monthly?
-                  </label>
-            </div>
-            </div> 
-        </div>
-       
-        <div class="row" *ngIf="updateForm.get('accrude_monthly').value === true">
-            <div class="col-sm">
-                <p >Monthly leaves <span >*</span></p>
-                <input type="number" oninput="if(this.value < 0 ) this.value = 0;" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;"  formControlName="monthly_leaves" class="row container-fluid"   style="margin: 0;"  class="form-control p-3 sizeinput" placeholder="Enter no. of monthly leaves" aria-describedby="emailHelp"  autocomplete="off">
-                <div *ngIf="f['monthly_leaves'].touched && f['monthly_leaves'].invalid" >
-                    <div *ngIf="f['monthly_leaves'].errors && f['monthly_leaves'].errors['required']"><p class="error-msg">Monthly leaves is required</p></div>
-                <div *ngIf="f['monthly_leaves'].errors && f['monthly_leaves'].errors['pattern']"><p class="error-msg">It accepts only positive values.</p></div>
-                </div>
-              
-            </div>
 
-           
-        </div>
-        
-        <div class="row" *ngIf="updateForm.get('accrude_monthly').value === false">
-            <div class="col-sm">
-                <p >Yearly leaves <span >*</span></p>
-                <input type="number" oninput="if(this.value < 0 ) this.value = 0;" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;"  formControlName="yearly_leaves" class="row container-fluid"  style="margin: 0;"  class="form-control p-3 sizeinput" placeholder="Enter no. of yearly leaves" aria-describedby="emailHelp"  autocomplete="off" >
-            </div>
-            <div *ngIf="f['yearly_leaves'].touched && f['yearly_leaves'].invalid" >
-                <div *ngIf="f['yearly_leaves'].errors && f['yearly_leaves'].errors['required']"><p class="error-msg">Yearly leaves is required</p></div>
-                <div *ngIf="f['yearly_leaves'].errors && f['yearly_leaves'].errors['pattern']"><p class="error-msg">It accepts only positive values.</p></div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <p>Carry forward (in %) <span >*</span></p>
-                <input type="number"  oninput="if(this.value < 0 ) this.value = 0;" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control p-3 sizeinput" formControlName="carry_forward_per" placeholder="Carry forword (in %)" aria-describedby="emailHelp"  autocomplete="off">
-                <div *ngIf="f['carry_forward_per'].touched && f['carry_forward_per'].invalid" >
-                    <div *ngIf="f['carry_forward_per'].errors && f['carry_forward_per'].errors['required']" ><p class="error-msg">Carry forword is required</p></div>
-                    <div *ngIf="f['carry_forward_per'].errors && f['carry_forward_per'].errors['pattern']"><p class="error-msg">It accepts only positive values.</p></div>
-                </div>
-            </div>        
-        </div>
-        <div class="row">
-            <div class="col-sm">
-            </div>       
-        </div>
-        <!-- <div class="row">
-            <div class="col-sm">
-                <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
-            </div>
-
-        </div> -->
-            </div>
-            <div class="col-sm-6">       
-        <div class="row">
-            <div class="col-sm">
-                <h4>Gracefull days/encashment details</h4>
-            </div>
-        </div>
-        <!-- <div class="row">
-            <div class="col-sm">
-                <p>Gracefull Days <span >*</span></p> 
-            </div>
-        </div> -->
-        <div class="row">
-            <div class="col-sm">
-                <p>Gracefull days <span >*</span></p> 
-                <input type="number"  oninput="if(this.value < 0 ) this.value = 0;" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" class="form-control p-3 sizeinput" formControlName="gracefull_days" placeholder="Enter gracefull days " aria-describedby="emailHelp"  autocomplete="off">
-                <div *ngIf="f['gracefull_days'].touched && f['gracefull_days'].invalid" >
-                    <div *ngIf="f['gracefull_days'].errors && f['gracefull_days'].errors['required'] " ><p class="error-msg">Gracefull days is required</p></div>
-                    <div *ngIf="f['gracefull_days'].errors && f['gracefull_days'].errors['pattern']"><p class="error-msg">It accepts only positive values.</p></div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <div class="form-check">
-                    <input class="form-check-input" formControlName="encashment" type="checkbox" value="option1" id="checkbox1"  (click)="toggleShow($event)">
-                    <label class="form-check-label" for="checkbox1">
-                      Encashment?
-                    </label>  
-             </div>
-          </div>
-         </div>
-        <div class="row">
-            <div class="col-sm">
-                <div *ngIf="updateForm.get('encashment').value === true"   class="row container-fluid"  id="divshow" style="margin: 0;">
-                    <p >Maximum encashment of leaves <span >*</span></p>
-                    <input type="number" onkeydown="return event.keyCode !== 69" oninput="if(this.value < 0 ) this.value = 0;" onKeyPress="if(this.value.length==10) return false;" class="form-control p-3 sizeinput" formControlName="max_encashments" placeholder="Enter maximum encashment of leaves" aria-describedby="emailHelp"  autocomplete="off">
-                <div *ngIf="f['max_encashments'].touched && f['max_encashments'].invalid" >
-                    <div *ngIf="f['max_encashments'].errors && f['max_encashments'].errors['required']"><p class="error-msg">Maximum encashment of leaves are required</p></div>
-                    <div *ngIf="f['max_encashments'].errors && f['max_encashments'].errors['pattern']"><p class="error-msg">It accepts only positive values.</p></div>
-                </div>
-                </div>
-            </div>
-        </div>
-      
-        <div class="row">
-            <div class="col-sm">
-                <p>Leave applicable for (center)<span >*</span></p>
-                <select class="form-select" aria-label="Default select example" formControlName="leave_applicable_for">
-                    <option value="" selected disabled>Select center</option>
-                    <option *ngFor="let items of allCenter" [value]="items.id">{{items.center_name}}</option>
-                  </select>
-                  <div *ngIf="f['leave_applicable_for'].touched && f['leave_applicable_for'].invalid" >
-                    <div *ngIf="f['leave_applicable_for'].errors && f['leave_applicable_for'].errors['required'] " ><p class="error-msg">Leave Applicable is required</p></div>
-                </div>
-            </div>            
-        </div>
-
-        <div class="row">
-           
-            <div class="col-sm-8"></div>            
-            <div class="col-sm-4">
-                <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Update</button>
-            </div>            
-        </div>
-    
-            </div>
-        </div>
-       </form>
-       
-    </div>
-   
-</div>
 

@@ -1,50 +1,37 @@
 <div class="container-fluid webView">
    
-        <!-- <div class="row p-20">
-            
-         
-            <div class="col-sm-4 search-div px-0">
-                <input type="text" class="form-control p-2" [(ngModel)]="term" placeholder="Search by leave type" aria-describedby="emailHelp"  autocomplete="off">
-                <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
-            </div>
-            <div class="col-sm"></div>
-            <div class="col-md-4 col-lg-3 text-center align-self-center">
-                <div class="d-flex justify-content-center pg-bg">
-                    <button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
-                    >{{size}}</button>
-                </div>
-                        </div>
-        </div> -->
-        <div class="row pb-3">
-            <div class="col-sm-4 search-div">
+      
+        <div class="row px-3 pt-2 d-flex justify content-center align-items-center">
+            <div class="col-sm-4 mx-2 search-div">
               <input type="search" (input)="filterSearch()" class="form-control p-2 sizeinput" [(ngModel)]="term"
-                placeholder="Search by organization name" aria-describedby="emailHelp" autocomplete="off">
+                placeholder="Search by leave type" aria-describedby="emailHelp" autocomplete="off">
               <i class="bi bi-search" id="search-icon-tab" ></i>
             </div>
             <div class="col-sm"></div>
-            <div class="col-md-3 col-lg-3 p-1 text-end">
-              <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/organization/createOrg" type="submit">Create
+            <div class="col-md-3 col-lg-3 p-1 text-end pe-3">
+              <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/leave/leaveDetails" type="submit">
                 + Create Leave Master</button>
         
             </div>
           </div>
         <div class="bg">
         <div class="row">
-            <div class="col px-0">
+            <div class="col px-4">
                 <table class="table table-hover table-list">
                     <thead>
+                        
                         <tr>
                           <th scope="col">S.No</th>
-                          <th scope="col">Leave Type<i  *ngIf="!arrow" (click)="sort('asc','leave_title')" class="bi bi-arrow-up"></i><i (click)="sort('desc','leave_title')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col" class="text-center">No of Leaves <i  *ngIf="!arrow" (click)="sort('asc','no_of_leaves')" class="bi bi-arrow-up"></i><i (click)="sort('desc','no_of_leaves')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col" class="text-center">Carry Forward(%) <i  *ngIf="!arrow" (click)="sort('asc','carry_forward_per')" class="bi bi-arrow-up"></i><i (click)="sort('desc','carry_forward_per')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col" class="text-center">Graceful Days <i  *ngIf="!arrow" (click)="sort('asc','gracefull_days')" class="bi bi-arrow-up"></i><i (click)="sort('desc','gracefull_days')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col" class="text-center">Max Encashment  <i  *ngIf="!arrow" (click)="sort('asc','max_encashments')" class="bi bi-arrow-up"></i><i (click)="sort('desc','max_encashments')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+                          <th scope="col">Leave Type<i  *ngIf="!arrowState['leave_title']" (click)="sort('asc','leave_title')" class="bi bi-arrow-up"></i><i (click)="sort('desc','leave_title')" *ngIf="arrowState['leave_title']" class="bi bi-arrow-down"></i></th>
+                          <th scope="col" class="text-center">No of Leaves <i  *ngIf="!arrowState['number_of_leaves']" (click)="sort('asc','number_of_leaves')" class="bi bi-arrow-up"></i><i (click)="sort('desc','number_of_leaves')" *ngIf="arrowState['number_of_leaves']" class="bi bi-arrow-down"></i></th>
+                          <th scope="col" class="text-center">Carry Forward(%) <i  *ngIf="!arrowState['cary_forward_percentage']" (click)="sort('asc','cary_forward_percentage')" class="bi bi-arrow-up"></i><i (click)="sort('desc','cary_forward_percentage')" *ngIf="arrowState['cary_forward_percentage']" class="bi bi-arrow-down"></i></th>
+                          <th scope="col" class="text-center">Graceful Days <i  *ngIf="!arrowState['graceful_days']" (click)="sort('asc','graceful_days')" class="bi bi-arrow-up"></i><i (click)="sort('desc','graceful_days')" *ngIf="arrowState['graceful_days']" class="bi bi-arrow-down"></i></th>
+                          <th scope="col" class="text-center">Max Encashment  <i  *ngIf="!arrowState['maximum_enhancement']" (click)="sort('asc','maximum_enhancement')" class="bi bi-arrow-up"></i><i (click)="sort('desc','maximum_enhancement')" *ngIf="arrowState['maximum_enhancement']" class="bi bi-arrow-down"></i></th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                     
+                   
                         <ng-container *ngIf="(leaveMasterList) as result">
                         <tr  *ngFor='let item of result | paginate : {
                             itemsPerPage: tableSize,
@@ -52,25 +39,27 @@
                             totalItems: count
                           }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
                           <td>{{getContinuousIndex(i)}}</td>
-                         <td>{{item.leave_title |titlecase}}</td>
-                         <td class="text-center">{{item.no_of_leaves?item.no_of_leaves:"NA" |titlecase}}</td>
-                         <td class="text-center">{{item.carry_forward_per|titlecase}}</td>
-                         <td class="text-center">{{item.gracefull_days|titlecase}}</td>
-                         <!-- <td>{{item.encashment}}</td> -->
-                         <td class="text-center">{{item.max_encashments?item.max_encashments:"NA"|titlecase}}</td>
+                         <td>{{(item.leave_title |titlecase) || 'NA'}}</td>
+                         <td class="text-center">{{(item.number_of_leaves) || 'NA'}}</td>
+                         <td class="text-center">{{(item.cary_forward_percentage) || 'NA'}}</td>
+                         <td class="text-center">{{(item.graceful_days) || 'NA'}}</td>
+                         <td class="text-center">{{(item.maximum_enhancement)|| 'NA'}}</td>
                          <td class="text-center">
-                            <ng-container *ngFor="let access of permissions">
-                                <button mat-raised-button mat-mini-fab  routerLink="/leave/updateLeaveDetails/{{item.id}}" *ngIf="access === 'UPDATE'">
+                         
+                                <!-- <button mat-raised-button mat-mini-fab  routerLink="/leave/updateLeaveDetails/{{item.id}}" >
                                   <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
                                 </button>
-                                <button mat-raised-button mat-mini-fab   (click)="open(item.id)" *ngIf="access === 'DELETE'">
+                                <button mat-raised-button mat-mini-fab   (click)="open(item.id)" >
                                   <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
-                                </button>
-                              </ng-container> 
+                                </button> -->
+                                <img src="../../../../assets/images/Edit.svg" class="icon-image"  routerLink="/leave/updateLeaveDetails/{{item.id}}" container="body" ngbTooltip="Edit" />
+                                <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.id
+                                )"/>
                          </td>
+                         
                         </tr>
                         <tr *ngIf="result.length === 0" class="nodata">
-                            <td> No records found!</td>  
+                            <td style="width: 100% !important;"> No records found!</td>  
                         </tr>
                         </ng-container>
                       </tbody>
@@ -117,12 +106,13 @@
                 <div class="row">
                     <div class="col-6 align-self-center">
                         <h6 class="card-subtitle">Leave Type</h6>
-                        <p class="value-container">{{item.leave_title|titlecase}}</p>
+                        <p class="value-container">{{(item.leave_title|titlecase) || 'NA'}}</p>
                         </div>
                     <div class="col-6 p-3 text-end">
-                        <ng-container *ngFor="let access of permissions">
-                        <a *ngIf="access == 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" style="color: #000; font-size: 24px;" ></i></button></a>
-                        <a *ngIf="access == 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button></a>
+                     
+                        <ng-container>
+                            <a> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" style="color: #000; font-size: 24px;" ></i></button></a>
+                            <a> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button></a>
                         </ng-container>
                     </div>
                 </div>
@@ -130,23 +120,23 @@
                 <div class="col-6 text-start">
                     <div class="n-l">
                         <h6 class="card-subtitle">No of Leaves</h6>
-                        <p class="value-container">{{item.no_of_leaves?item.no_of_leaves:"NA"|titlecase}}</p>
+                        <p class="value-container">{{(item.number_of_leaves)|| 'NA'}}</p>
                     </div>
                   
                 </div>
                 <div class="col-6">
                     <h6 class="card-subtitle">Max Encashment</h6>
-                <p class="value-container">{{item.max_encashments?item.max_encashments:"NA"|titlecase}}</p>
+                <p class="value-container">{{(item.maximum_enhancement) || 'NA'}}</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-6">
                     <h6 class="card-subtitle">Carry Forward(%)</h6>
-                    <p class="value-container">{{item.carry_forward_per|titlecase}}</p>
+                    <p class="value-container">{{(item.cary_forward_percentage) || 'NA'}}</p>
                 </div>
                 <div class="col-6">
                     <h6 class="card-subtitle">Graceful Days</h6>
-                <p class="value-container">{{item.gracefull_days|titlecase}}</p>
+                <p class="value-container">{{(item.graceful_days) || 'NA'}}</p>
                 </div>
             </div>
            
@@ -175,10 +165,8 @@
     </div>
   </div>
 <div class="s-position">
-<ng-container *ngFor="let access of permissions">
-   <button mat-fab type="button" routerLink="/leave/leaveDetails" *ngIf="access === 'CREATE'" class="createbtn-new" ><i class="fa fa-plus"></i>
+   <button mat-fab type="button" routerLink="/leave/leaveDetails" class="createbtn-new" ><i class="fa fa-plus"></i>
   </button>
-</ng-container>
 </div>
 </div>
 

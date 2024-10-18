@@ -25,6 +25,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatNativeDateModule,
     MatTabsModule,
     MatExpansionModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatCheckboxModule
   ],
   exports:[
     SortPipe,
@@ -82,7 +84,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatNativeDateModule,
     MatTabsModule,
     MatExpansionModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatCheckboxModule
    ],
   
 })

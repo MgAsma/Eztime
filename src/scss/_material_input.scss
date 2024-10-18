@@ -8,12 +8,7 @@
   padding-right:20px;
   width:100% !important;
 }
-.date-picker .mat-form-field-appearance-outline .mat-form-field-infix {
-  padding: 0px  !important;
-}
-.mat-custom-input .mat-form-field-appearance-outline .mat-form-field-infix {
-  padding: 3px  !important;
-}
+
 .date-picker .mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix {
   top: -5px !important;
 }
@@ -241,3 +236,23 @@ app-create-timesheet{
 }
 }
 
+.search-div{
+  
+  #search-icon-tab {
+  position: absolute;
+  right: 30px !important;
+  top: 11px !important;
+  font-size: 15px !important;
+  color: grey;
+  cursor: text !important;
+  }
+  .sizeinput{
+      font-size: 14px;
+  }
+}
+.date-picker .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0px  !important;
+}
+.mat-custom-input .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 3px  !important;
+}
