@@ -52,6 +52,9 @@ const routes: Routes = [
       },
       {
         path:'updatePeople/:id/:page/:tableSize', component:UpdatePeopleComponent
+      },
+      {
+        path:'updatePeople', component:CreatePeopleComponent
       }
     ]
   }

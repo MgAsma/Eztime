@@ -55,8 +55,8 @@ export class PeopleListComponent implements OnInit {
   ngOnInit(): void {
     this.term='';
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.org_id = sessionStorage.getItem('org_id')
-    localStorage.clear()
+    this.org_id = sessionStorage.getItem('organization_id')
+    localStorage.removeItem('employee_id');
     this.getPeople();
     this.enabled = true;
   //  this.getUserControls()
@@ -108,17 +108,25 @@ export class PeopleListComponent implements OnInit {
     organization_id:this.org_id,
     search_key:this.term
     }
-    this.api.getPeopleDetailsPage(params).subscribe((data:any)=>{
-      this.allPeople = data.result.data;
+    this.api.getEmployeeList(`?${'organization_id'}=${this.org_id}`).subscribe((data:any)=>{
+      console.log('all employees',data)
+      this.allPeople = data;
 
-      const noOfPages:number = data['result'].pagination.number_of_pages
-      this.count  = noOfPages * this.tableSize;
-      this.page=data['result'].pagination.current_page;
+      // const noOfPages:number = data['result'].pagination.number_of_pages
+      // this.count  = noOfPages * this.tableSize;
+      // this.page=data['result'].pagination.current_page;
 
     },((error)=>{
       this.api.showError(error.error.error.message)
     })
     )
+  }
+
+  flattenUserData(data: any): any {
+    return {
+      ...data, // Main object properties
+      ...data.user // Spread the user properties
+    };
   }
   filterSearch(){
       this.api.getData(`${environment.live_url}/${environment.people_list}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`).subscribe((data:any)=>{
@@ -133,12 +141,12 @@ export class PeopleListComponent implements OnInit {
       )
   }
   delete(id:any){
-    this.api.deletePeopleDetails(id).subscribe((data:any)=>{
-      if(data){
-        this.api.showWarning('People deleted successfully!')
+    this.api.deleteEmployees(id).subscribe((data:any)=>{
+      // if(data){
+        this.api.showWarning('Employee deleted successfully!')
           this.allPeople = []
           this.ngOnInit()
-      }
+      // }
     
     },((error:any)=>{
       this.api.showError(error.error.error.message)
@@ -210,5 +218,11 @@ export class PeopleListComponent implements OnInit {
   }
   getContinuousIndex(index: number):number {
     return (this.page-1)*this.tableSize+ index + 1;
+  }
+
+  openUpdatePeople(id){
+    localStorage.removeItem('employee_id');
+    localStorage.setItem('employee_id',id);
+    this.router.navigate(['/people/updatePeople']);
   }
 }

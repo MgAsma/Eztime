@@ -1,292 +1,474 @@
-<div class="container-fluid">
-    <!-- <div class="row">
-        <div class="col-sm">
-            <h1>Create people</h1>
-        </div>
-        <div class="col-sm"></div>
-        <div class="col-sm-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">Create people</li>
-                  
-                </ol>
-              </nav>
-        </div>
-        
-    </div> -->
-    <div class="generic-form bg mx-1">
-       <form [formGroup]='peopleForm' (ngSubmit)='addPeople()' >
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-6">
+<!-- <ngx-ui-loader fgsColor="#1d2a6e" pbColor="#1d2a6e" text="Please wait..."></ngx-ui-loader> -->
+<div class="container-fluid bg-white">
+    <div class="row ">
+        <div class="col-12 px-3 px-md-5 px-lg-5 mt-3">
+            <div class="create-employees">
                 <div class="row">
-                    <div class="col-sm">
-                        <h4>Employee details</h4>
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <mat-horizontal-stepper [linear]="true" #stepper (selectionChange)="setIndex($event)">
+                            <ng-template matStepperIcon="edit">
+                                <mat-icon>done</mat-icon>
+                              </ng-template>
+                            <mat-step [stepControl]="firstFormGroup" >
+                                <form [formGroup]="firstFormGroup">
+                                    <ng-template matStepLabel>Profile details
+                                    </ng-template>
+                                    <div class="row mt-4">
+                                        <!-- Employe photo -->
+                                        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <input type="file" accept="image/*" formControlName="profile_image"
+                                                #fileInput (change)="uploadProflieImageFile($event)" hidden>
+
+                                            <div
+                                                class="image-container temp-style d-flex justify-content-around align-items-center">
+                                                <div class="image-background">
+                                                    <img id="imagePreview"
+                                                        [src]="fileDataUrl? fileDataUrl: '../assets/images/no-profile-pic.png'"
+                                                        alt="profile">
+                                                </div>
+                                                <!-- <button type="button" mat-icon-button (click)="triggerFileInput()">
+                                                    <mat-icon matTooltip="{{fileDataUrl? 'Edit':'Upload'}}"
+                                                        class="edit-or-upload-icon">{{fileDataUrl?
+                                                        'edit':'add_a_photo'}}</mat-icon>
+                                                </button> -->
+                                                <button type="button" mat-icon-button (click)="triggerFileInput(fileDataUrl? 'Delete':'Upload')">
+                                                    <mat-icon matTooltip="{{fileDataUrl? 'Delete':'Upload Photo'}}"
+                                                        class="edit-or-upload-icon">{{fileDataUrl? 'delete':'add_a_photo'}}</mat-icon>
+                                                </button>
+                                            </div>
+                                            <div *ngIf="firstFormGroup.get('profile_image')?.touched && firstFormGroup.get('profile_image')?.invalid">
+                                                <span class="text-errors" *ngIf="!fileDataUrl">Employee image is required</span>
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('profile_image').errors?.['accept']">Invalid file
+                                                    format. Only .jpg, .jpeg, .png formats are allowed.</span>
+                                            </div>
+                                        </div>
+                                        <!-- First name -->
+                                        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>First Name <b class="r-star">*</b></mat-label>
+                                                <input matInput placeholder="Enter first name" formControlName="first_name" autocomplete="off">
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="firstFormGroup.get('first_name')?.touched && firstFormGroup.get('first_name')?.invalid">
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('first_name').errors?.['required']">First name is required
+                                                </span>
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('first_name').errors?.['pattern']">
+                                                    Invalid name. Only letters are allowed, and the name must start with a letter.
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!-- Last name -->
+                                        <div  class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Last Name <b class="r-star">*</b></mat-label>
+                                                <input matInput placeholder="Enter last name" formControlName="last_name" autocomplete="off">
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="firstFormGroup.get('last_name')?.touched && firstFormGroup.get('last_name')?.invalid">
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('last_name').errors?.['required']">Last name is required
+                                                </span>
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('last_name').errors?.['pattern']">
+                                                    Invalid name. Only letters are allowed, and the name must start with a letter.
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!-- Gender -->
+                                        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Select Gender <b class="r-star">*</b></mat-label>
+                                                <mat-select formControlName="gender" autocomplete="off"
+                                                        placeholder="Select" panelClass="custom-select-panel"
+                                                        [disableOptionCentering]="true">
+                                                        <mat-option *ngFor="let i of gender" [value]="i.id">
+                                                        {{i.name}}
+                                                        </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="firstFormGroup.get('gender')?.touched && firstFormGroup.get('gender')?.invalid">
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('gender').errors?.['required']">Gender is required</span>
+                                            </div>
+                                        </div>
+                                        <!-- email -->
+                                        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Email Id <b class="r-star">*</b></mat-label>
+                                                <input matInput type="email" placeholder="Enter email" formControlName="email"
+                                                    autocomplete="off" >
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="firstFormGroup.get('email')?.touched && firstFormGroup.get('email')?.invalid">
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('email').errors?.['required']">Email is required</span>
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('email').errors?.['email']">Invalid email Id</span>
+                                            </div>
+                                        </div>
+                                        <!-- Phone number -->
+                                        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Phone Number <b class="r-star">*</b></mat-label>
+                                                <input matInput type="number" placeholder="Enter phone number" formControlName="phone_number"
+                                                    autocomplete="off" maxlength="10" pattern="\d{10}"
+                                                    onKeyPress="if(this.value.length==10) return false;" (keypress)="validateKeyPress($event)">
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="firstFormGroup.get('phone_number')?.touched && firstFormGroup.get('phone_number')?.invalid">
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('phone_number').errors?.['pattern']">Please enter 10 digits
+                                                    phone number.</span>
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('phone_number').errors?.['required']">Phone number is
+                                                    required.</span>
+                                            </div>
+                                        </div>
+                                        <!-- Marital status -->
+                                        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Marital Status <b class="r-star">*</b></mat-label>
+                                                <mat-select formControlName="marital_status" autocomplete="off"
+                                                        placeholder="Select" panelClass="custom-select-panel"
+                                                        [disableOptionCentering]="true">
+                                                        <mat-option *ngFor="let i of maritalStatus" [value]="i.id">
+                                                        {{i.name}}
+                                                        </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="firstFormGroup.get('marital_status')?.touched && firstFormGroup.get('marital_status')?.invalid">
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('marital_status').errors?.['required']">Marital status is required</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="action-btn-link-content mt-2">
+                                            <button type="button" mat-button class="back-button"
+                                               (click)="backToEmployeesTable()" >Back</button>
+                                            <button mat-button  class="proceedbtn"
+                                                (click)="employeeId? checkValidation('step1','update'): checkValidation('step1','add')">{{firstButtonName}}</button>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </mat-step>
+                            
+                            <mat-step [stepControl]="thirdFormGroup">
+                                <form [formGroup]="thirdFormGroup">
+                                    <ng-template matStepLabel>Organizaton details</ng-template>
+                                    <div class="row mt-4">
+                                        <!-- organization code -->
+                                        <!-- <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Organization Code <b class="r-star">*</b></mat-label>
+                                                <input type="number" matInput placeholder="Enter" formControlName="org_code" autocomplete="off"  onkeydown="return event.keyCode !== 69"
+                                                 onKeyPress="if(this.value.length==10) return false;">
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="thirdFormGroup.get('org_code')?.touched && thirdFormGroup.get('org_code')?.invalid">
+                                                <span class="text-errors" *ngIf="thirdFormGroup.get('org_code').errors?.['required']">Organization code is required
+                                                </span>
+                                            </div>
+                                        </div> -->
+                                        <!-- manger dropdown -->
+                                         <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Select Reporting Manager</mat-label>
+                                                <mat-select formControlName="reporting_manager_id" autocomplete="off"
+                                                        placeholder="Select" panelClass="custom-select-panel"
+                                                        [disableOptionCentering]="true">
+                                                        <mat-option *ngFor="let rmId of reportingManagerId" [value]="rmId.id">
+                                                            {{rmId.first_name}}
+                                                        </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="thirdFormGroup.get('reporting_manager_id')?.touched && thirdFormGroup.get('reporting_manager_id')?.invalid">
+                                                <span class="text-errors" *ngIf="thirdFormGroup.get('reporting_manager_id').errors?.['required']">Reporting manager is required</span>
+                                            </div>
+                                         </div>
+                                         <!-- Department -->
+                                         <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Select Department</mat-label>
+                                                <mat-select formControlName="department" autocomplete="off"
+                                                        placeholder="Select" panelClass="custom-select-panel"
+                                                        [disableOptionCentering]="true">
+                                                        <mat-option *ngFor="let item of departmentList" [value]="item.id">
+                                                            {{item.department_name}}
+                                                        </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="thirdFormGroup.get('department')?.touched && thirdFormGroup.get('department')?.invalid">
+                                                <span class="text-errors" *ngIf="thirdFormGroup.get('department').errors?.['required']">Department is required</span>
+                                            </div>
+                                         </div>
+                                         <!-- designation -->
+                                         <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Select Designation</mat-label>
+                                                <mat-select formControlName="designation" autocomplete="off"
+                                                        placeholder="Select" panelClass="custom-select-panel"
+                                                        [disableOptionCentering]="true">
+                                                        <mat-option *ngFor="let item of allDesignation" [value]="item.id">
+                                                            {{item.designation_name}}
+                                                        </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="thirdFormGroup.get('designation')?.touched && thirdFormGroup.get('designation')?.invalid">
+                                                <span class="text-errors" *ngIf="thirdFormGroup.get('designation').errors?.['required']">Designation is required</span>
+                                            </div>
+                                         </div>
+                                         <!-- Role -->
+                                         <!-- <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Select Role</mat-label>
+                                                <mat-select formControlName="role" autocomplete="off" 
+                                                        placeholder="Select" panelClass="custom-select-panel"
+                                                        [disableOptionCentering]="true">
+                                                        <mat-option  *ngFor="let item of allRole" [value]="item.id">
+                                                            {{item.role_name}}
+                                                        </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="thirdFormGroup.get('role')?.touched && thirdFormGroup.get('role')?.invalid">
+                                                <span class="text-errors" *ngIf="thirdFormGroup.get('role').errors?.['required']">Designation is required</span>
+                                            </div>
+                                         </div> -->
+                                         <!-- Date of joining -->
+                                         <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                                                <mat-label>Date of Joining <b class="r-star">*</b></mat-label>
+                                                <input matInput [matDatepicker]="picker" placeholder="Enter start date"
+                                                    formControlName="date_of_joining" autocomplete="off" (dateInput)="joiningDateFun($event)">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                     <mat-datepicker #picker></mat-datepicker>
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="thirdFormGroup.get('date_of_joining')?.touched && thirdFormGroup.get('date_of_joining')?.invalid">
+                                                <span class="text-errors" *ngIf="thirdFormGroup.get('date_of_joining').errors?.['required']">Date of joining is required</span>
+                                            </div>
+                                        </div>
+                                        <!-- status -->
+                                        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                                                <mat-label>Status <b class="r-star">*</b></mat-label>
+                                                <mat-select formControlName="status" autocomplete="off"
+                                                        placeholder="Select status" panelClass="custom-select-panel"
+                                                        [disableOptionCentering]="true">
+                                                        <mat-option *ngFor="let status of status" [value]="status.value">
+                                                        {{status.viewValue}}
+                                                        </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="thirdFormGroup.get('status')?.touched && thirdFormGroup.get('status')?.invalid">
+                                                <span class="text-errors" *ngIf="thirdFormGroup.get('status').errors?.['required']">Status is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="action-btn-link-content mt-2">
+                                        <button mat-button matStepperPrevious class="back-button">Back</button>
+                                        <button mat-button  class="proceedbtn"
+                                                (click)="OrganizationAdded? checkValidation('step2','update'): checkValidation('step2','add')">{{secondButtonName}}</button>
+                                        <!-- <button mat-button matStepperNext class="proceedbtn"
+                                            (click)="checkValidation('step2')">Save and Proceed</button> -->
+                                    </div>
+                                </form>
+                            </mat-step>
+                            <mat-step [stepControl]="fourthFormGroup">
+                                <form [formGroup]="fourthFormGroup" class="preview">
+                                    <ng-template matStepLabel>Preview</ng-template>
+                                    <div class="row disable-pointer mt-4">
+                                        <div class="col-12 mb-3">
+                                            <h5><b>Profile Details</b></h5>
+                                        </div>
+                                        <!-- Employe photo -->
+                                        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <input type="file" accept="image/*" formControlName="profile_image"
+                                                #fileInput (change)="uploadProflieImageFile($event)" hidden>
+
+                                            <div
+                                                class="image-container temp-style">
+                                                <div class="image-background">
+                                                    <img id="imagePreview"
+                                                        [src]="fileDataUrl? fileDataUrl: '../assets/images/no-profile-pic.png'"
+                                                        alt="profile">
+                                                </div>
+                                                <!-- <button type="button" mat-icon-button (click)="triggerFileInput()">
+                                                    <mat-icon matTooltip="{{fileDataUrl? 'Edit':'Upload'}}"
+                                                        class="edit-or-upload-icon">{{fileDataUrl?
+                                                        'edit':'add_a_photo'}}</mat-icon>
+                                                </button> -->
+                                            </div>
+                                        </div>
+                                        <!-- First name -->
+                                        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>First Name <b class="r-star">*</b></mat-label>
+                                                <input matInput placeholder="Enter first name" formControlName="first_name" autocomplete="off" readonly>
+                                            </mat-form-field>
+                                        </div>
+                                        <!-- Last name -->
+                                        <div  class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Last Name <b class="r-star">*</b></mat-label>
+                                                <input matInput placeholder="Enter last name" formControlName="last_name" autocomplete="off" readonly>
+                                            </mat-form-field>
+                                        </div>
+                                        <!-- Gender -->
+                                        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Select Gender <b class="r-star">*</b></mat-label>
+                                                <mat-select formControlName="gender" autocomplete="off"
+                                                        placeholder="Select" panelClass="custom-select-panel"
+                                                        [disableOptionCentering]="true" >
+                                                        <mat-option disabled *ngFor="let i of gender" [value]="i.id">
+                                                        {{i.name}}
+                                                        </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <!-- email -->
+                                        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Email Id <b class="r-star">*</b></mat-label>
+                                                <input matInput type="email" placeholder="Enter email" formControlName="email"
+                                                    autocomplete="off" readonly>
+                                            </mat-form-field>
+                                        </div>
+                                        <!-- Phone number -->
+                                        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Phone Number <b class="r-star">*</b></mat-label>
+                                                <input matInput type="number" placeholder="Enter phone number" formControlName="phone_number"
+                                                    autocomplete="off" maxlength="10" pattern="\d{10}" readonly
+                                                    onKeyPress="if(this.value.length==10) return false;" (keypress)="validateKeyPress($event)">
+                                            </mat-form-field>
+                                        </div>
+                                        <!-- Marital status -->
+                                        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Marital Status <b class="r-star">*</b></mat-label>
+                                                <mat-select formControlName="marital_status" autocomplete="off"
+                                                        placeholder="Select" panelClass="custom-select-panel"
+                                                        [disableOptionCentering]="true">
+                                                        <mat-option disabled *ngFor="let i of maritalStatus" [value]="i.id">
+                                                        {{i.name}}
+                                                        </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="row disable-pointer mt-4">
+                                        <div class="col-12 mb-3">
+                                            <h5><b>Account Details</b></h5>
+                                        </div>
+                                         <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Email Id <b class="r-star">*</b></mat-label>
+                                                <input matInput type="email" placeholder="Enter email" formControlName="email"
+                                                    autocomplete="off" readonly>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
+                                                <mat-label>Password<b class="r-star">*</b></mat-label>
+                                                <input matInput [type]="passwordType" formControlName='password' placeholder="Enter password"
+                                                aria-describedby="emailHelp" autocomplete="off" id="password" readonly>
+                                                <mat-icon matSuffix  (click)="showPassword()">{{eyeIcon}}</mat-icon>
+                                                
+                                              </mat-form-field>
+                                        </div>
+                                    </div> -->
+
+                                    <div class="row disable-pointer mt-4">
+                                        <div class="col-12 mb-3">
+                                            <h5><b>Organization Details</b></h5>
+                                        </div>
+                                        <!-- organization code -->
+                                        <!-- <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Organization Code <b class="r-star">*</b></mat-label>
+                                                <input type="number" matInput placeholder="Enter" formControlName="org_code" autocomplete="off"  onkeydown="return event.keyCode !== 69"
+                                                 onKeyPress="if(this.value.length==10) return false;" readonly>
+                                            </mat-form-field>
+                                        </div> -->
+                                        <!-- manger dropdown -->
+                                         <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Select Reporting Manager</mat-label>
+                                                <mat-select formControlName="reporting_manager_id" autocomplete="off"
+                                                        placeholder="Select" panelClass="custom-select-panel"
+                                                        [disableOptionCentering]="true">
+                                                        <mat-option disabled *ngFor="let rmId of reportingManagerId" [value]="rmId.id">
+                                                            {{rmId.first_name}}
+                                                        </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                         </div>
+                                         <!-- Department -->
+                                         <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Select Department</mat-label>
+                                                <mat-select formControlName="department" autocomplete="off"
+                                                        placeholder="Select" panelClass="custom-select-panel"
+                                                        [disableOptionCentering]="true">
+                                                        <mat-option disabled *ngFor="let item of departmentList" [value]="item.id">
+                                                            {{item.department_name}}
+                                                        </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                         </div>
+                                          <!-- designation -->
+                                          <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Select Designation</mat-label>
+                                                <mat-select formControlName="designation" autocomplete="off"
+                                                        placeholder="Select" panelClass="custom-select-panel"
+                                                        [disableOptionCentering]="true">
+                                                        <mat-option *ngFor="let item of allDesignation" [value]="item.id">
+                                                            {{item.designation_name}}
+                                                        </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                         </div>
+                                         <!-- Role -->
+                                         <!-- <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Select Role</mat-label>
+                                                <mat-select formControlName="role" autocomplete="off"
+                                                        placeholder="Select" panelClass="custom-select-panel"
+                                                        [disableOptionCentering]="true">
+                                                        <mat-option [disabled]="true"  *ngFor="let item of allRole" [value]="item.id">
+                                                            {{item.role_name}}
+                                                        </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                         </div> -->
+                                         <!-- Date of joining -->
+                                         <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                                                <mat-label>Date of Joining <b class="r-star">*</b></mat-label>
+                                                <input matInput [matDatepicker]="picker" placeholder="Enter start date" readonly
+                                                    formControlName="date_of_joining" autocomplete="off" (dateInput)="joiningDateFun($event)">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                     <mat-datepicker #picker></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <!-- status -->
+                                        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                                                <mat-label>Status <b class="r-star">*</b></mat-label>
+                                                <mat-select formControlName="status" autocomplete="off"
+                                                        placeholder="Select status" panelClass="custom-select-panel"
+                                                        [disableOptionCentering]="true">
+                                                        <mat-option disabled *ngFor="let status of status" [value]="status.value">
+                                                        {{status.viewValue}}
+                                                        </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    
+                                   <div class="action-btn-link-content mt-2 mb-4">
+                                        <button mat-button matStepperPrevious class="back-button">Back</button>
+                                        <!-- <button mat-button class="proceedbtn"
+                                            (click)="checkValidation('step3');onSubmit()">Create Employee</button> -->
+                                        <button mat-button class="proceedbtn" (click)="backToEmployeesTable()">Close</button>
+                                            
+                                    </div>
+                                </form>
+                            </mat-step>
+                        </mat-horizontal-stepper>
                     </div>
                 </div>
-             
-                <!-- <div class="row">
-                    <div class="col-sm">
-                        <p>Prefix/suffix <span >*</span></p> 
-                        <select class="form-select" [(value)]='prefix' aria-label="Default select example" formControlName="prefix_suffix_id">
-                            <option value="" selected disabled>Select prefix/suffix</option>
-                            <option *ngFor="let item of allPrefix" [value]="item.id">
-                                {{item.prefix}}
-                            </option>
-                          </select>
-                          <div *ngIf="f['prefix_suffix_id'].touched && f['prefix_suffix_id'].invalid" >
-                            <div *ngIf="f['prefix_suffix_id'].errors && f['prefix_suffix_id'].errors['required'] " ><p class="error-msg">Prefix/Suffix is required</p></div>
-                        </div>
-                    </div>
-                </div> -->
-           
-                <!-- <div class="row">
-                    <div class="col-sm">
-                        <p>Photo <span >*</span></p>
-                        <input type="file" class="form-control p-4-0 sizeinput" formControlName="photo"  placeholder="Photo" aria-describedby="emailHelp"  autocomplete="off" (change)="uploadImageFile($event)">
-                        <div *ngIf="f['photo'].touched && f['photo'].invalid" >
-                            <div *ngIf="f['photo'].errors && f['photo'].errors['required'] " ><p class="error-msg">Photo is required</p></div>
-                        </div>
-                    </div>
-                </div> -->
-              
-                <div class="row">
-                    <div class="col-sm">
-                        <p>First name <span >*</span></p>
-                        <input type="text" class="form-control p-3 sizeinput" formControlName="u_first_name" placeholder="Enter first name" aria-describedby="emailHelp"  autocomplete="off">
-                        <div *ngIf="f['u_first_name'].touched && f['u_first_name'].invalid" >
-                            <div *ngIf="f['u_first_name'].errors && f['u_first_name'].errors['required'] " ><p class="error-msg">First name is required</p></div>
-                        </div>
-                        <div *ngIf="f['u_first_name'].invalid && f['u_first_name'].hasError('pattern')" >
-                           <p class="error-msg">First name cannot contain spaces,numbers and special characters.</p>
-                        </div>
-                    </div>        
-                </div>
-            
-                <div class="row">
-                    <div class="col-sm">
-                        <p>Last name <span >*</span></p>
-                        <input type="text" class="form-control p-3 sizeinput" formControlName="u_last_name" placeholder="Enter last name" aria-describedby="emailHelp"  autocomplete="off">
-                        <div *ngIf="f['u_last_name'].touched && f['u_last_name'].invalid" >
-                            <div *ngIf="f['u_last_name'].errors && f['u_last_name'].errors['required']" ><p class="error-msg">Last name is required</p></div>
-                        </div>
-                        <div *ngIf="f['u_last_name'].invalid && f['u_last_name'].hasError('pattern')" >
-                            <p class="error-msg">Last name cannot contain spaces,numbers and special characters.</p>
-                         </div>
-                    </div>         
-                </div>
-              
-                <div class="row">
-                    <div class="col-sm">
-                        <p>Gender <span >*</span></p>
-                        <select class="form-select" aria-label="Default select example" formControlName="u_gender">
-                            <option value="" selected disabled>Select gender</option>
-                            <option value="M">Male</option>
-                            <option value="F">Female</option>
-                          </select>
-                          <div *ngIf="f['u_gender'].touched && f['u_gender'].invalid" >
-                            <div *ngIf="f['u_gender'].errors && f['u_gender'].errors['required']" ><p class="error-msg">Gender is required</p></div>
-                        </div>
-                    </div>        
-                </div>
-              
-                <div class="row">
-                    <div class="col-sm">
-                        <p>Marital status<span >*</span></p>
-                        <select class="form-select" aria-label="Default select example" formControlName="u_marital_status">
-                            <option value="" selected disabled>Select marital status</option>
-                            <option value="single">Single</option>
-                            <option value="married">Married</option>
-                           
-                          </select>
-                          <div *ngIf="f['u_marital_status'].touched && f['u_marital_status'].invalid" >
-                            <div *ngIf="f['u_marital_status'].errors && f['u_marital_status'].errors['required']" ><p class="error-msg">Marital status is required</p></div>
-                        </div>
-                    </div>       
-                </div>
-               
-                <div class="row">
-                    <div class="col-sm">
-                        <p>Date of joining<span >*</span></p>
-                        <input class="form-control" id="date-input" type="date" name="date-input" formControlName="u_date_of_joining" placeholder="date" (change)="changeYearStartDate($event)">  
-                        <div *ngIf="f['u_date_of_joining'].touched && f['u_date_of_joining'].invalid" >
-                            <div *ngIf="f['u_date_of_joining'].errors && f['u_date_of_joining'].errors['required']" ><p class="error-msg">Date of joining is required</p></div>
-                        </div>
-                    </div>         
-                </div>
-                <div class="row">
-                    <div class="col-sm">
-                        <p>Photo <span >*</span></p>
-                        <input type="file" class="form-control p-4-0 sizeinput" formControlName="profile_base64"   accept="image/*;capture=camera" placeholder="profile_base64" aria-describedby="emailHelp"  autocomplete="off" (change)="uploadImageFile($event)" >
-                        <div *ngIf="f['profile_base64'].touched && f['profile_base64'].invalid" >
-                            <div *ngIf="f['profile_base64'].errors && f['profile_base64'].errors['required']" ><p class="error-msg">Photo is required</p></div>
-                        </div>
-                        <div class="error-msg" *ngIf="f['profile_base64'].errors && f['profile_base64'].errors['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</div>
-                    </div>
-                </div>
-                <!-- <div class="row">
-                    <div class="col-sm">
-                        <p><i class="bi bi-newspaper"></i>Note: <span>*</span>Mandatory fields</p>
-                    </div>
-                </div> -->
             </div>
-            <div class="col-sm-12 col-md-12 col-lg-6">
-                <div class="row">
-                    <div class="col-sm">
-                        <h4>Role & responsibilities details</h4>
-                    </div>
-                </div>
-            
-                <div class="row">
-                    <div class="col-sm">
-                        <p>Email Id <span >*</span></p> 
-                        <input type="email" class="form-control p-3 sizeinput" formControlName="u_email" placeholder="Enter email Id" aria-describedby="emailHelp"  autocomplete="off">
-                        <div *ngIf="f['u_email'].touched && f['u_email'].invalid" >
-                            <div *ngIf="f['u_email'].errors && f['u_email'].errors['required']" ><p class="error-msg">Email Id is required</p></div>
-                            <div *ngIf="f['u_email'].errors['email']" ><p class="error-msg">Email Id is invalid</p></div>
-                        </div>
-                    </div>
-                </div>
-           
-                <div class="row">
-                    <div class="col-sm">
-                        <span> </span>
-                        <p>Department <span >*</span></p>
-                        <select class="form-select" [(value)]='department' aria-label="Default select example" formControlName="department_id">
-                            <option value="" selected disabled>Select department </option>
-                            <option *ngFor="let item of allDepartment" [value]="item.id">
-                                {{item.od_name}}
-                            </option>
-                          </select>
-                          <div *ngIf="f['department_id'].touched && f['department_id'].invalid" >
-                            <div *ngIf="f['department_id'].errors && f['department_id'].errors['required'] " ><p class="error-msg">Department is required</p></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- <div class="row">
-                    <div class="col-sm">
-                        <p>Organization <span >*</span></p>
-                        <select class="form-select" [(value)]='role' aria-label="Default select example" formControlName="organization_id">
-                             <option value="" selected disabled>Select organization</option>
-                             <ng-container *ngFor="let item of organizationList">   
-                            <option  [value]="item.id" >
-                                {{item.org_name}}
-                            </option>
-                        </ng-container>
-                          </select>
-                          <div *ngIf="f['organization_id'].touched && f['organization_id'].invalid" >
-                            <div *ngIf="f['organization_id'].errors && f['organization_id'].errors['required']"><p class="error-msg">Organization is required</p></div>
-                        </div>
-                    </div>            
-                </div> -->
-                <div class="row">
-                    <div class="col-sm">
-                        <p>Role  <span >*</span></p>
-                        <select class="form-select"  aria-label="Default select example" formControlName="user_role_id">
-                             <option value="" selected disabled>Select role</option>        
-                            <option *ngFor="let item of allRole" [value]="item.id" >
-                                {{item.user_role_name}}
-                            </option>
-                          </select>
-                          <div *ngIf="f['user_role_id'].touched && f['user_role_id'].invalid" >
-                            <div *ngIf="f['user_role_id'].errors && f['user_role_id'].errors['required']"><p class="error-msg">Role is required</p></div>
-                        </div>
-                    </div>            
-                </div>
-           
-                <div class="row">
-                    <div class="col-sm">
-                        <p>Reporting manager <span >*</span></p>
-                        <select class="form-select" [(value)]='reportingManager' aria-label="Default select example" formControlName="user_reporting_manager_ref_id">
-                            <option value="" selected disabled>Select reporting manager</option>      
-                            <option *ngFor="let item of allReportingManager" [value]="item.id">
-                                {{item.u_first_name}}
-                            </option>
-                          </select>
-                          <div *ngIf="f['user_reporting_manager_ref_id'].touched && f['user_reporting_manager_ref_id'].invalid" >
-                            <div *ngIf="f['user_reporting_manager_ref_id'].errors && f['user_reporting_manager_ref_id'].errors['required'] " ><p class="error-msg">Reporting manager is required</p></div>
-                        </div>
-                    </div>            
-                </div>
-                
-                <div class="row">
-                    <div class="col-sm">
-                        <p>Cost Center <span >*</span></p>
-                        <select class="form-select" [(value)]='center' aria-label="Default select example" formControlName="cost_center_id" >  
-                            <option value="" selected disabled>Select cost center</option>        
-                            <option *ngFor="let item of allCostCenter" [value]="item.id">
-                                {{item.occ_cost_center_name}}
-                            </option>
-                          </select>
-                          <div *ngIf="f['cost_center_id'].touched && f['cost_center_id'].invalid" >
-                            <div *ngIf="f['cost_center_id'].errors && f['cost_center_id'].errors['required'] " ><p class="error-msg">Cost center is required</p></div>
-                        </div>
-                    </div>            
-                </div>
-                <div class="row">
-                    <div class="col-sm">
-                        <p>Center <span >*</span></p>
-                        <select class="form-select" [(value)]='center' aria-label="Default select example" formControlName="center_id" >  
-                            <option value="" selected disabled>Select  center</option>        
-                            <option *ngFor="let item of allCenter" [value]="item.id">
-                                {{item.center_name}}
-                            </option>
-                          </select>
-                          <div *ngIf="f['center_id'].touched && f['center_id'].invalid" >
-                            <div *ngIf="f['center_id'].errors && f['center_id'].errors['required'] " ><p class="error-msg">Cost center is required</p></div>
-                        </div>
-                    </div>            
-                </div>
-             
-                <div class="row">
-                    <div class="col-sm">
-                        <p>Designation <span >*</span></p>
-                        <input type="text" class="form-control p-3 sizeinput" formControlName="u_designation" placeholder="Enter designation" aria-describedby="emailHelp"  autocomplete="off">
-                        <div *ngIf="f['u_designation'].touched && f['u_designation'].invalid" >
-                            <div *ngIf="f['u_designation'].errors && f['u_designation'].errors['required'] " ><p class="error-msg">Designation is required</p></div>
-                        </div>
-                    </div>            
-                </div>
-           
-                
-                <!-- <div class="row">
-                    <div class="col-sm">
-                        <p>Tags <span >*</span></p>
-                        <ng-multiselect-dropdown [placeholder]="'Select tags'"  [settings]="tagSetting"
-                        [data]="allTag" (onSelect)="onTagSelect($event)" (onSelectAll)="onTagSelectAll($event)" 
-                         formControlName="tags" (onDeSelect)="onItemDeSelect($event)" (onDeSelectAll)="onItemDeSelectAll($event)">
-                        </ng-multiselect-dropdown> 
-                          <div *ngIf="f['tags'].touched && f['tags'].invalid " >
-                            <div *ngIf="f['tags'].errors && f['tags'].errors['required'] " ><p class="error-msg">Tag is required</p></div>
-                        </div>
-                    </div>            
-                </div> -->
-                <div class="row">
-                    <div class="col-sm">
-                        <p>Status <span >*</span></p>
-                        <select class="form-select" aria-label="Default select example" formControlName="u_status" >  
-                            <option value="" selected disabled>Select  status</option>        
-                            <option value="Active">Active</option>
-                            <option value="Inactive">Inactive</option>
-                          </select>
-                          <div *ngIf="f['u_status'].touched && f['u_status'].invalid" >
-                            <div *ngIf="f['u_status'].errors && f['u_status'].errors['required'] " ><p class="error-msg">Status is required</p></div>
-                        </div>
-                    </div>            
-                </div>
-                
-                <div class="row">
-                    <div class="col-sm-8"></div>
-                    <div class="col-sm-4">
-                        <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Submit</button>
-                    </div>
-                </div>
-            </div>
+
         </div>
-       </form>
-       
     </div>
-   
 </div>
-
-

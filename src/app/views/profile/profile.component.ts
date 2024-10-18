@@ -155,7 +155,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getProfiledata() {
-    this.api.getProfileDetails(this.user_id).subscribe(
+    this.api.getProfileDetails(`${this.user_id}/`).subscribe(
       async (res:any)=>{
         console.log('new profile data',res)
         if (res) {

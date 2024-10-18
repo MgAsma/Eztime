@@ -1,104 +1,310 @@
-import { Component, OnInit } from '@angular/core';
-import {  Validators, FormBuilder,FormGroup, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Validators, FormBuilder, FormGroup, AbstractControl, ValidationErrors, FormControl } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { DatePipe } from '@angular/common';
 import { error } from 'console';
 import { environment } from 'src/environments/environment';
+import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { Router } from '@angular/router';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { MatStepper } from '@angular/material/stepper';
+
 @Component({
   selector: 'app-create-people',
   templateUrl: './create-people.component.html',
   styleUrls: ['./create-people.component.scss']
 })
 export class CreatePeopleComponent implements OnInit {
-  peopleForm : FormGroup
-  BreadCrumbsTitle:any='Create employee';
-  allDepartment:any=[];
-  department:any;
-
-  allRole:any=[];
-  role:any;
-
-  allReportingManager:any=[];
-  reportingManager:any;
-
-  allCenter:any=[];
-  center:any;
-
-  allPrefix:any=[];
-  prefix:any;
-
-  allTag:any=[];
-  tag:any;
-  tagSetting = {};
-  tagId:any=[]
-  
-  uploadFile:any;
-  url:any;
-  fileUrl:any;
-
-  startDate:any
+  @ViewChild('stepper') stepper!: MatStepper;
+  BreadCrumbsTitle: any = 'Create Employee';
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  thirdFormGroup: FormGroup;
+  fourthFormGroup: FormGroup;
+  isEditable = false;
+  registrationForm: FormGroup;
+  submitted = false;
+  gender: any = [];
+  maritalStatus: any = []
+  managerRoleId: any;
+  userId: any;
+  reportingManagerId: any = [];
+  departmentList: any = [];
+  employeeId: any
+  firstButtonName: String;
+  secondButtonName: String;
   params = {
-    pagination:"FALSE"
+    pagination: "FALSE"
   }
-//  centerId:any;
+  allPrefix: any = [];
+  allCenter: any = [];
+  allDesignation: any = [];
+  allRole: any = [];
   allCostCenter: any = [];
-  organizationList: any = [];
-  user_id: string;
-  org_id: any;
-  
-  changeYearStartDate(event:any){
-   
-    this.startDate =this.datepipe.transform( event.target.value,'dd/MM/yyyy')
-    //console.log(event.target.value, this.startDate)
-  }
-  constructor(private builder:FormBuilder, private api: ApiserviceService,
-    private datepipe:DatePipe,private common_service:CommonServiceService) {
-    this.org_id = sessionStorage.getItem('org_id')
-   }
+  uploadFile: any;
+  profileimg = 'text'
+  fileDataUrl: any = null;
+  tempStoreProfileImage: any = null;
+  url: any;
+  fileUrl: string | ArrayBuffer;
+  peopleForm: any;
+  OrganizationAdded:boolean = false;
+  eyeState: boolean = false;
+  eyeIcon = 'visibility_off'
+  passwordType = "password";
+  orgId: any;
+  status = [
+    { value: true, viewValue: 'Active' },
+    { value: false, viewValue: 'Inactive' },
+  ];
 
-  ngOnInit(): void {
+  @ViewChild('fileInput') fileInput: ElementRef;
+  constructor(
+    private formBuilder: FormBuilder,
+    private location: Location,
+    private api: ApiserviceService,
+    private common_service: CommonServiceService,
+    private router: Router,
+    private datePipe: DatePipe) {
+  }
+
+  ngOnInit() {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.getAllRoleandDepartment()
-    //this.centerId = sessionStorage.getItem('center_Id')
-  }
-  getAllRoleandDepartment(){
-    this.getRole();
+    this.userId = sessionStorage.getItem('user_id')
+    this.orgId = JSON.parse(sessionStorage.getItem('organization_id'));
+    this.employeeId = localStorage.getItem('employee_id');
+    this.initStepper()
+    // this.getDesignations();
+    this.getUserRole();
+    this.getGenderList();
+    this.getMritalStatus();
     this.getDepartment();
-    this.getReportingManager();
-    this.getCenter();
-    this.getCostCenter()
-    // this.getPrefix();
-    this.getTag();
-    this.user_id = sessionStorage.getItem('user_id')
-    
-    this.getOrgDetails(`&page_number=1}&data_per_page=2&pagination=FALSE`)
-    this.initForm()
-   
+    setTimeout(() => {
+      if (this.employeeId) {
+        this.firstButtonName = 'Update & Proceed';
+        this.getUserDetailsOfFirstStep(this.employeeId);
+        // this.getEmployeeById(this.employeeId)
+      } else {
+        this.firstButtonName = 'Save & Proceed';
+        this.secondButtonName = 'Save & Proceed';
+        this.OrganizationAdded = false
+      }
+    }, 1000);
+
   }
-  initForm(){
-    this.peopleForm= this.builder.group({
-      // prefix_suffix_id:['',[Validators.required]],
-      u_email:['',[Validators.required, Validators.email]],
-      department_id:['',[Validators.required]],
-      u_first_name:['',[Validators.required,Validators.pattern(/^[a-zA-Z]+$/)]],
-      user_role_id:['',[Validators.required]],
-      org_role_id:[1],
-      u_last_name:['',[Validators.required,Validators.pattern(/^[a-zA-Z]+$/)]],
-      user_reporting_manager_ref_id:['',[Validators.required]],
-      u_gender:['',[Validators.required]],
-      cost_center_id:['',[Validators.required]],
-      u_marital_status:['',[Validators.required]],
-      u_designation:['',[Validators.required]],
-      u_date_of_joining:['',[Validators.required]],
-      tags:['',[Validators.required]],
-      profile_base64:['',[Validators.required,,this.fileFormatValidator]],
-      center_id:['',Validators.required],
-      u_status:['',Validators.required],
-      u_org_code:['12345',Validators.required],
-      })
+
+  get uFirstNameControl(): FormControl {
+    return this.firstFormGroup.get('first_name') as FormControl;
   }
- 
+
+  // gender list
+  getGenderList() {
+    this.api.getAllGenders().subscribe(
+      (res: any) => {
+        // console.log(res,'allgenders');
+        this.gender = res;
+      }
+    )
+  }
+
+  // marital
+  getMritalStatus() {
+    this.api.getAllMaritalStatus().subscribe(
+      (res: any) => {
+        // console.log(res,'marital status');
+        this.maritalStatus = res;
+      }
+    )
+  }
+
+  // Manager list
+  getReportingManager() {
+    this.api.getProfileDetails(`?${'organization_id'}=${this.orgId}&${'designation_id'}=${this.managerRoleId}`).subscribe((data: any) => {
+      if (data) {
+        console.log('manager list', data)
+        if (data.length == 0) {
+          this.adminData();
+        }
+        else {
+          this.reportingManagerId = data;
+        }
+      }
+
+    }, (error: any) => {
+      this.api.showError(error.error.error.message)
+      console.log(error, "ERROR")
+    }
+
+    )
+  }
+  adminData() {
+    this.api.getProfileDetails(`${this.userId}/`).subscribe(
+      (res: any) => {
+        // console.log('admin',res);
+        let data = [];
+        data.push({ 'first_name': res.first_name, 'id': res.id });
+        // console.log(data)
+        this.reportingManagerId = data;
+      },
+      (error: any) => {
+        console.log('admin data error', error)
+      }
+    )
+  }
+
+  // Department list
+  getDepartment() {
+    this.api.getDepartmentList(`?${'organization_id'}=${this.orgId}`).subscribe((data: any) => {
+      if (data) {
+        this.departmentList = data;
+      }
+    }, (error: any) => {
+      this.api.showError(error.error.error.message)
+      //console.log(error,"ERROR")
+    }
+    )
+  }
+
+  // Roles
+  getUserRole() {
+    this.api.getAllRoles().subscribe((data: any) => {
+      if (data) {
+        const filteredRole = data.filter(role => role.role_name === 'Employee')
+        this.allRole = filteredRole;
+        this.firstFormGroup.patchValue({ role: this.allRole[0].id })
+      }
+
+    }, (error: any) => {
+      this.api.showError(error.error.error.message)
+    }
+    )
+  }
+
+  // designation list
+  getDesignations() {
+    this.api.getDesignationList(`?${'organization_id'}=${this.orgId}`).subscribe((data: any) => {
+      if (data) {
+        this.allDesignation = data;
+        const managerRoleId = data.filter(temp => temp.designation_name === 'Project Manager')
+        this.managerRoleId = managerRoleId[0].id
+        // console.log(this.managerRoleId,'managerRoleId')
+        this.getReportingManager();
+        // console.log(this.allDesignation,'designation')
+      }
+
+    }, (error: any) => {
+      this.api.showError(error.error.error.message)
+    }
+    )
+  }
+
+  // get by id of employee
+  getEmployeeById(id: any) {
+    console.log('id present', id);
+    this.api.getEmployeeDetailsById(`${id}/`).subscribe(
+      (res: any) => {
+        console.log('employee data', res)
+        if (res.length != 0) {
+          this.secondButtonName= 'Update & Proceed';
+          this.OrganizationAdded = true;
+          this.thirdFormGroup.patchValue({
+            reporting_manager_id: res[0].reporting_manager_id,
+            department: res[0].department,
+            designation: res[0].designation,
+            role: res[0].user.role,
+            date_of_joining: res[0].user.date_joined,
+            status: res[0].is_active,
+            organization_id: res[0].organization
+            // date_of_joining: this.datePipe.transform(res[0].date_of_joining, 'dd/MM/yyyy'),
+          })
+        } else {
+          this.secondButtonName= 'Save & Proceed';
+          this.OrganizationAdded = false;
+        }
+      },
+      (error) => {
+        console.log('employee data error', error)
+      }
+    )
+  }
+  getUserDetailsOfFirstStep(id: any) {
+    this.api.getProfileDetails(`${id}/`).subscribe(
+      (res: any) => {
+        console.log('only first step data', res);
+        if (res.profile_image) {
+          this.fileDataUrl = environment.new_media_url + res.profile_image
+        } else{
+          this.fileDataUrl = null;
+        }
+        this.firstFormGroup.patchValue({
+          first_name: res.first_name,
+          last_name: res.last_name,
+          gender: res.gender,
+          email: res.email,
+          phone_number: res.phone_number,
+          marital_status: res.marital_status,
+          organization_id: this.orgId
+          // profile_image:this.fileDataUrl
+        })
+        this.getEmployeeById(id);
+      }
+    )
+  }
+
+  initStepper() {
+    // let passwordRegex = 
+    this.firstFormGroup = this.formBuilder.group({
+      profile_image: ['', [this.fileFormatValidator]],
+      first_name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/), Validators.maxLength(20)]],
+      last_name: ['', [Validators.required, , Validators.pattern(/^[a-zA-Z]+$/), Validators.minLength(1), Validators.maxLength(20)]],
+      gender: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone_number: ['', [Validators.required, Validators.pattern('^\\d{10}$')]],
+      marital_status: ['', Validators.required],
+      role: ['', Validators.required],
+      organization_id: this.orgId
+    });
+    // this.secondFormGroup = this.formBuilder.group({
+    //   password: ['', [Validators.required]],
+
+    // });
+    this.thirdFormGroup = this.formBuilder.group({
+      // org_code: ['', [Validators.required]],
+      reporting_manager_id:['', Validators.required],
+      department: ['', Validators.required],
+      designation: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      date_of_joining: ['', Validators.required],
+      status: ['', Validators.required],
+      // role: ['', Validators.required],
+      
+      // prefix_suffix_id: ['', Validators.required],
+
+    })
+    this.fourthFormGroup = this.formBuilder.group({
+      profile_image: this.firstFormGroup.value.profile_image,
+      first_name: this.firstFormGroup.value.first_name,
+      last_name: this.firstFormGroup.value.last_name,
+      gender: this.firstFormGroup.value.gender,
+      phone_number: this.firstFormGroup.value.phone_number,
+      marital_status: this.firstFormGroup.value.marital_status,
+      email: this.firstFormGroup.value.email,
+      // password: this.secondFormGroup.value.password,
+      // org_code: this.thirdFormGroup.value.org_code,
+      reporting_manager_id: this.thirdFormGroup.value.reporting_manager_id,
+      department: this.thirdFormGroup.value.department,
+      designation: this.thirdFormGroup.value.designation,
+      role: this.thirdFormGroup.value.role,
+      date_of_joining: this.thirdFormGroup.value.date_of_joining,
+      status: this.thirdFormGroup.value.status,
+      // tags: ['', Validators.required],
+      organization_id: this.orgId
+    })
+    this.getDesignations();
+  }
+  // onFocusProfileImg(){
+  //   this.thirdFormGroup.get('profile_image')?.reset();
+  // }
   fileFormatValidator(control: AbstractControl): ValidationErrors | null {
     const allowedFormats = ['.jpg', '.jpeg', '.png', '.JPG', '.JPEG', '.PNG'];
     const file = control.value;
@@ -110,213 +316,323 @@ export class CreatePeopleComponent implements OnInit {
     }
     return null;
   }
-  get f(){
-    return this.peopleForm.controls;
-  }
-  uploadImageFile(event:any){
-    this.uploadFile=  event.target.files[0];
-    if(event.target.files && event.target.files[0]){
-      const reader =new FileReader();
-      reader.readAsDataURL(event.target.files[0])
-      reader.onload = (event:any)=>{
-        this.url = event.target.result;
-        this.fileUrl= reader.result
-        this.peopleForm.patchValue({profile_base64:this.fileUrl})
-        ////console.log(this.fileUrl)
 
-      }
+  triggerFileInput(text:any) {
+    if(text=='Upload'){
+      this.profileimg = 'file'
+      this.fileInput?.nativeElement?.click();
+    } 
+    else{
+      this.fileDataUrl = null;
+      this.imageUploaded = true;
     }
-  }
- 
-  getRole(){
-   let params = `page_number=1&data_per_page=2&pagination=FALSE&organization_id=${this.org_id}`
-    this.api.getUserAccess(params).subscribe((data:any)=>{
-      if(data.result.data){
-        const role = data.result.data
-        const filteredRole = role.filter(role => role.role_status !== 'Inactive' && role.user_role_name!='ADMIN')
-        this.allRole = filteredRole;
-      }
-    
-     },(error:any)=>{
-      this.api.showError(error.error.error.message)  
-      //console.log(error,"ERROR")
-    }
-    
-    )
-  }
- 
-  getDepartment(){
-    this.api.getDepartmentDetails(this.params,this.org_id).subscribe((data:any)=>{
-      if(data){
-        const department = data.result.data
-        const filteredDepartment = department.filter(depart => !depart.od_status.includes('Inactive'))
-        this.allDepartment = filteredDepartment;
-        }
-      },(error:any)=>{
-        this.api.showError(error.error.error.message)  
-        //console.log(error,"ERROR")
-      }
-    )
-  }
-  getReportingManager(){
-    this.api.getManagerDetails(this.params,this.org_id).subscribe((data:any)=>{
-      if(data.result.data){
-        const reportingManager = data.result.data
-        const filteredRepotingManager = reportingManager.filter(manager => !manager.u_status?.includes('Inactive'))
-        this.allReportingManager = filteredRepotingManager;
-      }
-     
-    },(error:any)=>{
-      this.api.showError(error.error.error.message)  
-      //console.log(error,"ERROR")
-    }
-    )
-  }
-  getTag(){
-    this.tagSetting = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'tag_name',
-      itemsShowLimit: 3,
-      allowSearchFilter: true,
-      unSelectAllText:'Un Select All'
-    };
-    this.api.getTagDetails(this.params,this.org_id).subscribe((data:any)=>{
-      if(data.result.data){
-        const tags = data.result.data
-        const filteredTags = tags.filter(tags => !tags.tage_status.includes('Inactive'))
-        this.allTag = filteredTags;
-      }
-    },(error:any)=>{
-      this.api.showError(error.error.error.message)  
-      //console.log(error,"ERROR")
-    }
-   )
   }
 
-  getCostCenter(){
-    this.api.getCostCenterDetails(this.params).subscribe((data:any)=>{
-      //console.log(data.result.data,"COST")
-      if(data.result.data){
-        const costCenter = data.result.data
-        const filterdCostCenter = costCenter.filter(cc => !cc.occ_status?.includes('Inactive'))
-        this.allCostCenter = filterdCostCenter;
-        }
-       },(error:any)=>{
-        this.api.showError(error.error.error.message)  
-        //console.log(error,"ERROR")
+  temp: any;
+  imageUploaded:boolean = false;
+  uploadProflieImageFile(event: any) {
+    const selectedFile = event.target.files[0];
+    console.log(event.target.files[0])
+    if (selectedFile) {
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!allowedTypes.includes(selectedFile.type)) {
+        this.imageUploaded = false;
+        console.error('Invalid file type. Only .jpg, .jpeg, and .png files are allowed.');
+        this.api.showError('Invalid file type, only .jpg, .jpeg, and .png files are allowed.')
+        this.fileDataUrl = this.tempStoreProfileImage; // Clear any previously selected image
+        this.firstFormGroup.patchValue({ profile_image: this.temp });
+        return;
+      } else {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.temp = this.firstFormGroup.value.profile_image;
+          console.log(this.temp)
+          this.imageUploaded = true;
+          this.fileDataUrl = e.target.result;
+          this.tempStoreProfileImage = e.target.result;
+        };
+        reader.readAsDataURL(selectedFile);
       }
-    )
+    }
+    else{
+      this.imageUploaded = false;
+    }
   }
-  getCenter(){
-    this.api.getCenterDetails(this.params,this.org_id).subscribe((data:any)=>{
-      if(data.result.data){
-        const center = data.result.data;
-        const filteredCenter = center.filter(center => !center.center_status?.includes('Inactive'))
-        this.allCenter = filteredCenter;
-        console.log(this.allCenter,"CENTER ID")
-        }
-    },(error:any)=>{
-      this.api.showError(error.error.error.message)  
-      //console.log(error,"ERROR")
+
+  validateKeyPress(event: KeyboardEvent) {
+    const keyCode = event.which || event.keyCode;
+    if ((keyCode < 48 || keyCode > 57) && keyCode !== 8 && keyCode !== 37 && keyCode !== 39) {
+      event.preventDefault();
+    }
+  }
+  joiningDateFun(event: any) {
+
+  }
+
+  patchingForthFormValue() {
+    this.fourthFormGroup.patchValue({
+      profile_image: '',
+      first_name: this.firstFormGroup.value.first_name,
+      last_name: this.firstFormGroup.value.last_name,
+      gender: this.firstFormGroup.value.gender,
+      phone_number: this.firstFormGroup.value.phone_number,
+      marital_status: this.firstFormGroup.value.marital_status,
+      email: this.firstFormGroup.value.email,
+      role: this.firstFormGroup.value.role,
+      // password: this.secondFormGroup.value.password,
+      // org_code: this.thirdFormGroup.value.org_code,
+      reporting_manager_id: this.thirdFormGroup.value.reporting_manager_id,
+      department: this.thirdFormGroup.value.department,
+      designation: this.thirdFormGroup.value.designation,
+      date_of_joining: this.thirdFormGroup.value.date_of_joining,
+      status: this.thirdFormGroup.value.status,
     })
   }
-  getPrefix(){
-    this.api.getPrefixSuffixDetails(this.params,this.org_id).subscribe((data:any)=>{
-      if(data.result.data){
-        this.allPrefix= data.result.data;
-      } 
-    },(error:any)=>{
-      this.api.showError(error.error.error.message)  
-      //console.log(error,"ERROR")
+  setIndex(event) {
+    // console.log(event,'index');
+    this.patchingForthFormValue();
+  }
+  backToEmployeesTable() {
+    localStorage.removeItem('employee_id');
+    this.router.navigate(['./people/people-list'])
+  }
+
+  // uploadImageFile(event: any) {
+  //   this.uploadFile = event.target.files[0];
+  //   if (event.target.files && event.target.files[0]) {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(event.target.files[0])
+  //     reader.onload = (event: any) => {
+  //       this.url = event.target.result;
+  //       this.fileUrl = reader.result
+  //       this.thirdFormGroup.patchValue({ profile_image: this.fileUrl })
+  //     }
+  //   }
+  // }
+  checkValidation(event,text:any) {
+    if (event == 'step1') {
+      this.handleStep1Validation(text);
     }
-   
+    else if (event == 'step2') {
+      console.log('step 2')
+      this.patchingForthFormValue();
+      this.handleStep2Validation(text);
+    }
+    else if (event == 'step3') {
+      this.fourthFormGroup.markAllAsTouched()
+      console.log(this.fourthFormGroup.value);
+    }
+  }
+
+  handleStep1Validation(text:any) {
+    if (this.firstFormGroup.invalid) {
+      this.firstFormGroup.markAllAsTouched();
+    } else {
+      let data = {
+        first_name: this.firstFormGroup.value.first_name,
+        last_name: this.firstFormGroup.value.last_name,
+        gender: this.firstFormGroup.value.gender,
+        marital_status: this.firstFormGroup.value.marital_status,
+        phone_number: this.firstFormGroup.value.phone_number,
+        email: this.firstFormGroup.value.email,
+        role: this.firstFormGroup.value.role,
+        organization_id: this.orgId
+      }
+      if (this.imageUploaded) {
+        data['profile_image'] = this.fileDataUrl;
+      } 
+      console.log(data,'before api')
+      if(text==='add'){
+        this.addFirstDetails(data);
+      } else{
+        this.updateFirstDetails(data);
+      }
+    }
+  }
+
+  addFirstDetails(data:any){
+    this.api.postEmployee(data).subscribe(
+      (res: any) => {
+        console.log('employee data added', res);
+        localStorage.setItem('employee_id', res.user.id)
+        this.employeeId = localStorage.getItem('employee_id')
+        this.firstButtonName = 'Update & Proceed';
+        this.api.showSuccess(res.message);
+        this.stepper.next();
+      },
+      (error) => {
+        console.log('employee post error', error);
+        this.api.showError(error.error.email[0])
+      }
     )
   }
-  onTagSelect(event: any) {
-    //console.log(event)
-    this.tagId.push(event.id)
-    this.f['tags'].markAsUntouched()
-  }
-  onTagSelectAll(event: any) {
-    event.forEach((element : any)  => {
-      this.tagId.push(element.id)
-    });
-  }
-  onItemDeSelect(item: any) {
-    if(this.tagId.length >1){
-    const index = this.tagId.indexOf(item.id)
-    const newArr = this.tagId.splice(index,1)
-    }
-    else{
-      this.tagId = []
-      this.f['tags'].markAllAsTouched()
-    }
- }
-  onItemDeSelectAll(item:any){
-    if(item){
-      this.tagId = []
-      this.f['tags'].markAllAsTouched()
-    }  
-  }
-  
-  getOrgDetails(pagination){
-    this.api.getData(`${environment.live_url}/${environment.organization}?id=${this.user_id}${pagination}`).subscribe(res=>{
-      if(res){
-       this.organizationList = res['result']['data']
-       console.log(this.organizationList,"ORG LIST")
+  updateFirstDetails(data:any){
+    console.log('update 1st step',data)
+    this.api.updateUserProfileDetails(this.employeeId,data).subscribe(
+      (res: any) => {
+        console.log('employee data updated', res);
+        this.firstButtonName = 'Update & Proceed';
+        this.api.showSuccess(res.message);
+        this.stepper.next();
+      },
+      (error) => {
+        console.log('employee post error', error);
+        this.api.showError(error.error.email[0])
       }
-    },(error =>{
-      this.api.showError(error.error.error.message)
-    }))
+    )
   }
-  addPeople(){
-    this.peopleForm.patchValue({tags:this.tagId});
-    
-    if(this.peopleForm.invalid){
-      this.api.showError('Invalid')
-      this.peopleForm.markAllAsTouched()
+  handleStep2Validation(text:any) {
+    if (this.thirdFormGroup.invalid) {
+      this.thirdFormGroup.markAllAsTouched();
     }
-    else{
-   // console.log(this.peopleForm.value.user_role_id,"USER ROLE ID")
-     let data =  {
-        // prefix_suffix_id: this.peopleForm.value.prefix_suffix_id,
-        u_email: this.peopleForm.value.u_email,
-        department_id:this.peopleForm.value.department_id,
-        u_first_name: this.peopleForm.value.u_first_name,
-        user_role_id: this.peopleForm.value.user_role_id,
-        org_role_id: this.peopleForm.value.org_role_id,
-        u_last_name:this.peopleForm.value.u_last_name,
-        user_reporting_manager_ref_id:this.peopleForm.value.user_reporting_manager_ref_id,
-        u_gender: this.peopleForm.value.u_gender,
-        cost_center_id: this.peopleForm.value.cost_center_id,
-        u_marital_status: this.peopleForm.value.u_marital_status,
-        u_designation:this.peopleForm.value.u_designation,
-        u_date_of_joining:this.startDate,
-        tags: this.tagId,
-        profile_base64:this.peopleForm.value.profile_base64,
-        center_id:this.peopleForm.value.center_id,
-        u_status: this.peopleForm.value.u_status,
-        u_org_code:this.peopleForm.value.u_org_code,
-        organization_id:this.peopleForm.value.organization_id
-    }
-      this.api.addPeopleDetails(data).subscribe(
-        response=>{
-          if(response){
-            this.api.showSuccess('People Added Successfully');
-            this.peopleForm.reset();
-            this.initForm()
-            
-            }
-          else{
-            this.api.showError('Error')
+    else {
+      let data = {
+        reporting_manager_id: this.thirdFormGroup.value.reporting_manager_id,
+        department: this.thirdFormGroup.value.department,
+        designation: this.thirdFormGroup.value.designation,
+        // role: this.thirdFormGroup.value.role,
+        date_of_joining: this.datePipe.transform(this.thirdFormGroup.value.date_of_joining, 'yyyy-MM-dd'),
+        status: this.thirdFormGroup.value.status,
+      }
+      this.api.putOrganizationDataOfEmployee(data, this.employeeId).subscribe(
+        (res: any) => {
+          if(res){
+          console.log('organization details updated', res);
+          this.api.showSuccess(res.message);
+          this.secondButtonName= 'Update & Proceed';
+          this.stepper.next();
           }
-        },error =>{
-          this.api.showError(error.message)
-      }
-       
+        },
+        (error) => {
+          console.log('employee post error', error)
+        }
       )
     }
   }
-  
+
+  addSecondDetails(data:any){
+    console.log(data)
+    this.api.postOrganizationDataOfEmployee(data, this.employeeId).subscribe(
+      (res: any) => {
+        if(res){
+        console.log('organization details added', res);
+        this.api.showSuccess(res.message);
+        this.secondButtonName= 'Update & Proceed';
+        this.stepper.next();
+        }
+      },
+      (error) => {
+        console.log('employee post error', error)
+      }
+    )
+  }
+  updateSecondDetails(data:any){
+    console.log(data,'second')
+    this.api.putOrganizationDataOfEmployee(data, this.employeeId).subscribe(
+      (res: any) => {
+        if(res){
+        console.log('organization details updated', res);
+        this.api.showSuccess(res.message);
+        this.secondButtonName= 'Update & Proceed';
+        this.stepper.next();
+        }
+      },
+      (error) => {
+        console.log('employee post error', error)
+      }
+    )
+  }
+
+  checkUpdateValidation(event) {
+    if (event == 'step1') {
+      this.firstFormGroup.markAllAsTouched();
+      console.log('update', this.firstFormGroup.value)
+      this.stepper.next();
+    }
+    else if (event == 'step2') {
+      this.thirdFormGroup.markAllAsTouched();
+      this.stepper.next();
+    } else if (event == 'step3') {
+      this.fourthFormGroup.markAllAsTouched()
+      console.log(this.fourthFormGroup.value);
+    }
+  }
+  showPassword() {
+    this.eyeState = !this.eyeState
+    if (this.eyeState == true) {
+      this.eyeIcon = 'visibility'
+      this.passwordType = 'text'
+    }
+    else {
+      this.eyeIcon = 'visibility_off'
+      this.passwordType = 'password'
+    }
+
+  }
+
+  onSubmit() {
+
+    let data = {
+      first_name: this.firstFormGroup.value.first_name,
+      last_name: this.firstFormGroup.value.last_name,
+      gender: this.firstFormGroup.value.gender,
+      marital_status: this.firstFormGroup.value.marital_status,
+      phone_number: this.firstFormGroup.value.phone_number,
+      email: this.secondFormGroup.value.email,
+      // password: this.secondFormGroup.value.password,
+      org_code: this.secondFormGroup.value.org_code,
+      designation: this.secondFormGroup.value.designation,
+      date_of_joining: this.secondFormGroup.value.date_of_joining,
+      center_id: this.thirdFormGroup.value.center_id,
+      reporting_manager_id: this.thirdFormGroup.value.reporting_manager_id,
+      profile_image: this.thirdFormGroup.value.profile_image,
+      // prefix_suffix_id: this.thirdFormGroup.value.prefix_suffix_id,
+      department: this.thirdFormGroup.value.department,
+      role_id: this.thirdFormGroup.value.role_id,
+      user_role_id: Number(this.fourthFormGroup.value.user_role_id),
+      cost_center_id: this.fourthFormGroup.value.cost_center_id,
+      // tags: [Number(this.fourthFormGroup.value.tags)],
+      organization_id: this.orgId,
+      status: this.fourthFormGroup.value.status
+    }
+    // stop here if form is invalid
+    if (this.fourthFormGroup.invalid) {
+      this.fourthFormGroup.markAllAsTouched()
+      //console.log(this.fourthFormGroup.value,"FOURTH FORM")
+      // if (this.fourthFormGroup.value.tags == null) {
+      //   this.submitted = true
+      // }
+      this.api.showError('Invalid!')
+    }
+    else {
+      this.api.register(data).subscribe((res: any) => {
+        if (res) {
+          if (res['result']) {
+            this.api.showSuccess('People added successfully!!')
+            setTimeout(() => {
+              location.reload()
+            }, 500);
+            sessionStorage.setItem('centerId', res['result'].center_id)
+          }
+          else {
+            if (res) {
+              this.api.showError(res.error)
+              //console.log(res,"ERROR") 
+            }
+          }
+        }
+      }, (error: any) => {
+        this.api.showError(error.error.error.message)
+        //console.log(error,"ERROR")
+      })
+    }
+
+
+  }
+
+
+
+  goBackPreviousPage() {
+    this.location.back();
+  }
 }

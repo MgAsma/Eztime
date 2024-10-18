@@ -1,35 +1,18 @@
 <div class="container-wrapper webView">
-    <!-- <div class="row">
-        <div class="col-sm-6">
-            <h1>People list</h1>
-        </div>
-        <div class="col-sm"></div>
-        <div class="col-sm-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                 <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">People list</li>
-                  
-                </ol>
-              </nav>
-        </div>
-    </div> -->
-   
-        <div class="row p-20">
-            <div class="col-md-7 col-lg-4 search-div px-0">
-                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search by name/role/center"aria-describedby="emailHelp"  autocomplete="off">
-                <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i> 
-              </div>
-              <div class="col-sm"></div>
-              <div class="col-md-4 col-lg-4 text-center align-self-center">
-                <div class="d-flex justify-content-center pg-bg">
-                  <button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
-                >{{size}}</button>
+    <div class="row pb-3">
+      <div class="col-sm-4 search-div">
+        <input type="search" (input)="filterSearch()" class="form-control p-2 sizeinput" [(ngModel)]="term"
+          placeholder="Search by employee name" aria-describedby="emailHelp" autocomplete="off">
+        <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>
+      </div>
+      <div class="col-sm"></div>
+      <div class="col-md-3 col-lg-3 p-1 text-end create-buttons">
+        <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/people/create-people" type="submit">
+          <mat-icon>add</mat-icon>Create Employees</button>
+
+      </div>
+    </div>  
   
-                </div>
-                        </div>
-              
-        </div>
         <div class="bg">
         <div class="row">
             <div class="col px-0">
@@ -37,13 +20,10 @@
                     <thead>
                         <tr> 
                           <th scope="col">S.No</th>
-                          <th scope="col">Employee Name <i  *ngIf="!arrow" (click)="sort('asc','u_first_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','u_first_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">Designation <i  *ngIf="!arrow" (click)="sort('asc','u_designation')" class="bi bi-arrow-up"></i><i (click)="sort('desc','u_designation')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">Tags <i  *ngIf="!arrow" (click)="sort('asc','tag_list_converted')" class="bi bi-arrow-up"></i><i (click)="sort('desc','tag_list_converted')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">DOJ <i  *ngIf="!arrow" (click)="sort('asc','u_date_of_joining')" class="bi bi-arrow-up"></i><i (click)="sort('desc','u_date_of_joining')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">Role <i  *ngIf="!arrow" (click)="sort('asc','user_role_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','user_role_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col" >Center <i  *ngIf="!arrow" (click)="sort('asc','cost_center_id')" class="bi bi-arrow-up"></i><i (click)="sort('desc','cost_center_id')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
                           <th scope="col">Photo  </th>
+                          <th scope="col">Employee Name <i  *ngIf="!arrow" (click)="sort('asc','first_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','first_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+                          <th scope="col">designation_name <i  *ngIf="!arrow" (click)="sort('asc','designation_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','designation_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+                          <!-- <th scope="col">DOJ <i  *ngIf="!arrow" (click)="sort('asc','u_date_of_joining')" class="bi bi-arrow-up"></i><i (click)="sort('desc','u_date_of_joining')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
                           <th scope="col">Status <i  *ngIf="!arrow" (click)="sort('asc','u_status')" class="bi bi-arrow-up"></i><i (click)="sort('desc','u_status')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
                           <th scope="col">
                                 Action
@@ -52,44 +32,43 @@
                       </thead>
                       <tbody>
                         <ng-container *ngIf="(allPeople ) as result">
-                        <tr *ngFor='let item of result|paginate : {
-                            itemsPerPage: tableSize,
-                            currentPage: page,
-                            totalItems: count
-                        }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
+                        <tr *ngFor='let item of result; let i=index' [class.active]="i == currentIndex">
                             <td>{{getContinuousIndex(i)}}</td>
-                            <td>{{item.u_first_name +" "+ item.u_last_name | titlecase}}</td>
-                            <td>{{item.u_designation?item.u_designation:"NA" | titlecase}}</td>
-                            
-                            <td style="width: 10% !important;">
-                              {{item.tag_list_converted ? item.tag_list_converted :'NA' | titlecase}}  
-                            </td>
-                           
-                            <!-- <td *ngIf="item.u_date_of_joining === null">{{'NA'}}</td> -->
-                            <td *ngIf="isDate(item.u_date_of_joining)">{{item.u_date_of_joining | date:'YYYY-MM-dd'}}</td> 
-                            <td *ngIf="!isDate(item.u_date_of_joining)">{{item.u_date_of_joining *1000 | date:'YYYY-MM-dd'}}</td> 
-                            
-                            <td>{{item.user_role_name}}</td>
-                            <td style="padding-left: 15px !important;">{{item.center_name ? item.center_name :'NA' | titlecase}}</td>
                             <td class="p-r">
-                              
-                              <img src="{{item.u_profile_path}}" alt="NAN" height="25px" width="50px">
-                              <a *ngIf="item.u_profile_path" href="{{item.u_profile_path}}" target="_blank">
+                              <img  [src]="item.user.profile_image? item.user.profile_image : '../assets/images/no-profile-pic.png'" height="45px" width="45px" style="border-radius: 50%;">
+                              <a *ngIf="item.user.profile_image" href="{{item.user.profile_image}}" target="_blank">
+                                <i class="bi bi-eye-fill" id="eye-btn" container="body" ngbTooltip="View"></i>
+                              </a>
+                            </td>
+                            <td>{{item.user.first_name +" "+ item.user.last_name | titlecase}}</td>
+                            <td>{{item.designation_name?item.designation_name:"NA" | titlecase}}</td>
+                            <!-- <td *ngIf="isDate(item.u_date_of_joining)">{{item.u_date_of_joining | date:'YYYY-MM-dd'}}</td>  -->
+                            <!-- <td *ngIf="!isDate(item.u_date_of_joining)">{{item.u_date_of_joining *1000 | date:'YYYY-MM-dd'}}</td>  -->
+                            
+                            <!-- <td style="padding-left: 15px !important;">{{item.center_name ? item.center_name :'NA' | titlecase}}</td> -->
+                            <!-- <td class="p-r">
+                              <img src="{{item.user.profile_image}}" alt="NAN" height="25px" width="50px">
+                              <a *ngIf="item.user.profile_image" href="{{item.user.profile_image}}" target="_blank">
                                 <i class="bi bi-eye" id="eye-btn"></i>
                             </a>
+                            </td> -->
                             
-                            </td>
                             
-                            <td>{{item.u_status?item.u_status:'NA' | titlecase}}</td>                                                      
+                            <td *ngIf="item.is_active==true">Active</td> 
+                            <td *ngIf="item.is_active==false">Inactive</td>                                                        
                            <td>
-                            <ng-container *ngFor="let access of permissions">
+                            <ng-container >
+                              <img src="../../../../assets/images/Edit.svg" class="icon-image" (click)="openUpdatePeople(item.user.id)"  container="body" ngbTooltip="Edit" />
+                              <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.user.id)"/>
+                          </ng-container>
+                            <!-- <ng-container *ngFor="let access of permissions">
                               <button mat-raised-button mat-mini-fab  routerLink="/people/updatePeople/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
                                 <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
                               </button>
                               <button mat-raised-button mat-mini-fab   (click)="open(item.people_id)" *ngIf="access === 'DELETE'">
                                 <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
                               </button>
-                            </ng-container>
+                            </ng-container> -->
                             </td>
                         </tr>
                         
@@ -119,7 +98,7 @@
       </div>
   </div>
   <ng-container *ngFor="let access of permissions">
-    <button mat-fab color="primary" routerLink="/register" *ngIf="access == 'CREATE'"  class="createbtn" placement="top" container="body"  ngbTooltip="Add Employee">
+    <button mat-fab color="primary" routerLink="/people/create-people" *ngIf="access == 'CREATE'"  class="createbtn" placement="top" container="body"  ngbTooltip="Add Employee">
       <i class="fa fa-plus"></i>
   
     </button>
@@ -149,7 +128,7 @@
                   <a href="{{item.u_profile_path}}" target="_blank">
                     <img src="{{item.u_profile_path}}" alt="" height="70px" width="27%">
                   </a>
-                <div class="p-2 pt-4">{{item.u_first_name +" "+ item.u_last_name |titlecase}}</div> 
+                <div class="p-2 pt-4">{{item.user.first_name +" "+ item.user.last_name |titlecase}}</div> 
               </div>
                 
                 <div class="col-6 p-2 text-end">
@@ -168,7 +147,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 value-container">
-                      {{item.u_status?item.u_status:'NA'|titlecase}}
+                      {{item.is_active?item.is_active:'NA'|titlecase}}
                     </div>
                   </div>
                 </div>
@@ -184,7 +163,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12 value-container">
-                          {{item.user_role_name|titlecase}}
+                          {{item.user.role_name|titlecase}}
                       </div>
                     </div>
                   </div>
@@ -206,12 +185,12 @@
                 <div class="col-6">
                   <div class="row">
                      <div class="col-12">
-                      <h6 class="card-subtitle">Designation</h6>
+                      <h6 class="card-subtitle">designation_name</h6>
                      </div>
                   </div>
                   <div class="row">
                      <div class="col-12 value-container">
-                     {{item.u_designation?item.u_designation:"NA"|titlecase}}
+                     {{item.designation_name?item.designation_name:"NA"|titlecase}}
                      </div>
                    </div>
                  </div>

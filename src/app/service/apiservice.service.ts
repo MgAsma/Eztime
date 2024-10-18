@@ -179,8 +179,8 @@ export class ApiserviceService {
   addClientDetails(data: any) {
     return this.http.post(`${this.baseurl}/client/`, data, { headers: this.headers })
   }
-  getClientListFromUserId(){
-    return this.http.get(`${this.baseurl}/client/`, { headers: this.headers })
+  getClientListFromUserId(params){
+    return this.http.get(`${this.baseurl}/client/${params}`, { headers: this.headers })
   }
   deleteClient(id: any) {
     return this.http.delete(`${this.baseurl}/client/${id}/`, { headers: this.headers })
@@ -547,8 +547,8 @@ export class ApiserviceService {
   }
 
   // new profile url
-  getProfileDetails(user_id:any){
-    return this.http.get(`${this.baseurl}/user/${user_id}/`, { headers: this.headers })
+  getProfileDetails(params){
+    return this.http.get(`${this.baseurl}/user/${params}`, { headers: this.headers })
   }
   updateUserProfileDetails(user_id:any,data:any){
     return this.http.put(`${this.baseurl}/user/${user_id}/`,data,{ headers: this.headers })
@@ -565,5 +565,42 @@ export class ApiserviceService {
   }
   delete(id) {
     return this.http.delete(id)
+  }
+
+  // gender api
+  getAllGenders(){
+    return this.http.get(`${this.baseurl}/gender/`,{ headers: this.headers })
+  }
+  // marital status
+  getAllMaritalStatus(){
+    return this.http.get(`${this.baseurl}/marital-status/`,{ headers: this.headers })
+  }
+  // project status
+  getProjectStatus(){
+    return this.http.get(`${this.baseurl}/project-status/`)
+  }
+
+  // roles list
+  getAllRoles(){
+    return this.http.get(`${this.baseurl}/role/`,{ headers: this.headers })
+  }
+  // Creating Employees
+  postEmployee(data){
+    return this.http.post(`${this.baseurl}/user/`,data,{headers: this.headers})
+  }
+  getEmployeeList(params){
+    return this.http.get(`${this.baseurl}/all-employee/${params}`,{headers: this.headers})
+  }
+  getEmployeeDetailsById(params){
+    return this.http.get(`${this.baseurl}/employee/${params}`,{headers: this.headers})
+  }
+  postOrganizationDataOfEmployee(data,id){
+    return this.http.post(`${this.baseurl}/employee/${id}/`,data,{headers: this.headers})
+  }
+  putOrganizationDataOfEmployee(data,id){
+    return this.http.put(`${this.baseurl}/employee/${id}/`,data,{headers: this.headers})
+  }
+  deleteEmployees(id:any){
+    return this.http.delete(`${this.baseurl}/user/${id}/`,{headers: this.headers})
   }
 }
