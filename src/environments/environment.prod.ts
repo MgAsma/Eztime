@@ -45,5 +45,7 @@ export const environment = {
   country:`country`,
   state:`state`,
   city:`city`,
-  client:`client`
+  client:`client`,
+  leave_master:`leave-master`,
+  employee_leaves:`employee-leaves`
 };

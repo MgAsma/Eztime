@@ -23,7 +23,6 @@ export class OrganizationListComponent implements OnInit {
   arrowState: { [key: string]: boolean } = {
     organization_name: false,
     email: false,
-    // number_of_users_in_organization: false
   };
   
   sortValue: string = '';

@@ -29,7 +29,7 @@ export class LeaveMasterComponent implements OnInit {
   carry:any;
   day:any;
   encashment:any;
-  max_encashment:any;
+  maximum_enhancement:any;
   action:any;
   selectedId: any;
   enabled: boolean = true;
@@ -37,6 +37,8 @@ export class LeaveMasterComponent implements OnInit {
   user_id: string;
   orgId: any;
   params:any;
+  sortValue: string = '';
+  directionValue: string = '';
   constructor(
     private modalService:NgbModal, 
     private api:ApiserviceService,
@@ -44,6 +46,13 @@ export class LeaveMasterComponent implements OnInit {
     private location:Location,
     private common_service:CommonServiceService
     ) { }
+    
+    arrowState: { [key: string]: boolean } = {
+      number_of_leaves: false,
+      cary_forward_percentage: false,
+      graceful_days:false,
+      maximum_enhancement:false
+    };
   goBack(event)
   {
     event.preventDefault(); // Prevent default back button behavior
@@ -52,110 +61,62 @@ export class LeaveMasterComponent implements OnInit {
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.orgId = sessionStorage.getItem('org_id');
-    
     this.getLeaveType();
-    this.enabled = true
-    this.getUserControls()
   }
   filterSearch(){
-    this.api.getData(`${environment.live_url}/${environment.master_leave_list}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
-      if(res){
-        this.leaveMasterList= res.result.data;
-        const noOfPages:number = res['result'].pagination.number_of_pages
-        this.count  = noOfPages * this.tableSize
-        this.page=res['result'].pagination.current_page;
+    // this.api.getData(`${environment.live_url}/${environment.master_leave_list}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
+    //   if(res){
+    //     this.leaveMasterList= res.result.data;
+    //     const noOfPages:number = res['result'].pagination.number_of_pages
+    //     this.count  = noOfPages * this.tableSize
+    //     this.page=res['result'].pagination.current_page;
 
-      }
-    },((error:any)=>{
-      this.api.showError(error.error.error.message)
-    }))
+    //   }
+    // },((error:any)=>{
+    //   this.api.showError(error.error.error.message)
+    // }))
   }
 
-  getUserControls(){
-    this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
-      if(res.status_code !== '401'){
-        this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
-      }
-      else{
-        this.api.showError("ERROR !")
-      }
-      //console.log(res,'resp from yet');
-      
-    },(error =>{
-      this.api.showError(error.error.error.message)
-    })
   
-    )
-  
-    this.common_service.permission.subscribe(res=>{
-      const accessArr = res
-      if(accessArr.length > 0){
-        accessArr.forEach((element,i) => {
-          if(element['LEAVE_MASTER']){
-            this.permissions = element['LEAVE_MASTER']
-          }
-          
-        });
-       
-      }
-    
-      
-    //  console.log(this.accessConfig,"this.accessConfig")
-    })
-    }
   getLeaveType(){
-    let params = {
-      page_number:this.page,
-      data_per_page:this.tableSize,
-      organization_id:this.orgId,
-      search_key:this.term
-      }
-    this.api.getLeaveDetail(params).subscribe((data:any)=>{
-      this.leaveMasterList= data.result.data;
-      const noOfPages:number = data['result'].pagination.number_of_pages
-      this.count  = noOfPages * this.tableSize;
-      this.page=data['result'].pagination.current_page;
+  
+    this.api.getData(`${environment.live_url}/${environment.leave_master}/`).subscribe((data:any)=>{
+      this.leaveMasterList= data;
+      // const noOfPages:number = data['result'].pagination.number_of_pages
+      // this.count  = noOfPages * this.tableSize;
+      // this.page=data['result'].pagination.current_page;
 
     },(error=>{
-     this.api.showError(error.error.error.message)
+     this.api.showError(error?.error?.message)
       
     })
 
     )
   }
   delete(id:any){
-    this.api.deleteLeaveTypeDetails(id).subscribe((data:any)=>{
+    this.api.delete(`${environment.live_url}/${environment.leave_master}/${id}/`).subscribe((data:any)=>{
       this.enabled = true
       this.api.showWarning('Deleted successfully!')
       this.getLeaveType();
 
     },error=>{
-      this.api.showError(error.error.error.message);
+      this.api.showError(error?.error?.message);
       
     })
     
   }
-  arrow:boolean=false
-  directionValue:any='desc'
-
-
-
-
-  sortValue:any='leave_title'
-  sort(direction:any,value:any){
-    if(direction=='asc'){
-      this.arrow=true
-      this.directionValue= direction
-      this.sortValue= value
-    }
-    else{
-      this.arrow=false
-      this.directionValue= direction
-      this.sortValue= value
-    }
+  
+  sort(direction: string, column: string) {
+    // Reset the state of all columns except the one being sorted
+    Object.keys(this.arrowState).forEach(key => {
+      this.arrowState[key] = false;
+    });
+  
+    // Update the state of the currently sorted column
+    this.arrowState[column] = direction === 'asc';
+  
+    this.directionValue = direction;
+    this.sortValue = column;
   }
   cardId(selected):any{
     this.selectedId = selected.id;

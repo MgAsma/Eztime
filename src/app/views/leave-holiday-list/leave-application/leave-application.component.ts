@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   Validators,
   FormBuilder,
@@ -30,7 +30,7 @@ window['dayjs'] = dayjs;
 })
 export class LeaveApplicationComponent implements OnInit {
   leaveForm!: FormGroup;
-  BreadCrumbsTitle: any = 'Leave application';
+  BreadCrumbsTitle: any = 'Apply';
   allLeave: any = [];
   leave: any;
   uploadFile: any;
@@ -61,7 +61,19 @@ export class LeaveApplicationComponent implements OnInit {
   minDate: any;
   maxDate: any;
   orgId: any;
+  fileDataUrl: string | ArrayBuffer | null = null;
+  @ViewChild('fileInput') fileInput: ElementRef;
+ // Dropdown data as array of objects
+ leaveTypes = [
+  { value: 'sick', viewValue: 'Sick' },
+  { value: 'vacation', viewValue: 'Vacation' },
+  { value: 'casual', viewValue: 'Casual' }
+];
 
+sessions = [
+  { value: 'session1', viewValue: 'Session 1' },
+  { value: 'session2', viewValue: 'Session 2' }
+];
   constructor(
     private builder: FormBuilder,
     private api: ApiserviceService,
@@ -76,7 +88,7 @@ export class LeaveApplicationComponent implements OnInit {
     applyLabel: 'Appliquer',
     customRangeLabel: ' - ',
   };
-
+  onFileChange($event){}
   myFilter = (d: Date | null): boolean => {
     // Disable weekends
     const day = (d || new Date()).getDay();
@@ -87,17 +99,19 @@ export class LeaveApplicationComponent implements OnInit {
     event.preventDefault(); // Prevent default back button behavior
     this.location.back();
   }
-
+  triggerFileInput() {
+    this.fileInput?.nativeElement?.click();
+  }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.user_id = JSON.parse(sessionStorage.getItem('user_id'));
-    this.orgId = sessionStorage.getItem('org_id')
-    this.getPeopleGroup();
-    this.getLeaveType();
+   // this.user_id = JSON.parse(sessionStorage.getItem('user_id'));
+    //this.orgId = sessionStorage.getItem('org_id')
+    //this.getPeopleGroup();
+    //this.getLeaveType();
     this.initForm();
-    this.enableDatepicker();
+   // this.enableDatepicker();
 
-    this.getAllleaveData();
+   // this.getAllleaveData();
   }
 
   getAllleaveData() {
@@ -200,11 +214,8 @@ export class LeaveApplicationComponent implements OnInit {
   initForm() {
     this.leaveForm = this.builder.group({
       reason: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
-      contact_details: [
-        '',
-        [Validators.pattern(/^\S.*$/), Validators.required],
-      ],
-      leave_application_file_attachment: ['', this.fileFormatValidator],
+     
+      leave_application_file_attachment: ['',[Validators.required,this.fileFormatValidator]],
       cc_to: ['', Validators.required],
       leaveApplication_from_date: ['', [Validators.required]],
       leaveApplication_to_date: ['', [Validators.required]],
@@ -213,8 +224,18 @@ export class LeaveApplicationComponent implements OnInit {
       to1_session: ['', [Validators.required]],
       balance: ['', [Validators.required]],
       days: ['', [Validators.required]],
+      applying_to:['',[Validators.required]]
     });
   }
+
+  submit(){
+    if(this.leaveForm.invalid){
+      this.leaveForm.markAllAsTouched()
+    }else{
+      console.log(this.leaveForm.value)
+    }
+  }
+  
   fileFormatValidator(control: AbstractControl): ValidationErrors | null {
     const allowedFormats = ['.jpg', '.jpeg', '.png', '.JPG', '.JPEG', '.PNG'];
     const file = control.value;
@@ -238,6 +259,7 @@ export class LeaveApplicationComponent implements OnInit {
       reader.onload = (event: any) => {
         this.url = event.target.result;
         this.fileUrl = reader.result;
+        this.fileDataUrl = reader.result
         this.leaveForm.patchValue({
           leave_application_file_attachment: this.fileUrl,
         });

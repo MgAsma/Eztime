@@ -1,14 +1,15 @@
 <div class="card-container">
   <div class="row">
     <div class="col-sm-12 col-md-4" *ngFor="let leave of leaveData">
+     
       <mat-card >
-        <mat-card-title>{{ leave.type }}</mat-card-title>
+        <mat-card-title>{{ leave.leave_type }}</mat-card-title>
         <mat-progress-bar mode="determinate" [value]="(leave.used / leave.total * 100)"></mat-progress-bar>
         
         <div class="row py-3">
           <div class="col-12">
             <div>
-              <span class="used-leaves">{{ leave.used }}</span><span style="font-size: 15px;margin-left: 5px;">Used</span>  
+              <span class="used-leaves">{{ leave.consumed_leaves }}</span><span style="font-size: 15px;margin-left: 5px;">Used</span>  
             </div>
             
           </div>
@@ -17,17 +18,17 @@
         <div class="row">
           <div class="col-6">
             <div class="total">
-              <div class="leave-counts">{{ leave.total }}</div>
+              <div class="leave-counts">{{ leave.total_number_of_leaves }}</div>
               <div>Total</div>
             </div>
             
           </div>
           <div class="col-6">
             <div class="total" [ngClass]="{
-              'balance3': (leave.total - leave.used <= 3 && leave.total - leave.used > 0),
-              'balance0': (leave.total - leave.used === 0)
+              'balance3': (leave.total_number_of_leaves - leave.consumed_leaves <= 3 && leave.total_number_of_leaves - leave.consumed_leaves > 0),
+              'balance0': (leave.total_number_of_leaves - leave.consumed_leaves === 0)
             }">
-              <div class="leave-counts">{{ leave.total - leave.used }}</div>
+              <div class="leave-counts">{{ leave.total_number_of_leaves - leave.consumed_leaves }}</div>
               <div>Balance</div>
             </div>
           </div>
