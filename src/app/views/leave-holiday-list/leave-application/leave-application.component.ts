@@ -214,7 +214,6 @@ sessions = [
   initForm() {
     this.leaveForm = this.builder.group({
       reason: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
-     
       leave_application_file_attachment: ['',[Validators.required,this.fileFormatValidator]],
       cc_to: ['', Validators.required],
       leaveApplication_from_date: ['', [Validators.required]],
@@ -300,7 +299,7 @@ sessions = [
       },
       (error: any) => {
         this.noLeaves = true;
-        this.api.showError(error.error.error.message);
+        this.api.showError(error.error.message);
       }
     );
   }

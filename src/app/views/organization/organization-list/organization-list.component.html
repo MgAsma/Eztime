@@ -52,7 +52,7 @@
                 <td>{{getContinuousIndex(i)}}</td>
                 <td class="p-r">
                   <img  *ngIf="item.organization_image" src="{{item.organization_image}}" height="45px" width="45px" style="border-radius: 50%;">
-                  <a href="{{item.organization_image_url}}" target="_blank">
+                  <a *ngIf="item.organization_image" href="{{item.organization_image_url}}" target="_blank">
                     <i class="bi bi-eye-fill" id="eye-btn" container="body" ngbTooltip="View"></i>
                   </a>
                 </td>

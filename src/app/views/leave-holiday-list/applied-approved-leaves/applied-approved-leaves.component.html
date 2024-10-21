@@ -5,49 +5,28 @@
             <div class="col-12">
                 <div style="padding: 12px;">
                     <div class="row">
-                        <div class="col-sm-12 col-md-12 col-lg-3">
-                            <mat-card style="background: #E4FFE3;padding: 25px 0;">
-                                <!-- <div class="row">
-                                    <div class="row">
-                                        <div class="col-12 text-center mb-1"> -->
-                                            <h4 style="font-size: 20px !important;text-align: center;">{{AllCardData?.approved_count || 0}}</h4>
-                                        <!-- </div>
-                                        <div class="col-12 text-center"> -->
-                                            <h6 style="margin-bottom: 0;text-align: center;"><b>Approved</b> </h6>
-                                        <!-- </div>
-                                        
-                                    </div>
-                                </div> -->
+                        <div class="col-sm-12 col-md-12 col-lg-3 cards-section">
+                            <mat-card style="background: #E4FFE3;">
+                                <h4 style="font-size: 20px !important;text-align: center;">{{AllCardData?.approved_count || 0}}</h4>
+                                <h6 style="margin-bottom: 0;text-align: center;"><b>Approved</b> </h6>
                             </mat-card>
-                            <!--/.col-->
-
                         </div>
-                        <div class="col-sm-12 col-md-12 col-lg-3 ">
-                            <mat-card style="background: #FFFBE3;padding: 25px 0;">
+                        <div class="col-sm-12 col-md-12 col-lg-3 cards-section">
+                            <mat-card style="background: #FFFBE3;">
                                
-                                            <h4 style="font-size: 20px !important;text-align: center;">{{AllCardData?.request_count || 0}}</h4>
-                                        
-                                            <h6 style="margin-bottom: 0;text-align: center;"><b>Pending</b></h6>
-                                        
-                                   
+                            <h4 style="font-size: 20px !important;text-align: center;">{{AllCardData?.request_count || 0}}</h4>
+                        
+                            <h6 style="margin-bottom: 0;text-align: center;"><b>Pending</b></h6>
+                        
+                    
                             </mat-card>
                             <!--/.col-->
 
                         </div>
-                        <div class="col-sm-12 col-md-12 col-lg-3">
-                            <mat-card style="background: #FFE3E3;padding: 25px 0;">
-                                <!-- <div class="row">
-                                    <div class="row">
-                                        <div class="col-12 text-center mb-1"> -->
-                                            <h4 style="font-size: 20px !important;text-align: center;">{{AllCardData?.declined_count || 0}}</h4>
-                                        <!-- </div>
-                                        <div class="col-12 text-center"> -->
-                                            <h6 style="margin-bottom: 0;text-align: center"><b>Declined</b></h6>
-                                        <!-- </div> -->
-                                        
-                                    <!-- </div>
-
-                                </div> -->
+                        <div class="col-sm-12 col-md-12 col-lg-3 cards-section">
+                            <mat-card style="background: #FFE3E3;">
+                                <h4 style="font-size: 20px !important;text-align: center;">{{AllCardData?.declined_count || 0}}</h4>
+                                <h6 style="margin-bottom: 0;text-align: center"><b>Declined</b></h6>
                             </mat-card>
                         </div>
                        
@@ -140,7 +119,8 @@
                                           </div>
                                        
                                       </div>
-                                      <app-approved *ngIf="AllListData && AllListData[0]?.status === 'APPROVED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-approved>   
+                                      <app-approved [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-approved>   
+                                      <!-- <app-approved *ngIf="AllListData && AllListData[0]?.status === 'APPROVED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-approved>    -->
                                 </mat-tab>
                                 <mat-tab label="Declined">
                                     <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
@@ -151,7 +131,8 @@
                                           </div>
                                        
                                       </div>
-                                      <app-declined *ngIf="AllListData && AllListData[0]?.status === 'DECLINED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-declined>
+                                      <app-declined  [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-declined>
+                                      <!-- <app-declined *ngIf="AllListData && AllListData[0]?.status === 'DECLINED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-declined> -->
                                 </mat-tab>
                             </mat-tab-group>
                                 <!-- No Records Template -->
