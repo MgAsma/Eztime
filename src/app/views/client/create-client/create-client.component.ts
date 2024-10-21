@@ -12,7 +12,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 export class CreateClientComponent implements OnInit {
   BreadCrumbsTitle:any='Create client';
   clientForm! : FormGroup
-
+  user_id:any;
   allClient:any=[];
   client:any;
 
@@ -29,7 +29,8 @@ export class CreateClientComponent implements OnInit {
 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.orgId = sessionStorage.getItem('org_id')
+    this.orgId = sessionStorage.getItem('organization_id');
+    this.user_id = sessionStorage.getItem('user_id');
     // this.getIndustry();
     this.initForm();
   }
@@ -41,13 +42,14 @@ export class CreateClientComponent implements OnInit {
   }
   initForm(){
     this.clientForm= this.builder.group({
-      c_name:['',[Validators.required]],
-      c_contact_person:['',[Validators.required]],
-      c_type:[true,[Validators.required]],
-      c_contact_person_address:['',[Validators.required,Validators.pattern(/^\S.*$/)]],
-      c_contact_person_email_id:['',[Validators.required,Validators.email]],
-      c_contact_person_phone_no:['',[Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      org_ref_id:this.orgId
+      clint_name:['',[Validators.required]],
+      contact_person_name:['',[Validators.required]],
+      is_billable:[true,[Validators.required]],
+      address:['',[Validators.required,Validators.pattern(/^\S.*$/)]] ,
+      email:['',[Validators.required,Validators.email]],
+      phone_number:['',[Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      created_by:this.user_id,
+      organization: this.orgId
       // c_code:['',[Validators.pattern(/^\S.*$/),Validators.required]],
       // c_address:['',[Validators.pattern(/^\S.*$/),Validators.required]],
       // c_satus:['',Validators.required],
@@ -84,8 +86,9 @@ export class CreateClientComponent implements OnInit {
       this.api.addClientDetails(this.clientForm.value).subscribe(response=>{
         if(response){
           this.api.showSuccess('Client added successfully!!');
-          // this.clientForm.reset();
-          this.ngOnInit();
+          this.clientForm.reset();
+          // this.clientForm.markAsUntouched();
+          // this.ngOnInit();
         }
         else{
           this.api.showError('Error!')

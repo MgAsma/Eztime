@@ -6,9 +6,9 @@
                 <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>
               </div>
             <div class="col-sm"></div>
-            <div class="col-md-3 col-lg-3 p-1 text-end">
-                <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/project/create" type="submit">Create
-                  Project</button>
+            <div class="col-md-3 col-lg-3 p-1 text-end create-buttons">
+                <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/project/create" type="submit">
+                  <mat-icon>add</mat-icon>  Create Project</button>
           
               </div>
             <!-- <div class="col-md-4 col-lg-3 text-center align-self-center">
@@ -71,9 +71,9 @@
                                   </ng-container>  
                             </td>
                         </tr>
-                        <tr *ngIf="result.length === 0" class="nodata">
-                            <td> No records found !</td>  
-                        </tr>
+                        <div *ngIf="result.length === 0" class="nodata">
+                          <p style="width: 100%;"> No records found! </p>
+                        </div>
                         
                     </ng-container>
                       </tbody>

@@ -67,7 +67,7 @@ export class CategoryListComponent implements OnInit {
     //     }
     //   });
     // }
-    this.getUserControls()
+    // this.getUserControls()
   }
   filterSearch(){
     this.api.getData(`${environment.live_url}/${environment.project_tasks}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe(data=>{
@@ -120,25 +120,26 @@ export class CategoryListComponent implements OnInit {
       search_key:this.term
   }
 
-    this.api.getProjectTaskCategoryDetailsPage(params).subscribe(data=>{
+    this.api.getProjCategory().subscribe((data:any)=>{
       
-      if(data['result'].data){
-        this.categoryList = data['result'].data;
-        const noOfPages:number = data['result'].pagination.number_of_pages
-        this.count  = noOfPages * this.tableSize;
-        this.page=data['result'].pagination.current_page;      }
+      if(data){
+        this.categoryList = data;
+        // const noOfPages:number = data['result'].pagination.number_of_pages
+        // this.count  = noOfPages * this.tableSize;
+        // this.page=data['result'].pagination.current_page;      
+      }
       
     },((error)=>{
       this.api.showError(error.error.error.message)
     }))
   }
   delete(id:any){
-    this.api.deleteProjectTaskCategoryDetails(id).subscribe((data:any)=>{
-      if(data){
+    this.api.deleteProjCategory(id).subscribe((data:any)=>{
+      // if(data){
         this.categoryList = []
         this.ngOnInit()
         this.api.showWarning('Project category deleted successfully')
-      }
+      // }
      
     },((error)=>{
       this.api.showError(error.error.error.message)

@@ -6,6 +6,8 @@ import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 @Component({
   selector: 'app-update-project',
   templateUrl: './update-project.component.html',
@@ -26,7 +28,7 @@ export class UpdateProjectComponent implements OnInit {
   updateForm: FormGroup;
   invalidDate: boolean = false;
   url: any;
-
+  assigneePeoples: any = [];
   task_name: any = [];
   subTaskValue: any;
   org_id: any;
@@ -60,6 +62,7 @@ export class UpdateProjectComponent implements OnInit {
   peopleGroupSetting = {};
   subTaskSetting: any = {};
   taskForm: FormGroup;
+  selectedTeams:any= []
   constructor(
     private builder: FormBuilder,
     private api: ApiserviceService,
@@ -67,16 +70,17 @@ export class UpdateProjectComponent implements OnInit {
     private datepipe: DatePipe,
     private router: Router,
     private location: Location,
-    private common_service: CommonServiceService
+    private common_service: CommonServiceService,
+    private modalService: NgbModal
   ) {
     this.id = this.route.snapshot.paramMap.get('id')
     this.page = this.route.snapshot.paramMap.get('page')
     this.tableSize = this.route.snapshot.paramMap.get('tableSize')
 
   }
-  onChange() {
+  onChange(event:any) {
     this.updateForm.patchValue({
-      p_closure_date: ''
+      end_date: ''
     })
   }
   goBack(event) {
@@ -86,29 +90,29 @@ export class UpdateProjectComponent implements OnInit {
   }
   initForm() {
     this.updateForm = this.builder.group({
-      p_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
-      // p_status:['',Validators.required],
-      c_ref_id: ['', [Validators.required]],
+      project_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      client_id: ['', [Validators.required]],
       p_description: ['', [Validators.pattern(/^\S.*$/)]],
-      p_start_date: ['', [Validators.required]],
-      p_closure_date: ['', [Validators.required]],
-      p_estimated_hours: ['', [Validators.required]],
-      p_estimated_cost: ['', [Validators.required]],
-      reporting_manager_ref_id: ['', [Validators.required]],
+      start_date: ['', [Validators.required]],
+      end_date: ['', [Validators.required]],
+      estimated_hour: ['', [Validators.required]],
+      estimated_billing: ['', [Validators.required]],
+      project_manager_id: ['', [Validators.required]],
       approve_manager_ref_id: ['', [Validators.required]],
+      project_task:  this.builder.array([]),
       p_task_checklist_status: [''],
-      p_status: ['', [Validators.required]],
-      pc_ref_id: [''],
+      project_category: [''],
+      status_id: ['', [Validators.required]],
+      pclient_id: [''],
       user_ref_id: [''],
       opg_ref_id: [''],
       p_code: [''],
       p_people_type: [''],
-      people_ref_list: ['', Validators.required],
+      team: ['', Validators.required],
       p_activation_status: [''],
-      project_related_task_list: ['', [Validators.required]],
-      task_project_category_list: ['']
 
-    })
+    });
+    this.addTask();
   }
 
   ngOnInit(): void {
@@ -127,30 +131,51 @@ export class UpdateProjectComponent implements OnInit {
     this.getManager();
     this.getPeopleGroup();
     this.getCategory();
-    this.edit();
-    this.taskForm = this.builder.group({
-      subTasks: this.builder.array([])
-    });
+    // this.edit();
+    // this.taskForm = this.builder.group({
+    //   subTasks: this.builder.array([])
+    // });
 
     // Optionally, you can add an initial empty task
-    this.addTask();
+    // this.addTask();
   }
+ 
   get subTasks(): FormArray {
-    return this.taskForm.get('subTasks') as FormArray;
+    return this.updateForm.get('project_task') as FormArray;
   }
+  addTask(): void {
+    console.log('this.updateForm.value',this.updateForm.value)
+    const taskList = this.updateForm.value.project_task;
+    let allTasksValid = true;
 
+    taskList.forEach((element: any) => {
+      if (element.is_saved === false && element.task_name.trim() === '' || element.status === '' || element.assignee === '') {
+        this.api.showWarning('Task cannot be empty.');
+        allTasksValid = false;
+      }
+      else if (element.task_name.trim() !== '') {
+        if (element.is_saved === false) {
+          this.api.showWarning('Please click on the ✅ to save your task.');
+          allTasksValid = false;
+        }
+      }
+    });
+    if (allTasksValid) {
+      this.subTasks?.push(this.createSubTask());
+    }
+  }
   createSubTask(): FormGroup {
     return this.builder.group({
       task_name: '',
       status: '',
-      assignee: ''
+      assignee: '',
+      is_saved: false,
+      is_cancelled: false,
+      edit_icon: false,
+      is_template: false
     });
   }
-
-  addTask(): void {
-    this.subTasks?.push(this.createSubTask());
-  }
-
+  
   removeTask(index: number): void {
     this.subTasks.removeAt(index);
   }
@@ -172,28 +197,28 @@ export class UpdateProjectComponent implements OnInit {
       organization_id: this.org_id
     }
     this.api.getCurrentProjectDetails(this.id, params).subscribe((data: any) => {
-      this.startDate = this.datepipe.transform(data.result.data[0].p_start_date * 1000, 'yyyy-MM-dd')
-      this.endDate = this.datepipe.transform(data.result.data[0].p_closure_date * 1000, 'yyyy-MM-dd')
-      this.getSubTask(data.result.data[0].p_task_checklist_status, 'TS')
+      this.startDate = this.datepipe.transform(data.result.data[0].start_date * 1000, 'yyyy-MM-dd')
+      this.endDate = this.datepipe.transform(data.result.data[0].end_date * 1000, 'yyyy-MM-dd')
+      // this.getSubTask(data.result.data[0].p_task_checklist_status, 'TS')
       this.updateForm.patchValue({
-        p_status: data.result.data[0].p_status,
-        p_name: data.result.data[0].p_name,
-        c_ref_id: data.result.data[0].c_ref_id,
+        status_id: data.result.data[0].status_id,
+        project_name: data.result.data[0].project_name,
+        client_id: data.result.data[0].client_id,
         p_description: data.result.data[0].p_description,
-        p_start_date: this.datepipe.transform(data.result.data[0].p_start_date * 1000, 'yyyy-MM-dd'),
-        p_closure_date: this.datepipe.transform(data.result.data[0].p_closure_date * 1000, 'yyyy-MM-dd'),
-        p_estimated_hours: data.result.data[0].p_estimated_hours,
-        p_estimated_cost: data.result.data[0].p_estimated_cost,
-        reporting_manager_ref_id: data.result.data[0].reporting_manager_ref_id,
+        start_date: this.datepipe.transform(data.result.data[0].start_date * 1000, 'yyyy-MM-dd'),
+        end_date: this.datepipe.transform(data.result.data[0].end_date * 1000, 'yyyy-MM-dd'),
+        estimated_hour: data.result.data[0].estimated_hour,
+        estimated_billing: data.result.data[0].estimated_billing,
+        project_manager_id: data.result.data[0].project_manager_id,
         approve_manager_ref_id: data.result.data[0].approve_manager_ref_id,
         p_task_checklist_status: data.result.data[0].p_task_checklist_status,
-        people_ref_list: data.result.data[0].pc_ref_id == null ? data.result.data[0].people_ref_list : data.result.data[0].pc_ref_id,
-        task_project_category_list: data.result.data[0].task_project_category_list,
-        project_related_task_list: data.result.data[0].project_related_task_list[0]?.task_name
+        team: data.result.data[0].pclient_id == null ? data.result.data[0].team : data.result.data[0].pclient_id,
+        project_category: data.result.data[0].project_category,
+        project_task: data.result.data[0].project_task[0]?.task_name
       })
       let subTasksArray: any = [];
       let removedItem = [];
-      data.result.data[0].project_related_task_list.forEach((item: any) => {
+      data.result.data[0].project_task.forEach((item: any) => {
         if (item) {
           subTasksArray.push(item);
         }
@@ -281,9 +306,9 @@ export class UpdateProjectComponent implements OnInit {
     if (this.updateForm.invalid) {
       this.updateForm.markAllAsTouched()
     } else {
-      //this.tasks.push(this.updateForm.value.project_related_task_list)
+      //this.tasks.push(this.updateForm.value.project_task)
       console.log(this.tasks, "TASK")
-      this.subTask(this.updateForm.value.project_related_task_list)
+      this.subTask(this.updateForm.value.project_task)
       this.selectedTask.push(this.subTaskValue, this.taskForm.value)
       let flattenedData = this.selectedTask.flatMap(item => {
 
@@ -300,34 +325,34 @@ export class UpdateProjectComponent implements OnInit {
         }
       });
       // console.log(flattenedData,"flattenedData")
-      this.startDate = this.updateForm.value.p_start_date
-      this.endDate = this.updateForm.value.p_closure_date
+      this.startDate = this.updateForm.value.start_date
+      this.endDate = this.updateForm.value.end_date
       let data = {
-        p_name: this.updateForm.value.p_name,
-        p_status: this.updateForm.value.p_status,
-        c_ref_id: this.updateForm.value.c_ref_id,
+        project_name: this.updateForm.value.project_name,
+        status_id: this.updateForm.value.status_id,
+        client_id: this.updateForm.value.client_id,
         //   people_ref_id:this.updateForm.value.people_ref_id,
         p_description: this.updateForm.value.p_description,
-        p_start_date: this.datepipe.transform(this.startDate, 'dd/MM/yyyy'),
-        p_closure_date: this.datepipe.transform(this.endDate, 'dd/MM/yyyy'),
-        p_estimated_hours: this.updateForm.value.p_estimated_hours,
-        p_estimated_cost: this.updateForm.value.p_estimated_cost,
-        reporting_manager_ref_id: this.updateForm.value.reporting_manager_ref_id,
+        start_date: this.datepipe.transform(this.startDate, 'dd/MM/yyyy'),
+        end_date: this.datepipe.transform(this.endDate, 'dd/MM/yyyy'),
+        estimated_hour: this.updateForm.value.estimated_hour,
+        estimated_billing: this.updateForm.value.estimated_billing,
+        project_manager_id: this.updateForm.value.project_manager_id,
         approve_manager_ref_id: this.updateForm.value.approve_manager_ref_id,
         p_task_checklist_status: this.updateForm.value.p_task_checklist_status,
-        pc_ref_id: this.updateForm.value.pc_ref_id,
+        pclient_id: this.updateForm.value.pclient_id,
         org_ref_id: this.org_id,
         user_ref_id: this.updateForm.value.user_ref_id,
         opg_ref_id: this.updateForm.value.opg_ref_id,
         p_code: this.updateForm.value.p_code,
         p_people_type: this.updateForm.value.p_people_type,
-        people_ref_list: this.updateForm.value.people_ref_list,
+        team: this.updateForm.value.team,
         p_activation_status: this.updateForm.value.p_activation_status,
-        project_related_task_list: flattenedData,
-        task_project_category_list: [Number(this.updateForm.value.task_project_category_list)]
+        project_task: flattenedData,
+        project_category: [Number(this.updateForm.value.project_category)]
       }
-      console.log(this.subTaskValue, this.subTaskValue.length, this.updateForm.value.project_related_task_list.length, 'LENGTH--------------')
-      if (this.updateForm.value.people_ref_list !== '' && this.updateForm.value.project_related_task_list.length > 0) {
+      console.log(this.subTaskValue, this.subTaskValue.length, this.updateForm.value.project_task.length, 'LENGTH--------------')
+      if (this.updateForm.value.team !== '' && this.updateForm.value.project_task.length > 0) {
         this.api.updateProject(this.id, data).subscribe(response => {
 
           if (response) {
@@ -348,7 +373,7 @@ export class UpdateProjectComponent implements OnInit {
       else {
         if (this.subTaskValue.length < 0) {
           this.updateForm.patchValue({
-            project_related_task_list: ''
+            project_task: ''
           })
           this.updateForm.markAllAsTouched()
         }
@@ -368,24 +393,24 @@ export class UpdateProjectComponent implements OnInit {
       this.peopleId.push(element.id)
     });
   }
-  getSubTask(event, data): any {
-    // console.log(event,'))))))))))))))))))))))))))))))))))))))')
-    this.subTaskCategories = []
+  // getSubTask(event, data): any {
+  //   // console.log(event,'))))))))))))))))))))))))))))))))))))))')
+  //   this.subTaskCategories = []
 
-    this.updateForm.patchValue({
-      project_related_task_list: ''
-    })
+  //   this.updateForm.patchValue({
+  //     project_task: ''
+  //   })
 
-    this.api.getSubTaskByProjectTaskCategory(event, this.org_id).subscribe(
-      (resp: any) => {
-        this.subTaskCategories = resp.result.data[0].task_list
-      },
-      (error: any) => {
-        this.api.showError(error.error.error.message)
-      }
-    )
+  //   this.api.getSubTaskByProjectTaskCategory(event, this.org_id).subscribe(
+  //     (resp: any) => {
+  //       this.subTaskCategories = resp.result.data[0].task_list
+  //     },
+  //     (error: any) => {
+  //       this.api.showError(error.error.error.message)
+  //     }
+  //   )
 
-  }
+  // }
 
   subTask(event: any) {
     if (event) {
@@ -394,10 +419,10 @@ export class UpdateProjectComponent implements OnInit {
 
   }
   yearEndDateValidator(): any {
-    this.endDate = this.updateForm.get('p_closure_date').value
-    const StartDate = new Date(this.updateForm.get('p_start_date').value).getTime() / (1000 * 60);
+    this.endDate = this.updateForm.get('end_date').value
+    const StartDate = new Date(this.updateForm.get('start_date').value).getTime() / (1000 * 60);
 
-    const EndDate = new Date(this.updateForm.get('p_closure_date').value).getTime() / (1000 * 60);
+    const EndDate = new Date(this.updateForm.get('end_date').value).getTime() / (1000 * 60);
     if (StartDate > EndDate) {
       this.invalidDate = true;
       //console.log(StartDate > EndDate,'true')
@@ -421,5 +446,151 @@ export class UpdateProjectComponent implements OnInit {
     }
 
     return false;
+  }
+
+  matTeamSelect(event: any) {
+    console.log(this.selectedTeams);
+    this.peopleId = event.value;
+    let tempId: any = []
+    const taskList = this.subTasks.value
+    this.allPeopleGroup.forEach(element => {
+      this.peopleId.forEach(element1 => {
+        if (element1 == element.id) {
+          tempId.push(element)
+        }
+      })
+    });
+    this.assigneePeoples = tempId;
+    this.subTasks.controls.forEach((taskControl: FormGroup, index: number) => {
+      const task = taskControl.value;
+
+      if (task.assignee && !this.assigneePeoples.some(person => person.id === task.assignee)) {
+        taskControl.removeControl('original_task_assignee');
+        taskControl.patchValue({
+          assignee: '',
+          is_saved: false,
+          edit_icon: false,
+          is_cancelled: false
+        });
+      }
+    });
+    
+    console.log('assigneePeoples', this.assigneePeoples)
+    console.log('this.subTasks.value', this.subTasks.value)
+  }
+
+  // selecting project templates
+  getSubTask(event: any) {
+    console.log(event.value);
+    // this.subTasks.clear();
+    this.api.getSubTaskByProjectTaskCategory(event.value, this.org_id,).subscribe(
+      (resp: any) => {
+        for (let i = this.subTasks.length - 1; i >= 0; i--) {
+          const task = this.subTasks.at(i);
+          if (task.get('is_template')?.value === true && task.get('is_saved')?.value === false && task.get('is_cancelled')?.value === false) {
+            this.subTasks.removeAt(i);
+          }
+        }
+        const taskList = resp.result.data[0].task_list;
+        taskList.forEach(task => {
+          this.subTasks.push(this.builder.group({
+            task_name: [task.task_name, [Validators.required, Validators.pattern(/^\S.*$/),]],
+            status: ['', Validators.required],
+            assignee: ['', Validators.required],
+            is_saved: false,
+            is_cancelled: false,
+            edit_icon: false,
+            is_template: true
+          }));
+        });
+        console.log(this.updateForm.value)
+      },
+      (error: any) => {
+        //console.log(error);
+
+      }
+    )
+
+  }
+
+  // save task
+  save(index1: any) {
+    const taskList = this.subTasks.at(index1) as FormGroup;
+    const taskName = taskList.get('task_name')?.value.trim();
+    if (taskList.invalid) {
+      taskList.markAllAsTouched();
+    }
+    else {
+      taskList.patchValue({
+        is_saved: true,
+        edit_icon: true,
+        is_cancelled: false
+      });
+      this.api.showSuccess('Task saved.');
+    }
+    console.log(this.updateForm.value, 'clicked on save button')
+  }
+  editTask(index1: any) {
+    const taskList = this.subTasks.at(index1) as FormGroup;
+    taskList.patchValue({
+      is_saved: false,
+      edit_icon: false,
+      is_cancelled: true
+    });
+    const currentTaskName = taskList.get('task_name')?.value;
+    const currentTaskStatus = taskList.get('status')?.value;
+    const currentTaskAssignee = taskList.get('assignee')?.value;
+    taskList.addControl('original_task_name', new FormControl(currentTaskName));
+    taskList.addControl('original_task_status', new FormControl(currentTaskStatus));
+    taskList.addControl('original_task_assignee', new FormControl(currentTaskAssignee));
+    console.log(this.updateForm.value, 'clicked on edit button')
+  }
+  cancelEdit(index1: any) {
+    const taskList = this.subTasks.at(index1) as FormGroup;
+    const originalTaskName = taskList.get('original_task_name')?.value;
+    const originalTaskStatus = taskList.get('original_task_status')?.value;
+    const originalTaskAssignee = taskList.get('original_task_assignee')?.value;
+    if (originalTaskName !== undefined) {
+      taskList.patchValue({ task_name: originalTaskName });
+      taskList.patchValue({ status: originalTaskStatus });
+      taskList.patchValue({ assignee: originalTaskAssignee });
+    }
+    taskList.removeControl('original_task_name');
+    taskList.removeControl('original_task_status');
+    taskList.removeControl('original_task_assignee');
+    taskList.patchValue({
+      is_saved: true,
+      is_cancelled: false,
+      edit_icon: true,
+    });
+  }
+
+   // delete confirmation popup
+   async openDeleteConfirmation(index) {
+    try {
+      const modalRef = await this.modalService.open(GenericDeleteComponent, {
+        size: 'sm',
+        backdrop: 'static',
+        centered: true
+      });
+
+      modalRef.componentInstance.status.subscribe(resp => {
+        if (resp === 'ok') {
+          this.deleteTaskRow(index);
+          modalRef.dismiss();
+        } else {
+          modalRef.dismiss();
+        }
+      });
+    } catch (error) {
+      console.error('Error opening modal:', error);
+    }
+  }
+  // delete task
+  deleteTaskRow(index: any) {
+    this.subTasks.removeAt(index);
+    console.log(this.subTasks);
+    console.log(this.updateForm.value.project_task)
+    // this.projectForm.patchValue({ project_task: this.subTasks });
   }
 }

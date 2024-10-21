@@ -1,20 +1,4 @@
 <div class="container-wrapper webView">
-    <!-- <div class="row">
-        <div class="col-sm-6">
-            <h1>Client list</h1>
-        </div>
-        <div class="col-sm"></div>
-        <div class="col-sm-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">Client list</li>
-                  
-                </ol>
-              </nav>
-        </div>
-        
-    </div> -->
     <div class="row pb-3">
         <div class="col-sm-4 search-div">
           <input type="search" (input)="filterSearch()" class="form-control p-2 sizeinput" [(ngModel)]="term"
@@ -28,21 +12,7 @@
     
         </div>
       </div>    
-    <!-- <div class="row p-20">
-            
-          
-            <div class="col-sm-4 search-div px-0">
-                <input type="text" class="form-control p-2 sizeinput" [(ngModel)]="term" placeholder="Search by client name/contact person" aria-describedby="emailHelp"  autocomplete="off">
-                <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>     
-            </div>
-            <div class="col-sm"></div>
-            <div class="col-md-4 col-lg-3 text-center align-self-center">
-                <div class="d-flex justify-content-center pg-bg">
-                  <button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
-                >{{size}}</button>
-                </div>
-                        </div>
-        </div> -->
+    
         <div class="bg">
         <div class="row">
             <div class="col px-0">
@@ -51,19 +21,16 @@
                         <tr>
                           <th scope="col">S.No</th>
                           <th scope="col">Client Name
-                             <i *ngIf="!arrowState['c_name']" (click)="sort('asc','c_name')" class="bi bi-arrow-up"></i>
-                             <i (click)="sort('desc','c_name')" *ngIf="arrowState['c_name']" class="bi bi-arrow-down"></i>
+                             <i *ngIf="!arrowState['clint_name']" (click)="sort('asc','clint_name')" class="bi bi-arrow-up"></i>
+                             <i (click)="sort('desc','clint_name')" *ngIf="arrowState['clint_name']" class="bi bi-arrow-down"></i>
                              </th>
-                          <!-- <th scope="col">Code <i  *ngIf="!arrow" (click)="sort('asc','c_code')" class="bi bi-arrow-up"></i><i (click)="sort('desc','c_code')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
-                          <!-- <th scope="col">Industry <i  *ngIf="!arrow" (click)="sort('asc','toi_ref_id')" class="bi bi-arrow-up"></i><i (click)="sort('desc','toi_ref_id')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
-                          <!-- <th scope="col">Type <i  *ngIf="!arrow" (click)="sort('asc','c_type')" class="bi bi-arrow-up"></i><i (click)="sort('desc','c_type')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
                           <th scope="col">Contact Person 
-                            <i *ngIf="!arrowState['c_contact_person']" (click)="sort('asc','c_contact_person')" class="bi bi-arrow-up"></i>
-                             <i (click)="sort('desc','c_contact_person')" *ngIf="arrowState['c_contact_person']" class="bi bi-arrow-down"></i>
+                            <i *ngIf="!arrowState['contact_person_name']" (click)="sort('asc','contact_person_name')" class="bi bi-arrow-up"></i>
+                             <i (click)="sort('desc','contact_person_name')" *ngIf="arrowState['contact_person_name']" class="bi bi-arrow-down"></i>
                           </th>
                           <th scope="col">Reg. Date 
-                            <i *ngIf="!arrowState['c_c_timestamp']" (click)="sort('asc','c_c_timestamp')" class="bi bi-arrow-up"></i>
-                            <i (click)="sort('desc','c_c_timestamp')" *ngIf="arrowState['c_c_timestamp']" class="bi bi-arrow-down"></i>
+                            <i *ngIf="!arrowState['created_datetime']" (click)="sort('asc','created_datetime')" class="bi bi-arrow-up"></i>
+                            <i (click)="sort('desc','created_datetime')" *ngIf="arrowState['created_datetime']" class="bi bi-arrow-down"></i>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
@@ -75,28 +42,15 @@
                             totalItems: count
                           }|customSort:directionValue:sortValue; let i=index' [class.active]="i == currentIndex">
                             <td>{{getContinuousIndex(i)}}</td>
-                            <td>{{item.c_name|titlecase}}</td>
-                            <!-- <td>{{item.c_code|titlecase}}</td> -->
-                            <!-- <td>{{item.toi_ref_id}}</td> -->
-                            <!-- <td>{{item.c_type}}</td> -->
-                            <td>{{item.c_contact_person|titlecase}}</td>
-                            <!-- <td>{{item.project ? item.project :"NA"}}</td> -->
-                            <td>{{item.c_c_timestamp | date:'mediumDate'}}</td>
+                            <td>{{item.clint_name|titlecase}}</td>
+                            <td>{{item.contact_person_name|titlecase}}</td>
+                            <td>{{item.created_datetime | date:'mediumDate'}}</td>
                             
                             <td>
-                                <!-- <ng-container *ngFor="let access of permissions">
-                                    <button mat-mini-fab  routerLink="/client/update/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
-                                      <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
-                                    </button>
-                                    <button mat-mini-fab   (click)="open(item.id)" *ngIf="access === 'DELETE'">
-                                      <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
-                                    </button>
-                                  </ng-container>   -->
-                                  <ng-container *ngFor="let access of permissions">
-                                    <img src="../../../../assets/images/Edit.svg" class="icon-image"  *ngIf="access === 'UPDATE'" routerLink="/client/update/{{item.id}}/{{page}}/{{tableSize}}" container="body" ngbTooltip="Edit" />
-                                    <img src="../../../../assets/images/Delete.svg" class="icon-image" *ngIf="access === 'DELETE'" container="body" ngbTooltip="Delete" (click)="open(item.id)"/>
-                                   
-                                </ng-container>
+                                <ng-container >
+                                  <img src="../../../../assets/images/Edit.svg" class="icon-image"  routerLink="/client/update/{{item.id}}/{{page}}/{{tableSize}}" container="body" ngbTooltip="Edit" />
+                                  <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.id)"/>
+                              </ng-container>
                              </td>
                         </tr>
                         <div *ngIf="result.length === 0" class="nodata">
@@ -109,19 +63,6 @@
         </div>
        
     </div>
-    <!-- <div class="row">
-           
-        <div class="col-sm"></div>
-        <div class="col-sm-12">
-            <div class="d-flex justify-content-center p-nav">
-                <pagination-controls 
-                  previousLabel="Prev" 
-                  nextLabel="Next" 
-                  (pageChange)="onTableDataChange($event)">
-                </pagination-controls>
-              </div>
-        </div>
-    </div> -->
     <div class="pagination-container p-0 pt-2">
       <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
       </pagination-controls>
@@ -132,14 +73,6 @@
         </mat-select>
       </div>
     </div>
- <!-- <ng-container *ngFor="let access of permissions">
-    <button mat-fab color="primary" *ngIf="access == 'CREATE'" routerLink="/client/create" class="createbtn" placement="top" container="body" ngbTooltip="Add client">
-      <i class="fa fa-plus"></i>
-  
-    </button>
-  </ng-container> -->
-    <!-- <a routerLink="/client/create"> <button type="button"  class="createbtn" placement="top" container="body" ngbTooltip="Add Client"><i class="fa fa-plus"></i>
-  </button></a> -->
 </div>
 
 <div class="container-wrapper mobileView">
@@ -164,7 +97,7 @@
                     <div class="row">
                         <div class="col-6 b-b">
                             <h6 class="card-subtitle"><i class="bi bi-person-circle"></i> Client name</h6>
-                            <div class="value-container">{{item.c_name |titlecase}}</div>
+                            <div class="value-container">{{item.clint_name |titlecase}}</div>
                         </div>
                         <div class="col-6 p-2 text-end">
                         <ng-container *ngFor="let access of permissions">
@@ -176,28 +109,20 @@
                     <!-- <div class="row">
                         <div class="col-12 b-b">
                             <h6 class="card-subtitle"><i class="bi bi-person-circle"></i> Client name</h6>
-                            <div class="value-container">{{item.c_name}}</div>
+                            <div class="value-container">{{item.clint_name}}</div>
                         </div>
                     </div> -->
                     <div class="row">
                         <div class="col-6">
                             <h6 class="card-subtitle"><i class="bi bi-calendar-week"></i> Reg. date</h6>
-                            <div class="value-container">{{item.c_c_timestamp | date:'mediumDate'}}</div>
+                            <div class="value-container">{{item.created_datetime | date:'mediumDate'}}</div>
                         </div>
                         <div class="col-6">
                              <h6 class="card-subtitle"><i class="bi bi-person-rolodex"></i> Contact person</h6>
-                            <div class="value-container">{{item.c_contact_person|titlecase}}</div>
+                            <div class="value-container">{{item.contact_person_name|titlecase}}</div>
                         </div>
                     </div>
                     <div class="row">
-                        <!-- <div class="col-6">
-                            <h6 class="card-subtitle"><i class="bi bi-upc-scan"></i> Industry</h6>
-                            <div class="value-container">{{item.toi_ref_id}}</div>
-                        </div> -->
-                        <!-- <div class="col-6">
-                            <h6 class="card-subtitle"><i class="bi bi-person-rolodex"></i> Contact person</h6>
-                            <div class="value-container">{{item.c_contact_person|titlecase}}</div>
-                        </div> -->
                     </div>
               
                 </div>
@@ -208,20 +133,6 @@
             </ng-container>
         </div>
     </div>
-    <!-- <div class="row mobile-pagination" *ngIf="allClientList.length !== 0">
-        <div class="col-sm-12" >
-            <div class="mobile-pagination-content">
-               
-                <pagination-controls 
-                  previousLabel="Prev" 
-                  nextLabel="Next" 
-                  (pageChange)="onTableDataChange($event)">
-                </pagination-controls>
-               <div><button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
-                >{{size}}</button></div>
-              </div>
-        </div>
-    </div> -->
     <div class="pagination-container p-0 pt-2">
       <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
       </pagination-controls>
