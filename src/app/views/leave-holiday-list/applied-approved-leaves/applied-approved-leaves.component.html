@@ -1,252 +1,176 @@
-<div class="container-fluid webView">
-    <!-- <div class="row">
-        <div class="col-sm-8">
-            <h1>Applied approved leaves <span *ngIf="month"><b >-</b>{{month| date:'MMMM'}}</span></h1>
-        </div>
-            <div class="col-sm d-flex align-items-end ">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                      <li class="breadcrumb-item">Applied approved leaves <span *ngIf="month"><b >-</b>{{month| date:'MMMM'}}</span> </li>
-                      
-                    </ol>
-                  </nav>
-            </div>
-    </div> -->
+<div class="container-fluid s-padd">
 
- <div class="container-middle">
-    <div class="row p-20">
-        <div class="col-sm-12 col-md-12 col-lg-4">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                            <div class="row">
-                                <div class="col-8"><h6><i class="bi bi-check"></i> Approved </h6></div>  
-                                <div class="col-4 text-end"><h4 class="v-align" style="color: green;">{{AllCardData?.approved_count}}</h4></div>
-                            </div>
-                            <!-- <div class="col-12">
-                                <p><i class="bi bi-calendar-week"></i><span *ngIf="month"> {{month| date:'MMMM'}} </span></p>
-                            </div> -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-12 col-lg-4">
-            <div class="card" >
-                <div class="card-body" >
-                    <div class="row">
-                            <div class="row">
-                                <div class="col-8"><h6><i class="bi bi-lightning"></i> Request </h6></div>  
-                                <div class="col-4 text-end"><h4 class="v-align" style="color: #e6b539;">{{AllCardData?.request_count}}</h4></div>
-                            </div>
-                            <!-- <div class="col-12">
-                                <p><i class="bi bi-calendar-week"></i><span *ngIf="month"> {{month| date:'MMMM'}} </span></p>
-                            </div> -->
-                    </div>
-                </div>
-            </div>
-       
-            <!--/.col-->
-
-        </div>
-        <div class="col-sm-12 col-md-12 col-lg-4">
-            <div class="card" >
-                <div class="card-body" >
-                    <div class="row">
-                            <div class="row">
-                                <div class="col-8"><h6><i class="bi bi-x"></i> Declined </h6></div>  
-                                <div class="col-4 text-end"><h4 class="v-align" style="color: red;">{{AllCardData?.declined_count}}</h4></div>
-                            </div>
-                            <!-- <div class="col-12">
-                                <p><i class="bi bi-calendar-week"></i><span *ngIf="month"> {{month| date:'MMMM'}} </span></p>
-                            </div> -->
-                    </div>
-                </div>
-            </div>
-         
-
-        </div>
-
-    </div>
-    <div class="row p-20">
-        <div class="col-12">
-            <div class="card dt-card">
-                <form [formGroup]="appliedLeaveForm" (ngSubmit)="submit()">
-                <div class="row" >
-                    <div class="col-sm-4 col-md-6 col-lg-4">
-                        <label class="date-label">From date <span >*</span></label>
-                        <input class="form-control date-input"  type="date" formControlName="from_date"  placeholder="date" (change)="changeFormat()">                   
-                      <div *ngIf="f['from_date'].touched && f['from_date'].invalid" class="error-msg">
-                        <p *ngIf="f['from_date'].errors['required']">From date is required</p>
-                      </div>
-                    </div>
-                    <div class="col-sm-4 col-md-6 col-lg-4">
-                        <label class="date-label">To date <span >*</span></label>
-                        <input class="form-control date-input"  type="date" formControlName="to_date" [min]="appliedLeaveForm.value.from_date"  placeholder="date" (change)="changeFormat()">  
-                        <div *ngIf="f['to_date'].touched && f['to_date'].invalid" class="error-msg">
-                            <p *ngIf="f['to_date'].errors['required']">To date is required</p>
-                          </div>
-                    </div>
-                    <div class="col-sm-2 col-md-6 col-lg-2 py-3 d-flex align-items-center">
-                        <button mat-raised-button class="proceedbtn mat-btn-s">Submit</button>
-                    </div>
-                </div>
-             </form>
-            </div>
-        </div>
-    </div>
-    
-    <div class="animated fadeIn p-20">
+    <div class="container-middle p-20">
         <div class="row">
-            <div class="col-md-12 mb-4">
-                <!-- Nav tabs -->
-                <tabset >
-                  <tab heading="Yet to approved" (selectTab)="tabState($event)">
-                    <app-yet-to-approve  *ngIf="AllListData && AllListData[0]?.status === 'YET_TO_APPROVED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-yet-to-approve> 
-                    <div class="text-center text-muted no-data py-2" *ngIf="AllListData && AllListData[0]?.status !== 'YET_TO_APPROVED' ">No records found
-  </div>  
-                 </tab>
-                  <tab heading="Approved leaves" (selectTab)="tabState($event)"  aria-selected="true" >
-                      <app-approved *ngIf="AllListData && AllListData[0]?.status === 'APPROVED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-approved>   
-                      <div class="text-center text-muted no-data py-2" *ngIf="AllListData && AllListData[0]?.status !== 'APPROVED' ">No records found
-  </div>  
-                    </tab>
-                  <tab heading="Declined leaves" (selectTab)="tabState($event)">
-                    <app-declined *ngIf="AllListData && AllListData[0]?.status === 'DECLINED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-declined>
-                    <div class="text-center text-muted no-data py-2" *ngIf="AllListData && AllListData[0]?.status !== 'DECLINED' ">No records found
-  </div>  
-                </tab>
-                </tabset>
-              </div>
-        </div>
-    </div>
-
-</div>  
-</div>
-
-<div class="container-fluid mobileView">
-    <div class="row mx-1 my-1">
-        <div class="col-sm-7">
-            <h1>Applied approved leaves <span *ngIf="month"><b >-</b></span></h1>
-        </div>
-            <!-- <div class="col-sm-5 d-flex align-items-end ">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                      <li class="breadcrumb-item">Applied approved leaves <b *ngIf="month">-</b> {{month| date:'MMMM'}}</li>
-                      
-                    </ol>
-                  </nav>
-            </div> -->
-    </div>
-
- <div class="container-middle">
-    <div class="row p-20">
-        <div class="col-sm-12 col-md-12 col-lg-4">
-            <div class="card">
-                <div class="card-body">
+            <div class="col-12">
+                <div style="padding: 12px;">
                     <div class="row">
-                            <div class="row">
-                                <div class="col-8"><h6><i class="bi bi-check"></i> Approved </h6></div>  
-                                <div class="col-4 text-end"><h4 class="v-align" style="color: green;">{{AllCardData?.approved_count}}</h4></div>
-                            </div>
-                            <!-- <div class="col-12">
-                                <p><i class="bi bi-calendar-week"></i><span *ngIf="month"> {{month| date:'MMMM'}} </span></p>
-                            </div> -->
+                        <div class="col-sm-12 col-md-12 col-lg-3">
+                            <mat-card style="background: #E4FFE3;padding: 25px 0;">
+                                <!-- <div class="row">
+                                    <div class="row">
+                                        <div class="col-12 text-center mb-1"> -->
+                                            <h4 style="font-size: 20px !important;text-align: center;">{{AllCardData?.approved_count || 0}}</h4>
+                                        <!-- </div>
+                                        <div class="col-12 text-center"> -->
+                                            <h6 style="margin-bottom: 0;text-align: center;"><b>Approved</b> </h6>
+                                        <!-- </div>
+                                        
+                                    </div>
+                                </div> -->
+                            </mat-card>
+                            <!--/.col-->
+
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-3 ">
+                            <mat-card style="background: #FFFBE3;padding: 25px 0;">
+                               
+                                            <h4 style="font-size: 20px !important;text-align: center;">{{AllCardData?.request_count || 0}}</h4>
+                                        
+                                            <h6 style="margin-bottom: 0;text-align: center;"><b>Pending</b></h6>
+                                        
+                                   
+                            </mat-card>
+                            <!--/.col-->
+
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-3">
+                            <mat-card style="background: #FFE3E3;padding: 25px 0;">
+                                <!-- <div class="row">
+                                    <div class="row">
+                                        <div class="col-12 text-center mb-1"> -->
+                                            <h4 style="font-size: 20px !important;text-align: center;">{{AllCardData?.declined_count || 0}}</h4>
+                                        <!-- </div>
+                                        <div class="col-12 text-center"> -->
+                                            <h6 style="margin-bottom: 0;text-align: center"><b>Declined</b></h6>
+                                        <!-- </div> -->
+                                        
+                                    <!-- </div>
+
+                                </div> -->
+                            </mat-card>
+                        </div>
+                       
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-12 col-lg-4">
-            <div class="card" >
-                <div class="card-body" >
-                    <div class="row">
-                            <div class="row">
-                                <div class="col-8"><h6><i class="bi bi-lightning"></i> Request </h6></div>  
-                                <div class="col-4 text-end"><h4 class="v-align" style="color: #e6b539;">{{AllCardData?.request_count}}</h4></div>
+                <div class="card dt-card">
+
+                    <form [formGroup]="appliedLeaveForm">
+                        <div class="row">
+                            <div class="col-sm-4 col-md-6 col-lg-3">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>From date</mat-label>
+                                    <input matInput [matDatepicker]="fromDatePicker" formControlName="from_date"
+                                        (dateChange)="changeFormat()" required>
+                                    <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #fromDatePicker></mat-datepicker>
+                                    <mat-error *ngIf="f['from_date'].touched && f['from_date'].invalid">
+                                        From date is required.
+                                    </mat-error>
+                                </mat-form-field>
                             </div>
-                            <!-- <div class="col-12">
-                                <p><i class="bi bi-calendar-week"></i><span *ngIf="month"> {{month| date:'MMMM'}} </span></p>
-                            </div> -->
-                    </div>
-                </div>
-            </div>
-       
-            <!--/.col-->
 
-        </div>
-        <div class="col-sm-12 col-md-12 col-lg-4">
-            <div class="card" >
-                <div class="card-body" >
-                    <div class="row">
-                            <div class="row">
-                                <div class="col-8"><h6><i class="bi bi-x"></i> Declined </h6></div>  
-                                <div class="col-4 text-end"><h4 class="v-align" style="color: red;">{{AllCardData?.declined_count}}</h4></div>
+                            <div class="col-sm-4 col-md-6 col-lg-3">
+                                <mat-form-field appearance="outline" [attr.disabled]="!appliedLeaveForm.value.from_date">
+                                    <mat-label>To date</mat-label>
+                                    <input matInput [matDatepicker]="toDatePicker" formControlName="to_date"
+                                        [min]="appliedLeaveForm.value.from_date" (dateChange)="changeFormat()" required>
+                                    <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #toDatePicker></mat-datepicker>
+                                    <mat-error *ngIf="f['to_date'].touched && f['to_date'].invalid">
+                                        To date is required.
+                                    </mat-error>
+                                </mat-form-field>
                             </div>
-                            <!-- <div class="col-12">
-                                <p><i class="bi bi-calendar-week"></i><span *ngIf="month"> {{month| date:'MMMM'}} </span></p>
-                            </div> -->
-                    </div>
+
+                            <div class="col-sm-2 col-md-1 col-lg-1 d-flex align-items-center p-0">
+                                <button mat-icon-button type="submit" (click)="submit()" ngbTooltip="Submit">
+                                    <i class="bi bi-arrow-up-right-square-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
                 </div>
-            </div>
-         
 
-        </div>
-
-    </div>
-    <div class="row p-20">
-        <div class="col-12">
-            <div class="card dt-card">
-                <form [formGroup]="appliedLeaveForm" (ngSubmit)="submit()">
-                <div class="row" >
-                    <div class="col-sm-4 col-md-6 col-lg-4">
-                        <label class="date-label">From date <span >*</span></label>
-                        <input class="form-control date-input"  type="date" formControlName="from_date"  placeholder="date" (change)="changeFormat()">                   
-                      <div *ngIf="f['from_date'].touched && f['from_date'].invalid" class="error-msg">
-                        <p *ngIf="f['from_date'].errors['required']">From date is required</p>
+                <div class="animated fadeIn pt-2">
+                    <div class="row p-r webView">
+                        
+                        <div class="col-sm-4 search-div" >
+                            <button mat-icon-button  class="close-icon" style="top:0" ngbTooltip="Search" *ngIf="!showSearch" (click)="showSearch=!showSearch">
+                                <i class="bi bi-search"></i>
+                            </button>
+                           
+                            <input type="search" *ngIf="showSearch" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+                              placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
+                            <i class="bi bi-search" id="search-icon-tab" *ngIf="showSearch"></i>
+                          
+                            <i class="bi bi-x-circle close-icon" ngbTooltip="Close" *ngIf="showSearch" (click)="showSearch=!showSearch"></i>
+                        </div>
+                          
                       </div>
+                     
+                    <div class="row">
+                        <div class="col-md-12 mb-4">
+                            <mat-tab-group class="custom-tab-group" (selectedTabChange)="tabState($event)">
+                               
+                                <!-- Pending Tab -->
+                                <mat-tab label="Pending">
+                                    <ng-container >
+                                    <!-- <ng-container *ngIf="AllListData && AllListData[0]?.status === 'YET_TO_APPROVED';else noRecords"> -->
+                                        <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
+                                            <div class="col-sm-12 col-md-6 search-div">
+                                                <input type="search" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+                                                  placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
+                                                <i class="bi bi-search" id="search-icon-tab" ></i>
+                                              </div>
+                                           
+                                          </div>
+                                          <app-yet-to-approve   [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-yet-to-approve> 
+                                          <!-- <app-yet-to-approve  *ngIf="AllListData && AllListData[0]?.status === 'YET_TO_APPROVED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-yet-to-approve>  -->
+                                    </ng-container>
+                                 
+                                </mat-tab>
+                                <mat-tab label="Approved">
+                                    <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
+                                        <div class="col-sm-12 col-md-6 search-div">
+                                            <input type="search" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+                                              placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
+                                            <i class="bi bi-search" id="search-icon-tab" ></i>
+                                          </div>
+                                       
+                                      </div>
+                                      <app-approved *ngIf="AllListData && AllListData[0]?.status === 'APPROVED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-approved>   
+                                </mat-tab>
+                                <mat-tab label="Declined">
+                                    <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
+                                        <div class="col-sm-12 col-md-6 search-div">
+                                            <input type="search" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+                                              placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
+                                            <i class="bi bi-search" id="search-icon-tab" ></i>
+                                          </div>
+                                       
+                                      </div>
+                                      <app-declined *ngIf="AllListData && AllListData[0]?.status === 'DECLINED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-declined>
+                                </mat-tab>
+                            </mat-tab-group>
+                                <!-- No Records Template -->
+                                <ng-template #noRecords>
+                                    <div class="no-records text-center">
+                                    No records found !!
+                                        <button mat-button (click)="refershPage()" class="proceedbtn" style="width: fit-content;padding:0 10px;">Refresh <i class="fa fa-refresh" aria-hidden="true"></i></button>
+                                    </div>
+                                </ng-template>
+                        </div>
                     </div>
-                    <div class="col-sm-4 col-md-6 col-lg-4">
-                        <label class="date-label">To date <span >*</span></label>
-                        <input class="form-control date-input"  type="date" formControlName="to_date" [min]="appliedLeaveForm.value.from_date"  placeholder="date" (change)="changeFormat()">  
-                        <div *ngIf="f['to_date'].touched && f['to_date'].invalid" class="error-msg">
-                            <p *ngIf="f['to_date'].errors['required']">To date is required</p>
-                          </div>
-                    </div>
-                    <div class="col-sm-2 col-md-6 col-lg-2 py-3 d-flex align-items-center">
-                        <button mat-raised-button class="proceedbtn mat-btn-s">Submit</button>
-                    </div>
-                </div>
-             </form>
+                <!-- </div>
             </div>
         </div>
     </div>
-    
-    <div class="animated fadeIn p-20">
-        <div class="row">
-            <div class="col-md-12 mb-4">
-                <!-- Nav tabs -->
-                <tabset >
-                  <tab heading="Yet to approved" (selectTab)="tabState($event)">
-                    <app-yet-to-approve  *ngIf="AllListData && AllListData[0]?.status === 'YET_TO_APPROVED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-yet-to-approve> 
-                    <div class="text-center text-muted no-data py-2" *ngIf="AllListData && AllListData[0]?.status !== 'YET_TO_APPROVED' ">No records found
-  </div>  
-                 </tab>
-                  <tab heading="Approved leaves" (selectTab)="tabState($event)"  aria-selected="true" >
-                      <app-approved *ngIf="AllListData && AllListData[0]?.status === 'APPROVED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-approved>   
-                      <div class="text-center text-muted no-data py-2" *ngIf="AllListData && AllListData[0]?.status !== 'APPROVED' ">No records found
-  </div>  
-                    </tab>
-                  <tab heading="Declined leaves" (selectTab)="tabState($event)">
-                    <app-declined *ngIf="AllListData && AllListData[0]?.status === 'DECLINED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-declined>
-                    <div class="text-center text-muted no-data py-2" *ngIf="AllListData && AllListData[0]?.status !== 'DECLINED' ">No records found
-  </div>  
-                </tab>
-                </tabset>
-              </div>
+</div> -->
+
+           
+            </div>
         </div>
     </div>
-
-</div>  
 </div>
-
