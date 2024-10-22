@@ -55,10 +55,10 @@ export class TodaysApprovalComponent implements OnInit {
   getApprovals(params) {
     this.allDetails = [];
    // this.timesheetService.getTodaysApprovalTimesheet(params).subscribe(res => {
-      this.api.getData(`${environment.live_url}/${environment.timesheets}/?status=${params.status}&current_date=today`).subscribe(res =>{
-      if (res['result']['data'].length >= 1) {
-        this.allDetails = res['result'].data;
-        this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.table_size };
+      this.api.getData(`${environment.live_url}/${environment.timesheets}/?status=${params.status}&current_date=today`).subscribe((res:any) =>{
+      if (res) {
+        this.allDetails = res.timesheets        ;
+       // this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.table_size };
       } else {
         this.api.showWarning('No records found !')
       }

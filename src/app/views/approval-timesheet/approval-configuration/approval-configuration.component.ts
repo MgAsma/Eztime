@@ -34,7 +34,7 @@ export class ApprovalConfigurationComponent implements OnInit {
    this.initForm()
    this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
    this.orgId = JSON.parse(sessionStorage.getItem('org_id'))
-   this.getConfiguration()
+ 
   }
   goBack(event)
   {

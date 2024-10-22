@@ -22,46 +22,47 @@
                       <td>{{getContinuousIndex(i)}}</td>
                      
                       <td class="text-center">{{(item.timesheet_date | date :'dd/MM/YYYY') || 'NA'}}</td>
-                      <td class="text-center">{{item.created_by_first_name|titlecase}}</td>
-                    
-                      <td class="text-center">{{item.task_list.task_name}}</td>
-                      <td class="text-center">{{item.task_list.hours_to_complete|titlecase }}</td>
+                      <td class="text-center">{{item.employee_first_name|titlecase}}</td>
+                      <td class="text-center" *ngIf="item.task_list.length">
+                        <div *ngFor="let task of item.task_list; let j = index">
+                          <div>
+                            {{ task?.task_name || 'NA' }} <br/>
+                          </div>
+                        </div>
+                      </td>
+                      <td *ngIf="item.task_list.length === 0">
+                        {{'NA'}}
+                      </td>
+                      <td class="text-center" *ngIf="item.task_list.length">
+                        <div *ngFor="let task of item.task_list; let j = index">
+                          <div>
+                            {{ task?.hours_to_complete || 'NA' }}
+                          </div>
+                        </div>
+                      </td>
+                      <td *ngIf="item.task_list.length === 0">
+                        {{'NA'}}
+                      </td>
+                      <!-- <td class="text-center">{{item[i]?.task_list[i]?.hours_to_complete|titlecase }}</td> -->
                       <td class="text-center">{{item.created_datetime | date :'dd/MM/YYYY'}}</td> 
-                      <!-- <td class="text-center">{{item.approved_state ? item.approved_state : 'Yet to Approve'|titlecase}}</td> -->
-                       <!-- <td class="text-center">
-                          <ng-container *ngFor="let approval of accessConfig">
-                              <span *ngIf="approval == 'DELETE'">
-                                  <button   style="border: none;background-color: inherit;" (click)="open(item)"> <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>
-                              </span>
-                              <!-- <span *ngIf="approval == 'APPROVE'">
-                                  <button  style="border: none;background-color: inherit;" (click)="openDialogue(item.id,'APPROVED')"><i class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>
-                              </span>
-                              <span *ngIf="approval == 'REJECT'">
-                                  <button  style="border: none;background-color: inherit;" (click)="openDialogue(item.id,'DECLINED')"><i class="bi bi-x-circle" container="body" ngbTooltip="Reject" style="color:red"></i></button>
-                              </span> --
-                          </ng-container>
-
-                       </td> -->
+                   
+                      
+                      
                        <td class="text-center">
-                       <ng-container *ngIf="accessConfig.includes('DELETE'); else noDelete">
-                        <ng-container *ngFor="let approval of accessConfig">
-                          <span *ngIf="approval == 'DELETE'">
-                            <!-- <button style="border: none;background-color: inherit;" (click)="open(item)">
-                              <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
-                            </button> -->
+                          <span>
                             <img src="../../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete" (click)="open(item)"/>
                           </span>
-                        </ng-container>
-                      </ng-container>
+                        
                       <ng-template #noDelete>
                         <span>NA</span>
                       </ng-template>
                        </td>
                       
                   </tr>
-                  <tr *ngIf="result.length === 0" class="nodata">
-                      <td> No records found!</td>  
-                  </tr>
+                 
+                  <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="result.length === 0">
+                    No records found!
+                  </div>
                   </ng-container>
                 </tbody>
             </table>
@@ -71,7 +72,7 @@
   
 </div>
 
-<div class="pagination-container p-0 py-2">
+<div class="pagination-container p-0 py-4">
   <!-- Pagination Controls (Center-Aligned) -->
   <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
   </pagination-controls>
@@ -105,22 +106,17 @@
             </div>
             <div class="row">
               <div class="col-12 status-text">
-                {{ item.approved_state ? item.approved_state : 'Yet to Approve'|titlecase }}
+                {{ item.status | titlecase }}
               </div>
             </div>
           </div>
           <div class="col-5">
-              <ng-container *ngFor="let approval of accessConfig">
-                  <span *ngIf="approval == 'DELETE'" style="float: right;">
+              <ng-container>
+                  <span  style="float: right;">
                       <!-- <button type="button" class="toolbar-btn"   (click)="open(item)" ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button> -->
                       <img src="../../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete" (click)="open(item)"/>
                     </span>
-                  <!-- <span *ngIf="approval == 'APPROVE'">
-                      <button  style="border: none;background-color: inherit;" (click)="openDialogue(item.id,'APPROVED')"><i class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>
-                  </span>
-                  <span *ngIf="approval == 'REJECT'">
-                      <button  style="border: none;background-color: inherit;" (click)="openDialogue(item.id,'DECLINED')"><i class="bi bi-x-circle" container="body" ngbTooltip="Reject" style="color:red"></i></button>
-                  </span> -->
+                
               </ng-container>
               
           </div>
@@ -137,7 +133,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 val-r">
-                    {{ item.created_date_time | date: 'dd/MM/yyyy' }}
+                    {{ item.timesheet_date | date: 'dd/MM/yyyy' }}
                   </div>
                 </div>
               </div>
@@ -149,7 +145,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 val-r">
-                    {{ item.created_by_first_name|titlecase }}
+                    {{ item.employee_first_name|titlecase }}
                   </div>
                 </div>
               </div>
@@ -164,8 +160,15 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-12 val-r">
-                    {{ item.time_spent|titlecase }}
+                  <div class="col-12 val-r" *ngIf="item.task_list.length">
+                    <div *ngFor="let task of item.task_list; let j = index">
+                      <div>
+                        {{ task?.hours_to_complete || 'NA' }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 val-r" *ngIf="item.task_list.length === 0">
+                    {{'NA'}}
                   </div>
                 </div>
               </div>
@@ -176,8 +179,15 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-12 val-r">
-                    {{ item.task_worked_list.task_name|titlecase }}
+                  <div class="col-12 val-r" *ngIf="item.task_list.length">
+                    <div *ngFor="let task of item.task_list; let j = index">
+                      <div>
+                        {{ task?.task_name || 'NA' }} <br/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 val-r" *ngIf="item.task_list.length === 0">
+                    {{'NA'}}
                   </div>
                 </div>
               </div>
@@ -201,7 +211,7 @@
   </ng-container>
 </div>
 
-<div class="pagination-container p-0 pt-2">
+<div class="pagination-container p-0 py-2">
   <!-- Pagination Controls (Center-Aligned) -->
   <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
   </pagination-controls> 

@@ -566,4 +566,7 @@ export class ApiserviceService {
   delete(id) {
     return this.http.delete(id)
   }
+  deleteMultiple(url,data) {
+    return this.http.delete(url, data)
+  }
 }

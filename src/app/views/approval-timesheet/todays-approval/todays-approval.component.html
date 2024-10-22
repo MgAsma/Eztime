@@ -30,7 +30,7 @@
                   </div>
                
               </div>
-              <ng-container *ngIf="allDetails[0]?.approved_state === 'YET_TO_APPROVED'; else noRecords">
+              <ng-container >
                
                 <app-yet-approve 
                   [data]="allDetails" 
@@ -50,7 +50,7 @@
                   </div>
                
               </div>
-              <ng-container *ngIf="allDetails[0]?.approved_state === 'APPROVED'; else noRecords">
+              <ng-container >
                 <app-approved 
                   [data]="allDetails" 
                   [totalCount]="totalCount" 
@@ -69,7 +69,7 @@
                   </div>
                
               </div>
-              <ng-container *ngIf="allDetails[0]?.approved_state === 'DECLINED'; else noRecords">
+              <ng-container >
                 <app-declined 
                   [data]="allDetails" 
                   [totalCount]="totalCount" 
@@ -81,12 +81,12 @@
         </ng-container>
 
         <!-- No Records Template -->
-        <ng-template #noRecords>
+        <!-- <ng-template #noRecords>
           <div class="no-records text-center">
             No records found !
               <button mat-button (click)="refershPage()" class="proceedbtn" style="width: fit-content;">Refresh <i class="fa fa-refresh" aria-hidden="true"></i></button>
           </div>
-        </ng-template>
+        </ng-template> -->
       </div>
     </div>
   </div>

@@ -5,6 +5,7 @@ import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.co
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { TimesheetService } from 'src/app/service/timesheet.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-yet-to-approve',
@@ -46,8 +47,7 @@ export class YetToApproveComponent implements OnInit {
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id')
     this.orgId = sessionStorage.getItem('org_id')
-    this.getList();
-    this.getUserControls();
+   
   }
 
   ngOnChanges(changes:SimpleChange):void{
@@ -92,9 +92,7 @@ export class YetToApproveComponent implements OnInit {
     })
     }
   
-  getList(){
-   
-  }
+  
   filterSearch(){
     let tableData ={
       search_key:this.term,
@@ -112,13 +110,10 @@ export class YetToApproveComponent implements OnInit {
   }
   }
   deleteContent(item){
-    let params = {
-      module: "TIMESHEET",
-      menu: "PEOPLE_TIMESHEET",
-      method: "DELETE",
-      user_id: this.user_id
+    let data = {
+     ids:[item.id]
   }
-    this.api.deleteTimeSheeteDetails(item.id,params).subscribe((data:any)=>{
+    this.api.deleteMultiple(`${environment.live_url}/${environment.time_sheets}`,data).subscribe((data:any)=>{
       if(data){
         let tableData ={
           page:this.page,
@@ -127,11 +122,11 @@ export class YetToApproveComponent implements OnInit {
          }
         this.buttonClick.emit(tableData);
        this.ngOnInit()
-        this.api.showWarning('Yet to approve deleted successfully!')
+        this.api.showWarning('Timesheet deleted successfully!')
        
       }
     },((error)=>{
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
       
     }))
     
