@@ -496,7 +496,7 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
         state: this.f['state'].value,
         country: this.f['country'].value,
         postal_code: this.f['postal_code'].value,
-        organization_image: this.fileDataUrl,
+        organization_image: this.fileDataUrl || this.f['logo'].value,
       };
       this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}/`, data).subscribe(
         res => {

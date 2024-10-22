@@ -15,7 +15,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 export class AppliedApprovedLeavesComponent implements OnInit {
   @ViewChild('tabset') tabset: TabsetComponent;
   appliedLeaveForm:FormGroup;
-  BreadCrumbsTitle:any='Applied approved leaves';
+  BreadCrumbsTitle:any='Leave Status';
   AllCardData: any = [];
   selectedTab: any = '';
   currDate:any;
@@ -34,6 +34,8 @@ export class AppliedApprovedLeavesComponent implements OnInit {
   user_id =sessionStorage.getItem('user_id')
   permission: any;
   orgId: any;
+  term:any;
+  showSearch = false
   constructor(
     private api:ApiserviceService,
     private datepipe:DatePipe,
@@ -58,18 +60,18 @@ export class AppliedApprovedLeavesComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.initForm();
-    let params= {
-      module:"LEAVE/HOLIDAY_LIST",
-      menu:"APPLIED/APPROVIED_LEAVES",
-      method:"VIEW",
-      page_number:1,
-      data_per_page:10,
-      user_id:this.user_id,
-      pagination:"TRUE",
-      search_key:'',
-      approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-    }
-    this.getByStatus(params)
+    // let params= {
+    //   module:"LEAVE/HOLIDAY_LIST",
+    //   menu:"APPLIED/APPROVIED_LEAVES",
+    //   method:"VIEW",
+    //   page_number:1,
+    //   data_per_page:10,
+    //   user_id:this.user_id,
+    //   pagination:"TRUE",
+    //   search_key:'',
+    //   approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
+    // }
+    // this.getByStatus(params)
   }
   searchFiter(event){
     if(event){
@@ -107,6 +109,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
     }
     
   }
+  refershPage(){}
   buttonClick(event){
     if(event){
       this.cdref.detectChanges();
@@ -238,55 +241,54 @@ export class AppliedApprovedLeavesComponent implements OnInit {
     
     }
     tabState(data){
-      //console.log(data,"WERTYFDS")
-      if(data.heading == 'Approved leaves'){
-        this.selectedTab = 'APPROVED'
-      }
-      else if(data.heading == 'Yet to be approved' ){
-        this.selectedTab = 'YET_TO_APPROVED' 
-      }
-      else if(data.heading == 'Declined leaves'){
-        this.selectedTab = 'DECLINED'
-      }
-      else{
-        this.selectedTab = 'YET_TO_APPROVED' 
-      }
-      if(this.changes){
+    //   if(data.heading == 'Approved leaves'){
+    //     this.selectedTab = 'APPROVED'
+    //   }
+    //   else if(data.heading == 'Yet to be approved' ){
+    //     this.selectedTab = 'YET_TO_APPROVED' 
+    //   }
+    //   else if(data.heading == 'Declined leaves'){
+    //     this.selectedTab = 'DECLINED'
+    //   }
+    //   else{
+    //     this.selectedTab = 'YET_TO_APPROVED' 
+    //   }
+    //   if(this.changes){
         
-         let params= {
-          module:"LEAVE/HOLIDAY_LIST",
-          menu:"APPLIED/APPROVIED_LEAVES",
-          method:"VIEW",
-          page_number:1,
-          data_per_page:10,
-          search_key:'',
-          user_id:this.user_id,
-          pagination:"TRUE",
-          approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-          leaveApplication_from_date:this.fromDate,
-          leaveApplication_to_date:this.toDate
-        }
-        if(this.appliedLeaveForm.invalid){
-          this.appliedLeaveForm.markAllAsTouched()
-        }
-        else{
-          this.getAppliedLeaves(params)
-        }
-      }
-    else{
-       let params= {
-        module:"LEAVE/HOLIDAY_LIST",
-        menu:"APPLIED/APPROVIED_LEAVES",
-        method:"VIEW",
-        page_number:1,
-        data_per_page:10,
-        search_key:'',
-        user_id:this.user_id,
-        pagination:"TRUE",
-        approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-      }
-      this.getByStatus(params)
-    }
+    //      let params= {
+    //       module:"LEAVE/HOLIDAY_LIST",
+    //       menu:"APPLIED/APPROVIED_LEAVES",
+    //       method:"VIEW",
+    //       page_number:1,
+    //       data_per_page:10,
+    //       search_key:'',
+    //       user_id:this.user_id,
+    //       pagination:"TRUE",
+    //       approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
+    //       leaveApplication_from_date:this.fromDate,
+    //       leaveApplication_to_date:this.toDate
+    //     }
+    //     if(this.appliedLeaveForm.invalid){
+    //       this.appliedLeaveForm.markAllAsTouched()
+    //     }
+    //     else{
+    //       this.getAppliedLeaves(params)
+    //     }
+    //   }
+    // else{
+    //    let params= {
+    //     module:"LEAVE/HOLIDAY_LIST",
+    //     menu:"APPLIED/APPROVIED_LEAVES",
+    //     method:"VIEW",
+    //     page_number:1,
+    //     data_per_page:10,
+    //     search_key:'',
+    //     user_id:this.user_id,
+    //     pagination:"TRUE",
+    //     approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
+    //   }
+    //   this.getByStatus(params)
+    // }
     
     }
     

@@ -11,8 +11,11 @@
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Leave Title *</mat-label>
                     <input matInput formControlName="leave_title" placeholder="Enter leave type Name">
-                    <mat-error *ngIf="leaveTypeForm?.get('leave_title')?.touched && leaveTypeForm.get('leave_title')?.invalid">
+                    <mat-error *ngIf="leaveTypeForm?.get('leave_title')?.touched && leaveTypeForm.get('leave_title')?.invalid && leaveTypeForm.get('leave_title')?.hasError('required') ">
                       Leave title is required.
+                    </mat-error>
+                    <mat-error *ngIf="!leaveTypeForm.get('leave_title')?.hasError('required') && leaveTypeForm?.get('leave_title')?.touched && leaveTypeForm.get('leave_title')?.hasError('pattern')">
+                     Invalid leave title.
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -23,9 +26,12 @@
                     <mat-form-field appearance="outline" class="full-width">
                       <mat-label>Leave Description </mat-label>
                       <textarea matInput formControlName="leave_description" placeholder="Enter leave description"></textarea>
-                      <mat-error *ngIf="leaveTypeForm?.get('leave_description')?.touched && leaveTypeForm?.get('leave_description')?.invalid">
+                      <mat-error *ngIf="leaveTypeForm?.get('leave_description')?.touched && leaveTypeForm?.get('leave_description')?.invalid && leaveTypeForm?.get('leave_description')?.hasError('required')">
                         Leave description is required.
                       </mat-error>
+                      <mat-error *ngIf="!leaveTypeForm.get('leave_description')?.hasError('required') && leaveTypeForm?.get('leave_description')?.touched && leaveTypeForm.get('leave_description')?.hasError('pattern')">
+                        Leave description cannot start with a space.
+                       </mat-error>
                     </mat-form-field>
                   </div>
             </div>
@@ -66,8 +72,11 @@
                     <!-- <mat-error *ngIf="leaveTypeForm?.get('cary_forward_percentage')?.touched && leaveTypeForm?.get('carry_forward_percentage')?.invalid">
                       Carry forward percentage is required.
                     </mat-error> -->
-                    <mat-error *ngIf="leaveTypeForm.get('cary_forward_percentage')?.hasError('pattern')">
+                    <mat-error *ngIf="leaveTypeForm.get('cary_forward_percentage')?.hasError('pattern') && !leaveTypeForm.get('cary_forward_percentage')?.hasError('max')">
                         Please enter a valid percentage (e.g., 50 or 50%)
+                      </mat-error>
+                      <mat-error *ngIf="!leaveTypeForm.get('cary_forward_percentage')?.hasError('pattern') && leaveTypeForm.get('cary_forward_percentage')?.hasError('max')">
+                        Percentage cannot exceed 100%.
                       </mat-error>
                   </mat-form-field>
                 </div>

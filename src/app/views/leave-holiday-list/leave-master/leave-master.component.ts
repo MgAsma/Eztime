@@ -13,7 +13,7 @@ import { error } from 'console';
   styleUrls: ['./leave-master.component.scss']
 })
 export class LeaveMasterComponent implements OnInit {
-  BreadCrumbsTitle:any='Master leave types';
+  BreadCrumbsTitle:any='Leave Master';
   leaveMasterList=[];
   currentIndex:any;
   page = 1;

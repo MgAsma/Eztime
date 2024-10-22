@@ -57,8 +57,6 @@ export class YetToApproveComponent implements OnInit{
     
     this.user_id = sessionStorage.getItem('user_id')
     this.orgId = sessionStorage.getItem('org_id')
-    this.getUserControls()
-    //console.log('LOaded,YET')
   }
 
   
