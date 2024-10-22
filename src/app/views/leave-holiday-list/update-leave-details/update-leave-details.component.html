@@ -72,9 +72,12 @@
                     <!-- <mat-error *ngIf="leaveTypeForm?.get('cary_forward_percentage')?.touched && leaveTypeForm?.get('carry_forward_percentage')?.invalid">
                       Carry forward percentage is required.
                     </mat-error> -->
-                    <mat-error *ngIf="leaveTypeForm.get('cary_forward_percentage')?.hasError('pattern')">
-                        Please enter a valid percentage (e.g., 50 or 50%)
-                      </mat-error>
+                    <mat-error *ngIf="leaveTypeForm.get('cary_forward_percentage')?.hasError('pattern') && !leaveTypeForm.get('cary_forward_percentage')?.hasError('max')">
+                      Please enter a valid percentage (e.g., 50 or 50%)
+                    </mat-error>
+                    <mat-error *ngIf="!leaveTypeForm.get('cary_forward_percentage')?.hasError('pattern') && leaveTypeForm.get('cary_forward_percentage')?.hasError('max')">
+                      Percentage cannot exceed 100%.
+                    </mat-error>
                   </mat-form-field>
                 </div>
               </div>

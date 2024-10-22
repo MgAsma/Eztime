@@ -42,7 +42,7 @@ export class UpdateLeaveDetailsComponent implements OnInit {
       leave_description: ['', Validators.pattern('^[^\\s].*')],
       accruals_or_carry_forward: [''],
       number_of_leaves: [null, [Validators.required,Validators.min(1)]],
-      cary_forward_percentage: ['',Validators.pattern(/^\d+%?$/)],
+      cary_forward_percentage: ['',Validators.pattern(/^\d+%?$/),Validators.max(100)],
       graceful_days: [null,Validators.min(1)],
       maximum_enhancement: [null,Validators.min(1)],
       encashment: [false]
@@ -62,7 +62,7 @@ export class UpdateLeaveDetailsComponent implements OnInit {
  
   edit(){
     this.api.getData(`${environment.live_url}/${environment.leave_master}/${this.id}/`).subscribe((data:any)=>{
-     
+     console.log(data,"DATA")
     if(data){
       
       this.leaveTypeForm.patchValue({
