@@ -13,16 +13,16 @@
                                 <div class="col-12 mb-4">
                                     <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                         <mat-label>Category Name <b class="r-star">*</b></mat-label>
-                                        <input matInput placeholder="Enter category name" formControlName="tpc_name"
+                                        <input matInput placeholder="Enter category name" formControlName="category_name"
                                             autocomplete="off">
                                     </mat-form-field>
-                                    <div class="px-2" *ngIf="f['tpc_name']?.touched && f['tpc_name']?.invalid">
+                                    <div class="px-2" *ngIf="f['category_name']?.touched && f['category_name']?.invalid">
                                         <span class="text-errors"
-                                            *ngIf="f['tpc_name'].errors && f['tpc_name'].errors['required'] ">Category
+                                            *ngIf="f['category_name'].errors && f['category_name'].errors['required'] ">Category
                                             name is
                                             required</span>
                                         <span class="text-errors"
-                                            *ngIf="f['tpc_name'].invalid && f['tpc_name'].hasError('pattern')">
+                                            *ngIf="f['category_name'].invalid && f['category_name'].hasError('pattern')">
                                             Cannot start with a space.
                                         </span>
                                     </div>
@@ -37,25 +37,25 @@
                                 </div>
                                 <!-- Valid -->
                                 <div class="col-6 text-end align-content-center"
-                                    *ngIf="taskCategoryForm.get('task_list').valid">
-                                    <div *ngIf="taskCategoryForm.get('task_list').valid">
+                                    *ngIf="taskCategoryForm.get('projectcategory_task').valid">
+                                    <div *ngIf="taskCategoryForm.get('projectcategory_task').valid">
                                         <button mat-icon-button type="button" class="proceedbtn" color="primary"
-                                            (click)="addRow()" [disabled]="taskCategoryForm.get('task_list').invalid">
+                                            (click)="addRow()" [disabled]="taskCategoryForm.get('projectcategory_task').invalid">
                                             <mat-icon>add</mat-icon>Add Tasks
                                         </button>
                                     </div>
                                 </div>
                                 <!-- invalid -->
                                 <div class="col-6 text-end align-content-center invalid-button"
-                                    *ngIf="taskCategoryForm.get('task_list').invalid">
-                                    <div *ngIf="taskCategoryForm.get('task_list').invalid">
+                                    *ngIf="taskCategoryForm.get('projectcategory_task').invalid">
+                                    <div *ngIf="taskCategoryForm.get('projectcategory_task').invalid">
                                         <button mat-icon-button type="button" class="proceedbtn" color="primary"
                                             disabled>
                                             <mat-icon>add</mat-icon>Add Tasks
                                         </button>
                                     </div>
                                 </div>
-                                <div class="col-12" formArrayName="task_list">
+                                <div class="col-12" formArrayName="projectcategory_task">
                                     <div class="" *ngFor="let task of dynamicArray.controls; let i = index;">
                                         <div [formGroupName]="i" class="row">
                                             <div class="col-sm-12 col-md-6 col-lg-9 mb-3">
@@ -141,15 +141,15 @@
                         <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                 <mat-label>Category Name <b class="r-star">*</b></mat-label>
-                                <input matInput placeholder="Enter category name" formControlName="tpc_name"
+                                <input matInput placeholder="Enter category name" formControlName="category_name"
                                     autocomplete="off">
                             </mat-form-field>
-                            <div class="px-2" *ngIf="f['tpc_name']?.touched && f['tpc_name']?.invalid">
+                            <div class="px-2" *ngIf="f['category_name']?.touched && f['category_name']?.invalid">
                                 <span class="text-errors"
-                                    *ngIf="f['tpc_name'].errors && f['tpc_name'].errors['required'] ">Category name is
+                                    *ngIf="f['category_name'].errors && f['category_name'].errors['required'] ">Category name is
                                     required</span>
                                 <span class="text-errors"
-                                    *ngIf="f['tpc_name'].invalid && f['tpc_name'].hasError('pattern')">
+                                    *ngIf="f['category_name'].invalid && f['category_name'].hasError('pattern')">
                                     Cannot start with a space.
                                 </span>
                             </div>
@@ -163,24 +163,24 @@
                             </div>
                         </div>
                         <!-- Valid -->
-                        <div class="col-12 mb-3 align-content-center" *ngIf="taskCategoryForm.get('task_list').valid">
-                            <div *ngIf="taskCategoryForm.get('task_list').valid">
+                        <div class="col-12 mb-3 align-content-center" *ngIf="taskCategoryForm.get('projectcategory_task').valid">
+                            <div *ngIf="taskCategoryForm.get('projectcategory_task').valid">
                                 <button mat-icon-button type="button" class="proceedbtn" color="primary"
-                                    (click)="addRow()" [disabled]="taskCategoryForm.get('task_list').invalid">
+                                    (click)="addRow()" [disabled]="taskCategoryForm.get('projectcategory_task').invalid">
                                     <mat-icon>add</mat-icon>Add Tasks
                                 </button>
                             </div>
                         </div>
                         <!-- invalid -->
                         <div class="col-12 mb-3 align-content-center invalid-button"
-                            *ngIf="taskCategoryForm.get('task_list').invalid">
-                            <div *ngIf="taskCategoryForm.get('task_list').invalid">
+                            *ngIf="taskCategoryForm.get('projectcategory_task').invalid">
+                            <div *ngIf="taskCategoryForm.get('projectcategory_task').invalid">
                                 <button mat-icon-button type="button" class="proceedbtn" color="primary" disabled>
                                     <mat-icon>add</mat-icon>Add Tasks
                                 </button>
                             </div>
                         </div>
-                        <div class="col-12" formArrayName="task_list">
+                        <div class="col-12" formArrayName="projectcategory_task">
                             <div class="" *ngFor="let task of dynamicArray.controls; let i = index;">
                                 <div [formGroupName]="i" class="row">
                                     <div class="col-sm-12 col-md-6 col-lg-9 mb-3">

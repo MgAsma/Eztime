@@ -14,6 +14,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class UpdateTaskCategoryComponent implements OnInit {
   BreadCrumbsTitle: any = 'Update category';
   id: any;
+  user_id:any
   uploadFile: any;
   url: any = [];
   fileUrl: any;
@@ -54,15 +55,15 @@ export class UpdateTaskCategoryComponent implements OnInit {
   }
   initForm() {
     this.taskCategoryForm = this.builder.group({
-      tpc_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
-      task_list: this.builder.array([]),
-      organization_id: this.orgId
+      category_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      projectcategory_task: this.builder.array([]),
     });
 
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.orgId = sessionStorage.getItem('org_id')
+    this.orgId = sessionStorage.getItem('org_id');
+    this.user_id = sessionStorage.getItem('user_id')
     this.initForm();
     this.edit();
   }
@@ -86,15 +87,15 @@ export class UpdateTaskCategoryComponent implements OnInit {
   //   }
   //   else {
 
-  //     this.taskCategoryForm.value['task_list'].forEach((element, i) => {
+  //     this.taskCategoryForm.value['projectcategory_task'].forEach((element, i) => {
   //       element.id = i + 1
   //     });
 
   //     if (this.type === 'file') {
 
   //       this.data = {
-  //         tpc_name: this.taskCategoryForm.value.tpc_name,
-  //         task_list: this.taskCategoryForm.value.task_list,
+  //         category_name: this.taskCategoryForm.value.category_name,
+  //         projectcategory_task: this.taskCategoryForm.value.projectcategory_task,
   //         organization_id: this.orgId
   //       }
   //     }
@@ -109,9 +110,9 @@ export class UpdateTaskCategoryComponent implements OnInit {
   //       // }
 
   //       this.data = {
-  //         tpc_name: this.taskCategoryForm.value.tpc_name,
+  //         category_name: this.taskCategoryForm.value.category_name,
   //         file_templates_list: filterTemplateList,
-  //         task_list: this.taskCategoryForm.value.task_list,
+  //         projectcategory_task: this.taskCategoryForm.value.projectcategory_task,
   //         organization_id: this.orgId
   //       }
   //       // console.log(this.data,"DATA------------>>>>>>>>>")
@@ -144,13 +145,12 @@ export class UpdateTaskCategoryComponent implements OnInit {
       org_ref_id: this.orgId
     }
 
-    this.api.getCurrentProjectTaskCategoryDetails(this.id, params).subscribe((res: any) => {
-      ////console.log(res,"DATA+++++",res.result.data[0].file_templates_list,res.result.data[0].task_list.length)
-      this.taskCategoryForm.patchValue({
-        tpc_name: res.result.data[0].tpc_name
+    this.api.getProjCategoryById(this.id).subscribe((res: any) => {
+     this.taskCategoryForm.patchValue({
+        category_name: res.category_name
       });
-      const taskList = res.result.data[0].task_list
-      //  this.dynamicArray = this.taskCategoryForm.get('task_list') as FormArray;
+      const taskList = res.projectcategory_task
+      //  this.dynamicArray = this.taskCategoryForm.get('projectcategory_task') as FormArray;
       taskList.forEach(task => {
         this.dynamicArray.push(this.builder.group({
           task_name: [task.task_name, [Validators.required, Validators.pattern(/^\S.*$/),]],
@@ -165,11 +165,11 @@ export class UpdateTaskCategoryComponent implements OnInit {
 
   // new
   get dynamicArray() {
-    return this.taskCategoryForm.controls['task_list'] as FormArray;
+    return this.taskCategoryForm.controls['projectcategory_task'] as FormArray;
   }
   addRow() {
-    console.log('this.taskCategoryForm.value.task_list', this.taskCategoryForm.value.task_list)
-    const taskList = this.taskCategoryForm.value.task_list;
+    console.log('this.taskCategoryForm.value.projectcategory_task', this.taskCategoryForm.value.projectcategory_task)
+    const taskList = this.taskCategoryForm.value.projectcategory_task;
     let allTasksValid = true;  // Flag to check if all tasks are valid
 
     taskList.forEach((element: any) => {
@@ -234,7 +234,7 @@ export class UpdateTaskCategoryComponent implements OnInit {
   }
 
   save(index1: any) {
-    // this.taskCategoryForm.value['task_list'].forEach((element, i) => {
+    // this.taskCategoryForm.value['projectcategory_task'].forEach((element, i) => {
     //   element.id = i + 1
     // });
     console.log(this.taskCategoryForm.value)
@@ -264,7 +264,7 @@ export class UpdateTaskCategoryComponent implements OnInit {
     });
     const currentTaskName = taskList.get('task_name')?.value;
     taskList.addControl('original_task_name', new FormControl(currentTaskName));
-    // this.taskCategoryForm.value.task_list.forEach((element: any, index: any) => {
+    // this.taskCategoryForm.value.projectcategory_task.forEach((element: any, index: any) => {
     //   if (index1 === index) {
     //     element['is_saved'] = false;
     //     element['is_cancelled'] = true;
@@ -288,7 +288,7 @@ export class UpdateTaskCategoryComponent implements OnInit {
       edit_icon: true,
     });
 
-    // this.taskCategoryForm.value.task_list.forEach((element: any, index: any) => {
+    // this.taskCategoryForm.value.projectcategory_task.forEach((element: any, index: any) => {
     //   if (index1 === index) {
     //     element['is_saved'] = true;
     //     element['is_cancelled'] = false;
@@ -303,7 +303,7 @@ export class UpdateTaskCategoryComponent implements OnInit {
       this.taskCategoryForm.markAllAsTouched();
     }
     else {
-      const taskList = this.taskCategoryForm.value.task_list;
+      const taskList = this.taskCategoryForm.value.projectcategory_task;
       let allTasksValid = true;
       taskList.forEach((element: any) => {
         if (element.task_name.trim() === '' && element.is_saved === false) {
@@ -320,20 +320,21 @@ export class UpdateTaskCategoryComponent implements OnInit {
       // api will trigger if it is true 
       if (allTasksValid) {
         let tempList: any;
-        this.taskCategoryForm.value['task_list'].forEach((element, i) => {
+        this.taskCategoryForm.value['projectcategory_task'].forEach((element, i) => {
           element.id = i + 1
         });
-        tempList = this.taskCategoryForm.value['task_list'].map(({ id, task_name }) => ({
+        tempList = this.taskCategoryForm.value['projectcategory_task'].map(({ id, task_name }) => ({
           id,
           task_name
         }));
         const data = {
-          tpc_name: this.taskCategoryForm.value['tpc_name'],
-          task_list: tempList,
-          organization_id: this.taskCategoryForm.value['organization_id']
+          category_name: this.taskCategoryForm.value['category_name'],
+          projectcategory_task: tempList,
+          created_by:this.user_id,
+          updated_by:this.user_id
         }
 
-        this.api.updateProjectTaskCategory(this.id,data).subscribe(response=>{
+        this.api.putProjCategory(this.id,data).subscribe(response=>{
           //console.log(response,"RESPONSE----")
           if(response){
             this.api.showSuccess('Project category updated successfully');

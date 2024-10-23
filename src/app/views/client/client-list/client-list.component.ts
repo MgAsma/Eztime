@@ -39,7 +39,7 @@ export class ClientListComponent implements OnInit {
   selectedId: any;
   enabled: boolean = true;
   permissions: any = [];
-  user_id: string;
+  user_id: any;
   orgId: any;
   arrowState: { [key: string]: boolean } = {
     c_name: false,
@@ -64,11 +64,12 @@ export class ClientListComponent implements OnInit {
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.orgId = sessionStorage.getItem('org_id')
-    this.getClient();
+    this.orgId = sessionStorage.getItem('organization_id')
+    // this.getClient();
+    this.getNewClients();
     this.enabled = true
  
-    this.getUserControls()
+    // this.getUserControls()
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')
@@ -111,6 +112,17 @@ export class ClientListComponent implements OnInit {
           this.api.showError(error.error.error.message)
         }))
     }
+
+    getNewClients(){
+      this.api.getClientListFromUserId(`?${'organization_id'}=${this.orgId}`).subscribe(
+        (res:any)=>{
+          this.allClientList = res;
+        },
+        (error) => {
+          this.api.showError(error.error.error.message)
+        }
+      )
+    }
   getClient(){
     let params = {
       page_number:this.page,
@@ -134,11 +146,11 @@ export class ClientListComponent implements OnInit {
     )
   }
   delete(id:any){
-    this.api.deleteClientDetails(id).subscribe((data:any)=>{
-      if(data){
-        this.ngOnInit();
-        this.api.showWarning('Client deleted successfully!!')
-      }
+    this.api.deleteClient(id).subscribe((data:any)=>{
+      this.ngOnInit();
+      this.api.showWarning('Client deleted successfully!!')
+      // if(data){
+      // }
     },error=>{
      this.api.showError(error.error.error.message)
     })

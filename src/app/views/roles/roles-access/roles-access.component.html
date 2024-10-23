@@ -1,5 +1,8 @@
 
 <div class="row mobileView">
+    <div class="col-12">
+        <span class="user-role">ROLE : {{userRole}}</span> 
+    </div>
     <div class="col-sm-12 col-md-12 sidebar-container" *ngIf="show">
         <!-- <form [formGroup]="rolesAccessForm"> -->
         <ul class="list-group">
@@ -22,16 +25,20 @@
         <router-outlet ></router-outlet>
     </div>
 </div>
-<div class="row webView">
+<div class="row webView p-3">
+    <div class="col-12">
+        <h3><b>{{userRole}}</b></h3> 
+    </div>
     <div class="col-sm-3 sidebar-container">
         <!-- <form [formGroup]="rolesAccessForm"> -->
         <ul class="list-group">
             <li class="list-group-item" *ngFor="let items of mainMenu;let i=index"  >
                 <div [class]="items.containerClass" >
-                    <input [class]="items.class" [type]="items.type" [checked]="items.checked"  [routerLink]="items.path" name="roles">
+                    <button type="button" class="btn" [routerLink]="items.path">{{items.label}}</button>
+                    <!-- <input [class]="items.class" [type]="items.type" [checked]="items.checked"  [routerLink]="items.path" name="roles">
                     <label [class]="items.labelClass">
                         {{items.label}}
-                    </label>
+                    </label> -->
                 </div>
                 <span class="icon-span"><i [class]="items.icon" aria-hidden="true" id="h-icon"></i></span>
             </li>
@@ -41,7 +48,7 @@
 
     </div>
     <div class="col-sm-9 p-0"> 
-        <h1>Roles Accessibility</h1>
+        <!-- <h1>Roles Accessibility</h1> -->
         <router-outlet></router-outlet>
     </div>
 </div>

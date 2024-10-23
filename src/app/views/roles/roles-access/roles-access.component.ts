@@ -9,18 +9,20 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
   styleUrls: ['./roles-access.component.scss']
 })
 export class RolesAccessComponent implements OnInit {
-  BreadCrumbsTitle:any='Accessibilty';
+  BreadCrumbsTitle:any='Roles Accessibilty';
   rolesAccessForm:FormGroup
   id: any;
   mainMenu:any =[]
   show = true;
   role: string;
+  userRole:any;
   constructor(private _fb:FormBuilder,private routes:ActivatedRoute,private common_service:CommonServiceService
   ) {
     this.id =this.routes.snapshot.paramMap.get('id')
     this.role =this.routes.snapshot.paramMap.get('role')
     sessionStorage.setItem('user_role_id',this.id)
     sessionStorage.setItem('user_role_c_side',this.role)
+    this.userRole =sessionStorage.getItem('user_role_c_side') 
     this.mainMenu =[
       {
         label:'Accounts',
@@ -155,6 +157,7 @@ export class RolesAccessComponent implements OnInit {
         path:'projects'
       },
     ]
+   
    }
   
   

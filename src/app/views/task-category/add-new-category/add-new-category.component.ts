@@ -13,7 +13,7 @@ import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.co
 export class AddNewCategoryComponent implements OnInit {
   BreadCrumbsTitle: any = 'Create category';
   taskCategoryForm!: FormGroup
-
+  user_id:any
   allTaskCategory: any = [];
   taskCategory: any;
   file_templates_list!: FormArray
@@ -35,10 +35,10 @@ export class AddNewCategoryComponent implements OnInit {
 
   initForm() {
     this.taskCategoryForm = this.builder.group({
-      tpc_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
-      task_list: this.builder.array([]),
-      organization_id: this.orgId
-      // task_list: this.builder.array([]),
+      category_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      projectcategory_task: this.builder.array([]),
+      // organization_id: this.orgId
+      // projectcategory_task: this.builder.array([]),
       // file_templates_list: this.builder.array([]),
     });
     this.dynamicArray.push(this.builder.group({
@@ -49,8 +49,8 @@ export class AddNewCategoryComponent implements OnInit {
       is_cancelled: false
     }));
     console.log(this.taskCategoryForm.value)
-    // Adding task fields to task_list FormArray
-    // const taskArray = this.taskCategoryForm.get('task_list') as FormArray;
+    // Adding task fields to projectcategory_task FormArray
+    // const taskArray = this.taskCategoryForm.get('projectcategory_task') as FormArray;
     // taskArray.push(this.taskFields());
   }
 
@@ -78,8 +78,9 @@ export class AddNewCategoryComponent implements OnInit {
     this.location.back();
   }
   ngOnInit(): void {
+    this.user_id = sessionStorage.getItem('user_id');
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.orgId = sessionStorage.getItem('org_id')
+    // this.orgId = sessionStorage.getItem('org_id')
     this.initForm();
   }
   get f() {
@@ -92,17 +93,17 @@ export class AddNewCategoryComponent implements OnInit {
     } else {
       console.log('no data', event.target.value)
     }
-    console.log(this.taskCategoryForm.controls['task_list'], 'only task list')
+    console.log(this.taskCategoryForm.controls['projectcategory_task'], 'only task list')
   }
 
 
   // new
   get dynamicArray() {
-    return this.taskCategoryForm.controls['task_list'] as FormArray;
+    return this.taskCategoryForm.controls['projectcategory_task'] as FormArray;
   }
   addRow() {
-    console.log('this.taskCategoryForm.value.task_list', this.taskCategoryForm.value.task_list)
-    const taskList = this.taskCategoryForm.value.task_list;
+    console.log('this.taskCategoryForm.value.projectcategory_task', this.taskCategoryForm.value.projectcategory_task)
+    const taskList = this.taskCategoryForm.value.projectcategory_task;
     let allTasksValid = true;  // Flag to check if all tasks are valid
 
     taskList.forEach((element: any) => {
@@ -194,7 +195,7 @@ export class AddNewCategoryComponent implements OnInit {
     });
     const currentTaskName = taskList.get('task_name')?.value;
     taskList.addControl('original_task_name', new FormControl(currentTaskName));
-    // this.taskCategoryForm.value.task_list.forEach((element: any, index: any) => {
+    // this.taskCategoryForm.value.projectcategory_task.forEach((element: any, index: any) => {
     //   if (index1 === index) {
     //     element['is_saved'] = false;
     //     element['is_cancelled'] = true;
@@ -218,7 +219,7 @@ export class AddNewCategoryComponent implements OnInit {
       edit_icon: true,
     });
 
-    // this.taskCategoryForm.value.task_list.forEach((element: any, index: any) => {
+    // this.taskCategoryForm.value.projectcategory_task.forEach((element: any, index: any) => {
     //   if (index1 === index) {
     //     element['is_saved'] = true;
     //     element['is_cancelled'] = false;
@@ -232,7 +233,7 @@ export class AddNewCategoryComponent implements OnInit {
       this.taskCategoryForm.markAllAsTouched();
     }
     else {
-      const taskList = this.taskCategoryForm.value.task_list;
+      const taskList = this.taskCategoryForm.value.projectcategory_task;
       let allTasksValid = true;
 
       taskList.forEach((element: any) => {
@@ -250,20 +251,21 @@ export class AddNewCategoryComponent implements OnInit {
       // api will trigger if it is true 
       if (allTasksValid) {
         let tempList: any;
-        this.taskCategoryForm.value['task_list'].forEach((element, i) => {
+        this.taskCategoryForm.value['projectcategory_task'].forEach((element, i) => {
           element.id = i + 1
         });
-        tempList = this.taskCategoryForm.value['task_list'].map(({ id, task_name }) => ({
+        tempList = this.taskCategoryForm.value['projectcategory_task'].map(({ id, task_name }) => ({
           id,
           task_name
         }));
         const data = {
-          tpc_name: this.taskCategoryForm.value['tpc_name'],
-          task_list: tempList,
-          organization_id: this.taskCategoryForm.value['organization_id']
+          category_name: this.taskCategoryForm.value['category_name'],
+          projectcategory_task: tempList,
+          created_by:this.user_id,
+          updated_by:this.user_id
         }
         console.log(data, 'data form')
-        this.api.addProjectTaskCategoryDetails(data).subscribe(res => {
+        this.api.postProjCategory(data).subscribe(res => {
           if (res) {
             this.api.showSuccess('Project category added successfully!');
             this.taskCategoryForm.reset();
