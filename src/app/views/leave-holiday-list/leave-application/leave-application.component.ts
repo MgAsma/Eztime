@@ -64,16 +64,14 @@ export class LeaveApplicationComponent implements OnInit {
   fileDataUrl: string | ArrayBuffer | null = null;
   @ViewChild('fileInput') fileInput: ElementRef;
  // Dropdown data as array of objects
- leaveTypes = [
-  { value: 'sick', viewValue: 'Sick' },
-  { value: 'vacation', viewValue: 'Vacation' },
-  { value: 'casual', viewValue: 'Casual' }
-];
-
+ 
 sessions = [
   { value: 'session1', viewValue: 'Session 1' },
   { value: 'session2', viewValue: 'Session 2' }
 ];
+  leaveBalance: any;
+  applyingDays: number;
+  today: Date;
   constructor(
     private builder: FormBuilder,
     private api: ApiserviceService,
@@ -104,16 +102,24 @@ sessions = [
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-   // this.user_id = JSON.parse(sessionStorage.getItem('user_id'));
+    this.user_id = JSON.parse(sessionStorage.getItem('user_id'));
+    this.today = new Date()
     //this.orgId = sessionStorage.getItem('org_id')
     //this.getPeopleGroup();
-    //this.getLeaveType();
+    this.getLeaveType();
     this.initForm();
    // this.enableDatepicker();
 
    // this.getAllleaveData();
   }
 
+  getLeaveBalance(){
+    this.api.getData(`${environment.live_url}/${environment.employee_leaves}/?employee-id=${this.user_id}&leave-type-id=${this.leaveForm.value.leave_type_id}`).subscribe((res:any)=>{
+      if(res){
+        this.leaveBalance = res?.[0]['total_number_of_leaves']
+      }
+    })
+  }
   getAllleaveData() {
     let params = {
       pagination: 'FALSE',
@@ -148,9 +154,7 @@ sessions = [
         }
       );
   }
-  enableDatepicker() {
-
-  }
+ 
   toggleDisable(event) {
     if (event == 'from_date') {
       this.disableTextbox2 = false;
@@ -180,13 +184,13 @@ sessions = [
     }
   }
   getLeaveType() {
-    let params: any = { 'orgId': this.orgId, 'center_id': sessionStorage.getItem('center_id') };
-    this.api.getLeaveTypeDetails(params).subscribe(
+    
+    this.api.getData(`${environment.live_url}/${environment.leave_master}/?employee-id=${this.user_id}`).subscribe(
       (data: any) => {
-        this.leaveType = data.result.data;
+        this.leaveType = data;
       },
       (error) => {
-        this.api.showError(error.error.error.message);
+        this.api.showError(error?.error?.message);
       }
     );
   }
@@ -225,6 +229,50 @@ sessions = [
       days: ['', [Validators.required]],
       applying_to:['',[Validators.required]]
     });
+     // Listen for changes to the date and session fields
+    //  this.leaveForm.valueChanges.subscribe(() => {
+    //   this.calculateApplyingDays();
+    // });
+  }
+  calculateApplyingDays() {
+    const fromDate = this.leaveForm.get('leaveApplication_from_date')?.value;
+    const fromSession = this.leaveForm.get('from1_session')?.value;
+    const toDate = this.leaveForm.get('leaveApplication_to_date')?.value;
+    const toSession = this.leaveForm.get('to1_session')?.value;
+
+    if (fromDate && toDate) {
+      const from = new Date(fromDate);
+      const to = new Date(toDate);
+
+      // Calculate the difference in days
+      let diffInTime = to.getTime() - from.getTime();
+      let diffInDays = diffInTime / (1000 * 3600 * 24);
+
+      // If the fromDate and toDate are the same day
+      if (from.getTime() === to.getTime()) {
+        if (fromSession === toSession) {
+          // If sessions are the same on the same day, it counts as 0.5 days
+          this.applyingDays = 0.5;
+        } else {
+          // If sessions are different on the same day, it counts as 1 full day
+          this.applyingDays = 1;
+        }
+      } else {
+        // For different dates, adjust for sessions
+        if (fromSession === 'session2') {
+          // If starting with the afternoon session, subtract 0.5 day
+          diffInDays -= 0.5;
+        }
+
+        if (toSession === 'session1') {
+          // If ending with the morning session, subtract 0.5 day
+          diffInDays -= 0.5;
+        }
+
+        // Set the number of applying days (add 1 to include the first day)
+        this.applyingDays = diffInDays + 1;
+      }
+    }
   }
 
   submit(){

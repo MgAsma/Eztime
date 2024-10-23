@@ -24,7 +24,7 @@ export class TimesheetComponent implements OnInit {
   toDate: any;
   changes: boolean;
   month: any;
-  selectedTab: any;
+  selectedTab = 'Pending';
   userId:any;
   count: number;
   cardData: any = {};
@@ -75,19 +75,20 @@ export class TimesheetComponent implements OnInit {
  }
   
   getByStatus(params){
-   
-    this.api.getData(`${environment.live_url}/${environment.time_sheets}/?status=${params.status}&from_date=${params.timesheets_from_date}&to_date=${params.timesheets_to_date}`).subscribe((res:any)=>{
-     if( res['result'].data.length >=1){
-       this.allDetails = res['result']['data']
+
+    this.api.getData(`${environment.live_url}/${environment.time_sheets}/?status=${params.status}`).subscribe((res:any)=>{
+     if( res){
+       this.allDetails = res.timesheets
+
     
-    this.cardData = {
-      approved_count:res['result'].approve_count,
-      request_count:res['result'].pending_count,
-      declined_count:res['result'].declined_count,
-      total_count:res['result'].total_status_count,
-    }
+       this.cardData = {
+        approved_count:res.total_approve_count,
+        request_count:res.total_pending_count,
+        declined_count:res.total_declined_count,
+        total_count:res.total_status_count,
+      }
       
-       this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
+      //  this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
      }
     //  else{
     //    res['result']['data'].length <=0 ? this.api.showWarning('No records found') : '';
@@ -99,29 +100,63 @@ export class TimesheetComponent implements OnInit {
  }
 
   getAllTimeSheet(params){ 
-    this.api.getData(`${environment.live_url}/${environment.time_sheets}?search_key=${params.search_key}&status=${params.status}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&from_date=${params.timesheets_from_date}&to_date=${params.timesheets_to_date}`).subscribe((res:any)=>{
-      if( res['result'].data.length >=1){
-        this.allDetails = res['result']['data']
-       
+    this.api.getData(`${environment.live_url}/${environment.time_sheets}/${params}`).subscribe((res:any)=>{
+      if( res){
+        this.allDetails = res.timesheets
+
+        // {
+        //   "total_status_count": 3,
+        //   "total_approve_count": 0,
+        //   "total_pending_count": 3,
+        //   "total_declined_count": 0,
+        //   "approve_count": 0,
+        //   "pending_count": 3,
+        //   "declined_count": 0,
+        //   "timesheets": [
+        //       {
+        //           "id": 3,
+        //           "client": 1,
+        //           "project": 6,
+        //           "description": "",
+        //           "employee_first_name": "anandhi",
+        //           "employee_last_name": "c",
+        //           "manager_first_name": "Nithesh",
+        //           "manager_last_name": "Hegde",
+        //           "reporting_manager": 2,
+        //           "created_by": 235,
+        //           "status": "Pending",
+        //           "timesheet_date": "2024-09-19",
+        //           "created_datetime": "2024-10-22T06:16:39.474207Z",
+        //           "updated_datetime": "2024-10-22T06:16:39.474261Z",
+        //           "task_list": [
+        //               {
+        //                   "task_id": 14,
+        //                   "task_name": "create project",
+        //                   "hours_left": "2 hr",
+        //                   "hours_to_complete": "4 hr"
+        //               }
+        //           ]
+        //       },
         this.cardData = {
-          approved_count:res['result'].total_approve_count,
-          request_count:res['result'].total_pending_count,
-          declined_count:res['result'].total_declined_count,
-          total_count:res['result'].total_status_count,
+          approved_count:res.total_approve_count,
+          request_count:res.total_pending_count,
+          declined_count:res.total_declined_count,
+          total_count:res.total_status_count,
         }
-        this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
-        this.timeSheetForm.patchValue({
-          from_date:this.datepipe.transform(this.cardData.from_date,'dd-MM-yyyy'),
-          to_date:this.datepipe.transform(this.cardData.to_date,'dd-MM-yyyy')
-        });
+
+       // this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
+        // this.timeSheetForm.patchValue({
+        //   from_date:this.datepipe.transform(this.cardData.from_date,'dd-MM-yyyy'),
+        //   to_date:this.datepipe.transform(this.cardData.to_date,'dd-MM-yyyy')
+        // });
         
       }
-      else{
-        res['result']['data'].length <= 0 ? this.api.showWarning('No records found') :''
-        if(res['result'] && res['result'].timesheet_dashboard){
-          this.cardData = res['result'].timesheet_dashboard    
-        }
-       }
+      // else{
+      //   res['result']['data'].length <= 0 ? this.api.showWarning('No records found') :''
+      //   if(res['result'] && res['result'].timesheet_dashboard){
+      //     this.cardData = res['result'].timesheet_dashboard    
+      //   }
+      //  }
       
     })
 
@@ -144,8 +179,8 @@ export class TimesheetComponent implements OnInit {
           //page_number:event.page,
           // data_per_page:event.tableSize,
           // search_key:event.search_key,
-          timesheets_to_date:this.datepipe.transform(this.toDate,'dd-MM-yyyy'),
-          timesheets_from_date:this.datepipe.transform(this.fromDate,'dd-MM-yyyy') 
+          timesheets_to_date:this.datepipe.transform(this.toDate,'yyyy-MM-dd'),
+          timesheets_from_date:this.datepipe.transform(this.fromDate,'yyyy-MM-dd') 
          }
          this.getAllTimeSheet(c_params);
       }
@@ -172,8 +207,8 @@ export class TimesheetComponent implements OnInit {
           // page_number:this.page,
           // data_per_page:this.tableSize,
           search_key:this.term,
-          timesheets_to_date:this.datepipe.transform(this.toDate,'dd-MM-yyyy'),
-          timesheets_from_date:this.datepipe.transform(this.fromDate,'dd-MM-yyyy') 
+          timesheets_to_date:this.datepipe.transform(this.toDate,'yyyy-MM-dd'),
+          timesheets_from_date:this.datepipe.transform(this.fromDate,'yyyy-MM-dd') 
          }
       }
     else{
@@ -206,12 +241,12 @@ export class TimesheetComponent implements OnInit {
           // page_number: this.page,
           // data_per_page: this.tableSize,
           // search_key: '',
-          timesheets_to_date: this.datepipe.transform(this.toDate, 'dd-MM-yyyy'),
-          timesheets_from_date: this.datepipe.transform(this.fromDate, 'dd-MM-yyyy')
+          timesheets_to_date: this.datepipe.transform(this.toDate, 'yyyy-MM-dd'),
+          timesheets_from_date: this.datepipe.transform(this.fromDate, 'yyyy-MM-dd')
         };
 
         this.allDetails = [];
-        this.getAllTimeSheet(c_params);  // Fetch the data
+        this.getAllTimeSheet(`?from_date=${c_params['timesheets_from_date']}&to_date=${c_params['timesheets_to_date']}`);  // Fetch the data
         // this.timeSheetForm.patchValue({
         //   from_date:[''],
         //   to_date:['']
@@ -243,14 +278,19 @@ export class TimesheetComponent implements OnInit {
       c_params={
         
         status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-        // page_number:this.page,
-        // data_per_page:this.tableSize,
-        // search_key:'',
-        timesheets_to_date:this.datepipe.transform(this.toDate,'dd-MM-yyyy') ,
-        timesheets_from_date:this.datepipe.transform(this.fromDate,'dd-MM-yyyy') 
+        // // page_number:this.page,
+        // // data_per_page:this.tableSize,
+        // // search_key:'',
+        // timesheets_to_date:this.datepipe.transform(this.toDate,'dd-MM-yyyy') ,
+        // timesheets_from_date:this.datepipe.transform(this.fromDate,'dd-MM-yyyy') 
        }
-      
-        this.getAllTimeSheet(c_params)
+       this.fromDate = ''
+       this.toDate = ''
+       this.timeSheetForm = this._fb.group({
+        from_date:null,
+        to_date:null
+      })
+        this.getAllTimeSheet(`?status=${this.selectedTab}`)
       
     }
     else{

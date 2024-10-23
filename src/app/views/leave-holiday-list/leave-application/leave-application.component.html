@@ -1,166 +1,158 @@
-
 <div class="generic-form bg">
-    <form [formGroup]="leaveForm" >
-  
+  <form [formGroup]="leaveForm">
       <!-- Leave Type Section -->
       <h5 class="px-2 c-header">Leave Type</h5>
-      
-            <div class="row mb-2">
-                <div class="col-md-4">
-                  <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Leave Type *</mat-label>
-                    <mat-select formControlName="leave_type_id"  panelClass="custom-select-panel" [disableOptionCentering]="true">
-                      <mat-option *ngFor="let leave of leaveTypes" [value]="leave.value">
-                        {{ leave.viewValue }}
+      <div class="row mb-2">
+          <div class="col-md-4">
+              <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Leave Type *</mat-label>
+                  <mat-select formControlName="leave_type_id" placeholder="Select leave type" (selectionChange)="getLeaveBalance()" panelClass="custom-select-panel" [disableOptionCentering]="true">
+                      <mat-option *ngFor="let leave of leaveType" [value]="leave.id">
+                          {{ leave.leave_title }}
                       </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="f['leave_type_id']?.touched && f['leave_type_id']?.invalid">
-                     Leave Type is required.
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-4">
-                  <div  style="border-left: 1px solid lightgray;padding: 4px 15px;">
-                    <mat-label>Leave Balance</mat-label>
-                   <div class="text-clr">2</div>
-                  </div>
-                </div>
+                  </mat-select>
+                  <mat-error *ngIf="f['leave_type_id']?.touched && f['leave_type_id']?.invalid">
+                      Leave Type is required.
+                  </mat-error>
+              </mat-form-field>
+          </div>
+          <div class="col-md-4">
+              <div style="border-left: 1px solid lightgray;padding: 4px 15px;">
+                  <mat-label>Leave Balance</mat-label>
+                  <div class="text-clr">{{leaveBalance}}</div>
               </div>
-      
-     
-  
+          </div>
+      </div>
+
       <!-- Date Range Section -->
       <h5 class="px-2 c-header">Date Range</h5>
       <div class="row mb-2">
-        <div class="col-md-4 date-picker">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>From *</mat-label>
-            <input matInput [matDatepicker]="fromDate" formControlName="leaveApplication_from_date">
-            <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
-            <mat-datepicker #fromDate></mat-datepicker>
-            <mat-error *ngIf="f['leaveApplication_from_date']?.touched && f['leaveApplication_from_date']?.invalid">
-             From date is required.
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Session *</mat-label>
-            <mat-select formControlName="from1_session"  panelClass="custom-select-panel" [disableOptionCentering]="true">
-              <mat-option *ngFor="let session of sessions" [value]="session.value">
-                {{ session.viewValue }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="f['from1_session']?.touched && f['from1_session']?.invalid">
-              From session is required.
-            </mat-error>
-          </mat-form-field>
-        </div>
-        
+          <div class="col-md-4 date-picker">
+              <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>From *</mat-label>
+                  <input matInput [matDatepicker]="fromDate" formControlName="leaveApplication_from_date" placeholder="Select start date" [min]="today">
+                  <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                  <mat-datepicker #fromDate></mat-datepicker>
+                  <mat-error *ngIf="f['leaveApplication_from_date']?.touched && f['leaveApplication_from_date']?.invalid">
+                      From date is required.
+                  </mat-error>
+              </mat-form-field>
+          </div>
+          <div class="col-md-4">
+              <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Session *</mat-label>
+                  <mat-select formControlName="from1_session" placeholder="Select session" panelClass="custom-select-panel" [disableOptionCentering]="true">
+                      <mat-option *ngFor="let session of sessions" [value]="session.value">
+                          {{ session.viewValue }}
+                      </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="f['from1_session']?.touched && f['from1_session']?.invalid">
+                      From session is required.
+                  </mat-error>
+              </mat-form-field>
+          </div>
       </div>
+      
       <div class="row mb-2">
-        <div class="col-md-4 date-picker">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>To *</mat-label>
-              <input matInput [matDatepicker]="toDate" formControlName="leaveApplication_to_date">
-              <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
-              <mat-datepicker #toDate></mat-datepicker>
-              <mat-error *ngIf="f['leaveApplication_to_date']?.touched && f['leaveApplication_to_date']?.invalid">
-                To date is required.
-              </mat-error>
-            </mat-form-field>
+          <div class="col-md-4 date-picker">
+              <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>To *</mat-label>
+                  <input matInput [matDatepicker]="toDate" formControlName="leaveApplication_to_date" [min]="leaveForm.value.leaveApplication_from_date" placeholder="Select end date">
+                  <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                  <mat-datepicker #toDate></mat-datepicker>
+                  <mat-error *ngIf="f['leaveApplication_to_date']?.touched && f['leaveApplication_to_date']?.invalid">
+                      To date is required.
+                  </mat-error>
+              </mat-form-field>
           </div>
           <div class="col-md-4">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Session *</mat-label>
-              <mat-select formControlName="to1_session"  panelClass="custom-select-panel" [disableOptionCentering]="true">
-                <mat-option *ngFor="let session of sessions" [value]="session.value">
-                  {{ session.viewValue }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="f['to1_session']?.touched && f['to1_session']?.invalid">
-                This field is required.
-              </mat-error>
-            </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Session *</mat-label>
+                  <mat-select formControlName="to1_session" placeholder="Select session" panelClass="custom-select-panel" [disableOptionCentering]="true" (selectionChange)="calculateApplyingDays()">
+                      <mat-option *ngFor="let session of sessions" [value]="session.value">
+                          {{ session.viewValue }}
+                      </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="f['to1_session']?.touched && f['to1_session']?.invalid">
+                    To session is required.
+                  </mat-error>
+              </mat-form-field>
           </div>
           <div class="col-md-4">
-            <div  style="border-left: 1px solid lightgray;padding: 4px 15px;">
-                <mat-label>Applying For </mat-label>
-                <div class="text-clr">2 days</div>
-            </div>
-            
+              <div style="border-left: 1px solid lightgray;padding: 4px 15px;">
+                  <mat-label>Applying For</mat-label>
+                  <div class="text-clr">{{applyingDays || 0}} days</div>
+              </div>
           </div>
       </div>
-  
-      <!-- Reporting To Section -->
 
+      <!-- Reporting To Section -->
       <h5 class="px-2 c-header">Reporting to</h5>
       <div class="row mb-3">
-        <div class="col-md-4">
-            <input type="file" accept="image/*" formControlName="leave_application_file_attachment" #fileInput (change)="uploadImageFile($event)" hidden>
-                <div  class="image-container w-100 d-flex justify-content-between align-items-center" style="padding: 3px 15px;">
-                  <img id="imagePreview" *ngIf="fileDataUrl" [src]="fileDataUrl? fileDataUrl: ''" alt="profile" >
+          <div class="col-md-4">
+              <input type="file" accept="image/*" formControlName="leave_application_file_attachment" #fileInput (change)="uploadImageFile($event)" hidden>
+              <div class="image-container w-100 d-flex justify-content-between align-items-center" style="padding: 3px 15px;">
+                  <img id="imagePreview" *ngIf="fileDataUrl" [src]="fileDataUrl ? fileDataUrl : ''" alt="profile">
                   <mat-label *ngIf="!fileDataUrl">File Attachment</mat-label>
-                  <button type="button" mat-icon-button (click)="triggerFileInput()" >
-                    <mat-icon matTooltip="{{fileDataUrl? 'Edit':'Upload'}}" class="edit-or-upload-icon">{{fileDataUrl? 'edit':'attach_file'}} </mat-icon><b class="r-star px-1">*</b> 
+                  <button type="button" mat-icon-button (click)="triggerFileInput()">
+                      <mat-icon matTooltip="{{fileDataUrl ? 'Edit' : 'Upload'}}" class="edit-or-upload-icon">{{fileDataUrl ? 'edit' : 'attach_file'}} </mat-icon><b class="r-star px-1">*</b> 
                   </button>
-                </div>
-          
-            <mat-error *ngIf="f['leave_application_file_attachment']?.touched && f['leave_application_file_attachment']?.invalid" style="font-size: 11px;padding-left: 10px;">
-              <span *ngIf="f['leave_application_file_attachment'].errors?.['required']" >Logo is required</span>
-              <span *ngIf="f['leave_application_file_attachment'].errors?.['accept']" >Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</span>
-            </mat-error>
-            
-        </div> 
-      </div>
-      
-      
-      <div class="row">
-        <div class="col-md-4">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Applying To *</mat-label>
-              <mat-select formControlName="applying_to" placeholder="Select applying to"  panelClass="custom-select-panel" [disableOptionCentering]="true">
-                <mat-option value="">Select</mat-option>
-              </mat-select>
-              <mat-error *ngIf="f['applying_to']?.touched && f['applying_to']?.invalid">
-                Applying To is required.
+              </div>
+              <mat-error *ngIf="f['leave_application_file_attachment']?.touched && f['leave_application_file_attachment']?.invalid" style="font-size: 11px;padding-left: 10px;">
+                  <span *ngIf="f['leave_application_file_attachment'].errors?.['required']">Logo is required</span>
+                  <span *ngIf="f['leave_application_file_attachment'].errors?.['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</span>
               </mat-error>
-            </mat-form-field>
+          </div> 
+      </div>
+
+      <!-- Applying To Section -->
+      <div class="row">
+          <div class="col-md-4">
+              <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Applying To *</mat-label>
+                  <mat-select formControlName="applying_to" placeholder="Select the person to apply to" panelClass="custom-select-panel" [disableOptionCentering]="true">
+                      <mat-option value="">Select</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="f['applying_to']?.touched && f['applying_to']?.invalid">
+                      Applying To is required.
+                  </mat-error>
+              </mat-form-field>
           </div>
       </div>
+
+      <!-- CC Section -->
       <div class="row">
-        <div class="col-md-4">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>CC *</mat-label>
-              <mat-select formControlName="cc_to" placeholder="Select cc to"  panelClass="panel-multiselect" [disableOptionCentering]="true" multiple>
-                <mat-option value="">Select</mat-option>
-              </mat-select>
-              <mat-error *ngIf="f['cc_to']?.touched && f['cc_to']?.invalid">
-                Cc to is required.
-              </mat-error>
-            </mat-form-field>
+          <div class="col-md-4">
+              <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>CC *</mat-label>
+                  <mat-select formControlName="cc_to" placeholder="Select CC recipients" panelClass="panel-multiselect" [disableOptionCentering]="true" multiple>
+                      <mat-option value="">Select</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="f['cc_to']?.touched && f['cc_to']?.invalid">
+                      CC is required.
+                  </mat-error>
+              </mat-form-field>
           </div>
       </div>
-  
+
+      <!-- Message Section -->
       <div class="row mb-2">
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Message *</mat-label>
-            <textarea matInput formControlName="reason"></textarea>
-            <mat-error *ngIf="f['reason']?.touched && f['reason']?.invalid">
-             Message is required.
-            </mat-error>
-          </mat-form-field>
-        </div>
+          <div class="col-md-4">
+              <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Message *</mat-label>
+                  <textarea matInput formControlName="reason" placeholder="Enter your message"></textarea>
+                  <mat-error *ngIf="f['reason']?.touched && f['reason']?.invalid">
+                      Message is required.
+                  </mat-error>
+              </mat-form-field>
+          </div>
       </div>
-   
+
       <!-- Buttons -->
       <div class="row">
-      
-        <div class="col-md-6 text-right">
-          <button mat-raised-button class="submit-button" type="button" (click)="submit()">Apply</button>
-        </div>
+          <div class="col-md-6 text-right">
+              <button mat-raised-button class="submit-button" type="button" (click)="submit()">Apply</button>
+          </div>
       </div>
-    </form>
-  </div>
-  
+  </form>
+</div>

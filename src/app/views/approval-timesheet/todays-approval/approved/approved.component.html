@@ -8,6 +8,7 @@
               <th scope="col">S.No</th>
               <th scope="col" class="text-center">Date </th>
               <th scope="col" class="text-center">Employee</th>
+              <th scope="col" class="text-center">Task</th>
               <th scope="col" class="text-center">Time</th>
               <!-- <th scope="col">Saved On</th> -->
               <th scope="col" class="text-center">Approved On</th>
@@ -20,8 +21,27 @@
               <tr *ngFor="let items of result|paginate:paginationConfig;let i=index">
                 <td>{{getContinuousIndex(i)}}</td>
                 <td class="text-center">{{items['created_date_time'] | date : 'mediumDate'}}</td>
-                <td class="text-center">{{items['created_by_first_name']|titlecase }}</td>
-                <td class="text-center">{{items['time_spent']|titlecase}}</td>
+                <td class="text-center">{{items['employee_first_name']|titlecase }}</td>
+                <td class="text-center" *ngIf="items.task_list.length">
+                  <div *ngFor="let task of items.task_list; let j = index">
+                    <div>
+                      {{ task?.task_name || 'NA' }} <br/>
+                    </div>
+                  </div>
+                </td>
+                <td *ngIf="items.task_list.length === 0">
+                  {{'NA'}}
+                </td>
+                <td class="text-center" *ngIf="items.task_list.length">
+                  <div *ngFor="let task of items.task_list; let j = index">
+                    <div>
+                      {{ task?.hours_to_complete || 'NA' }}
+                    </div>
+                  </div>
+                </td>
+                <td *ngIf="items.task_list.length === 0">
+                  {{'NA'}}
+                </td>
                 <!-- <td>{{items['saved_on'] }}</td> -->
                 <td class="text-center">{{items['approved_date_time'] | date : 'mediumDate' }}</td>
                 <td class="text-center">{{items['approved_by_first_name']?items['approved_by_first_name']:'NA'|titlecase
@@ -42,10 +62,9 @@
                             </ng-container>
                 </td> -->
               </tr>
-              <tr *ngIf="result.length === 0" class="nodata">
-                <td> No records found
-                  !</td>
-              </tr>
+              <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="result.length === 0">
+                No records found!
+              </div>
             </ng-container>
 
           </tbody>
@@ -54,7 +73,7 @@
 
       </div>
     </div>
-    <div class="pagination-container p-0 py-2">
+    <div class="pagination-container p-0 py-4">
       <!-- Pagination Controls (Center-Aligned) -->
       <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
       </pagination-controls>
@@ -128,7 +147,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{ item.created_by_first_name ?item.created_by_first_name :'NA'|titlecase }}
+                      {{ item.employee_first_name ?item.employee_first_name :'NA'|titlecase }}
                     </div>
                   </div>
                 </div>
@@ -142,8 +161,15 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-12 val-r">
-                      {{ item.id ? item.id :'NA' |titlecase}}
+                    <div class="col-12 val-r" *ngIf="item.task_list.length">
+                      <div *ngFor="let task of item.task_list; let j = index">
+                        <div>
+                          {{ task?.hours_to_complete || 'NA' }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 val-r" *ngIf="item.task_list.length === 0">
+                      {{'NA'}}
                     </div>
                   </div>
                 </div>
@@ -154,8 +180,15 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-12 val-r">
-                      {{ item['time_spent'] |titlecase}}
+                    <div class="col-12 val-r" *ngIf="item.task_list.length">
+                      <div *ngFor="let task of item.task_list; let j = index">
+                        <div>
+                          {{ task?.hours_to_complete || 'NA' }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 val-r" *ngIf="item.task_list.length === 0">
+                      {{'NA'}}
                     </div>
                   </div>
                 </div>

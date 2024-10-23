@@ -603,4 +603,7 @@ export class ApiserviceService {
   deleteEmployees(id:any){
     return this.http.delete(`${this.baseurl}/user/${id}/`,{headers: this.headers})
   }
+  deleteMultiple(url,data) {
+    return this.http.delete(url, data)
+  }
 }

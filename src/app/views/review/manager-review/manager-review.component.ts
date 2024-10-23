@@ -25,6 +25,38 @@ export class ManagerReviewComponent implements OnInit {
   timesheetAccess: any;
   leaveAccess: any;
   orgId: any;
+  selectedSection = 'lists';
+
+  employeeList = [
+    { name: 'Surya', id: 149, role: 'Designer', email: 'Surya@ekfrazon.in', contact: '62695723681' },
+    { name: 'Manoj', id: 150, role: 'Tester', email: 'Manoj@ekfrazon.in', contact: '98792036781' }
+  ];
+
+  leaveList = {
+    pending: [
+      { name: 'Surya', leaveType: 'Earned', days: 2, fromDate: '22/02/2024', toDate: '22/02/2024', reason: 'Personal Commitments' },
+      { name: 'Manoj', leaveType: 'Sick', days: 1, fromDate: '10/01/2024', toDate: '10/01/2024', reason: 'Sick' }
+    ],
+    approved: [
+      { name: 'Karthik', leaveType: 'Earned', days: 2, fromDate: '15/02/2024', toDate: '17/02/2024', reason: 'Vacation' }
+    ],
+    declined: [
+      { name: 'Surya', leaveType: 'Casual', days: 1, fromDate: '21/02/2024', toDate: '21/02/2024', reason: 'Emergency' }
+    ]
+  };
+
+  timesheetList = {
+    pending: [
+      { employeeName: 'Surya', client: 'MTN', projectName: 'eShop', time: '8 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Redesigning UI' },
+      { employeeName: 'Manoj', client: 'MTN', projectName: 'eShop', time: '2 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Library updates' }
+    ],
+    approved: [
+      { employeeName: 'Karthik', client: 'MTN', projectName: 'eShop', time: '6 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Bug fixes' }
+    ],
+    declined: [
+      { employeeName: 'Ravi', client: 'MTN', projectName: 'eShop', time: '1 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Meeting' }
+    ]
+  };
   constructor(
     private api: ApiserviceService,
     private modalService: NgbModal,
@@ -40,38 +72,9 @@ export class ManagerReviewComponent implements OnInit {
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
-    this.user_role_id = JSON.parse(sessionStorage.getItem('user_role_id'))
-    this.orgId = sessionStorage.getItem('org_id')
-    this.getEmployeeData()
-    this.getUserControls()
+   
   }
-  getUserControls() {
-    this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res: any) => {
-      if (res.status_code !== '401') {
-        this.common_service.permission.next(res['data'][0]['permissions'])
-      }
-      else {
-        this.api.showError("ERROR !")
-      }
-    }
-
-    )
-
-    this.common_service.permission.subscribe(res => {
-      const accessArr = res
-      if (accessArr.length > 0) {
-        accessArr.forEach((element, i) => {
-          if (element['REVIEW']) {
-            this.timesheetAccess = element['REVIEW'];
-            this.leaveAccess = element['REVIEW']
-          }
-        });
-      }
-    })
-
-  }
+ 
   getEmployeeData() {
     this.api.getData(`${environment.live_url}/${environment.managerReview}?user_id=${this.user_id}&role_id=${this.user_role_id}&organization_id=${this.orgId}`).subscribe(response => {
       if (response) {

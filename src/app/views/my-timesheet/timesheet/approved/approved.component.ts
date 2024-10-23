@@ -6,6 +6,7 @@ import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.co
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { TimesheetService } from 'src/app/service/timesheet.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-approved',
@@ -48,52 +49,21 @@ export class ApprovedComponent implements OnInit {
     ngOnInit(): void {
       this.user_id = sessionStorage.getItem('user_id')
       this.orgId = sessionStorage.getItem('org_id')
-      this.getUserControls()
     }
     ngOnChanges(changes:SimpleChange):void{
       if(changes['data'].currentValue){
         this.list=changes['data'].currentValue;
       }
-      if(changes['totalCount'].currentValue){
-        this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
-        this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
-        this.paginationConfig.itemsPerPage=this.tableSize;
-      this.page=changes['totalCount'].currentValue.currentPage;
-      this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
-      }
-      this.cdref.detectChanges();
+      // if(changes['totalCount'].currentValue){
+      //   this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
+      //   this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
+      //   this.paginationConfig.itemsPerPage=this.tableSize;
+      // this.page=changes['totalCount'].currentValue.currentPage;
+      // this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
+      // }
+      // this.cdref.detectChanges();
         }
-    getUserControls(){
-      this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
-        if(res.status_code !== '401'){
-          this.common_service.permission.next(res['data'][0]['permissions'])
-          //console.log(this.common_service.permission,"PERMISSION")
-        }
-        else{
-          this.api.showError("ERROR !")
-        }
-        //console.log(res,'resp from yet');
-        
-      },(error=>{
-        this.api.showError(error.error.error.message)
-     })
-    
-      )
-    
-      this.common_service.permission.subscribe(res=>{
-        const accessArr = res
-        if(accessArr.length > 0){
-          accessArr.forEach(element => {
-            if(element['PEOPLE_TIMESHEET']){
-              this.accessConfig = element['PEOPLE_TIMESHEET']
-            }
-            
-          });
-          
-        }
-     
-      })
-      }
+  
  
   delete(item:any){
   if(this.list.length === 1){
@@ -106,26 +76,26 @@ export class ApprovedComponent implements OnInit {
    
   }
   deleteContent(item){
-    let params = {
-      module: "TIMESHEET",
-      menu: "PEOPLE_TIMESHEET",
-      method: "DELETE",
-      user_id: this.user_id
+    let data = {
+     ids:[item.id]
   }
-    this.api.deleteTimeSheeteDetails(item.id,params).subscribe((data:any)=>{ 
+    this.api.deleteMultiple(`${environment.live_url}/${environment.time_sheets}`,data).subscribe((data:any)=>{
       if(data){
         let tableData ={
           page:this.page,
           tableSize:this.tableSize,
           search_key:this.term
          }
-         this.buttonClick.emit(tableData);
-         
+        this.buttonClick.emit(tableData);
+       this.ngOnInit()
+        this.api.showWarning('Timesheet deleted successfully!')
+       
       }
-      this.api.showWarning('Approved deleted successfully!')
-    },((error:any)=>{
-      this.api.showError(error.error.error.message)
+    },((error)=>{
+      this.api.showError(error?.error?.message)
+      
     }))
+    
   }
   filterSearch(){
     let tableData ={
