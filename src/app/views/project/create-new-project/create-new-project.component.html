@@ -8,6 +8,7 @@
                         <p>Lets dig into the project details!</p>
                     </div>
                     <div class="row">
+                        
                         <!-- client dropdown -->
                         <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
@@ -68,31 +69,6 @@
                             <div class="px-2" *ngIf="f['end_date']?.touched && f['end_date']?.invalid">
                                 <span class="text-errors" *ngIf="f['end_date'].errors?.['required']">End date is
                                     required</span>
-                            </div>
-                        </div>
-                        <!-- select team -->
-                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-                            <ng-multiselect-dropdown [placeholder]="'Select employee list'"
-                                [settings]="peopleListSetting" [data]="allPeopleGroup"
-                                (onSelect)="onPeopleGroupSelect($event)"
-                                (onSelectAll)="onPeopleGroupSelectAll($event)" formControlName="team">
-                            </ng-multiselect-dropdown>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3 multi-select">
-                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
-                                <mat-label>Select Team <b class="r-star">*</b></mat-label>
-                                <mat-select formControlName="team" autocomplete="off"
-                                    placeholder="Select team" panelClass="custom-select-panel"
-                                    [disableOptionCentering]="true" multiple (selectionChange)="matTeamSelect($event)">
-                                    <mat-option *ngFor="let item of allPeopleGroup" [value]="item.id ">
-                                        {{item.first_name}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            <div class="px-2" *ngIf="f['team'].touched && f['team'].invalid">
-                                <span class="text-errors"
-                                    *ngIf="f['team'].errors && f['team'].errors['required']">Team
-                                    list is required</span>
                             </div>
                         </div>
                         <!-- project manager -->
@@ -158,6 +134,61 @@
                                     required</span>
                             </div>
                         </div>
+                        <!-- select team -->
+                        <div class="col-sm-12 col-md-6 col-lg-6 mb-3 multi-select">
+                            <!-- <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Select Team <b class="r-star">*</b></mat-label>
+                                <mat-select formControlName="team" autocomplete="off"
+                                    placeholder="Select team" panelClass="custom-select-panel"
+                                    [disableOptionCentering]="true" multiple (selectionChange)="matTeamSelect($event)">
+                                    <mat-option *ngFor="let item of allPeopleGroup" [value]="item.id ">
+                                        {{item.first_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Select Team <b class="r-star">*</b></mat-label>
+                                <mat-select formControlName="team" autocomplete="off"
+                                    placeholder="Select team" panelClass="custom-select-panel"
+                                    [disableOptionCentering]="true" multiple (selectionChange)="matTeamSelect()"
+                                        [(ngModel)]="selectedTeamId">
+                                    
+                                    <!-- Search Input -->
+                                    <div class="custom-search py-2 px-1">
+                                        <input matInput (input)="filterOptions($event)" placeholder="Search..." />
+                                    </div>
+                            
+                                    <mat-option *ngFor="let item of filteredPeopleGroup" [value]="item.id">
+                                        {{item.first_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['team'].touched && f['team'].invalid">
+                                <span class="text-errors"
+                                    *ngIf="f['team'].errors && f['team'].errors['required']">Team
+                                    list is required</span>
+                            </div>
+                        </div>
+                        <div *ngIf="assigneePeoples.length!=0" class="col-sm-12 col-md-6  col-lg-6 team-border mb-3">
+                            <!-- <div class="team-mates" *ngFor="let item of assigneePeoples">
+                                <span class="">{{item.first_name}}</span>
+                                <span class="team-close-icon"> <i class="bi bi-x fs-5 fw-bold" (click)="teamDeselectedFromCard(item.id)"></i></span>
+                            </div> -->
+                            <div class="tag-container" [ngClass]="{ 'collapsed': isCollapsed }">
+                                <span *ngFor="let item of assigneePeoples" class="tag-item">
+                                  {{item.first_name}}<i class="bi bi-x fs-5 fw-bold" (click)="teamDeselectedFromCard(item.id)"></i>
+                                  <!-- <button (click)="teamDeselectedFromCard(item.id)" class="remove-btn">X</button> -->
+                                </span>
+                              </div>
+                              
+                              <div class="controls mb-2">
+                                <button type="button" (click)="clearAll()" class="clear-btn">Clear all</button>
+                                <button type="button" (click)="toggleCollapse()" class="toggle-btn">
+                                  {{ isCollapsed ? 'Expand' : 'Collapse' }}
+                                </button>
+                              </div>
+                            
+                        </div>
                     </div>
                     <!-- project template -->
                     <div class="row px-3 gx-0 task-border">
@@ -193,7 +224,7 @@
                                             placeholder="Select template" panelClass="custom-select-panel"
                                             [disableOptionCentering]="true" (selectionChange)="getSubTask($event)">
                                             <mat-option *ngFor="let item of taskCategories" [value]="item.id">
-                                                {{item.tpc_name}}
+                                                {{item.category_name}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
@@ -567,7 +598,7 @@
                                 aria-label="Default select example" formControlName="p_task_checklist_status">
                                 <option value="" disabled selected>Select task category</option>
                                 <option *ngFor="let item of taskCategories" [value]="item.id">
-                                    {{item.tpc_name}}
+                                    {{item.category_name}}
                                 </option>
                             </select>
                             <div *ngIf="f['p_task_checklist_status'].touched && f['p_task_checklist_status'].invalid">
@@ -779,7 +810,8 @@
                                 <mat-label>Select Team <b class="r-star">*</b></mat-label>
                                 <mat-select formControlName="team" autocomplete="off"
                                     placeholder="Select team" panelClass="custom-select-panel"
-                                    [disableOptionCentering]="true" multiple (selectionChange)="matTeamSelect($event)">
+                                    [disableOptionCentering]="true" multiple (selectionChange)="matTeamSelect()"
+                                    [(ngModel)]="selectedTeamId">
                                     <mat-option *ngFor="let item of allPeopleGroup" [value]="item.id ">
                                         {{item.first_name}}
                                     </mat-option>
@@ -890,7 +922,7 @@
                                             placeholder="Select template" panelClass="custom-select-panel"
                                             [disableOptionCentering]="true" (selectionChange)="getSubTask($event)">
                                             <mat-option *ngFor="let item of taskCategories" [value]="item.id">
-                                                {{item.tpc_name}}
+                                                {{item.category_name}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>

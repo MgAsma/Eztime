@@ -5,6 +5,7 @@ export const environment = {
   new_media_url:'https://projectacedevelop.thestorywallcafe.com',
   media_url: 'https://projectacedevelop.thestorywallcafe.com/media',
   live_url:'https://projectacedevelop.thestorywallcafe.com/api',
+  // new_media_url:'https://projectacetest.thestorywallcafe.com',
   // live_url: 'https://projectacetest.thestorywallcafe.com/api',
   // media_url:'https://projectacetest.thestorywallcafe.com/media',
   // live_url: 'https://projectaceuat.thestorywallcafe.com/api',

@@ -24,7 +24,7 @@ export class CreateNewProjectComponent implements OnInit {
   value;
   tasks = []
   status = [];
-  selectedItems = [];
+  selectedTeamId = [];
   toggleShow() {
 
     this.isShown = !this.isShown;
@@ -62,7 +62,6 @@ export class CreateNewProjectComponent implements OnInit {
   params = {
     pagination: "FALSE"
   }
-  taskForm: FormGroup;
 
   constructor(private builder: FormBuilder,
     private api: ApiserviceService,
@@ -114,7 +113,7 @@ export class CreateNewProjectComponent implements OnInit {
   }
   initForm() {
     this.projectForm = this.builder.group({
-      org_ref_id: this.orgId,
+      organization: this.orgId,
       user_id: this.user_id,
       client_id: ['', [Validators.required]],
       project_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
@@ -176,6 +175,7 @@ export class CreateNewProjectComponent implements OnInit {
         })
         // console.log(' this.filteredRole', filteredRole)
         this.allPeopleGroup = filteredRole;
+        this.filteredPeopleGroup = this.allPeopleGroup;
         // console.log(' this.allPeopleGroup', this.allPeopleGroup)
       }
       else {
@@ -188,12 +188,39 @@ export class CreateNewProjectComponent implements OnInit {
   }
 
   
-  matTeamSelect(event: any) {
-    // console.log(event);
-    this.peopleId = event.value;
+  matTeamSelect() {
+    console.log(this.selectedTeamId);
+    this.teamFunction(this.selectedTeamId);
+    // this.peopleId = event.value;
+    // let tempId: any = []
+    // this.allPeopleGroup.forEach(element => {
+    //   this.peopleId.forEach(element1 => {
+    //     if (element1 == element.id) {
+    //       tempId.push(element)
+    //     }
+    //   })
+    // });
+    // this.assigneePeoples = tempId;
+    // this.subTasks.controls.forEach((taskControl: FormGroup, index: number) => {
+    //   const task = taskControl.value;
+
+    //   if (task.assignee && !this.assigneePeoples.some(person => person.id === task.assignee)) {
+    //     taskControl.removeControl('original_task_assignee');
+    //     taskControl.patchValue({
+    //       assignee: '',
+    //       is_saved: false,
+    //       edit_icon: false,
+    //       is_cancelled: false
+    //     });
+    //   }
+    // });
+    // console.log('assigneePeoples', this.assigneePeoples)
+    // console.log('this.subTasks.value', this.subTasks.value)
+  }
+  teamFunction(id:any){
     let tempId: any = []
     this.allPeopleGroup.forEach(element => {
-      this.peopleId.forEach(element1 => {
+      id.forEach(element1 => {
         if (element1 == element.id) {
           tempId.push(element)
         }
@@ -214,8 +241,40 @@ export class CreateNewProjectComponent implements OnInit {
       }
     });
     console.log('assigneePeoples', this.assigneePeoples)
-    console.log('this.subTasks.value', this.subTasks.value)
+    // console.log('this.subTasks.value', this.subTasks.value)
   }
+
+  teamDeselectedFromCard(id:any){
+     this.selectedTeamId = this.selectedTeamId.filter(item => item !== id);
+    console.log('this.selectedTeamId',this.selectedTeamId);
+    this.teamFunction(this.selectedTeamId);
+  }
+
+  items: string[] = ['Surya', 'Arpitha', 'Asma', 'Sandesh', 'Manoj', 'Shruti', 'Abhi','Surya', 'Arpitha', 'Asma', 'Sandesh', 'Manoj', 'Shruti', 'Abhi','Surya', 'Arpitha', 'Asma', 'Sandesh', 'Manoj', 'Shruti', 'Abhi'];
+  isCollapsed: boolean = false;
+
+  // Clear all team items
+  clearAll(): void {
+    this.selectedTeamId= [];
+    this.assigneePeoples = [];
+  }
+
+  toggleCollapse(): void {
+    this.isCollapsed = !this.isCollapsed;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   // Managers
@@ -230,9 +289,9 @@ export class CreateNewProjectComponent implements OnInit {
 
   // Templates
   getCategory() {
-    this.api.getData(`${environment.live_url}/${environment.taskProjectCategories}?page_number=1&data_per_page=2&pagination=FALSE&org_ref_id=${this.orgId}`).subscribe(data => {
+    this.api.getProjCategory(`${'organization_id'}=${this.orgId}`).subscribe(data => {
       console.log(data, "category template")
-      this.taskCategories = data['result'].data
+      this.taskCategories = data;
     })
   }
 
@@ -381,6 +440,7 @@ export class CreateNewProjectComponent implements OnInit {
     event.forEach((element: any) => {
       this.peopleId.push(element.id)
     });
+    
   }
 
 
@@ -390,7 +450,7 @@ export class CreateNewProjectComponent implements OnInit {
   getSubTask(event) {
     console.log(event.value);
     // this.subTasks.clear();
-    this.api.getSubTaskByProjectTaskCategory(event.value, this.orgId).subscribe(
+    this.api.getProjCategoryById(event.value).subscribe(
       (resp) => {
         for (let i = this.subTasks.length - 1; i >= 0; i--) {
           const task = this.subTasks.at(i);
@@ -398,7 +458,8 @@ export class CreateNewProjectComponent implements OnInit {
             this.subTasks.removeAt(i);
           }
         }
-        const taskList = resp['result']['data'][0].task_list;
+        console.log('resp',resp)
+        const taskList = resp['projectcategory_task'];
         taskList.forEach(task => {
           this.subTasks.push(this.builder.group({
             task_name: [task.task_name, [Validators.required, Validators.pattern(/^\S.*$/),]],
@@ -436,7 +497,6 @@ export class CreateNewProjectComponent implements OnInit {
   // Add project
   selectedTask = []
   addProject() {
-    this.projectForm.patchValue({ people_ref_id: this.peopleId });
     const startDate = this.projectForm.value.start_date;
     const EndDate = this.projectForm.value.end_date;
     console.log(this.projectForm.value);
@@ -470,7 +530,7 @@ export class CreateNewProjectComponent implements OnInit {
           assignee
         }));
         let data = {
-          org_ref_id: this.projectForm.value.org_ref_id,
+          organization: this.projectForm.value.organization,
           created_by: this.projectForm.value.user_id,
           client_id: this.projectForm.value.client_id,
           project_name: this.projectForm.value.project_name,
@@ -509,7 +569,7 @@ export class CreateNewProjectComponent implements OnInit {
         //       end_date: '',
         //       approve_manager_ref_id: '',
         //       p_task_checklist_status: '',
-        //       org_ref_id: '',
+        //       organization: '',
         //       user_ref_id: '',
         //       opg_ref_id: '',
         //       p_code: '',
@@ -540,6 +600,14 @@ export class CreateNewProjectComponent implements OnInit {
 
 
     }
+  }
+
+  filteredPeopleGroup= [];
+  filterOptions(event: any) {
+    let eventw = event.target.value.toLowerCase();
+    this.filteredPeopleGroup = this.allPeopleGroup.filter(item =>
+      item.first_name.toLowerCase().includes(eventw)
+    );
   }
 
 }

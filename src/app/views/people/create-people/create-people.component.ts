@@ -157,6 +157,7 @@ export class CreatePeopleComponent implements OnInit {
   getDepartment() {
     this.api.getDepartmentList(`?${'organization_id'}=${this.orgId}`).subscribe((data: any) => {
       if (data) {
+        // console.log('departments',data)
         this.departmentList = data;
       }
     }, (error: any) => {
@@ -185,6 +186,7 @@ export class CreatePeopleComponent implements OnInit {
   getDesignations() {
     this.api.getDesignationList(`?${'organization_id'}=${this.orgId}`).subscribe((data: any) => {
       if (data) {
+        // console.log('designations',data)
         this.allDesignation = data;
         const managerRoleId = data.filter(temp => temp.designation_name === 'Project Manager')
         this.managerRoleId = managerRoleId[0].id

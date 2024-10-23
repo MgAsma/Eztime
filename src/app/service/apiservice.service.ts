@@ -355,8 +355,8 @@ export class ApiserviceService {
   postProjCategory(data:any){
     return this.http.post(`${this.baseurl}/project_category/`,data,{ headers: this.headers })
   }
-  getProjCategory(){
-    return this.http.get(`${this.baseurl}/project_category/`,{ headers: this.headers })
+  getProjCategory(param){
+    return this.http.get(`${this.baseurl}/project_category/?${param}`,{ headers: this.headers })
   }
   getProjCategoryById(id:any){
     return this.http.get(`${this.baseurl}/project_category/${id}/`,{ headers: this.headers })
