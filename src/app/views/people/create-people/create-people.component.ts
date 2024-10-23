@@ -235,7 +235,7 @@ export class CreatePeopleComponent implements OnInit {
       (res: any) => {
         console.log('only first step data', res);
         if (res.profile_image) {
-          this.fileDataUrl = environment.new_media_url + res.profile_image
+          this.fileDataUrl = environment.media_url + res.profile_image
         } else{
           this.fileDataUrl = null;
         }

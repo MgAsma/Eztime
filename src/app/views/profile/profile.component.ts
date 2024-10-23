@@ -14,7 +14,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 })
 export class ProfileComponent implements OnInit {
   BreadCrumbsTitle: any = 'Update profile';
-  media_url = environment.new_media_url
+  media_url = environment.media_url
   profileForm: FormGroup;
   uploadFile: any;
   url: any;

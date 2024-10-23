@@ -157,7 +157,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
       (res:any)=>{
         // console.log('profile details in side bar', res);
         if(res.user_info[0]['profile_image_path']){
-          this.profileDataForSidebar.profile_pic =environment.new_media_url+res.user_info[0]['profile_image_path'];
+          this.profileDataForSidebar.profile_pic =environment.media_url+res.user_info[0]['profile_image_path'];
         }
         this.profileDataForSidebar.name = res.user_info[0].first_name; 
         this.profileDataForSidebar.last_name = res.user_info[0].last_name;
