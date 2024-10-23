@@ -19,7 +19,7 @@
           <div class="col-md-4">
               <div style="border-left: 1px solid lightgray;padding: 4px 15px;">
                   <mat-label>Leave Balance</mat-label>
-                  <div class="text-clr">{{leaveBalance}}</div>
+                  <div class="text-clr">{{leaveBalance || 'NA'}}</div>
               </div>
           </div>
       </div>
@@ -30,7 +30,7 @@
           <div class="col-md-4 date-picker">
               <mat-form-field appearance="outline" class="full-width">
                   <mat-label>From *</mat-label>
-                  <input matInput [matDatepicker]="fromDate" formControlName="leaveApplication_from_date" placeholder="Select start date" [min]="today">
+                  <input matInput [matDatepicker]="fromDate" formControlName="leaveApplication_from_date" placeholder="Select start date" [min]="today" (dateChange)="removeToDate();calculateApplyingDays()">
                   <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
                   <mat-datepicker #fromDate></mat-datepicker>
                   <mat-error *ngIf="f['leaveApplication_from_date']?.touched && f['leaveApplication_from_date']?.invalid">
@@ -41,7 +41,7 @@
           <div class="col-md-4">
               <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Session *</mat-label>
-                  <mat-select formControlName="from1_session" placeholder="Select session" panelClass="custom-select-panel" [disableOptionCentering]="true">
+                  <mat-select formControlName="from1_session" placeholder="Select session"  (selectionChange)="calculateApplyingDays()" panelClass="custom-select-panel" [disableOptionCentering]="true">
                       <mat-option *ngFor="let session of sessions" [value]="session.value">
                           {{ session.viewValue }}
                       </mat-option>
@@ -57,7 +57,8 @@
           <div class="col-md-4 date-picker">
               <mat-form-field appearance="outline" class="full-width">
                   <mat-label>To *</mat-label>
-                  <input matInput [matDatepicker]="toDate" formControlName="leaveApplication_to_date" [min]="leaveForm.value.leaveApplication_from_date" placeholder="Select end date">
+                  <input matInput [matDatepicker]="toDate" formControlName="leaveApplication_to_date" [min]="leaveForm.value.leaveApplication_from_date" placeholder="Select end date"
+                  (dateChange)="calculateApplyingDays()">
                   <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
                   <mat-datepicker #toDate></mat-datepicker>
                   <mat-error *ngIf="f['leaveApplication_to_date']?.touched && f['leaveApplication_to_date']?.invalid">
@@ -111,7 +112,7 @@
               <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Applying To *</mat-label>
                   <mat-select formControlName="applying_to" placeholder="Select the person to apply to" panelClass="custom-select-panel" [disableOptionCentering]="true">
-                      <mat-option value="">Select</mat-option>
+                      <mat-option *ngFor="let employees of allEmployees" [value]="employees.user.id">{{employees.user.first_name}}{{employees.user.last_name}}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="f['applying_to']?.touched && f['applying_to']?.invalid">
                       Applying To is required.
@@ -126,7 +127,7 @@
               <mat-form-field appearance="outline" class="full-width">
                   <mat-label>CC *</mat-label>
                   <mat-select formControlName="cc_to" placeholder="Select CC recipients" panelClass="panel-multiselect" [disableOptionCentering]="true" multiple>
-                      <mat-option value="">Select</mat-option>
+                    <mat-option *ngFor="let employees of allEmployees" [value]="employees.user.id">{{employees.user.first_name}}{{employees.user.last_name}}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="f['cc_to']?.touched && f['cc_to']?.invalid">
                       CC is required.

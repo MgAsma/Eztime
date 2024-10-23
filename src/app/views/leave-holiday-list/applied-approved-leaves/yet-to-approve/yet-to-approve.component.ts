@@ -63,8 +63,9 @@ export class YetToApproveComponent implements OnInit{
   ngOnChanges(changes:SimpleChange):void{
     if(changes['data'].currentValue){
       this.data=changes['data'].currentValue;
+      console.log(this.data,"DATA")
     }
-    if(changes['totalCount'].currentValue){
+    if(changes['totalCount']?.currentValue){
     this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
     this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
     this.paginationConfig.itemsPerPage=this.tableSize;
@@ -73,38 +74,7 @@ export class YetToApproveComponent implements OnInit{
     }
     this.cdref.detectChanges();
       }
-  getUserControls(){
-   
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
-      if(res.status_code !== '401'){
-        this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
-      }
-      else{
-        this.api.showError("ERROR !")
-      }
-      //console.log(res,'resp from yet');
-      
-    }
-  
-    )
-  
-    this.common_service.permission.subscribe(res=>{
-      const accessArr = res
-      if(accessArr.length > 0){
-        accessArr.forEach((element,i) => {
-          if(element['APPLIED/APPROVIED_LEAVES']){
-            this.accessConfig = element['APPLIED/APPROVIED_LEAVES']
-          }
-          
-        });
-        
-      }
-   
-      
-    //  console.log(this.accessConfig,"this.accessConfig")
-    })
-    }
+ 
     filterSearch(){
       let tableData ={
         search_key:this.term,

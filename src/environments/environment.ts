@@ -51,7 +51,10 @@ export const environment = {
   city:`city`,
   client:`client`,
   leave_master:`leave-master`,
-  employee_leaves:`employee-leaves`
+  employee_leaves:`employee-leaves`,
+  all_employee:`all-employee`,
+  apply_leave:`apply-leave`,
+  employee_leave_details:`employee-leave-details`
 };
 
 /*

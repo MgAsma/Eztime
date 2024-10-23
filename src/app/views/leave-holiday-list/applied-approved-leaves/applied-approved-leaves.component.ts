@@ -16,8 +16,8 @@ export class AppliedApprovedLeavesComponent implements OnInit {
   @ViewChild('tabset') tabset: TabsetComponent;
   appliedLeaveForm:FormGroup;
   BreadCrumbsTitle:any='Leave Status';
-  AllCardData: any = [];
-  selectedTab: any = '';
+ 
+  selectedTab: any = 'Pending';
   currDate:any;
   AllListData:any = []
   fromDate: any ;
@@ -36,6 +36,8 @@ export class AppliedApprovedLeavesComponent implements OnInit {
   orgId: any;
   term:any;
   showSearch = false
+  allCardData: Object;
+  selectedTabId: number;
   constructor(
     private api:ApiserviceService,
     private datepipe:DatePipe,
@@ -60,6 +62,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('org_id')
     this.initForm();
+    this.getAppliedLeaves('')
     // let params= {
     //   module:"LEAVE/HOLIDAY_LIST",
     //   menu:"APPLIED/APPROVIED_LEAVES",
@@ -72,6 +75,19 @@ export class AppliedApprovedLeavesComponent implements OnInit {
     //   approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
     // }
     // this.getByStatus(params)
+    this.getCount()
+  }
+  getCount(){
+    this.api.getData(`${environment.live_url}/${environment.employee_leave_details}/?get-count=true&employee-id=${this.user_id}`).subscribe(res=>{
+      if(res){ 
+      
+      this.allCardData = res
+      //this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10}; 
+    }
+  },(error:any)=>{
+    this.api.showError(error?.error?.message)
+  })
+  
   }
   searchFiter(event){
     if(event){
@@ -104,7 +120,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
           pagination:"TRUE",
           approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
         }
-        this.getByStatus(params)
+        this.getByStatus()
       }  
     }
     
@@ -141,47 +157,31 @@ export class AppliedApprovedLeavesComponent implements OnInit {
           pagination:"TRUE",
           approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
         }
-        this.getByStatus(params)
+        this.getByStatus()
       }  
     }
   }
   get f(){
   return  this.appliedLeaveForm.controls 
   }
-  getByStatus(paginate){
-    this.api.getData(`${environment.live_url}/${environment.leave_application}?module=${paginate.module}&menu=${paginate.menu}&method=${paginate.method}&user_id=${paginate.user_id}&search_key=${paginate.search_key}&page_number=${paginate.page_number}&data_per_page=${paginate.data_per_page}&pagination=${paginate.pagination}&organization_id=${this.orgId}&approved_state=${paginate.approved_state}`).subscribe(res=>{
+  getByStatus(){
+    this.api.getData(`${environment.live_url}/${environment.employee_leave_details}/?status-id=${this.selectedTabId}&employee-id=${this.user_id}`).subscribe(res=>{
       if(res){ 
-        this.AllListData = res['result'].data
-        this.AllCardData = res['result'].leave_dashboard
-        this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
-      if(this.AllListData.length <= 0){
-        this.api.showWarning('No records found')
-      }
-      
+        this.AllListData = res
+       // this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
     }
-    else{
-      this.AllListData.length < 0 ? this.api.showWarning('No records found'):''
-    }
-    
   },(error:any)=>{
-    this.api.showError(error.error.error.message)
+    this.api.showError(error?.error?.message)
   })
   }
   getAppliedLeaves(paginate){
-    this.api.getData(`${environment.live_url}/${environment.leave_application}?module=${paginate.module}&menu=${paginate.menu}&method=${paginate.method}&user_id=${paginate.user_id}&search_key=${paginate.search_key}&page_number=${paginate.page_number}&data_per_page=${paginate.data_per_page}&pagination=${paginate.pagination}&organization_id=${this.orgId}&approved_state=${paginate.approved_state}&leaveApplication_from_date=${paginate.leaveApplication_from_date}&leaveApplication_to_date=${paginate.leaveApplication_to_date}`).subscribe(res=>{
+    this.api.getData(`${environment.live_url}/${environment.employee_leave_details}/?status-id=1&employee-id=${this.user_id}`).subscribe(res=>{
         if(res){ 
-        this.AllCardData = res['result'].leave_dashboard
-        this.AllListData = res['result'].data
-        this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
-        if(this.AllListData.length <= 0){
-          this.api.showWarning('No records found')
-        }
-      
-         this.month = res['result'].data[0].your_applied_leave_to_date;
-    }
-
+        this.AllListData = res
+        //this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10}; 
+      }
     },(error:any)=>{
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     })
     
   }
@@ -241,54 +241,22 @@ export class AppliedApprovedLeavesComponent implements OnInit {
     
     }
     tabState(data){
-    //   if(data.heading == 'Approved leaves'){
-    //     this.selectedTab = 'APPROVED'
-    //   }
-    //   else if(data.heading == 'Yet to be approved' ){
-    //     this.selectedTab = 'YET_TO_APPROVED' 
-    //   }
-    //   else if(data.heading == 'Declined leaves'){
-    //     this.selectedTab = 'DECLINED'
-    //   }
-    //   else{
-    //     this.selectedTab = 'YET_TO_APPROVED' 
-    //   }
-    //   if(this.changes){
-        
-    //      let params= {
-    //       module:"LEAVE/HOLIDAY_LIST",
-    //       menu:"APPLIED/APPROVIED_LEAVES",
-    //       method:"VIEW",
-    //       page_number:1,
-    //       data_per_page:10,
-    //       search_key:'',
-    //       user_id:this.user_id,
-    //       pagination:"TRUE",
-    //       approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-    //       leaveApplication_from_date:this.fromDate,
-    //       leaveApplication_to_date:this.toDate
-    //     }
-    //     if(this.appliedLeaveForm.invalid){
-    //       this.appliedLeaveForm.markAllAsTouched()
-    //     }
-    //     else{
-    //       this.getAppliedLeaves(params)
-    //     }
-    //   }
-    // else{
-    //    let params= {
-    //     module:"LEAVE/HOLIDAY_LIST",
-    //     menu:"APPLIED/APPROVIED_LEAVES",
-    //     method:"VIEW",
-    //     page_number:1,
-    //     data_per_page:10,
-    //     search_key:'',
-    //     user_id:this.user_id,
-    //     pagination:"TRUE",
-    //     approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-    //   }
-    //   this.getByStatus(params)
-    // }
+      if(data.tab.textLabel === 'Approved'){
+        this.selectedTab = 'Approved'
+        this.selectedTabId = 2
+      }
+      else if(data.tab.textLabel === 'Pending' ){
+        this.selectedTab = 'Pending' 
+        this.selectedTabId = 1
+      }
+      else if(data.tab.textLabel === 'Declined'){
+        this.selectedTab = 'Declined'
+        this.selectedTabId = 3
+      }
+      
+      this.getByStatus()
+ 
+   
     
     }
     

@@ -19,6 +19,7 @@ import * as duration from 'dayjs/plugin/duration';
 import * as isBetween from 'dayjs/plugin/isBetween';
 import * as customParseFormat from 'dayjs/plugin/customParseFormat';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { error } from 'console';
 dayjs.extend(duration);
 dayjs.extend(isBetween);
 dayjs.extend(customParseFormat);
@@ -72,6 +73,7 @@ sessions = [
   leaveBalance: any;
   applyingDays: number;
   today: Date;
+  allEmployees: any;
   constructor(
     private builder: FormBuilder,
     private api: ApiserviceService,
@@ -104,15 +106,20 @@ sessions = [
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'));
     this.today = new Date()
-    //this.orgId = sessionStorage.getItem('org_id')
+    this.orgId = sessionStorage.getItem('organization_id')
     //this.getPeopleGroup();
     this.getLeaveType();
+    this.getAllEmployee();
     this.initForm();
    // this.enableDatepicker();
 
    // this.getAllleaveData();
   }
-
+  removeToDate(){
+    this.leaveForm.patchValue({
+      leaveApplication_to_date:''
+    })
+  }
   getLeaveBalance(){
     this.api.getData(`${environment.live_url}/${environment.employee_leaves}/?employee-id=${this.user_id}&leave-type-id=${this.leaveForm.value.leave_type_id}`).subscribe((res:any)=>{
       if(res){
@@ -225,14 +232,10 @@ sessions = [
       leave_type_id: ['', [Validators.required]],
       from1_session: ['', [Validators.required]],
       to1_session: ['', [Validators.required]],
-      balance: ['', [Validators.required]],
-      days: ['', [Validators.required]],
+     
       applying_to:['',[Validators.required]]
     });
-     // Listen for changes to the date and session fields
-    //  this.leaveForm.valueChanges.subscribe(() => {
-    //   this.calculateApplyingDays();
-    // });
+    
   }
   calculateApplyingDays() {
     const fromDate = this.leaveForm.get('leaveApplication_from_date')?.value;
@@ -276,10 +279,38 @@ sessions = [
   }
 
   submit(){
+   
+    
+    const data = {
+      leave_type: this.leaveForm.value.leave_type_id,
+      number_of_leaves_applying_for: this.applyingDays,
+      from_date: this.datepipe.transform(this.leaveForm.value.leaveApplication_from_date,'yyyy-MM-dd'),
+      to_date: this.datepipe.transform(this.leaveForm.value.leaveApplication_to_date,'yyyy-MM-dd'),
+      reporting_to: this.leaveForm.value.applying_to,
+      cc: JSON.stringify(this.leaveForm.value.cc_to), 
+      employee: this.user_id,
+      attachment: this.fileUrl,
+      message: this.leaveForm.value.reason
+    };
     if(this.leaveForm.invalid){
       this.leaveForm.markAllAsTouched()
     }else{
-      console.log(this.leaveForm.value)
+      if(this.applyingDays > this.leaveBalance){
+        this.api.showWarning(`Applied leaves should not exceed the available leave balance`);
+      }else{
+        this.api.postData(`${environment.live_url}/${environment.apply_leave}/`,data).subscribe((res:any)=>{
+          if(res){
+            this.api.showSuccess('Leave application created successfully!')
+            this.ngOnInit()
+            this.applyingDays = 0
+            this.leaveBalance = ""
+            this.fileDataUrl = ""
+          }
+         },(error)=>{
+          this.api.showError(error?.error?.message)
+         })
+      }
+   
     }
   }
   
@@ -307,9 +338,9 @@ sessions = [
         this.url = event.target.result;
         this.fileUrl = reader.result;
         this.fileDataUrl = reader.result
-        this.leaveForm.patchValue({
-          leave_application_file_attachment: this.fileUrl,
-        });
+        // this.leaveForm.patchValue({
+        //   leave_application_file_attachment: this.fileUrl,
+        // });
       };
     }
   }
@@ -413,7 +444,16 @@ sessions = [
       this.getBalance(this.workingDays);
     });
   }
-
+  getAllEmployee(){
+    const organization_id =  53
+    this.api.getData(`${environment.live_url}/${environment.all_employee}/?organization_id=${organization_id}`).subscribe((res:any)=>{
+      if(res){
+        this.allEmployees = res
+      }
+    },(error)=>{
+      this.api.showError(error?.error?.message)
+    })
+  }
 
   getWorkingDays(
     startDate: Date,
@@ -451,102 +491,6 @@ sessions = [
   onPeopleSelect(event: any) {
     this.peopleId.push(event.id);
   }
-  onPeopleSelectAll(event: any) {
-    event.forEach((element: any) => {
-      this.peopleId.push(element.id);
-    });
-    //console.log(this.peopleId)
-  }
-  getPeopleGroup() {
-    this.ccSetting = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'u_first_name',
-      itemsShowLimit: 3,
-      allowSearchFilter: true,
-    };
+  
 
-    this.api
-      .getData(
-        `${environment.live_url}/${environment.people_list}?page_number=1&data_per_page=2&pagination=FALSE&organization_id=${this.orgId}`
-      )
-      .subscribe(
-        (data: any) => {
-          if (data) {
-            this.allPeopleGroup = data.result.data;
-          }
-        },
-        (error) => {
-          this.api.showError(error.error.error.message);
-        }
-      );
-  }
-  addLeave() {
-    if (this.leaveForm.invalid) {
-      this.api.showError('Invalid');
-      this.leaveForm.markAllAsTouched();
-    } else {
-      let startDate = this.leaveForm.value.leaveApplication_from_date;
-      let endDate = this.leaveForm.value.leaveApplication_to_date;
-      const selectedCCTo = this.leaveForm.value.cc_to.map((f) => f.id);
-      console.log(selectedCCTo);
-      if (this.noLeaves == false) {
-        let data = {
-          module: 'LEAVE/HOLIDAY_LIST',
-          menu: 'LEAVE_APPLICATION',
-          method: 'CREATE',
-          reason: this.leaveForm.value.reason,
-          contact_details: this.leaveForm.value.contact_details,
-          leave_application_file_attachment:
-            this.leaveForm.value.leave_application_file_attachment,
-          cc_to: selectedCCTo,
-          leaveApplication_from_date: this.datepipe.transform(
-            startDate,
-            'dd/MM/yyyy'
-          ),
-          leaveApplication_to_date: this.datepipe.transform(
-            endDate,
-            'dd/MM/yyyy'
-          ),
-          leave_type_id: Number(this.leaveForm.value.leave_type_id),
-          from_session: this.leaveForm.value.from1_session,
-          to_session: this.leaveForm.value.to1_session,
-          balance: String(this.leaveForm.value.balance),
-          days: this.leaveForm.value.days,
-          user_id: this.user_id,
-          organization_id: this.orgId
-        };
-
-        this.api.addLeaveDetails(data).subscribe(
-          (response) => {
-            if (response) {
-              this.api.showSuccess('Leave added successfully!!');
-              this.leaveForm.reset();
-              this.leaveForm.patchValue({
-                leaveApplication_from_date: '',
-                leaveApplication_to_date: '',
-                from1_session: '',
-                to1_session: '',
-                balance: '',
-                days: '',
-                reason: '',
-                contact_details: '',
-                leave_application_file_attachment: '',
-                cc_to: '',
-              });
-
-              // this.ngOnInit()
-            } else {
-              this.api.showError('Error');
-            }
-          },
-          (error) => {
-            this.api.showError(error.error.error.message);
-          }
-        );
-      } else {
-        this.api.showWarning('leaves are not available');
-      }
-    }
-  }
 }

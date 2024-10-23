@@ -7,14 +7,14 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-3 cards-section">
                             <mat-card style="background: #E4FFE3;">
-                                <h4 style="font-size: 20px !important;text-align: center;">{{AllCardData?.approved_count || 0}}</h4>
+                                <h4 style="font-size: 20px !important;text-align: center;">{{allCardData?.['Approved'] || 0}}</h4>
                                 <h6 style="margin-bottom: 0;text-align: center;"><b>Approved</b> </h6>
                             </mat-card>
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-3 cards-section">
                             <mat-card style="background: #FFFBE3;">
                                
-                            <h4 style="font-size: 20px !important;text-align: center;">{{AllCardData?.request_count || 0}}</h4>
+                            <h4 style="font-size: 20px !important;text-align: center;">{{allCardData?.['Pending'] || 0}}</h4>
                         
                             <h6 style="margin-bottom: 0;text-align: center;"><b>Pending</b></h6>
                         
@@ -25,7 +25,7 @@
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-3 cards-section">
                             <mat-card style="background: #FFE3E3;">
-                                <h4 style="font-size: 20px !important;text-align: center;">{{AllCardData?.declined_count || 0}}</h4>
+                                <h4 style="font-size: 20px !important;text-align: center;">{{allCardData?.['Declined'] || 0}}</h4>
                                 <h6 style="margin-bottom: 0;text-align: center"><b>Declined</b></h6>
                             </mat-card>
                         </div>
@@ -36,8 +36,8 @@
 
                     <form [formGroup]="appliedLeaveForm">
                         <div class="row">
-                            <div class="col-sm-4 col-md-6 col-lg-3">
-                                <mat-form-field appearance="outline">
+                            <div class="col-sm-12 col-md-6 col-lg-3">
+                                <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>From date</mat-label>
                                     <input matInput [matDatepicker]="fromDatePicker" formControlName="from_date"
                                         (dateChange)="changeFormat()" required>
@@ -49,8 +49,8 @@
                                 </mat-form-field>
                             </div>
 
-                            <div class="col-sm-4 col-md-6 col-lg-3">
-                                <mat-form-field appearance="outline" [attr.disabled]="!appliedLeaveForm.value.from_date">
+                            <div class="col-sm-12 col-md-6 col-lg-3">
+                                <mat-form-field appearance="outline" class="w-100" [attr.disabled]="!appliedLeaveForm.value.from_date">
                                     <mat-label>To date</mat-label>
                                     <input matInput [matDatepicker]="toDatePicker" formControlName="to_date"
                                         [min]="appliedLeaveForm.value.from_date" (dateChange)="changeFormat()" required>
@@ -105,7 +105,7 @@
                                               </div>
                                            
                                           </div>
-                                          <app-yet-to-approve   [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-yet-to-approve> 
+                                          <app-yet-to-approve *ngIf="selectedTab === 'Pending'"  [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-yet-to-approve> 
                                           <!-- <app-yet-to-approve  *ngIf="AllListData && AllListData[0]?.status === 'YET_TO_APPROVED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-yet-to-approve>  -->
                                     </ng-container>
                                  
@@ -119,7 +119,7 @@
                                           </div>
                                        
                                       </div>
-                                      <app-approved [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-approved>   
+                                      <app-approved *ngIf="selectedTab === 'Approved'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-approved>   
                                       <!-- <app-approved *ngIf="AllListData && AllListData[0]?.status === 'APPROVED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-approved>    -->
                                 </mat-tab>
                                 <mat-tab label="Declined">
@@ -131,7 +131,7 @@
                                           </div>
                                        
                                       </div>
-                                      <app-declined  [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-declined>
+                                      <app-declined  *ngIf="selectedTab === 'Declined'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-declined>
                                       <!-- <app-declined *ngIf="AllListData && AllListData[0]?.status === 'DECLINED'" [data]="AllListData" [totalCount]="totalCount" (filter)="searchFiter($event)" (buttonClick)="buttonClick($event)"></app-declined> -->
                                 </mat-tab>
                             </mat-tab-group>

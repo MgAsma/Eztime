@@ -69,22 +69,17 @@ p{
 html{
     position: relative;
 }
-// .createbtn{
-//     background-color: #3F51B5;
-//     border: none;
-//     color: white;
-//     padding: 20px;
-//     text-align: center;
-//     text-decoration: none;
-//     display: inline-block;
-//     font-size: 35px;
-//     margin: 0px 2px;
-//     border-radius: 50%;
-//     position: fixed;
-//     right: 5%;
-//     bottom: 10%;
+.pagination-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 
-// }
+  
+
+
 #i-cr tr td{
     padding: 0 2px !important;
     margin: 0 !important;
