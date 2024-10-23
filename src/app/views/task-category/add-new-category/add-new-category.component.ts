@@ -37,7 +37,7 @@ export class AddNewCategoryComponent implements OnInit {
     this.taskCategoryForm = this.builder.group({
       category_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
       projectcategory_task: this.builder.array([]),
-      // organization_id: this.orgId
+      organization: this.orgId
       // projectcategory_task: this.builder.array([]),
       // file_templates_list: this.builder.array([]),
     });
@@ -80,7 +80,7 @@ export class AddNewCategoryComponent implements OnInit {
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id');
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    // this.orgId = sessionStorage.getItem('org_id')
+    this.orgId = sessionStorage.getItem('organization_id')
     this.initForm();
   }
   get f() {
@@ -262,7 +262,8 @@ export class AddNewCategoryComponent implements OnInit {
           category_name: this.taskCategoryForm.value['category_name'],
           projectcategory_task: tempList,
           created_by:this.user_id,
-          updated_by:this.user_id
+          updated_by:this.user_id,
+          organization: this.orgId
         }
         console.log(data, 'data form')
         this.api.postProjCategory(data).subscribe(res => {

@@ -8,7 +8,7 @@
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                 <mat-label>Department name<b class="r-star">*</b></mat-label>
                                 <input matInput placeholder="Enter department name" formControlName="department_name"
-                                    autocomplete="off" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
+                                    autocomplete="off" pattern="^(?!\s)(.*\S)?$">
                             </mat-form-field>
                             <div class="px-2" *ngIf="f['department_name']?.touched && f['department_name']?.invalid">
                                 <span class="text-errors"
@@ -26,7 +26,7 @@
                             <mat-form-field appearance="outline" class="w-100 ">
                                 <mat-label>Description</mat-label>
                                 <textarea matInput placeholder="Enter description" formControlName="description"
-                                    autocomplete="off" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$"></textarea>
+                                    autocomplete="off" pattern="^(?!\s)(.*\S)?$"></textarea>
                             </mat-form-field>
                             <div class="px-2" *ngIf="f['description']?.touched && f['description']?.invalid">
                                 <span class="text-errors"

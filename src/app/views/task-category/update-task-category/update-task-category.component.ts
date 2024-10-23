@@ -62,7 +62,7 @@ export class UpdateTaskCategoryComponent implements OnInit {
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.orgId = sessionStorage.getItem('org_id');
+    this.orgId = sessionStorage.getItem('organization_id');
     this.user_id = sessionStorage.getItem('user_id')
     this.initForm();
     this.edit();
@@ -329,7 +329,8 @@ export class UpdateTaskCategoryComponent implements OnInit {
         }));
         const data = {
           category_name: this.taskCategoryForm.value['category_name'],
-          projectcategory_task: tempList,
+          projectcategory_task: tempList, 
+          organization: this.orgId,
           created_by:this.user_id,
           updated_by:this.user_id
         }

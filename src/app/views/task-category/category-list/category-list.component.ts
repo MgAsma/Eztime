@@ -54,7 +54,7 @@ export class CategoryListComponent implements OnInit {
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.orgId = sessionStorage.getItem('org_id')
+    this.orgId = sessionStorage.getItem('organization_id')
     this.getCategory();
     // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
 
@@ -120,7 +120,7 @@ export class CategoryListComponent implements OnInit {
       search_key:this.term
   }
 
-    this.api.getProjCategory().subscribe((data:any)=>{
+    this.api.getProjCategory(`${'organization_id'}=${this.orgId}`).subscribe((data:any)=>{
       
       if(data){
         this.categoryList = data;

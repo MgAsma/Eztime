@@ -42,8 +42,8 @@ export class CreateRoleComponent implements OnInit {
   initForm(){
    
     this.roleForm= this.builder.group({
-      designation_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      description:['',[Validators.pattern(/^\S.*$/)]],
+      designation_name:['',[Validators.required]],
+      description:[''],
       organization:this.orgId
       // priority:['',Validators.required],
       // role_status:['',Validators.required],
@@ -58,33 +58,17 @@ export class CreateRoleComponent implements OnInit {
  
   addRole(){
     if(this.roleForm.invalid){
-      this.api.showError('Invalid!')
+      this.api.showError('Please enter the mandatory fields!')
       this.roleForm.markAllAsTouched();
     }
     else{
-      // let data = {
-      //   designation_name:this.roleForm.value.designation_name,
-      //   // priority:this.roleForm.value.priority,
-      //   role_status:this.roleForm.value.role_status,
-      //   description:this.roleForm.value.description,
-      //   module_name:['ROLES'],
-      //   organization_id:this.orgId,
-      //   permissions:[
-      //     {
-      //     "ROLES": [],
-      //     "ROLES_ACCESSIBILITY": []
-      //    }
-      // ]
-      // }
+      
       this.api.postDesignationList(this.roleForm.value).subscribe((res:any) =>{
           if(res){
             this.api.showSuccess(res.message);
             this.roleForm.reset();
             this.initForm();
           }
-          // else{
-          //   this.api.showError('Error')
-          // }
       },((error:any) =>{
           this.api.showError(error.error.message);
           console.log(error)

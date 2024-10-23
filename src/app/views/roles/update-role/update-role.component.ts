@@ -33,8 +33,8 @@ status = [
   }
   initForm(){
     this.updateForm= this.builder.group({
-      designation_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      description:['',[Validators.pattern(/^\S.*$/)]],
+      designation_name:['',[Validators.required]],
+      description:[''],
       organization:this.org_id
       // priority:['',Validators.required],
       // role_status:['',Validators.required],
