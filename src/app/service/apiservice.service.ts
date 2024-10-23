@@ -10,7 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 
 export class ApiserviceService {
   baseurl = environment.live_url;
-  newUrl = environment.new_dev_url;
+  newUrl = environment.live_url;
   org_id: any;
   accessArr: any = []
   token: any
