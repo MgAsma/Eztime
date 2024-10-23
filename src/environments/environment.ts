@@ -4,16 +4,15 @@
 
 export const environment = {
   production: false,
-//  live_url: 'https://projectacedev.thestorywallcafe.com/api',
+   //live_url: 'https://projectacedev.thestorywallcafe.com/api',
   //media_url: 'https://projectacedev.thestorywallcafe.com/media',
-  media_url: 'https://projectacedevelop.thestorywallcafe.com/',
+   media_url: 'https://projectacedevelop.thestorywallcafe.com/',
    live_url:'https://projectacedevelop.thestorywallcafe.com/api',
-  //  new_media_url:'https://projectacetest.thestorywallcafe.com',
+  
   // live_url: 'https://projectacetest.thestorywallcafe.com/api',
-  // new_media_url:'https://projectacetest.thestorywallcafe.com/media',
   // media_url:'https://projectacetest.thestorywallcafe.com/media',
-  // new_dev_url: 'https://projectacetest.thestorywallcafe.com/api',
- // live_url: 'https://projectaceuat.thestorywallcafe.com/api',
+  
+  // live_url: 'https://projectaceuat.thestorywallcafe.com/api',
   // media_url: 'https://projectaceuat.thestorywallcafe.com/media',
   // live_url: 'https://projectaceprod.thestorywallcafe.com/api',
   // media_url: 'https://projectaceprod.thestorywallcafe.com/media',
