@@ -26,7 +26,7 @@
                 <ng-container >
                   <div class="row p-r webView">
                                 
-                    <div class="col-sm-4 search-div" >
+                    <!-- <div class="col-sm-4 search-div" >
                         <button mat-icon-button  class="close-icon search-button" style="top:0" ngbTooltip="Search" *ngIf="!showSearch" (click)="showSearch=!showSearch">
                             <i class="bi bi-search"></i>
                         </button>
@@ -36,8 +36,9 @@
                         <i class="bi bi-search" id="search-icon-tab" *ngIf="showSearch"></i>
                       
                         <i class="bi bi-x-circle close-icon" ngbTooltip="Close" *ngIf="showSearch" (click)="showSearch=!showSearch"></i>
-                    </div>
-                      
+                    </div> -->
+                      <button mat-raised-button type="button" class="bulk-action-btn" style="background: #3CA300;"><i class="bi bi-check-circle"></i>APPROVE</button>
+                      <button mat-raised-button type="button" class="bulk-action-btn" style="right: 12%;background: #B41212;"><i class="bi bi-x-circle"></i>REJECT</button>
                   </div>
                   <mat-tab-group class="custom-tab-group" (selectedTabChange)="tabState($event)">
                     <!-- Pending -->

@@ -18,7 +18,7 @@ export class MonthTimesheetComponent implements OnInit {
   term:any;
   showSearch:any;
   page: any = 1;
-  selectedTab: any = 'YET_TO_APPROVED';
+  selectedTab: any;
   allDetails: any = [];
   submited: boolean = false;
   openDropdown: boolean = false;
@@ -59,51 +59,15 @@ export class MonthTimesheetComponent implements OnInit {
     this.initForm()
     this.user_id = sessionStorage.getItem('user_id')
     this.orgId = sessionStorage.getItem('org_id')
+    const currentDate = new Date();
+    const shortMonthName = currentDate.toLocaleString('default', { month: 'long' });
+    console.log(shortMonthName);
     let c_params = {
-     
-      user_id: this.user_id,
-      page_number: 1,
-      data_per_page: this.itemPerPageCount,
-      search_key: '',
-      pagination: 'TRUE'
+     status:'Pending',
+     month:shortMonthName
     }
-   this.getByStatus(c_params)
-    //this.getUserControls()
-    this.allDetails;
-    // this.allDetails = [
-    //   {
-    //     index: 1,
-    //     created_date_time: new Date('2024-09-20T00:00:00'), // Date object
-    //     created_by_name: 'John Doe',
-    //     id: 12345,
-    //     time_spent: '8 hours',
-    //     approved_state: 'Approved'
-    //   },
-    //   {
-    //     index: 2,
-    //     created_date_time: new Date('2024-09-21T00:00:00'),
-    //     created_by_name: 'Jane Smith',
-    //     id: 67890,
-    //     time_spent: '5 hours',
-    //     approved_state: 'Pending'
-    //   },
-    //   {
-    //     index: 3,
-    //     created_date_time: new Date('2024-09-22T00:00:00'),
-    //     created_by_name: null, // No created_by_name
-    //     id: null, // No ID
-    //     time_spent: '6 hours',
-    //     approved_state: 'Rejected'
-    //   },
-    //   {
-    //     index: 4,
-    //     created_date_time: new Date('2024-09-23T00:00:00'),
-    //     created_by_name: 'Alice Cooper',
-    //     id: 54321,
-    //     time_spent: '3 hours',
-    //     approved_state: 'Approved'
-    //   }
-    // ];
+   this.getAllTimeSheet(c_params)
+   
   }
   get f() {
     return this.monthForm.controls;
@@ -125,35 +89,7 @@ export class MonthTimesheetComponent implements OnInit {
   onChanges() {
     this.changes = true
   }
-  getUserControls() {
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.orgId}&pagination=TRUE`).subscribe((res: any) => {
-      if (res.status_code !== '401') {
-        this.common_service.permission.next(res['data'][0]['permissions'])
-      }
-      else {
-        this.api.showError("ERROR !")
-      }
-    }
-
-    )
-
-
-    this.common_service.permission.subscribe(res => {
-      let accessArr: any = []
-      accessArr = res
-      if (accessArr.length > 0) {
-        accessArr.forEach((element) => {
-          if (element['MONTH_APPROVAL_TIMESHEET']) {
-            let exebtn = element['MONTH_APPROVAL_TIMESHEET'].includes('ACCEPT') || element['MONTH_APPROVAL_TIMESHEET'].includes('REJECT')// Check if 'ACCEPT' is present in the array
-            this.exebtn = exebtn; // Set this.exebtn based on exebtn value
-            element['MONTH_APPROVAL_TIMESHEET'].includes('ACCEPT') ? this.acceptOption = true : this.acceptOption = false
-            element['MONTH_APPROVAL_TIMESHEET'].includes('REJECT') ? this.rejectOption = true : this.rejectOption = false
-          }
-
-        });
-      }
-    })
-  }
+  
 
   submit() {
     if (this.monthForm.invalid) {
@@ -187,29 +123,11 @@ export class MonthTimesheetComponent implements OnInit {
     this.allDetails = [];
     this.exebtn = false;
   //  this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&approved_state=${params.approved_state}&search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&organization_id=${this.orgId}`).subscribe(res => {
-      this.api.getData(`${environment.live_url}/${environment.timesheets}/?status=${params.status}&month=${params.timesheets_from_date}`).subscribe(res =>{
-      if (res && res['result']['data'].length >= 1) {
-        if (res['result']['data'].length > 1) {
-          res['result']['data'].forEach(element => {
-            // console.log(element.id)
-            this.allListDataids.push(element.id)
-            this.exebtn = true;
-          });
-          this.allDetails = res['result']['data']
-          this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
-
-        }
-        else {
-          if (res['result']['data'].length === 1) {
-            this.allListDataids.push(res['result']['data'][0].id)
-            this.exebtn = true;
-            this.allDetails = res['result']['data']
-            this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
-
-          }
-        }
-      } else {
-        this.api.showWarning('No records found !')
+      this.api.getData(`${environment.live_url}/${environment.timesheets}/${params}`).subscribe(res =>{
+      if (res ) {
+        
+          this.allDetails = res?.['timesheets']
+         // this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
       }
     }, ((error: any) => {
       this.api.showError(error.error.error.message)
@@ -220,29 +138,29 @@ export class MonthTimesheetComponent implements OnInit {
     this.allListDataids = []
     this.allDetails = [];
     this.exebtn = false;
-  //  this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&timesheets_from_date=${params.timesheets_from_date}&approved_state=${params.approved_state}&search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&organization_id=${this.orgId}`).subscribe(res => {
-      this.api.getData(`${environment.live_url}/${environment.timesheets}/?status=${params.status}&month=${params.timesheets_from_date}`).subscribe(res =>{
-      if (res && res['result']['data'].length >= 1) {
-        if (res['result']['data'].length > 1) {
-          res['result']['data'].forEach(element => {
-            // console.log(element.id)
-            this.allListDataids.push(element.id)
-            this.exebtn = true;
-          });
-          this.allDetails = res['result']['data']
-          this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
-        }
-        else {
-          if (res['result']['data'].length === 1) {
-            this.allListDataids.push(res['result']['data'][0].id)
-            this.exebtn = true;
-            this.allDetails = res['result']['data']
-            this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
-          }
-        }
-      } else {
-        this.api.showWarning('No records found !')
-      }
+ 
+      this.api.getData(`${environment.live_url}/${environment.timesheets}/?status=${params.status}&month=${params.month}`).subscribe(res =>{
+      if (res) {
+        // if (res['result']['data'].length > 1) {
+        //   res['result']['data'].forEach(element => {
+        //     // console.log(element.id)
+        //     this.allListDataids.push(element.id)
+        //     this.exebtn = true;
+        //   });
+          this.allDetails = res?.['timesheets']
+        //  this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
+      //   }
+      //   else {
+      //     if (res['result']['data'].length === 1) {
+      //       this.allListDataids.push(res['result']['data'][0].id)
+      //       this.exebtn = true;
+      //       this.allDetails = res['result']['data']
+      //       this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
+      //     }
+      //   }
+      // } else {
+      //   this.api.showWarning('No records found !')
+       }
 
     }, ((error: any) => {
       this.api.showError(error.error.error.message)
@@ -253,59 +171,54 @@ export class MonthTimesheetComponent implements OnInit {
 
   tabState(data) {
     //console.log(data,"REEE")
-    if (data.heading == 'Approved timesheets') {
-      this.selectedTab = 'APPROVED'
+    if(data.tab.textLabel == 'Approved'){
+      this.selectedTab = 'Approved'
     }
-    else if (data.heading == 'Yet to be approved') {
-      this.selectedTab = 'YET_TO_APPROVED'
+    else if(data.tab.textLabel == 'Pending' ){
+      this.selectedTab = 'Pending' 
     }
-    else if (data.heading == 'Declined timesheets') {
-      this.selectedTab = 'DECLINED'
+    else if(data.tab.textLabel == 'Declined'){
+      this.selectedTab = 'Declined'
     }
-    else if (data.heading == 'Time Sheets') {
-      this.selectedTab = 'TIMESHEET'
-    }
-    else {
-      this.selectedTab = 'YET_TO_APPROVED'
-    }
-    this.handleMonthSelection(this.monthForm.value['fromMonth'])
-    if (this.monthForm.value['fromMonth'] !== '') {
-      let c_params = {
-        module: "TIMESHEET",
-        menu: "MONTH_APPROVAL_TIMESHEET",
-        method: "VIEW",
-        approved_state: this.selectedTab,
-        user_id: this.user_id,
-        page_number: 1,
-        data_per_page: this.itemPerPageCount,
-        search_key: '',
-        timesheets_from_date: this.formattedDate,
-        pagination: 'TRUE'
-      }
+    this.getByStatus(`?status=${this.selectedTab}`)
+    // this.handleMonthSelection(this.monthForm.value['fromMonth'])
+    // if (this.monthForm.value['fromMonth'] !== '') {
+    //   let c_params = {
+    //     module: "TIMESHEET",
+    //     menu: "MONTH_APPROVAL_TIMESHEET",
+    //     method: "VIEW",
+    //     approved_state: this.selectedTab,
+    //     user_id: this.user_id,
+    //     page_number: 1,
+    //     data_per_page: this.itemPerPageCount,
+    //     search_key: '',
+    //     timesheets_from_date: this.formattedDate,
+    //     pagination: 'TRUE'
+    //   }
 
-      if (this.monthForm.invalid) {
-        this.monthForm.markAllAsTouched()
-        this.api.showWarning('Please select month')
-      }
-      else {
-        this.allDetails = []
-        this.getAllTimeSheet(c_params)
-      }
-    }
-    else {
-      let c_params = {
-        module: "TIMESHEET",
-        menu: "MONTH_APPROVAL_TIMESHEET",
-        method: "VIEW",
-        approved_state: this.selectedTab,
-        user_id: this.user_id,
-        page_number: 1,
-        data_per_page: this.itemPerPageCount,
-        search_key: '',
-        pagination: 'TRUE'
-      }
-      this.getByStatus(c_params)
-    }
+    //   if (this.monthForm.invalid) {
+    //     this.monthForm.markAllAsTouched()
+    //     this.api.showWarning('Please select month')
+    //   }
+    //   else {
+    //     this.allDetails = []
+    //     this.getAllTimeSheet(c_params)
+    //   }
+    // }
+    // else {
+    //   let c_params = {
+    //     module: "TIMESHEET",
+    //     menu: "MONTH_APPROVAL_TIMESHEET",
+    //     method: "VIEW",
+    //     approved_state: this.selectedTab,
+    //     user_id: this.user_id,
+    //     page_number: 1,
+    //     data_per_page: this.itemPerPageCount,
+    //     search_key: '',
+    //     pagination: 'TRUE'
+    //   }
+    //   this.getByStatus(c_params)
+    // }
 
 
 

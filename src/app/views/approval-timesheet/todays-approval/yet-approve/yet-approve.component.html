@@ -15,30 +15,6 @@
             </tr>
           </thead>
           <tbody>
-           
-                <!-- "id": 4,
-                "client": 1,
-                "project": 6,
-                "description": "",
-                "employee_first_name": "anandhi",
-                "employee_last_name": "c",
-                "manager_first_name": "Nithesh",
-                "manager_last_name": "Hegde",
-                "reporting_manager": 2,
-                "created_by": 235,
-                "status": "Pending",
-                "timesheet_date": "2024-10-22",
-                "created_datetime": "2024-10-22T06:16:58.139005Z",
-                "updated_datetime": "2024-10-22T10:46:41.358212Z",
-                "task_list": [
-                    {
-                        "task_id": 14,
-                        "task_name": "create project",
-                        "hours_left": "2 hr",
-                        "hours_to_complete": "4 hr"
-                    }
-                ] -->
-           
             <ng-container *ngIf="(yetToApproveAll) as result">
               <tr *ngFor="let item of result|paginate:paginationConfig;let i = index">
                 <td>{{getContinuousIndex(i)}}</td>

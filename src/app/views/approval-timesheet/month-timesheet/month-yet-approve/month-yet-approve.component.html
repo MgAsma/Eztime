@@ -94,18 +94,36 @@
               <tr *ngFor="let item of result | paginate: paginationConfig; let i = index">
                 <td><input type="checkbox" [(ngModel)]="item.selected" (change)="onCheckboxChange()"/></td>
                 <td>{{getContinuousIndex(i)}}</td>
-                <td class="text-center">{{item['created_date_time'] | date : 'mediumDate'}}</td>
-                <td class="text-center">{{item.created_by_first_name ?item.created_by_first_name :'NA' |titlecase}}</td>
-               
-                <td class="text-center">{{item.task_list.task_name}}</td>
-                <td class="text-center">{{item.task_list.hours_to_complete|titlecase}}</td>
                 <td class="text-center">{{item.created_datetime | date :'dd/MM/YYYY'}}</td>
+                <td class="text-center">{{item.employee_first_name ?item.employee_first_name :'NA' |titlecase}}</td>
+               
+                <td class="text-center" *ngIf="item.task_list.length">
+                  <div *ngFor="let task of item.task_list; let j = index">
+                    <div>
+                      {{ task?.task_name || 'NA' }} <br/>
+                    </div>
+                  </div>
+                </td>
+                <td *ngIf="item.task_list.length === 0">
+                  {{'NA'}}
+                </td>
+                <td class="text-center" *ngIf="item.task_list.length">
+                  <div *ngFor="let task of item.task_list; let j = index">
+                    <div>
+                      {{ task?.hours_to_complete || 'NA' }}
+                    </div>
+                  </div>
+                </td>
+                <td *ngIf="item.task_list.length === 0">
+                  {{'NA'}}
+                </td>
+               
                 <td class="text-center">
-                  <ng-container *ngFor="let approval of accessConfig">
-                    <span *ngIf="approval == 'REJECT'" >
+                  <ng-container>
+                    <span>
                       <img src="../../../../../assets/images/Close.svg" class="icon-image" container="body" ngbTooltip="Reject" (click)="open(item.id, 'DECLINED')" />
                     </span>
-                    <span *ngIf="approval == 'ACCEPT'" >
+                    <span>
                       <img src="../../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Approve" (click)="open(item.id, 'APPROVED')" />
                     </span>
                   </ng-container>
@@ -122,13 +140,6 @@
   </div>
 </div>
 <div class="container-fluid mobileView">
-  <div class="row mx-1 my-2">
-    <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-      <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search"
-        aria-describedby="emailHelp" autocomplete="off">
-      <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
-    </div>
-  </div>
 
   <div class="bg row mx-0 my-1">
     <ng-container *ngIf="(yetToApproveAll) as result">

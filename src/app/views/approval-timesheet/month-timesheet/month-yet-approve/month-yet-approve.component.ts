@@ -71,13 +71,12 @@ export class MonthYetApproveComponent implements OnInit {
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id')
     this.org_id = sessionStorage.getItem('org_id')
-    this.getUserControls()
   }
   ngOnChanges(changes: SimpleChange): void {
     if (changes['data'].currentValue) {
       this.yetToApproveAll = changes['data'].currentValue;
     }
-    if (changes['totalCount'].currentValue) {
+    if (changes['totalCount']?.currentValue) {
       this.paginationConfig.totalItems = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
       this.paginationConfig.currentPage = changes['totalCount'].currentValue.currentPage;
       this.paginationConfig.itemsPerPage = changes['totalCount'].currentValue.itemsPerPage;

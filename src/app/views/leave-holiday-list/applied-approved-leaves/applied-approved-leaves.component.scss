@@ -28,8 +28,15 @@ mat-form-field{
     border-radius: 5px;
     overflow-x: auto !important;
 }
-.cards-section{
-    width: 20% !important;
+.webView{
+    .cards-section{
+        width: 20% !important;
+    }
+}
+.mobileView{
+    .cards-section{
+        width: 100% !important;
+    }
 }
 
 i {

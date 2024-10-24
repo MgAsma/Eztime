@@ -106,10 +106,7 @@ export class TodaysApprovalComponent implements OnInit {
       this.selectedTab = 'Declined'
     }
     
-    else{
-      this.selectedTab = 'Pending' 
-    }
-
+   
     let params = {
       // page_number: 1,
       // data_per_page: this.table_size,
