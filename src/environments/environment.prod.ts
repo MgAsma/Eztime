@@ -2,12 +2,12 @@ export const environment = {
   production: true,
   // live_url: 'https://projectacedev.thestorywallcafe.com/api',
    //media_url: 'https://projectacedev.thestorywallcafe.com/media',
-
+   
   media_url: 'https://projectacedevelop.thestorywallcafe.com',
   live_url:'https://projectacedevelop.thestorywallcafe.com/api',
  
   // live_url: 'https://projectacetest.thestorywallcafe.com/api',
-  // media_url:'https://projectacetest.thestorywallcafe.com/media',
+  // media_url:'https://projectacetest.thestorywallcafe.com',
  
   // live_url: 'https://projectaceuat.thestorywallcafe.com/api',
   // media_url: 'https://projectaceuat.thestorywallcafe.com/media',

@@ -90,11 +90,16 @@ i{
 .btnicon{
     display: none;
 }
-
-
-.search-color{
-    background-color: #f6f6f6;
+button:hover .btnicon{
+    display: block;
 }
+// ::ng-deep .mat-form-field {
+//     height: 55px;
+//     width: 95%!important;
+//     background-color: #ffff;
+//     border-radius: 50px;
+//     border: solid gray;
+// }
 
 .outer-card{
     border: none;
@@ -105,10 +110,16 @@ i{
     zoom: 90%;
     background: #FFFFFF99 !important;
     padding: 5px 16px;
+    
 }
 .card-subtitle{
     font-weight: bold;
 }
 .main-col{
-    padding: 5px !important;
+    padding: 5px;
+}
+.icon-image{
+    cursor: pointer;
+    height: 25px;
+    margin: 0 2px;
 }
