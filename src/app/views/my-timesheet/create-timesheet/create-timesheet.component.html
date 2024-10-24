@@ -204,7 +204,7 @@
                   <mat-label>Project <span>*</span></mat-label>
                   <mat-select (selectionChange)="getTask($event.value, i)" [ngbTooltip]="!project.get('client_id').value ? 'Please select the client name':''" [disabled]="!project.get('client_id').value" formControlName="project_id"
                   panelClass="custom-select-panel" [disableOptionCentering]="true" placeholder="Select project">
-                    <mat-option *ngFor="let item of createdProject.value[i]?.projectList" [value]="item.id">{{ item.p_name }}</mat-option>
+                    <mat-option *ngFor="let item of createdProject.value[i]?.projectList" [value]="item.id">{{ item.project_name }}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="project.get('project_id').touched && project.get('project_id').invalid">
                     <span class="error-text" *ngIf="project.get('project_id').hasError('required')">Project name is required.</span>
@@ -262,7 +262,7 @@
                       <mat-select formControlName="task_id"
                         (selectionChange)="getTimeSpent($event.value, currentIndex)" placeholder="Select task"
                         panelClass="custom-select-panel" [disableOptionCentering]="true">
-                        <mat-option *ngFor="let item of createdProject.value[i]?.taskList" [value]="item.id">
+                        <mat-option *ngFor="let item of createdProject.value[i]?.taskList" [value]="item.task_name">
                            {{ item.task_name }}
                          
                         </mat-option>

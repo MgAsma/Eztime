@@ -55,7 +55,9 @@ export const environment = {
   all_employee:`all-employee`,
   apply_leave:`apply-leave`,
   employee_leave_details:`employee-leave-details`,
-  project:`project`
+  project:`project`,
+  project_task:`project-task`,
+  task_hours:`timesheet-task-hours`
 };
 
 /*

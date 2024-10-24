@@ -196,7 +196,7 @@ export class UpdateProjectComponent implements OnInit {
       data_per_page: this.tableSize,
       organization_id: this.org_id
     }
-    this.api.getCurrentProjectDetails(this.id, params).subscribe((data: any) => {
+    this.api.getCurrentProjectDetails(this.id).subscribe((data: any) => {
       this.startDate = this.datepipe.transform(data.result.data[0].start_date * 1000, 'yyyy-MM-dd')
       this.endDate = this.datepipe.transform(data.result.data[0].end_date * 1000, 'yyyy-MM-dd')
       // this.getSubTask(data.result.data[0].p_task_checklist_status, 'TS')

@@ -622,7 +622,7 @@ console.log(selectedArr,'MAP')
         this.addProjectDetails(); 
       },
       (error) => {
-        this.api.showError(error?.error.error.message);
+        this.api.showError(error?.error?.message);
       }
     );
   }
@@ -639,7 +639,6 @@ console.log(selectedArr,'MAP')
   
         // Update only the relevant index's project list
         projectControl.patchValue({ clientList: allClient });
-        console.log(this.allClient,'CLIENTLIST')
       }
      
     }
@@ -651,7 +650,6 @@ console.log(selectedArr,'MAP')
   getProject(event, index){
     this.currentIndex = index
     this.client_id = event
-    // 'https://projectacedevelop.thestorywallcafe.com/api/project/?organization=53&client=11
     this.api.getData(`${environment.live_url}/${environment.project}/?organization=${this.orgId}&client=${event}`).subscribe((res:any)=>{
       if(res){
         this.allProject = res
@@ -662,14 +660,14 @@ console.log(selectedArr,'MAP')
       }
      
     },(error =>{
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     }))
   }
   getTask(event,index){
     this.project_id = event
-    this.api.getData(`${environment.live_url}/${environment.get_time_sheet_values}?client_id=${this.client_id}&project_id=${event}`).subscribe((res:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.project_task}/?project=${event}`).subscribe((res:any)=>{
       if(res){
-       this.allTask = res.data[0].project_related_task_list 
+       this.allTask = res 
        this.taskList = [...this.allTask]
         // console.log(res.data[0].project_related_task_list,"RESPONSETASK n/----------------")
         this.createdProject.at(index)?.patchValue({taskList: this.taskList})
