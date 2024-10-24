@@ -131,12 +131,12 @@ export class ProjectListComponent implements OnInit {
   }
 
   delete(id: any) {
-    this.api.deleteProjectDetails(`${'p_id'}=${id}`).subscribe((data: any) => {
-      if (data) {
+    this.api.deleteProjectDetails(id).subscribe((data: any) => {
+      // if (data) {
         this.allProjectList = []
         this.ngOnInit()
         this.api.showWarning('Project deleted successfully!')
-      }
+      // }
     }, (error => {
       this.api.showError(error.error.error.message)
     })

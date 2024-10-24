@@ -251,7 +251,10 @@ export class ApiserviceService {
     return this.http.get(`${this.baseurl}/projectbyclients/?client_id=${id}`, { headers: this.headers })
   }
   deleteProjectDetails(params: any) {
-    return this.http.delete(`${this.baseurl}/project/?${params}`, { headers: this.headers })
+    return this.http.delete(`${this.baseurl}/project/${params}/`, { headers: this.headers })
+  }
+  deleteTaskInProjectData(id:any){
+    return this.http.delete(`${this.baseurl}/project-task/${id}/`)
   }
   getCurrentProjectDetails(id: any) {
     return this.http.get(`${this.baseurl}/project/${id}/`, { headers: this.headers })

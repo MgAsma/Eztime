@@ -23,6 +23,8 @@ export class UpdateProjectComponent implements OnInit {
   params = {
     pagination: 'FALSE'
   }
+  selectedTeamId: any = [];
+  user_id: any
   taskCategories: any = [];
   subTaskCategories: any = [];
   updateForm: FormGroup;
@@ -33,12 +35,7 @@ export class UpdateProjectComponent implements OnInit {
   subTaskValue: any;
   org_id: any;
   tasks = []
-  status = [
-    { value: 'open', viewValue: 'Open' },
-    { value: 'inprogress', viewValue: 'Inprogress' },
-    { value: 'completed', viewValue: 'Completed' },
-    { value: 'pending', viewValue: 'Pending' },
-  ];
+  status = [];
   toggleShow() {
     this.isShown = !this.isShown;
   }
@@ -62,7 +59,7 @@ export class UpdateProjectComponent implements OnInit {
   peopleGroupSetting = {};
   subTaskSetting: any = {};
   taskForm: FormGroup;
-  selectedTeams:any= []
+  selectedTeams: any = []
   constructor(
     private builder: FormBuilder,
     private api: ApiserviceService,
@@ -74,11 +71,9 @@ export class UpdateProjectComponent implements OnInit {
     private modalService: NgbModal
   ) {
     this.id = this.route.snapshot.paramMap.get('id')
-    this.page = this.route.snapshot.paramMap.get('page')
-    this.tableSize = this.route.snapshot.paramMap.get('tableSize')
 
   }
-  onChange(event:any) {
+  onChange(event: any) {
     this.updateForm.patchValue({
       end_date: ''
     })
@@ -90,34 +85,27 @@ export class UpdateProjectComponent implements OnInit {
   }
   initForm() {
     this.updateForm = this.builder.group({
-      project_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      organization: this.org_id,
+      user_id: this.user_id,
       client_id: ['', [Validators.required]],
-      p_description: ['', [Validators.pattern(/^\S.*$/)]],
+      project_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
       start_date: ['', [Validators.required]],
       end_date: ['', [Validators.required]],
+      team: ['', Validators.required],
+      project_manager_id: ['', [Validators.required]],
       estimated_hour: ['', [Validators.required]],
       estimated_billing: ['', [Validators.required]],
-      project_manager_id: ['', [Validators.required]],
-      approve_manager_ref_id: ['', [Validators.required]],
-      project_task:  this.builder.array([]),
-      p_task_checklist_status: [''],
-      project_category: [''],
       status_id: ['', [Validators.required]],
-      pclient_id: [''],
-      user_ref_id: [''],
-      opg_ref_id: [''],
-      p_code: [''],
-      p_people_type: [''],
-      team: ['', Validators.required],
-      p_activation_status: [''],
+      project_task: this.builder.array([]),
+      project_category: [''],
 
     });
-    this.addTask();
   }
 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.org_id = sessionStorage.getItem('org_id')
+    this.org_id = sessionStorage.getItem('organization_id');
+    this.user_id = sessionStorage.getItem('user_id');
     this.subTaskCategories = []
     this.subTaskSetting = {
       singleSelection: false,
@@ -126,25 +114,269 @@ export class UpdateProjectComponent implements OnInit {
       itemsShowLimit: 3,
       allowSearchFilter: true
     }
-    this.initForm()
-    this.getClient();
-    this.getManager();
-    this.getPeopleGroup();
     this.getCategory();
-    // this.edit();
-    // this.taskForm = this.builder.group({
-    //   subTasks: this.builder.array([])
-    // });
-
-    // Optionally, you can add an initial empty task
-    // this.addTask();
+    this.getClient();
+    this.getProjectStatus();
+    this.getDesignations();
+    this.getPeopleGroup();
+    this.initForm()
+    setTimeout(() => {
+      this.edit();
+    }, 1000);
   }
- 
+
+  getProjectStatus() {
+    this.api.getProjectStatus().subscribe(
+      (res: any) => {
+        this.status = res;
+      },
+      (error: any) => {
+        console.log('project status error', error)
+      }
+    )
+  }
+
+  get f() {
+    return this.updateForm.controls;
+  }
+  startDate: any
+  endDate: any
+  changeYearStartDate(event: any) {
+    this.startDate = event.target.value
+  }
+  changeYearEndDate(event: any) {
+    this.endDate = event.target.value
+  }
+  edit() {
+    this.api.getCurrentProjectDetails(this.id).subscribe((data: any) => {
+      console.log('Get by id Project Details', data)
+      this.startDate = this.datepipe.transform(data.start_date * 1000, 'yyyy-MM-dd')
+      this.endDate = this.datepipe.transform(data.end_date * 1000, 'yyyy-MM-dd')
+      let array1: any = [];
+      this.selectedTeamId = data?.teams.map((teams: any) => teams.employee)
+      this.teamFunction(this.selectedTeamId);
+      this.updateForm.patchValue({
+        client_id: data.client,
+        project_name: data.project_name,
+        // start_date: this.datepipe.transform(data.start_date * 1000, 'yyyy-MM-dd'),
+        // end_date: this.datepipe.transform(data.end_date * 1000, 'yyyy-MM-dd'),
+        start_date: data.start_date,
+        end_date: data.end_date,
+        status_id: data.status,
+        estimated_hour: data.estimated_hour,
+        estimated_billing: data.estimated_billing,
+        project_manager_id: data.project_manager,
+        team: this.selectedTeamId,
+        project_category: data.project_category,
+        // project_task: data.project_task
+      })
+      const taskList = data.project_task;
+      taskList.forEach(task => {
+        this.subTasks.push(this.builder.group({
+          task_name: [task.task_name, [Validators.pattern(/^\S.*$/), Validators.required]],
+          status: [Number(task.status), Validators.required],
+          assignee: [task.assignee, Validators.required],
+          id: [task.id],
+          is_saved: true,
+          edit_icon: true,
+          is_cancelled: false,
+          is_template: true
+        }));
+      });
+
+      // console.log('this.updateForm.value', this.updateForm.value)
+    })
+
+
+  }
+
+  getClient() {
+    this.api.getClientListFromUserId(`?${'organization_id'}=${this.org_id}`).subscribe(
+      (res: any) => {
+        this.allClientList = res;
+      },
+      (error) => {
+        this.api.showError(error.error.error.message)
+      }
+    )
+  }
+
+  getDesignations() {
+    this.api.getDesignationList(`?${'organization_id'}=${this.org_id}`).subscribe((data: any) => {
+      if (data) {
+        // console.log('designations',data)
+        const managerRoleId = data.filter(temp => temp.designation_name === 'Project Manager');
+        // console.log(this.managerRoleId,'managerRoleId')
+        this.getReportingManager(managerRoleId[0].id);
+        // console.log(this.allDesignation,'designation')
+      }
+
+    }, (error: any) => {
+      this.api.showError(error.error.error.message)
+    }
+    )
+  }
+
+  getReportingManager(id) {
+    this.api.getProfileDetails(`?${'organization_id'}=${this.org_id}&${'designation_id'}=${id}`).subscribe((data: any) => {
+      if (data) {
+        // console.log('manager list', data)
+        if (data.length == 0) {
+          this.adminData();
+        }
+        else {
+          this.allManager = data;
+        }
+      }
+
+    }, (error: any) => {
+      this.api.showError(error.error.error.message)
+      console.log(error, "ERROR")
+    }
+
+    )
+  }
+  adminData() {
+    this.api.getProfileDetails(`${this.user_id}/`).subscribe(
+      (res: any) => {
+        // console.log('admin',res);
+        let data = [];
+        data.push({ 'first_name': res.first_name, 'last_name': res.last_name, 'id': res.id });
+        // console.log(data)
+        this.allManager = data;
+      },
+      (error: any) => {
+        console.log('admin data error', error)
+      }
+    )
+  }
+
+
+  filteredPeopleGroup = [];
+  filterOptions(event: any) {
+    let eventw = event.target.value.toLowerCase();
+    this.filteredPeopleGroup = this.allPeopleGroup.filter(item =>
+      item.first_name.toLowerCase().includes(eventw)
+    );
+  }
+
+  matTeamSelect() {
+    console.log(this.selectedTeamId, 'this.selectedTeamId');
+    this.teamFunction(this.selectedTeamId);
+  }
+  teamFunction(id: any) {
+    let tempId: any = []
+    this.allPeopleGroup.forEach(element => {
+      id.forEach(element1 => {
+        if (element1 == element.id) {
+          tempId.push(element)
+        }
+      })
+    });
+    // console.log('from teM FUN', id);
+    this.assigneePeoples = tempId;
+    this.subTasks.controls.forEach((taskControl: FormGroup, index: number) => {
+      const task = taskControl.value;
+
+      if (task.assignee && !this.assigneePeoples.some(person => person.id === task.assignee)) {
+        taskControl.removeControl('original_task_assignee');
+        taskControl.patchValue({
+          assignee: '',
+          is_saved: false,
+          edit_icon: false,
+          is_cancelled: false
+        });
+      }
+    });
+
+
+    // console.log('assigneePeoples', this.assigneePeoples);
+  }
+
+  teamDeselectedFromCard(id: any) {
+    this.selectedTeamId = this.selectedTeamId.filter(item => item !== id);
+    // console.log('this.selectedTeamId', this.selectedTeamId);
+    this.teamFunction(this.selectedTeamId);
+  }
+
+  isCollapsed: boolean = false;
+
+  // Clear all team items
+  clearAll(): void {
+    this.selectedTeamId = [];
+    this.assigneePeoples = [];
+    this.subTasks.controls.forEach((taskControl: FormGroup) => {
+      const task = taskControl.value;
+      if (task.assignee && !this.assigneePeoples.some(person => person.id === task.assignee)) {
+        taskControl.removeControl('original_task_assignee');
+        taskControl.patchValue({
+          assignee: '',
+          is_saved: false,
+          edit_icon: false,
+          is_cancelled: false
+        });
+      }
+    });
+    this.updateForm.patchValue({ team: '' })
+  }
+
+  toggleCollapse(): void {
+    this.isCollapsed = !this.isCollapsed;
+  }
+  getPeopleGroup() {
+    this.api.getEmployeeList(`?${'organization_id'}=${this.org_id}`).subscribe((data: any) => {
+      if (data) {
+        let filteredRole = [];
+        // console.log(' ressss', data)
+        data.forEach((element: any) => {
+          filteredRole.push(element.user)
+        })
+        this.allPeopleGroup = filteredRole;
+        this.filteredPeopleGroup = this.allPeopleGroup;
+      }
+      else {
+        //console.log('Error');
+      }
+
+    }
+
+    )
+  }
+  getManager() {
+    this.api.getManagerDetails(this.params, this.org_id).subscribe((data: any) => {
+      this.allManager = data.result.data;
+    }
+
+    )
+  }
+  getCategory() {
+    this.api.getProjCategory(`${'organization_id'}=${this.org_id}`).subscribe(data => {
+      // console.log(data, "category template")
+      this.taskCategories = data;
+    })
+  }
+
   get subTasks(): FormArray {
     return this.updateForm.get('project_task') as FormArray;
   }
+
+
+  createSubTask(): FormGroup {
+    return this.builder.group({
+      task_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      status: ['', Validators.required],
+      assignee: ['', Validators.required],
+      id: [''],
+      is_saved: false,
+      is_cancelled: false,
+      edit_icon: false,
+      is_template: false
+    });
+  }
+
+  // adding new task
   addTask(): void {
-    console.log('this.updateForm.value',this.updateForm.value)
+    // console.log('this.updateForm.value.task_list', this.updateForm.value.project_task)
     const taskList = this.updateForm.value.project_task;
     let allTasksValid = true;
 
@@ -164,260 +396,107 @@ export class UpdateProjectComponent implements OnInit {
       this.subTasks?.push(this.createSubTask());
     }
   }
-  createSubTask(): FormGroup {
-    return this.builder.group({
-      task_name: '',
-      status: '',
-      assignee: '',
-      is_saved: false,
-      is_cancelled: false,
-      edit_icon: false,
-      is_template: false
-    });
-  }
-  
-  removeTask(index: number): void {
-    this.subTasks.removeAt(index);
-  }
-  get f() {
-    return this.updateForm.controls;
-  }
-  startDate: any
-  endDate: any
-  changeYearStartDate(event: any) {
-    this.startDate = event.target.value
-  }
-  changeYearEndDate(event: any) {
-    this.endDate = event.target.value
-  }
-  edit() {
-    let params = {
-      page_number: this.page,
-      data_per_page: this.tableSize,
-      organization_id: this.org_id
-    }
-    this.api.getCurrentProjectDetails(this.id, params).subscribe((data: any) => {
-      this.startDate = this.datepipe.transform(data.result.data[0].start_date * 1000, 'yyyy-MM-dd')
-      this.endDate = this.datepipe.transform(data.result.data[0].end_date * 1000, 'yyyy-MM-dd')
-      // this.getSubTask(data.result.data[0].p_task_checklist_status, 'TS')
-      this.updateForm.patchValue({
-        status_id: data.result.data[0].status_id,
-        project_name: data.result.data[0].project_name,
-        client_id: data.result.data[0].client_id,
-        p_description: data.result.data[0].p_description,
-        start_date: this.datepipe.transform(data.result.data[0].start_date * 1000, 'yyyy-MM-dd'),
-        end_date: this.datepipe.transform(data.result.data[0].end_date * 1000, 'yyyy-MM-dd'),
-        estimated_hour: data.result.data[0].estimated_hour,
-        estimated_billing: data.result.data[0].estimated_billing,
-        project_manager_id: data.result.data[0].project_manager_id,
-        approve_manager_ref_id: data.result.data[0].approve_manager_ref_id,
-        p_task_checklist_status: data.result.data[0].p_task_checklist_status,
-        team: data.result.data[0].pclient_id == null ? data.result.data[0].team : data.result.data[0].pclient_id,
-        project_category: data.result.data[0].project_category,
-        project_task: data.result.data[0].project_task[0]?.task_name
-      })
-      let subTasksArray: any = [];
-      let removedItem = [];
-      data.result.data[0].project_task.forEach((item: any) => {
-        if (item) {
-          subTasksArray.push(item);
-        }
-      });
 
-
-      const subTasksVal: any = this.taskForm.get('subTasks') as FormArray;
-      if (subTasksArray.length > 2) {
-        removedItem = subTasksArray.slice(1);
-        subTasksVal.removeAt(0);
-
-
-        removedItem.forEach((task: any) => {
-
-          subTasksVal.push(this.builder.group({
-            task_name: task.task_name || '',
-            status: task.status,
-            assignee: task.assignee
-            // Add more form controls as needed
-          }));
+  // delete confirmation popup
+  async openDeleteConfirmation(index, id: any) {
+      try {
+        const modalRef = await this.modalService.open(GenericDeleteComponent, {
+          size: 'sm',
+          backdrop: 'static',
+          centered: true
         });
+
+        modalRef.componentInstance.status.subscribe(resp => {
+          if (resp === 'ok') {
+            if (id) {
+              this.deleteTaskFromBackend(id);
+            } else {
+              this.deleteTaskRow(index);
+            }
+            modalRef.dismiss();
+          } else {
+            modalRef.dismiss();
+          }
+        });
+      } catch (error) {
+        console.error('Error opening modal:', error);
       }
-      else {
-        if (subTasksArray.length > 1) {
-          removedItem = subTasksArray.slice(1);
-
-          subTasksVal.removeAt(0);
-          subTasksVal.push(this.builder.group({
-            task_name: removedItem[0]['task_name'] || '',
-            status: removedItem[0]['status'],
-            assignee: removedItem[0]['assignee']
-            // Add more form controls as needed
-          }));
-        }
-
-      }
-    })
-
 
   }
-  getClient() {
-    this.api.getClientDetails(this.params, this.org_id).subscribe((data: any) => {
-      this.allClientList = data.result.data;
+
+  // delete task
+  deleteTaskRow(index: any) {
+    this.subTasks.removeAt(index);
+    // this.updateForm.patchValue({ project_task: this.subTasks });
+  }
+
+  // delete task from backend
+  deleteTaskFromBackend(id:any){
+    this.api.deleteTaskInProjectData(id).subscribe(
+      (res:any)=>{
+        console.log(res);
+        this.api.showSuccess('Task deleted successfully.')
+        this.subTasks.clear();
+        this.edit();
+      },
+      (error:any)=>{
+        console.log('error while deleting task inside the projects',error)
+      }
+    )
+  } 
+
+  // save task
+  save(index1: any) {
+    const taskList = this.subTasks.at(index1) as FormGroup;
+    if (taskList.invalid) {
+      taskList.markAllAsTouched();
     }
-    )
-  }
-  getPeopleGroup() {
-    this.peopleListSetting = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'u_first_name',
-      itemsShowLimit: 3,
-      allowSearchFilter: true
-    };
-
-    this.api.getData(`${environment.live_url}/${environment.people_list}?page_number=1&data_per_page=2&pagination=FALSE&organization_id=${this.org_id}`).subscribe((data: any) => {
-      if (data) {
-        this.allPeopleGroup = data.result.data;
-      }
-      else {
-        //console.log('Error');
-      }
-
-    }, ((error) => {
-      this.api.showError(error.error.error.message)
-    })
-
-    )
-  }
-  getManager() {
-    this.api.getManagerDetails(this.params, this.org_id).subscribe((data: any) => {
-      this.allManager = data.result.data;
-    }
-
-    )
-  }
-  getCategory() {
-    this.api.getData(`${environment.live_url}/${environment.taskProjectCategories}?page_number=1&data_per_page=2&pagination=FALSE&org_ref_id=${this.org_id}`).subscribe(data => {
-      //console.log(data,"RESPONSE")
-      this.taskCategories = data['result'].data
-    })
-  }
-  selectedTask = []
-  update() {
-    if (this.updateForm.invalid) {
-      this.updateForm.markAllAsTouched()
-    } else {
-      //this.tasks.push(this.updateForm.value.project_task)
-      console.log(this.tasks, "TASK")
-      this.subTask(this.updateForm.value.project_task)
-      this.selectedTask.push(this.subTaskValue, this.taskForm.value)
-      let flattenedData = this.selectedTask.flatMap(item => {
-
-        if (Array.isArray(item)) {
-
-          return item.flat(); // Flatten inner arrays
-        } else if (item.subTasks) {
-
-          return item.subTasks; // Extract subTasks objects
-        } else {
-
-          return [item]; // Return single objects
-
-        }
+    else {
+      taskList.patchValue({
+        is_saved: true,
+        edit_icon: true,
+        is_cancelled: false
       });
-      // console.log(flattenedData,"flattenedData")
-      this.startDate = this.updateForm.value.start_date
-      this.endDate = this.updateForm.value.end_date
-      let data = {
-        project_name: this.updateForm.value.project_name,
-        status_id: this.updateForm.value.status_id,
-        client_id: this.updateForm.value.client_id,
-        //   people_ref_id:this.updateForm.value.people_ref_id,
-        p_description: this.updateForm.value.p_description,
-        start_date: this.datepipe.transform(this.startDate, 'dd/MM/yyyy'),
-        end_date: this.datepipe.transform(this.endDate, 'dd/MM/yyyy'),
-        estimated_hour: this.updateForm.value.estimated_hour,
-        estimated_billing: this.updateForm.value.estimated_billing,
-        project_manager_id: this.updateForm.value.project_manager_id,
-        approve_manager_ref_id: this.updateForm.value.approve_manager_ref_id,
-        p_task_checklist_status: this.updateForm.value.p_task_checklist_status,
-        pclient_id: this.updateForm.value.pclient_id,
-        org_ref_id: this.org_id,
-        user_ref_id: this.updateForm.value.user_ref_id,
-        opg_ref_id: this.updateForm.value.opg_ref_id,
-        p_code: this.updateForm.value.p_code,
-        p_people_type: this.updateForm.value.p_people_type,
-        team: this.updateForm.value.team,
-        p_activation_status: this.updateForm.value.p_activation_status,
-        project_task: flattenedData,
-        project_category: [Number(this.updateForm.value.project_category)]
-      }
-      console.log(this.subTaskValue, this.subTaskValue.length, this.updateForm.value.project_task.length, 'LENGTH--------------')
-      if (this.updateForm.value.team !== '' && this.updateForm.value.project_task.length > 0) {
-        this.api.updateProject(this.id, data).subscribe(response => {
-
-          if (response) {
-            this.api.showSuccess('Project updated successfully!');
-            this.router.navigate(['/project/list'])
-
-          }
-          else {
-            this.api.showError('Error!')
-          }
-
-        }, ((error: any) => {
-          this.api.showError(error?.error.error.message)
-        })
-
-        )
-      }
-      else {
-        if (this.subTaskValue.length < 0) {
-          this.updateForm.patchValue({
-            project_task: ''
-          })
-          this.updateForm.markAllAsTouched()
-        }
-
-        this.updateForm.markAllAsTouched()
-      }
-
+      this.api.showSuccess('Task saved.');
     }
+    // console.log(this.updateForm.value, 'clicked on save button')
+  }
 
+  editTask(index1: any) {
+    const taskList = this.subTasks.at(index1) as FormGroup;
+    taskList.patchValue({
+      is_saved: false,
+      edit_icon: false,
+      is_cancelled: true
+    });
+    const currentTaskName = taskList.get('task_name')?.value;
+    const currentTaskStatus = taskList.get('status')?.value;
+    const currentTaskAssignee = taskList.get('assignee')?.value;
+    taskList.addControl('original_task_name', new FormControl(currentTaskName));
+    taskList.addControl('original_task_status', new FormControl(currentTaskStatus));
+    taskList.addControl('original_task_assignee', new FormControl(currentTaskAssignee));
+    // console.log(this.updateForm.value, 'clicked on edit button')
   }
-  onPeopleGroupSelect(event: any) {
-    //console.log(event)
-    this.peopleId.push(event.id)
-  }
-  onPeopleGroupSelectAll(event: any) {
-    event.forEach((element: any) => {
-      this.peopleId.push(element.id)
+  cancelEdit(index1: any) {
+    const taskList = this.subTasks.at(index1) as FormGroup;
+    const originalTaskName = taskList.get('original_task_name')?.value;
+    const originalTaskStatus = taskList.get('original_task_status')?.value;
+    const originalTaskAssignee = taskList.get('original_task_assignee')?.value;
+    if (originalTaskName !== undefined) {
+      taskList.patchValue({ task_name: originalTaskName });
+      taskList.patchValue({ status: originalTaskStatus });
+      taskList.patchValue({ assignee: originalTaskAssignee });
+    }
+    taskList.removeControl('original_task_name');
+    taskList.removeControl('original_task_status');
+    taskList.removeControl('original_task_assignee');
+    taskList.patchValue({
+      is_saved: true,
+      is_cancelled: false,
+      edit_icon: true,
     });
   }
-  // getSubTask(event, data): any {
-  //   // console.log(event,'))))))))))))))))))))))))))))))))))))))')
-  //   this.subTaskCategories = []
 
-  //   this.updateForm.patchValue({
-  //     project_task: ''
-  //   })
-
-  //   this.api.getSubTaskByProjectTaskCategory(event, this.org_id).subscribe(
-  //     (resp: any) => {
-  //       this.subTaskCategories = resp.result.data[0].task_list
-  //     },
-  //     (error: any) => {
-  //       this.api.showError(error.error.error.message)
-  //     }
-  //   )
-
-  // }
-
-  subTask(event: any) {
-    if (event) {
-      this.subTaskValue = this.subTaskCategories.filter((x, i) => x.task_name == event)
-    }
-
-  }
   yearEndDateValidator(): any {
     this.endDate = this.updateForm.get('end_date').value
     const StartDate = new Date(this.updateForm.get('start_date').value).getTime() / (1000 * 60);
@@ -448,149 +527,119 @@ export class UpdateProjectComponent implements OnInit {
     return false;
   }
 
-  matTeamSelect(event: any) {
-    console.log(this.selectedTeams);
-    this.peopleId = event.value;
-    let tempId: any = []
-    const taskList = this.subTasks.value
-    this.allPeopleGroup.forEach(element => {
-      this.peopleId.forEach(element1 => {
-        if (element1 == element.id) {
-          tempId.push(element)
-        }
-      })
-    });
-    this.assigneePeoples = tempId;
-    this.subTasks.controls.forEach((taskControl: FormGroup, index: number) => {
-      const task = taskControl.value;
-
-      if (task.assignee && !this.assigneePeoples.some(person => person.id === task.assignee)) {
-        taskControl.removeControl('original_task_assignee');
-        taskControl.patchValue({
-          assignee: '',
-          is_saved: false,
-          edit_icon: false,
-          is_cancelled: false
-        });
-      }
-    });
-    
-    console.log('assigneePeoples', this.assigneePeoples)
-    console.log('this.subTasks.value', this.subTasks.value)
-  }
-
   // selecting project templates
   getSubTask(event: any) {
-    console.log(event.value);
+    // console.log(event.value);
     // this.subTasks.clear();
-    this.api.getSubTaskByProjectTaskCategory(event.value, this.org_id,).subscribe(
-      (resp: any) => {
+    this.api.getProjCategoryById(event.value).subscribe(
+      (resp) => {
         for (let i = this.subTasks.length - 1; i >= 0; i--) {
           const task = this.subTasks.at(i);
           if (task.get('is_template')?.value === true && task.get('is_saved')?.value === false && task.get('is_cancelled')?.value === false) {
             this.subTasks.removeAt(i);
           }
         }
-        const taskList = resp.result.data[0].task_list;
+        console.log('resp', resp)
+        const taskList = resp['projectcategory_task'];
         taskList.forEach(task => {
           this.subTasks.push(this.builder.group({
             task_name: [task.task_name, [Validators.required, Validators.pattern(/^\S.*$/),]],
             status: ['', Validators.required],
             assignee: ['', Validators.required],
+            id: [''],
             is_saved: false,
             is_cancelled: false,
             edit_icon: false,
             is_template: true
           }));
         });
-        console.log(this.updateForm.value)
       },
-      (error: any) => {
-        //console.log(error);
+      (error) => {
+        console.log(error);
 
       }
     )
 
   }
-
-  // save task
-  save(index1: any) {
-    const taskList = this.subTasks.at(index1) as FormGroup;
-    const taskName = taskList.get('task_name')?.value.trim();
-    if (taskList.invalid) {
-      taskList.markAllAsTouched();
+  selectedTask = []
+  update() {
+    const startDate = this.updateForm.value.start_date;
+    const EndDate = this.updateForm.value.end_date;
+    console.log(this.updateForm.value);
+    if (this.updateForm.invalid) {
+      this.api.showError('Invalid');
+      console.log(this.updateForm.controls);
+      this.updateForm.markAllAsTouched()
     }
     else {
-      taskList.patchValue({
-        is_saved: true,
-        edit_icon: true,
-        is_cancelled: false
-      });
-      this.api.showSuccess('Task saved.');
-    }
-    console.log(this.updateForm.value, 'clicked on save button')
-  }
-  editTask(index1: any) {
-    const taskList = this.subTasks.at(index1) as FormGroup;
-    taskList.patchValue({
-      is_saved: false,
-      edit_icon: false,
-      is_cancelled: true
-    });
-    const currentTaskName = taskList.get('task_name')?.value;
-    const currentTaskStatus = taskList.get('status')?.value;
-    const currentTaskAssignee = taskList.get('assignee')?.value;
-    taskList.addControl('original_task_name', new FormControl(currentTaskName));
-    taskList.addControl('original_task_status', new FormControl(currentTaskStatus));
-    taskList.addControl('original_task_assignee', new FormControl(currentTaskAssignee));
-    console.log(this.updateForm.value, 'clicked on edit button')
-  }
-  cancelEdit(index1: any) {
-    const taskList = this.subTasks.at(index1) as FormGroup;
-    const originalTaskName = taskList.get('original_task_name')?.value;
-    const originalTaskStatus = taskList.get('original_task_status')?.value;
-    const originalTaskAssignee = taskList.get('original_task_assignee')?.value;
-    if (originalTaskName !== undefined) {
-      taskList.patchValue({ task_name: originalTaskName });
-      taskList.patchValue({ status: originalTaskStatus });
-      taskList.patchValue({ assignee: originalTaskAssignee });
-    }
-    taskList.removeControl('original_task_name');
-    taskList.removeControl('original_task_status');
-    taskList.removeControl('original_task_assignee');
-    taskList.patchValue({
-      is_saved: true,
-      is_cancelled: false,
-      edit_icon: true,
-    });
-  }
-
-   // delete confirmation popup
-   async openDeleteConfirmation(index) {
-    try {
-      const modalRef = await this.modalService.open(GenericDeleteComponent, {
-        size: 'sm',
-        backdrop: 'static',
-        centered: true
-      });
-
-      modalRef.componentInstance.status.subscribe(resp => {
-        if (resp === 'ok') {
-          this.deleteTaskRow(index);
-          modalRef.dismiss();
-        } else {
-          modalRef.dismiss();
+      const taskList = this.updateForm.value.project_task;
+      let allTasksValid = true;
+      taskList.forEach((element: any) => {
+        if (taskList.invalid) {
+          taskList.markAllAsTouched();
+          allTasksValid = false;
         }
-      });
-    } catch (error) {
-      console.error('Error opening modal:', error);
+        else if (element.task_name.trim() !== '') {
+          if (element.is_saved === false) {
+            this.api.showWarning('Please click on the ✅ to save your task.');
+            allTasksValid = false;
+          }
+        }
+      })
+
+
+      if (allTasksValid == true && this.invalidDate == false) {
+        let tempTeamIds: any = [];
+        this.selectedTeamId.forEach((element: any) => {
+          tempTeamIds.push({ 'employee': element })
+        })
+        let tempList: any;
+        tempList = this.updateForm.value['project_task'].map(({ task_name, status, assignee }) => ({
+          task_name,
+          status,
+          assignee
+        }));
+        let data = {
+          organization: this.updateForm.value.organization,
+          created_by: this.updateForm.value.user_id,
+          client: this.updateForm.value.client_id,
+          project_name: this.updateForm.value.project_name,
+          start_date: this.datepipe.transform(startDate, 'yyyy-MM-dd'),
+          end_date: this.datepipe.transform(EndDate, 'yyyy-MM-dd'),
+          team: tempTeamIds,
+          project_manager: this.updateForm.value.project_manager_id,
+          estimated_hour: this.updateForm.value.estimated_hour,
+          estimated_billing: this.updateForm.value.estimated_billing,
+          status: this.updateForm.value.status_id,
+          project_task: tempList,
+          project_category: this.updateForm.value.project_category,
+
+        }
+        console.log(data, 'dataaaa')
+        this.api.updateProject(this.id, data).subscribe(res => {
+          if (res) {
+            this.api.showSuccess(res['message']);
+            this.updateForm.reset()
+          }
+          else {
+            this.api.showError('Error')
+
+          }
+
+        }, (error => {
+          this.api.showError(error.error.error.message)
+          console.log('project creation error', error)
+        })
+        )
+      }
+      else {
+        this.api.showWarning('Invalid date')
+      }
+
+
     }
+
   }
-  // delete task
-  deleteTaskRow(index: any) {
-    this.subTasks.removeAt(index);
-    console.log(this.subTasks);
-    console.log(this.updateForm.value.project_task)
-    // this.projectForm.patchValue({ project_task: this.subTasks });
-  }
+
+
 }

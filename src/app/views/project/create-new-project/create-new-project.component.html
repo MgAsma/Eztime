@@ -78,7 +78,7 @@
                                 <mat-label>Project Manager <b class="r-star">*</b></mat-label>
                                 <mat-select formControlName="project_manager_id" autocomplete="off"
                                     placeholder="Select manager" panelClass="custom-select-panel"
-                                    [disableOptionCentering]="true">
+                                    [disableOptionCentering]="true" single>
                                     <mat-option *ngFor="let item of allManager" [value]="item.id">
                                         {{item.first_name +" "+ item.last_name}}
                                     </mat-option>

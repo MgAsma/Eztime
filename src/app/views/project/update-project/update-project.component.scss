@@ -1,120 +1,3 @@
-// ol{
-//     background-color: inherit;
-// }
-// a{
-//     color: #3F51B5;
-//     text-decoration: none;
-// }
-// li{
-
-//     list-style: none;
-//     color: grey;
-// }
-// ul{
-//     padding: 0px;
-// }
-
-// .bg{
-//     background-color: white;
-//     height: 100%;
-//     width: 100%;
-//     padding: 20px;
-//     border-radius: 5px;
-// }
-// .proceedbtn{
-//     background-color: #3F51B5;
-//     border-radius: 5px;
-//     border: none;
-//     height: 40px;
-//     width: 100%;
-//     color: white;
-//     margin: 10px 0px;
-// }
-// .printbtn{
-//     background-color: #00BCD4;
-//     border-radius: 5px;
-//     border: none;
-//     height: 40px;
-//     width: 100%;
-//     color: white;
-//     margin: 10px 0px;
-// }
-// .row{
-//     padding: 5px;
-// }
-// i{
-//     padding: 0px 5px 0px 0px;
-// }
-// .btnicon{
-//     display: none;
-// }
-// button:hover .btnicon{
-//     display: block;
-// }
-// ::ng-deep .mat-form-field {
-//     height: 55px;
-//     width: 95%!important;
-//     background-color: #ffff;
-//     border-radius: 50px;
-//     border: solid gray;
-// }
-
-// ::ng-deep .mat-form-field-underline {
-//     display: none;
-// }
-// select{
-//     width: 100%;
-//     height: 50px;
-//     margin: 0px 1px;
-// }
-// span{
-//     color: red;
-// }
-// p{
-//     color: grey;
-// }
-// .form-check-input{
-//     height: 20px !important;
-// }
-// .add-new{
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     padding-top: 10px;
-// }
-// .add-task{
-//     color:#3F51B5;
-//     background-color: #e3e5f8;
-//     margin: 0 16px;
-// }
-// input,select{
-//     // border:0;
-//     width:100%
-// }
-// .mat-form-field {
-//     height: 55px;
-//     width: 95% !important;
-//     background-color: white;
-//     border-radius: 10px;
-//     border-color: #f6f6f6;
-//     padding: 0 10px;
-//      //border: 0 !important;
-// }
-// .mat-add-input{
-//  border: 0px !important;
-// }
-// .add-button{
-//     background-color: #e6e9fe;
-//     margin-right: 15px;
-// }
-// .cancel-button{
-//     background-color: #f7f7f7;
-// }
-// mat-card{
-//     box-shadow: none !important;
-//     padding: 10px 10px 0;
-// }
-
 ::ng-deep .update-project-details .mat-form-field-wrapper {
     padding-bottom: 0em;
 }
@@ -194,16 +77,121 @@
     // position: absolute !important;
     top: -2px !important;
 }
-
-.update-project-details .task-labels {
+.update-project-details .task-labels{
     font-size: 10px;
     margin-right: 2px;
 }
-
 .auto-height {
     height: auto !important;
-}
-
-::ng-deep .mat-select-panel {
+  }
+::ng-deep  .mat-select-panel {
     margin-left: 20px !important;
 }
+
+.floating-label-container {
+    position: relative;
+    margin-top: 20px;
+  
+    label {
+      position: absolute;
+      top: 10px;
+      left: 15px;
+      color: #aaa;
+      transition: 0.2s ease all;
+      pointer-events: none;
+    }
+  
+    .floating {
+      top: -15px;
+      font-size: 12px;
+      color: #3f51b5;
+    }
+  
+    ng-multiselect-dropdown {
+      width: 100%;
+      padding: 10px 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+  
+    ng-multiselect-dropdown:focus + label {
+      top: -15px;
+      font-size: 12px;
+      color: #3f51b5;
+    }
+  }
+
+
+.update-project-details .custom-search input {
+    width: 100%;
+    box-sizing: border-box; /* Ensure padding doesn't increase width */
+}
+.update-project-details .team-border{
+    border: 1px solid rgb(231, 229, 229);
+    border-radius: 5px;
+}
+.update-project-details .tag-item i{
+    text-align: center;
+    cursor: pointer !important;
+
+}
+
+
+.update-project-details .tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 150px; /* Adjust this height to set the maximum height */
+    overflow-y: auto; /* Allow vertical scrolling when there is more data */
+    padding: 10px;
+  }
+  
+  .update-project-details .tag-container.collapsed {
+    max-height: 100px; /* Adjust height for collapsed view */
+    overflow-y: hidden; /* Hide scroll in collapsed view */
+  }
+  
+  .update-project-details .tag-item {
+    background-color: lightblue;
+    margin: 4px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .update-project-details .remove-btn {
+    margin-left: 8px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .update-project-details .controls {
+    margin-top: 10px;
+    text-align: end;
+  }
+  
+  .update-project-details .toggle-btn {
+    margin-right: 10px;
+    background-color: #418BC3;
+    color: white;
+    border: none;
+    font-family: "Exo FT" !important;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 8px;
+
+  }
+  .update-project-details .clear-btn {
+    border: none;
+    margin-right: 10px;
+    background-color: #DEDEDE;
+    color: black;
+    border-radius: 5px;
+    font-family: "Exo FT" !important;
+    cursor: pointer;
+    padding: 7px 10px;
+
+  }
+  
