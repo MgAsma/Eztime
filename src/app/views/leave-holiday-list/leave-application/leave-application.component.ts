@@ -290,7 +290,8 @@ sessions = [
       cc: JSON.stringify(this.leaveForm.value.cc_to), 
       employee: this.user_id,
       attachment: this.fileUrl,
-      message: this.leaveForm.value.reason
+      message: this.leaveForm.value.reason,
+      organization: Number(this.orgId)
     };
     if(this.leaveForm.invalid){
       this.leaveForm.markAllAsTouched()
