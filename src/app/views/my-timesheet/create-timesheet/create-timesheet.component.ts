@@ -20,9 +20,9 @@ export class CreateTimesheetComponent implements OnInit {
   timeSheetForm!: FormGroup;
   createdProject!: FormArray;
   taskForm!: FormGroup; 
-  userId = 195;
-  manager_id = 195;
-  orgId = 102;
+  userId:any;
+  manager_id:any;
+  orgId:any;
   hours_to_complete: any = [];
   timeList: any[] = [];
   project_id: any;
@@ -62,6 +62,7 @@ export class CreateTimesheetComponent implements OnInit {
 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
+    this.orgId = sessionStorage.getItem('organization_id')
     this.initializeForm();
     this.taskInitForm()
     this.addProjectDetails(); 
@@ -628,21 +629,19 @@ console.log(selectedArr,'MAP')
 
   getClient(i){
     this.currentIndex = i;
-    this.api.getData(`${environment.live_url}/${environment.client}/`).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.client}/?organization_id=${this.orgId}`).subscribe((data:any)=>{
       if(data){
         this.allClient = data;
-        // console.log(this.allClient,'CLIENTLIST')
+         
         const allClient = [...this.allClient]
       
         const projectControl = this.createdProject.at(i);
   
         // Update only the relevant index's project list
         projectControl.patchValue({ clientList: allClient });
+        console.log(this.allClient,'CLIENTLIST')
       }
-      else{
-        //console.log('Error');
-      }
-      
+     
     }
     )
   }
@@ -652,9 +651,10 @@ console.log(selectedArr,'MAP')
   getProject(event, index){
     this.currentIndex = index
     this.client_id = event
-    this.api.getData(`${environment.live_url}/${environment.get_time_sheet_values}?client_id=${event}`).subscribe((res:any)=>{
+    // 'https://projectacedevelop.thestorywallcafe.com/api/project/?organization=53&client=11
+    this.api.getData(`${environment.live_url}/${environment.project}/?organization=${this.orgId}&client=${event}`).subscribe((res:any)=>{
       if(res){
-        this.allProject = res.data
+        this.allProject = res
         this.projectList = [...this.allProject]
         this.createdProject?.at(index)?.patchValue({projectList: this.projectList})
         
