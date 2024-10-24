@@ -88,9 +88,11 @@ export class CreateNewProjectComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('organization_id');
     this.user_id = sessionStorage.getItem('user_id');
+    this.assigneePeoples = [];
     this.getProjectStatus();
     this.getClient();
-    this.getManager();
+    // this.getManager();
+    this.getDesignations();
     this.getPeopleGroup();
     this.initForm();
     this.getCategory();
@@ -126,16 +128,6 @@ export class CreateNewProjectComponent implements OnInit {
       status_id: ['', [Validators.required]],
       project_task: this.builder.array([]),
       project_category: [''],
-
-      pc_ref_id: [''],
-      p_description: [''],
-      approve_manager_ref_id: [''],
-      p_task_checklist_status: [''],
-      user_ref_id: [''],
-      opg_ref_id: [''],
-      p_code: [''],
-      p_people_type: [''],
-      p_activation_status: [''],
     })
     this.addTask();
   }
@@ -147,6 +139,56 @@ export class CreateNewProjectComponent implements OnInit {
       },
       (error) => {
         this.api.showError(error.error.error.message)
+      }
+    )
+  }
+  // designation list
+  getDesignations() {
+    this.api.getDesignationList(`?${'organization_id'}=${this.orgId}`).subscribe((data: any) => {
+      if (data) {
+        // console.log('designations',data)
+        const managerRoleId = data.filter(temp => temp.designation_name === 'Project Manager');
+        // console.log(this.managerRoleId,'managerRoleId')
+        this.getReportingManager(managerRoleId[0].id);
+        // console.log(this.allDesignation,'designation')
+      }
+
+    }, (error: any) => {
+      this.api.showError(error.error.error.message)
+    }
+    )
+  }
+
+  getReportingManager(id){
+    this.api.getProfileDetails(`?${'organization_id'}=${this.orgId}&${'designation_id'}=${id}`).subscribe((data: any) => {
+      if (data) {
+        console.log('manager list', data)
+        if (data.length == 0) {
+          this.adminData();
+        }
+        else {
+          this.allManager = data;
+        }
+      }
+
+    }, (error: any) => {
+      this.api.showError(error.error.error.message)
+      console.log(error, "ERROR")
+    }
+
+    )
+  }
+  adminData(){
+    this.api.getProfileDetails(`${this.user_id}/`).subscribe(
+      (res: any) => {
+        // console.log('admin',res);
+        let data = [];
+        data.push({ 'first_name': res.first_name,'last_name':res.last_name, 'id': res.id });
+        // console.log(data)
+        this.allManager = data;
+      },
+      (error: any) => {
+        console.log('admin data error', error)
       }
     )
   }
@@ -240,8 +282,8 @@ export class CreateNewProjectComponent implements OnInit {
         });
       }
     });
-    console.log('assigneePeoples', this.assigneePeoples)
-    // console.log('this.subTasks.value', this.subTasks.value)
+    
+    console.log('assigneePeoples', this.assigneePeoples);
   }
 
   teamDeselectedFromCard(id:any){
@@ -250,32 +292,30 @@ export class CreateNewProjectComponent implements OnInit {
     this.teamFunction(this.selectedTeamId);
   }
 
-  items: string[] = ['Surya', 'Arpitha', 'Asma', 'Sandesh', 'Manoj', 'Shruti', 'Abhi','Surya', 'Arpitha', 'Asma', 'Sandesh', 'Manoj', 'Shruti', 'Abhi','Surya', 'Arpitha', 'Asma', 'Sandesh', 'Manoj', 'Shruti', 'Abhi'];
-  isCollapsed: boolean = false;
+   isCollapsed: boolean = false;
 
   // Clear all team items
   clearAll(): void {
-    this.selectedTeamId= [];
+    this.selectedTeamId = [];
     this.assigneePeoples = [];
+    this.subTasks.controls.forEach((taskControl: FormGroup) => {
+      const task = taskControl.value;
+      if (task.assignee && !this.assigneePeoples.some(person => person.id === task.assignee)) {
+        taskControl.removeControl('original_task_assignee');
+        taskControl.patchValue({
+          assignee: '',
+          is_saved: false,
+          edit_icon: false,
+          is_cancelled: false
+        });
+      }
+    });
+    this.projectForm.patchValue({team:''})
   }
 
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   // Managers
   getManager() {
@@ -523,6 +563,10 @@ export class CreateNewProjectComponent implements OnInit {
 
 
       if (allTasksValid == true && this.invalidDate == false) {
+        let tempTeamIds:any =[];
+        this.selectedTeamId.forEach((element:any)=>{
+          tempTeamIds.push({'employee':element})
+        })
         let tempList: any;
         tempList = this.projectForm.value['project_task'].map(({ task_name, status, assignee }) => ({
           task_name,
@@ -532,71 +576,39 @@ export class CreateNewProjectComponent implements OnInit {
         let data = {
           organization: this.projectForm.value.organization,
           created_by: this.projectForm.value.user_id,
-          client_id: this.projectForm.value.client_id,
+          client: this.projectForm.value.client_id,
           project_name: this.projectForm.value.project_name,
-          start_date: this.datepipe.transform(startDate, 'dd/MM/yyyy'),
-          end_date: this.datepipe.transform(EndDate, 'dd/MM/yyyy'),
-          team: this.projectForm.value.team,
-          project_manager_id: this.projectForm.value.project_manager_id,
-          estimated_hour: this.projectForm.value.p_estimated_hours,
+          start_date: this.datepipe.transform(startDate, 'yyyy-MM-dd'),
+          end_date: this.datepipe.transform(EndDate, 'yyyy-MM-dd'),
+          team: tempTeamIds,
+          project_manager: this.projectForm.value.project_manager_id,
+          estimated_hour: this.projectForm.value.estimated_hour,
           estimated_billing: this.projectForm.value.estimated_billing,
-          status_id: this.projectForm.value.status_id,
+          status: this.projectForm.value.status_id,
           project_task: tempList,
-          project_category: [Number(this.projectForm.value.project_category)],
+          project_category: this.projectForm.value.project_category,
 
-          // pc_ref_id: this.projectForm.value.pc_ref_id || this.projectForm.value.pc_ref_id,
-          // p_description: this.projectForm.value.p_description,
-          // approve_manager_ref_id: this.projectForm.value.approve_manager_ref_id,
-          // p_task_checklist_status: this.projectForm.value.p_task_checklist_status,
-          // user_ref_id: this.projectForm.value.user_ref_id,
-          // opg_ref_id: this.projectForm.value.opg_ref_id,
-          // p_code: this.projectForm.value.p_code,
-          // p_people_type: this.projectForm.value.p_people_type,
-          // p_activation_status: this.projectForm.value.p_activation_status,
         }
         console.log(data, 'dataaaa')
-        // this.api.addProjectDetails(data).subscribe(res => {
-        //   if (res) {
-        //     this.projectForm.patchValue({
-        //       project_name: '',
-        //       p_estimated_hours: '',
-        //       estimated_billing: '',
-        //       project_manager_id: '',
-        //       pc_ref_id: '',
-        //       status_id: '',
-        //       p_description: '',
-        //       start_date: '',
-        //       end_date: '',
-        //       approve_manager_ref_id: '',
-        //       p_task_checklist_status: '',
-        //       organization: '',
-        //       user_ref_id: '',
-        //       opg_ref_id: '',
-        //       p_code: '',
-        //       p_people_type: '',
-        //       p_activation_status: '',
-        //       c_ref_id: '',
-        //       project_task: '',
-        //       project_category: ''
-        //     });
-        //     this.taskForm.get('subTasks').reset();
-        //     this.projectForm.get('team').reset();
+        this.api.addProjectDetails(data).subscribe(res => {
+          if (res) {
+            this.api.showSuccess(res['message']);
+            this.ngOnInit();
+          }
+          else {
+            this.api.showError('Error')
+            
+          }
 
-        //     this.api.showSuccess('Project added successfully!');
-        //     this.initForm()
-        //   }
-        //   else {
-        //     this.api.showError('Error')
-        //   }
-
-        // }, (error => {
-        //   this.api.showError(error.error.error.message)
-        // })
-        // )
+        }, (error => {
+          this.api.showError(error.error.error.message)
+          console.log('project creation error',error)
+        })
+        )
       }
-      // else {
-      //   this.api.showWarning('Invalid date')
-      // }
+      else {
+        this.api.showWarning('Invalid date')
+      }
 
 
     }

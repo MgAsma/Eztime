@@ -15,7 +15,7 @@ const routes: Routes = [
         path:'list', component: ProjectListComponent
       },
       {
-        path:'update/:id/:page/:tableSize', component: UpdateProjectComponent
+        path:'update/:id', component: UpdateProjectComponent
       }
     ]
   }

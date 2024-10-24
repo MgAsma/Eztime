@@ -25,12 +25,12 @@
                     <thead>
                         <tr>
                           <th scope="col">S.No</th>
-                          <th scope="col">Project <i  *ngIf="!arrow" (click)="sort('asc','p_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','p_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+                          <th scope="col">Project <i  *ngIf="!arrow" (click)="sort('asc','project_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','project_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
                           <th scope="col">Client <i  *ngIf="!arrow" (click)="sort('asc','client_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','client_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">Project Manager <i  *ngIf="!arrow" (click)="sort('asc','reporting_manager_first_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','reporting_manager_first_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">Start Date <i  *ngIf="!arrow" (click)="sort('asc','p_start_date')" class="bi bi-arrow-up"></i><i (click)="sort('desc','p_start_date')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">End Date <i  *ngIf="!arrow" (click)="sort('asc','p_closure_date')" class="bi bi-arrow-up"></i><i (click)="sort('desc','p_closure_date')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">Status <i  *ngIf="!arrow" (click)="sort('asc','p_status')" class="bi bi-arrow-up"></i><i (click)="sort('desc','p_status')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+                          <th scope="col">Project Manager <i  *ngIf="!arrow" (click)="sort('asc','project_manager_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','project_manager_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+                          <th scope="col">Start Date <i  *ngIf="!arrow" (click)="sort('asc','start_date')" class="bi bi-arrow-up"></i><i (click)="sort('desc','start_date')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+                          <th scope="col">End Date <i  *ngIf="!arrow" (click)="sort('asc','end_date')" class="bi bi-arrow-up"></i><i (click)="sort('desc','end_date')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+                          <th scope="col">Status <i  *ngIf="!arrow" (click)="sort('asc','status_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','status_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
                           <th scope="col">Action</th>
                           <!-- <th scope="col">Tasks <i  *ngIf="!arrow" (click)="sort('asc','project_related_task_list_converted')" class="bi bi-arrow-up"></i><i (click)="sort('desc','project_related_task_list_converted')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
                           <!-- <th scope="col">Approver <i  *ngIf="!arrow" (click)="sort('asc','approver_manager_first_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','approver_manager_first_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
@@ -38,24 +38,23 @@
                       </thead>
                       <tbody>
                         <ng-container *ngIf="(allProjectList) as result">
-                        <tr *ngFor='let item of result |customSort:directionValue:sortValue| paginate : {
-                            itemsPerPage: tableSize,
-                            currentPage: page,
-                            totalItems: count
-                          }
-                           ; let i=index' [class.active]="i == currentIndex">
+                        <tr *ngFor='let item of result  ; let i=index' >
                             <td>{{getContinuousIndex(i)}}</td>
-                            <td>{{item.p_name | titlecase}}</td>
+                            <td>{{item.project_name | titlecase}}</td>
                             <!-- <td>{{item.project_related_task_list_converted | titlecase}}</td> -->
                             <td>{{item.client_name| titlecase}}</td>
-                            <td>{{item.reporting_manager_first_name| titlecase}}</td>
+                            <td>{{item.project_manager_name| titlecase}}</td>
                             <!-- <td>{{item.approver_manager_first_name| titlecase}}</td> -->
-                            <td *ngIf="item.p_start_date !== ''">{{item.p_start_date*1000 | date:'dd-MM-yyyy'}}</td>
-                            <td *ngIf="item.p_closure_date !== ''">{{item.p_closure_date*1000 | date:'dd-MM-yyyy'}}</td>
-                            <td>{{item.p_status?item.p_status:"NA"| titlecase}}</td>
+                            <td >{{item.start_date | date:'dd-MM-yyyy'}}</td>
+                            <td>{{item.end_date | date:'dd-MM-yyyy'}}</td>
+                            <td>{{item.status_name| titlecase}}</td>
                            
                             
                             <td>
+                              <ng-container >
+                                <img src="../../../../assets/images/Edit.svg" class="icon-image" routerLink="/project/update/{{item.id}}"  container="body" ngbTooltip="Edit" />
+                                <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.id)"/>
+                            </ng-container>
                                 <ng-container *ngFor="let access of permissions">
                                     <!-- <button mat-raised-button mat-mini-fab  routerLink="/project/update/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
                                       <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
@@ -144,19 +143,18 @@
                     <h6 class="card-subtitle">
                         <!-- <i class="bi bi-collection"></i> -->
                         Project</h6>
-                    <div class="value-container">{{item.p_name}}</div>
+                    <div class="value-container">{{item.project_name}}</div>
                 </div>
                 <div class="col-6 p-2 text-end">
-                    <ng-container *ngFor="let access of permissions">
+                    <!-- <ng-container *ngFor="let access of permissions">
                      <a *ngIf="access == 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" style="color: #000;"></i></button></a>
                      <a *ngIf="access == 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash" style="color: red;"></i></button></a>
-                    </ng-container>
+                    </ng-container> -->
                     </div>
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-12 bg-secondary">
                         <h6 class="card-subtitle">
-                            <!-- <i class="bi bi-list-task"></i> -->
                             Tasks</h6>
                         <div class="value-container">
                         <ng-container *ngIf="item.project_related_task_list.length >0">
@@ -167,19 +165,19 @@
                         </ng-container>
                        </div>
                     </div>   
-                 </div>
+                 </div> -->
                 <div class="row">
                     <div class="col-6">
                     <h6 class="card-subtitle">
                         <!-- <i class="bi bi-calendar2-week"></i> -->
                         Start date</h6>
-                    <div class="value-container">{{item.p_start_date*1000 | date:'dd-MM-yyyy'}}</div>
+                    <div class="value-container">{{item.start_date | date:'dd-MM-yyyy'}}</div>
                     </div>
                     <div class="col-6">
                         <h6 class="card-subtitle">
                             <!-- <i class="bi bi-calendar2-week"></i> -->
                             End date</h6>
-                        <div class="value-container">{{item.p_closure_date*1000 | date:'dd-MM-yyyy'}}</div>
+                        <div class="value-container">{{item.end_date | date:'dd-MM-yyyy'}}</div>
                     </div>
                  </div>
 
@@ -188,7 +186,7 @@
                     <h6 class="card-subtitle">
                         <!-- <i class="bi bi-person-check"></i> -->
                         Reporter</h6>
-                    <div class="value-container">{{item.reporting_manager_first_name|titlecase}}</div>
+                    <div class="value-container">{{item.project_manager_name|titlecase}}</div>
                     </div>
                     <div class="col-6 bg-secondary">
                         <h6 class="card-subtitle">
@@ -209,7 +207,7 @@
                         <h6 class="card-subtitle">
                             <!-- <i class="bi bi-radioactive"></i> -->
                             Status</h6>
-                        <div class="value-container">{{item.p_status?item.p_status:"NA"|titlecase}}</div>
+                        <div class="value-container">{{item.status_name?item.status_name:"NA"|titlecase}}</div>
                     </div>
                  </div>
             </div>

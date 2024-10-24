@@ -52,11 +52,11 @@ export class ProjectListComponent implements OnInit {
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.orgId = sessionStorage.getItem('org_id')
+    this.orgId = sessionStorage.getItem('organization_id')
     this.user_id = sessionStorage.getItem('user_id');
     this.enabled = true;
     this.getProject();
-    this.getUserControls()
+    // this.getUserControls()
   }
   filterSearch() {
     this.api.getData(`${environment.live_url}/${environment.project_list}?user_id=${this.user_id}&search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((data: any) => {
@@ -116,12 +116,12 @@ export class ProjectListComponent implements OnInit {
       user_id: this.user_id
     }
 
-    this.api.getProjectDetailsPage(params).subscribe((data: any) => {
-      this.allProjectList = data.result.data;
-      //console.log( this.allProjectList,"ALL")
-      const noOfPages: number = data['result'].pagination.number_of_pages
-      this.count = noOfPages * this.tableSize;
-      this.page = data['result'].pagination.current_page;
+    this.api.getProjectDetails(`${'organization'}=${this.orgId}`).subscribe((data: any) => {
+      this.allProjectList = data;
+      console.log( data,"ALL")
+      // const noOfPages: number = data['result'].pagination.number_of_pages
+      // this.count = noOfPages * this.tableSize;
+      // this.page = data['result'].pagination.current_page;
     }, ((error: any) => {
       this.api.showError(error.error.error.message)
 
@@ -131,7 +131,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   delete(id: any) {
-    this.api.deleteProjectDetails(id).subscribe((data: any) => {
+    this.api.deleteProjectDetails(`${'p_id'}=${id}`).subscribe((data: any) => {
       if (data) {
         this.allProjectList = []
         this.ngOnInit()

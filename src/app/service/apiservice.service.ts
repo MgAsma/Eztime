@@ -239,10 +239,10 @@ export class ApiserviceService {
 
   // Project
   addProjectDetails(data: any) {
-    return this.http.post(`${this.baseurl}/projects`, data, { headers: this.headers })
+    return this.http.post(`${this.baseurl}/project/`, data, { headers: this.headers })
   }
   getProjectDetails(params) {
-    return this.http.get(`${this.baseurl}/projects?page_number=1&data_per_page=2&pagination=${params.pagination}`, { headers: this.headers })
+    return this.http.get(`${this.baseurl}/project/?${params}`, { headers: this.headers })
   }
   getProjectDetailsPage(params) {
     return this.http.get(`${this.baseurl}/projects?user_id=${params.user_id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&organization_id=${params.organization_id}`, { headers: this.headers })
@@ -250,14 +250,14 @@ export class ApiserviceService {
   getProjectDetailsByClientId(id: any) {
     return this.http.get(`${this.baseurl}/projectbyclients/?client_id=${id}`, { headers: this.headers })
   }
-  deleteProjectDetails(id: any) {
-    return this.http.delete(`${this.baseurl}/projects/${id}`, { headers: this.headers })
+  deleteProjectDetails(params: any) {
+    return this.http.delete(`${this.baseurl}/project/?${params}`, { headers: this.headers })
   }
-  getCurrentProjectDetails(id: any, params) {
-    return this.http.get(`${this.baseurl}/projects?id=${id}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=TRUE&organization_id=${params.organization_id}`, { headers: this.headers })
+  getCurrentProjectDetails(id: any) {
+    return this.http.get(`${this.baseurl}/project/${id}/`, { headers: this.headers })
   }
   updateProject(id: any, data: any) {
-    return this.http.put(`${this.baseurl}/projects/${id}`, data, { headers: this.headers })
+    return this.http.put(`${this.baseurl}/project/${id}/`, data, { headers: this.headers })
   }
   // Project
 
@@ -577,7 +577,7 @@ export class ApiserviceService {
   }
   // project status
   getProjectStatus(){
-    return this.http.get(`${this.baseurl}/project-status/`)
+    return this.http.get(`${this.baseurl}/project_status/`)
   }
 
   // roles list
