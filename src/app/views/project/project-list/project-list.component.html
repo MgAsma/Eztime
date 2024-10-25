@@ -1,101 +1,99 @@
 <div class="container-wrapper webView">
-        <div class="row pb-3">
-            <div class="col-sm-4 search-div">
-                <input type="search" (input)="filterSearch()" class="form-control p-2 sizeinput" [(ngModel)]="term"
-                  placeholder="Search by project/client/status" aria-describedby="emailHelp" autocomplete="off">
-                <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>
-              </div>
-            <div class="col-sm"></div>
-            <div class="col-md-3 col-lg-3 p-1 text-end create-buttons">
-                <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/project/create" type="submit">
-                  <mat-icon>add</mat-icon>  Create Project</button>
-          
-              </div>
-            <!-- <div class="col-md-4 col-lg-3 text-center align-self-center">
+  <div class="row pb-3">
+    <div class="col-sm-4 search-div">
+      <input type="search" (input)="filterSearch()" class="form-control p-2 sizeinput" [(ngModel)]="term"
+        placeholder="Search by project/client/status" aria-describedby="emailHelp" autocomplete="off">
+      <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>
+    </div>
+    <div class="col-sm"></div>
+    <div class="col-md-3 col-lg-3 p-1 text-end create-buttons">
+      <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/project/create" type="submit">
+        <mat-icon>add</mat-icon> Create Project</button>
+
+    </div>
+    <!-- <div class="col-md-4 col-lg-3 text-center align-self-center">
                 <div class="d-flex justify-content-center pg-bg">
                   <button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
                 >{{size}}</button>
                 </div>
                         </div> -->
-        </div>
-        <div class="bg">
-        <div class="row">
-            <div class="col px-0">
-                <table class="table table-hover table-list">
-                    <thead>
-                        <tr>
-                          <th scope="col">S.No</th>
-                          <th scope="col">Project <i  *ngIf="!arrow" (click)="sort('asc','project_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','project_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">Client <i  *ngIf="!arrow" (click)="sort('asc','client_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','client_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">Project Manager <i  *ngIf="!arrow" (click)="sort('asc','project_manager_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','project_manager_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">Start Date <i  *ngIf="!arrow" (click)="sort('asc','start_date')" class="bi bi-arrow-up"></i><i (click)="sort('desc','start_date')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">End Date <i  *ngIf="!arrow" (click)="sort('asc','end_date')" class="bi bi-arrow-up"></i><i (click)="sort('desc','end_date')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">Status <i  *ngIf="!arrow" (click)="sort('asc','status_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','status_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">Action</th>
-                          <!-- <th scope="col">Tasks <i  *ngIf="!arrow" (click)="sort('asc','project_related_task_list_converted')" class="bi bi-arrow-up"></i><i (click)="sort('desc','project_related_task_list_converted')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
-                          <!-- <th scope="col">Approver <i  *ngIf="!arrow" (click)="sort('asc','approver_manager_first_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','approver_manager_first_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <ng-container *ngIf="(allProjectList) as result">
-                        <tr *ngFor='let item of result  ; let i=index' >
-                            <td>{{getContinuousIndex(i)}}</td>
-                            <td>{{item.project_name | titlecase}}</td>
-                            <!-- <td>{{item.project_related_task_list_converted | titlecase}}</td> -->
-                            <td>{{item.client_name| titlecase}}</td>
-                            <td>{{item.project_manager_name| titlecase}}</td>
-                            <!-- <td>{{item.approver_manager_first_name| titlecase}}</td> -->
-                            <td >{{item.start_date | date:'dd-MM-yyyy'}}</td>
-                            <td>{{item.end_date | date:'dd-MM-yyyy'}}</td>
-                            <td>{{item.status_name| titlecase}}</td>
-                           
-                            
-                            <td>
-                              <ng-container >
-                                <img src="../../../../assets/images/Edit.svg" class="icon-image" routerLink="/project/update/{{item.id}}"  container="body" ngbTooltip="Edit" />
-                                <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.id)"/>
-                            </ng-container>
-                                <ng-container *ngFor="let access of permissions">
-                                    <!-- <button mat-raised-button mat-mini-fab  routerLink="/project/update/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
-                                      <i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i>
-                                    </button>
-                                    <button mat-raised-button mat-mini-fab   (click)="open(item.id)" *ngIf="access === 'DELETE'">
-                                      <i class="bi bi-trash" style="color: red;" container="body" ngbTooltip="Delete"></i>
-                                    </button> -->
-                                    <i class="bi bi-pencil-square" *ngIf="access === 'UPDATE'" routerLink="/project/update/{{item.id}}/{{page}}/{{tableSize}}" container="body"
-                                    ngbTooltip="Edit" style="color:  #000; "></i>
-              
-                                  <i class="bi bi-trash" *ngIf="access === 'DELETE'" (click)="open(item.id)" style="color: red;" container="body"
-                                    ngbTooltip="Delete"></i>
-                                  </ng-container>  
-                            </td>
-                        </tr>
-                        <div *ngIf="result.length === 0" class="nodata">
-                          <p style="width: 100%;"> No records found! </p>
-                        </div>
-                        
-                    </ng-container>
-                      </tbody>
-                  </table>
-                 
-            </div>
-        </div>
-      
-    </div>
-    <div class="pagination-container p-0 pt-2">
-        <!-- Pagination Controls (Center-Aligned) -->
-        <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
-        </pagination-controls>
-      
-        <!-- Items Per Page Selector (Right-Aligned) -->
-        <div class="items-per-page-container">
-          <div>Items per page</div>
-          <mat-select (change)="onTableSizeChange($event)" placeholder="10" class="page-size">
-            <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
-          </mat-select>
-        </div>
+  </div>
+  <div class="bg">
+    <div class="row">
+      <div class="col px-0">
+        <table class="table table-hover table-list">
+          <thead>
+            <tr>
+              <th scope="col">S.No</th>
+              <th scope="col">Project <i *ngIf="!arrow" (click)="sort('asc','project_name')"
+                  class="bi bi-arrow-up"></i><i (click)="sort('desc','project_name')" *ngIf="arrow"
+                  class="bi bi-arrow-down"></i></th>
+              <th scope="col">Client <i *ngIf="!arrow" (click)="sort('asc','client_name')" class="bi bi-arrow-up"></i><i
+                  (click)="sort('desc','client_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+              <th scope="col">Project Manager <i *ngIf="!arrow" (click)="sort('asc','project_manager_name')"
+                  class="bi bi-arrow-up"></i><i (click)="sort('desc','project_manager_name')" *ngIf="arrow"
+                  class="bi bi-arrow-down"></i></th>
+              <th scope="col">Start Date <i *ngIf="!arrow" (click)="sort('asc','start_date')"
+                  class="bi bi-arrow-up"></i><i (click)="sort('desc','start_date')" *ngIf="arrow"
+                  class="bi bi-arrow-down"></i></th>
+              <th scope="col">End Date <i *ngIf="!arrow" (click)="sort('asc','end_date')" class="bi bi-arrow-up"></i><i
+                  (click)="sort('desc','end_date')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+              <th scope="col">Status <i *ngIf="!arrow" (click)="sort('asc','status_name')" class="bi bi-arrow-up"></i><i
+                  (click)="sort('desc','status_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+              <th scope="col">Action</th>
+              <!-- <th scope="col">Tasks <i  *ngIf="!arrow" (click)="sort('asc','project_related_task_list_converted')" class="bi bi-arrow-up"></i><i (click)="sort('desc','project_related_task_list_converted')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
+              <!-- <th scope="col">Approver <i  *ngIf="!arrow" (click)="sort('asc','approver_manager_first_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','approver_manager_first_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="(allProjectList) as result">
+              <tr *ngFor='let item of result  ; let i=index'>
+                <td>{{getContinuousIndex(i)}}</td>
+                <td>{{item.project_name | titlecase}}</td>
+                <!-- <td>{{item.project_related_task_list_converted | titlecase}}</td> -->
+                <td>{{item.client_name| titlecase}}</td>
+                <td>{{item.project_manager_name| titlecase}}</td>
+                <!-- <td>{{item.approver_manager_first_name| titlecase}}</td> -->
+                <td>{{item.start_date | date:'dd-MM-yyyy'}}</td>
+                <td>{{item.end_date | date:'dd-MM-yyyy'}}</td>
+                <td>{{item.status_name| titlecase}}</td>
+
+
+                <td>
+                  <ng-container>
+                    <img src="../../../../assets/images/Edit.svg" class="icon-image"
+                      routerLink="/project/update/{{item.id}}" container="body" ngbTooltip="Edit" />
+                    <img src="../../../../assets/images/Delete.svg" class="icon-image" container="body"
+                      ngbTooltip="Delete" (click)="open(item.id)" />
+                  </ng-container>
+                </td>
+              </tr>
+              <div *ngIf="result.length === 0" class="nodata">
+                <p style="width: 100%;"> No records found! </p>
+              </div>
+
+            </ng-container>
+          </tbody>
+        </table>
+
       </div>
-    <!-- <div class="row">
+    </div>
+
+  </div>
+  <div class="pagination-container p-0 pt-2">
+    <!-- Pagination Controls (Center-Aligned) -->
+    <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+    </pagination-controls>
+
+    <!-- Items Per Page Selector (Right-Aligned) -->
+    <div class="items-per-page-container">
+      <div>Items per page</div>
+      <mat-select (change)="onTableSizeChange($event)" placeholder="10" class="page-size">
+        <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+      </mat-select>
+    </div>
+  </div>
+  <!-- <div class="row">
            
         <div class="col-sm"></div>
         <div class="col-sm-12" *ngIf="allProjectList.length > 0">
@@ -108,141 +106,120 @@
               </div>
         </div>
     </div> -->
-    <!-- <ng-container *ngFor="let access of permissions">
+  <!-- <ng-container *ngFor="let access of permissions">
         <button mat-raised-button mat-fab color="primary" *ngIf="access == 'CREATE'" routerLink="/project/create" class="createbtn" placement="top" container="body" ngbTooltip="Add project">
           <i class="fa fa-plus"></i>
   
         </button>
       </ng-container> -->
-    <!-- <a routerLink="/project/create"> <button mat-raised-button type="button" placement="top" container="body" ngbTooltip="Add Project" class="createbtn"><i class="fa fa-plus"></i>
+  <!-- <a routerLink="/project/create"> <button mat-raised-button type="button" placement="top" container="body" ngbTooltip="Add Project" class="createbtn"><i class="fa fa-plus"></i>
   </button></a> -->
 </div>
 
-  
-<div class="container-wrapper mobileView">
-    <div class="row mx-1 my-2">
-        <div class="col-sm-12 col-md-6">
-            <!-- <h1 class="mx-3">Project list</h1> -->
-        </div>
-        <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-            <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by project/client/status"aria-describedby="emailHelp"  autocomplete="off">
-            <i class="bi bi-search" id="search-icon"  (click)="filterSearch()"></i>
-        </div>
+
+<div class="mobileView">
+  <div class="row mx-1 my-2">
+    <div class="col-sm-12 col-md-6">
+      <!-- <h1 class="mx-3">Project list</h1> -->
     </div>
-    <div class="bg">
-    <div class="row">
-        <ng-container *ngIf="(allProjectList) as result">
-        <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of allProjectList| paginate : {
+    <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
+      <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by project/client/status"
+        aria-describedby="emailHelp" autocomplete="off">
+      <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
+    </div>
+  </div>
+  <div class="bg row mx-0 my-1">
+    <ng-container *ngIf="(allProjectList) as result">
+      <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of allProjectList| paginate : {
             itemsPerPage: tableSize,
             currentPage: page,
             totalItems: count
           }'>
-        <div class="card">
-            <div class="row">
-                <div class="col-6">
-                    <h6 class="card-subtitle">
-                        <!-- <i class="bi bi-collection"></i> -->
-                        Project</h6>
-                    <div class="value-container">{{item.project_name}}</div>
-                </div>
-                <div class="col-6 p-2 text-end">
-                    <!-- <ng-container *ngFor="let access of permissions">
-                     <a *ngIf="access == 'UPDATE'"> <button  type="button" class="toolbar-btn"   (click)='editCard(item.id)'  ><i class="bi bi-pencil-square" style="color: #000;"></i></button></a>
-                     <a *ngIf="access == 'DELETE'"> <button  type="button" class="toolbar-btn"   (click)="open(item.id)"  ><i class="bi bi-trash" style="color: red;"></i></button></a>
-                    </ng-container> -->
-                    </div>
-                </div>
-                <!-- <div class="row">
-                    <div class="col-12 bg-secondary">
-                        <h6 class="card-subtitle">
-                            Tasks</h6>
-                        <div class="value-container">
-                        <ng-container *ngIf="item.project_related_task_list.length >0">
-                        <ng-container *ngFor="let task of item.project_related_task_list">{{task.task_name}}</ng-container>
-                        </ng-container>
-                        <ng-container *ngIf="item.project_related_task_list.length ===0">
-                            NA
-                        </ng-container>
-                       </div>
-                    </div>   
-                 </div> -->
-                <div class="row">
-                    <div class="col-6">
-                    <h6 class="card-subtitle">
-                        <!-- <i class="bi bi-calendar2-week"></i> -->
-                        Start date</h6>
-                    <div class="value-container">{{item.start_date | date:'dd-MM-yyyy'}}</div>
-                    </div>
-                    <div class="col-6">
-                        <h6 class="card-subtitle">
-                            <!-- <i class="bi bi-calendar2-week"></i> -->
-                            End date</h6>
-                        <div class="value-container">{{item.end_date | date:'dd-MM-yyyy'}}</div>
-                    </div>
-                 </div>
-
-                 <div class="row">
-                    <div class="col-6 bg-secondary">
-                    <h6 class="card-subtitle">
-                        <!-- <i class="bi bi-person-check"></i> -->
-                        Reporter</h6>
-                    <div class="value-container">{{item.project_manager_name|titlecase}}</div>
-                    </div>
-                    <div class="col-6 bg-secondary">
-                        <h6 class="card-subtitle">
-                            <!-- <i class="bi bi-person-gear"></i> -->
-                            Approver</h6>
-                        <div class="value-container">{{item.approver_manager_first_name|titlecase}}</div>
-                    </div>
-                 </div>
-
-                 <div class="row">
-                    <div class="col-6">
-                        <h6 class="card-subtitle">
-                            <!-- <i class="bi bi-person-lines"></i> -->
-                            Client</h6>
-                        <div class="value-container">{{item.client_name|titlecase}}</div>
-                    </div>
-                    <div class="col-6">
-                        <h6 class="card-subtitle">
-                            <!-- <i class="bi bi-radioactive"></i> -->
-                            Status</h6>
-                        <div class="value-container">{{item.status_name?item.status_name:"NA"|titlecase}}</div>
-                    </div>
-                 </div>
+        <div class="card outer-card">
+          <div class="row py-1">
+            <div class="col-6">
+              <h6 class="card-subtitle">
+                <!-- <i class="bi bi-collection"></i> -->
+                Project
+              </h6>
+              <div class="value-container">{{item.project_name}}</div>
             </div>
+            <div class="col-5 p-0 text-end">
+              <img src="../../../../assets/images/Edit.svg" class="icon-image" (click)='editCard(item.id
+  )' container="body" ngbTooltip="Edit" />
+              <img src="../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete"
+                (click)="open(item.id
+  )" />
+            </div>
+          </div>
+
+          <div class="row py-1">
+            <div class="col-6">
+              <h6 class="card-subtitle">
+                Project Manager
+              </h6>
+              <div class="value-container">{{item.project_manager_name|titlecase}}</div>
+            </div>
+            <div class="col-6">
+              <h6 class="card-subtitle">
+                Client
+              </h6>
+              <div class="value-container">{{item.client_name|titlecase}}</div>
+            </div>
+          </div>
+          <div class="row py-1">
+            <div class="col-6">
+              <h6 class="card-subtitle">
+                <!-- <i class="bi bi-calendar2-week"></i> -->
+                Start date
+              </h6>
+              <div class="value-container">{{item.start_date | date:'dd-MM-yyyy'}}</div>
+            </div>
+            <div class="col-6">
+              <h6 class="card-subtitle">
+                <!-- <i class="bi bi-calendar2-week"></i> -->
+                End date
+              </h6>
+              <div class="value-container">{{item.end_date | date:'dd-MM-yyyy'}}</div>
+            </div>
+          </div>
+          <div class="row py-1">
+            <div class="col-6">
+              <h6 class="card-subtitle">
+                <!-- <i class="bi bi-radioactive"></i> -->
+                Status
+              </h6>
+              <div class="value-container">{{item.status_name?item.status_name:"NA"|titlecase}}</div>
+            </div>
+          </div>
         </div>
-     <div *ngIf="result.length === 0">
-    <app-generic-norecards></app-generic-norecards>
-     </div>
-    
-    </ng-container>
       </div>
+      <div *ngIf="result.length === 0">
+        <app-generic-norecards></app-generic-norecards>
+      </div>
+
+    </ng-container>
+  </div>
+  <div class="pagination-container p-0 pt-2">
+    <!-- Pagination Controls (Center-Aligned) -->
+    <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+    </pagination-controls>
+
+    <!-- Items Per Page Selector (Right-Aligned) -->
+    <div class="items-per-page-container">
+      <div>Items per page</div>
+      <mat-select [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10"
+        class="page-size">
+        <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+      </mat-select>
     </div>
-    <div class="row mobile-pagination" *ngIf="allProjectList.length !== 0">
-        <div class="col-sm-12" >
-            <div class="mobile-pagination-content">
-               
-                <pagination-controls 
-                  previousLabel="Prev" 
-                  nextLabel="Next" 
-                  (pageChange)="onTableDataChange($event)">
-                </pagination-controls>
-               <div><button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size" (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}"
-                >{{size}}</button></div>
-              </div>
-        </div>
-    </div>
-    <div class="s-position">
-        <ng-container *ngFor="let access of permissions">
-        <button routerLink="/project/create" *ngIf="access == 'CREATE'"  mat-fab type="button"  class="createbtn-new mat-btn-s" ><i class="fa fa-plus"></i>
-        </button>
-        </ng-container>
-    </div>
+  </div>
+  <div class="s-position">
+    <ng-container>
+      <button mat-fab routerLink="/project/create" class="createbtn-new" placement="top" container="body"
+        ngbTooltip="Add"><i class="fa fa-plus"></i>
+      </button>
+    </ng-container>
+
+  </div>
 </div>
-
-
-
-
-
-

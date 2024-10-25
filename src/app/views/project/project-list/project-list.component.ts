@@ -148,7 +148,7 @@ export class ProjectListComponent implements OnInit {
     this.enabled = true;
   }
   editCard(id) {
-    this.router.navigate([`/project/update/${id}/${this.page}/${this.tableSize}`])
+    this.router.navigate([`/project/update/${id}`])
   }
   onTableDataChange(event: any) {
     this.page = event;

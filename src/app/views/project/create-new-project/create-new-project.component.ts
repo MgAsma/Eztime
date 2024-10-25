@@ -91,7 +91,6 @@ export class CreateNewProjectComponent implements OnInit {
     this.assigneePeoples = [];
     this.getProjectStatus();
     this.getClient();
-    // this.getManager();
     this.getDesignations();
     this.getPeopleGroup();
     this.initForm();
@@ -292,7 +291,7 @@ export class CreateNewProjectComponent implements OnInit {
     this.teamFunction(this.selectedTeamId);
   }
 
-   isCollapsed: boolean = false;
+   isCollapsed: boolean = true;
 
   // Clear all team items
   clearAll(): void {
@@ -593,7 +592,10 @@ export class CreateNewProjectComponent implements OnInit {
         this.api.addProjectDetails(data).subscribe(res => {
           if (res) {
             this.api.showSuccess(res['message']);
-            this.ngOnInit();
+            this.projectForm.markAsPristine();
+            this.projectForm.markAsUntouched();
+            this.projectForm.updateValueAndValidity();
+            window.location.reload();
           }
           else {
             this.api.showError('Error')

@@ -177,6 +177,8 @@ form {
 .mat-mini-fab:not([class*=mat-elevation-z]) {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
     stroke: #D7D7D7;
+    height: 50px !important;
+    width: 50px !important;
 }
 
 .mat-btn-s:hover {

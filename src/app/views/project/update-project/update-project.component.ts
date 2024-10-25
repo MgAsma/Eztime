@@ -26,13 +26,11 @@ export class UpdateProjectComponent implements OnInit {
   selectedTeamId: any = [];
   user_id: any
   taskCategories: any = [];
-  subTaskCategories: any = [];
   updateForm: FormGroup;
   invalidDate: boolean = false;
   url: any;
   assigneePeoples: any = [];
   task_name: any = [];
-  subTaskValue: any;
   org_id: any;
   tasks = []
   status = [];
@@ -106,14 +104,6 @@ export class UpdateProjectComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.org_id = sessionStorage.getItem('organization_id');
     this.user_id = sessionStorage.getItem('user_id');
-    this.subTaskCategories = []
-    this.subTaskSetting = {
-      singleSelection: false,
-      idField: 'task_name',
-      textField: 'task_name',
-      itemsShowLimit: 3,
-      allowSearchFilter: true
-    }
     this.getCategory();
     this.getClient();
     this.getProjectStatus();
@@ -299,7 +289,7 @@ export class UpdateProjectComponent implements OnInit {
     this.teamFunction(this.selectedTeamId);
   }
 
-  isCollapsed: boolean = false;
+  isCollapsed: boolean = true;
 
   // Clear all team items
   clearAll(): void {
@@ -619,7 +609,10 @@ export class UpdateProjectComponent implements OnInit {
         this.api.updateProject(this.id, data).subscribe(res => {
           if (res) {
             this.api.showSuccess(res['message']);
-            this.updateForm.reset()
+            this.updateForm.markAsPristine();
+            this.updateForm.markAsUntouched();
+            this.updateForm.updateValueAndValidity();
+            this.resetValues();
           }
           else {
             this.api.showError('Error')
@@ -641,5 +634,19 @@ export class UpdateProjectComponent implements OnInit {
 
   }
 
+  resetValues(){
+    // this.subTasks.reset();
+    this.subTasks.clear();
+    this.getCategory();
+    this.getClient();
+    this.getProjectStatus();
+    this.getDesignations();
+    this.getPeopleGroup();
+    // this.initForm()
+    setTimeout(() => {
+      this.edit();
+    }, 1000);
+    
+  }
 
 }

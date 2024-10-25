@@ -84,9 +84,7 @@
         opacity: 0.7;
     }
 }
-i{
-    padding: 2px 5px 0 0;  
-}
+
 .btnicon{
     display: none;
 }
@@ -103,14 +101,12 @@ button:hover .btnicon{
 
 .outer-card{
     border: none;
-    // border-left: 5px solid #39f;
-    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 4%);
+    box-shadow: 0 4px 8px #0003, 0 6px 20px #0000000a;
     margin: 20px 5px;
     border-radius: 10px;
     zoom: 90%;
-    background: #FFFFFF99 !important;
+    background: rgba(255, 255, 255, .6) !important;
     padding: 5px 16px;
-    
 }
 .card-subtitle{
     font-weight: bold;

@@ -217,7 +217,7 @@
                             <div class="row">
                                 <div class="col-3 mb-3">
                                     <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
-                                        <mat-label>Choose Template <b class="r-star">*</b></mat-label>
+                                        <mat-label>Choose Template </mat-label>
                                         <mat-select formControlName="project_category" autocomplete="off"
                                             placeholder="Select template" panelClass="custom-select-panel"
                                             [disableOptionCentering]="true" (selectionChange)="getSubTask($event)">
@@ -368,9 +368,12 @@
             <div class="row create-project">
                 <div class="col-12">
                     <div class="row">
-                        <h4><i class="bi bi-arrow-left mx-2" (click)="goBack($event)"></i>Project details</h4>
+                        <div class="py-3">
+                            <h5 class="p-2"><b>Project Details</b></h5>
+                            <p class="px-2">Lets dig into the project details!</p>
+                        </div>
                     </div>
-                    <div class="row mt-3 mx-1">
+                    <div class="row mt-3 px-1">
                         <!-- client dropdown -->
                         <div class="col-sm-12 col-md-6 col-lg-3 mb-1">
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
@@ -432,23 +435,6 @@
                             <div class="px-2" *ngIf="f['end_date']?.touched && f['end_date']?.invalid">
                                 <span class="text-errors" *ngIf="f['end_date'].errors?.['required']">End date is
                                     required</span>
-                            </div>
-                        </div>
-                        <!-- select team -->
-                        <div class="col-sm-12 col-md-6 col-lg-3 mb-1">
-                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
-                                <mat-label>Select Team <b class="r-star">*</b></mat-label>
-                                <mat-select formControlName="team" autocomplete="off" placeholder="Select team"
-                                    panelClass="custom-select-panel" [disableOptionCentering]="true" multiple
-                                    (selectionChange)="matTeamSelect()" [(ngModel)]="selectedTeamId">
-                                    <mat-option *ngFor="let item of allPeopleGroup" [value]="item.id ">
-                                        {{item.first_name}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            <div class="px-2" *ngIf="f['team'].touched && f['team'].invalid">
-                                <span class="text-errors" *ngIf="f['team'].errors && f['team'].errors['required']">Team
-                                    list is required</span>
                             </div>
                         </div>
                         <!-- project manager -->
@@ -514,10 +500,49 @@
                                     required</span>
                             </div>
                         </div>
+                        <!-- team -->
+                        <div class="col-sm-12 col-md-6 col-lg-6 mb-3 multi-select">
+                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                <mat-label>Select Team <b class="r-star">*</b></mat-label>
+                                <mat-select formControlName="team" autocomplete="off" placeholder="Select team"
+                                    panelClass="custom-select-panel" [disableOptionCentering]="true" multiple
+                                    (selectionChange)="matTeamSelect()" [(ngModel)]="selectedTeamId">
+
+                                    <!-- Search Input -->
+                                    <div class="custom-search py-2 px-1">
+                                        <input matInput (input)="filterOptions($event)" placeholder="Search..." />
+                                    </div>
+
+                                    <mat-option *ngFor="let item of filteredPeopleGroup" [value]="item.id">
+                                        {{item.first_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="px-2" *ngIf="f['team'].touched && f['team'].invalid">
+                                <span class="text-errors" *ngIf="f['team'].errors && f['team'].errors['required']">Team
+                                    list is required</span>
+                            </div>
+                        </div>
+                        <div *ngIf="assigneePeoples.length!=0" class="col-sm-12 col-md-6 mx-3 col-lg-6 team-border mb-3">
+                            <div class="tag-container" [ngClass]="{ 'collapsed': isCollapsed }">
+                                <span *ngFor="let item of assigneePeoples" class="tag-item">
+                                    {{item.first_name}}<i class="bi bi-x fs-5 fw-bold"
+                                        (click)="teamDeselectedFromCard(item.id)"></i>
+                                    </span>
+                            </div>
+
+                            <div class="controls mb-2">
+                                <button type="button" (click)="clearAll()" class="clear-btn">Clear all</button>
+                                <button type="button" (click)="toggleCollapse()" class="toggle-btn">
+                                    {{ isCollapsed ? 'Expand' : 'Collapse' }}
+                                </button>
+                            </div>
+
+                        </div>
                     </div>
 
                     <!-- project template -->
-                    <div class="row px-3 gx-0 task-border">
+                    <div class="row mx-1 px-2 gx-0 task-border">
                         <div class="col-12 ">
                             <div class="py-3">
                                 <h5 class="py-1"><b>Add Tasks</b></h5>
@@ -544,7 +569,7 @@
                             <div class="row">
                                 <div class="col-12 mb-3">
                                     <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
-                                        <mat-label>Choose Template <b class="r-star">*</b></mat-label>
+                                        <mat-label>Choose Template </mat-label>
                                         <mat-select formControlName="project_category" autocomplete="off"
                                             placeholder="Select template" panelClass="custom-select-panel"
                                             [disableOptionCentering]="true" (selectionChange)="getSubTask($event)">
@@ -587,7 +612,7 @@
                                                     placeholder="Select status" panelClass="custom-select-panel"
                                                     [disableOptionCentering]="true">
                                                     <mat-option [disabled]="task.value.edit_icon"
-                                                        *ngFor="let status of status" [value]="status.value">
+                                                        *ngFor="let status of status" [value]="status.id">
                                                         {{status.status_name}}
                                                     </mat-option>
                                                 </mat-select>
@@ -667,9 +692,8 @@
 
                     </div>
 
-                    <div class="row">
-                        <div class="col-sm"></div>
-                        <div class="col-sm-2">
+                    <div class="row mt-3">
+                        <div>
                             <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Submit</button>
                         </div>
                     </div>
