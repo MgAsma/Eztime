@@ -2,7 +2,7 @@
   <div class="row pb-3">
     <div class="col-sm-4 search-div">
       <input type="search" (input)="filterSearch()" class="form-control p-2 sizeinput" [(ngModel)]="term"
-        placeholder="Search by project/client/status" aria-describedby="emailHelp" autocomplete="off">
+        placeholder="Search by project/client" aria-describedby="emailHelp" autocomplete="off">
       <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>
     </div>
     <div class="col-sm"></div>
@@ -123,7 +123,7 @@
       <!-- <h1 class="mx-3">Project list</h1> -->
     </div>
     <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-      <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by project/client/status"
+      <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by project/client"
         aria-describedby="emailHelp" autocomplete="off">
       <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
     </div>

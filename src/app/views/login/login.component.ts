@@ -88,32 +88,10 @@ export class LoginComponent implements OnInit {
           }
         )
 
-
-        // if (response['result']['status'] === status) {
-        //   this.error = false;
-        //   sessionStorage.setItem('token', response['result'].token),
-        //     sessionStorage.setItem('user_id', response['result'].user_id)
-        //   sessionStorage.setItem('center_id', response['result'].center_id)
-        //   sessionStorage.setItem('manager_id', response['result'].manager_id)
-        //   sessionStorage.setItem('user_role_id', response['result'].user_role_id)
-        //   sessionStorage.setItem('user_role_name', response['result'].user_role_name.toUpperCase())
-        //   sessionStorage.setItem('org_id', response['result'].organization_id)
-        //   this.api.accessArr.push(response['result'].arragned_data)
-        //   sessionStorage.setItem('permissionArr', JSON.stringify(response['result'].arragned_data))
-        //   let permissionArr: any = []
-        //   permissionArr = JSON.parse(sessionStorage.getItem('permissionArr'))
-        //   let userName = response['result'].u_first_name
-        //   sessionStorage.setItem('user_name', userName)
-        //   this.router.navigate(['/dashboards']);
-        //   this.api.showSuccess('Login successful!');
-        // }
-        // else {
-        //   this.api.showError('Error!')
-        // }
-
-      }, ((error: any) => {
-        this.api.showError(error.error.error.detail ? error.error.error.detail : error.error.error.message)
-      })
+      }, (error: any) => {
+        this.api.showError(error.error.non_field_errors[0])
+        console.log('error',error)
+      }
 
       )
     }
