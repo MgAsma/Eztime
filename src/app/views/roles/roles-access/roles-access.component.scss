@@ -1,66 +1,107 @@
+.list-group-item {
+  padding: 16px 15px;
+}
 
-.list-group-item{
-    // position: relative;
-    padding: 12px 15px 8px;
+.main-heading {
+  background: #F4F4F4;
 }
-#h-icon{
-    position: absolute;
-    right: 24px;
-    bottom: 15px;
-    color:gray;
-    text-align: end !important;
+
+.main-heading label {
+  color: #126EB4 !important;
+  font-weight: bold !important;
 }
-.icon-span{
-    display: none;
-  }
-.list-group-item:hover{
+
+.main-heading .main-text {
+  font-weight: 400;
+  color: black;
+  font-size: 13px;
+  padding-left: 30px;
+}
+
+#h-icon {
+  position: absolute;
+  right: 24px;
+  bottom: 15px;
+  color: gray;
+  text-align: end !important;
+}
+
+.icon-span {
+  display: none;
+}
+
+.list-group-item:hover {
   background: rgb(238, 237, 237);
-  .icon-span{
+
+  .icon-span {
     display: block;
   }
 }
 
-.set-scrol{
+.set-scrol {
   width: 99% !important;
   overflow-x: scroll !important;
 
 }
-@media(max-width:767px){
-  .list-group{
-    height: 70vh;
-    overflow-y: auto;
-    margin: 25px 10px !important;
+
+@media(max-width:767px) {
+  //   .list-group{
+  //     height: 70vh;
+  //     overflow-y: auto;
+  //     // margin: 25px 10px !important;
+  // }
+
+  h1.margin-in-mob {
+    margin-left: 20px;
+  }
 }
 
-h1.margin-in-mob{
-  margin-left: 20px;
-}
-}
-@media(min-width:768px){
-  .list-group{
-    height: 70vh;
-    overflow-y: scroll !important;
-    overflow: hidden;
-    margin: 25px 0px;
+// @media(min-width:768px){
+//   .list-group{
+//     height: 70vh;
+//     overflow-y: scroll !important;
+//     overflow: hidden;
+//     // margin: 25px 0px;
+// }
+
+// }
+.bi-arrow-left {
+  margin-right: 10px;
 }
 
-}
-.bi-arrow-left{
- margin-right: 10px;
-}
 // .mobileView{
 //   height: 70vh !important;
 //   overflow: auto;
 // }
-@media only screen and (min-width: 768px) and (max-width: 1023px){
-.mobileView {
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .mobileView {
     width: 100% !important;
     // display:flex !important;
+  }
 }
+
+.content-page {
+  height: 70vh !important;
+  overflow-y: auto !important;
+  width: 100% !important;
+  overflow-x: hidden;
 }
-@media only screen and (min-width: 1024px){
-.webView {
-    width: 100% !important;
-     display: flex !important; 
+
+// @media only screen and (min-width: 1024px){
+// .webView {
+//     width: 100% !important;
+//      display: flex !important; 
+// }
+// }
+
+.list-group {
+  box-shadow: 0px 0px 4px 0px #00000040;
+  border-radius: 10px
 }
+
+.checkbox-design {
+  width: 20px;
+  border-radius: 3px;
+  border: 2px solid #413f3f !important;
+  // appearance: none;
 }

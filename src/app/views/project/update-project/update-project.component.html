@@ -176,12 +176,12 @@
                             <div class="tag-container" [ngClass]="{ 'collapsed': isCollapsed }">
                                 <span *ngFor="let item of assigneePeoples" class="tag-item">
                                     {{item.first_name}}<i class="bi bi-x fs-5 fw-bold"
-                                        (click)="teamDeselectedFromCard(item.id)"></i>
+                                        (click)="openRemoveConfirmation('single',item.id)"></i>
                                     </span>
                             </div>
 
                             <div class="controls mb-2">
-                                <button type="button" (click)="clearAll()" class="clear-btn">Clear all</button>
+                                <button type="button" (click)="openRemoveConfirmation('group','')" class="clear-btn">Clear all</button>
                                 <button type="button" (click)="toggleCollapse()" class="toggle-btn">
                                     {{ isCollapsed ? 'Expand' : 'Collapse' }}
                                 </button>

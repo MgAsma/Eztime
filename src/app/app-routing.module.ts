@@ -64,6 +64,9 @@ const routes: Routes = [
         path:'generic',loadChildren:() => import('./generic-delete/generic-delete.module').then(m =>m.GenericDeleteModule)}
       ,
       {
+        path:'generic-remove',loadChildren:() => import('./generic-remove/generic-remove.module').then(m =>m.GenericRemoveModule)
+      },
+      {
         path: 'designation',
         loadChildren: () => import('./views/roles/roles.module').then(m => m.RolesModule)
       },

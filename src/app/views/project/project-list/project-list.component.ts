@@ -19,7 +19,6 @@ export class ProjectListComponent implements OnInit {
   count = 0;
   tableSize = 10;
   tableSizes = [10, 25, 50, 100];
-
   term: any = '';
   slno: any;
   project: any;
@@ -59,13 +58,13 @@ export class ProjectListComponent implements OnInit {
     // this.getUserControls()
   }
   filterSearch() {
-    this.api.getData(`${environment.live_url}/${environment.project_list}?user_id=${this.user_id}&search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((data: any) => {
-      if (data.result) {
-        this.allProjectList = data.result.data;
-        //console.log( this.allProjectList,"ALL")
-        const noOfPages: number = data['result'].pagination.number_of_pages
-        this.count = noOfPages * this.tableSize;
-        this.page = data['result'].pagination.current_page;
+    this.api.getProjectDetails(`organization_id=${this.orgId}&search=${this.term}`).subscribe((data: any) => {
+      if (data) {
+        this.allProjectList = data
+        // //console.log( this.allProjectList,"ALL")
+        // const noOfPages: number = data['result'].pagination.number_of_pages
+        // this.count = noOfPages * this.tableSize;
+        // this.page = data['result'].pagination.current_page;
       }
 
     }, ((error: any) => {

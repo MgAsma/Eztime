@@ -8,6 +8,8 @@ import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
+import { GenericRemoveComponent } from 'src/app/generic-remove/generic-remove.component';
+
 @Component({
   selector: 'app-update-project',
   templateUrl: './update-project.component.html',
@@ -287,6 +289,31 @@ export class UpdateProjectComponent implements OnInit {
     this.selectedTeamId = this.selectedTeamId.filter(item => item !== id);
     // console.log('this.selectedTeamId', this.selectedTeamId);
     this.teamFunction(this.selectedTeamId);
+  }
+  async openRemoveConfirmation(text:any,id) {
+    try {
+      const modalRef = await this.modalService.open(GenericRemoveComponent, {
+        size: 'sm',
+        backdrop: 'static',
+        centered: true
+      });
+
+      modalRef.componentInstance.status.subscribe(resp => {
+        if (resp === 'ok') {
+          if(text==='group'){
+            this.clearAll();
+          } else{
+            this.teamDeselectedFromCard(id)
+          }
+          modalRef.dismiss();
+        } else {
+          modalRef.dismiss();
+        }
+      });
+    } catch (error) {
+      console.error('Error opening modal:', error);
+    }
+
   }
 
   isCollapsed: boolean = true;
