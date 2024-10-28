@@ -262,7 +262,7 @@
                       <mat-select formControlName="task_id"
                         (selectionChange)="getTimeSpent($event.value, currentIndex)" placeholder="Select task"
                         panelClass="custom-select-panel" [disableOptionCentering]="true">
-                        <mat-option *ngFor="let item of createdProject.value[i]?.taskList" [value]="item.task_name">
+                        <mat-option *ngFor="let item of createdProject.value[i]?.taskList" [value]="item.id">
                            {{ item.task_name }}
                          
                         </mat-option>
@@ -284,8 +284,8 @@
                         <mat-select formControlName="hours_to_complete"
                           placeholder="Select hours"
                           panelClass="custom-select-panel" [disableOptionCentering]="true">
-                          <mat-option *ngFor="let item of createdProject.value[i]?.time" [value]="item.time">
-                             {{ item.time }}
+                          <mat-option *ngFor="let item of createdProject.value[i]?.time" [value]="item.hours">
+                             {{ item.hours }}
                            
                           </mat-option>
                         </mat-select>
@@ -354,9 +354,9 @@
                         panelClass="custom-select-panel" [disableOptionCentering]="true" (selectionChange)="getValue(i,j,task?.get('task_spent')?.value,'time')"> -->
                         <mat-select  formControlName="hours_to_complete" placeholder="Select hours" 
                         panelClass="custom-select-panel" [disableOptionCentering]="true" (selectionChange)="getValue(i,j,task?.get('task_spent')?.value,'time')">
-                        <mat-option *ngFor="let item of createdProject.value[i]?.time" [value]="item.time"
+                        <mat-option *ngFor="let item of createdProject.value[i]?.time" [value]="item.hours"
                           [disabled]="item.time > getRemainingHours(i)">
-                            {{ item.time }}
+                            {{ item.hours }}
                           </mat-option>
                         </mat-select>
                       </div>

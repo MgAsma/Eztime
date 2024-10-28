@@ -38,6 +38,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
   showSearch = false
   allCardData: Object;
   selectedTabId: number;
+  submitted: boolean = false;
   constructor(
     private api:ApiserviceService,
     private datepipe:DatePipe,
@@ -60,22 +61,11 @@ export class AppliedApprovedLeavesComponent implements OnInit {
   }
   ngOnInit(): void { 
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.orgId = sessionStorage.getItem('org_id')
+    this.orgId = sessionStorage.getItem('organization_id')
     this.initForm();
-    this.getAppliedLeaves('')
-    // let params= {
-    //   module:"LEAVE/HOLIDAY_LIST",
-    //   menu:"APPLIED/APPROVIED_LEAVES",
-    //   method:"VIEW",
-    //   page_number:1,
-    //   data_per_page:10,
-    //   user_id:this.user_id,
-    //   pagination:"TRUE",
-    //   search_key:'',
-    //   approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-    // }
-    // this.getByStatus(params)
+    // this.getAppliedLeaves('')
     this.getCount()
+    this.getByStatus(`?status-id=1&employee-id=${this.user_id}`)
   }
   getCount(){
     this.api.getData(`${environment.live_url}/${environment.employee_leave_details}/?get-count=true&employee-id=${this.user_id}`).subscribe(res=>{
@@ -120,7 +110,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
           pagination:"TRUE",
           approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
         }
-        this.getByStatus()
+        this.getByStatus(`?status-id=${this.selectedTabId}&employee-id=${this.user_id}`)
       }  
     }
     
@@ -157,16 +147,18 @@ export class AppliedApprovedLeavesComponent implements OnInit {
           pagination:"TRUE",
           approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
         }
-        this.getByStatus()
+        this.getByStatus(`?organization=${this.orgId}&status-id=${this.selectedTabId}&employee-id=${this.user_id}`)
+        this.getCount()
       }  
     }
   }
   get f(){
   return  this.appliedLeaveForm.controls 
   }
-  getByStatus(){
-    this.api.getData(`${environment.live_url}/${environment.employee_leave_details}/?status-id=${this.selectedTabId}&employee-id=${this.user_id}`).subscribe(res=>{
-      if(res){ 
+  getByStatus(params){
+    // this.api.getData(`${environment.live_url}/${environment.employee_leave_details}/?status-id=${this.selectedTabId}&employee-id=${this.user_id}`).subscribe(res=>{
+      this.api.getData(`${environment.live_url}/${environment.employee_leave_details}/${params}`).subscribe(res=>{
+    if(res){ 
         this.AllListData = res
        // this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
     }
@@ -196,49 +188,36 @@ export class AppliedApprovedLeavesComponent implements OnInit {
     }
     
    }
-    submit(){
-      if(this.changes){
-         let params= {
-          module:"LEAVE/HOLIDAY_LIST",
-          menu:"APPLIED/APPROVIED_LEAVES",
-          method:"VIEW",
-          page_number:1,
-          data_per_page:10,
-          user_id:this.user_id,
-          search_key:'',
-          pagination:"TRUE",
-          approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-          leaveApplication_from_date:this.fromDate,
-          leaveApplication_to_date:this.toDate
-        }
-        if(this.appliedLeaveForm.invalid){
-          this.appliedLeaveForm.markAllAsTouched()
-        }
-        else{
-          this.getAppliedLeaves(params)
-          this.tabset.tabs[0].active = true;
-        }
-      }
-      else{
-        if(this.appliedLeaveForm.invalid){
-          this.appliedLeaveForm.markAllAsTouched()
-        }
-      }
-    // else{
-      
-    //   let params= {
-    //     module:"LEAVE/HOLIDAY_LIST",
-    //     menu:"APPLIED/APPROVIED_LEAVES",
-    //     method:"VIEW",
-    //     page_number:1,
-    //     data_per_page:10,
-    //     user_id:this.user_id,
-    //     pagination:"TRUE",
-    //     approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-    //   }
-    //   this.getByStatus(params)
-    // }
     
+    async submit() {
+      let c_params = {};
+      
+      // Check if form is valid before proceeding
+      if (this.appliedLeaveForm.invalid) {
+        this.appliedLeaveForm.markAllAsTouched(); // Show validation only if form is invalid
+        return; // Exit the function early if invalid
+      }else{
+        // If changes exist and form is valid
+        
+          c_params = {
+            status: this.selectedTab ? this.selectedTab : 'Pending',
+            leave_to_date: this.datepipe.transform(this.appliedLeaveForm.value.to_date, 'yyyy-MM-dd'),
+            leave_from_date: this.datepipe.transform(this.appliedLeaveForm.value.from_date, 'yyyy-MM-dd')
+          };
+  
+          this.AllListData = [];
+          let query:string;
+          if(this.selectedTabId){
+           query = `?from-date=${c_params['leave_from_date']}&to-date=${c_params['leave_to_date']}&status=${this.selectedTabId}`
+          }else{
+            query = `?from-date=${c_params['leave_from_date']}&to-date=${c_params['leave_to_date']}&status=${1}`
+          }
+          this.getByStatus(query);  
+          this.submitted = true
+        
+      }
+    
+     
     }
     tabState(data){
       if(data.tab.textLabel === 'Approved'){
@@ -253,8 +232,13 @@ export class AppliedApprovedLeavesComponent implements OnInit {
         this.selectedTab = 'Declined'
         this.selectedTabId = 3
       }
-      
-      this.getByStatus()
+      let query:string = `?organization=${this.orgId}&status-id=${this.selectedTabId}&employee-id=${this.user_id}`;
+      if(this.submitted){
+        const to_date = this.datepipe.transform(this.appliedLeaveForm.value.to_date, 'yyyy-MM-dd')
+        const from_date =  this.datepipe.transform(this.appliedLeaveForm.value.from_date, 'yyyy-MM-dd')
+        query=`?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.user_id}&from-date=${from_date}&to-date=${to_date}`
+       }
+      this.getByStatus(query)
  
    
     

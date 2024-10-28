@@ -45,18 +45,22 @@ export class ManagerReviewComponent implements OnInit {
     ]
   };
 
-  timesheetList = {
-    pending: [
-      { employeeName: 'Surya', client: 'MTN', projectName: 'eShop', time: '8 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Redesigning UI' },
-      { employeeName: 'Manoj', client: 'MTN', projectName: 'eShop', time: '2 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Library updates' }
-    ],
-    approved: [
-      { employeeName: 'Karthik', client: 'MTN', projectName: 'eShop', time: '6 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Bug fixes' }
-    ],
-    declined: [
-      { employeeName: 'Ravi', client: 'MTN', projectName: 'eShop', time: '1 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Meeting' }
-    ]
-  };
+  timesheetList:any = []
+
+  selectedTimesheetTabId: number;
+  selectedTimesheetTab: string;
+  // = {
+  //   pending: [
+  //     { employeeName: 'Surya', client: 'MTN', projectName: 'eShop', time: '8 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Redesigning UI' },
+  //     { employeeName: 'Manoj', client: 'MTN', projectName: 'eShop', time: '2 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Library updates' }
+  //   ],
+  //   approved: [
+  //     { employeeName: 'Karthik', client: 'MTN', projectName: 'eShop', time: '6 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Bug fixes' }
+  //   ],
+  //   declined: [
+  //     { employeeName: 'Ravi', client: 'MTN', projectName: 'eShop', time: '1 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Meeting' }
+  //   ]
+  // };
   constructor(
     private api: ApiserviceService,
     private modalService: NgbModal,
@@ -72,7 +76,8 @@ export class ManagerReviewComponent implements OnInit {
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-   
+    this.orgId = sessionStorage.getItem('organization_id')
+    this.getAllTimesheets(`?organization=${this.orgId}&status=1`)
   }
  
   getEmployeeData() {
@@ -84,11 +89,40 @@ export class ManagerReviewComponent implements OnInit {
         this.emptimesheet = response['result'].data.emp_timesheet_list[0]
       }
     }, (error => {
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     }))
   }
 
+  getAllTimesheets(params){
+    this.api.getData(`${environment.live_url}/${environment.time_sheets}/${params}`).subscribe(response => {
+      if (response) {
+        this.timesheetList = response
+        console.log(this.timesheetList)
+    }
+  },(error)=>{
+    this.api.showError(error?.error?.message)
+  })
+  }
+  tabTimesheet(data){
+    if(data.tab.textLabel === 'Approved'){
+      this.selectedTimesheetTab = 'Approved'
+      this.selectedTimesheetTabId = 2
+    }
+    else if(data.tab.textLabel === 'Pending' ){
+      this.selectedTimesheetTab = 'Pending' 
+      this.selectedTimesheetTabId = 1
+    }
+    else if(data.tab.textLabel === 'Declined'){
+      this.selectedTimesheetTab = 'Declined'
+      this.selectedTimesheetTabId = 3
+    }
+    let query:string = `?organization=${this.orgId}&status=${this.selectedTimesheetTabId}`;
+   
+    this.getAllTimesheets(query)
 
+ 
+  
+  }
   openDialogue(content, status) {
     if (content) {
       const statusText = status === 'DECLINED' ? 'decline' : 'approve'

@@ -50,7 +50,7 @@ export class DeclineComponent implements OnInit {
     if(changes['data'].currentValue){
       this.list=changes['data'].currentValue;
     }
-    if(changes['totalCount'].currentValue){
+    if(changes['totalCount']?.currentValue){
       this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
       this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
       this.paginationConfig.itemsPerPage=this.tableSize;
@@ -71,10 +71,7 @@ export class DeclineComponent implements OnInit {
     }
   }
   deleteContent(item){
-    let data = {
-     ids:[item.id]
-  }
-    this.api.deleteMultiple(`${environment.live_url}/${environment.time_sheets}`,data).subscribe((data:any)=>{
+    this.api.delete(`${environment.live_url}/${environment.time_sheets}/${item.id}/`).subscribe((data:any)=>{
       if(data){
         let tableData ={
           page:this.page,

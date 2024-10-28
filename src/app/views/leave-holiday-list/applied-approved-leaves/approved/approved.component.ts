@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from '../../../../service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-approved',
   templateUrl: './approved.component.html',
@@ -57,7 +58,7 @@ export class ApprovedComponent implements OnInit {
     if(changes['data'].currentValue){
       this.data=changes['data'].currentValue;
     }
-    if(changes['totalCount'].currentValue){
+    if(changes['totalCount']?.currentValue){
     this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
     this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
     this.paginationConfig.itemsPerPage=this.tableSize;
@@ -90,25 +91,18 @@ export class ApprovedComponent implements OnInit {
     })
   }
   delete(item:any){
-    let params = {
-      module: "LEAVE/HOLIDAY_LIST",
-      menu: "APPLIED/APPROVIED_LEAVES",
-      method: "DELETE",
-      user_id: this.user_id
-  }
-    this.api.deletePeopleLeaves(item.id,params).subscribe((data:any)=>{
-      this.api.showWarning('Approved leave deleted successfully!')
+    this.api.delete(`${environment.live_url}/${environment.employee_leave_details}/${item.id}/`).subscribe((data:any)=>{
+      this.api.showWarning('leave deleted successfully!')
       let tableData ={
-        page:this.page,
-        tableSize:this.tableSize,
-        search_key:this.term
+        // page:this.page,
+        // tableSize:this.tableSize,
+        // search_key:this.term
        }
       this.buttonClick.emit(tableData);
     },((error:any)=>{
-      this.api.showError(error.error.error.message);
+      this.api.showError(error?.error?.message)
     }))
    
-
   }
   openDialogue(content,status){
     if(content){

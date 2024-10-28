@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from '../../../../service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-declined',
   templateUrl: './declined.component.html',
@@ -60,7 +61,7 @@ export class DeclinedComponent implements OnInit {
       if(changes['data'].currentValue){
         this.data=changes['data'].currentValue;
       }
-      if(changes['totalCount'].currentValue){
+      if(changes['totalCount']?.currentValue){
       this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
       this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
       this.paginationConfig.itemsPerPage=this.tableSize;
@@ -98,28 +99,20 @@ export class DeclinedComponent implements OnInit {
     }
     
 
-  delete(item:any){
-    let content ={
-      module: "LEAVE/HOLIDAY_LIST",
-      menu: "APPLIED/APPROVIED_LEAVES",
-      method: "DELETE",
-      user_id: this.user_id,
-   }
-    this.api.deletePeopleLeaves(item.id,content).subscribe((data:any)=>{
-   //   //console.log(data,"DELETE")
-      this.api.showWarning('Declined leave deleted successfully!')
-      let tableData ={
-        page:this.page,
-        tableSize:this.tableSize,
-        search_key:this.term
-       }
-      this.buttonClick.emit(tableData);
-    },((error:any)=>{
-      this.api.showError(error.error.error.message);
-      
-    }))
-
-  }
+    delete(item:any){
+      this.api.delete(`${environment.live_url}/${environment.employee_leave_details}/${item.id}/`).subscribe((data:any)=>{
+        this.api.showWarning('leave deleted successfully!')
+        let tableData ={
+          // page:this.page,
+          // tableSize:this.tableSize,
+          // search_key:this.term
+         }
+        this.buttonClick.emit(tableData);
+      },((error:any)=>{
+        this.api.showError(error?.error?.message)
+      }))
+     
+    }
   open(content) {
     if(content){
       const modelRef =   this.modalService.open(GenericDeleteComponent, {

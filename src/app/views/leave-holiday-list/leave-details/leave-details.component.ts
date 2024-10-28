@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 export class LeaveDetailsComponent implements OnInit {
   BreadCrumbsTitle:any='Add leave master';
   leaveTypeForm! : FormGroup
+  organization_id: any;
   
   constructor(
     private builder:FormBuilder, 
@@ -29,6 +30,7 @@ export class LeaveDetailsComponent implements OnInit {
   } 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
+    this.organization_id = JSON.parse(sessionStorage.getItem('organization_id'))
     this.initForm()
    }
  
@@ -67,6 +69,7 @@ export class LeaveDetailsComponent implements OnInit {
         cary_forward_percentage:this.leaveTypeForm.value.cary_forward_percentage ,
         graceful_days:this.leaveTypeForm.value.graceful_days ,
         maximum_enhancement:this.leaveTypeForm.value.maximum_enhancement ,
+        organization: this.organization_id
       }
       this.api.postData(`${environment.live_url}/${environment.leave_master}/`,data).subscribe((res:any)=>{
         if(res){

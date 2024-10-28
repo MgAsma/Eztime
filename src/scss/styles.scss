@@ -49,9 +49,9 @@
    appearance: none;
    margin: 0;
  }
-//  body,html{
-//   font-family: 'Exo FT' !important;
-//  }
+ body,html{
+  font-family: 'Exo FT' !important;
+ }
 
  .mat-h6,
 
@@ -72,6 +72,7 @@
   .body{
     background-color: #f6f6f6;
     height: 100vh;
+    font-family: 'Exo FT' !important;
   }
  /* based on angular-toastr css https://github.com/Foxandxss/angular-toastr/blob/cb508fe6801d6b288d3afc525bb40fee1b101650/dist/angular-toastr.css */
  .default-header-card{
