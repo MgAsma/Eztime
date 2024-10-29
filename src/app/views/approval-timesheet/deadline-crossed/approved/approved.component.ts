@@ -55,7 +55,6 @@ export class DeadlineApprovedComponent implements OnInit {
    }
    ngOnInit(){
     this.user_id = sessionStorage.getItem('user_id')
-    this.getUserControls()
  }
  getUserControls(){
   this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10`).subscribe((res:any)=>{

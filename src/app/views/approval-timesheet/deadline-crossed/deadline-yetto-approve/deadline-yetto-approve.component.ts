@@ -52,7 +52,6 @@ export class DeadlineYettoApproveComponent implements OnInit {
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id');
     this.orgId = sessionStorage.getItem('org_id');
-    this.getUserControls()
   }
 
   ngOnChanges(changes: SimpleChange): void {
