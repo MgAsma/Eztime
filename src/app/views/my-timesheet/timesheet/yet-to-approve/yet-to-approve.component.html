@@ -8,7 +8,7 @@
               <thead>
                   <tr>
                     <th scope="col">S.No</th>
-                    <th scope="col" class="text-center">Date</th>
+                    <th scope="col" class="text-center">Created Date</th>
                     <th scope="col" class="text-center">Employee</th>
                     <th scope="col" class="text-center">Task</th>
                     <th scope="col" class="text-center">Time</th>
@@ -21,30 +21,30 @@
                   <tr *ngFor='let item of result|paginate:paginationConfig; let i=index'>
                       <td>{{getContinuousIndex(i)}}</td>
                      
-                      <td class="text-center">{{(item.timesheet_date | date :'dd/MM/YYYY') || 'NA'}}</td>
-                      <td class="text-center">{{item.employee_first_name|titlecase}}</td>
-                      <td class="text-center" *ngIf="item.task_list.length">
-                        <div *ngFor="let task of item.task_list; let j = index">
+                      <td class="text-center">{{(item.created_date | date :'dd/MM/YYYY') || 'NA'}}</td>
+                      <td class="text-center">{{item.created_by_first_name |titlecase}}</td>
+                      <td class="text-center" *ngIf="item.tasks.length">
+                        <div *ngFor="let task of item.tasks; let j = index">
                           <div>
-                            {{ task?.task_name || 'NA' }} <br/>
+                            {{ task?.task__task_name || 'NA' }} <br/>
                           </div>
                         </div>
                       </td>
-                      <td *ngIf="item.task_list.length === 0">
+                      <td *ngIf="item.tasks.length === 0">
                         {{'NA'}}
                       </td>
-                      <td class="text-center" *ngIf="item.task_list.length">
-                        <div *ngFor="let task of item.task_list; let j = index">
+                      <td class="text-center" *ngIf="item.tasks.length">
+                        <div *ngFor="let task of item.tasks; let j = index">
                           <div>
-                            {{ task?.hours_to_complete || 'NA' }}
+                            {{ task?.time_required_to_complete || 'NA' }}
                           </div>
                         </div>
                       </td>
-                      <td *ngIf="item.task_list.length === 0">
+                      <td *ngIf="item.tasks.length === 0">
                         {{'NA'}}
                       </td>
-                      <!-- <td class="text-center">{{item[i]?.task_list[i]?.hours_to_complete|titlecase }}</td> -->
-                      <td class="text-center">{{item.created_datetime | date :'dd/MM/YYYY'}}</td> 
+                      <!-- <td class="text-center">{{item[i]?.tasks[i]?.time_required_to_complete|titlecase }}</td> -->
+                      <td class="text-center">{{item.updated_datetime | date :'dd/MM/YYYY'}}</td> 
                    
                       
                       
@@ -133,7 +133,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 val-r">
-                    {{ item.timesheet_date | date: 'dd/MM/yyyy' }}
+                    {{ item.created_date | date: 'dd/MM/yyyy' }}
                   </div>
                 </div>
               </div>
@@ -145,7 +145,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 val-r">
-                    {{ item.employee_first_name|titlecase }}
+                    {{ item.created_by_first_name |titlecase }}
                   </div>
                 </div>
               </div>
@@ -160,14 +160,14 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-12 val-r" *ngIf="item.task_list.length">
-                    <div *ngFor="let task of item.task_list; let j = index">
+                  <div class="col-12 val-r" *ngIf="item.tasks.length">
+                    <div *ngFor="let task of item.tasks; let j = index">
                       <div>
-                        {{ task?.hours_to_complete || 'NA' }}
+                        {{ task?.time_required_to_complete || 'NA' }}
                       </div>
                     </div>
                   </div>
-                  <div class="col-12 val-r" *ngIf="item.task_list.length === 0">
+                  <div class="col-12 val-r" *ngIf="item.tasks.length === 0">
                     {{'NA'}}
                   </div>
                 </div>
@@ -179,14 +179,14 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-12 val-r" *ngIf="item.task_list.length">
-                    <div *ngFor="let task of item.task_list; let j = index">
+                  <div class="col-12 val-r" *ngIf="item.tasks.length">
+                    <div *ngFor="let task of item.tasks; let j = index">
                       <div>
-                        {{ task?.task_name || 'NA' }} <br/>
+                        {{ task?.task__task_name || 'NA' }} <br/>
                       </div>
                     </div>
                   </div>
-                  <div class="col-12 val-r" *ngIf="item.task_list.length === 0">
+                  <div class="col-12 val-r" *ngIf="item.tasks.length === 0">
                     {{'NA'}}
                   </div>
                 </div>

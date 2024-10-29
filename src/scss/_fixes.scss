@@ -574,9 +574,11 @@ form{
     select,
     textarea {
       height: 17px !important;
+      font-family: 'Exo FT' !important;
     }
     input[type="file"] {
       height: 30px !important;
+      font-family: 'Exo FT' !important;
     }
   }
 }
@@ -607,6 +609,7 @@ input,
 select,
 textarea {
   font-size: 14px;
+  font-family: 'Exo FT' !important;
 }
 
 .table-list>:not(caption)>*>* {
@@ -666,6 +669,7 @@ textarea {
   right: 0;
   display: flex;
   align-items: center;
+  font-size: 12px;
 }
 
 
@@ -682,8 +686,14 @@ textarea {
 }
 .mat-tab-body-content {
     overflow: hidden !important;
+    font-family: 'Exo FT' !important;
 }
-
+.mat-tab-label .mat-tab-label-content {
+  font-family: 'Exo FT' !important;
+}
+mat-label{
+  font-family: 'Exo FT' !important;
+}
 .create-buttons .mat-icon{
   font-size: medium;
   height: auto;

@@ -1,6 +1,6 @@
 mat-card{
-    padding: 20px 14px 10px;
     border-radius: 5px !important;
+    box-shadow: none !important;
     h4{
         font-size: 24px !important;
     }
@@ -246,3 +246,18 @@ button{
     flex-direction: column; /* Stacks text and button vertically */
     font-size: 1rem; /* Optional: Adjust font size for better readability */
   }
+  
+    
+    @media only screen and (min-width: 767px) {
+        .cards-section{
+            width: 100% !important;
+        }
+    }
+    @media only screen and (min-width: 768px) {
+        .cards-section{
+            width: 20% !important;
+        }
+    }
+    // .cards-section{
+    //     width: 100% !important;
+    // }

@@ -39,6 +39,7 @@ export class LeaveMasterComponent implements OnInit {
   params:any;
   sortValue: string = '';
   directionValue: string = '';
+  organization_id: any;
   constructor(
     private modalService:NgbModal, 
     private api:ApiserviceService,
@@ -61,6 +62,7 @@ export class LeaveMasterComponent implements OnInit {
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
+    this.organization_id = JSON.parse(sessionStorage.getItem('organization_id'))
     this.getLeaveType();
   }
   filterSearch(){
@@ -80,7 +82,7 @@ export class LeaveMasterComponent implements OnInit {
   
   getLeaveType(){
   
-    this.api.getData(`${environment.live_url}/${environment.leave_master}/`).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.leave_master}/?organization=${this.organization_id}`).subscribe((data:any)=>{
       this.leaveMasterList= data;
       // const noOfPages:number = data['result'].pagination.number_of_pages
       // this.count  = noOfPages * this.tableSize;

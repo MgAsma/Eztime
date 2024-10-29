@@ -44,7 +44,7 @@
                             <td class="text-center">{{item.alloted_leaves || 'NA'}}</td>
                             
                             <td class="text-center">{{item.created_datetime | date}}</td>                            
-                            <td class="text-center">{{item.updated_datetime | date }}</td>                            
+                            <td class="text-center">{{item.rejected_on | date }}</td>                            
                             
                              <td class="text-center">
                                 <ng-container >
@@ -83,18 +83,7 @@
 </div>
 
 <div class="container-fluid mobileView">
-    <!-- <div class="row mx-1 my-2">
-      <div class="col-sm-12 col-md-6 col-lg-2 px-0">
-        <select class="form-select page-set" aria-label="Default select example" (change)="onTableSizeChange($event)">
-            <option *ngFor="let size of tableSizes" [ngValue]="size">
-                {{ size }}
-              </option>
-          </select>
-    </div>
-      <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-        <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search" aria-describedby="emailHelp" autocomplete="off">
-        <i class="bi bi-search" id="search-icon" (click)="filterSearch()" ></i>      </div>
-    </div> -->
+    
   
     <div class="bg row mx-0 my-1">
       <ng-container *ngIf="(data) as result">
@@ -114,8 +103,8 @@
                 </div>
               </div>
               <div class="col-5">
-                  <ng-container *ngFor="let approval of accessConfig">
-                      <span *ngIf="approval == 'DELETE'" style="float: right;">
+                  <ng-container>
+                      <span style="float: right;">
                           <button mat-raised-button type="button" class="toolbar-btn "   (click)="open(item)"  ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button>
                         </span>
                   </ng-container>  
@@ -132,7 +121,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12 val-r">
-                        {{item.from_date}}
+                        {{(item.from_date | date) || 'NA'}}
                       </div>
                     </div>
                   </div>
@@ -144,7 +133,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12 val-r">
-                        {{ item.to_date }}
+                        {{ (item.to_date | date) || 'NA' }}
                       </div>
                     </div>
                   </div>
@@ -177,18 +166,7 @@
                   </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-12">
-                          <h6 class="card-subtitle">Used Leaves</h6>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-12 val-r">
-                          {{ item.used_leaves}}
-                        </div>
-                      </div>
-                    </div>
+                  
                     <div class="col-6">
                       <div class="row">
                         <div class="col-12">
@@ -197,7 +175,7 @@
                       </div>
                       <div class="row">
                         <div class="col-12 val-r">
-                          {{ item.created_datetime }}
+                          {{ (item.created_datetime | date) || 'NA' }}
                         </div>
                       </div>
                     </div>
@@ -223,7 +201,7 @@
                       </div>
                       <div class="row">
                         <div class="col-12 val-r">
-                          {{ item.approved_date }}
+                          {{ (item.rejected_on | date) || 'NA' }}
                         </div>
                       </div>
                     </div>

@@ -20,9 +20,9 @@ export class CreateTimesheetComponent implements OnInit {
   timeSheetForm!: FormGroup;
   createdProject!: FormArray;
   taskForm!: FormGroup; 
-  userId = 195;
-  manager_id = 195;
-  orgId = 102;
+  userId:any;
+  manager_id:any;
+  orgId:any;
   hours_to_complete: any = [];
   timeList: any[] = [];
   project_id: any;
@@ -62,6 +62,8 @@ export class CreateTimesheetComponent implements OnInit {
 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
+    this.orgId = sessionStorage.getItem('organization_id')
+    this.userId = sessionStorage.getItem('user_id')
     this.initializeForm();
     this.taskInitForm()
     this.addProjectDetails(); 
@@ -238,12 +240,12 @@ onDateChange(date: string) {
   }
   getProjectNameById(projectId: number): string {
     const project = this.allProject.find(p => p.id === projectId);
-    return project ? project.p_name : 'NA';
+    return project ? project.project_name : 'NA';
   }
   
   getClientNameById(clientId: number): string {
     const client = this.allClient.find(c => c.id === clientId);
-    return client ? client.c_name : 'NA';
+    return client ? client.clint_name : 'NA';
   }
   
   getProjectLength(): number {
@@ -261,7 +263,7 @@ onDateChange(date: string) {
     const taskFormGroup = taskArray?.at(taskIndex) as FormGroup;
   // console.log(taskArray,'ALL DETAILS')
   
-    const newTimeSpentValue = this.extractNumber(taskFormGroup.get('hours_to_complete').value);
+    const newTimeSpentValue = taskFormGroup.get('hours_to_complete').value;
   
     // Get the original (old) time spent before editing
   //  const oldTimeSpentValue = this.extractNumber(this.originalTaskData[projectIndex][taskIndex]?.hours_to_complete || 0);
@@ -335,7 +337,7 @@ saveTask(projectIndex: number): void {
 
   // Calculate values
   const remainingHours = this.getRemainingHours(projectIndex);
-  const enteredTime = this.extractNumber(this.taskForm.get('hours_to_complete').value);
+  const enteredTime = this.taskForm.get('hours_to_complete').value;
   const totalHoursForDate = this.totalHoursForDate || 0; // Default to 0 if undefined
 
   
@@ -349,8 +351,8 @@ saveTask(projectIndex: number): void {
   // Disable the task details based on editing state
   
   // Add the new task to the form array
-  //const newTaskGroup = this.builder.group(this.taskForm.value);
-  //taskArray.push(newTaskGroup);
+  // const newTaskGroup = this.builder.group(this.taskForm.value);
+  // taskArray.push(newTaskGroup);
   taskArray.push(this.builder.group(this.taskForm.value));
    console.log(taskArray)
   const taskIndex = taskArray?.length ? taskArray?.length - 1 : 0
@@ -402,10 +404,10 @@ deleteProject(projectIndex: number): void {
 
 
 
-  extractNumber(value: string): number {
-    const numericValue = value?.match(/\d+/);
-    return numericValue ? +numericValue[0] : null;
-  }
+  // extractNumber(value: string): number {
+  //   const numericValue = value?.match(/\d+/);
+  //   return numericValue ? +numericValue[0] : null;
+  // }
 
  
   saveTimesheet(i: number): void {
@@ -538,7 +540,7 @@ deleteProject(projectIndex: number): void {
         client_id,
         project_id,
         description,
-        created_date,
+        created_date : this.datepipe.transform(created_date,'dd-MM-YYYY') ,
         task_list: task_list.map(task => ({
           task_id: task['task_id'],
           hours_to_complete: task['hours_to_complete'],
@@ -547,7 +549,7 @@ deleteProject(projectIndex: number): void {
        
       };
     });
-console.log(selectedArr,'MAP')
+//console.log(selectedArr,'MAP')
     // const data = {
     //   created_by: this.userId,
     //   reporting_manager_id: this.manager_id,
@@ -562,8 +564,8 @@ console.log(selectedArr,'MAP')
     //   organization_id: this.orgId,
     // };
     const data = {
+      reporting_manager_id: this.userId, 
       created_by: this.userId,
-      reporting_manager_id: this.manager_id,
       data: selectedArr,
       organization_id: this.orgId,
     };
@@ -614,24 +616,25 @@ console.log(selectedArr,'MAP')
   //         }
   //     ]
   // }
-    this.api.addTimeSheet(data).subscribe(
+    this.api.postData(`${environment.live_url}/${environment.time_sheets}/`,data).subscribe(
       (response) => {
         this.api.showSuccess('Timesheet added successfully!');
-        this.timeSheetForm.reset();
-        this.addProjectDetails(); 
+        // this.timeSheetForm.reset();
+        // this.addProjectDetails(); 
+        this.ngOnInit()
       },
       (error) => {
-        this.api.showError(error?.error.error.message);
+        this.api.showError(error?.error?.message);
       }
     );
   }
 
   getClient(i){
     this.currentIndex = i;
-    this.api.getData(`${environment.live_url}/${environment.client}/`).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.client}/?organization_id=${this.orgId}`).subscribe((data:any)=>{
       if(data){
         this.allClient = data;
-        // console.log(this.allClient,'CLIENTLIST')
+         
         const allClient = [...this.allClient]
       
         const projectControl = this.createdProject.at(i);
@@ -639,10 +642,7 @@ console.log(selectedArr,'MAP')
         // Update only the relevant index's project list
         projectControl.patchValue({ clientList: allClient });
       }
-      else{
-        //console.log('Error');
-      }
-      
+     
     }
     )
   }
@@ -652,9 +652,9 @@ console.log(selectedArr,'MAP')
   getProject(event, index){
     this.currentIndex = index
     this.client_id = event
-    this.api.getData(`${environment.live_url}/${environment.get_time_sheet_values}?client_id=${event}`).subscribe((res:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.project}/?organization=${this.orgId}&client=${event}`).subscribe((res:any)=>{
       if(res){
-        this.allProject = res.data
+        this.allProject = res
         this.projectList = [...this.allProject]
         this.createdProject?.at(index)?.patchValue({projectList: this.projectList})
         
@@ -662,37 +662,35 @@ console.log(selectedArr,'MAP')
       }
      
     },(error =>{
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     }))
   }
   getTask(event,index){
     this.project_id = event
-    this.api.getData(`${environment.live_url}/${environment.get_time_sheet_values}?client_id=${this.client_id}&project_id=${event}`).subscribe((res:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.project_task}/?project=${event}`).subscribe((res:any)=>{
       if(res){
-       this.allTask = res.data[0].project_related_task_list 
+       this.allTask = res 
        this.taskList = [...this.allTask]
         // console.log(res.data[0].project_related_task_list,"RESPONSETASK n/----------------")
         this.createdProject.at(index)?.patchValue({taskList: this.taskList})
       }
       
     },(error =>{
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     })) 
   }
   getTimeSpent(event,index){
     //console.log(event)
-    this.api.getData(`${environment.live_url}/${environment.get_time_sheet_values}?client_id=${this.client_id}&project_id=${this.project_id}&task_name=${event}`).subscribe((res:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.task_hours}/`).subscribe((res:any)=>{
       if(res){
        this.hours_to_complete = res
        this.timeList = [...this.hours_to_complete]
         //console.log(res,"TIMESPENT n/----------------")
         this.createdProject?.at(index)?.patchValue({time: this.timeList})
       }
-      else{
-        this.api.showError('ERROR!')
-      }
+      
     },(error =>{
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     })) 
   }
 }

@@ -6,6 +6,7 @@ import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.co
 import { ApiserviceService } from '../../../../service/apiservice.service';
 import { CommonServiceService } from '../../../../service/common-service.service';
 import { error } from 'console';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-yet-to-approve',
   templateUrl: './yet-to-approve.component.html',
@@ -110,22 +111,17 @@ export class YetToApproveComponent implements OnInit{
   }
 
   delete(item:any){
-    let params = {
-        module: "LEAVE/HOLIDAY_LIST",
-        menu: "APPLIED/APPROVIED_LEAVES",
-        method: "DELETE",
-        user_id: this.user_id
-    }
-    this.api.deletePeopleLeaves(item.id,params).subscribe((data:any)=>{
-      this.api.showWarning('Yet to approve leave deleted successfully!')
+   
+    this.api.delete(`${environment.live_url}/${environment.employee_leave_details}/${item.id}/`).subscribe((data:any)=>{
+      this.api.showWarning('leave deleted successfully!')
       let tableData ={
-        page:this.page,
-        tableSize:this.tableSize,
-        search_key:this.term
+        // page:this.page,
+        // tableSize:this.tableSize,
+        // search_key:this.term
        }
       this.buttonClick.emit(tableData);
     },((error:any)=>{
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     }))
    
   }
