@@ -158,7 +158,7 @@ export class YetToApproveComponent implements OnInit{
         backdrop: true,
         centered:true
       });
-      modelRef.componentInstance.title = `Are you sure do you want to ${statusText}`;
+      modelRef.componentInstance.title = `Are you sure you want to ${statusText}`;
       modelRef.componentInstance.message = `${confirmText} confirmation`;
       modelRef.componentInstance.status.subscribe(resp => {
         if(resp == "ok"){

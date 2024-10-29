@@ -152,7 +152,7 @@ export class ManagerReviewComponent implements OnInit {
         backdrop: true,
         centered: true
       });
-      modelRef.componentInstance.title = `Are you sure do you want to ${status}`;
+      modelRef.componentInstance.title = `Are you sure you want to ${status}`;
       modelRef.componentInstance.message = `${status}`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {
@@ -177,7 +177,7 @@ export class ManagerReviewComponent implements OnInit {
         backdrop: true,
         centered: true
       });
-      modelRef.componentInstance.title = `Are you sure do you want to ${status}`;
+      modelRef.componentInstance.title = `Are you sure you want to ${status}`;
       modelRef.componentInstance.message = `${status}`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {
