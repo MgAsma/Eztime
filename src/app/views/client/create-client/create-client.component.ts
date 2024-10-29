@@ -86,9 +86,7 @@ export class CreateClientComponent implements OnInit {
       this.api.addClientDetails(this.clientForm.value).subscribe(response=>{
         if(response){
           this.api.showSuccess('Client added successfully!!');
-          this.clientForm.reset();
-          // this.clientForm.markAsUntouched();
-          // this.ngOnInit();
+          window.location.reload();
         }
         else{
           this.api.showError('Error!')

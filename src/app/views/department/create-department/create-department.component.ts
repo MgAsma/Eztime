@@ -61,8 +61,7 @@ export class CreateDepartmentComponent implements OnInit {
       this.api.postDepartmentList(this.departmentForm.value).subscribe(res=>{
         if(res){
           this.api.showSuccess(res['message']);
-          this.departmentForm.reset();
-          this.initForm();
+          window.location.reload();
         }
         else{
           this.api.showError('Error!')

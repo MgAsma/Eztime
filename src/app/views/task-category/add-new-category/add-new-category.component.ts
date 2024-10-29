@@ -269,8 +269,7 @@ export class AddNewCategoryComponent implements OnInit {
         this.api.postProjCategory(data).subscribe(res => {
           if (res) {
             this.api.showSuccess('Project category added successfully!');
-            this.taskCategoryForm.reset();
-            this.initForm()
+            window.location.reload();
           }
           else {
             this.api.showError('Error!')

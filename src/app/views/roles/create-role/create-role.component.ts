@@ -66,8 +66,7 @@ export class CreateRoleComponent implements OnInit {
       this.api.postDesignationList(this.roleForm.value).subscribe((res:any) =>{
           if(res){
             this.api.showSuccess(res.message);
-            this.roleForm.reset();
-            this.initForm();
+            window.location.reload();
           }
       },((error:any) =>{
           this.api.showError(error.error.message);
