@@ -1,8 +1,8 @@
 <div class="container-fluid">
     <div class="modal-body custom-modal" >
-        <h4 class="modal-title" *ngIf="!message"><i class="bi bi-exclamation-circle"></i>Remove</h4>
+        <h4 class="modal-title" *ngIf="!message"><i class="bi bi-exclamation-circle"></i>Remove Teams</h4>
         <h4 class="modal-title" *ngIf="message"><i class="bi bi-box-arrow-right"></i> {{message}}</h4>
-        <p *ngIf="!title"> Are you sure do you want to remove?</p>
+        <p *ngIf="!title">Are you sure you want to remove?</p>
         <p *ngIf="title" >{{title}}?</p>
     </div>
     <div class="modal-footer" [ngClass]="title ? 'justify-content-center':''">
