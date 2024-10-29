@@ -140,7 +140,7 @@ export class MonthApproveComponent implements OnInit {
   //       backdrop: true,
   //       centered:true
   //     });
-  //     modelRef.componentInstance.title = `Are You Sure Do You Want To ${status}`;
+  //     modelRef.componentInstance.title = `Are you sure you want to ${status}`;
   //    modelRef.componentInstance.message =`Confirmation`;
   //     modelRef.componentInstance.status.subscribe(resp => {
   //       if(resp == "ok"){

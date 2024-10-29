@@ -324,7 +324,7 @@ export class DefaultLayoutComponent {
       backdrop: true,
       centered: true
     });
-    modelRef.componentInstance.title = `Are you sure do you want to logout`;
+    modelRef.componentInstance.title = `Are you sure you want to logout`;
     modelRef.componentInstance.message = `Logout`;
     modelRef.componentInstance.status.subscribe(resp => {
       if (resp == "ok") {

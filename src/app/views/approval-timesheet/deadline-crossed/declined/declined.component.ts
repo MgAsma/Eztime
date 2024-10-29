@@ -110,7 +110,7 @@ export class DeadlineDeclinedComponent implements OnInit {
           backdrop: true,
           centered:true
         });
-       modelRef.componentInstance.text = `Are you sure do you want to ${status}`;
+       modelRef.componentInstance.text = `Are you sure you want to ${status}`;
        modelRef.componentInstance.message =`Confirmation`;
         modelRef.componentInstance.status.subscribe(resp => {
           if(resp == "ok"){

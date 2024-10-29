@@ -156,7 +156,7 @@ export class MonthYetApproveComponent implements OnInit {
         backdrop: true,
         centered: true
       });
-      modelRef.componentInstance.title = `Are you sure do you want to ${selectedStatus}`;
+      modelRef.componentInstance.title = `Are you sure you want to ${selectedStatus}`;
       modelRef.componentInstance.message = `${confirmText}`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {
