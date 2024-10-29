@@ -29,38 +29,42 @@
   <div *ngIf="selectedSection === 'lists'">
     <!-- Lists Section: Employee Table -->
     <div class="table-responsive">
-      <table class="table table-bordered table-list">
+      <table class="table table-bordered table-list" *ngIf="empInfoList.length">
         <thead>
           <tr>
             <th>Sl No</th>
             <th>Employee Name</th>
             <th>ID</th>
-            <th>Role</th>
+            <th>Designation</th>
             <th>Email</th>
             <th>Contact</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let employee of employeeList; let i = index">
+          <tr *ngFor="let employee of empInfoList; let i = index">
             <td>{{ i + 1 }}</td>
-            <td>{{ employee.name }}</td>
-            <td>{{ employee.id }}</td>
-            <td>{{ employee.role }}</td>
-            <td>{{ employee.email }}</td>
-            <td>{{ employee.contact }}</td>
+            <td>{{ employee.user.first_name }} {{ employee.user.last_name }}</td>
+            <td>{{ employee.user.id }}</td>
+            <td>{{ employee.designation_name }}</td>
+            <td>{{ employee.user.email }}</td>
+            <td>{{ employee.user.phone_number }}</td>
+           
           </tr>
         </tbody>
       </table>
+      <div class="no-records" *ngIf="empInfoList?.length === 0">
+        No records found!
+      </div>
     </div>
   </div>
 
   <!-- Leaves Section -->
   <div *ngIf="selectedSection === 'leaves'">
-    <mat-tab-group class="custom-tab-group">
+    <mat-tab-group class="custom-tab-group" (selectedTabChange)="tabLeaveSection($event)">
       <mat-tab label="Pending">
         <!-- Pending Leaves Table -->
         <div class="table-responsive">
-          <table class="table table-bordered table-list">
+          <table class="table table-bordered table-list" *ngIf="leaveList.length">
             <thead>
               <tr>
                 <th>Sl No</th>
@@ -74,32 +78,36 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let leave of leaveList.pending; let i = index">
+             
+              <tr *ngFor="let leave of leaveList; let i = index">
                 <td>{{ i + 1 }}</td>
-                <td>{{ leave.name }}</td>
-                <td>{{ leave.leaveType }}</td>
-                <td>{{ leave.days }}</td>
-                <td>{{ leave.fromDate }}</td>
-                <td>{{ leave.toDate }}</td>
-                <td>{{ leave.reason }}</td>
+                <td>{{ leave.employee_name }}</td>
+                <td>{{ leave.leave_type_name }}</td>
+                <td>{{ leave.number_of_leaves_applying_for }}</td>
+                <td>{{ leave.from_date }}</td>
+                <td>{{ leave.to_date }}</td>
+                <td>{{ leave.message }}</td>
                 <td>
                   <span>
-                    <img src="../../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Approve" />
+                    <img src="../../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Approve" (click)="open(leave,'Approve')"/>
                   </span>
                   <span>
-                    <img src="../../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Reject"  />
+                    <img src="../../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Reject"  (click)="open(leave,'Declined')"/>
                   </span>
                 </td>
               </tr>
             </tbody>
           </table>
+          <div class="no-records" *ngIf="leaveList?.length === 0">
+            No records found!
+          </div>
         </div>
       </mat-tab>
 
       <mat-tab label="Approved">
         <!-- Approved Leaves Table -->
         <div class="table-responsive">
-          <table class="table table-bordered table-list">
+          <table class="table table-bordered table-list" *ngIf="leaveList?.length">
             <thead>
               <tr>
                 <th>Sl No</th>
@@ -112,24 +120,27 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let leave of leaveList.approved; let i = index">
+              <tr *ngFor="let leave of leaveList; let i = index">
                 <td>{{ i + 1 }}</td>
-                <td>{{ leave.name }}</td>
-                <td>{{ leave.leaveType }}</td>
-                <td>{{ leave.days }}</td>
-                <td>{{ leave.fromDate }}</td>
-                <td>{{ leave.toDate }}</td>
-                <td>{{ leave.reason }}</td>
+                <td>{{ leave.employee_name }}</td>
+                <td>{{ leave.leave_type_name }}</td>
+                <td>{{ leave.number_of_leaves_applying_for }}</td>
+                <td>{{ leave.from_date }}</td>
+                <td>{{ leave.to_date }}</td>
+                <td>{{ leave.message }}</td>
               </tr>
             </tbody>
           </table>
+          <div class="no-records" *ngIf="leaveList?.length === 0">
+            No records found!
+          </div>
         </div>
       </mat-tab>
 
       <mat-tab label="Declined">
         <!-- Declined Leaves Table -->
         <div class="table-responsive">
-          <table class="table table-bordered table-list">
+          <table class="table table-bordered table-list" *ngIf="leaveList?.length">
             <thead>
               <tr>
                 <th>Sl No</th>
@@ -142,17 +153,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let leave of leaveList.declined; let i = index">
+              <tr *ngFor="let leave of leaveList; let i = index">
                 <td>{{ i + 1 }}</td>
-                <td>{{ leave.name }}</td>
-                <td>{{ leave.leaveType }}</td>
-                <td>{{ leave.days }}</td>
-                <td>{{ leave.fromDate }}</td>
-                <td>{{ leave.toDate }}</td>
-                <td>{{ leave.reason }}</td>
+                <td>{{ leave.employee_name }}</td>
+                <td>{{ leave.leave_type_name }}</td>
+                <td>{{ leave.number_of_leaves_applying_for }}</td>
+                <td>{{ leave.from_date }}</td>
+                <td>{{ leave.to_date }}</td>
+                <td>{{ leave.message }}</td>
               </tr>
             </tbody>
           </table>
+          <div class="no-records" *ngIf="leaveList?.length === 0">
+            No records found!
+          </div>
         </div>
       </mat-tab>
     </mat-tab-group>
@@ -160,11 +174,11 @@
 
   <!-- Timesheets Section -->
   <div *ngIf="selectedSection === 'timesheets'">
-    <mat-tab-group class="custom-tab-group" (selectedTabChange)="tabTimesheet($event)">
+    <mat-tab-group class="custom-tab-group custom-tab-height" (selectedTabChange)="tabTimesheet($event)">
       <mat-tab label="Pending">
         <!-- Pending Timesheets Table -->
         <div class="table-responsive">
-          <table class="table table-bordered table-list">
+          <table class="table table-bordered table-list" *ngIf="timesheetList.length">
             <thead>
               <tr>
                 <th>Sl No</th>
@@ -207,27 +221,29 @@
               
                 <td>
                   <span>
-                    <img src="../../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Approve" />
+                    <img src="../../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Approve" (click)="openDialogue(timesheet,'Approve')"/>
                   </span>
                   <span>
-                    <img src="../../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Reject"  />
+                    <img src="../../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Reject"  (click)="openDialogue(timesheet,'Declined')"/>
                   </span>
                 </td>
                 
               </tr>
-              <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="result?.length === 0">
-                No records found!
-              </div>
+             
+             
             </ng-container>
             </tbody>
           </table>
+          <div class="no-records" *ngIf="timesheetList?.length === 0">
+            No records found!
+          </div>
         </div>
       </mat-tab>
 
       <mat-tab label="Approved">
         <!-- Pending Timesheets Table -->
         <div class="table-responsive">
-          <table class="table table-bordered table-list">
+          <table class="table table-bordered table-list" *ngIf="timesheetList.length">
             <thead>
               <tr>
                 <th>Sl No</th>
@@ -270,19 +286,25 @@
               
                 
               </tr>
-              <div style="position: relative;width: 100%;"  *ngIf="result?.length === 0">
-                <div style="position: absolute;left: 45%;padding: 10px 0;">No records found!</div>
-              </div>
+              <!-- <div class="no-records"  *ngIf="result?.length === 0">
+                <div>No records found!</div>
+              </div> -->
+              <tr>
+                
+              </tr>
               </ng-container>
             </tbody>
           </table>
+          <div class="no-records" *ngIf="timesheetList?.length === 0">
+            No records found!
+          </div>
         </div>
       </mat-tab>
 
       <mat-tab label="Declined">
         <!-- Pending Timesheets Table -->
         <div class="table-responsive">
-          <table class="table table-bordered table-list">
+          <table class="table table-bordered table-list" *ngIf="timesheetList?.length">
             <thead>
               <tr>
                 <th>Sl No</th>
@@ -324,12 +346,13 @@
                 </td>
                
               </tr>
-              <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="result?.length === 0">
-                No records found!
-              </div>
+             
             </ng-container>
             </tbody>
           </table>
+          <div class="no-records" *ngIf="timesheetList?.length === 0">
+            No records found!
+          </div>
         </div>
       </mat-tab>
     </mat-tab-group>

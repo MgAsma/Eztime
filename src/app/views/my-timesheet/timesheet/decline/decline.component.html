@@ -42,10 +42,8 @@
                         <td *ngIf="item.tasks.length === 0">
                           {{'NA'}}
                         </td>
-                        <td class="text-center">{{item.
-rejected_on ? item.
-rejected_on:"NA"|titlecase}}</td>
-                        <td class="text-center">{{item.rejected_by ? item.rejected_by : "NA"|titlecase}}</td>
+                        <td class="text-center">{{(item.rejected_on |date) || 'NA'}}</td>
+                        <td class="text-center">{{item.rejected_by_name ? item.rejected_by_name : "NA"|titlecase}}</td>
                                                                           
                         
                        <td class="text-center">
@@ -173,7 +171,7 @@ rejected_on:"NA"|titlecase}}</td>
                       </div>
                       <div class="row">
                         <div class="col-12 val-r">
-                          {{item.rejected_by ? item.rejected_by : "NA"|titlecase}}
+                          {{item.rejected_by_name ? item.rejected_by_name : "NA"|titlecase}}
                         </div>
                       </div>
                     </div>

@@ -4,8 +4,9 @@ import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.co
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { TimesheetService } from 'src/app/service/timesheet.service';
 import { environment } from 'src/environments/environment';
-import { Location } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-manager-review',
@@ -32,18 +33,7 @@ export class ManagerReviewComponent implements OnInit {
     { name: 'Manoj', id: 150, role: 'Tester', email: 'Manoj@ekfrazon.in', contact: '98792036781' }
   ];
 
-  leaveList = {
-    pending: [
-      { name: 'Surya', leaveType: 'Earned', days: 2, fromDate: '22/02/2024', toDate: '22/02/2024', reason: 'Personal Commitments' },
-      { name: 'Manoj', leaveType: 'Sick', days: 1, fromDate: '10/01/2024', toDate: '10/01/2024', reason: 'Sick' }
-    ],
-    approved: [
-      { name: 'Karthik', leaveType: 'Earned', days: 2, fromDate: '15/02/2024', toDate: '17/02/2024', reason: 'Vacation' }
-    ],
-    declined: [
-      { name: 'Surya', leaveType: 'Casual', days: 1, fromDate: '21/02/2024', toDate: '21/02/2024', reason: 'Emergency' }
-    ]
-  };
+  leaveList:any = []
 
   timesheetList:any = []
 
@@ -66,7 +56,8 @@ export class ManagerReviewComponent implements OnInit {
     private modalService: NgbModal,
     private _timesheet: TimesheetService,
     private location: Location,
-    private common_service: CommonServiceService
+    private common_service: CommonServiceService,
+    private datepipe:DatePipe
   ) { }
   data = []
 
@@ -78,15 +69,14 @@ export class ManagerReviewComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('organization_id')
     this.getAllTimesheets(`?organization=${this.orgId}&status=1`)
+    this.getAllLeaves(`?status-id=1&organization=${this.orgId}`)
+    this.getEmployeeData() 
   }
  
   getEmployeeData() {
-    this.api.getData(`${environment.live_url}/${environment.managerReview}?user_id=${this.user_id}&role_id=${this.user_role_id}&organization_id=${this.orgId}`).subscribe(response => {
+    this.api.getData(`${environment.live_url}/${environment.all_employee}/?organization_id=${this.orgId}`).subscribe(response => {
       if (response) {
-        this.empInfoList = response['result'].data.emp_info_list;
-        this.manger_info.push(response['result'].data.manger_info);
-        this.empLeaveList = response['result'].data.emp_leave_list[0];
-        this.emptimesheet = response['result'].data.emp_timesheet_list[0]
+        this.empInfoList = response;
       }
     }, (error => {
       this.api.showError(error?.error?.message)
@@ -102,6 +92,15 @@ export class ManagerReviewComponent implements OnInit {
   },(error)=>{
     this.api.showError(error?.error?.message)
   })
+  }
+  getAllLeaves(params){
+    this.api.getData(`${environment.live_url}/${environment.employee_leave_details}/${params}`).subscribe((res:any)=>{
+      if(res){
+        this.leaveList = res
+      }
+    },(error)=>{
+      this.api.showError(error?.error?.message)
+    })
   }
   tabTimesheet(data){
     if(data.tab.textLabel === 'Approved'){
@@ -123,21 +122,40 @@ export class ManagerReviewComponent implements OnInit {
  
   
   }
+  tabLeaveSection(data){
+    if(data.tab.textLabel === 'Approved'){
+      this.selectedTimesheetTab = 'Approved'
+      this.selectedTimesheetTabId = 2
+    }
+    else if(data.tab.textLabel === 'Pending' ){
+      this.selectedTimesheetTab = 'Pending' 
+      this.selectedTimesheetTabId = 1
+    }
+    else if(data.tab.textLabel === 'Declined'){
+      this.selectedTimesheetTab = 'Declined'
+      this.selectedTimesheetTabId = 3
+    }
+    let query:string = `?organization=${this.orgId}&status-id=${this.selectedTimesheetTabId}`;
+   
+    this.getAllLeaves(query)
+
+ 
+  
+  }
   openDialogue(content, status) {
     if (content) {
-      const statusText = status === 'DECLINED' ? 'decline' : 'approve'
-      const confirmText = status === 'APPROVED' ? 'Approve' : 'Decline'
+      // const statusText = status === 'DECLINED' ? 'decline' : 'approve'
+      // const confirmText = status === 'APPROVED' ? 'Approve' : 'Decline'
       const modelRef = this.modalService.open(GenericDeleteComponent, {
         size: <any>'sm'
         ,
         backdrop: true,
         centered: true
       });
-      modelRef.componentInstance.title = `Are you sure do you want to ${statusText}`;
-      modelRef.componentInstance.message = `${confirmText} confirmation`;
+      modelRef.componentInstance.title = `Are you sure do you want to ${status}`;
+      modelRef.componentInstance.message = `${status}`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {
-          console.log(content, "CONTENT")
           this.updateTimesheetStatus(content, status)
           modelRef.close();
         }
@@ -151,7 +169,7 @@ export class ManagerReviewComponent implements OnInit {
   }
   open(content, status) {
     if (content) {
-      const statusText = status === 'APPROVED' ? 'approve' : 'decline'
+    
       const confirmText = status === 'APPROVED' ? 'Approve' : 'Decline'
       const modelRef = this.modalService.open(GenericDeleteComponent, {
         size: <any>'sm'
@@ -159,8 +177,8 @@ export class ManagerReviewComponent implements OnInit {
         backdrop: true,
         centered: true
       });
-      modelRef.componentInstance.title = `Are you sure do you want to ${statusText}`;
-      modelRef.componentInstance.message = `${confirmText} confirmation`;
+      modelRef.componentInstance.title = `Are you sure do you want to ${status}`;
+      modelRef.componentInstance.message = `${status}`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {
           this.updateStatus(content, status)
@@ -174,52 +192,49 @@ export class ManagerReviewComponent implements OnInit {
     }
   }
   updateTimesheetStatus(content, status) {
-    console.log(content, "TIMESHEET CONTENT")
-    let currMethod = status === "APPROVED" ? 'ACCEPT' : "REJECT";
-    const confirmText = status === 'APPROVED' ? 'approved' : 'declined'
-    let data = {
-      user_id: this.user_id,
-      update: "TRUE",
-      approved_by_manager_id: this.user_id,
-      module: "TIMESHEET",
-      menu: "PEOPLE_TIMESHEET",
-      method: currMethod,
-      time_sheet_id_list: [],
-      time_sheet_id: content.timesheet_id,
-      approved_state: status
-    }
-    this._timesheet.updateStatus(data).subscribe(res => {
+    const confirmText = status === 'Approve' ? 'Approved' : 'Declined'
+    let date = new Date()
+    let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
+    let data =   {
+      id: content.id,
+      status: status === 'Approve' ? 2 : 3,
+      organization: this.orgId,
+      employee: content.created_by,
+      approved_by: status === 'Approve' ? content.created_by :null,
+      approved_on: status === 'Approve' ? formattedDate :null,
+      rejected_by: status === 'Declined' ? content.created_by :null,
+      rejected_on: status === 'Declined' ? formattedDate :null
+  }
+    this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
       if (res) {
         this.api.showSuccess(`Timesheet ${confirmText} successfully`)
-        this.getEmployeeData()
+        this.getAllTimesheets(`?organization=${this.orgId}&status=1`)
       }
     }, (error => {
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     }))
   }
   updateStatus(content, status) {
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
-    let date = new Date();
-    let currDate = ('0' + (date.getDate())).slice(-2) + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear()
-    let method = status === "APPROVED" ? "APPROVE" : "REJECT"
-    let contentUser_id: number = content.user_id
-    let content_Id: number = content.leave_id
+    let date = new Date()
+    let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
+    const confirmText = status === 'Approve' ? 'Approved' : 'Declined'
     let data = {
-      user_id: this.user_id,
-      module: "LEAVE/HOLIDAY_LIST",
-      menu: "APPLIED/APPROVIED_LEAVES",
-      method: method,
-      id: content_Id,
-      approved_state: status,
-      approved_by_id: this.user_id,
-      approved_date: currDate
-    }
-
-    this.api.leaveApplicationState(data).subscribe(res => {
+      id: content.id,
+      status: status === 'Approve' ? 2 : 3,
+      organization: this.orgId,
+      employee: content.employee,
+      approved_by: status === 'Approve' ? content.employee :null,
+      approved_on: status === 'Approve' ? formattedDate :null,
+      rejected_by: status === 'Declined' ? content.employee :null,
+      rejected_on: status === 'Declined' ? formattedDate :null
+  }
+  
+    this.api.updateData(`${environment.live_url}/${environment.update_leave_details}/`,data).subscribe(res => {
 
       if (res) {
-        this.api.showSuccess(res['result'].message)
-        this.getEmployeeData()
+        this.api.showSuccess(`Timesheet ${confirmText} successfully`)
+        this.getAllLeaves(`?status-id=1&organization=${this.orgId}`)
       }
 
     }, ((error: any) => {

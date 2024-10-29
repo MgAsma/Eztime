@@ -9,8 +9,9 @@
                       <th scope="col">S.No</th>
                       <th scope="col" class="text-center">Date</th>
                       <th scope="col" class="text-center">Employee</th>
-                      <th scope="col" class="text-center">Time</th>
+                      
                       <th scope="col" class="text-center">Task</th>
+                      <th scope="col" class="text-center">Time</th>
                       <th scope="col" class="text-center">Saved On</th>
                       <th scope="col" class="text-center">Approved On</th>
                       <th scope="col" class="text-center">Approved By</th>
@@ -41,8 +42,9 @@
                             </div>
                           </div>
                         </td>
-                        <td class="text-center">{{item.approved_on}}</td>
-                        <td class="text-center">{{item.approved_by}}</td>
+                        <td class="text-center">{{item.updated_datetime | date}}</td>
+                        <td class="text-center">{{item.approved_on | date}}</td>
+                        <td class="text-center">{{item.approved_by_name | titlecase}}</td>
                         <td *ngIf="item.tasks.length === 0">
                           {{'NA'}}
                         </td>
@@ -166,7 +168,7 @@
                       </div>
                       <div class="row">
                         <div class="col-12 val-r">
-                          {{item.approved_by ? item.approved_by : "NA"|titlecase}}
+                          {{item.approved_by_name ? item.approved_by_name : "NA"|titlecase}}
                         </div>
                       </div>
                     </div>

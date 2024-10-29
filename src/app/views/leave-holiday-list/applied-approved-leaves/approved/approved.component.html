@@ -19,16 +19,39 @@
                       <tbody id="i-cr">
                        
                          <ng-container *ngIf="(data) as result">
-                         
+                          <!-- {
+                            "id": 31,
+                            "employee_name": "Nadeem",
+                            "leave_type_name": "Earned Leave",
+                            "approved_by_name": "Nadeem",
+                            "number_of_leaves_applying_for": 1.5,
+                            "from_date": "2024-10-28",
+                            "to_date": "2024-10-29",
+                            "cc": "[228,235]",
+                            "attachment": "https://projectacedevelop.thestorywallcafe.com/media/leave_attachment/file.png",
+                            "status": 2,
+                            "message": "ffasaf",
+                            "created_datetime": "2024-10-28T05:04:19.719250Z",
+                            "updated_datetime": "2024-10-28T05:04:19.719290Z",
+                            "approved_on": "2024-10-29T00:00:00Z",
+                            "rejected_on": null,
+                            "leave_type": 4,
+                            "reporting_to": 228,
+                            "employee": 176,
+                            "organization": 78,
+                            "approved_by": 176,
+                            "rejected_by": null
+                        } -->
                         <tr *ngFor='let item of result|paginate:paginationConfig;let i=index'>
                           <td>{{getContinuousIndex(i)}}</td>                            
-                          <td class="text-center">{{item.from_date}}</td>
-                            <td class="text-center">{{item.your_applied_leave_to_date}}</td>
-                            <td class="text-center">{{item.to_date}}</td>
+                          <td class="text-center">{{(item.from_date | date) || 'NA'}}</td>
+                            <td class="text-center">{{(item.to_date | date) || 'NA'}}</td>
+                            
                           
-                            <td class="text-center">{{item.created_datetime}}</td>
+                            <td class="text-center">{{item.number_of_leaves_applying_for}}</td>
+                            <td class="text-center">{{(item.created_datetimetime | date)|| 'NA'}}</td>
                             <td class="text-center">{{item.approved_by_name|| 'NA'}}</td>
-                            <td class="text-center">{{item.approved_date || 'Na'}}</td>                            
+                            <td class="text-center">{{(item.approved_on | date)|| 'NA'}}</td>                            
                             
                             <td class="text-center">
                             <ng-container>
@@ -80,7 +103,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 status-text">
-                    {{ item.status ? item.status : 'NA' }}
+                    {{ item.status ? item.status : 'Approved' }}
                   </div>
                 </div>
               </div>
@@ -103,7 +126,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12 val-r">
-                        {{item.from_date}}
+                        {{(item.from_date | date) || 'NA'}}
                       </div>
                     </div>
                   </div>
@@ -115,7 +138,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12 val-r">
-                        {{ item.your_applied_leave_to_date }}
+                        {{ (item.to_date | date) || 'NA'}}
                       </div>
                     </div>
                   </div>
@@ -130,7 +153,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12 val-r">
-                        {{ item.to_date }}
+                        {{ item.number_of_leaves_applying_for }}
                       </div>
                     </div>
                   </div>
@@ -169,7 +192,7 @@
                       </div>
                       <div class="row">
                         <div class="col-12 val-r">
-                          {{ item.approved_date }}
+                          {{ (item.approved_on | date ) || 'NA' }}
                         </div>
                       </div>
                     </div>
@@ -184,7 +207,7 @@
                       </div>
                       <div class="row">
                         <div class="col-12 val-r">
-                          {{ item.created_datetime }}
+                          {{ (item.created_datetime | date) || 'NA' }}
                         </div>
                       </div>
                     </div>
