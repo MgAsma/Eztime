@@ -320,11 +320,10 @@ export class UpdateTaskCategoryComponent implements OnInit {
       // api will trigger if it is true 
       if (allTasksValid) {
         let tempList: any;
-        this.taskCategoryForm.value['projectcategory_task'].forEach((element, i) => {
-          element.id = i + 1
-        });
+        // this.taskCategoryForm.value['projectcategory_task'].forEach((element, i) => {
+        //   element.id = i + 1
+        // });
         tempList = this.taskCategoryForm.value['projectcategory_task'].map(({ id, task_name }) => ({
-          id,
           task_name
         }));
         const data = {
@@ -338,7 +337,7 @@ export class UpdateTaskCategoryComponent implements OnInit {
         this.api.putProjCategory(this.id,data).subscribe(response=>{
           //console.log(response,"RESPONSE----")
           if(response){
-            this.api.showSuccess('Project category updated successfully');
+            this.api.showSuccess(response['message']);
             this.taskCategoryForm.reset();
             this.router.navigate(['/task/list'])
           }

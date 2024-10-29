@@ -251,11 +251,10 @@ export class AddNewCategoryComponent implements OnInit {
       // api will trigger if it is true 
       if (allTasksValid) {
         let tempList: any;
-        this.taskCategoryForm.value['projectcategory_task'].forEach((element, i) => {
-          element.id = i + 1
-        });
+        // this.taskCategoryForm.value['projectcategory_task'].forEach((element, i) => {
+        //   element.id = i + 1
+        // });
         tempList = this.taskCategoryForm.value['projectcategory_task'].map(({ id, task_name }) => ({
-          id,
           task_name
         }));
         const data = {
@@ -268,8 +267,8 @@ export class AddNewCategoryComponent implements OnInit {
         console.log(data, 'data form')
         this.api.postProjCategory(data).subscribe(res => {
           if (res) {
-            this.api.showSuccess('Project category added successfully!');
-            window.location.reload();
+            this.api.showSuccess(res['message']);
+            this.ngOnInit();
           }
           else {
             this.api.showError('Error!')
