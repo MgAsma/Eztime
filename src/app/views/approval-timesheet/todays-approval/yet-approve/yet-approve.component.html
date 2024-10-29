@@ -18,27 +18,28 @@
             <ng-container *ngIf="(yetToApproveAll) as result">
               <tr *ngFor="let item of result|paginate:paginationConfig;let i = index">
                 <td>{{getContinuousIndex(i)}}</td>
-                <td class="text-center">{{item.created_datetime | date :'dd/MM/YYYY'}}</td>
-                <td class="text-center">{{item.employee_first_name ?item.employee_first_name :'NA' |titlecase}}</td>
+
+                <td class="text-center">{{item.created_date | date :'dd/MM/YYYY'}}</td>
+                <td class="text-center">{{item.created_by_first_name ?item.created_by_first_name :'NA' |titlecase}}</td>
                
-                <td class="text-center" *ngIf="item.task_list.length">
-                  <div *ngFor="let task of item.task_list; let j = index">
+                <td class="text-center" *ngIf="item.tasks.length">
+                  <div *ngFor="let task of item.tasks; let j = index">
                     <div>
-                      {{ task?.task_name || 'NA' }} <br/>
+                      {{ task?.task__task_name || 'NA' }} <br/>
                     </div>
                   </div>
                 </td>
-                <td *ngIf="item.task_list.length === 0">
+                <td *ngIf="item.tasks.length === 0">
                   {{'NA'}}
                 </td>
-                <td class="text-center" *ngIf="item.task_list.length">
-                  <div *ngFor="let task of item.task_list; let j = index">
+                <td class="text-center" *ngIf="item.tasks.length">
+                  <div *ngFor="let task of item.tasks; let j = index">
                     <div>
-                      {{ task?.hours_to_complete || 'NA' }}
+                      {{ task?.time_required_to_complete || 'NA' }}
                     </div>
                   </div>
                 </td>
-                <td *ngIf="item.task_list.length === 0">
+                <td *ngIf="item.tasks.length === 0">
                   {{'NA'}}
                 </td>
                 
@@ -135,7 +136,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{item['created_datetime'] | date : 'mediumDate'}}
+                      {{item['created_date'] | date : 'mediumDate'}}
                     </div>
                   </div>
                 </div>
@@ -147,7 +148,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{ item.employee_first_name ?item.employee_first_name :'NA'|titlecase }}
+                      {{ item.created_by_first_name ?item.created_by_first_name :'NA'|titlecase }}
                     </div>
                   </div>
                 </div>
@@ -160,14 +161,14 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-12 val-r" *ngIf="item.task_list.length">
-                    <div *ngFor="let task of item.task_list; let j = index">
+                  <div class="col-12 val-r" *ngIf="item.tasks.length">
+                    <div *ngFor="let task of item.tasks; let j = index">
                       <div>
-                        {{ task?.hours_to_complete || 'NA' }}
+                        {{ task?.time_required_to_complete || 'NA' }}
                       </div>
                     </div>
                   </div>
-                  <div class="col-12 val-r" *ngIf="item.task_list.length === 0">
+                  <div class="col-12 val-r" *ngIf="item.tasks.length === 0">
                     {{'NA'}}
                   </div>
                 </div>
@@ -180,14 +181,14 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-12 val-r" *ngIf="item.task_list.length">
+                    <div class="col-12 val-r" *ngIf="item.tasks.length">
                       <div *ngFor="let task of item.task_list; let j = index">
                         <div>
-                          {{ task?.task_name || 'NA' }} <br/>
+                          {{ task?.task__task_name || 'NA' }} <br/>
                         </div>
                       </div>
                     </div>
-                    <div class="col-12 val-r" *ngIf="item.task_list.length === 0">
+                    <div class="col-12 val-r" *ngIf="item.tasks.length === 0">
                       {{'NA'}}
                     </div>
                   </div>
