@@ -200,9 +200,9 @@ export class ManagerReviewComponent implements OnInit {
       status: status === 'Approve' ? 2 : 3,
       organization: this.orgId,
       employee: content.created_by,
-      approved_by: status === 'Approve' ? content.created_by :null,
+      approved_by: status === 'Approve' ? this.user_id :null,
       approved_on: status === 'Approve' ? formattedDate :null,
-      rejected_by: status === 'Declined' ? content.created_by :null,
+      rejected_by: status === 'Declined' ? this.user_id :null,
       rejected_on: status === 'Declined' ? formattedDate :null
   }
     this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
@@ -224,9 +224,9 @@ export class ManagerReviewComponent implements OnInit {
       status: status === 'Approve' ? 2 : 3,
       organization: this.orgId,
       employee: content.employee,
-      approved_by: status === 'Approve' ? content.employee :null,
+      approved_by: status === 'Approve' ? this.user_id :null,
       approved_on: status === 'Approve' ? formattedDate :null,
-      rejected_by: status === 'Declined' ? content.employee :null,
+      rejected_by: status === 'Declined' ? this.user_id :null,
       rejected_on: status === 'Declined' ? formattedDate :null
   }
   

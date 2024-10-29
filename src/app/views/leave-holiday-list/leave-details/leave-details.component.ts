@@ -74,7 +74,7 @@ export class LeaveDetailsComponent implements OnInit {
       this.api.postData(`${environment.live_url}/${environment.leave_master}/`,data).subscribe((res:any)=>{
         if(res){
           this.api.showSuccess('Leave details added successfully!')
-          this.leaveTypeForm.reset();
+          this.ngOnInit()
         }
       },((error:any)=>{
         this.api.showError(error?.error?.message)

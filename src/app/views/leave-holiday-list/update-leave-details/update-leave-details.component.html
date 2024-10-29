@@ -11,11 +11,11 @@
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Leave Title *</mat-label>
                     <input matInput formControlName="leave_title" placeholder="Enter leave type Name">
-                    <mat-error *ngIf="leaveTypeForm?.get('leave_title')?.touched && leaveTypeForm.get('leave_title')?.invalid ">
+                    <mat-error *ngIf="leaveTypeForm?.get('leave_title')?.touched && leaveTypeForm.get('leave_title')?.invalid && !leaveTypeForm.get('leave_title')?.hasError('pattern') ">
                       Leave title is required.
                     </mat-error>
-                    <mat-error *ngIf="leaveTypeForm?.get('leave_title')?.touched && leaveTypeForm.get('leave_title')?.hasError('pattern')">
-                     Invalid leave title.
+                    <mat-error *ngIf="!leaveTypeForm?.get('leave_title')?.required && leaveTypeForm?.get('leave_title')?.touched && leaveTypeForm.get('leave_title')?.hasError('pattern')">
+                     Invalid leave title.It accepts only characters.
                     </mat-error>
                   </mat-form-field>
                 </div>
