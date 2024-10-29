@@ -18,6 +18,7 @@ export class MyLeavesComponent implements OnInit {
   orgId: any;
   leaveData= [];
   user_id: string;
+  organization_id: any;
   constructor(
     private api:ApiserviceService,
     private location:Location,
@@ -30,10 +31,11 @@ export class MyLeavesComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.user_id = sessionStorage.getItem('user_id')
+    this.organization_id = JSON.parse(sessionStorage.getItem('organization_id'))
     this.getLeaveOverview()
   }
   getLeaveOverview(){
-    this.api.getData(`${environment.live_url}/${environment.employee_leaves}/?employee-id=${this.user_id}`).subscribe((res:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.employee_leaves}/?employee-id=${this.user_id}&organization=${this.organization_id}`).subscribe((res:any)=>{
       if(res){
         this.leaveData = res
       }

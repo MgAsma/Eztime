@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 export class TodaysApprovalComponent implements OnInit {
   BreadCrumbsTitle: any = 'Todays approval';
   allDetails: any = [];
-  selectedTab: string;
+  selectedTab: string = 'Pending';
   changes: boolean = false;
   totalCount: any;
   currDate: any;
@@ -51,10 +51,8 @@ export class TodaysApprovalComponent implements OnInit {
    // this.timesheetService.getTodaysApprovalTimesheet(params).subscribe(res => {
       this.api.getData(`${environment.live_url}/${environment.timesheets}/${params}`).subscribe((res:any) =>{
       if (res) {
-        this.allDetails = res.timesheets        ;
+        this.allDetails = res;
        // this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.table_size };
-      } else {
-        this.api.showWarning('No records found !')
       }
     })
   }

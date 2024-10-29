@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-sm-12">
         <ng-container >
-          <div class="row p-r webView">
+          <!-- <div class="row p-r webView">
                         
             <div class="col-sm-4 search-div" >
                 <button mat-icon-button  class="close-icon" style="top:0" ngbTooltip="Search" *ngIf="!showSearch" (click)="showSearch=!showSearch">
@@ -18,21 +18,22 @@
                 <i class="bi bi-x-circle close-icon" ngbTooltip="Close" *ngIf="showSearch" (click)="showSearch=!showSearch"></i>
             </div>
               
-          </div>
+          </div> -->
           <mat-tab-group class="custom-tab-group" (selectedTabChange)="tabState($event)">
             <!-- Pending -->
             <mat-tab label="Pending">
-              <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
+              <!-- <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
                 <div class="col-sm-12 col-md-6 search-div">
                     <input type="search" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
                       placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
                     <i class="bi bi-search" id="search-icon-tab" ></i>
                   </div>
                
-              </div>
-              <ng-container >
+              </div> -->
+              <ng-container>
                
                 <app-yet-approve 
+                *ngIf="selectedTab === 'Pending'"
                   [data]="allDetails" 
                   [totalCount]="totalCount" 
                   (buttonClick)="buttonClick($event)">
@@ -42,16 +43,17 @@
 
             <!-- Approved Timesheet Tab -->
             <mat-tab label="Approved">
-              <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
+              <!-- <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
                 <div class="col-sm-12 col-md-6 search-div">
                     <input type="search" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
                       placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
                     <i class="bi bi-search" id="search-icon-tab" ></i>
                   </div>
                
-              </div>
-              <ng-container >
+              </div> -->
+              <ng-container>
                 <app-approved 
+                *ngIf="selectedTab === 'Approved'"
                   [data]="allDetails" 
                   [totalCount]="totalCount" 
                   (buttonClick)="buttonClick($event)">
@@ -61,16 +63,17 @@
 
             <!-- Declined Timesheet Tab -->
             <mat-tab label="Declined">
-              <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
+              <!-- <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
                 <div class="col-sm-12 col-md-6 search-div">
                     <input type="search" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
                       placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
                     <i class="bi bi-search" id="search-icon-tab" ></i>
                   </div>
                
-              </div>
-              <ng-container >
+              </div> -->
+              <ng-container>
                 <app-declined 
+                *ngIf="selectedTab === 'Declined'"
                   [data]="allDetails" 
                   [totalCount]="totalCount" 
                   (buttonClick)="buttonClick($event)">
