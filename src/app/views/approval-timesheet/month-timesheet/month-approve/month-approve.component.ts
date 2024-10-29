@@ -53,7 +53,6 @@ export class MonthApproveComponent implements OnInit {
   ngOnInit() {
     this.user_id = sessionStorage.getItem('user_id')
     this.org_id = sessionStorage.getItem('org_id')
-    this.getUserControls()
   }
 
 
