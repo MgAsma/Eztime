@@ -50,8 +50,7 @@ export class DeclinedComponent implements OnInit {
   ngOnInit(): void {
     this.entryPoint = JSON.parse(sessionStorage.getItem('entryPoint'))
     this.user_id = sessionStorage.getItem('user_id');
-    this.orgId = sessionStorage.getItem('org_id');
-    this.getUserControls()
+    this.orgId = sessionStorage.getItem('organization_id');
   }
   ngOnChanges(changes: SimpleChange): void {
     if (changes['data'].currentValue) {
@@ -67,33 +66,7 @@ export class DeclinedComponent implements OnInit {
     }
     this.cdref.detectChanges();
   }
-  getUserControls() {
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.orgId}&pagination=TRUE`).subscribe((res: any) => {
-      if (res.status_code !== '401') {
-        this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
-      }
-      else {
-        this.api.showError("ERROR !")
-      }
-      //console.log(res,'resp from yet');
-
-    }
-
-    )
-
-    this.common_service.permission.subscribe(res => {
-      const accessArr = res
-      if (accessArr.length > 0) {
-        accessArr.forEach((element, i) => {
-          if (element['TODAY_APPROVAL_TIMESHEET']) {
-            this.accessConfig = element['TODAY_APPROVAL_TIMESHEET']
-          }
-        });
-      }
-
-    })
-  }
+  
 
   delete(items: any) {
     let params = {

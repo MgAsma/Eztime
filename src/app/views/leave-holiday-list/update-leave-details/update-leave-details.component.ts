@@ -15,6 +15,7 @@ export class UpdateLeaveDetailsComponent implements OnInit {
   BreadCrumbsTitle:any='Update leave master';
   id:any;
   leaveTypeForm: any;
+  organization_id: any;
   constructor(
     private builder:FormBuilder,
     private api: ApiserviceService,
@@ -33,6 +34,7 @@ export class UpdateLeaveDetailsComponent implements OnInit {
  
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
+    this.organization_id = JSON.parse(sessionStorage.getItem('organization_id'))
     this.initForm();
     this.edit();
   }
@@ -91,6 +93,7 @@ export class UpdateLeaveDetailsComponent implements OnInit {
       cary_forward_percentage:this.leaveTypeForm.value.cary_forward_percentage ,
       graceful_days:this.leaveTypeForm.value.graceful_days ,
       maximum_enhancement:this.leaveTypeForm.value.maximum_enhancement ,
+      organization:this.organization_id
     }
     this.api.updateData(`${environment.live_url}/${environment.leave_master}/${this.id}/`,data).subscribe((data:any)=>{
       if(data){

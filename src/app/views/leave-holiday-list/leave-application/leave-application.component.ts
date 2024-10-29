@@ -157,7 +157,7 @@ sessions = [
           //console.log(this.reservedDates,"FROMDATE")
         },
         (err) => {
-          this.api.showError(err.error.error.message);
+          this.api.showError(err.error?.message);
         }
       );
   }
@@ -446,8 +446,8 @@ sessions = [
     });
   }
   getAllEmployee(){
-    const organization_id =  53
-    this.api.getData(`${environment.live_url}/${environment.all_employee}/?organization_id=${organization_id}`).subscribe((res:any)=>{
+   
+    this.api.getData(`${environment.live_url}/${environment.all_employee}/?organization_id=${this.orgId}`).subscribe((res:any)=>{
       if(res){
         this.allEmployees = res
       }
