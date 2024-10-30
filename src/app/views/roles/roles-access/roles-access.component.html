@@ -40,7 +40,7 @@
                                         Menu Items
                                     </label>
                                     <span class="main-text">Select All</span>
-                                    <input class="checkbox-design" type="checkbox">
+                                    <input class="custom-checkbox" type="checkbox">
                                 </div>
                         </li>
                         <li class="list-group-item" *ngFor="let items of mainMenu;let i=index">
@@ -48,9 +48,9 @@
                                 <label [class]="items.labelClass">
                                     {{items.label}}
                                 </label>
-                                
-                                <input class="checkbox-design" type="checkbox" [checked]="items.checked"
-                                    [routerLink]="items.path" name="roles">
+                                <input class="custom-checkbox" type="checkbox" [checked]="items.checked">
+                                <!-- <input class="checkbox-design" type="checkbox" [checked]="items.checked"
+                                     name="roles"> -->
                             </div>
                             <!-- <div [class]="items.containerClass" >
                             <input [class]="items.class" [type]="items.type" [checked]="items.checked"  [routerLink]="items.path" name="roles">

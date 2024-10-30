@@ -91,7 +91,8 @@ export class CreateNewProjectComponent implements OnInit {
     this.assigneePeoples = [];
     this.getProjectStatus();
     this.getClient();
-    this.getDesignations();
+    this.getReportingManager();
+    // this.getDesignations();
     this.getPeopleGroup();
     this.initForm();
     this.getCategory();
@@ -148,7 +149,7 @@ export class CreateNewProjectComponent implements OnInit {
         // console.log('designations',data)
         const managerRoleId = data.filter(temp => temp.designation_name === 'Project Manager');
         // console.log(this.managerRoleId,'managerRoleId')
-        this.getReportingManager(managerRoleId[0].id);
+        this.getReportingManager();
         // console.log(this.allDesignation,'designation')
       }
 
@@ -158,15 +159,17 @@ export class CreateNewProjectComponent implements OnInit {
     )
   }
 
-  getReportingManager(id){
-    this.api.getProfileDetails(`?${'organization_id'}=${this.orgId}&${'designation_id'}=${id}`).subscribe((data: any) => {
+  getReportingManager(){
+    this.api.getEmployeeList(`?${'organization_id'}=${this.orgId}&${'designation'}=${'manager'}`).subscribe((data: any) => {
       if (data) {
         console.log('manager list', data)
         if (data.length == 0) {
           this.adminData();
         }
         else {
-          this.allManager = data;
+          let temp:any [];
+          temp = data.map((element:any)=>element.user)
+          this.allManager = temp;
         }
       }
 

@@ -103,5 +103,29 @@
   width: 20px;
   border-radius: 3px;
   border: 2px solid #413f3f !important;
-  // appearance: none;
+  appearance: none; /* Remove default styling */
+  -webkit-appearance: none;
 }
+/* CSS */
+.custom-checkbox {
+  width: 20px; /* Adjust size as needed */
+  height: 20px;
+  appearance: none; /* Remove default styling */
+  -webkit-appearance: none;
+  border: 2px solid #413f3f ; /* Thin black border */
+  border-radius: 3px; /* Optional: rounded corners */
+  cursor: pointer;
+  position: relative;
+}
+
+.custom-checkbox:checked::before {
+  content: "✓"; 
+  color: #126EB4;
+  font-size: 20px; 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%); 
+  font-weight: bold;
+}
+

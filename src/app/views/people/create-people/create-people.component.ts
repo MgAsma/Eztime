@@ -75,7 +75,6 @@ export class CreatePeopleComponent implements OnInit {
     this.orgId = JSON.parse(sessionStorage.getItem('organization_id'));
     this.employeeId = localStorage.getItem('employee_id');
     this.initStepper()
-    // this.getDesignations();
     this.getUserRole();
     this.getGenderList();
     this.getMritalStatus();
@@ -120,14 +119,17 @@ export class CreatePeopleComponent implements OnInit {
 
   // Manager list
   getReportingManager() {
-    this.api.getProfileDetails(`?${'organization_id'}=${this.orgId}&${'designation_id'}=${this.managerRoleId}`).subscribe((data: any) => {
+    this.api.getEmployeeList(`?${'organization_id'}=${this.orgId}&${'designation'}=${'manager'}`).subscribe((data: any) => {
       if (data) {
         console.log('manager list', data)
         if (data.length == 0) {
           this.adminData();
         }
         else {
-          this.reportingManagerId = data;
+          let temp:any [];
+          temp = data.map((element:any)=>element.user)
+          // console.log('filtered',temp)
+          this.reportingManagerId = temp;
         }
       }
 
@@ -188,11 +190,7 @@ export class CreatePeopleComponent implements OnInit {
       if (data) {
         // console.log('designations',data)
         this.allDesignation = data;
-        const managerRoleId = data.filter(temp => temp.designation_name === 'Project Manager')
-        this.managerRoleId = managerRoleId[0].id
-        // console.log(this.managerRoleId,'managerRoleId')
         this.getReportingManager();
-        // console.log(this.allDesignation,'designation')
       }
 
     }, (error: any) => {
