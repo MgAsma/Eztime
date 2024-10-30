@@ -28,6 +28,7 @@
   <!-- Section Content -->
   <div *ngIf="selectedSection === 'lists'">
     <!-- Lists Section: Employee Table -->
+    <div class="scroll-h">
     <div class="table-responsive">
       <table class="table table-bordered table-list" *ngIf="empInfoList.length">
         <thead>
@@ -56,6 +57,7 @@
         No records found!
       </div>
     </div>
+    </div>
   </div>
 
   <!-- Leaves Section -->
@@ -63,6 +65,7 @@
     <mat-tab-group class="custom-tab-group" (selectedTabChange)="tabLeaveSection($event)">
       <mat-tab label="Pending">
         <!-- Pending Leaves Table -->
+        <div class="scroll-h">
         <div class="table-responsive">
           <table class="table table-bordered table-list" *ngIf="leaveList.length">
             <thead>
@@ -102,10 +105,12 @@
             No records found!
           </div>
         </div>
+        </div>
       </mat-tab>
 
       <mat-tab label="Approved">
         <!-- Approved Leaves Table -->
+        <div class="scroll-h">
         <div class="table-responsive">
           <table class="table table-bordered table-list" *ngIf="leaveList?.length">
             <thead>
@@ -135,10 +140,12 @@
             No records found!
           </div>
         </div>
+        </div>
       </mat-tab>
 
       <mat-tab label="Declined">
         <!-- Declined Leaves Table -->
+        <div class="scroll-h">
         <div class="table-responsive">
           <table class="table table-bordered table-list" *ngIf="leaveList?.length">
             <thead>
@@ -167,6 +174,7 @@
           <div class="no-records" *ngIf="leaveList?.length === 0">
             No records found!
           </div>
+        </div>
         </div>
       </mat-tab>
     </mat-tab-group>
@@ -177,6 +185,7 @@
     <mat-tab-group class="custom-tab-group custom-tab-height" (selectedTabChange)="tabTimesheet($event)">
       <mat-tab label="Pending">
         <!-- Pending Timesheets Table -->
+        <div class="scroll-h">
         <div class="table-responsive">
           <table class="table table-bordered table-list" *ngIf="timesheetList.length">
             <thead>
@@ -238,10 +247,12 @@
             No records found!
           </div>
         </div>
+      </div> 
       </mat-tab>
 
       <mat-tab label="Approved">
         <!-- Pending Timesheets Table -->
+        <div class="scroll-h">
         <div class="table-responsive">
           <table class="table table-bordered table-list" *ngIf="timesheetList.length">
             <thead>
@@ -299,10 +310,12 @@
             No records found!
           </div>
         </div>
+        </div>
       </mat-tab>
 
       <mat-tab label="Declined">
         <!-- Pending Timesheets Table -->
+        <div class="scroll-h">
         <div class="table-responsive">
           <table class="table table-bordered table-list" *ngIf="timesheetList?.length">
             <thead>
@@ -353,6 +366,7 @@
           <div class="no-records" *ngIf="timesheetList?.length === 0">
             No records found!
           </div>
+        </div>
         </div>
       </mat-tab>
     </mat-tab-group>

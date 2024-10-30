@@ -131,7 +131,7 @@ export class YetApproveComponent implements OnInit {
   open(content) {
     if (content) {
       const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: <any>'md',
+        size: <any>'sm',
         backdrop: true,
         centered: true
       });

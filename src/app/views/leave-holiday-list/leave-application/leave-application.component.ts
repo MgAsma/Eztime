@@ -192,7 +192,7 @@ sessions = [
   }
   getLeaveType() {
     
-    this.api.getData(`${environment.live_url}/${environment.leave_master}/?employee-id=${this.user_id}`).subscribe(
+    this.api.getData(`${environment.live_url}/${environment.leave_master}/?employee-id=${this.user_id}&organization=${this.orgId}`).subscribe(
       (data: any) => {
         this.leaveType = data;
       },
@@ -302,7 +302,7 @@ sessions = [
         this.api.postData(`${environment.live_url}/${environment.apply_leave}/`,data).subscribe((res:any)=>{
           if(res){
             this.api.showSuccess('Leave application created successfully!')
-            this.ngOnInit()
+            this.leaveForm.reset()
             this.applyingDays = 0
             this.leaveBalance = ""
             this.fileDataUrl = ""
