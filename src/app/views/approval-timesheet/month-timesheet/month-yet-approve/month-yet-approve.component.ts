@@ -43,24 +43,28 @@ export class MonthYetApproveComponent implements OnInit {
     currentPage: 1,
     totalItems: 0
   }
-  onCheckboxChange() {
+  selectedId: any = [];
+  timesheetId: any;
+  onCheckboxChange(id) {
     // If any checkbox is unchecked, uncheck the "Select All" checkbox
     const allSelected = this.yetToApproveAll.every(item => item.selected);
     this.isAllSelected = allSelected;
+    // this.selectedId.push(id)
+    // console.log(this.selectedId)
+    this.performActionOnSelected()
   }
   selectAll(event: any) {
     const isChecked = event.target.checked;
     this.yetToApproveAll.forEach(item => item.selected = isChecked);
+    this.timesheetId = this.yetToApproveAll.map(m =>m.id)
   }
 
   // Function to perform action on selected rows
   performActionOnSelected() {
     const selectedItems = this.yetToApproveAll.filter(item => item.selected);
     if (selectedItems.length) {
-      console.log('Selected Items:', selectedItems);
+      this.timesheetId = selectedItems.map(m =>m.id)
       // Add your logic to handle selected items
-    } else {
-      console.log('No items selected');
     }
   }
   constructor(
@@ -125,8 +129,8 @@ export class MonthYetApproveComponent implements OnInit {
  
 
   
-  openDialogue(content, status) {
-    if (content) {
+  openDialogue(content?, status?) {
+    
       
       const modelRef = this.modalService.open(GenericDeleteComponent, {
         size: <any>'sm'
@@ -146,31 +150,54 @@ export class MonthYetApproveComponent implements OnInit {
         }
       })
 
-    }
+    
 
   }
   updateTimesheetStatus(content, status) {
-    const confirmText = status === 'Approve' ? 'Approved' : 'Declined'
+    const confirmText = status === 'Approve' ? 'approved' : 'declined'
     let date = new Date()
     let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
-    let data =   {
-      id: content.id,
-      status: status === 'Approve' ? 2 : 3,
-      organization: this.org_id,
-      employee: content.created_by,
-      approved_by: status === 'Approved' ? this.user_id :null,
-      approved_on: status === 'Approved' ? formattedDate :null,
-      rejected_by: status === 'Declined' ? this.user_id :null,
-      rejected_on: status === 'Declined' ? formattedDate :null
-  }
-    this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
-      if (res) {
-        this.api.showSuccess(`Timesheet ${confirmText} successfully!`)
-        this.buttonClick.emit('')
+    let data =   {}
+    if(content){
+      data =   {
+        id: content.id,
+        status: status === 'Approve' ? 2 : 3,
+        organization: this.org_id,
+        employee: content.created_by,
+        approved_by: status === 'Approve' ? this.user_id :null,
+        approved_on: status === 'Approve' ? formattedDate :null,
+        rejected_by: status === 'Decline' ? this.user_id :null,
+        rejected_on: status === 'Decline' ? formattedDate :null
       }
-    }, (error => {
-      this.api.showError(error?.error?.message)
-    }))
+      this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
+        if (res) {
+          this.api.showSuccess(`Timesheet ${confirmText} successfully!`)
+          this.buttonClick.emit('')
+        }
+      }, (error => {
+        this.api.showError(error?.error?.message)
+      }))
+    }else{
+      data =   {
+        id: this.timesheetId,
+        status: status === 'Approve' ? 2 : 3,
+        organization: this.org_id,
+        approved_by: status === 'Approve' ? this.user_id :null,
+        approved_on: status === 'Approve' ? formattedDate :null,
+        rejected_by: status === 'Decline' ? this.user_id :null,
+        rejected_on: status === 'Decline' ? formattedDate :null
+      }
+      this.api.updateData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
+        if (res) {
+          this.api.showSuccess(`Timesheet ${confirmText} successfully!`)
+          this.buttonClick.emit('')
+        }
+      }, (error => {
+        this.api.showError(error?.error?.message)
+      }))
+    }
+    
+   
   }
   getContinuousIndex(index: number): number {
     return (this.page - 1) * this.tableSize + index + 1;

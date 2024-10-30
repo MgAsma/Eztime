@@ -141,7 +141,8 @@ export class TimesheetComponent implements OnInit {
     //    }
     //    this.getByStatus(c_params)
     // }
-    this.getByStatus(`?organization=${this.orgId}&status=${1}&user=${this.userId}`)
+    const selectedTab = this.selectedTabId || 1
+    this.getByStatus(`?organization=${this.orgId}&status=${selectedTab}&user=${this.userId}`)
     this.getStatusCount(`?user=${this.userId}&get-count=true`)
     }
   }

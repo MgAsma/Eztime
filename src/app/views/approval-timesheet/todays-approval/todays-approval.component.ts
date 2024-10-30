@@ -57,7 +57,8 @@ export class TodaysApprovalComponent implements OnInit {
     })
   }
   buttonClick(event) {
-    this.getTodaysApprovals(`?status=1&organization=${this.orgId}&created-date=${this.currDate}`);
+    const selectedTab = this.selectedTabId || 1
+    this.getTodaysApprovals(`?status=${selectedTab}&organization=${this.orgId}&created-date=${this.currDate}`);
    
   }
 

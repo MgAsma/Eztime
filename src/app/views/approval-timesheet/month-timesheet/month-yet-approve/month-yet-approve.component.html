@@ -2,6 +2,25 @@
 
 <div class="container-fluid webView">
   <div class="bg px-0">
+    <div class="row my-2" >
+                                
+      <!-- <div class="col-sm-4 search-div" >
+          <button mat-icon-button  class="close-icon search-button" style="top:0" ngbTooltip="Search" *ngIf="!showSearch" (click)="showSearch=!showSearch">
+              <i class="bi bi-search"></i>
+          </button>
+         
+          <input type="search" *ngIf="showSearch" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+            placeholder="Search by employee" aria-describedby="emailHelp" autocomplete="off">
+          <i class="bi bi-search" id="search-icon-tab" *ngIf="showSearch"></i>
+        
+          <i class="bi bi-x-circle close-icon" ngbTooltip="Close" *ngIf="showSearch" (click)="showSearch=!showSearch"></i>
+      </div> -->
+      <div class="col text-end" *ngIf="yetToApproveAll.length">
+        <button mat-raised-button type="button" class="bulk-action-btn" style="background: #3CA300;margin-right: 5px;" (click)="openDialogue('','Approve')"><i class="bi bi-check-circle"></i>APPROVE</button>
+        <button mat-raised-button type="button" class="bulk-action-btn" style="background: #B41212;" (click)="openDialogue('','Decline')"><i class="bi bi-x-circle"></i>DECLINE</button>
+      </div>
+        
+    </div>
     <div class="row">
       <div class="col">
         <table class="table table-hover table-list" *ngIf="yetToApproveAll.length">
@@ -13,14 +32,14 @@
               <th scope="col" class="text-center">Employee</th>
               <th scope="col" class="text-center">Task</th>
               <th scope="col" class="text-center">Time</th>
-              <!-- <th scope="col" class="text-center">Status</th> -->
+              
               <th scope="col" class="text-center">Action</th>
             </tr>
           </thead>
           <tbody>
             <ng-container *ngIf="(yetToApproveAll) as result">
               <tr *ngFor="let item of result | paginate: paginationConfig; let i = index">
-                <td><input type="checkbox" [(ngModel)]="item.selected" (change)="onCheckboxChange()"/></td>
+                <td><input type="checkbox" [(ngModel)]="item.selected" (change)="onCheckboxChange(item.id)"/></td>
                 <td>{{getContinuousIndex(i)}}</td>
                
                 <td class="text-center">{{item.created_date | date }}</td>
