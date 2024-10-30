@@ -89,9 +89,8 @@ export class DeadlineCrossedComponent implements OnInit {
       // timesheets_from_date:this.formattedDate,
       pagination: 'TRUE'
     }
-    //this.getByStatus(params,'init')
-    this.getUserControls()
-    console.log(this.allDetails)
+    
+   
   }
   goBack(event) {
     event.preventDefault(); // Prevent default back button behavior
@@ -109,35 +108,7 @@ export class DeadlineCrossedComponent implements OnInit {
   onChanges() {
     this.changes = true
   }
-  getUserControls() {
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.orgId}&pagination=TRUE`).subscribe((res: any) => {
-      if (res.status_code !== '401') {
-        this.common_service.permission.next(res['data'][0]['permissions'])
-      }
-      else {
-        this.api.showError("ERROR !")
-      }
-    }, ((error: any) => {
-      this.api.showError(error.error.error.message)
-    })
-
-    )
-
-
-    this.common_service.permission.subscribe(res => {
-      const accessArr = res
-      if (accessArr.length > 0) {
-        accessArr.forEach((element) => {
-          if (element['DEAD_LINE_CROSSED']) {
-            this.accessConfig = element['DEAD_LINE_CROSSED']
-
-          }
-
-        });
-      }
-
-    })
-  }
+ 
   getByStatus(params,init?) {
     this.allDetails = [];
     this.api.getData(`${environment.live_url}/${environment.time_sheets_deadline_crossed}?user_id=${params.user_id}&organization_id=${params.organization_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}`).subscribe(res => {

@@ -68,6 +68,7 @@ export class ManagerReviewComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('organization_id')
+    this.user_id = sessionStorage.getItem('user_id')
     this.getAllTimesheets(`?organization=${this.orgId}&status=1`)
     this.getAllLeaves(`?status-id=1&organization=${this.orgId}`)
     this.getEmployeeData() 

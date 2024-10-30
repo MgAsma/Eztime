@@ -50,10 +50,10 @@
                         <img src="../../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete" (click)="open(item)"/>
                     </span>
                     <span>
-                      <img src="../../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Approve" (click)="openDialogue(item.id,'APPROVED')"/>
+                      <img src="../../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Approve" (click)="openDialogue(item,'Approve')"/>
                     </span>
                     <span>
-                      <img src="../../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Reject"  (click)="openDialogue(item.id,'DECLINED')"/>
+                      <img src="../../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Reject"  (click)="openDialogue(item,'Decline')"/>
                     </span>
                   </ng-container>
                 </td>

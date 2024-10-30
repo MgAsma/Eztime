@@ -58,6 +58,9 @@ export class DeadlineDeclinedComponent implements OnInit {
   ngOnInit(){
     this.user_id =sessionStorage.getItem('user_id')
   }
+  
+  
+    
     onTableDataChange(event:any){
       this.page = event;
       this.buttonClick.emit(event)
