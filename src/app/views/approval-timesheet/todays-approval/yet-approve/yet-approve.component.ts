@@ -1,9 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChange } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { TimesheetService } from 'src/app/service/timesheet.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-yet-approve',
@@ -40,14 +42,18 @@ export class YetApproveComponent implements OnInit {
     totalItems: 0
   }
  
-  constructor(private api: ApiserviceService, private _timeSheetService: TimesheetService, private modalService: NgbModal,
-    private _timesheet: TimesheetService, private cdref: ChangeDetectorRef, private common_service: CommonServiceService) { }
+  constructor(
+    private api: ApiserviceService, 
+    private _timeSheetService: TimesheetService,
+     private modalService: NgbModal,
+     private cdref: ChangeDetectorRef, 
+     private datepipe: DatePipe) { }
 
 
   ngOnInit(): void {
     // this.entryPoint = JSON.parse(sessionStorage.getItem('entryPoint'))
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'));
-    this.orgId = sessionStorage.getItem('org_id')
+    this.orgId = sessionStorage.getItem('organization_id')
     
   }
 
@@ -67,28 +73,27 @@ export class YetApproveComponent implements OnInit {
     this.cdref.detectChanges();
   }
   
-
-  delete(item: any) {
-    let params = {
-      module: "TIMESHEET",
-      menu: "TODAY_APPROVAL_TIMESHEET",
-      method: "DELETE",
-      user_id: this.user_id
-    }
-    this._timeSheetService.deleteTodaysApproval(item.id, params).subscribe((data: any) => {
-      this.api.showWarning('Deleted successfully')
-      let tableData = {
-        search_key: this.term,
-        page: this.page,
-        tableSize: this.tableSize
+  delete(item){
+    
+    this.api.delete(`${environment.live_url}/${environment.time_sheets}/${item.id}/`,).subscribe((data:any)=>{
+      if(data){
+        let tableData ={
+          page:this.page,
+          tableSize:this.tableSize,
+          search_key:this.term
+         }
+        this.buttonClick.emit('');
+       this.ngOnInit()
+        this.api.showWarning('Timesheet deleted successfully!')
+       
       }
-      this.buttonClick.emit(tableData)
-    }, error => {
-      //console.log(error);
-
-    })
-
+    },((error)=>{
+      this.api.showError(error?.error?.message)
+      
+    }))
+    
   }
+  
 
   filterSearch() {
     let tableData = {
@@ -149,19 +154,19 @@ export class YetApproveComponent implements OnInit {
   }
   openDialogue(content, status) {
     if (content) {
-      const selectedStatus = status === 'APPROVED' ? 'approve' : 'decline'
-      const confirmText = status === 'APPROVED' ? 'Approve' : 'Decline'
+      // const statusText = status === 'DECLINED' ? 'decline' : 'approve'
+      // const confirmText = status === 'APPROVED' ? 'Approve' : 'Decline'
       const modelRef = this.modalService.open(GenericDeleteComponent, {
         size: <any>'sm'
         ,
         backdrop: true,
         centered: true
       });
-      modelRef.componentInstance.title = `Are you sure you want to ${selectedStatus}`;
-      modelRef.componentInstance.message = `${confirmText}`;
+      modelRef.componentInstance.title = `Are you sure you want to ${status}`;
+      modelRef.componentInstance.message = `${status}`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {
-          this.updateStatus(content, status);
+          this.updateTimesheetStatus(content, status)
           modelRef.close();
         }
         else {
@@ -170,35 +175,30 @@ export class YetApproveComponent implements OnInit {
       })
 
     }
+
   }
-  updateStatus(content, status) {
-    //let currStatus =  status === 'Approved'?  "APPROVED": "DECLINED";
-    let currMethod = status === 'DECLINED' ? 'REJECT' : 'ACCEPT'
-
-    let data = {
-      user_id: this.user_id,
-      update: "TRUE",
-      approved_by_manager_id: this.user_id,
-      module: "TIMESHEET",
-      menu: "TODAY_APPROVAL_TIMESHEET",
-      method: currMethod,
-      time_sheet_id_list: [],
-      time_sheet_id: content,
-      approved_state: status
-    }
-    this._timesheet.updateStatus(data).subscribe(res => {
+  updateTimesheetStatus(content, status) {
+    const confirmText = status === 'Approve' ? 'Approved' : 'Declined'
+    let date = new Date()
+    let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
+    let data =   {
+      id: content.id,
+      status: status === 'Approve' ? 2 : 3,
+      organization: this.orgId,
+      employee: content.created_by,
+      approved_by: status === 'Approve' ? this.user_id :null,
+      approved_on: status === 'Approve' ? formattedDate :null,
+      rejected_by: status === 'Declined' ? this.user_id :null,
+      rejected_on: status === 'Declined' ? formattedDate :null
+  }
+    this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
       if (res) {
-        const toastText = status === 'DECLINED' ? 'declined' : 'approved'
-        this.api.showSuccess(`Timesheet ${toastText} successfully`)
-        let tableData = {
-          search_key: this.term,
-          page: this.page,
-          tableSize: this.tableSize
-        }
-        this.buttonClick.emit(tableData)
+        this.api.showSuccess(`Timesheet ${confirmText} successfully!`)
+        this.buttonClick.emit('')
       }
-
-    })
+    }, (error => {
+      this.api.showError(error?.error?.message)
+    }))
   }
   getContinuousIndex(index: number): number {
     return (this.page - 1) * this.tableSize + index + 1;

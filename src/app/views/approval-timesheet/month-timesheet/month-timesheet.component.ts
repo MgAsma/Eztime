@@ -18,7 +18,7 @@ export class MonthTimesheetComponent implements OnInit {
   term:any;
   showSearch:any;
   page: any = 1;
-  selectedTab: any;
+  selectedTab: string = 'Pending';
   allDetails: any = [];
   submited: boolean = false;
   openDropdown: boolean = false;
@@ -34,15 +34,65 @@ export class MonthTimesheetComponent implements OnInit {
   @ViewChild('tabset') tabset: TabsetComponent;
   @ViewChild('tabsets') tabsets: TabsetComponent;
 
-  monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+  monthNames = [
+    {
+      name:"January",
+      id:1
+    },
+    {
+      name:"February",
+      id:2
+    },
+    {
+      name:"March", 
+      id:3
+    },
+    {
+      name:"April",
+      id:4
+    },
+    {
+      name:"May",
+      id:5
+    },
+    {
+      name:"June",
+      id:6
+    },
+    {
+      name:"July",
+      id:7
+    },
+    {
+      name:"August",
+      id:8
+    },
+    {
+      name:"September",
+      id:9
+    },
+    {
+      name:"October",
+      id:10
+    },
+    {
+      name:"November",
+      id:11
+    },
+    {
+      name:"December",
+      id:12
+    }  
+         
   ];
-
+  
  
   
   formattedDate: any;
   changes: boolean = false;
   orgId: any;
+  currentMonth: number;
+  selectedTabId: number;
   constructor(
     private fb: FormBuilder,
     private api: ApiserviceService,
@@ -58,16 +108,22 @@ export class MonthTimesheetComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.initForm()
     this.user_id = sessionStorage.getItem('user_id')
-    this.orgId = sessionStorage.getItem('org_id')
-    const currentDate = new Date();
-    const shortMonthName = currentDate.toLocaleString('default', { month: 'long' });
-    console.log(shortMonthName);
-    let c_params = {
-     status:'Pending',
-     month:shortMonthName
-    }
-   this.getAllTimeSheet(c_params)
+    this.orgId = sessionStorage.getItem('organization_id')
+ 
+    this.currentMonth = new Date().getMonth() + 1;
+    
+   this.getMonthApprovals(`?status=1&organization=${this.orgId}&month=${this.currentMonth}`)
    
+  }
+  getMonthApprovals(params) {
+    this.allDetails = [];
+   // this.timesheetService.getTodaysApprovalTimesheet(params).subscribe(res => {
+      this.api.getData(`${environment.live_url}/${environment.timesheets}/${params}`).subscribe((res:any) =>{
+      if (res) {
+        this.allDetails = res;
+       // this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.table_size };
+      }
+    })
   }
   get f() {
     return this.monthForm.controls;
@@ -173,14 +229,21 @@ export class MonthTimesheetComponent implements OnInit {
     //console.log(data,"REEE")
     if(data.tab.textLabel == 'Approved'){
       this.selectedTab = 'Approved'
+      this.selectedTabId = 2
     }
     else if(data.tab.textLabel == 'Pending' ){
       this.selectedTab = 'Pending' 
+      this.selectedTabId = 1
     }
     else if(data.tab.textLabel == 'Declined'){
       this.selectedTab = 'Declined'
+      this.selectedTabId = 3
     }
-    this.getByStatus(`?status=${this.selectedTab}`)
+    let query:string = `?status=${this.selectedTabId}&organization=${this.orgId}&month=${this.currentMonth}`;
+    if(this.submited){
+      query= `?status=${this.selectedTabId}&organization=${this.orgId}&month=${this.monthForm.value.fromMonth}`
+    }
+    this.getMonthApprovals(query)
     // this.handleMonthSelection(this.monthForm.value['fromMonth'])
     // if (this.monthForm.value['fromMonth'] !== '') {
     //   let c_params = {
@@ -225,41 +288,7 @@ export class MonthTimesheetComponent implements OnInit {
   }
 
   buttonClick(event) {
-    console.log(event.page);
-    this.handleMonthSelection(this.monthForm.value['fromMonth'])
-    if (event) {
-      this.itemPerPageCount = event.tableSize;
-      if (this.changes) {
-        let c_params = {
-          module: "TIMESHEET",
-          menu: "MONTH_APPROVAL_TIMESHEET",
-          method: "VIEW",
-          approved_state: this.selectedTab,
-          user_id: this.user_id,
-          page_number: event.page,
-          data_per_page: this.itemPerPageCount,
-          search_key: event.search_key,
-          timesheets_from_date: this.formattedDate,
-          pagination: 'TRUE'
-        }
-        this.getAllTimeSheet(c_params)
-      }
-      else {
-        let c_params = {
-          module: "TIMESHEET",
-          menu: "MONTH_APPROVAL_TIMESHEET",
-          method: "VIEW",
-          approved_state: this.selectedTab,
-          user_id: this.user_id,
-          page_number: event.page,
-          search_key: event.search_key,
-          data_per_page: this.itemPerPageCount,
-          pagination: 'TRUE'
-        }
-        this.getByStatus(c_params)
-      }
-
-    }
+    this.getMonthApprovals(`?status=1&organization=${this.orgId}&month=${this.currentMonth}`)
   }
 
   searchFiter(event) {

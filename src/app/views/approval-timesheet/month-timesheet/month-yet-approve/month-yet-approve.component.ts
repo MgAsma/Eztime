@@ -1,9 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChange } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { TimesheetService } from 'src/app/service/timesheet.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-month-yet-approve',
@@ -61,16 +63,17 @@ export class MonthYetApproveComponent implements OnInit {
       console.log('No items selected');
     }
   }
-  constructor(private _timesheet: TimesheetService,
-    private modalService: NgbModal, private cdref: ChangeDetectorRef,
+  constructor(
+    private modalService: NgbModal, 
+    private cdref: ChangeDetectorRef,
     private api: ApiserviceService,
-    private common_service: CommonServiceService) {
+    private datepipe:DatePipe) {
 
   }
 
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id')
-    this.org_id = sessionStorage.getItem('org_id')
+    this.org_id = sessionStorage.getItem('organization_id')
   }
   ngOnChanges(changes: SimpleChange): void {
     if (changes['data'].currentValue) {
@@ -87,35 +90,7 @@ export class MonthYetApproveComponent implements OnInit {
     this.cdref.detectChanges();
   }
 
-  getUserControls() {
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.org_id}&pagination=TRUE`).subscribe((res: any) => {
-      if (res.status_code !== '401') {
-        this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
-      }
-      else {
-        this.api.showError("ERROR !")
-      }
-      //console.log(res,'resp from yet');
-
-    }
-
-    )
-
-    this.common_service.permission.subscribe(res => {
-      const accessArr = res
-      if (accessArr.length > 0) {
-        accessArr.forEach((element, i) => {
-          if (element['MONTH_APPROVAL_TIMESHEET']) {
-            this.accessConfig = element['MONTH_APPROVAL_TIMESHEET']
-          }
-
-        });
-      }
-
-    })
-
-  }
+  
   filterSearch() {
     let tableData = {
       search_key: this.term,
@@ -147,20 +122,23 @@ export class MonthYetApproveComponent implements OnInit {
     }
     this.buttonClick.emit(tableData)
   }
-  open(content, status) {
-    const selectedStatus = status === 'APPROVED' ? 'approve' : 'decline'
-    const confirmText = status === 'APPROVED' ? 'Approve' : 'Decline'
+ 
+
+  
+  openDialogue(content, status) {
     if (content) {
+      
       const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: <any>'sm',
+        size: <any>'sm'
+        ,
         backdrop: true,
         centered: true
       });
-      modelRef.componentInstance.title = `Are you sure you want to ${selectedStatus}`;
-      modelRef.componentInstance.message = `${confirmText}`;
+      modelRef.componentInstance.title = `Are you sure you want to ${status}`;
+      modelRef.componentInstance.message = `${status}`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {
-          this.updateStatus(content, status);
+          this.updateTimesheetStatus(content, status)
           modelRef.close();
         }
         else {
@@ -169,35 +147,30 @@ export class MonthYetApproveComponent implements OnInit {
       })
 
     }
+
   }
-
-  updateStatus(content, status) {
-    let currMethod = status === 'DECLINED' ? 'REJECT' : 'ACCEPT'
-    let data = {
-      user_id: this.user_id,
-      update: "TRUE",
-      approved_by_manager_id: this.user_id,
-      module: "TIMESHEET",
-      menu: "MONTH_APPROVAL_TIMESHEET",
-      method: currMethod,
-      time_sheet_id_list: [],
-      time_sheet_id: content,
-      approved_state: status
-    }
-    this._timesheet.updateStatus(data).subscribe(res => {
-      let tableData = {
-        search_key: this.term,
-        page: this.page,
-        tableSize: this.tableSize
-      }
-      this.buttonClick.emit(tableData);
+  updateTimesheetStatus(content, status) {
+    const confirmText = status === 'Approve' ? 'Approved' : 'Declined'
+    let date = new Date()
+    let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
+    let data =   {
+      id: content.id,
+      status: status === 'Approve' ? 2 : 3,
+      organization: this.org_id,
+      employee: content.created_by,
+      approved_by: status === 'Approved' ? this.user_id :null,
+      approved_on: status === 'Approved' ? formattedDate :null,
+      rejected_by: status === 'Declined' ? this.user_id :null,
+      rejected_on: status === 'Declined' ? formattedDate :null
+  }
+    this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
       if (res) {
-        const toasterText = status === 'DECLINED' ? 'declined' : 'approved'
-        this.api.showSuccess(`Timesheet ${toasterText} successfully !!`)
-        this.ngOnInit();
+        this.api.showSuccess(`Timesheet ${confirmText} successfully!`)
+        this.buttonClick.emit('')
       }
-
-    })
+    }, (error => {
+      this.api.showError(error?.error?.message)
+    }))
   }
   getContinuousIndex(index: number): number {
     return (this.page - 1) * this.tableSize + index + 1;

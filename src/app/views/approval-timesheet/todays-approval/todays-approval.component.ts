@@ -57,31 +57,15 @@ export class TodaysApprovalComponent implements OnInit {
     })
   }
   buttonClick(event) {
-    if (event) {
-      this.table_size = event.tableSize;
-      this.page = event.page;
-      let data = {
-        // user_id: this.user_id,
-        // page_number: event.page,
-        // data_per_page: event.tableSize,
-        status: this.selectedTab ? this.selectedTab : 'Pending',
-        // organization_id: this.orgId,
-        //search_key: event.search_key,
-      }
-      this.getTodaysApprovals(data);
-    }
+    this.getTodaysApprovals(`?status=1&organization=${this.orgId}&created-date=${this.currDate}`);
+   
   }
 
   searchFiter(event) {
     if (event) {
       // this.table_size = event.tableSize;
       let data = {
-        // user_id: this.user_id,
-        // page_number: this.page,
-        // data_per_page: this.table_size,
         status: this.selectedTab ? this.selectedTab : 'Pending',
-        // organization_id: this.orgId,
-        // search_key: this.term
       }
       this.getTodaysApprovals(data);
     }

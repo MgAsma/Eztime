@@ -52,8 +52,7 @@ export class MonthApproveComponent implements OnInit {
   }
   ngOnInit() {
     this.user_id = sessionStorage.getItem('user_id')
-    this.org_id = sessionStorage.getItem('org_id')
-    this.getUserControls()
+    this.org_id = sessionStorage.getItem('organization_id')
   }
 
 
@@ -61,7 +60,7 @@ export class MonthApproveComponent implements OnInit {
     if (changes['data'].currentValue) {
       this.approvedAll = changes['data'].currentValue;
     }
-    if (changes['totalCount'].currentValue) {
+    if (changes['totalCount']?.currentValue) {
       this.paginationConfig.totalItems = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
       this.paginationConfig.currentPage = changes['totalCount'].currentValue.currentPage;
       this.paginationConfig.itemsPerPage = changes['totalCount'].currentValue.itemsPerPage;
@@ -71,34 +70,7 @@ export class MonthApproveComponent implements OnInit {
     }
     this.cdref.detectChanges();
   }
-  getUserControls() {
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.org_id}&pagination=TRUE`).subscribe((res: any) => {
-      if (res.status_code !== '401') {
-        this.common_service.permission.next(res['data'][0]['permissions'])
-        // //console.log(this.common_service.permission,"PERMISSION")
-      }
-      else {
-        this.api.showError("ERROR !")
-      }
-      //  //console.log(res,'resp from yet');
-
-    }
-
-    )
-
-    this.common_service.permission.subscribe(res => {
-      const accessArr = res
-      if (accessArr.length > 0) {
-        accessArr.forEach((element, i) => {
-          if (element['MONTH_APPROVAL_TIMESHEET']) {
-            this.accessConfig = element['MONTH_APPROVAL_TIMESHEET']
-          }
-        });
-      }
-
-    })
-
-  }
+  
   filterSearch() {
     let tableData = {
       search_key: this.term,
@@ -132,48 +104,7 @@ export class MonthApproveComponent implements OnInit {
     this.buttonClick.emit(tableData)
   }
 
-  // open(content,status) {
-  //   if(content){
-  //     const modelRef =   this.modalService.open(GenericDeleteComponent, {
-  //       size: <any>'sm'
-
-  //       backdrop: true,
-  //       centered:true
-  //     });
-  //     modelRef.componentInstance.title = `Are you sure you want to ${status}`;
-  //    modelRef.componentInstance.message =`Confirmation`;
-  //     modelRef.componentInstance.status.subscribe(resp => {
-  //       if(resp == "ok"){
-  //        this.updateStatus(content,status);
-  //        modelRef.close();
-  //       }
-  //       else{
-  //         modelRef.close();
-  //       }
-  //   })
-
-  // }
-  // }
-  // updateStatus(content,status){
-  //   let currMethod = status === 'DECLINED'?'REJECT':'ACCEPT'
-  //   //let manager_id = sessionStorage.getItem('manager_id')
-  //   let data= {
-  //     time_sheet_id_list: [],
-  //     time_sheet_id:content,
-  //     status_name: status,
-  //     reporting_manager_ref:this.user_id,
-  //     module: "TIMESHEET",
-  //     menu: "MONTH_APPROVAL_TIMESHEET",
-  //     method: currMethod,
-  //     user_id:this.user_id
-  // }
-  // this._timesheet.updateStatus(data).subscribe(res =>{
-  //   this.buttonClick.emit(this.page)
-  //   if(res){
-  //     this.api.showSuccess(`${status} updated successfully`)
-  //   }
-  // })
-  // }
+  
 
   getContinuousIndex(index: number): number {
     return (this.page - 1) * this.tableSize + index + 1;

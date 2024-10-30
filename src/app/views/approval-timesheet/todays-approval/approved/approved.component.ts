@@ -56,7 +56,7 @@ export class ApprovedComponent implements OnInit {
     if (changes['data'].currentValue) {
       this.list = changes['data'].currentValue;
     }
-    if (changes['totalCount'].currentValue) {
+    if (changes['totalCount']?.currentValue) {
       this.paginationConfig.totalItems = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
       this.paginationConfig.currentPage = changes['totalCount'].currentValue.currentPage;
       this.paginationConfig.itemsPerPage = changes['totalCount'].currentValue.itemsPerPage;
