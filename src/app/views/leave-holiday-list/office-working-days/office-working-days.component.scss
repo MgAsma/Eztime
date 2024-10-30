@@ -1,137 +1,95 @@
-ol{
-    background-color: inherit;
-}
-a{
-    color: #3F51B5;
-    text-decoration: none;
-}
-li{
-    
-    list-style: none;
-    color: grey;
-}
-ul{
-    padding: 0px;
-}
-.bg{
-    background-color: white;
-    height: 100%;
-    width: 99% !important;
-    padding: 10px;
-    border-radius: 5px;
+.container-fluid {
+    padding: 0 15px;
+  }
   
-}
-.proceedbtn{
-    background-color: #3F51B5;
-    border-radius: 5px;
-    border: none;
-    height: 40px;
-    width: 100%;
-    color: white;
-    margin: 10px 0px;
-}
-.printbtn{
-    background-color: #00BCD4;
-    border-radius: 5px;
-    border: none;
-    height: 40px;
-    width: 100%;
-    color: white;
-    margin: 10px 0px;
-}
-.row{
-    padding: 5px;
-}
-i{
-    padding: 0px 5px 0px 0px;
-}
-.btnicon{
-    display: none;
-}
-button:hover .btnicon{
+  /* Generic form background styling */
+  .generic-form.bg {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  mat-card {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .mat-checkbox {
     display: block;
-}
-
-span{
-    color: red;
-}
-p{
-    color: grey;
-}
-html{
-    position: relative;
-}
-// .createbtn{
-//     background-color: #3F51B5;
-//     border: none;
-//     color: white;
-//     padding: 20px;
-//     text-align: center;
-//     text-decoration: none;
-//     display: inline-block;
-//     font-size: 35px;
-//     margin: 0px 2px;
-//     border-radius: 50%;
-//     position: fixed;
-//     right: 5%;
-//     bottom: 10%;
-
-// }
-input{
-    margin: 15px 0 0 0;
-    height: 41px !important;
-}
-select{
-    margin: 16px 0px 0px 0px;
-    border:1px solid #dfdfdf;
-    border-radius: 5px;
-    width: 100%;
-    height: 40px;
-}
-
-@media(max-width:767px){
-//    table{
-//     font-size: 12px !important;
-//     zoom: 90%;
-// }
-
-
-}
-
-@media(min-width:320px) and (max-width:1023px){
-    // .bg{
-    //     padding: 0 0 8rem 0!important;
-    // }
-    // table{
-    //     font-size: 12px !important;
-    //     zoom: 90%;
-    // }
-    select,input{
-        width: 100%;
-        margin: 2px !important;
+  }
+  
+  /* Flexbox styling for the time selection section */
+  .d-flex {
+    display: flex;
+  }
+  
+  .align-items-center {
+    align-items: center;
+  }
+  
+  .flex-wrap {
+    flex-wrap: wrap;
+  }
+  
+  /* Adjust width for time select fields */
+  .mat-form-field.time-field {
+    width: 150px;
+    margin-right: 10px;
+  }
+  
+  .hours-display {
+    margin-top: 10px;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .mat-form-field.time-field {
+      width: 100%; /* Full width on mobile */
     }
-    label{
-        color:gray !important;
+  
+    .hours-display {
+      width: 100%;
+      text-align: left;
     }
-    .days-container{
-        background: #f3f3f3;
+  
+    /* Adjust day selection section for smaller screens */
+    .day-selection {
+      padding: 10px;
     }
-    .day-header{
-    color: #972fa7;
-    font-size: 16px;
-    font-weight: bold;
-    padding-top: 10px;
+  
+    /* Font size adjustment for smaller headers */
+    h3 {
+      font-size: 1.5rem;
     }
-}
-.form-control,.sizeinput:focus {
-    border-color: rgb(223, 223, 223);
-    outline: 0 !important;
-    box-shadow: none !important;
-}
-.sizeinput{
-    background-color: lightgray;
-}
-.error-border{
-  border:1px solid red;
-}
-
+  
+    h5 {
+      font-size: 1.2rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .container-fluid {
+      padding: 0 10px; /* Reduce padding for extra small screens */
+    }
+  
+    h3 {
+      font-size: 1.2rem;
+    }
+  
+    /* Stack flex items vertically on extra small screens */
+    .d-flex.align-items-center {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .mat-form-field.time-field {
+      margin-bottom: 10px; /* Add spacing between fields */
+    }
+  
+    /* Adjust the layout of hours display for extra small screens */
+    .hours-display {
+      margin-top: 5px;
+      text-align: left;
+    }
+  }
+  
