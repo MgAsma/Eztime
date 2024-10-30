@@ -70,36 +70,40 @@ export class OfficeWorkingDaysComponent implements OnInit {
     mins6:['0','5','10','15','20','25','30','35','40','45','50','55'],
     mins7:['0','5','10','15','20','25','30','35','40','45','50','55'],
    }
-   this.getUserControls()
-  }
-  getUserControls(){
    
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
-      if(res.status_code !== '401'){
-        this.common_service.permission.next(res['data'][0]['permissions'])
-      }
-      else{
-        this.api.showError("ERROR !")
-      }
+  }
+  days = [
+    { name: 'Monday', selected: false, fromTime: null, toTime: null },
+    { name: 'Tuesday', selected: false, fromTime: null, toTime: null },
+    { name: 'Wednesday', selected: false, fromTime: null, toTime: null },
+    { name: 'Thursday', selected: false, fromTime: null, toTime: null },
+    { name: 'Friday', selected: false, fromTime: null, toTime: null },
+    { name: 'Saturday', selected: false, fromTime: null, toTime: null },
+    { name: 'Sunday', selected: false, fromTime: null, toTime: null },
+  ];
+
+  times = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
+
+  toggleSelectAll(isChecked: boolean) {
+    this.days.forEach(day => day.selected = isChecked);
+  }
+
+  toggleDaySelection(index: number) {
+    const day = this.days[index];
+    if (!day.selected) {
+      day.fromTime = null;
+      day.toTime = null;
     }
-  
-    )
-  
-    this.common_service.permission.subscribe(res=>{
-      const accessArr = res
-      if(accessArr.length > 0){
-        accessArr.forEach((element,i) => {
-          if(element['OFFICE_WORKING_DAYS']){
-            this.permissions = element['OFFICE_WORKING_DAYS']
-            if (this.permissions.includes('CREATE')) {
-              this.enable = true;
-            }
-             }
-        });
-        
-      }
-    })
+  }
+
+  calculateHours(from: string, to: string): number {
+    if (from && to) {
+      const [fromHour, fromMinutes] = from.split(':').map(Number);
+      const [toHour, toMinutes] = to.split(':').map(Number);
+      return (toHour + toMinutes / 60) - (fromHour + fromMinutes / 60);
     }
+    return 0;
+  }
   get f(){
     return this.officeWorkingDaysForm.controls
   }

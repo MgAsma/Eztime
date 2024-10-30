@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
@@ -6,6 +6,8 @@ import { TimesheetService } from 'src/app/service/timesheet.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { environment } from 'src/environments/environment';
+import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-month-timesheet',
@@ -97,9 +99,12 @@ export class MonthTimesheetComponent implements OnInit {
     private fb: FormBuilder,
     private api: ApiserviceService,
     private location: Location,
-    private _timesheet: TimesheetService, private cdref: ChangeDetectorRef,
-    private common_service: CommonServiceService) {
-      this.currentMonth = new Date().getMonth() + 1;
+    private _timesheet: TimesheetService, 
+    private cdref: ChangeDetectorRef,
+    private common_service: CommonServiceService,
+    private datepipe:DatePipe,
+    private modalService:NgbModal) {
+    this.currentMonth = new Date().getMonth() + 1;
      }
   goBack(event) {
     event.preventDefault(); // Prevent default back button behavior
@@ -196,39 +201,39 @@ export class MonthTimesheetComponent implements OnInit {
     })
     )
   }
-  getAllTimeSheet(params) {
-    this.allListDataids = []
-    this.allDetails = [];
-    this.exebtn = false;
+  // getAllTimeSheet(params) {
+  //   this.allListDataids = []
+  //   this.allDetails = [];
+  //   this.exebtn = false;
  
-      this.api.getData(`${environment.live_url}/${environment.timesheets}/?status=${params.status}&month=${params.month}`).subscribe(res =>{
-      if (res) {
-        // if (res['result']['data'].length > 1) {
-        //   res['result']['data'].forEach(element => {
-        //     // console.log(element.id)
-        //     this.allListDataids.push(element.id)
-        //     this.exebtn = true;
-        //   });
-          this.allDetails = res?.['timesheets']
-        //  this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
-      //   }
-      //   else {
-      //     if (res['result']['data'].length === 1) {
-      //       this.allListDataids.push(res['result']['data'][0].id)
-      //       this.exebtn = true;
-      //       this.allDetails = res['result']['data']
-      //       this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
-      //     }
-      //   }
-      // } else {
-      //   this.api.showWarning('No records found !')
-       }
+  //     this.api.getData(`${environment.live_url}/${environment.timesheets}/?status=${params.status}&month=${params.month}`).subscribe(res =>{
+  //     if (res) {
+  //       // if (res['result']['data'].length > 1) {
+  //       //   res['result']['data'].forEach(element => {
+  //       //     // console.log(element.id)
+  //       //     this.allListDataids.push(element.id)
+  //       //     this.exebtn = true;
+  //       //   });
+  //         this.allDetails = res?.['timesheets']
+  //       //  this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
+  //     //   }
+  //     //   else {
+  //     //     if (res['result']['data'].length === 1) {
+  //     //       this.allListDataids.push(res['result']['data'][0].id)
+  //     //       this.exebtn = true;
+  //     //       this.allDetails = res['result']['data']
+  //     //       this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
+  //     //     }
+  //     //   }
+  //     // } else {
+  //     //   this.api.showWarning('No records found !')
+  //      }
 
-    }, ((error: any) => {
-      this.api.showError(error.error.error.message)
-    }))
+  //   }, ((error: any) => {
+  //     this.api.showError(error.error.error.message)
+  //   }))
 
-  }
+  // }
 
 
   tabState(data) {
@@ -294,7 +299,13 @@ export class MonthTimesheetComponent implements OnInit {
   }
 
   buttonClick(event) {
-    this.getMonthApprovals(`?status=1&organization=${this.orgId}&month=${this.currentMonth}`)
+    
+    if(event){
+      console.log(event,'event')
+    }else{
+      this.getMonthApprovals(`?status=1&organization=${this.orgId}&month=${this.currentMonth}`)
+    }
+    
   }
 
   searchFiter(event) {
@@ -314,7 +325,7 @@ export class MonthTimesheetComponent implements OnInit {
           timesheets_from_date: this.formattedDate,
           pagination: 'TRUE'
         }
-        this.getAllTimeSheet(c_params)
+       // this.getAllTimeSheet(c_params)
       }
       else {
         let c_params = {
@@ -337,41 +348,52 @@ export class MonthTimesheetComponent implements OnInit {
     this.openDropdown = !this.openDropdown
   }
 
-  updateStatus(status) {
-    let currMethod = status === 'DECLINED' ? 'REJECT' : 'ACCEPT'
+  openDialogue(status) {
+   
+    if (status) {
+      debugger;
+      const modelRef = this.modalService.open(GenericDeleteComponent, {
+        size: <any>'sm',
+        backdrop: true,
+        centered: true
+      });
+      modelRef.componentInstance.title = `Are you sure you want to ${status}`;
+      modelRef.componentInstance.message = `${status}`;
+      modelRef.componentInstance.status.subscribe(resp => {
+        if (resp == "ok") {
+          this.updateTimesheetStatus(status)
+          modelRef.close();
+        }
+        else {
+          modelRef.close();
+        }
+      })
 
-    let data = {
-      user_id: this.user_id,
-      update: "TRUE",
-      approved_by_manager_id: this.user_id,
-      module: "TIMESHEET",
-      menu: "MONTH_APPROVAL_TIMESHEET",
-      method: currMethod,
-      time_sheet_id_list: this.allListDataids,
-      time_sheet_id: null,
-      approved_state: status
     }
-    this._timesheet.updateStatus(data).subscribe(res => {
-      let c_params = {
-        module: "TIMESHEET",
-        menu: "MONTH_APPROVAL_TIMESHEET",
-        method: "VIEW",
-        approved_state: this.selectedTab,
-        user_id: this.user_id,
-        page_number: 1,
-        data_per_page: this.itemPerPageCount,
-        search_key: '',
-        timesheets_from_date: this.formattedDate,
-        pagination: 'TRUE'
-      }
+
+  }
+  updateTimesheetStatus(status) {
+    const confirmText = status === 'Approve' ? 'approved' : 'declined'
+    let date = new Date()
+    let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
+    let data =   {
+      id: '',
+      status: status === 'Approve' ? 2 : 3,
+      organization: this.orgId,
+      employee: '',
+      approved_by: status === 'Approve' ? this.user_id :null,
+      approved_on: status === 'Approve' ? formattedDate :null,
+      rejected_by: status === 'Decline' ? this.user_id :null,
+      rejected_on: status === 'Decline' ? formattedDate :null
+  }
+    this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
       if (res) {
-        const toastText = status === 'DECLINED' ? 'declined' : 'approved'
-        this.api.showSuccess(`Timesheet ${toastText} updated successfully`)
-        this.handleMonthSelection(this.monthForm.value['fromMonth'])
-        this.getAllTimeSheet(c_params)
-        this.ngOnInit()
+        this.api.showSuccess(`Timesheet ${confirmText} successfully!`)
+  
       }
-    })
+    }, (error => {
+      this.api.showError(error?.error?.message)
+    }))
   }
   refershPage() {
     let c_params = {
