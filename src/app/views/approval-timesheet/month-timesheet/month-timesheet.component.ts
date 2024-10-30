@@ -92,13 +92,15 @@ export class MonthTimesheetComponent implements OnInit {
   changes: boolean = false;
   orgId: any;
   currentMonth: number;
-  selectedTabId: number;
+  selectedTabId: number = 1;
   constructor(
     private fb: FormBuilder,
     private api: ApiserviceService,
     private location: Location,
     private _timesheet: TimesheetService, private cdref: ChangeDetectorRef,
-    private common_service: CommonServiceService) { }
+    private common_service: CommonServiceService) {
+      this.currentMonth = new Date().getMonth() + 1;
+     }
   goBack(event) {
     event.preventDefault(); // Prevent default back button behavior
     this.location.back();
@@ -110,7 +112,7 @@ export class MonthTimesheetComponent implements OnInit {
     this.user_id = sessionStorage.getItem('user_id')
     this.orgId = sessionStorage.getItem('organization_id')
  
-    this.currentMonth = new Date().getMonth() + 1;
+    
     
    this.getMonthApprovals(`?status=1&organization=${this.orgId}&month=${this.currentMonth}`)
    
@@ -130,7 +132,7 @@ export class MonthTimesheetComponent implements OnInit {
   }
   initForm() {
     this.monthForm = this.fb.group({
-      fromMonth: ['', Validators.required],
+      fromMonth: [this.currentMonth, Validators.required],
     })
   }
 
@@ -155,23 +157,27 @@ export class MonthTimesheetComponent implements OnInit {
     else {
       this.allDetails = []
       this.submited = true;
-      this.handleMonthSelection(this.monthForm.value['fromMonth'])
-      let c_params = {
-        module: "TIMESHEET",
-        menu: "MONTH_APPROVAL_TIMESHEET",
-        method: "VIEW",
-        approved_state: 'YET_TO_APPROVED',
-        user_id: this.user_id,
-        page_number: 1,
-        data_per_page: this.itemPerPageCount,
-        search_key: '',
-        timesheets_from_date: this.formattedDate,
-        pagination: 'TRUE'
-      }
+     // this.handleMonthSelection(this.monthForm.value['fromMonth'])
+      // let c_params = {
+      //   module: "TIMESHEET",
+      //   menu: "MONTH_APPROVAL_TIMESHEET",
+      //   method: "VIEW",
+      //   approved_state: 'YET_TO_APPROVED',
+      //   user_id: this.user_id,
+      //   page_number: 1,
+      //   data_per_page: this.itemPerPageCount,
+      //   search_key: '',
+      //   timesheets_from_date: this.formattedDate,
+      //   pagination: 'TRUE'
+      // }
 
-      this.getAllTimeSheet(c_params)
-      this.tabset.tabs[0].active = true;
-      this.tabsets.tabs[0].active = true;
+      // this.getAllTimeSheet(c_params)
+      // this.tabset.tabs[0].active = true;
+      // this.tabsets.tabs[0].active = true;
+     
+        let query= `?status=${this.selectedTabId}&organization=${this.orgId}&month=${this.monthForm.value.fromMonth}`
+     
+      this.getMonthApprovals(query)
     }
   }
   getByStatus(params) {

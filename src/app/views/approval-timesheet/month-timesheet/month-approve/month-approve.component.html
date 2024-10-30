@@ -3,18 +3,17 @@
   <div class="bg">
     <div class="row">
       <div class="col">
-        <table class="table table-hover table-list">
+        <table class="table table-hover table-list" *ngIf="approvedAll.length">
           <thead>
             <tr>
               <th scope="col">S.No</th>
-              <th scope="col" class="text-center">Date </th>
+              <th scope="col" class="text-center">Created Date </th>
               <th scope="col" class="text-center">Employee</th>
-              <th scope="col" class="text-center">Time Sheet Id</th>
+              <th scope="col" class="text-center">Task</th>
               <th scope="col" class="text-center">Time</th>
               <!-- <th scope="col">Saved On</th> -->
               <th scope="col" class="text-center">Approved On</th>
               <th scope="col" class="text-center">Approved By</th>
-              <th scope="col" class="text-center">Status</th>
              
 
             </tr>
@@ -24,23 +23,39 @@
             <ng-container *ngIf="(approvedAll) as result">
               <tr *ngFor="let items of result|paginate:paginationConfig;let i=index">
                 <td>{{getContinuousIndex(i)}}</td>
-                <td class="text-center">{{items.created_date_time | date :'mediumDate'}}</td>
+                <td class="text-center">{{items.created_date | date :'mediumDate'}}</td>
                 <td class="text-center">{{items.created_by_name?items.created_by_name:"NA"|titlecase}}</td>
-                <td class="text-center">{{items.id ? items.id :'NA'|titlecase}}</td>
-                <td class="text-center">{{items.time_spent|titlecase}}</td>
-                <!-- <td>{{items.created_by_name?items.created_by_name:"NA"}}</td> -->
-                <td class="text-center">{{items.approved_date_time | date :"mediumDate"}}</td>
+                <td class="text-center" *ngIf="items.tasks.length">
+                  <div *ngFor="let task of items.tasks; let j = index">
+                    <div>
+                      {{ task?.task__task_name || 'NA' }} <br/>
+                    </div>
+                  </div>
+                </td>
+                <td *ngIf="items.tasks.length === 0">
+                  {{'NA'}}
+                </td>
+                <td class="text-center" *ngIf="items.tasks.length">
+                  <div *ngFor="let task of items.tasks; let j = index">
+                    <div>
+                      {{ task?.time_required_to_complete || 'NA' }}
+                    </div>
+                  </div>
+                </td>
+                <td *ngIf="items.tasks.length === 0">
+                  {{'NA'}}
+                </td>
+                <td class="text-center">{{items.approved_on | date :"mediumDate"}}</td>
                 <td class="text-center">{{items.approved_by_name?items.approved_by_name:'NA'|titlecase}}</td>
-                <td class="text-center">{{items.approved_state|titlecase}}</td>
-             
+                
               </tr>
-              <tr *ngIf="result.length === 0" class="nodata">
-                <td> No records found!</td>
-              </tr>
-
+              
             </ng-container>
           </tbody>
         </table>
+        <div *ngIf="approvedAll.length === 0" class="text-center">
+          No records found!
+        </div>
       </div>
     </div>
 
@@ -77,18 +92,7 @@
               </div>
             </div>
             <div class="col-5">
-              <!-- <ng-container *ngFor="let approval of accessConfig">
-                      <span *ngIf="approval == 'DELETE'" style="float: right;">
-                          <button type="button" class="toolbar-btn "   (click)="open(item)"  ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button>
-                        
-                        </span>
-                        <span *ngIf="approval == 'ACCEPT'" style="float: right;">
-                            <button type="button" class="toolbar-btn " (click)="openDialogue(item.id,'APPROVED')"><i class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>
-                        </span>
-                        <span *ngIf="approval == 'REJECT'" style="float: right;">
-                            <button type="button" class="toolbar-btn " (click)="openDialogue(item.id,'DECLINED')"><i class="bi bi-x-circle" container="body" ngbTooltip="Reject" style="color:red"></i></button>
-                        </span>
-                  </ng-container>   -->
+             
             </div>
           </div>
 
@@ -103,7 +107,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{item['created_date_time'] | date : 'mediumDate'}}
+                      {{item['created_date'] | date : 'mediumDate'}}
                     </div>
                   </div>
                 </div>
@@ -125,28 +129,43 @@
                 <div class="col-6">
                   <div class="row">
                     <div class="col-12">
-                      <h6 class="card-subtitle">Timesheet Id</h6>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12 val-r">
-                      {{ item.id ? item.id :'NA' |titlecase}}
-                    </div>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="row">
-                    <div class="col-12">
                       <h6 class="card-subtitle">Time</h6>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-12 val-r">
-                      {{ item['time_spent'] |titlecase}}
+                    <div class="col-12 val-r" *ngIf="item.tasks.length">
+                      <div *ngFor="let task of item.tasks; let j = index">
+                        <div>
+                          {{ task?.time_required_to_complete || 'NA' }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 val-r" *ngIf="item.tasks.length === 0">
+                      {{'NA'}}
                     </div>
                   </div>
                 </div>
-              </div>
+               
+                  <div class="col-6">
+                    <div class="row">
+                      <div class="col-12">
+                        <h6 class="card-subtitle">Task name</h6>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 val-r" *ngIf="item.tasks.length">
+                        <div *ngFor="let task of item.task_list; let j = index">
+                          <div>
+                            {{ task?.task__task_name || 'NA' }} <br/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 val-r" *ngIf="item.tasks.length === 0">
+                        {{'NA'}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
               <div class="row">
                 <div class="col-6">
@@ -157,7 +176,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{ item['approved_date_time'] | date : 'mediumDate' }}
+                      {{ item['approved_on'] | date : 'mediumDate' }}
                     </div>
                   </div>
                 </div>
