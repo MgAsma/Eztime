@@ -203,7 +203,7 @@
                   <div class="p-ab">
                     <mat-label class="admin-labels">Phone number </mat-label><b class="r-star">*</b>
                   </div>
-                  <input type="tel" matInput class="pt-1" formControlName="admin_phone_number" onKeyPress="if(this.value.length==10) return false;" placeholder="Enter phone number"  autocomplete="off"/>
+                  <input type="number" matInput class="pt-1" formControlName="admin_phone_number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==10) return false;" placeholder="Enter phone number"  autocomplete="off"/>
                  
                   <div *ngIf="a['admin_phone_number']?.touched && a['admin_phone_number']?.invalid"
                   class="error-text">
@@ -214,7 +214,7 @@
                   </div>
                   <div
                       *ngIf="a['admin_phone_number']?.invalid && a['admin_phone_number']?.hasError('phoneNumberLength')"
-                      class="error-text">Please enter 10 digits
+                      class="error-text">Please enter 10 digit phone number.
                   </div>
                 </div>
                    
