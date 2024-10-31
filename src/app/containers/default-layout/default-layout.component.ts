@@ -74,7 +74,7 @@ export class DefaultLayoutComponent {
 }
   ngOnInit() {
     this.user_role_Name = sessionStorage.getItem('user_role_name');
-    let role_id = sessionStorage.getItem('user_role_id');
+    let role_id = sessionStorage.getItem('designation_id');
     // this.user_name = sessionStorage.getItem('user_name');
     this.testingFunction();
     // this.getUserControls(role_id)

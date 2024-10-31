@@ -76,11 +76,11 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
+                <div *ngIf="user_role!='SuperAdmin' && user_role!='Admin'" class="col-sm-12 col-md-6 col-lg-3 mb-4">
                     <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                         <mat-label>Designation <b class="r-star">*</b></mat-label>
                         <input matInput placeholder="Enter designation" formControlName="designation"
-                            autocomplete="off">
+                            autocomplete="off" readonly title="readonly field">
                     </mat-form-field>
                     <div class="px-2" *ngIf="f['designation']?.touched && f['designation']?.invalid">
                         <span class="text-errors" *ngIf="f['designation'].errors?.['required']">Designation is
@@ -118,7 +118,7 @@
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
                     <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
                         <mat-label>Date of Birth <b class="r-star">*</b></mat-label>
-                        <input class="pt-1" type="date" matInput placeholder="Enter date of birth" formControlName="date_of_birth"
+                        <input style="padding: 0.3rem 0 0 0;" type="date" matInput placeholder="Enter date of birth" formControlName="date_of_birth"
                             autocomplete="off">
                     </mat-form-field>
                     <div class="px-2" *ngIf="f['date_of_birth']?.touched && f['date_of_birth']?.invalid">
@@ -170,9 +170,13 @@
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
                     <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                         <mat-label>Postal code</mat-label>
-                        <input matInput placeholder="Enter postal code" formControlName="postal_code" autocomplete="off"
-                            onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                        <input matInput type="number" placeholder="Enter postal code" formControlName="postal_code" autocomplete="off"
+                         maxlength="6" pattern="^[1-9]{1}[0-9]{2}\s{0,1}[0-9]{3}$">
                     </mat-form-field>
+                    <div class="px-2" *ngIf="f['postal_code']?.touched && f['postal_code']?.invalid">
+                        <span class="text-errors"
+                            *ngIf="f['postal_code'].invalid && f['postal_code'].hasError('pattern')">Invalid postal code.</span>
+                    </div>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-6">
                     <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
@@ -364,9 +368,13 @@
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
                     <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                         <mat-label>Postal code</mat-label>
-                        <input matInput placeholder="Enter postal code" formControlName="postal_code" autocomplete="off"
-                            onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                        <input matInput type="number" placeholder="Enter postal code" formControlName="postal_code" autocomplete="off"
+                         maxlength="6" pattern="^[1-9]{1}[0-9]{2}\s{0,1}[0-9]{3}$">
                     </mat-form-field>
+                    <div class="px-2" *ngIf="f['postal_code']?.touched && f['postal_code']?.invalid">
+                        <span class="text-errors"
+                            *ngIf="f['postal_code'].invalid && f['postal_code'].hasError('pattern')">Invalid postal code.</span>
+                    </div>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-6">
                     <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">

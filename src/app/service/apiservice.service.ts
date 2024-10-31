@@ -609,4 +609,15 @@ export class ApiserviceService {
   deleteMultiple(url,data) {
     return this.http.delete(url, data)
   }
+
+  // new roles and access
+  getAccessByDesignationId(param){
+    return this.http.get(`${this.baseurl}/designation-access/${param}`,{headers: this.headers})
+  }
+  postAccessToDesignation(data:any){
+    return this.http.post(`${this.baseurl}/designation-access/`,data,{headers: this.headers})
+  }
+  putAccessToDesignation(id:any,data:any){
+    return this.http.put(`${this.baseurl}/designation-access/${id}/`,data,{headers: this.headers})
+  }
 }

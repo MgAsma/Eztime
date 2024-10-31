@@ -92,7 +92,7 @@ export class LeaveHolidayConfigComponent implements OnInit {
   constructor(private api:ApiserviceService,private router:Router) { }
    
   ngOnInit(): void {
-    this.id = sessionStorage.getItem('user_role_id')
+    this.id = sessionStorage.getItem('designation_id')
     this.orgId = sessionStorage.getItem('org_id')
     this.userRole =sessionStorage.getItem('user_role_c_side') 
     this.getUserControls();

@@ -28,6 +28,7 @@ export class ProfileComponent implements OnInit {
   org_id: string;
   fileDataUrl: any = null;
   tempStoreProfileImage: any = null;
+  user_role:any;
   @ViewChild('fileInput') fileInput: ElementRef;
   constructor(
     private _fb: FormBuilder,
@@ -40,7 +41,8 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.user_id = sessionStorage.getItem('user_id')
-    // this.org_id = sessionStorage.getItem('org_id')
+    this.user_role = sessionStorage.getItem('user_role_name');
+    console.log('this.user_role',this.user_role)
     this.getCountry();
     this.initform()
     this.getProfiledata()
@@ -55,7 +57,7 @@ export class ProfileComponent implements OnInit {
       first_name: ['', [Validators.pattern(/^[a-zA-Z]+$/), Validators.required]],
       last_name: ['', [Validators.pattern(/^[a-zA-Z]+$/), Validators.required]],
       address: ['', Validators.pattern(/^\S.*$/)],
-      designation: ['', [Validators.required, Validators.pattern(/^\S.*$/)]],
+      designation: ['', [Validators.pattern(/^\S.*$/)]],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required]],
       date_of_birth: ['', [Validators.required]],
@@ -66,6 +68,15 @@ export class ProfileComponent implements OnInit {
       postal_code: [''],
       profile_image: ['',]
     })
+    this.setValidators();
+  }
+  setValidators(){
+    if(this.user_role!='Admin' && this.user_role!='SuperAdmin'){
+      this.profileForm.controls['designation'].setValidators([Validators.required]);
+    } else{
+      this.profileForm.get('designation')?.setValidators(null); 
+      this.profileForm.get('designation')?.setErrors(null);
+    }
   }
   phoneNumberLengthValidator() {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -130,22 +141,6 @@ export class ProfileComponent implements OnInit {
     }, ((error) => {
       this.api.showError(error.error.error.message)
     }))
-    // if (event) {
-
-    //   const state_code = this.state?.find((state: any) => state.name === event)?.iso2;
-    //   let data = {
-    //     data_request: "GIVE_STATE_RELATED_CITY",
-    //     state_code: state_code
-    //   }
-    //   this.api.postData(`${environment.live_url}/${environment.country_state_city}`, data).subscribe((res: any) => {
-    //     if (res) {
-    //       this.city = res.result.data.data
-    //     }
-
-    //   }, ((error) => {
-    //     this.api.showError(error.error.error.message)
-    //   }))
-    // }
   }
 
   profileDataForSidebar: any = {
@@ -177,8 +172,8 @@ export class ProfileComponent implements OnInit {
           this.profileForm.patchValue({
             first_name: data.first_name,
             last_name: data.last_name,
-            designation: data.designation,
             email: data.email,
+            designation:data.designation,
             phone_number: data.phone_number,
             date_of_birth: data.date_of_birth,
             country: data.country,
@@ -192,44 +187,6 @@ export class ProfileComponent implements OnInit {
         }
       }
     )
-    // this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe(async (res: any) => {
-    //   console.log(res, 'PROFILE GET API RESPONSE', this.profileimg)
-    //   if (res.result.data) {
-    //     let data = res.result.data
-    //     this.profileDataForSidebar.profile_pic = res.result.data[0]['u_profile_photo'];
-    //     this.profileDataForSidebar.name = res.result.data[0].u_first_name;
-    //     this.common_service.setProfilePhoto(this.profileDataForSidebar)
-    //     let responseData = []
-    //     let currentProfileDetails = []
-    //     responseData = res['result']['data']
-    //     currentProfileDetails = responseData[responseData.length - 1]
-    //     this.fileDataUrl = currentProfileDetails['u_profile_photo'];
-    //     this.tempStoreProfileImage = currentProfileDetails['u_profile_photo'];
-    //     console.log(this.fileDataUrl)
-    //     await this.getCountry();
-    //     await this.getState('')
-    //     setTimeout(async () => {
-    //       await this.getCity(currentProfileDetails['u_state'])
-    //     }, 1000);
-    //     this.profileForm.patchValue({
-    //       first_name: data[0].u_first_name,
-    //       last_name: data[0].u_last_name,
-    //       designation: data[0].u_designation,
-    //       email_id: data[0].u_email,
-    //       phone_number: data[0].u_phone_no,
-    //       dob: data[0].u_dob,
-    //       tags: data[0].tags,
-    //       country: data[0].u_country,
-    //       state: data[0].u_state,
-    //       city: data[0].u_city,
-    //       address: data[0].u_address,
-    //       postal_code: data[0].u_postal_code,
-    //     })
-    //     console.log(this.profileForm.controls)
-    //   }
-    // }, (error => {
-    //   this.api.showError(error.error.error.message)
-    // }))
   }
 
   onFocusDate() {
