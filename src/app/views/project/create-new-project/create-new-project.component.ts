@@ -595,9 +595,6 @@ export class CreateNewProjectComponent implements OnInit {
         this.api.addProjectDetails(data).subscribe(res => {
           if (res) {
             this.api.showSuccess(res['message']);
-            this.projectForm.markAsPristine();
-            this.projectForm.markAsUntouched();
-            this.projectForm.updateValueAndValidity();
             window.location.reload();
           }
           else {

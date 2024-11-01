@@ -8,7 +8,7 @@
                 <div [class]="items.containerClass">
                     <input [class]="items.class" [type]="items.type" [checked]="items.checked" [routerLink]="items.path"
                         name="roles">
-                    <label [class]="items.labelClass">
+                    <label class="form-check-input">
                         {{items.label}}
                     </label>
                 </div>
@@ -25,52 +25,53 @@
 </div> -->
 
 <!-- <div class="row p-3"> -->
-    <div class="row content-page p-3">
-        <div class="col-12">
-            <h3><b>{{userRole}}</b></h3>
-        </div>
-        <div class="col-12 sidebar-container">
-            <!-- <div class="list-border"></div> -->
-            <div class="row mx-0 gx-0">
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                    <ul class="list-group list-border">
-                        <li class="list-group-item main-heading">
-                                <div class="d-flex justify-content-between">
-                                    <label>
-                                        Menu Items
-                                    </label>
-                                    <span class="main-text">Select All</span>
-                                    <input class="custom-checkbox" type="checkbox">
-                                </div>
-                        </li>
-                        <li class="list-group-item" *ngFor="let items of mainMenu;let i=index">
-                            <div class="d-flex justify-content-between">
-                                <label [class]="items.labelClass">
-                                    {{items.label}}
-                                </label>
-                                <input class="custom-checkbox" type="checkbox" [checked]="items.checked">
-                                <!-- <input class="checkbox-design" type="checkbox" [checked]="items.checked"
+<div class="row content-page p-3">
+    <div class="col-12">
+        <h3><b>{{role}}</b></h3>
+    </div>
+    <div class="col-12 sidebar-container">
+        <!-- <div class="list-border"></div> -->
+        <div class="row mx-0 gx-0">
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                <ul class="list-group list-border">
+                    <li class="list-group-item main-heading">
+                        <div class="d-flex justify-content-between">
+                            <label>
+                                Menu Items
+                            </label>
+                            <span class="main-text">Select All</span>
+                            <input class="custom-checkbox" type="checkbox" [checked]="allSelected" (change)="selectAll($event)">
+                        </div>
+                    </li>
+                    <li class="list-group-item" *ngFor="let items of mainMenu;let i=index">
+                        <div class="d-flex justify-content-between">
+                            <label>
+                                {{items.name}}
+                            </label>
+                            <input class="custom-checkbox" type="checkbox" [checked]="items.is_checked" (change)="SelectedCheckboxLabels($event,items.name)">
+                            <!-- <input class="checkbox-design" type="checkbox" [checked]="items.checked"
                                      name="roles"> -->
-                            </div>
-                            <!-- <div [class]="items.containerClass" >
+                        </div>
+                        <!-- <div [class]="items.containerClass" >
                             <input [class]="items.class" [type]="items.type" [checked]="items.checked"  [routerLink]="items.path" name="roles">
-                            <label [class]="items.labelClass">
+                            <label class="form-check-input">
                                 {{items.label}}
                             </label>
                         </div> -->
-                            <!-- <span class="icon-span"><i [class]="items.icon" aria-hidden="true" id="h-icon"></i></span> -->
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 mt-3">
-            <div>
-                <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Update Changes</button>
+                        <!-- <span class="icon-span"><i [class]="items.icon" aria-hidden="true" id="h-icon"></i></span> -->
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
-    <!-- <div class="col-sm-8 p-0"> 
+    <div class="col-12 mt-3">
+        <div>
+            <button mat-raised-button class="proceedbtn mat-btn-s" 
+            type="submit" (click)="hasAccessData==false? modifyChanges('add'): modifyChanges('update')">Update Changes</button>
+        </div>
+    </div>
+</div>
+<!-- <div class="col-sm-8 p-0"> 
         <router-outlet></router-outlet>
     </div> -->
 <!-- </div> -->
