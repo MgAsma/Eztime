@@ -61,7 +61,8 @@ export const environment = {
   task_hours:`timesheet-task-hours`,
   update_timesheet_status:`update-timesheet-status`,
   update_leave_details:`update-leave-details`,
-  allEmployee:`all-employee`
+  allEmployee:`all-employee`,
+  working_hour:`working-hour`
 };
 
 /*

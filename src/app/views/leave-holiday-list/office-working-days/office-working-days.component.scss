@@ -1,21 +1,65 @@
+$primay-color: #126EB4;
+
 .container-fluid {
     padding: 0 15px;
   }
-  
+  *{
+    font-size: 13px !important;
+  }
   /* Generic form background styling */
   .generic-form.bg {
-    padding: 20px;
-    background-color: #f9f9f9;
+    padding: 20px 0;
     border-radius: 8px;
   }
-  
-  mat-card {
-    padding: 15px;
-    margin-bottom: 20px;
+  .mat-card-title {
+    margin-bottom: 0 !important;
+    color:$primay-color;
   }
   
+ 
+  mat-card {
+    padding: 0px;
+    border-radius: 10px !important;
+    font-family: "Exo FT" !important;
+  }
+  .mat-form-field {
+    height: 40px !important;
+    margin-bottom: 20px !important;
+  }
+  .check-bx{
+    text-align: right;
+  }
+  h5{
+    padding-bottom: 15px;
+    font-weight: 500;
+  }
+  .col-align{
+    padding: 0 6px;
+    text-align: right;
+  }
   .mat-checkbox {
     display: block;
+  }
+  .title-column {
+    display: flex;
+    flex-direction: column;
+    background: #f6f6f6;
+    padding:15px 10px;
+  }
+  .submit-btn{
+    background-color: $primay-color;
+    color: white;
+  }
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .select-all-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
   
   /* Flexbox styling for the time selection section */
@@ -38,7 +82,12 @@
   }
   
   .hours-display {
-    margin-top: 10px;
+    padding-bottom: 15px;
+    p{
+      font-size: 11px !important;
+    color: #8c8c8c !important;
+
+    }
   }
   
   /* Responsive styles */
