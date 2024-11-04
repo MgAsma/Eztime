@@ -21,6 +21,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
 
   @Input() sidebarId: string = "sidebar";
   @Input() pageName: any;
+  @Input() previousPage:string;
   public newMessages = new Array(4)
   public newTasks = new Array(5)
   public newNotifications = new Array(5)
@@ -52,9 +53,9 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   notes: any;
   screenWidth: number;
   orgId: any;
-  previousPage: string;
-
-
+  permissionArr:any = [];
+  dashboardAccess: any;
+  
   constructor(private classToggler: ClassToggleService, private modalService: NgbModal,
     private router: Router,
     private api: ApiserviceService, private cdref: ChangeDetectorRef,
@@ -67,7 +68,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     this.user_id = sessionStorage.getItem('user_id');
     // this.orgId = sessionStorage.getItem('org_id')
     this.user_role_Name = sessionStorage.getItem('user_role_name');
-    // this.user_name = sessionStorage.getItem('user_name');
+    this.permissionArr = JSON.parse(sessionStorage.getItem('permissionArr'));
     this.getProfiledata()
     // this.getNotification();
     this.common_service.title$.subscribe(title => {
@@ -77,6 +78,11 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     this.common_service.subTitle$.subscribe(subtitle =>{
       this.previousPage = subtitle
     })
+    this.getaccessDetails()
+  }
+  getaccessDetails(){
+    this.dashboardAccess = this.permissionArr?.find((element,i) =>element?.name === 'Dashboard')
+    console.log(this.dashboardAccess,"DASHBOARD")
   }
   getBack(){
     this.location.back()

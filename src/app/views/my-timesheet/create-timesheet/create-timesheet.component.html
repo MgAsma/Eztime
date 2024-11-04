@@ -188,7 +188,7 @@
               <!-- Client Selection -->
               <div class="col-sm-12 col-md-6 col-lg-3 p-2">
                 <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Client <span>*</span></mat-label>
+                  <mat-label>Client <b class="r-star">*</b></mat-label>
                   <mat-select (selectionChange)="getProject($event.value, i)" placeholder="Select client" formControlName="client_id"
                   panelClass="custom-select-panel" [disableOptionCentering]="true">
                     <mat-option *ngFor="let item of allClient" [value]="item.id">{{ item.clint_name }}</mat-option>
@@ -201,7 +201,7 @@
               <!-- Project Selection -->
               <div class="col-sm-12 col-md-6 col-lg-3 p-2">
                 <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Project <span>*</span></mat-label>
+                  <mat-label>Project <b class="r-star">*</b></mat-label>
                   <mat-select (selectionChange)="getTask($event.value, i)" [ngbTooltip]="!project.get('client_id').value ? 'Please select the client name':''" [disabled]="!project.get('client_id').value" formControlName="project_id"
                   panelClass="custom-select-panel" [disableOptionCentering]="true" placeholder="Select project">
                     <mat-option *ngFor="let item of createdProject.value[i]?.projectList" [value]="item.id">{{ item.project_name }}</mat-option>
@@ -214,9 +214,9 @@
               <!-- Date Selection -->
               <div class="col-sm-12 col-md-6 col-lg-3 p-2">
                 <mat-form-field appearance="outline" class="full-width date-picker">
-                  <mat-label>Created Date <span>*</span></mat-label>
+                  <mat-label>Created Date <b class="r-star">*</b></mat-label>
                   <input matInput [matDatepicker]="picker" formControlName="created_date" placeholder="Select date"
-                  (dateChange)="onDateChange($event.value)" >
+                  (dateChange)="onDateChange($event.value)" [max]="currentDate">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
                   <mat-error *ngIf="project.get('created_date').touched && project.get('created_date').invalid">

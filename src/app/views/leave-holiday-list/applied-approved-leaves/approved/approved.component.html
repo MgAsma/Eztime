@@ -13,35 +13,13 @@
                           <th scope="col" class="text-center">Applied On</th>
                           <th scope="col" class="text-center">Approved By</th>
                           <th scope="col" class="text-center">Approved Date</th>
-                          <th scope="col" class="text-center">Action</th>
+                          <!-- <th scope="col" class="text-center">Action</th> -->
                         </tr>
                       </thead>
                       <tbody id="i-cr">
                        
                          <ng-container *ngIf="(data) as result">
-                          <!-- {
-                            "id": 31,
-                            "employee_name": "Nadeem",
-                            "leave_type_name": "Earned Leave",
-                            "approved_by_name": "Nadeem",
-                            "number_of_leaves_applying_for": 1.5,
-                            "from_date": "2024-10-28",
-                            "to_date": "2024-10-29",
-                            "cc": "[228,235]",
-                            "attachment": "https://projectacedevelop.thestorywallcafe.com/media/leave_attachment/file.png",
-                            "status": 2,
-                            "message": "ffasaf",
-                            "created_datetime": "2024-10-28T05:04:19.719250Z",
-                            "updated_datetime": "2024-10-28T05:04:19.719290Z",
-                            "approved_on": "2024-10-29T00:00:00Z",
-                            "rejected_on": null,
-                            "leave_type": 4,
-                            "reporting_to": 228,
-                            "employee": 176,
-                            "organization": 78,
-                            "approved_by": 176,
-                            "rejected_by": null
-                        } -->
+                         
                         <tr *ngFor='let item of result|paginate:paginationConfig;let i=index'>
                           <td>{{getContinuousIndex(i)}}</td>                            
                           <td class="text-center">{{(item.from_date | date) || 'NA'}}</td>
@@ -53,13 +31,13 @@
                             <td class="text-center">{{item.approved_by_name|| 'NA'}}</td>
                             <td class="text-center">{{(item.approved_on | date)|| 'NA'}}</td>                            
                             
-                            <td class="text-center">
+                            <!-- <td class="text-center">
                             <ng-container>
                                 <span>
                                     <button  style="border: none;background-color: inherit;" (click)="open(item)"> <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>
                                 </span>
                             </ng-container>
-                        </td>
+                        </td> -->
                         </tr>
                         <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="result.length === 0">
                           No records found!

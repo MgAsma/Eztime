@@ -11,11 +11,11 @@
                       <th scope="col" class="text-center">Employee</th>
                       
                       <th scope="col" class="text-center">Task</th>
-                      <th scope="col" class="text-center">Time</th>
+                      <th scope="col" class="text-center">Hours</th>
                       <th scope="col" class="text-center">Saved On</th>
                       <th scope="col" class="text-center">Approved On</th>
                       <th scope="col" class="text-center">Approved By</th>
-                      <th scope="col" class="text-center">Action</th>
+                      <!-- <th scope="col" class="text-center">Action</th> -->
                     </tr>
                   </thead>
                   <tbody>
@@ -49,14 +49,14 @@
                           {{'NA'}}
                         </td>
                        
-                       <td class="text-center">
+                       <!-- <td class="text-center">
                     
                          <ng-container>
                            <span>
                              <img src="../../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete" (click)="open(item)"/>
                            </span>
                          </ng-container>
-                        </td>
+                        </td> -->
                     </tr>
                     <div style="position: absolute;left: 45%;padding: 10px;"  *ngIf="result.length === 0">
                       No records found!
@@ -102,19 +102,17 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-12 status-text">
-                    {{ item.status ? item.status : 'Approved' | titlecase }}
+                  <div class="col-12">
+                    <strong>{{ (item.status_name | titlecase) || 'NA' }}</strong>
                   </div>
                 </div>
               </div>
               <div class="col-5">
-                  <ng-container >
+                  <!-- <ng-container >
                       <span  style="float: right;">
-                          <!-- <button type="button" class="toolbar-btn "   (click)="open(item)"  ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button> -->
                           <img src="../../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete" (click)="open(item)"/>
                         </span>
-                     
-                  </ng-container>
+                  </ng-container> -->
                   
               </div>
             </div>
@@ -178,7 +176,7 @@
                   <div class="col-6">
                     <div class="row">
                       <div class="col-12">
-                        <h6 class="card-subtitle">Time</h6>
+                        <h6 class="card-subtitle">Hours</h6>
                       </div>
                     </div>
                     <div class="row">

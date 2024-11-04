@@ -36,8 +36,8 @@ export class LeaveDetailsComponent implements OnInit {
  
   initForm(){
     this.leaveTypeForm = this.builder.group({
-      leave_title: [null, [Validators.required,Validators.pattern('^[A-Za-z][A-Za-z ]*$')]],
-      leave_description: ['', Validators.pattern('^[^\\s].*')],
+      leave_title: ['', [Validators.required,Validators.pattern('^[A-Za-z][A-Za-z ]*$'),Validators.maxLength(50)]],
+      leave_description: ['', [Validators.pattern('^[^\\s].*'),Validators.maxLength(300)]],
       accruals_or_carry_forward: [''],
       number_of_leaves: [null, [Validators.required,Validators.min(1)]],
       cary_forward_percentage: ['',[Validators.pattern(/^\d+%?$/),Validators.max(100)] ],

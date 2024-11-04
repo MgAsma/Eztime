@@ -11,7 +11,7 @@
                     <th scope="col" class="text-center">Created Date</th>
                     <th scope="col" class="text-center">Employee</th>
                     <th scope="col" class="text-center">Task</th>
-                    <th scope="col" class="text-center">Time</th>
+                    <th scope="col" class="text-center">Hours</th>
                     <th scope="col" class="text-center">Saved On</th>
                     <th scope="col" class="text-center">Action</th>
                   </tr>
@@ -105,8 +105,8 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-12 status-text">
-                {{ item.status | titlecase }}
+              <div class="col-12">
+                <strong>{{ (item.status_name | titlecase) || 'NA' }}</strong>
               </div>
             </div>
           </div>
@@ -156,7 +156,7 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-12">
-                    <h6 class="card-subtitle">Time</h6>
+                    <h6 class="card-subtitle">Hours</h6>
                   </div>
                 </div>
                 <div class="row">

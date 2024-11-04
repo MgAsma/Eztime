@@ -49,6 +49,7 @@ export class CreateTimesheetComponent implements OnInit {
   duplicateDate: string;
   totalHoursForDate: number;
   taskDetailsList:string[]=[];
+  currentDate: Date;
 
   constructor(
     private builder: FormBuilder,
@@ -64,6 +65,7 @@ export class CreateTimesheetComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('organization_id')
     this.userId = sessionStorage.getItem('user_id')
+    this.currentDate = new Date()
     this.initializeForm();
     this.taskInitForm()
     this.addProjectDetails(); 
@@ -395,7 +397,7 @@ deleteProject(projectIndex: number): void {
     projectsArray.removeAt(projectIndex);
     projectGroup.get('isSaved').setValue(false);
     // Optional: If you need to update any other state or UI after deletion, do it here
-    this.api.showSuccess('Project and its tasks deleted successfully'); // Example of showing a success message
+    this.api.showWarning('Timesheet deleted successfully!'); // Example of showing a success message
     this.isSaved = false;
     // Optional: Reset or update any form states as needed
     this.taskForm.reset();
@@ -549,20 +551,7 @@ deleteProject(projectIndex: number): void {
        
       };
     });
-//console.log(selectedArr,'MAP')
-    // const data = {
-    //   created_by: this.userId,
-    //   reporting_manager_id: this.manager_id,
-    //   user_id: this.userId,
-    //   status: 'YET_TO_APPROVED',
-    //   module: 'TIMESHEET',
-    //   menu: 'PEOPLE_TIMESHEET',
-    //   method:"CREATE",
-    //   date: this.datepipe.transform(new Date(), 'dd/MM/yyyy'),
-    //   timesheet_status: 'YET_TO_APPROVED',
-    //   data: selectedArr,
-    //   organization_id: this.orgId,
-    // };
+
     const data = {
       reporting_manager_id: this.userId, 
       created_by: this.userId,
@@ -570,57 +559,10 @@ deleteProject(projectIndex: number): void {
       organization_id: this.orgId,
     };
 
-  //   {
-  //     "reporting_manager_id": 4, 
-  //     "created_by": 46,
-  //     "data": [
-  //         {
-  //             "client_id": 1,
-  //             "project_id" : 1,
-  //             "created_date": "24-09-2024",
-  //             "description": "",
-  //             "task_list": [
-  //                 {
-  //                     "task_id": 1,
-  //                     "hours_left": 2,
-  //                     "hours_to_complete":1
   
-  //                 },
-  //                 {
-  //                     "task_id": 2,
-  //                     "hours_left": 8,
-  //                     "hours_to_complete":1
-  
-  //                 }
-  //             ] 
-  //         },
-  //          {
-  //             "client_id": 1,
-  //             "project_id" : 2,
-  //             "created_date": "24-09-2024",
-  //             "description": "",
-  //             "task_list": [
-  //                 {
-  //                     "task_id": 1,
-  //                     "hours_left": 2,
-  //                     "hours_to_complete":1
-  
-  //                 },
-  //                 {
-  //                     "task_id": 1,
-  //                     "hours_left": 8,
-  //                     "hours_to_complete":1
-  
-  //                 }
-  //             ] 
-  //         }
-  //     ]
-  // }
     this.api.postData(`${environment.live_url}/${environment.time_sheets}/`,data).subscribe(
       (response) => {
         this.api.showSuccess('Timesheet added successfully!');
-        // this.timeSheetForm.reset();
-        // this.addProjectDetails(); 
         this.ngOnInit()
       },
       (error) => {

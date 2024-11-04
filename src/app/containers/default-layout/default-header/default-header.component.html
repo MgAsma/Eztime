@@ -19,8 +19,8 @@
          <div class="mobile-hide-content" *ngIf="pageName!=''">
           <nav aria-label="breadcrumb ">
             <ol class="breadcrumb mb-2">
-              <li class="breadcrumb-item" *ngIf="pageName !== 'Dashboard'"><a routerLink="/dashboards">Dashboard</a></li>
-              <li class="breadcrumb-item sub-title" *ngIf="pageName !== 'Dashboard'"><a>{{pageName |titlecase}}</a></li>
+              <li class="breadcrumb-item" *ngIf="pageName !== 'Dashboard' && dashboardAccess?.['name'] === 'Dashboard' "><a routerLink="/dashboards">Dashboard</a> </li>
+              <li class="breadcrumb-item sub-title" *ngIf="pageName !== 'Dashboard'"><a [ngStyle]="dashboardAccess?.['name'] !== 'Dashboard' ? {'text-decoration':'none'}:{'':''}">{{pageName |titlecase}}</a></li>
             </ol>
           </nav>
          </div>

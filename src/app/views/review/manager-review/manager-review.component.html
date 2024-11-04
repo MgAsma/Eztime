@@ -44,11 +44,11 @@
         <tbody>
           <tr *ngFor="let employee of empInfoList; let i = index">
             <td>{{ i + 1 }}</td>
-            <td>{{ employee.user.first_name }} {{ employee.user.last_name }}</td>
-            <td>{{ employee.user.id }}</td>
-            <td>{{ employee.designation_name }}</td>
-            <td>{{ employee.user.email }}</td>
-            <td>{{ employee.user.phone_number }}</td>
+            <td>{{ employee.user.first_name || 'NA'}} {{ employee.user.last_name || 'NA'}}</td>
+            <td>{{ employee.user.id || 'NA'}}</td>
+            <td>{{ employee.designation_name || 'NA'}}</td>
+            <td>{{ employee.user.email || 'NA' }}</td>
+            <td>{{ employee.user.phone_number || 'NA' }}</td>
            
           </tr>
         </tbody>
@@ -186,7 +186,6 @@
       <mat-tab label="Pending">
         <!-- Pending Timesheets Table -->
         <div class="scroll-h">
-        <div class="table-responsive">
           <table class="table table-bordered table-list" *ngIf="timesheetList.length">
             <thead>
               <tr>
@@ -194,7 +193,7 @@
                 <th>Employee Name</th>
                 <th>Client</th>
                 <th>Project Name</th>
-                <th>Time</th>
+                <th>Hours</th>
                 <th>Tasks</th>
                 <th>Action</th>
               </tr>
@@ -230,10 +229,10 @@
               
                 <td>
                   <span>
-                    <img src="../../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Approve" (click)="openDialogue(timesheet,'Approve')"/>
+                    <img src="../../../../../assets/images/tick.svg" class="icon-image"  ngbTooltip="Approve" (click)="openDialogue(timesheet,'Approve')"/>
                   </span>
                   <span>
-                    <img src="../../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Reject"  (click)="openDialogue(timesheet,'Declined')"/>
+                    <img src="../../../../../assets/images/Close.svg" class="icon-image"   ngbTooltip="Decline"  (click)="openDialogue(timesheet,'Declined')"/>
                   </span>
                 </td>
                 
@@ -246,14 +245,12 @@
           <div class="no-records" *ngIf="timesheetList?.length === 0">
             No records found!
           </div>
-        </div>
-      </div> 
+        </div> 
       </mat-tab>
 
       <mat-tab label="Approved">
         <!-- Pending Timesheets Table -->
         <div class="scroll-h">
-        <div class="table-responsive">
           <table class="table table-bordered table-list" *ngIf="timesheetList.length">
             <thead>
               <tr>
@@ -261,7 +258,7 @@
                 <th>Employee Name</th>
                 <th>Client</th>
                 <th>Project Name</th>
-                <th>Time</th>
+                <th>Hours</th>
                 <th>Tasks</th>
                
               </tr>
@@ -310,13 +307,11 @@
             No records found!
           </div>
         </div>
-        </div>
       </mat-tab>
 
       <mat-tab label="Declined">
         <!-- Pending Timesheets Table -->
         <div class="scroll-h">
-        <div class="table-responsive">
           <table class="table table-bordered table-list" *ngIf="timesheetList?.length">
             <thead>
               <tr>
@@ -324,7 +319,7 @@
                 <th>Employee Name</th>
                 <th>Client</th>
                 <th>Project Name</th>
-                <th>Time</th>
+                <th>Hours</th>
                 <th>Tasks</th>
                
               </tr>
@@ -366,7 +361,6 @@
           <div class="no-records" *ngIf="timesheetList?.length === 0">
             No records found!
           </div>
-        </div>
         </div>
       </mat-tab>
     </mat-tab-group>

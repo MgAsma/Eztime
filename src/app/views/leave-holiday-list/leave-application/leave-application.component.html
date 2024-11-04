@@ -5,7 +5,7 @@
       <div class="row mb-2">
           <div class="col-md-4">
               <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Leave Type *</mat-label>
+                  <mat-label>Leave Type <b class="r-star">*</b></mat-label>
                   <mat-select formControlName="leave_type_id" placeholder="Select leave type" (selectionChange)="getLeaveBalance()" panelClass="custom-select-panel" [disableOptionCentering]="true">
                       <mat-option *ngFor="let leave of leaveType" [value]="leave.id">
                           {{ leave.leave_title }}
@@ -29,7 +29,7 @@
       <div class="row mb-2">
           <div class="col-md-4 date-picker">
               <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>From *</mat-label>
+                  <mat-label>From <b class="r-star">*</b></mat-label>
                   <input matInput [matDatepicker]="fromDate" formControlName="leaveApplication_from_date" placeholder="Select start date" [min]="today" (dateChange)="removeToDate();calculateApplyingDays()">
                   <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
                   <mat-datepicker #fromDate></mat-datepicker>
@@ -40,7 +40,7 @@
           </div>
           <div class="col-md-4">
               <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Session *</mat-label>
+                  <mat-label>Session <b class="r-star">*</b></mat-label>
                   <mat-select formControlName="from1_session" placeholder="Select session"  (selectionChange)="calculateApplyingDays()" panelClass="custom-select-panel" [disableOptionCentering]="true">
                       <mat-option *ngFor="let session of sessions" [value]="session.value">
                           {{ session.viewValue }}
@@ -56,7 +56,7 @@
       <div class="row mb-2">
           <div class="col-md-4 date-picker">
               <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>To *</mat-label>
+                  <mat-label>To <b class="r-star">*</b></mat-label>
                   <input matInput [matDatepicker]="toDate" formControlName="leaveApplication_to_date" [min]="leaveForm.value.leaveApplication_from_date" placeholder="Select end date"
                   (dateChange)="calculateApplyingDays()">
                   <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
@@ -68,7 +68,7 @@
           </div>
           <div class="col-md-4">
               <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Session *</mat-label>
+                  <mat-label>Session <b class="r-star">*</b></mat-label>
                   <mat-select formControlName="to1_session" placeholder="Select session" panelClass="custom-select-panel" [disableOptionCentering]="true" (selectionChange)="calculateApplyingDays()">
                       <mat-option *ngFor="let session of sessions" [value]="session.value">
                           {{ session.viewValue }}
@@ -96,11 +96,11 @@
                   <img id="imagePreview" *ngIf="fileDataUrl" [src]="fileDataUrl ? fileDataUrl : ''" alt="profile">
                   <mat-label *ngIf="!fileDataUrl">File Attachment</mat-label>
                   <button type="button" mat-icon-button (click)="triggerFileInput()">
-                      <mat-icon matTooltip="{{fileDataUrl ? 'Edit' : 'Upload'}}" class="edit-or-upload-icon">{{fileDataUrl ? 'edit' : 'attach_file'}} </mat-icon><b class="r-star px-1">*</b> 
+                      <mat-icon matTooltip="{{fileDataUrl ? 'Edit' : 'Upload'}}" class="edit-or-upload-icon">{{fileDataUrl ? 'edit' : 'attach_file'}} </mat-icon> 
                   </button>
               </div>
               <mat-error *ngIf="f['leave_application_file_attachment']?.touched && f['leave_application_file_attachment']?.invalid" style="font-size: 11px;padding-left: 10px;">
-                  <span *ngIf="f['leave_application_file_attachment'].errors?.['required']">Logo is required</span>
+                  <!-- <span *ngIf="f['leave_application_file_attachment'].errors?.['required']">Logo is required</span> -->
                   <span *ngIf="f['leave_application_file_attachment'].errors?.['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</span>
               </mat-error>
           </div> 
@@ -110,7 +110,7 @@
       <div class="row">
           <div class="col-md-4">
               <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Applying To *</mat-label>
+                  <mat-label>Applying To <b class="r-star">*</b></mat-label>
                   <mat-select formControlName="applying_to" placeholder="Select the person to apply to" panelClass="custom-select-panel" [disableOptionCentering]="true">
                       <mat-option *ngFor="let employees of allEmployees" [value]="employees.user.id">{{employees.user.first_name}}{{employees.user.last_name}}</mat-option>
                   </mat-select>
@@ -125,7 +125,7 @@
       <div class="row">
           <div class="col-md-4">
               <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>CC *</mat-label>
+                  <mat-label>CC <b class="r-star">*</b></mat-label>
                   <mat-select formControlName="cc_to" placeholder="Select CC recipients" panelClass="panel-multiselect" [disableOptionCentering]="true" multiple>
                     <mat-option *ngFor="let employees of allEmployees" [value]="employees.user.id">{{employees.user.first_name}}{{employees.user.last_name}}</mat-option>
                   </mat-select>
@@ -140,7 +140,7 @@
       <div class="row mb-2">
           <div class="col-md-4">
               <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Message *</mat-label>
+                  <mat-label>Message <b class="r-star">*</b></mat-label>
                   <textarea matInput formControlName="reason" placeholder="Enter your message"></textarea>
                   <mat-error *ngIf="f['reason']?.touched && f['reason']?.invalid">
                       Message is required.

@@ -93,6 +93,7 @@ html{
     border-radius: 10px;
     background: #FFFFFF99 !important;
     position: relative;
+    font-size: 13px;
     i{
       color:red ;
       padding-right: 2px;
@@ -209,16 +210,14 @@ margin-top:5px;
   #access-icon{
     color:white;
   }
-  .status-text{
-    font-size: 11px;
-  }
+  
 
   table th {
     position: sticky;
-     position: -webkit-sticky;
-   top: -15px;
+    position: -webkit-sticky;
+    top: -15px;
     z-index: 1; // any positive value, layer order is global
-}
+  }
 .icon-image{
   cursor: pointer;
   height: 30px;

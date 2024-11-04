@@ -8,6 +8,8 @@ import { ManagerReviewComponent } from './manager-review/manager-review.componen
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [
     ReviewComponent,
@@ -19,7 +21,9 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatExpansionModule,
     MatCardModule,
     MatButtonModule,
-    MatTabsModule
+    MatTabsModule,
+    SharedModule,
+    NgbTooltipModule
   ]
 })
 export class ReviewModule { }

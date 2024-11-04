@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit {
             sessionStorage.setItem('organization_id', data.organization_id);
               let permissionArr: any = []
               permissionArr = JSON.parse(sessionStorage.getItem('permissionArr'));
-              this.router.navigate(['/dashboards']);
+              this.router.navigate([data.access_list[0].url || data.access_list[0].children[0].url]);
               this.api.showSuccess('Login successful!');
           },
           (error:any)=>{

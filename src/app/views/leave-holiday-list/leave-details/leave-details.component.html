@@ -9,15 +9,21 @@
               <div class="row">
                 <div class="col-md-6 mat-custom-input">
                   <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Leave Title *</mat-label>
+                    <mat-label>Leave Title <b class="r-star">*</b></mat-label>
                     <input matInput formControlName="leave_title" placeholder="Enter leave type Name">
-                    <mat-error *ngIf="leaveTypeForm?.get('leave_title')?.touched && leaveTypeForm.get('leave_title')?.invalid && leaveTypeForm.get('leave_title')?.hasError('required') ">
+                    <mat-error *ngIf="leaveTypeForm?.get('leave_title')?.touched && leaveTypeForm.get('leave_title')?.invalid && leaveTypeForm.get('leave_title')?.hasError('required')">
                       Leave title is required.
                     </mat-error>
-                    <mat-error *ngIf="!leaveTypeForm.get('leave_title')?.hasError('required') && leaveTypeForm?.get('leave_title')?.touched && leaveTypeForm.get('leave_title')?.hasError('pattern')">
+                    <mat-error *ngIf="!leaveTypeForm.get('leave_title')?.hasError('required') && !leaveTypeForm.get('leave_description')?.hasError('maxlength') && leaveTypeForm?.get('leave_title')?.touched && leaveTypeForm?.get('leave_title')?.touched && leaveTypeForm.get('leave_title')?.hasError('pattern')">
                       Invalid leave title.It accepts only characters.
                     </mat-error>
+                   
+                    <mat-error *ngIf="!leaveTypeForm.get('leave_title')?.hasError('required') && leaveTypeForm.get('leave_title')?.hasError('pattern') && leaveTypeForm?.get('leave_title')?.touched && leaveTypeForm.get('leave_title')?.hasError('maxlength')">
+                      Leave title cannot exceed 50 characters.
+                    </mat-error>
+                    
                   </mat-form-field>
+
                 </div>
              
               </div>
@@ -26,19 +32,21 @@
                     <mat-form-field appearance="outline" class="full-width">
                       <mat-label>Leave Description </mat-label>
                       <textarea matInput formControlName="leave_description" placeholder="Enter leave description"></textarea>
-                      <mat-error *ngIf="leaveTypeForm?.get('leave_description')?.touched && leaveTypeForm?.get('leave_description')?.invalid && leaveTypeForm?.get('leave_description')?.hasError('required')">
-                        Leave description is required.
-                      </mat-error>
-                      <mat-error *ngIf="!leaveTypeForm.get('leave_description')?.hasError('required') && leaveTypeForm?.get('leave_description')?.touched && leaveTypeForm.get('leave_description')?.hasError('pattern')">
+                      
+                      <mat-error *ngIf="!leaveTypeForm.get('leave_description')?.hasError('maxlength') && leaveTypeForm?.get('leave_description')?.touched && leaveTypeForm.get('leave_description')?.hasError('pattern')">
                         Leave description cannot start with a space.
                        </mat-error>
+                       <mat-error *ngIf="!leaveTypeForm.get('leave_description')?.hasError('pattern') && leaveTypeForm?.get('leave_description')?.touched && leaveTypeForm.get('leave_description')?.hasError('maxlength')">
+                        Leave description cannot exceed 300 characters.
+                       </mat-error>
+                       <mat-hint align="end">Maximum 300 characters</mat-hint>
                     </mat-form-field>
                   </div>
             </div>
             <div class="row">
                 <div class="col-md-4 mat-custom-input">
                     <mat-form-field appearance="outline" class="full-width">
-                      <mat-label>Number of Leaves *</mat-label>
+                      <mat-label>Number of Leaves <b class="r-star">*</b></mat-label>
                       <input matInput type="number" formControlName="number_of_leaves" placeholder="Enter number of leaves">
                       <mat-error *ngIf="leaveTypeForm?.get('number_of_leaves')?.touched && leaveTypeForm?.get('number_of_leaves')?.invalid && !leaveTypeForm.get('number_of_leaves')?.hasError('min')">
                         Number of leaves is required.
@@ -53,14 +61,13 @@
               <h5 class="c-header">Accruals & Carry Forward</h5>
               <div class="row">
                 <div class="col-md-4">
-                  
+                  <mat-label  style="margin-right: 10px;" [ngClass]="!leaveTypeForm?.get('accruals_or_carry_forward')?.value ? 'active-accruals':''">Monthly</mat-label> 
                     <mat-slide-toggle class="pt-1" formControlName="accruals_or_carry_forward" >
-                        {{ leaveTypeForm?.get('accruals_or_carry_forward')?.value  ? 'Yearly' : 'Monthly' }}
                     </mat-slide-toggle>
+                    <mat-label style="margin-left: 10px;" [ngClass]="leaveTypeForm?.get('accruals_or_carry_forward')?.value ? 'active-accruals':''">Yearly</mat-label>
                     <mat-error *ngIf="leaveTypeForm?.get('accruals_or_carry_forward')?.touched && leaveTypeForm?.get('accruals_or_carry_forward')?.invalid">
                       This field is required.
                     </mat-error>
-                  <!-- </mat-form-field> -->
                 </div>
               </div>
              

@@ -1,7 +1,7 @@
 <div class="container-fluid">
   
   <div class="container-middle">
-            <form [formGroup]="monthForm" (ngSubmit)="submit()">
+            <form [formGroup]="monthForm" >
            
                   <mat-form-field appearance="outline" >
                     <mat-label>Select month</mat-label>
@@ -15,9 +15,13 @@
                     </mat-error>
                   </mat-form-field>
           
-                  <button mat-icon-button type="submit" class="submit-btn"  ngbTooltip="Submit">
-                      <i class="bi bi-arrow-up-right-square-fill"></i>
+                  <button mat-icon-button type="button" class="submit-btn"  ngbTooltip="Submit" (click)="submit()">
+                      <i class="bi bi-arrow-up-right-square-fill" ></i>
                   </button>
+                  
+                  <button mat-icon-button type="reset" class="submit-btn"  ngbTooltip="Reset">
+                    <i class="bi bi-arrow-repeat"></i>
+                </button>
              
             </form>
     

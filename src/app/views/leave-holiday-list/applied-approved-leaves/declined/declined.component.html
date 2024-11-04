@@ -16,25 +16,11 @@
                           <th scope="col" class="text-center">Applied On</th>
                           <!-- <th scope="col">Rejected By</th> -->
                           <th scope="col" class="text-center">Rejected On</th>
-                          <th scope="col" class="text-center">Action</th>
+                          <!-- <th scope="col" class="text-center">Action</th> -->
                         </tr>
                       </thead>
                       <tbody id="i-cr">
-                        <!-- {
-                          "id": 5,
-                          "leave_type_id": 2,
-                          "number_of_leaves_applying_for": 4.0,
-                          "from_date": "2024-12-11",
-                          "to_date": "2024-12-16",
-                          "reporting_to_id": 2,
-                          "cc": "['sandesh@ekfrazo.in', 'arpitha@ekfrazo.in']",
-                          "attachment": "/leave_attachment/file.pdf",
-                          "status": "2",
-                          "message": "Appliying for personal reason",
-                          "created_datetime": "2024-10-22T14:50:34.827217Z",
-                          "updated_datetime": "2024-10-22T14:50:34.827257Z",
-                          "employee_id": 113
-                      } -->
+                        
                         <ng-container *ngIf="(data) as result">
                         <tr *ngFor='let item of result|paginate:paginationConfig; let i=index'>
                           <td>{{getContinuousIndex(i)}}</td>                            
@@ -47,12 +33,12 @@
                             <td class="text-center">{{item.rejected_on | date }}</td>                            
                             
                              <td class="text-center">
-                                <ng-container >
+                                <!-- <ng-container >
                                     <span >
                                         <button style="border: none;background-color: inherit;" > <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>
                                     </span>
                                    
-                                </ng-container>
+                                </ng-container> -->
                             </td>
                         </tr>
                         <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="result.length === 0">
@@ -103,11 +89,11 @@
                 </div>
               </div>
               <div class="col-5">
-                  <ng-container>
+                  <!-- <ng-container>
                       <span style="float: right;">
                           <button mat-raised-button type="button" class="toolbar-btn "   (click)="open(item)"  ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button>
                         </span>
-                  </ng-container>  
+                  </ng-container>   -->
               </div>
             </div>
             <div class="card inner-card">

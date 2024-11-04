@@ -13,7 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./add-organization.component.scss']
 })
 export class AddOrganizationComponent implements OnInit {
-  BreadCrumbsTitle: any = 'Create Organization';
+  BreadCrumbsTitle: any = 'Create';
   BreadCrumbsSubTitle:any = 'Organization'
   photoUrl: string | null = null;
   @ViewChild('fileInput') fileInput: ElementRef;

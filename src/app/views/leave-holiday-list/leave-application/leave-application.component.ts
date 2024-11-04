@@ -225,14 +225,13 @@ sessions = [
   initForm() {
     this.leaveForm = this.builder.group({
       reason: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
-      leave_application_file_attachment: ['',[Validators.required,this.fileFormatValidator]],
+      leave_application_file_attachment: ['',this.fileFormatValidator],
       cc_to: ['', Validators.required],
       leaveApplication_from_date: ['', [Validators.required]],
       leaveApplication_to_date: ['', [Validators.required]],
       leave_type_id: ['', [Validators.required]],
       from1_session: ['', [Validators.required]],
       to1_session: ['', [Validators.required]],
-     
       applying_to:['',[Validators.required]]
     });
     

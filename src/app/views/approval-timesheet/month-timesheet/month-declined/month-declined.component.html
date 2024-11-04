@@ -11,7 +11,7 @@
               <th scope="col" class="text-center">Date </th>
               <th scope="col" class="text-center">Employee</th>
               <th scope="col" class="text-center">Task</th>
-              <th scope="col" class="text-center">Time</th>
+              <th scope="col" class="text-center">Hours</th>
               <th scope="col" class="text-center">Saved On</th>
               <th scope="col" class="text-center">Rejected On</th>
               <th scope="col" class="text-center">Rejected By</th>
@@ -135,7 +135,7 @@
                 <div class="col-6">
                   <div class="row">
                     <div class="col-12">
-                      <h6 class="card-subtitle">Time</h6>
+                      <h6 class="card-subtitle">Hours</h6>
                     </div>
                   </div>
                   <div class="row">
@@ -212,16 +212,5 @@
         </div>
       </div>
     </ng-container>
-  </div>
-  <div class="row mobile-pagination" *ngIf="declinedAll.length !== 0">
-    <div class="col-sm-12">
-      <div class="mobile-pagination-content">
-
-        <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
-        </pagination-controls>
-        <div><button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size"
-            (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}">{{size}}</button></div>
-      </div>
-    </div>
   </div>
 </div>
