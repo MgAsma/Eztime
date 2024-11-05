@@ -35,7 +35,17 @@ export class ProjectListComponent implements OnInit {
   permissions: any = [];
   user_id: string;
   orgId: any;
-
+  sortValue: string = '';
+  directionValue: string = '';
+  arrow:boolean=false;
+  arrowState: { [key: string]: boolean } = {
+    project_name: false,
+    client_name: false,
+    project_manager_name: false,
+    start_date: false,
+    end_date: false,
+    status_name: false,
+  };
 
   constructor(
     private modalService: NgbModal,
@@ -186,21 +196,13 @@ export class ProjectListComponent implements OnInit {
   }
 
 
-  arrow: boolean = false
-  directionValue: any = 'desc'
-
-  sortValue: any = 'p_name'
-  sort(direction: any, value: any) {
-    if (direction == 'asc') {
-      this.arrow = true
-      this.directionValue = direction
-      this.sortValue = value
-    }
-    else {
-      this.arrow = false
-      this.directionValue = direction
-      this.sortValue = value
-    }
+  sort(direction: string, column: string) {
+    Object.keys(this.arrowState).forEach(key => {
+      this.arrowState[key] = false;
+    });
+    this.arrowState[column] = direction === 'asc';
+    this.directionValue = direction;
+    this.sortValue = column;
   }
 
   getContinuousIndex(index: number): number {

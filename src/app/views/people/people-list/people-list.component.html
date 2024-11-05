@@ -21,10 +21,19 @@
                         <tr> 
                           <th scope="col">S.No</th>
                           <th scope="col">Photo  </th>
-                          <th scope="col">Employee Name <i  *ngIf="!arrow" (click)="sort('asc','first_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','first_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-                          <th scope="col">designation Name <i  *ngIf="!arrow" (click)="sort('asc','designation_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','designation_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+                          <th scope="col">Employee Name 
+                            <i *ngIf="!arrowState['first_name']" (click)="sort('asc','first_name')" class="bi bi-arrow-up"></i>
+                            <i (click)="sort('desc','first_name')" *ngIf="arrowState['first_name']" class="bi bi-arrow-down"></i>
+                          </th>
+                          <th scope="col">designation Name 
+                            <i *ngIf="!arrowState['designation_name']" (click)="sort('asc','designation_name')" class="bi bi-arrow-up"></i>
+                            <i (click)="sort('desc','designation_name')" *ngIf="arrowState['designation_name']" class="bi bi-arrow-down"></i>
+                          </th>
                           <!-- <th scope="col">DOJ <i  *ngIf="!arrow" (click)="sort('asc','u_date_of_joining')" class="bi bi-arrow-up"></i><i (click)="sort('desc','u_date_of_joining')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
-                          <th scope="col">Status <i  *ngIf="!arrow" (click)="sort('asc','u_status')" class="bi bi-arrow-up"></i><i (click)="sort('desc','u_status')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+                          <th scope="col">Status 
+                            <i *ngIf="!arrowState['is_active']" (click)="sort('asc','is_active')" class="bi bi-arrow-up"></i>
+                            <i (click)="sort('desc','is_active')" *ngIf="arrowState['is_active']" class="bi bi-arrow-down"></i>
+                          </th>
                           <th scope="col">
                                 Action
                            </th>
@@ -32,23 +41,23 @@
                       </thead>
                       <tbody>
                         <ng-container *ngIf="(allPeople ) as result">
-                        <tr *ngFor='let item of result; let i=index'>
+                        <tr *ngFor='let item of result | customSort:directionValue:sortValue; let i=index'>
                             <td>{{getContinuousIndex(i)}}</td>
                             <td class="p-r">
-                              <img  [src]="item.user.profile_image? item.user.profile_image : '../assets/images/no-profile-pic.png'" height="45px" width="45px" style="border-radius: 50%;">
-                              <a *ngIf="item.user.profile_image" href="{{item.user.profile_image}}" target="_blank">
+                              <img  [src]="item.profile_image? item.profile_image : '../assets/images/no-profile-pic.png'" height="45px" width="45px" style="border-radius: 50%;">
+                              <a *ngIf="item.profile_image" href="{{item.profile_image}}" target="_blank">
                                 <i class="bi bi-eye-fill" id="eye-btn" container="body" ngbTooltip="View"></i>
                               </a>
                             </td>
-                            <td>{{item.user.first_name +" "+ item.user.last_name | titlecase}}</td>
+                            <td>{{item.first_name +" "+ item.last_name | titlecase}}</td>
                             <td>{{item.designation_name?item.designation_name:"NA" | titlecase}}</td>
                             <!-- <td *ngIf="isDate(item.u_date_of_joining)">{{item.u_date_of_joining | date:'YYYY-MM-dd'}}</td>  -->
                             <!-- <td *ngIf="!isDate(item.u_date_of_joining)">{{item.u_date_of_joining *1000 | date:'YYYY-MM-dd'}}</td>  -->
                             
                             <!-- <td style="padding-left: 15px !important;">{{item.center_name ? item.center_name :'NA' | titlecase}}</td> -->
                             <!-- <td class="p-r">
-                              <img src="{{item.user.profile_image}}" alt="NAN" height="25px" width="50px">
-                              <a *ngIf="item.user.profile_image" href="{{item.user.profile_image}}" target="_blank">
+                              <img src="{{item.profile_image}}" alt="NAN" height="25px" width="50px">
+                              <a *ngIf="item.profile_image" href="{{item.profile_image}}" target="_blank">
                                 <i class="bi bi-eye" id="eye-btn"></i>
                             </a>
                             </td> -->
@@ -58,8 +67,8 @@
                             <td *ngIf="item.is_active==false">Inactive</td>                                                        
                            <td>
                             <ng-container >
-                              <img src="../../../../assets/images/Edit.svg" class="icon-image" (click)="openUpdatePeople(item.user.id)"  container="body" ngbTooltip="Edit" />
-                              <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.user.id)"/>
+                              <img src="../../../../assets/images/Edit.svg" class="icon-image" (click)="openUpdatePeople(item.id)"  container="body" ngbTooltip="Edit" />
+                              <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.id)"/>
                           </ng-container>
                             <!-- <ng-container *ngFor="let access of permissions">
                               <button mat-raised-button mat-mini-fab  routerLink="/people/updatePeople/{{item.id}}/{{page}}/{{tableSize}}" *ngIf="access === 'UPDATE'">
@@ -125,7 +134,7 @@
                   <a href="{{item.u_profile_path}}" target="_blank">
                     <img src="{{item.u_profile_path}}" alt="" height="70px" width="27%">
                   </a>
-                <div class="p-2 pt-4">{{item.user.first_name +" "+ item.user.last_name |titlecase}}</div> 
+                <div class="p-2 pt-4">{{item.first_name +" "+ item.last_name |titlecase}}</div> 
               </div>
                 
                 <div class="col-6 p-2 text-end">
@@ -160,7 +169,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12 value-container">
-                          {{item.user.role_name|titlecase}}
+                          {{item.role_name|titlecase}}
                       </div>
                     </div>
                   </div>

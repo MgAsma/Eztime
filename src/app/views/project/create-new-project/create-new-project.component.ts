@@ -406,8 +406,9 @@ export class CreateNewProjectComponent implements OnInit {
   // delete task
   deleteTaskRow(index: any) {
     this.subTasks.removeAt(index);
-    console.log(this.subTasks);
-    console.log(this.projectForm.value.project_task)
+    // console.log(this.subTasks);
+    // console.log(this.projectForm.value.project_task)
+    this.api.showSuccess('Task removed')
     // this.projectForm.patchValue({ project_task: this.subTasks });
   }
 
@@ -494,9 +495,10 @@ export class CreateNewProjectComponent implements OnInit {
     // this.subTasks.clear();
     this.api.getProjCategoryById(event.value).subscribe(
       (resp) => {
+        // task.get('is_template')?.value === true &&
         for (let i = this.subTasks.length - 1; i >= 0; i--) {
           const task = this.subTasks.at(i);
-          if (task.get('is_template')?.value === true && task.get('is_saved')?.value === false && task.get('is_cancelled')?.value === false) {
+          if ( task.get('is_saved')?.value === false && task.get('is_cancelled')?.value === false) {
             this.subTasks.removeAt(i);
           }
         }
@@ -595,7 +597,7 @@ export class CreateNewProjectComponent implements OnInit {
         this.api.addProjectDetails(data).subscribe(res => {
           if (res) {
             this.api.showSuccess(res['message']);
-            window.location.reload();
+            this.ngOnInit();
           }
           else {
             this.api.showError('Error')

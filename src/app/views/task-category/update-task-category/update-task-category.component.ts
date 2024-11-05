@@ -231,6 +231,7 @@ export class UpdateTaskCategoryComponent implements OnInit {
     this.dynamicArray.removeAt(index);
     console.log(this.dynamicArray)
     this.taskCategoryForm.patchValue({ task_name: this.dynamicArray });
+    this.api.showSuccess('Task deleted')
   }
 
   save(index1: any) {
