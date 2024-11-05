@@ -1,4 +1,4 @@
-<div class="card-container">
+<div class="card-container" *ngIf="leaveData.length">
   <div class="row">
     <div class="col-sm-12 col-md-4" *ngFor="let leave of leaveData">
      
@@ -18,7 +18,7 @@
         <div class="row">
           <div class="col-6">
             <div class="total">
-              <div class="leave-counts">{{ leave.total_number_of_leaves }}</div>
+              <div class="leave-counts">{{ leave.total_number_of_leaves + leave.consumed_leaves}}</div>
               <div>Total</div>
             </div>
             
@@ -28,7 +28,7 @@
               'balance3': (leave.total_number_of_leaves - leave.consumed_leaves <= 3 && leave.total_number_of_leaves - leave.consumed_leaves > 0),
               'balance0': (leave.total_number_of_leaves - leave.consumed_leaves === 0)
             }">
-              <div class="leave-counts">{{ leave.total_number_of_leaves - leave.consumed_leaves }}</div>
+              <div class="leave-counts">{{ leave.total_number_of_leaves }}</div>
               <div>Balance</div>
             </div>
           </div>
@@ -38,4 +38,4 @@
     </div>
   </div>
 </div>
-
+<div *ngIf="!leaveData.length" style="text-align: center;height: 20vh;display: flex;align-items: center;justify-content: center;">No Records Found!</div>

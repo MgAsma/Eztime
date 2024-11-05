@@ -103,7 +103,7 @@ export class UpdateOrganizationComponent implements OnInit {
       organization_name: ['', [ Validators.required,Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/)]],
       
       email: ['', [Validators.required, Validators.email]],
-      address: ['', Validators.pattern(/^\S.*$/)],
+      address: ['', [Validators.pattern(/^\S.*$/),Validators.maxLength(300)]],
       city: ['', Validators.required],
       state: ['', Validators.required],
       country: ['', Validators.required],
