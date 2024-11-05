@@ -413,3 +413,6 @@ span {
     }
 
 }
+::ng-deep .login-content-bg .mat-form-field-appearance-outline .mat-form-field-suffix {
+    top: .25em !important;
+}

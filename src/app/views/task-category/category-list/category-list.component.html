@@ -108,7 +108,7 @@
 
 <div class="container-wrapper mobileView">
   <div class="row mx-1 my-2">
-    <div class="col-sm-12">
+    <div class="col-sm-12 col-md-6">
       <!-- <h1>Project category list</h1> -->
     </div>
     <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
@@ -117,8 +117,7 @@
       <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
     </div>
   </div>
-  <div class="bg">
-    <div class="row ">
+  <div class="bg row mx-0 my-1">
       <ng-container *ngIf="(categoryList) as result">
         <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of result
         |paginate : {
@@ -127,20 +126,18 @@
             totalItems: count
           }'>
 
-          <div class="card p-3">
-            <div class="row">
+          <div class="card outer-card">
+            <div class="row py-1">
               <div class="col-6 text-start">
                 <h6 class="card-subtitle">Category name</h6>
                 <div class="value-container">{{item.category_name|titlecase}}</div>
               </div>
-              <div class="col-6 p-2 text-end">
-                <ng-container *ngFor="let access of permissions">
-                  <a *ngIf="access === 'UPDATE'"> <button type="button" class="toolbar-btn"
-                      (click)='editCard(item.id)'><i class="bi bi-pencil-square"
-                        style="color: #000; font-size: 24px;"></i></button></a>
-                  <a *ngIf="access === 'DELETE'"> <button type="button" class="toolbar-btn" (click)="open(item.id)"><i
-                        class="bi bi-trash" style="color: red; font-size: 24px;"></i></button></a>
-                </ng-container>
+              <div class="col-6 p-0 text-end">
+                <img src="../../../../assets/images/Edit.svg" class="icon-image" (click)='editCard(item.id
+    )' container="body" ngbTooltip="Edit" />
+                <img src="../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete"
+                  (click)="open(item.id
+    )" />
               </div>
             </div>
             <div class="row ">
@@ -161,18 +158,6 @@
           <app-generic-norecards></app-generic-norecards>
         </div>
       </ng-container>
-    </div>
-    <!-- <div class="row mobile-pagination" *ngIf="categoryList.length !== 0">
-      <div class="col-sm-12">
-        <div class="mobile-pagination-content">
-          <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
-          </pagination-controls>
-          <div><button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size"
-              (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}">{{size}}</button>
-          </div>
-        </div>
-      </div>
-    </div> -->
     <div class="pagination-container p-0 pt-2">
       <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
       </pagination-controls>
@@ -184,8 +169,8 @@
       </div>
     </div>
     <div class="s-position">
-      <ng-container *ngFor="let access of permissions">
-        <button *ngIf="access === 'CREATE'" routerLink="/task/add" type="button" mat-fab
+      <ng-container>
+        <button routerLink="/task/add" type="button" mat-fab
           class="createbtn-new mat-btn-s"><i class="fa fa-plus"></i>
         </button>
       </ng-container>

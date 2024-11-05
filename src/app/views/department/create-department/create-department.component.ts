@@ -17,6 +17,7 @@ export class CreateDepartmentComponent implements OnInit {
   allDepartment: any = [];
   department: any;
   org_id: string;
+  error:boolean = false;
   status = [
     { value: 'active', viewValue: 'Active' },
     { value: 'inactive', viewValue: 'Inactive' },
@@ -61,12 +62,7 @@ export class CreateDepartmentComponent implements OnInit {
       this.api.postDepartmentList(this.departmentForm.value).subscribe(res => {
         if (res) {
           this.api.showSuccess(res['message']);
-          Object.keys(this.departmentForm.controls).forEach(key => {
-            this.departmentForm.get(key)?.setErrors(null);
-          });
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
+          this.departmentForm.reset();
         }
         else {
           this.api.showError('Error!')

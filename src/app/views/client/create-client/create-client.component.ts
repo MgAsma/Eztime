@@ -46,7 +46,7 @@ export class CreateClientComponent implements OnInit {
       contact_person_name:['',[Validators.required]],
       is_billable:[true,[Validators.required]],
       address:['',[Validators.required,Validators.pattern(/^\S.*$/)]] ,
-      email:['',[Validators.required,Validators.email]],
+      email:['',[Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       phone_number:['',[Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       created_by:this.user_id,
       organization: this.orgId
@@ -86,7 +86,7 @@ export class CreateClientComponent implements OnInit {
       this.api.addClientDetails(this.clientForm.value).subscribe(response=>{
         if(response){
           this.api.showSuccess('Client added successfully!!');
-          window.location.reload();
+         this.clientForm.reset();
         }
         else{
           this.api.showError('Error!')

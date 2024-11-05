@@ -43,7 +43,7 @@ export class UpdateClientComponent implements OnInit {
       clint_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
       contact_person_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
       address:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      email:['',[Validators.required,Validators.email]],
+      email:['',[Validators.required,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       is_billable:['',[Validators.required]],
       phone_number:['',[Validators.required ,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       created_by: this.user_id,

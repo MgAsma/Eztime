@@ -32,7 +32,7 @@ const routes: Routes = [
         path:'update/:id', component:UpdateRoleComponent
       },
       {
-        path:'roles-access/:id/:role', component:RolesAccessComponent,children:[
+        path:'roles-access/:id', component:RolesAccessComponent,children:[
           {
             path:'accounts-config', component:AccountsConfigComponent
           },

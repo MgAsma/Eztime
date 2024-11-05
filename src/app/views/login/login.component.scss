@@ -440,3 +440,6 @@ span {
     color: #126EB4;
     font-size: 20px;
 }
+::ng-deep .login-content-bg .mat-form-field-appearance-outline .mat-form-field-suffix {
+    top: .25em !important;
+}

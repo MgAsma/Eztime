@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 
@@ -22,149 +22,147 @@ export class RolesAccessComponent implements OnInit {
   allSelected:boolean = false;
   selectedLabelNames: any = [];
   itemId: any;
-  constructor(private _fb: FormBuilder, private routes: ActivatedRoute, private common_service: CommonServiceService,
+ buttonName:any;
+  constructor(private _fb: FormBuilder, private router:Router, private routes: ActivatedRoute, private common_service: CommonServiceService,
     private api: ApiserviceService,
   ) {
     this.user_id = sessionStorage.getItem('user_id')
     this.designation_id = this.routes.snapshot.paramMap.get('id')
-    this.role = this.routes.snapshot.paramMap.get('role');
     this.organization_id = sessionStorage.getItem('organization_id')
-    // sessionStorage.setItem('designation_id', this.designation_id)
-    // sessionStorage.setItem('user_role_c_side', this.role)
-    this.mainMenu = [
-      {
-        label: 'Accounts',
-        icon: 'fa fa-key',
-        type: 'radio',
-        class: 'form-check-input',
-        labelClass: 'form-check-label',
-        checked: false,
-        containerClass: 'form-check',
-        controlName: 'accounts',
-        path: 'accounts-config'
-      },
-      {
-        label: 'Roles',
-        icon: 'fa fa-handshake',
-        type: 'radio',
-        class: 'form-check-input',
-        labelClass: 'form-check-label',
-        checked: false,
-        containerClass: 'form-check',
-        controlName: 'roles',
-        path: 'roles-config'
-      },
-      {
-        label: 'Department',
-        icon: 'fa fa-th-large',
-        type: 'radio',
-        class: 'form-check-input',
-        labelClass: 'form-check-label',
-        checked: false,
-        containerClass: 'form-check',
-        controlName: 'department',
-        path: 'department-config'
-      },
-      {
-        label: 'People',
-        icon: 'fa fa-user-plus',
-        type: 'radio',
-        class: 'form-check-input',
-        labelClass: 'form-check-label',
-        checked: false,
-        containerClass: 'form-check',
-        controlName: 'people',
-        path: 'people-config'
-      },
-      {
-        label: 'Leave/Holiday List',
-        icon: 'fa fa-calendar',
-        type: 'radio',
-        class: 'form-check-input',
-        labelClass: 'form-check-label',
-        checked: false,
-        containerClass: 'form-check',
-        controlName: 'leave/holiday',
-        path: `leave/holiday-config`
-      },
-      {
-        label: 'Timesheet',
-        icon: 'fa fa-clock',
-        type: 'radio',
-        class: 'form-check-input',
-        labelClass: 'form-check-label',
-        checked: false,
-        containerClass: 'form-check',
-        controlName: 'timesheet',
-        path: 'timesheet-config'
-      },
-      {
-        label: 'Industry/Sector',
-        icon: 'fa fa-building',
-        type: 'radio',
-        class: 'form-check-input',
-        labelClass: 'form-check-label',
-        checked: false,
-        containerClass: 'form-check',
-        controlName: 'industry/sector',
-        path: 'industry-config'
-      },
-      {
-        label: 'Review',
-        icon: 'fa fa-sitemap',
-        type: 'radio',
-        class: 'form-check-input',
-        labelClass: 'form-check-label',
-        checked: false,
-        containerClass: 'form-check',
-        controlName: 'review',
-        path: 'review'
-      },
-      {
-        label: 'Clients',
-        icon: 'fa fa-building',
-        type: 'radio',
-        class: 'form-check-input',
-        labelClass: 'form-check-label',
-        checked: false,
-        containerClass: 'form-check',
-        controlName: 'clients',
-        path: 'clients-config'
-      },
-      // {
-      //   label:'Project Status',
-      //   icon:'fa fa-list',
-      //   type:'radio',
-      //   class:'form-check-input',
-      //   labelClass:'form-check-label',
-      //   checked:false,
-      //   containerClass:'form-check',
-      //   controlName:'projectStatus',
-      //   path:'project-status-config'
-      // },
-      {
-        label: 'Project Task Categories',
-        icon: 'fa fa-tags',
-        type: 'radio',
-        class: 'form-check-input',
-        labelClass: 'form-check-label',
-        checked: false,
-        containerClass: 'form-check',
-        controlName: 'projectTaskCategories',
-        path: 'project-task-config'
-      },
-      {
-        label: 'Projects',
-        icon: 'fa fa-folder-open',
-        type: 'radio',
-        class: 'form-check-input',
-        labelClass: 'form-check-label',
-        checked: false,
-        containerClass: 'form-check',
-        controlName: 'projects',
-        path: 'projects'
-      },
-    ]
+    // this.mainMenu = [
+    //   {
+    //     label: 'Accounts',
+    //     icon: 'fa fa-key',
+    //     type: 'radio',
+    //     class: 'form-check-input',
+    //     labelClass: 'form-check-label',
+    //     checked: false,
+    //     containerClass: 'form-check',
+    //     controlName: 'accounts',
+    //     path: 'accounts-config'
+    //   },
+    //   {
+    //     label: 'Roles',
+    //     icon: 'fa fa-handshake',
+    //     type: 'radio',
+    //     class: 'form-check-input',
+    //     labelClass: 'form-check-label',
+    //     checked: false,
+    //     containerClass: 'form-check',
+    //     controlName: 'roles',
+    //     path: 'roles-config'
+    //   },
+    //   {
+    //     label: 'Department',
+    //     icon: 'fa fa-th-large',
+    //     type: 'radio',
+    //     class: 'form-check-input',
+    //     labelClass: 'form-check-label',
+    //     checked: false,
+    //     containerClass: 'form-check',
+    //     controlName: 'department',
+    //     path: 'department-config'
+    //   },
+    //   {
+    //     label: 'People',
+    //     icon: 'fa fa-user-plus',
+    //     type: 'radio',
+    //     class: 'form-check-input',
+    //     labelClass: 'form-check-label',
+    //     checked: false,
+    //     containerClass: 'form-check',
+    //     controlName: 'people',
+    //     path: 'people-config'
+    //   },
+    //   {
+    //     label: 'Leave/Holiday List',
+    //     icon: 'fa fa-calendar',
+    //     type: 'radio',
+    //     class: 'form-check-input',
+    //     labelClass: 'form-check-label',
+    //     checked: false,
+    //     containerClass: 'form-check',
+    //     controlName: 'leave/holiday',
+    //     path: `leave/holiday-config`
+    //   },
+    //   {
+    //     label: 'Timesheet',
+    //     icon: 'fa fa-clock',
+    //     type: 'radio',
+    //     class: 'form-check-input',
+    //     labelClass: 'form-check-label',
+    //     checked: false,
+    //     containerClass: 'form-check',
+    //     controlName: 'timesheet',
+    //     path: 'timesheet-config'
+    //   },
+    //   {
+    //     label: 'Industry/Sector',
+    //     icon: 'fa fa-building',
+    //     type: 'radio',
+    //     class: 'form-check-input',
+    //     labelClass: 'form-check-label',
+    //     checked: false,
+    //     containerClass: 'form-check',
+    //     controlName: 'industry/sector',
+    //     path: 'industry-config'
+    //   },
+    //   {
+    //     label: 'Review',
+    //     icon: 'fa fa-sitemap',
+    //     type: 'radio',
+    //     class: 'form-check-input',
+    //     labelClass: 'form-check-label',
+    //     checked: false,
+    //     containerClass: 'form-check',
+    //     controlName: 'review',
+    //     path: 'review'
+    //   },
+    //   {
+    //     label: 'Clients',
+    //     icon: 'fa fa-building',
+    //     type: 'radio',
+    //     class: 'form-check-input',
+    //     labelClass: 'form-check-label',
+    //     checked: false,
+    //     containerClass: 'form-check',
+    //     controlName: 'clients',
+    //     path: 'clients-config'
+    //   },
+    //   // {
+    //   //   label:'Project Status',
+    //   //   icon:'fa fa-list',
+    //   //   type:'radio',
+    //   //   class:'form-check-input',
+    //   //   labelClass:'form-check-label',
+    //   //   checked:false,
+    //   //   containerClass:'form-check',
+    //   //   controlName:'projectStatus',
+    //   //   path:'project-status-config'
+    //   // },
+    //   {
+    //     label: 'Project Task Categories',
+    //     icon: 'fa fa-tags',
+    //     type: 'radio',
+    //     class: 'form-check-input',
+    //     labelClass: 'form-check-label',
+    //     checked: false,
+    //     containerClass: 'form-check',
+    //     controlName: 'projectTaskCategories',
+    //     path: 'project-task-config'
+    //   },
+    //   {
+    //     label: 'Projects',
+    //     icon: 'fa fa-folder-open',
+    //     type: 'radio',
+    //     class: 'form-check-input',
+    //     labelClass: 'form-check-label',
+    //     checked: false,
+    //     containerClass: 'form-check',
+    //     controlName: 'projects',
+    //     path: 'projects'
+    //   },
+    // ]
 
   }
 
@@ -172,9 +170,15 @@ export class RolesAccessComponent implements OnInit {
   ngOnInit(): void {
     this.selectedLabelNames = [];
     this.common_service.setTitle(this.BreadCrumbsTitle);
+    this.getDesignationNameFromDesignationId();
     this.rolesAccess();
   }
 
+  getDesignationNameFromDesignationId(){
+    this.api.getDesignationListById(this.designation_id).subscribe((res:any)=>{
+     this.role= res.designation_name;
+      })
+   }
   rolesAccess() {
     this.api.userAccess(this.user_id).subscribe(
       (data: any) => {
@@ -192,10 +196,12 @@ export class RolesAccessComponent implements OnInit {
     this.api.getAccessByDesignationId(`?${'designation'}=${this.designation_id}&${'organization'}=${this.organization_id}`).subscribe(
       (res: any) => {
         console.log(res);
-        this.itemId = res[0].id;
         if (res.length == 0) {
           this.hasAccessData = false;
+          this.buttonName = 'Submit';
         } else {
+          this.itemId = res[0].id;
+          this.buttonName = 'Update Changes'
           this.hasAccessData = true;
           this.mainMenu.forEach((element1: any) => {
             element1['is_checked'] = false;
@@ -257,6 +263,10 @@ export class RolesAccessComponent implements OnInit {
 
   modifyChanges(text: any) {
     // console.log(text);
+    if(this.selectedLabelNames.length==0){
+      this.api.showError('Please give access to the designation')
+    }
+    else{
     let data = {
       designation: this.designation_id,
       organization: this.organization_id,
@@ -270,6 +280,7 @@ export class RolesAccessComponent implements OnInit {
       this.updateAccesstoDesignation(data);
     }
   }
+  }
 
 
 
@@ -278,7 +289,9 @@ export class RolesAccessComponent implements OnInit {
       (res: any) => {
         console.log(res);
         this.api.showSuccess(res.message)
-        this.ngOnInit();
+        setTimeout(() => {
+          this.router.navigate(['/designation/list'])
+        }, 2000);
       },
       (error: any) => {
         console.log(error);

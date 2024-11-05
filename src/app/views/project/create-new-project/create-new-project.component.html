@@ -30,7 +30,7 @@
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                 <mat-label>Enter Project Name <b class="r-star">*</b></mat-label>
                                 <input matInput placeholder="Enter project name" formControlName="project_name"
-                                    autocomplete="off">
+                                    autocomplete="off" maxlength="50">
                             </mat-form-field>
                             <div class="px-2" *ngIf="f['project_name']?.touched && f['project_name']?.invalid">
                                 <span class="text-errors"
@@ -40,6 +40,10 @@
                                 <span class="text-errors"
                                     *ngIf="f['project_name'].invalid && f['project_name'].hasError('pattern')">
                                     Cannot start with a space.
+                                </span>
+                                <span class="text-errors"
+                                    *ngIf="f['project_name'].value?.length > 50">
+                                    Text cannot exceed 50 characters.
                                 </span>
                             </div>
                         </div>

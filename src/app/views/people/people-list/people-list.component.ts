@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
 })
 export class PeopleListComponent implements OnInit {
   BreadCrumbsTitle:any='Employees list';
-  currentIndex = 1;
+  currentIndex : any;
   allPeople=[];
   page = 1;
   count = 0;

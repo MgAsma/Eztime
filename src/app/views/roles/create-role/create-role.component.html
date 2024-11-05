@@ -1,6 +1,6 @@
 <div class="container-fluid p-3 p-lg-4">
     <div class="generic-form bg ">
-        <form [formGroup]='roleForm' (ngSubmit)='addRole()'>
+        <form [formGroup]='roleForm'>
             <div class="row gx-0 mx-0 create-role">
                 <div class="col-12 mt-lg-2">
                     <div class="row gx-0 mx-0 mb-3">
@@ -22,25 +22,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="row gx-0 mx-0 mb-3">
-                        <div class="col-sm-12 col-md-6 col-lg-4">
-                            <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
-                                <mat-label>Status <b class="r-star">*</b></mat-label>
-                                <mat-select formControlName="role_status" autocomplete="off" placeholder="Select status"
-                                    panelClass="custom-select-panel" [disableOptionCentering]="true">
-                                    <mat-option *ngFor="let status of status" [value]="status.value">
-                                        {{status.viewValue}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            <div class="px-2" *ngIf="f['role_status']?.touched && f['role_status']?.invalid">
-                                <span class="text-errors"
-                                    *ngIf="f['role_status'].errors && f['role_status'].errors['required'] ">Status is
-                                    required</span>
-                            </div>
-                        </div>
-                    </div> -->
-                    
                     <div class="row gx-0 mx-0 mb-3">
                         <div class="col-sm-12 col-md-6 col-lg-4">
                             <mat-form-field appearance="outline" class="w-100 ">
@@ -63,7 +44,7 @@
                     <div class="row gx-0 mx-0 ">
                         <div class="col mt-3">
                             <button mat-button type="button" class="back-button" (click)="BackToRolesList()">Back</button>
-                            <button mat-raised-button class="proceedbtn" type="submit">Submit</button>
+                            <button mat-raised-button class="proceedbtn" type="button" (click)="addRole()">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -72,69 +53,3 @@
     </div>
 </div>
 
-<!-- <div class="container-fluid mobileView">
-    <div class="row mx-1 my-2">
-        <div class="col-sm-6">
-            <h1> <i  class="bi bi-arrow-left" (click)="goBack($event)
-  
-  "></i>  Add role</h1>
-        </div>
-    </div>
-    <div class="generic-form bg mx-1">
-     <form [formGroup]='roleForm' (ngSubmit)='addRole()' >
-        <div class="row">
-            <div class="col-sm-6">
-                <h4>Role details</h4>
-            </div>
-        </div>
-     
-        <div class="row">
-            <div class="col-sm-6">
-                <p>Role name <span >*</span></p> 
-                <input type="text" class="form-control p-3 sizeinput" formControlName="designation_name" placeholder="Enter role name" aria-describedby="emailHelp"  autocomplete="off">
-                <div *ngIf="f['designation_name'].touched && f['designation_name'].invalid" >
-                    <p *ngIf="f['designation_name'].errors['required']" class="error-msg">Role name is required</p>
-                </div>
-                <div *ngIf="f['designation_name'].invalid && f['designation_name'].hasError('pattern') " >
-                   <p class="error-msg">Cannot start with a space.
-                </p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <p>Description <span >*</span></p>
-                    <textarea class="form-control" placeholder="Enter your description here" formControlName="description" id="floatingTextarea2" style="height: 100px"></textarea>
-                    <div *ngIf="f['description'].touched && f['description'].invalid" >
-                        <div *ngIf="f['description'].errors && f['description'].errors['required']" ><p class="error-msg">Description is required</p></div>
-                    </div> 
-                    <div *ngIf="f['description'].invalid && f['description'].hasError('pattern') " >
-                        <p class="error-msg">Cannot start with a space.
-                     </p>
-                     </div>     
-              </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-6">
-                <p>Status <span >*</span></p>
-                <select formControlName="role_status" class="form-select p-3 sizeinput">
-                    <option value="" selected disabled>Select status</option>
-                    <option value="Active" >Active</option>
-                    <option value="Inactive">Inactive</option>
-                </select>
-                <div *ngIf="f['role_status'].touched && f['role_status'].invalid" >
-                    <div *ngIf="f['role_status'].errors && f['role_status'].errors['required'] " ><p class="error-msg">Status is required</p></div>
-                </div> 
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-2 col-md-6 col-lg-6">
-                <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Submit</button>
-            </div>
-        </div>
-     </form>
-       
-    </div>
-   
-</div> -->
