@@ -170,8 +170,6 @@ export class ManagerReviewComponent implements OnInit {
   }
   open(content, status) {
     if (content) {
-    
-      const confirmText = status === 'APPROVED' ? 'Approve' : 'Decline'
       const modelRef = this.modalService.open(GenericDeleteComponent, {
         size: <any>'sm'
         ,
@@ -193,7 +191,7 @@ export class ManagerReviewComponent implements OnInit {
     }
   }
   updateTimesheetStatus(content, status) {
-    const confirmText = status === 'Approve' ? 'Approved' : 'Declined'
+    const confirmText = status === 'Approve' ? 'approved' : 'declined'
     let date = new Date()
     let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
     let data =   {
@@ -219,7 +217,7 @@ export class ManagerReviewComponent implements OnInit {
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
     let date = new Date()
     let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
-    const confirmText = status === 'Approve' ? 'Approved' : 'Declined'
+    const confirmText = status === 'Approve' ? 'approved' : 'declined'
     let data = {
       id: content.id,
       status: status === 'Approve' ? 2 : 3,
