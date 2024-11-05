@@ -288,7 +288,7 @@ sessions = [
       reporting_to: this.leaveForm.value.applying_to,
       cc: JSON.stringify(this.leaveForm.value.cc_to), 
       employee: this.user_id,
-      attachment: this.fileUrl,
+      attachment: this.fileUrl || null,
       message: this.leaveForm.value.reason,
       organization: Number(this.orgId)
     };

@@ -36,7 +36,7 @@
                        <mat-error *ngIf="!leaveTypeForm.get('leave_description')?.hasError('pattern') && leaveTypeForm?.get('leave_description')?.touched && leaveTypeForm.get('leave_description')?.hasError('maxlength')">
                         Leave description cannot exceed more than 300 characters.
                        </mat-error>
-                       <mat-hint align="end">{{leaveTypeForm.get('leave_description').value.length}}/300 characters</mat-hint>
+                       <mat-hint align="end">{{leaveTypeForm.get('leave_description')?.value?.length}}/300 characters</mat-hint>
                     </mat-form-field>
                   </div>
             </div>

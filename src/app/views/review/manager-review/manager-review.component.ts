@@ -225,6 +225,7 @@ export class ManagerReviewComponent implements OnInit {
       status: status === 'Approve' ? 2 : 3,
       organization: this.orgId,
       employee: content.employee,
+      leave_type:content.leave_type,
       approved_by: status === 'Approve' ? this.user_id :null,
       approved_on: status === 'Approve' ? formattedDate :null,
       rejected_by: status === 'Declined' ? this.user_id :null,
@@ -234,7 +235,7 @@ export class ManagerReviewComponent implements OnInit {
     this.api.updateData(`${environment.live_url}/${environment.update_leave_details}/`,data).subscribe(res => {
 
       if (res) {
-        this.api.showSuccess(`Timesheet ${confirmText} successfully`)
+        this.api.showSuccess(`Leave ${confirmText} successfully`)
         this.getAllLeaves(`?status-id=1&organization=${this.orgId}`)
       }
 
