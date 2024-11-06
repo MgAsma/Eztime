@@ -31,8 +31,12 @@ export class DepartmentListComponent implements OnInit {
   enabled: boolean = true;
   // @Input() selectedSortValue1:Subject<any> = new Subject<any>();
   // @Input() selectedDirection1:Subject<any> = new Subject<any>()
-  directionValue:any='desc'
-  sortValue:any='od_name'
+  sortValue: string = '';
+  directionValue: string = '';
+  arrowState: { [key: string]: boolean } = {
+    department_name: false,
+    created_datetime: false,
+  };
   params: { page_number: number; data_per_page: number; };
   permissions: any = [];
   user_id: string;
@@ -166,18 +170,14 @@ export class DepartmentListComponent implements OnInit {
     this.getDepartment(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`);
   } 
   arrow:boolean=false
-  sort(direction:any,value:any){
-    if(direction=='asc'){
-      this.arrow=true
-      this.directionValue= direction
-      this.sortValue= value
-    }
-    else{
-      this.arrow=false
-      this.directionValue= direction
-      this.sortValue= value
-    }
-  } 
+  sort(direction: string, column: string) {
+    Object.keys(this.arrowState).forEach(key => {
+      this.arrowState[key] = false;
+    });
+    this.arrowState[column] = direction === 'asc';
+    this.directionValue = direction;
+    this.sortValue = column;
+  }
   open(content) {
     if(content){
       const modelRef =   this.modalService.open(GenericDeleteComponent, {

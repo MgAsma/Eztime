@@ -58,11 +58,11 @@ export class RoleListComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.org_id = sessionStorage.getItem('organization_id')
-    this.getAllDesignations();
     // this.getRole(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`)
     this.enabled = true
     this.role = sessionStorage.getItem('user_role_name')
     this.user_id = sessionStorage.getItem('user_id')
+    this.getAllDesignations();
     
     
     // this.getUserControls()
@@ -203,21 +203,20 @@ export class RoleListComponent implements OnInit {
   
 
   }
-  directionValue:any='desc'
-
-  sortValue:any='user_role_name'
+  sortValue: string = '';
+  directionValue: string = '';
+  arrowState: { [key: string]: boolean } = {
+    department_name: false,
+    created_datetime: false,
+  };
   arrow:boolean=false
-  sort(direction:any,value:any){
-    if(direction=='asc'){
-      this.arrow=true
-      this.directionValue= direction
-      this.sortValue= value
-    }
-    else{
-      this.arrow=false
-      this.directionValue= direction
-      this.sortValue= value
-    }
+  sort(direction: string, column: string) {
+    Object.keys(this.arrowState).forEach(key => {
+      this.arrowState[key] = false;
+    });
+    this.arrowState[column] = direction === 'asc';
+    this.directionValue = direction;
+    this.sortValue = column;
   }
   getContinuousIndex(index: number):number {
     return (this.page-1)*this.tableSize+ index + 1;

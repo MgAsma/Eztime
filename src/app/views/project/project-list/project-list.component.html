@@ -25,21 +25,30 @@
           <thead>
             <tr>
               <th scope="col">S.No</th>
-              <th scope="col">Project <i *ngIf="!arrow" (click)="sort('asc','project_name')"
-                  class="bi bi-arrow-up"></i><i (click)="sort('desc','project_name')" *ngIf="arrow"
-                  class="bi bi-arrow-down"></i></th>
-              <th scope="col">Client <i *ngIf="!arrow" (click)="sort('asc','client_name')" class="bi bi-arrow-up"></i><i
-                  (click)="sort('desc','client_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-              <th scope="col">Project Manager <i *ngIf="!arrow" (click)="sort('asc','project_manager_name')"
-                  class="bi bi-arrow-up"></i><i (click)="sort('desc','project_manager_name')" *ngIf="arrow"
-                  class="bi bi-arrow-down"></i></th>
-              <th scope="col">Start Date <i *ngIf="!arrow" (click)="sort('asc','start_date')"
-                  class="bi bi-arrow-up"></i><i (click)="sort('desc','start_date')" *ngIf="arrow"
-                  class="bi bi-arrow-down"></i></th>
-              <th scope="col">End Date <i *ngIf="!arrow" (click)="sort('asc','end_date')" class="bi bi-arrow-up"></i><i
-                  (click)="sort('desc','end_date')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
-              <th scope="col">Status <i *ngIf="!arrow" (click)="sort('asc','status_name')" class="bi bi-arrow-up"></i><i
-                  (click)="sort('desc','status_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th>
+              <th scope="col">Project
+                <i *ngIf="!arrowState['project_name']" (click)="sort('asc','project_name')" class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','project_name')" *ngIf="arrowState['project_name']" class="bi bi-arrow-down"></i>
+              </th>
+              <th scope="col">Client 
+                <i *ngIf="!arrowState['client_name']" (click)="sort('asc','client_name')" class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','client_name')" *ngIf="arrowState['client_name']" class="bi bi-arrow-down"></i>
+              </th>
+              <th scope="col">Project Manager 
+                <i *ngIf="!arrowState['project_manager_name']" (click)="sort('asc','project_manager_name')" class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','project_manager_name')" *ngIf="arrowState['project_manager_name']" class="bi bi-arrow-down"></i>
+              </th>
+              <th scope="col">Start Date 
+                <i *ngIf="!arrowState['start_date']" (click)="sort('asc','start_date')" class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','start_date')" *ngIf="arrowState['start_date']" class="bi bi-arrow-down"></i>
+              </th>
+              <th scope="col">End Date 
+                <i *ngIf="!arrowState['end_date']" (click)="sort('asc','end_date')" class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','end_date')" *ngIf="arrowState['end_date']" class="bi bi-arrow-down"></i>
+              </th>
+              <th scope="col">Status 
+                <i *ngIf="!arrowState['status_name']" (click)="sort('asc','status_name')" class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','status_name')" *ngIf="arrowState['status_name']" class="bi bi-arrow-down"></i>
+              </th>
               <th scope="col">Action</th>
               <!-- <th scope="col">Tasks <i  *ngIf="!arrow" (click)="sort('asc','project_related_task_list_converted')" class="bi bi-arrow-up"></i><i (click)="sort('desc','project_related_task_list_converted')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
               <!-- <th scope="col">Approver <i  *ngIf="!arrow" (click)="sort('asc','approver_manager_first_name')" class="bi bi-arrow-up"></i><i (click)="sort('desc','approver_manager_first_name')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
@@ -47,7 +56,7 @@
           </thead>
           <tbody>
             <ng-container *ngIf="(allProjectList) as result">
-              <tr *ngFor='let item of result  ; let i=index'>
+              <tr *ngFor='let item of result | customSort:directionValue:sortValue;  ; let i=index'>
                 <td>{{getContinuousIndex(i)}}</td>
                 <td>{{item.project_name | titlecase}}</td>
                 <!-- <td>{{item.project_related_task_list_converted | titlecase}}</td> -->

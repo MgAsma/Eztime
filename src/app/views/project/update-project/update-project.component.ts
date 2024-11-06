@@ -447,6 +447,7 @@ export class UpdateProjectComponent implements OnInit {
   // delete task
   deleteTaskRow(index: any) {
     this.subTasks.removeAt(index);
+    this.api.showSuccess('Task removed')
     // this.updateForm.patchValue({ project_task: this.subTasks });
   }
 
@@ -555,7 +556,7 @@ export class UpdateProjectComponent implements OnInit {
       (resp) => {
         for (let i = this.subTasks.length - 1; i >= 0; i--) {
           const task = this.subTasks.at(i);
-          if (task.get('is_template')?.value === true && task.get('is_saved')?.value === false && task.get('is_cancelled')?.value === false) {
+          if (task.get('is_saved')?.value === false && task.get('is_cancelled')?.value === false) {
             this.subTasks.removeAt(i);
           }
         }
