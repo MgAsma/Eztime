@@ -19,7 +19,7 @@
                   <span *ngIf="!f['organization_name'].errors?.['required'] && f['organization_name'].errors?.['pattern'] && !f['organization_name'].errors?.['maxlength']">
                     Invalid name. Only characters are allowed.
                   </span>
-                  <span *ngIf="!f['organization_name'].errors?.['required'] && f['organization_name'].errors?.['pattern'] && f['organization_name'].errors?.['maxlength']">
+                  <span *ngIf="!f['organization_name'].errors?.['required'] && f['organization_name'].errors?.['maxlength']">
                     Organization name cannot exceed more than 50 characters.
                   </span>
                 </mat-error>
@@ -115,7 +115,7 @@
                 <mat-error *ngIf="f['address']?.touched && f['organization_name']?.invalid">
                   
                   <span *ngIf="f['address'].errors?.['pattern'] && !f['address'].errors?.['maxlength']">Cannot start with a space.</span>
-                  <span *ngIf="f['address'].errors?.['pattern'] && f['address'].errors?.['maxlength']">Address cannot exceed more than 300 characters.</span>
+                  <span *ngIf="(!f['address'].errors?.['pattern'] && f['address'].errors?.['maxlength'])">Address cannot exceed more than 300 characters.</span>
                 </mat-error>
                 <mat-hint align="end">{{f['address'].value.length}}/300 characters</mat-hint>
               </mat-form-field>

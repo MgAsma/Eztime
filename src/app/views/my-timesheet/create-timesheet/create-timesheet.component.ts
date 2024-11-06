@@ -50,6 +50,7 @@ export class CreateTimesheetComponent implements OnInit {
   totalHoursForDate: number;
   taskDetailsList:string[]=[];
   currentDate: Date;
+  projectDetailsSet: any;
 
   constructor(
     private builder: FormBuilder,
@@ -99,12 +100,12 @@ export class CreateTimesheetComponent implements OnInit {
     const remainingHours = totalHours - spentHours;
     this.remainingHours = remainingHours;
     // return remainingHours > 0 ? remainingHours : 0;
-    return this.totalHoursForDate >0 ? totalHours - this.totalHoursForDate : remainingHours;
+    return this.totalHoursForDate > 0 ? totalHours - this.totalHoursForDate : remainingHours;
   }
 
 
   calculateTotalHoursForDate(selectedDate: string): number {
-    let totalHours = 0;
+    let totalHours = 8;
 
     // Iterate through all projects in the response FormArray
     this.createdProject?.controls?.forEach((projectGroup: FormGroup) => {
@@ -117,7 +118,7 @@ export class CreateTimesheetComponent implements OnInit {
 
             // Add the hours for tasks with the matching selected date
             if (taskDate === selectedDate && timeSpent) {
-                totalHours += parseFloat(timeSpent);
+                totalHours -= parseFloat(timeSpent);
             }
         });
     });
@@ -414,49 +415,75 @@ deleteProject(projectIndex: number): void {
  
   saveTimesheet(i: number): void {
     const projectGroup = this.getProjectControl(i);
-   
-    // Check if the specific project's form controls and task form are valid
-    const isProjectGroupInvalid = projectGroup.invalid;
-    const isTaskFormInvalid = projectGroup.get('isTaskForm').value ? this.taskForm.invalid : false;
-    //  const tasks = taskArray.at(i).value
-    // const isEditing = tasks.find(element=>element.isEditing);
-    const tasksArray = projectGroup.get('task_list') as FormArray;
-    let isEditing = false;
+    // Create a composite key for all fields in createProjectDetails for duplicate detection
+  const clientId = projectGroup.get('client_id')?.value;
+  const projectId = projectGroup.get('project_id')?.value;
+  const description = projectGroup.get('description')?.value;
+  const createdDate = projectGroup.get('created_date')?.value;
+  const clientList = projectGroup.get('clientList')?.value;
+  const projectList = projectGroup.get('projectList')?.value;
+  const taskList = projectGroup.get('taskList')?.value;
+  const time = projectGroup.get('time')?.value;
+  
+  // Create a JSON string as a composite key for all fields
+  const projectDetailsKey = JSON.stringify({ clientId, projectId, description, createdDate, clientList, projectList, taskList, time });
 
-    // Loop through the FormArray
-    tasksArray?.controls.forEach((taskGroup: FormGroup, index: number) => {
-      const taskIsEditing = taskGroup.get('isEditing')?.value;
-      console.log(`Task ${index + 1}: isEditing =`, taskIsEditing);
-  
-      // Update isEditing if any task is being edited
-      if (taskIsEditing === true) {
-        isEditing = true;
-      }
-    });
-    if (isProjectGroupInvalid || isTaskFormInvalid) {
-      // Mark all controls as touched for the specific index
-      projectGroup.markAllAsTouched();
-      if (projectGroup.get('isTaskForm').value) {
-        this.taskForm.markAllAsTouched();
-      }
-      
-  
-      this.api.showWarning('Please select the mandatory fields');
-      projectGroup.get('isSaved').setValue(false);
-      this.isSaved = false;
-      this.isTaskSubmitted = true;
-    } else {
-      if (isEditing || (projectGroup.get('isTaskForm').value && this.taskForm.invalid) || (projectGroup.get('isTaskForm').value && this.taskForm.valid )) {
-        this.api.showWarning('Please add task details before save');
-        this.isTaskSubmitted = true;
-      } else {
-        this.isTaskSubmitted = false;
-        projectGroup.get('showSave').setValue(true);
-        projectGroup.get('isSaved').setValue(true);
-        this.isSaved = true;
-      }
-      // this.saveTask(i)
-    }
+  // Check if the project details are duplicated
+  const hasDuplicates = this.projectDetailsSet?.has(projectDetailsKey) || false;
+  console.log(this.projectDetailsSet)
+  // If duplicates are found, show a warning and exit
+  if (hasDuplicates) {
+    this.api.showWarning('Duplicate project details are not allowed');
+  }else{
+ // Add the current project details to the Set to keep track of uniqueness
+ this.projectDetailsSet = this.projectDetailsSet || new Set();
+ this.projectDetailsSet.add(projectDetailsKey);
+
+
+   // Check if the specific project's form controls and task form are valid
+   const isProjectGroupInvalid = projectGroup.invalid;
+   const isTaskFormInvalid = projectGroup.get('isTaskForm').value ? this.taskForm.invalid : false;
+   //  const tasks = taskArray.at(i).value
+   // const isEditing = tasks.find(element=>element.isEditing);
+   const tasksArray = projectGroup.get('task_list') as FormArray;
+   let isEditing = false;
+
+   // Loop through the FormArray
+   tasksArray?.controls.forEach((taskGroup: FormGroup, index: number) => {
+     const taskIsEditing = taskGroup.get('isEditing')?.value;
+     console.log(`Task ${index + 1}: isEditing =`, taskIsEditing);
+ 
+     // Update isEditing if any task is being edited
+     if (taskIsEditing === true) {
+       isEditing = true;
+     }
+   });
+   if (isProjectGroupInvalid || isTaskFormInvalid) {
+     // Mark all controls as touched for the specific index
+     projectGroup.markAllAsTouched();
+     if (projectGroup.get('isTaskForm').value) {
+       this.taskForm.markAllAsTouched();
+     }
+     
+     this.api.showWarning('Please select the mandatory fields');
+     projectGroup.get('isSaved').setValue(false);
+     this.isSaved = false;
+     this.isTaskSubmitted = true;
+   } else {
+     if (isEditing || (projectGroup.get('isTaskForm').value && this.taskForm.invalid) || (projectGroup.get('isTaskForm').value && this.taskForm.valid )) {
+       this.api.showWarning('Please add task details before save');
+       this.isTaskSubmitted = true;
+     } else {
+       this.isTaskSubmitted = false;
+       projectGroup.get('showSave').setValue(true);
+       projectGroup.get('isSaved').setValue(true);
+       this.isSaved = true;
+     }
+     // this.saveTask(i)
+   }
+  }
+
+ 
   }
   
   deleteTask(projectIndex: number, taskIndex: number): void {

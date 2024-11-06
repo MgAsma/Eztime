@@ -100,8 +100,7 @@ export class UpdateOrganizationComponent implements OnInit {
   }
   initform() {
     this.organizationForm = this._fb.group({
-      organization_name: ['', [ Validators.required,Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/)]],
-      
+      organization_name: ['', [ Validators.required,Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/),Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],
       address: ['', [Validators.pattern(/^\S.*$/),Validators.maxLength(300)]],
       city: ['', Validators.required],

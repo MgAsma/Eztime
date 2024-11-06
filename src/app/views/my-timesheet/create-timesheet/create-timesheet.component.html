@@ -381,7 +381,8 @@
 
               <div class="row w-100 my-2">
                 <div class="col"></div>
-                <div class="col-4 text-end" ><mat-label>Hours left :{{getRemainingHours(i)}}</mat-label></div>
+                <div class="col-4 text-end" ><mat-label>Hours left :{{calculateTotalHoursForDate(project.get('created_date')?.value)}}</mat-label></div>
+                <!-- <div class="col-4 text-end" ><mat-label>Hours left :{{getRemainingHours(i)}}</mat-label></div> -->
                 <div class="col-2"></div>
               </div>
             </div> 
