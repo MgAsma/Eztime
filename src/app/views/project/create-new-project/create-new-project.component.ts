@@ -186,7 +186,7 @@ export class CreateNewProjectComponent implements OnInit {
         // console.log('admin',res);
         let data = [];
         data.push({ 'first_name': res.first_name,'last_name':res?.last_name || '', 'id': res.id });
-        console.log(data,'ttttttttttttttt')
+        // console.log(data,'ttttttttttttttt')
         this.allManager = data;
       },
       (error: any) => {

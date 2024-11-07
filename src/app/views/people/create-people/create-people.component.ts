@@ -387,6 +387,7 @@ export class CreatePeopleComponent implements OnInit {
       date_of_joining: this.thirdFormGroup.value.date_of_joining,
       status: this.thirdFormGroup.value.status,
     })
+    // console.log(' this.fourthFormGroup', this.fourthFormGroup.value)
   }
   setIndex(event) {
     // console.log(event,'index');
