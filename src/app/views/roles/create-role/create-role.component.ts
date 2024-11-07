@@ -42,8 +42,8 @@ export class CreateRoleComponent implements OnInit {
   initForm(){
    
     this.roleForm= this.builder.group({
-      designation_name:['',[Validators.required]],
-      description:[''],
+      designation_name:['',[Validators.required,Validators.maxLength(50)]],
+      description:['',Validators.maxLength(300)],
       organization:this.orgId
       // priority:['',Validators.required],
       // role_status:['',Validators.required],

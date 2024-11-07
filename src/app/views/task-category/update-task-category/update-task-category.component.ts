@@ -55,7 +55,7 @@ export class UpdateTaskCategoryComponent implements OnInit {
   }
   initForm() {
     this.taskCategoryForm = this.builder.group({
-      category_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      category_name: ['', [Validators.required, Validators.maxLength(50)]],
       projectcategory_task: this.builder.array([]),
     });
 
@@ -74,7 +74,7 @@ export class UpdateTaskCategoryComponent implements OnInit {
   taskFields() {
     // it contains form feild
     return this.builder.group({
-      task_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      task_name: ['', [Validators.required,Validators.maxLength(150)]],
       billable_type: ['', Validators.required],
     })
   }
@@ -153,7 +153,7 @@ export class UpdateTaskCategoryComponent implements OnInit {
       //  this.dynamicArray = this.taskCategoryForm.get('projectcategory_task') as FormArray;
       taskList.forEach(task => {
         this.dynamicArray.push(this.builder.group({
-          task_name: [task.task_name, [Validators.required, Validators.pattern(/^\S.*$/),]],
+          task_name: [task.task_name, [Validators.required, Validators.maxLength(150)]],
           is_saved: true,
           is_cancelled: false,
           edit_icon: true
@@ -189,7 +189,7 @@ export class UpdateTaskCategoryComponent implements OnInit {
     if (allTasksValid) {
       this.dynamicArray.push(this.builder.group({
         id: [''],
-        task_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+        task_name: ['', [Validators.required,Validators.maxLength(150)]],
         is_saved: false,
         edit_icon: false,
         is_cancelled: false

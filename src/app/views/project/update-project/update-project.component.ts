@@ -88,13 +88,13 @@ export class UpdateProjectComponent implements OnInit {
       organization: this.org_id,
       user_id: this.user_id,
       client_id: ['', [Validators.required]],
-      project_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      project_name: ['', [Validators.required,Validators.maxLength(50)]],
       start_date: ['', [Validators.required]],
       end_date: ['', [Validators.required]],
-      team: ['', Validators.required],
+      team: [''],
       project_manager_id: ['', [Validators.required]],
-      estimated_hour: ['', [Validators.required]],
-      estimated_billing: ['', [Validators.required]],
+      // estimated_hour: ['', [Validators.required]],
+      // estimated_billing: ['', [Validators.required]],
       status_id: ['', [Validators.required]],
       project_task: this.builder.array([]),
       project_category: [''],
@@ -156,8 +156,8 @@ export class UpdateProjectComponent implements OnInit {
         start_date: data.start_date,
         end_date: data.end_date,
         status_id: data.status,
-        estimated_hour: data.estimated_hour,
-        estimated_billing: data.estimated_billing,
+        // estimated_hour: data.estimated_hour,
+        // estimated_billing: data.estimated_billing,
         project_manager_id: data.project_manager,
         team: this.selectedTeamId,
         project_category: data.project_category,
@@ -166,9 +166,9 @@ export class UpdateProjectComponent implements OnInit {
       const taskList = data.project_task;
       taskList.forEach(task => {
         this.subTasks.push(this.builder.group({
-          task_name: [task.task_name, [Validators.pattern(/^\S.*$/), Validators.required]],
+          task_name: [task.task_name, [Validators.required,Validators.maxLength(150)]],
           status: [Number(task.status), Validators.required],
-          assignee: [task.assignee, Validators.required],
+          assignee: [task.assignee],
           id: [task.id],
           is_saved: true,
           edit_icon: true,
@@ -276,7 +276,7 @@ export class UpdateProjectComponent implements OnInit {
       if (task.assignee && !this.assigneePeoples.some(person => person.id === task.assignee)) {
         taskControl.removeControl('original_task_assignee');
         taskControl.patchValue({
-          assignee: '',
+          assignee: null,
           is_saved: false,
           edit_icon: false,
           is_cancelled: false
@@ -330,7 +330,7 @@ export class UpdateProjectComponent implements OnInit {
       if (task.assignee && !this.assigneePeoples.some(person => person.id === task.assignee)) {
         taskControl.removeControl('original_task_assignee');
         taskControl.patchValue({
-          assignee: '',
+          assignee: null,
           is_saved: false,
           edit_icon: false,
           is_cancelled: false
@@ -383,9 +383,9 @@ export class UpdateProjectComponent implements OnInit {
 
   createSubTask(): FormGroup {
     return this.builder.group({
-      task_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      task_name: ['', [Validators.required,Validators.maxLength(150)]],
       status: ['', Validators.required],
-      assignee: ['', Validators.required],
+      assignee: null,
       id: [''],
       is_saved: false,
       is_cancelled: false,
@@ -564,9 +564,9 @@ export class UpdateProjectComponent implements OnInit {
         const taskList = resp['projectcategory_task'];
         taskList.forEach(task => {
           this.subTasks.push(this.builder.group({
-            task_name: [task.task_name, [Validators.required, Validators.pattern(/^\S.*$/),]],
+            task_name: [task.task_name, [Validators.required, Validators.maxLength(150)]],
             status: ['', Validators.required],
-            assignee: ['', Validators.required],
+            assignee: null,
             id: [''],
             is_saved: false,
             is_cancelled: false,
@@ -629,8 +629,8 @@ export class UpdateProjectComponent implements OnInit {
           end_date: this.datepipe.transform(EndDate, 'yyyy-MM-dd'),
           team: tempTeamIds,
           project_manager: this.updateForm.value.project_manager_id,
-          estimated_hour: this.updateForm.value.estimated_hour,
-          estimated_billing: this.updateForm.value.estimated_billing,
+          // estimated_hour: this.updateForm.value.estimated_hour,
+          // estimated_billing: this.updateForm.value.estimated_billing,
           status: this.updateForm.value.status_id,
           project_task: tempList,
           project_category: this.updateForm.value.project_category,

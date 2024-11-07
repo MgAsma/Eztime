@@ -43,8 +43,8 @@ export class CreateDepartmentComponent implements OnInit {
   }
   initForm() {
     this.departmentForm = this.builder.group({
-      department_name: ['', [Validators.required]],
-      description: [''],
+      department_name: ['', [Validators.required,Validators.maxLength(50)]],
+      description: ['',Validators.maxLength(300)],
       organization: this.org_id
       // od_status:['',Validators.required],
     })
@@ -55,7 +55,6 @@ export class CreateDepartmentComponent implements OnInit {
 
   addDepartment() {
     if (this.departmentForm.invalid) {
-      this.api.showError('Please enter the mandatory fields!')
       this.departmentForm.markAllAsTouched();
     }
     else {

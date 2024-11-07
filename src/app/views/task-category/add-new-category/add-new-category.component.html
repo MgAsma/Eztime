@@ -14,7 +14,7 @@
                                     <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                         <mat-label>Category Name <b class="r-star">*</b></mat-label>
                                         <input matInput placeholder="Enter category name" formControlName="category_name"
-                                            autocomplete="off">
+                                            autocomplete="off" pattern="^(?!\s)(.*\S)?$">
                                     </mat-form-field>
                                     <div class="px-2" *ngIf="f['category_name']?.touched && f['category_name']?.invalid">
                                         <span class="text-errors"
@@ -23,7 +23,11 @@
                                             required</span>
                                         <span class="text-errors"
                                             *ngIf="f['category_name'].invalid && f['category_name'].hasError('pattern')">
-                                            Cannot start with a space.
+                                            Please remove extra space.
+                                        </span>
+                                        <span class="text-errors"
+                                            *ngIf="!f['category_name'].errors?.['required'] && f['category_name'].errors?.['maxlength']">
+                                            Category name cannot exceed more than 50 characters.
                                         </span>
                                     </div>
                                 </div>
@@ -64,7 +68,7 @@
                                                         id="basic-addon1">#{{i+1}}</span>
                                                     <textarea type="text" [formControlName]="'task_name'"
                                                         autocomplete="off" (input)="taskFieldEntering($event,i)"
-                                                        class="form-control w-75" placeholder="Enter task name"
+                                                        class="form-control w-75" placeholder="Enter task name" pattern="^(?!\s)(.*\S)?$"
                                                         [readonly]="task.value.edit_icon" rows="1"
                                                         [ngStyle]="{'background-color': task.value.edit_icon ? '#F4F4F4' : 'white'}"></textarea>
                                                 </div>
@@ -84,7 +88,11 @@
                                                     </span>
                                                     <span class="text-errors"
                                                         *ngIf="task.get('task_name').invalid && task.get('task_name').hasError('pattern')">
-                                                        Cannot start with a space.
+                                                        Please remove extra space.
+                                                    </span>
+                                                    <span class="text-errors"
+                                                        *ngIf="task.get('task_name').hasError('maxlength')">
+                                                        Task name cannot exceed more than 150 characters.
                                                     </span>
                                                 </div>
                                             </div>
@@ -140,7 +148,7 @@
                         <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
                             <mat-form-field appearance="outline" class=" custom-mat-form-field">
                                 <mat-label>Category Name <b class="r-star">*</b></mat-label>
-                                <input matInput placeholder="Enter category name" formControlName="category_name"
+                                <input matInput placeholder="Enter category name" formControlName="category_name" pattern="^(?!\s)(.*\S)?$"
                                     autocomplete="off">
                             </mat-form-field>
                             <div class="px-2" *ngIf="f['category_name']?.touched && f['category_name']?.invalid">
@@ -149,7 +157,11 @@
                                     required</span>
                                 <span class="text-errors"
                                     *ngIf="f['category_name'].invalid && f['category_name'].hasError('pattern')">
-                                    Cannot start with a space.
+                                    Please remove extra space.
+                                </span>
+                                <span class="text-errors"
+                                    *ngIf="!f['category_name'].errors?.['required'] && f['category_name'].errors?.['maxlength']">
+                                    Category name cannot exceed more than 50 characters.
                                 </span>
                             </div>
                         </div>
@@ -187,7 +199,7 @@
                                             <span class="input-group-text" style="background-color: #F4F4F4;"
                                                 id="basic-addon1">#{{i+1}}</span>
                                             <textarea type="text" [formControlName]="'task_name'" autocomplete="off"
-                                                (input)="taskFieldEntering($event,i)" class="form-control w-75"
+                                                (input)="taskFieldEntering($event,i)" class="form-control w-75" pattern="^(?!\s)(.*\S)?$"
                                                 placeholder="Enter task name" [readonly]="task.value.edit_icon" rows="1"
                                                 [ngStyle]="{'background-color': task.value.edit_icon ? '#F4F4F4' : 'white'}"></textarea>
                                         </div>
@@ -199,7 +211,11 @@
                                             </span>
                                             <span class="text-errors"
                                                 *ngIf="task.get('task_name').invalid && task.get('task_name').hasError('pattern')">
-                                                Cannot start with a space.
+                                                Please remove extra space.
+                                            </span>
+                                            <span class="text-errors"
+                                                *ngIf="task.get('task_name').hasError('maxlength')">
+                                                Task name cannot exceed more than 150 characters.
                                             </span>
                                         </div>
                                     </div>

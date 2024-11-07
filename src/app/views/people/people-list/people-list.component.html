@@ -50,7 +50,7 @@
                               </a>
                             </td>
                             <td>{{item.first_name +" "+ item.last_name | titlecase}}</td>
-                            <td>{{item.designation_name?item.designation_name:"NA" | titlecase}}</td>
+                            <td>{{item?.designation_name?item.designation_name:"-" | titlecase}}</td>
                             <!-- <td *ngIf="isDate(item.u_date_of_joining)">{{item.u_date_of_joining | date:'YYYY-MM-dd'}}</td>  -->
                             <!-- <td *ngIf="!isDate(item.u_date_of_joining)">{{item.u_date_of_joining *1000 | date:'YYYY-MM-dd'}}</td>  -->
                             

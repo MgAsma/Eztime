@@ -118,18 +118,18 @@ export class CreateNewProjectComponent implements OnInit {
       organization: this.orgId,
       user_id: this.user_id,
       client_id: ['', [Validators.required]],
-      project_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      project_name: ['', [Validators.required,Validators.maxLength(50)]],
       start_date: ['', [Validators.required]],
       end_date: ['', [Validators.required]],
-      team: ['', Validators.required],
+      team: [''],
       project_manager_id: ['', [Validators.required]],
-      estimated_hour: ['', [Validators.required]],
-      estimated_billing: ['', [Validators.required]],
+      estimated_hour: [''],
+      estimated_billing: [''],
       status_id: ['', [Validators.required]],
       project_task: this.builder.array([]),
       project_category: [''],
     })
-    this.addTask();
+    // this.addTask();
   }
   // Client list
   getClient() {
@@ -185,8 +185,8 @@ export class CreateNewProjectComponent implements OnInit {
       (res: any) => {
         // console.log('admin',res);
         let data = [];
-        data.push({ 'first_name': res.first_name,'last_name':res.last_name, 'id': res.id });
-        // console.log(data)
+        data.push({ 'first_name': res.first_name,'last_name':res?.last_name || '', 'id': res.id });
+        console.log(data,'ttttttttttttttt')
         this.allManager = data;
       },
       (error: any) => {
@@ -277,7 +277,7 @@ export class CreateNewProjectComponent implements OnInit {
       if (task.assignee && !this.assigneePeoples.some(person => person.id === task.assignee)) {
         taskControl.removeControl('original_task_assignee');
         taskControl.patchValue({
-          assignee: '',
+          assignee: null,
           is_saved: false,
           edit_icon: false,
           is_cancelled: false
@@ -305,7 +305,7 @@ export class CreateNewProjectComponent implements OnInit {
       if (task.assignee && !this.assigneePeoples.some(person => person.id === task.assignee)) {
         taskControl.removeControl('original_task_assignee');
         taskControl.patchValue({
-          assignee: '',
+          assignee: null,
           is_saved: false,
           edit_icon: false,
           is_cancelled: false
@@ -347,9 +347,9 @@ export class CreateNewProjectComponent implements OnInit {
 
   createSubTask(): FormGroup {
     return this.builder.group({
-      task_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      task_name: ['', [Validators.required,Validators.maxLength(150)]],
       status: ['', Validators.required],
-      assignee: ['', Validators.required],
+      assignee: null,
       is_saved: false,
       is_cancelled: false,
       edit_icon: false,
@@ -506,9 +506,9 @@ export class CreateNewProjectComponent implements OnInit {
         const taskList = resp['projectcategory_task'];
         taskList.forEach(task => {
           this.subTasks.push(this.builder.group({
-            task_name: [task.task_name, [Validators.required, Validators.pattern(/^\S.*$/),]],
+            task_name: [task.task_name, [Validators.required, Validators.maxLength(150)]],
             status: ['', Validators.required],
-            assignee: ['', Validators.required],
+            assignee: null,
             is_saved: false,
             is_cancelled: false,
             edit_icon: false,
@@ -586,8 +586,8 @@ export class CreateNewProjectComponent implements OnInit {
           end_date: this.datepipe.transform(EndDate, 'yyyy-MM-dd'),
           team: tempTeamIds,
           project_manager: this.projectForm.value.project_manager_id,
-          estimated_hour: this.projectForm.value.estimated_hour,
-          estimated_billing: this.projectForm.value.estimated_billing,
+          // estimated_hour: this.projectForm.value.estimated_hour,
+          // estimated_billing: this.projectForm.value.estimated_billing,
           status: this.projectForm.value.status_id,
           project_task: tempList,
           project_category: this.projectForm.value.project_category,

@@ -256,8 +256,8 @@ export class CreatePeopleComponent implements OnInit {
     // let passwordRegex = 
     this.firstFormGroup = this.formBuilder.group({
       profile_image: ['', [this.fileFormatValidator]],
-      first_name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/), Validators.maxLength(20)]],
-      last_name: ['', [Validators.required, , Validators.pattern(/^[a-zA-Z]+$/), Validators.minLength(1), Validators.maxLength(20)]],
+      first_name: ['', [Validators.required, Validators.maxLength(50)]],
+      last_name: ['', [Validators.required, Validators.maxLength(50)]],
       gender: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, Validators.pattern('^\\d{10}$')]],

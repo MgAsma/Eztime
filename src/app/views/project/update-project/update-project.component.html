@@ -1,6 +1,6 @@
 <div class="container-fluid webView p-20">
     <div class="generic-form bg mx-2">
-        <form [formGroup]='updateForm' (ngSubmit)='update()'>
+        <form [formGroup]='updateForm'>
             <div class="row update-project-details">
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <div class="py-3">
@@ -30,7 +30,7 @@
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                 <mat-label>Enter Project Name <b class="r-star">*</b></mat-label>
                                 <input matInput placeholder="Enter project name" formControlName="project_name"
-                                    autocomplete="off">
+                                    autocomplete="off" pattern="^(?!\s)(.*\S)?$">
                             </mat-form-field>
                             <div class="px-2" *ngIf="f['project_name']?.touched && f['project_name']?.invalid">
                                 <span class="text-errors"
@@ -39,7 +39,11 @@
                                     required</span>
                                 <span class="text-errors"
                                     *ngIf="f['project_name'].invalid && f['project_name'].hasError('pattern')">
-                                    Cannot start with a space.
+                                    Please remove extra space.
+                                </span>
+                                <span class="text-errors"
+                                    *ngIf="!f['project_name'].errors?.['required'] && f['project_name'].errors?.['maxlength']">
+                                    Project name cannot exceed more than 50 characters.
                                 </span>
                             </div>
                         </div>
@@ -92,7 +96,7 @@
                             </div>
                         </div>
                         <!-- estimated hours -->
-                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                        <!-- <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                 <mat-label>Estimated Hours <b class="r-star">*</b></mat-label>
                                 <input matInput type="number" onkeydown="return event.keyCode !== 69"
@@ -104,9 +108,9 @@
                                     *ngIf="f['estimated_hour'].errors && f['estimated_hour'].errors['required']">Estimated
                                     hours is required</span>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- billing -->
-                        <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                        <!-- <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                 <mat-label>Estimated Billing <b class="r-star">*</b></mat-label>
                                 <input matInput placeholder="Enter billing amount"
@@ -118,7 +122,7 @@
                                     *ngIf="f['estimated_billing'].errors && f['estimated_billing'].errors['required']">Estimated
                                     billing is required</span>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- project status -->
                         <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
@@ -148,7 +152,7 @@
                                 </mat-select>
                             </mat-form-field> -->
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
-                                <mat-label>Select Team <b class="r-star">*</b></mat-label>
+                                <mat-label>Select Team</mat-label>
                                 <mat-select formControlName="team" autocomplete="off" placeholder="Select team"
                                     panelClass="custom-select-panel" [disableOptionCentering]="true" multiple
                                     (selectionChange)="matTeamSelect()" [(ngModel)]="selectedTeamId">
@@ -168,25 +172,22 @@
                                     list is required</span>
                             </div>
                         </div>
-                        <div *ngIf="assigneePeoples.length!=0" class="col-sm-12 col-md-6  col-lg-6 team-border mb-3">
-                            <!-- <div class="team-mates" *ngFor="let item of assigneePeoples">
-                                <span class="">{{item.first_name}}</span>
-                                <span class="team-close-icon"> <i class="bi bi-x fs-5 fw-bold" (click)="teamDeselectedFromCard(item.id)"></i></span>
-                            </div> -->
-                            <div class="tag-container" [ngClass]="{ 'collapsed': isCollapsed }">
-                                <span *ngFor="let item of assigneePeoples" class="tag-item">
-                                    {{item.first_name}}<i class="bi bi-x fs-5 fw-bold"
-                                        (click)="openRemoveConfirmation('single',item.id)"></i>
+                        <div *ngIf="assigneePeoples.length!=0" class="col-sm-12 col-md-6  col-lg-6 mb-3">
+                            <div class="team-border">
+                                <div class="tag-container" [ngClass]="{ 'collapsed': isCollapsed }">
+                                    <span *ngFor="let item of assigneePeoples" class="tag-item">
+                                        {{item.first_name}}<i class="bi bi-x fs-5 fw-bold"
+                                            (click)="openRemoveConfirmation('single',item.id)"></i>
                                     </span>
+                                </div>
+                                <div class="controls mb-2">
+                                    <button type="button" (click)="openRemoveConfirmation('group','')"
+                                        class="clear-btn">Clear all</button>
+                                    <button type="button" (click)="toggleCollapse()" class="toggle-btn">
+                                        {{ isCollapsed ? 'Expand' : 'Collapse' }}
+                                    </button>
+                                </div>
                             </div>
-
-                            <div class="controls mb-2">
-                                <button type="button" (click)="openRemoveConfirmation('group','')" class="clear-btn">Clear all</button>
-                                <button type="button" (click)="toggleCollapse()" class="toggle-btn">
-                                    {{ isCollapsed ? 'Expand' : 'Collapse' }}
-                                </button>
-                            </div>
-
                         </div>
                     </div>
                     <!-- project template -->
@@ -247,14 +248,13 @@
                                                 </div>
                                                 <input matInput type="text" [formControlName]="'task_name'"
                                                     [ngClass]="{'auto-height': true}" placeholder="Enter task name"
-                                                    [readonly]="task.value.edit_icon"
+                                                    [readonly]="task.value.edit_icon" pattern="^(?!\s)(.*\S)?$"
                                                     [ngStyle]="{'background-color': task.value.edit_icon ? '#F4F4F4' : 'white'}">
                                                 <!-- </textarea> -->
                                             </div>
                                             <div class="col border-end">
                                                 <div class="p-ab">
-                                                    <mat-label class="task-labels">Status</mat-label><b
-                                                        class="r-star">*</b>
+                                                    <mat-label class="task-labels">Status</mat-label>
                                                 </div>
                                                 <mat-select [formControlName]="'status'" autocomplete="off"
                                                     placeholder="Select status" panelClass="custom-select-panel"
@@ -267,8 +267,7 @@
                                             </div>
                                             <div class="col mt-1">
                                                 <div class="p-ab">
-                                                    <mat-label class="task-labels">Assignee</mat-label><b
-                                                        class="r-star">*</b>
+                                                    <mat-label class="task-labels">Assignee</mat-label>
                                                 </div>
                                                 <mat-select [formControlName]="'assignee'" autocomplete="off"
                                                     placeholder="Select assignee" panelClass="custom-select-panel"
@@ -294,7 +293,11 @@
                                                     </span>
                                                     <span class="text-errors"
                                                         *ngIf="task.get('task_name').invalid && task.get('task_name').hasError('pattern')">
-                                                        Cannot start with a space.
+                                                        Please remove extra space.
+                                                    </span>
+                                                    <span class="text-errors"
+                                                        *ngIf="task.get('task_name').hasError('maxlength')">
+                                                        Task name cannot exceed more than 150 characters.
                                                     </span>
                                                 </div>
                                             </div>
@@ -329,10 +332,10 @@
                                         <i class="bi bi-pencil-square me-1 icon-bg" *ngIf="task.value.is_saved"
                                             container="body" style="color:#367ab7;" (click)="editTask(i)"
                                             ngbTooltip="Edit"></i>
-                                        <i class="bi bi-trash icon-bg"
-                                            *ngIf="!task.value.is_saved && subTasks.length!=1" container="body"
+                                        <i class="bi bi-trash icon-bg" *ngIf="!task.value.is_saved " container="body"
                                             style="color:red;" (click)="openDeleteConfirmation(i,task.value.id)"
                                             ngbTooltip="Delete"></i>
+                                        <!-- && subTasks.length!=1 -->
                                     </div>
                                 </div>
                             </div>
@@ -341,7 +344,8 @@
                     </div>
                     <div class="row mt-3">
                         <div>
-                            <button type="submit" mat-raised-button class="proceedbtn" color="primary">Update</button>
+                            <button type="button" mat-raised-button class="proceedbtn" color="primary"
+                                (click)="update()">Update</button>
                         </div>
                     </div>
 
@@ -355,7 +359,7 @@
 
 <div class="container-fluid mobileView">
     <div class="generic-form bg mx-1">
-        <form [formGroup]='updateForm' (ngSubmit)='update()'>
+        <form [formGroup]='updateForm'>
             <div class="row update-project-details">
                 <div class="col-12">
                     <div class="row">
@@ -385,7 +389,7 @@
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                 <mat-label>Enter Project Name <b class="r-star">*</b></mat-label>
                                 <input matInput placeholder="Enter project name" formControlName="project_name"
-                                    autocomplete="off">
+                                    autocomplete="off" pattern="^(?!\s)(.*\S)?$">
                             </mat-form-field>
                             <div class="px-2" *ngIf="f['project_name']?.touched && f['project_name']?.invalid">
                                 <span class="text-errors"
@@ -394,7 +398,11 @@
                                     required</span>
                                 <span class="text-errors"
                                     *ngIf="f['project_name'].invalid && f['project_name'].hasError('pattern')">
-                                    Cannot start with a space.
+                                    Please remove extra space.
+                                </span>
+                                <span class="text-errors"
+                                    *ngIf="!f['project_name'].errors?.['required'] && f['project_name'].errors?.['maxlength']">
+                                    Project name cannot exceed more than 50 characters.
                                 </span>
                             </div>
                         </div>
@@ -447,7 +455,7 @@
                             </div>
                         </div>
                         <!-- estimated hours -->
-                        <div class="col-sm-12 col-md-6 col-lg-3 mb-1">
+                        <!-- <div class="col-sm-12 col-md-6 col-lg-3 mb-1">
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                 <mat-label>Estimated Hours <b class="r-star">*</b></mat-label>
                                 <input matInput type="number" onkeydown="return event.keyCode !== 69"
@@ -459,9 +467,9 @@
                                     *ngIf="f['estimated_hour'].errors && f['estimated_hour'].errors['required']">Estimated
                                     hours is required</span>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- billing -->
-                        <div class="col-sm-12 col-md-6 col-lg-3 mb-1">
+                        <!-- <div class="col-sm-12 col-md-6 col-lg-3 mb-1">
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                 <mat-label>Estimated Billing <b class="r-star">*</b></mat-label>
                                 <input matInput placeholder="Enter billing amount"
@@ -473,7 +481,7 @@
                                     *ngIf="f['estimated_billing'].errors && f['estimated_billing'].errors['required']">Estimated
                                     billing is required</span>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- project status -->
                         <div class="col-sm-12 col-md-6 col-lg-3 mb-1">
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
@@ -493,7 +501,7 @@
                         <!-- team -->
                         <div class="col-sm-12 col-md-6 col-lg-6 mb-3 multi-select">
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
-                                <mat-label>Select Team <b class="r-star">*</b></mat-label>
+                                <mat-label>Select Team </mat-label>
                                 <mat-select formControlName="team" autocomplete="off" placeholder="Select team"
                                     panelClass="custom-select-panel" [disableOptionCentering]="true" multiple
                                     (selectionChange)="matTeamSelect()" [(ngModel)]="selectedTeamId">
@@ -513,21 +521,21 @@
                                     list is required</span>
                             </div>
                         </div>
-                        <div *ngIf="assigneePeoples.length!=0" class="col-sm-12 col-md-6 mx-3 col-lg-6 team-border mb-3">
-                            <div class="tag-container" [ngClass]="{ 'collapsed': isCollapsed }">
-                                <span *ngFor="let item of assigneePeoples" class="tag-item">
-                                    {{item.first_name}}<i class="bi bi-x fs-5 fw-bold"
-                                        (click)="teamDeselectedFromCard(item.id)"></i>
+                        <div *ngIf="assigneePeoples.length!=0" class="col-sm-12 col-md-6 mx-3 col-lg-6 mb-3">
+                            <div class="team-border">
+                                <div class="tag-container" [ngClass]="{ 'collapsed': isCollapsed }">
+                                    <span *ngFor="let item of assigneePeoples" class="tag-item">
+                                        {{item.first_name}}<i class="bi bi-x fs-5 fw-bold"
+                                            (click)="teamDeselectedFromCard(item.id)"></i>
                                     </span>
+                                </div>
+                                <div class="controls mb-2">
+                                    <button type="button" (click)="clearAll()" class="clear-btn">Clear all</button>
+                                    <button type="button" (click)="toggleCollapse()" class="toggle-btn">
+                                        {{ isCollapsed ? 'Expand' : 'Collapse' }}
+                                    </button>
+                                </div>
                             </div>
-
-                            <div class="controls mb-2">
-                                <button type="button" (click)="clearAll()" class="clear-btn">Clear all</button>
-                                <button type="button" (click)="toggleCollapse()" class="toggle-btn">
-                                    {{ isCollapsed ? 'Expand' : 'Collapse' }}
-                                </button>
-                            </div>
-
                         </div>
                     </div>
 
@@ -588,8 +596,8 @@
                                                         class="r-star">*</b>
                                                 </div>
                                                 <input matInput type="text" [formControlName]="'task_name'"
-                                                    [ngClass]="{'auto-height': true}" placeholder="Enter task name"
-                                                    [readonly]="task.value.edit_icon"
+                                                    pattern="^(?!\s)(.*\S)?$" [ngClass]="{'auto-height': true}"
+                                                    placeholder="Enter task name" [readonly]="task.value.edit_icon"
                                                     [ngStyle]="{'background-color': task.value.edit_icon ? '#F4F4F4' : 'white'}">
                                                 <!-- </textarea> -->
                                             </div>
@@ -609,8 +617,7 @@
                                             </div>
                                             <div class="col mt-1">
                                                 <div class="p-ab">
-                                                    <mat-label class="task-labels">Assignee</mat-label><b
-                                                        class="r-star">*</b>
+                                                    <mat-label class="task-labels">Assignee</mat-label>
                                                 </div>
                                                 <mat-select [formControlName]="'assignee'" autocomplete="off"
                                                     placeholder="Select assignee" panelClass="custom-select-panel"
@@ -636,7 +643,11 @@
                                                     </span>
                                                     <span class="text-errors"
                                                         *ngIf="task.get('task_name').invalid && task.get('task_name').hasError('pattern')">
-                                                        Cannot start with a space.
+                                                        Please remove extra space.
+                                                    </span>
+                                                    <span class="text-errors"
+                                                        *ngIf="task.get('task_name').hasError('maxlength')">
+                                                        Task name cannot exceed more than 150 characters.
                                                     </span>
                                                 </div>
                                             </div>
@@ -671,8 +682,7 @@
                                         <i class="bi bi-pencil-square me-1 icon-bg" *ngIf="task.value.is_saved"
                                             container="body" style="color:#367ab7;" (click)="editTask(i)"
                                             ngbTooltip="Edit"></i>
-                                        <i class="bi bi-trash icon-bg"
-                                            *ngIf="!task.value.is_saved && subTasks.length!=1" container="body"
+                                        <i class="bi bi-trash icon-bg" *ngIf="!task.value.is_saved " container="body"
                                             style="color:red;" (click)="openDeleteConfirmation(i,task.value.id)"
                                             ngbTooltip="Delete"></i>
                                     </div>
@@ -684,7 +694,8 @@
 
                     <div class="row mt-3">
                         <div>
-                            <button mat-raised-button class="proceedbtn mat-btn-s" type="submit">Update</button>
+                            <button mat-raised-button class="proceedbtn mat-btn-s" type="button"
+                                (click)="update()">Update</button>
                         </div>
                     </div>
                 </div>

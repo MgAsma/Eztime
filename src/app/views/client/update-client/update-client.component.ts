@@ -40,11 +40,11 @@ export class UpdateClientComponent implements OnInit {
   }
   initForm(){
     this.updateForm= this.builder.group({
-      clint_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      contact_person_name:['',[Validators.pattern(/^\S.*$/),Validators.required]],
-      address:['',[Validators.pattern(/^\S.*$/),Validators.required]],
+      clint_name:['',[Validators.maxLength(50),Validators.required]],
+      contact_person_name:['',[Validators.maxLength(50),Validators.required]],
+      address:['',[Validators.maxLength(200),Validators.required]],
       email:['',[Validators.required,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-      is_billable:['',[Validators.required]],
+      // is_billable:['',[Validators.required]],
       phone_number:['',[Validators.required ,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       created_by: this.user_id,
       organization: this.orgId
@@ -88,7 +88,7 @@ export class UpdateClientComponent implements OnInit {
         clint_name:data.clint_name,
         contact_person_name:data.contact_person_name,
         address:data.address,
-        is_billable:data.is_billable,
+        // is_billable:data.is_billable,
         email:data.email,
         phone_number:data.phone_number
         

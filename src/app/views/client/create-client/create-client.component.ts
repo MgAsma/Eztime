@@ -42,10 +42,10 @@ export class CreateClientComponent implements OnInit {
   }
   initForm(){
     this.clientForm= this.builder.group({
-      clint_name:['',[Validators.required]],
-      contact_person_name:['',[Validators.required]],
-      is_billable:[true,[Validators.required]],
-      address:['',[Validators.required,Validators.pattern(/^\S.*$/)]] ,
+      clint_name:['',[Validators.required,Validators.maxLength(50)]],
+      contact_person_name:['',[Validators.required,Validators.maxLength(50)]],
+      // is_billable:[true,[Validators.required]],
+      address:['',[Validators.required,Validators.maxLength(200)]] ,
       email:['',[Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       phone_number:['',[Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       created_by:this.user_id,

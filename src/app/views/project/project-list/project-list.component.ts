@@ -46,14 +46,19 @@ export class ProjectListComponent implements OnInit {
     end_date: false,
     status_name: false,
   };
-
+  userRole:String;
+  baseUrl:String;
   constructor(
     private modalService: NgbModal,
     private api: ApiserviceService,
     private router: Router,
     private location: Location,
     private common_service: CommonServiceService
-  ) { }
+  ) {
+    this.orgId = sessionStorage.getItem('organization_id')
+    this.user_id = sessionStorage.getItem('user_id');
+    this.userRole = sessionStorage.getItem('user_role_name');
+   }
   goBack(event) {
     event.preventDefault(); // Prevent default back button behavior
     this.location.back();
@@ -61,11 +66,14 @@ export class ProjectListComponent implements OnInit {
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.orgId = sessionStorage.getItem('organization_id')
-    this.user_id = sessionStorage.getItem('user_id');
     this.enabled = true;
-    this.getProject();
+    if(this.userRole==='Employee'){
+      this.baseUrl = `${'organization'}=${this.orgId}&${'employee_id'}=${this.user_id}`
+    } else{
+      this.baseUrl = `${'organization'}=${this.orgId}`
+    }
     // this.getUserControls()
+    this.getProject();
   }
   filterSearch() {
     this.api.getProjectDetails(`organization_id=${this.orgId}&search=${this.term}`).subscribe((data: any) => {
@@ -116,6 +124,7 @@ export class ProjectListComponent implements OnInit {
     })
   }
 
+  
   getProject() {
     let params = {
       page_number: this.page,
@@ -125,7 +134,7 @@ export class ProjectListComponent implements OnInit {
       user_id: this.user_id
     }
 
-    this.api.getProjectDetails(`${'organization'}=${this.orgId}`).subscribe((data: any) => {
+    this.api.getProjectDetails(this.baseUrl).subscribe((data: any) => {
       this.allProjectList = data;
       console.log( data,"ALL")
       // const noOfPages: number = data['result'].pagination.number_of_pages

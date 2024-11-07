@@ -19,6 +19,10 @@
                                     *ngIf="f['designation_name'].invalid && f['designation_name'].hasError('pattern')">
                                     Please remove extra space.
                                 </span>
+                                <span class="text-errors"
+                                    *ngIf="!f['designation_name'].errors?.['required'] && f['designation_name'].errors?.['maxlength']">
+                                    Designation name cannot exceed more than 50 characters.
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -29,14 +33,14 @@
                                 <textarea matInput placeholder="Enter description" formControlName="description"
                                     autocomplete="off" pattern="^(?!\s)(.*\S)?$"></textarea>
                             </mat-form-field>
+                            <div class="text-end"><small>{{f['description'].value.length}}/300 characters</small></div>
                             <div class="px-2" *ngIf="f['description']?.touched && f['description']?.invalid">
                                 <span class="text-errors"
-                                    *ngIf="f['description'].errors && f['description'].errors['required'] ">Description
-                                    is
-                                    required</span>
-                                <span class="text-errors"
                                     *ngIf="f['description'].invalid && f['description'].hasError('pattern')">
-                                    Please remove extra space.
+                                    Please remove extra space.</span>
+                                <span class="text-errors"
+                                    *ngIf="!f['description'].errors?.['required'] && f['description'].errors?.['maxlength']">
+                                    Description cannot exceed more than 300 characters.
                                 </span>
                             </div>
                         </div>

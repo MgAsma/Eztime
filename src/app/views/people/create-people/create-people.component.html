@@ -46,7 +46,8 @@
                                         <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
                                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                                 <mat-label>First Name <b class="r-star">*</b></mat-label>
-                                                <input matInput placeholder="Enter first name" formControlName="first_name" autocomplete="off">
+                                                <input matInput placeholder="Enter first name" formControlName="first_name" autocomplete="off"
+                                                pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
                                             </mat-form-field>
                                             <div class="px-2" *ngIf="firstFormGroup.get('first_name')?.touched && firstFormGroup.get('first_name')?.invalid">
                                                 <span class="text-errors" *ngIf="firstFormGroup.get('first_name').errors?.['required']">First name is required
@@ -54,19 +55,36 @@
                                                 <span class="text-errors" *ngIf="firstFormGroup.get('first_name').errors?.['pattern']">
                                                     Invalid name. Only letters are allowed, and the name must start with a letter.
                                                 </span>
+                                                <span class="text-errors"
+                                                    *ngIf="firstFormGroup.get('first_name').errors?.['maxlength']">
+                                                    First name cannot exceed more than 50 characters.
+                                                </span>
+                                                <!-- <span class="text-errors"
+                                                    *ngIf="f['contact_person_name'].invalid && f['contact_person_name'].hasError('pattern')">
+                                                    Invalid Contact person name
+                                                </span>
+                                                <span class="text-errors"
+                                                    *ngIf="!f['contact_person_name'].errors?.['required'] && f['contact_person_name'].errors?.['maxlength']">
+                                                    Contact person name cannot exceed more than 50 characters.
+                                                </span> -->
                                             </div>
                                         </div>
                                         <!-- Last name -->
                                         <div  class="col-sm-12 col-md-4 col-lg-3 mb-3">
                                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                                 <mat-label>Last Name <b class="r-star">*</b></mat-label>
-                                                <input matInput placeholder="Enter last name" formControlName="last_name" autocomplete="off">
+                                                <input matInput placeholder="Enter last name" formControlName="last_name" autocomplete="off"
+                                                pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
                                             </mat-form-field>
                                             <div class="px-2" *ngIf="firstFormGroup.get('last_name')?.touched && firstFormGroup.get('last_name')?.invalid">
                                                 <span class="text-errors" *ngIf="firstFormGroup.get('last_name').errors?.['required']">Last name is required
                                                 </span>
                                                 <span class="text-errors" *ngIf="firstFormGroup.get('last_name').errors?.['pattern']">
                                                     Invalid name. Only letters are allowed, and the name must start with a letter.
+                                                </span>
+                                                <span class="text-errors"
+                                                    *ngIf="firstFormGroup.get('last_name').errors?.['maxlength']">
+                                                    Last name cannot exceed more than 50 characters.
                                                 </span>
                                             </div>
                                         </div>

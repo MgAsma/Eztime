@@ -54,9 +54,9 @@ export class ProfileComponent implements OnInit {
   }
   initform() {
     this.profileForm = this._fb.group({
-      first_name: ['', [Validators.pattern(/^[a-zA-Z]+$/), Validators.required]],
-      last_name: ['', [Validators.pattern(/^[a-zA-Z]+$/), Validators.required]],
-      address: ['', Validators.pattern(/^\S.*$/)],
+      first_name: ['', [Validators.required,Validators.maxLength(50)]],
+      last_name: ['', [Validators.required,Validators.maxLength(50)]],
+      address: ['', Validators.maxLength(300)],
       designation: ['', [Validators.pattern(/^\S.*$/)]],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required]],

@@ -1,6 +1,6 @@
 <div class="container-fluid webView p-20">
     <div class="generic-form bg mx-2">
-        <form [formGroup]='clientForm' >
+        <form [formGroup]='clientForm'>
             <div class="row create-client">
                 <div class="col-12">
                     <div class="py-3">
@@ -11,8 +11,8 @@
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                 <mat-label>Enter Client Name <b class="r-star">*</b></mat-label>
-                                <input matInput placeholder="Enter client name" formControlName="clint_name"
-                                    autocomplete="off" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
+                                <input matInput type="text" placeholder="Enter client name" formControlName="clint_name"
+                                    autocomplete="off" pattern="^(?!\s)(.*\S)?$">
                             </mat-form-field>
                             <div class="px-2" *ngIf="f['clint_name']?.touched && f['clint_name']?.invalid">
                                 <span class="text-errors"
@@ -20,7 +20,11 @@
                                     required</span>
                                 <span class="text-errors"
                                     *ngIf="f['clint_name'].invalid && f['clint_name'].hasError('pattern')">
-                                    Invalid client name
+                                    Please remove extra space.
+                                </span>
+                                <span class="text-errors"
+                                    *ngIf="!f['clint_name'].errors?.['required'] && f['clint_name'].errors?.['maxlength']">
+                                    Client name cannot exceed more than 50 characters.
                                 </span>
                             </div>
                         </div>
@@ -34,14 +38,18 @@
                                     formControlName="contact_person_name" autocomplete="off"
                                     pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
                             </mat-form-field>
-                            <div class="px-2" *ngIf="f['contact_person_name']?.touched && f['contact_person_name']?.invalid">
+                            <div class="px-2"
+                                *ngIf="f['contact_person_name']?.touched && f['contact_person_name']?.invalid">
                                 <span class="text-errors"
-                                    *ngIf="f['contact_person_name'].errors && f['contact_person_name'].errors['required'] ">Contact
-                                    person name is
-                                    required</span>
+                                    *ngIf="f['contact_person_name'].errors && f['contact_person_name'].errors['required'] ">
+                                    Contact person name is required</span>
                                 <span class="text-errors"
                                     *ngIf="f['contact_person_name'].invalid && f['contact_person_name'].hasError('pattern')">
-                                    Invalid person name
+                                    Invalid Contact person name
+                                </span>
+                                <span class="text-errors"
+                                    *ngIf="!f['contact_person_name'].errors?.['required'] && f['contact_person_name'].errors?.['maxlength']">
+                                    Contact person name cannot exceed more than 50 characters.
                                 </span>
                             </div>
                         </div>
@@ -52,8 +60,7 @@
                                     (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off"
                                     id="emailId">
                             </mat-form-field>
-                            <div class="px-2"
-                                *ngIf="f['email'].touched && f['email'].invalid">
+                            <div class="px-2" *ngIf="f['email'].touched && f['email'].invalid">
                                 <span class="text-errors"
                                     *ngIf="f['email'].errors && f['email'].errors['required']">Email
                                     Id is required.</span>
@@ -66,49 +73,50 @@
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                 <mat-label>Phone Nnumber <b class="r-star">*</b></mat-label>
                                 <input matInput type="number" placeholder="Enter phone number"
-                                    formControlName="phone_number" autocomplete="off" maxlength="10"
-                                    pattern="\d{10}" onKeyPress="if(this.value.length==10) return false;"
+                                    formControlName="phone_number" autocomplete="off" maxlength="10" pattern="\d{10}"
+                                    onKeyPress="if(this.value.length==10) return false;"
                                     (keypress)="validateKeyPress($event)">
                             </mat-form-field>
-                            <div class="px-2"
-                                *ngIf="f['phone_number']?.touched && f['phone_number']?.invalid">
-                                <span class="text-errors"
-                                    *ngIf="f['phone_number'].errors?.['pattern']">Please enter 10 digits
+                            <div class="px-2" *ngIf="f['phone_number']?.touched && f['phone_number']?.invalid">
+                                <span class="text-errors" *ngIf="f['phone_number'].errors?.['pattern']">Please enter 10
+                                    digits
                                     phone number.</span>
-                                <span class="text-errors"
-                                    *ngIf="f['phone_number'].errors?.['required']">Phone number is
+                                <span class="text-errors" *ngIf="f['phone_number'].errors?.['required']">Phone number is
                                     required.</span>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-md-6 col-lg-6">
-                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                            <mat-form-field appearance="outline" class="w-100 ">
                                 <mat-label>Address <b class="r-star">*</b></mat-label>
-                                <textarea matInput placeholder="Enter address"
-                                    formControlName="address" autocomplete="off"></textarea>
+                                <textarea style="height: auto;" matInput placeholder="Enter address"
+                                    formControlName="address" pattern="^(?!\s)(.*\S)?$" autocomplete="off"></textarea>
+
                             </mat-form-field>
-                            <div class="px-2"
-                                *ngIf="f['address']?.touched && f['address']?.invalid">
+                            <div class="text-end"><small>{{f['address'].value.length}}/200 characters</small></div>
+                            <div class="px-2" *ngIf="f['address']?.touched && f['address']?.invalid">
                                 <span class="text-errors"
-                                    *ngIf="f['address'].invalid && f['address'].hasError('pattern')">Address
-                                    cannot
-                                    start with a space.</span>
-                                <span class="text-errors"
-                                    *ngIf="f['address'].errors?.['required']">Address is
+                                    *ngIf="f['address'].invalid && f['address'].hasError('pattern')">
+                                    Please remove extra space.</span>
+                                <span class="text-errors" *ngIf="f['address'].errors?.['required']">Address is
                                     required.</span>
+                                <span class="text-errors"
+                                    *ngIf="!f['address'].errors?.['required'] && f['address'].errors?.['maxlength']">
+                                    Address cannot exceed more than 200 characters.
+                                </span>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl-2 billable-checkbox">
+                        <!-- <div class="col-sm-12 col-md-6 col-lg-3 col-xl-2 billable-checkbox">
                             <input class="checkbox" type="checkbox" formControlName="is_billable" checked>
                             <label for="" class="ps-3 fw-semibold">Billable?</label>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="row mt-3">
                         <div class="col-12">
                             <div>
-                                <button type="button" mat-raised-button class="proceedbtn"
-                                    color="primary" (click)="addClient()">Submit</button>
+                                <button type="button" mat-raised-button class="proceedbtn" color="primary"
+                                    (click)="addClient()">Submit</button>
                             </div>
                         </div>
                     </div>
@@ -135,7 +143,7 @@
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                 <mat-label>Enter Client Name <b class="r-star">*</b></mat-label>
                                 <input matInput placeholder="Enter client name" formControlName="clint_name"
-                                    autocomplete="off" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
+                                    autocomplete="off" pattern="^(?!\s)(.*\S)?$">
                             </mat-form-field>
                             <div class="px-2" *ngIf="f['clint_name']?.touched && f['clint_name']?.invalid">
                                 <span class="text-errors"
@@ -143,7 +151,11 @@
                                     required</span>
                                 <span class="text-errors"
                                     *ngIf="f['clint_name'].invalid && f['clint_name'].hasError('pattern')">
-                                    Invalid client name
+                                    Please remove extra space.
+                                </span>
+                                <span class="text-errors"
+                                    *ngIf="!f['clint_name'].errors?.['required'] && f['clint_name'].errors?.['maxlength']">
+                                    Client name cannot exceed more than 50 characters.
                                 </span>
                             </div>
                         </div>
@@ -157,14 +169,19 @@
                                     formControlName="contact_person_name" autocomplete="off"
                                     pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
                             </mat-form-field>
-                            <div class="px-2" *ngIf="f['contact_person_name']?.touched && f['contact_person_name']?.invalid">
+                            <div class="px-2"
+                                *ngIf="f['contact_person_name']?.touched && f['contact_person_name']?.invalid">
                                 <span class="text-errors"
                                     *ngIf="f['contact_person_name'].errors && f['contact_person_name'].errors['required'] ">Contact
                                     person name is
-                                    required</span>
+                                    required.</span>
                                 <span class="text-errors"
                                     *ngIf="f['contact_person_name'].invalid && f['contact_person_name'].hasError('pattern')">
-                                    Invalid person name
+                                    Invalid Contact person name.
+                                </span>
+                                <span class="text-errors"
+                                    *ngIf="!f['contact_person_name'].errors?.['required'] && f['contact_person_name'].errors?.['maxlength']">
+                                    Contact person name cannot exceed more than 50 characters.
                                 </span>
                             </div>
                         </div>
@@ -175,13 +192,11 @@
                                     (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off"
                                     id="emailId">
                             </mat-form-field>
-                            <div class="px-2"
-                                *ngIf="f['email'].touched && f['email'].invalid">
+                            <div class="px-2" *ngIf="f['email'].touched && f['email'].invalid">
                                 <span class="text-errors"
                                     *ngIf="f['email'].errors && f['email'].errors['required']">Email
                                     Id is required.</span>
-                                <span class="text-errors"
-                                    *ngIf="f['email'].errors && f['email'].errors['email']">Email
+                                <span class="text-errors" *ngIf="f['email'].errors && f['email'].errors['email']">Email
                                     Id is invalid.</span>
                             </div>
                         </div>
@@ -189,48 +204,49 @@
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                 <mat-label>Phone No <b class="r-star">*</b></mat-label>
                                 <input matInput type="number" placeholder="Enter phone no"
-                                    formControlName="phone_number" autocomplete="off" maxlength="10"
-                                    pattern="\d{10}" onKeyPress="if(this.value.length==10) return false;"
+                                    formControlName="phone_number" autocomplete="off" maxlength="10" pattern="\d{10}"
+                                    onKeyPress="if(this.value.length==10) return false;"
                                     (keypress)="validateKeyPress($event)">
                             </mat-form-field>
-                            <div class="px-2"
-                                *ngIf="f['phone_number']?.touched && f['phone_number']?.invalid">
-                                <span class="text-errors"
-                                    *ngIf="f['phone_number'].errors?.['pattern']">Please enter 10 digits
+                            <div class="px-2" *ngIf="f['phone_number']?.touched && f['phone_number']?.invalid">
+                                <span class="text-errors" *ngIf="f['phone_number'].errors?.['pattern']">Please enter 10
+                                    digits
                                     phone number.</span>
-                                <span class="text-errors"
-                                    *ngIf="f['phone_number'].errors?.['required']">Phone number is
+                                <span class="text-errors" *ngIf="f['phone_number'].errors?.['required']">Phone number is
                                     required.</span>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-md-6 col-lg-6 mb-3">
-                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                            <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>Address</mat-label>
-                                <textarea matInput placeholder="Enter address"
-                                    formControlName="address" autocomplete="off"></textarea>
+                                <textarea matInput placeholder="Enter address" formControlName="address"
+                                    style="height: auto;" pattern="^(?!\s)(.*\S)?$" autocomplete="off"></textarea>
                             </mat-form-field>
-                            <div class="px-2"
-                                *ngIf="f['address']?.touched && f['address']?.invalid">
-                                <span class="text-errors"
-                                    *ngIf="f['address'].invalid && f['address'].hasError('pattern')">Address
-                                    cannot start with a space.</span>
-                                <span class="text-errors"
-                                    *ngIf="f['address'].errors?.['required']">Address is
+                            <div class="text-end"><small>{{f['address'].value.length}}/200 characters</small></div>
+                            <div class="px-2" *ngIf="f['address']?.touched && f['address']?.invalid">
+                                <span class="text-errors" *ngIf="f['address'].errors?.['required']">Address is
                                     required.</span>
+                                <span class="text-errors"
+                                    *ngIf="f['address'].invalid && f['address'].hasError('pattern')">
+                                    Please remove extra space.</span>
+                                <span class="text-errors"
+                                    *ngIf="!f['address'].errors?.['required'] && f['address'].errors?.['maxlength']">
+                                    Address cannot exceed more than 200 characters.
+                                </span>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-2 billable-checkbox">
+                        <!-- <div class="col-sm-12 col-md-6 col-lg-2 billable-checkbox">
                             <input class="checkbox" type="checkbox" checked formControlName="is_billable">
                             <label for="" class="ps-3 fw-semibold">Billable?</label>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="row mt-3">
                         <div class="col-12">
                             <div>
-                                <button type="button" mat-raised-button class="proceedbtn"
-                                    color="primary" (click)="addClient()">Submit</button>
+                                <button type="button" mat-raised-button class="proceedbtn" color="primary"
+                                    (click)="addClient()">Submit</button>
                             </div>
                         </div>
                     </div>

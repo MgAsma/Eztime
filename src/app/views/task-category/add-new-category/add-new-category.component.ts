@@ -35,7 +35,7 @@ export class AddNewCategoryComponent implements OnInit {
 
   initForm() {
     this.taskCategoryForm = this.builder.group({
-      category_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      category_name: ['', [Validators.required, Validators.maxLength(50)]],
       projectcategory_task: this.builder.array([]),
       organization: this.orgId
       // projectcategory_task: this.builder.array([]),
@@ -43,7 +43,7 @@ export class AddNewCategoryComponent implements OnInit {
     });
     this.dynamicArray.push(this.builder.group({
       id: [''],
-      task_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+      task_name: ['', [Validators.required, Validators.maxLength(150)]],
       is_saved: false,
       edit_icon: false,
       is_cancelled: false
@@ -123,7 +123,7 @@ export class AddNewCategoryComponent implements OnInit {
     if (allTasksValid) {
       this.dynamicArray.push(this.builder.group({
         id: [''],
-        task_name: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
+        task_name: ['', [Validators.required, Validators.maxLength(150)]],
         is_saved: false,
         edit_icon: false,
         is_cancelled: false
