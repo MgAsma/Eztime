@@ -236,7 +236,7 @@ export class UpdateProjectComponent implements OnInit {
       (res: any) => {
         // console.log('admin',res);
         let data = [];
-        data.push({ 'first_name': res.first_name, 'last_name': res.last_name, 'id': res.id });
+        data.push({ 'first_name': res.first_name, 'last_name':res?.last_name || '', 'id': res.id });
         // console.log(data)
         this.allManager = data;
       },

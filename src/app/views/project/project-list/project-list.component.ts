@@ -70,7 +70,7 @@ export class ProjectListComponent implements OnInit {
     if(this.userRole==='Employee'){
       this.baseUrl = `${'organization'}=${this.orgId}&${'employee_id'}=${this.user_id}`
     } else{
-      this.baseUrl = `${'organization'}=${this.orgId}`
+      this.baseUrl = `${'organization'}=${this.orgId}&${'created_by'}=${this.user_id}`
     }
     // this.getUserControls()
     this.getProject();
