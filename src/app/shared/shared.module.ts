@@ -26,7 +26,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatChipsModule} from '@angular/material/chips';
 @NgModule({
   declarations: [
     SortPipe,
@@ -57,7 +58,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatTabsModule,
     MatExpansionModule,
     MatProgressBarModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatAutocompleteModule,
+    MatChipsModule
   ],
   exports:[
     SortPipe,
@@ -85,7 +88,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatTabsModule,
     MatExpansionModule,
     MatProgressBarModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatAutocompleteModule,
+    MatChipsModule
    ],
   
 })

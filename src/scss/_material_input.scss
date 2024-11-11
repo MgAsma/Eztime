@@ -265,3 +265,6 @@ app-create-timesheet{
 .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
   background-color:$primay-color !important;
 }
+.cc-to .mat-form-field-infix{
+  padding: 0 !important;
+}

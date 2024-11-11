@@ -123,16 +123,86 @@
 
       <!-- CC Section -->
       <div class="row">
-          <div class="col-md-4">
-              <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>CC <b class="r-star">*</b></mat-label>
-                  <mat-select formControlName="cc_to" placeholder="Select CC recipients" panelClass="panel-multiselect" [disableOptionCentering]="true" multiple>
-                    <mat-option *ngFor="let employees of allEmployees" [value]="employees.user.id">{{employees.user.first_name}}{{employees.user.last_name}}</mat-option>
-                  </mat-select>
+          <div class="col-md-8 p-r dropdown-container">
+             
+              <!-- <mat-form-field appearance="outline" class="full-width cc-to">
+                <mat-label>CC <b class="r-star">*</b></mat-label>
+                <input matInput type="search" placeholder="Search..." formControlName="cc_to_input"   (keyup)="filterEmployees()" />
+               
+               
                   <mat-error *ngIf="f['cc_to']?.touched && f['cc_to']?.invalid">
-                      CC is required.
+                    CC is required.
                   </mat-error>
               </mat-form-field>
+             
+              <mat-selection-list #ccTo class="c-position" formControlName="cc_to" *ngIf="isDropdownOpen">
+                <mat-card *ngIf="filteredEmployees.length > 0">
+                
+                    <mat-list-option *ngFor="let employee of filteredEmployees" [value]="employee.user.first_name" (click)="selectedList()">
+                        {{ employee.user.first_name }}{{ employee.user.last_name }} ({{employee.user.email}})
+                    </mat-list-option>
+              
+                </mat-card>
+                <mat-card class="no-data" *ngIf="filteredEmployees.length === 0 && f['cc_to_input']?.value">
+                <div>
+                    No data found!
+                </div>
+            </mat-card>
+                    
+              </mat-selection-list> -->
+
+              <mat-form-field  appearance="outline" class="full-width cc-to">
+                <mat-label>CC <b class="r-star">*</b></mat-label>
+                <mat-chip-list #chipList aria-label="CC To">
+                  <mat-chip
+                    *ngFor="let chips of ccToList"
+                    [selectable]="selectable"
+                    
+                    [removable]="removable"
+                    (removed)="remove(chips)">
+                    {{chips}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+                  <input
+                    placeholder="Search..."
+                    #ccInput
+                    
+                    formControlName="cc_to_input"
+                    [matAutocomplete]="auto"
+                    [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="add($event)"
+                    (keyup)="filterEmployees()">
+                </mat-chip-list>
+                <!-- <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedList()"> -->
+                 
+                      <mat-error *ngIf="f['cc_to']?.touched && f['cc_to']?.invalid">
+                        CC is required.
+                      </mat-error>
+              </mat-form-field>
+
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" >
+               
+
+                <div *ngIf="filteredEmployees.length > 0">
+                
+                    <mat-option *ngFor="let employee of filteredEmployees" [value]="employee.user.first_name" 
+                    [disabled]="ccToList.includes(employee.user.first_name)">
+                        {{ employee.user.first_name }}{{ employee.user.last_name }} ({{employee.user.email}})
+                    </mat-option>
+              
+                </div>
+                <div class="no-data" *ngIf="filteredEmployees.length === 0 && f['cc_to_input']?.value ">
+                    <div>
+                        No data found!
+                    </div>
+                </div>
+              </mat-autocomplete>
+             
+              
+             
+                
+              
           </div>
       </div>
 

@@ -381,7 +381,7 @@
 
               <div class="row w-100 my-2">
                 <div class="col"></div>
-                <div class="col-4 text-end" ><mat-label>Hours left :{{calculateTotalHoursForDate(project.get('created_date')?.value)}}</mat-label></div>
+                <div class="col-4 text-end" ><mat-label>Hours left :{{calculateTotalHoursForDate(project.get('created_date')?.value) >= 0 ? calculateTotalHoursForDate(project.get('created_date')?.value) : 0}}</mat-label></div>
                 <!-- <div class="col-4 text-end" ><mat-label>Hours left :{{getRemainingHours(i)}}</mat-label></div> -->
                 <div class="col-2"></div>
               </div>
@@ -397,8 +397,8 @@
     </form>
     <div class="text-start">
       <button mat-raised-button type="button" (click)="addProjectDetails()" class="mat-btn-s me-2 proceedbtn" 
-      [disabled]="!isSaved || timeSheetForm.invalid && taskForm.invalid || isTaskSubmitted ">+ Add More</button>
-      <button mat-raised-button class="mat-btn-s proceedbtn" type="submit" [disabled]="!isSaved || timeSheetForm.invalid && taskForm.invalid || isTaskSubmitted " (click)="addTimeSheet()">Submit Timesheet</button>
+      [disabled]="!isSaved || !timeSheetForm.invalid && !taskForm.invalid ">+ Add More</button>
+      <button mat-raised-button class="mat-btn-s proceedbtn" type="submit" [disabled]="!isSaved||!timeSheetForm.invalid && !taskForm.invalid" (click)="addTimeSheet()">Submit Timesheet</button>
     </div>
   </div>
 </div>

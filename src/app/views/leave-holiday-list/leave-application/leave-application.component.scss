@@ -32,4 +32,23 @@ $primay-color: #126EB4;
     border-radius: 12px;
     padding-right: 1px;
   }
-  
+  .c-position,.no-data{
+    position: absolute;
+    top:30px;
+    z-index: 1;
+    width: 250px;
+  }
+  .no-data{
+    top:20px;
+    padding: 10px;
+  }
+  mat-autocomplete{
+    padding: 5px;
+    transform: scale(0.85);
+    font-size: 12px;
+  }
+  .autocomplete-option {
+    height: 20px;
+    font-size: 12pt;
+    min-height: unset;
+}
