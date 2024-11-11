@@ -115,7 +115,7 @@
                     <span *ngIf="f['address'].errors?.['pattern'] && !f['address'].errors?.['maxlength']">Cannot start with a space.</span>
                     <span *ngIf="f['address'].errors?.['maxlength']">Address cannot exceed more than 300 characters.</span>
                   </mat-error>
-                  <mat-hint align="end">{{f['address'].value.length}}/300 characters</mat-hint>
+                  <mat-hint align="end">{{f['address']?.value?.length}}/300 characters</mat-hint>
                 </mat-form-field>
               </div>
             
