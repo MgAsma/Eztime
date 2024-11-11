@@ -81,6 +81,9 @@ sessions = [
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  selectedCC: any;
+  ccToIds: any = [];
+  adminlistData: any;
   constructor(
     private builder: FormBuilder,
     private api: ApiserviceService,
@@ -110,9 +113,6 @@ sessions = [
       input.value = '';
     }
 
-    this.leaveForm.patchValue({
-      cc_to_input:''
-    })
   }
    
   onSelectionChange(event: MatSelectionListChange): void {
@@ -129,11 +129,21 @@ sessions = [
   }
   
 
-  remove(fruit: string): void {
-    const index = this.ccToList.indexOf(fruit);
+  remove(employee: string): void {
+    const index = this.ccToList.indexOf(employee);
 
     if (index >= 0) {
       this.ccToList.splice(index, 1);
+      this.ccToIds.splice(index, 1);
+      if(this.ccToIds.length === 0){
+        this.leaveForm.patchValue({
+          cc_to_input:'',
+          cc_to: ''
+        });
+        this.leaveForm.markAllAsTouched()
+        
+      }
+     
       this.isDropdownOpen = false;
     }
     
@@ -142,10 +152,28 @@ sessions = [
   selected(event: MatAutocompleteSelectedEvent): void {
     this.ccToList.push(event.option.value);
       this.ccInput.nativeElement.value = '';
-      this.fruitCtrl.setValue(null);
-      this.leaveForm.patchValue({
-        cc_to_input:''
-      })
+      
+      const selectedEmployee = this.allEmployees.find(
+        (emp: any) => emp.user.first_name === event.option.value
+      );
+    
+      if (selectedEmployee) {
+        // Push both the name and ID to ccToList for easy access
+        this.ccToIds.push({ name: selectedEmployee.user.first_name, id: selectedEmployee.user.id });
+    
+        // Clear input field and reset form control
+        this.ccInput.nativeElement.value = '';
+        
+    
+        // Get selected IDs (optional, if needed for other purposes)
+        const selectedIDs = this.ccToIds.map(item => item.id);
+     //   console.log('Selected IDs:', selectedIDs);
+        this.leaveForm.patchValue({
+          cc_to_input:'',
+          cc_to: selectedIDs
+        });
+       }
+
   }
 
   onFileChange($event){}
@@ -176,7 +204,7 @@ sessions = [
     this.initForm();
    // this.enableDatepicker();
 
-   // this.getAllleaveData();
+   this.getRecentAddedAdminlistData()
   }
   // Close dropdown and clear filter when clicking outside
   @HostListener('document:click', ['$event.target'])
@@ -297,14 +325,14 @@ sessions = [
     this.leaveForm = this.builder.group({
       reason: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
       leave_application_file_attachment: ['',this.fileFormatValidator],
-      cc_to: [''],
       leaveApplication_from_date: ['', [Validators.required]],
       leaveApplication_to_date: ['', [Validators.required]],
       leave_type_id: ['', [Validators.required]],
       from1_session: ['', [Validators.required]],
       to1_session: ['', [Validators.required]],
       applying_to:['',[Validators.required]],
-      cc_to_input:['',Validators.required]
+      cc_to_input:[''],
+      cc_to:['',[Validators.required]],
     });
    
   }
@@ -319,11 +347,7 @@ sessions = [
     this.filteredEmployees = []
   }
   }
-  selectedList():void{
-    this.leaveForm.patchValue({
-      cc_to_input:this.ccTo['_value']
-    })
-  }
+  
 
   
 
@@ -397,6 +421,7 @@ sessions = [
             this.applyingDays = 0
             this.leaveBalance = ""
             this.fileDataUrl = ""
+            this.ccToList = []
           }
          },(error)=>{
           this.api.showError(error?.error?.message)
@@ -405,7 +430,18 @@ sessions = [
    
     }
   }
-  
+  getRecentAddedAdminlistData() {
+   
+    this.api.getData(`${environment.live_url}/${environment.user}/?role_id=2&organization_id=${this.orgId}`).subscribe((data: any) => {
+      if(data){
+        this.adminlistData = data;
+      }
+     
+    }, ((error) => {
+      this.api.showError(error?.error?.message)
+    })
+    )
+  }
   fileFormatValidator(control: AbstractControl): ValidationErrors | null {
     const allowedFormats = ['.jpg', '.jpeg', '.png', '.JPG', '.JPEG', '.PNG'];
     const file = control.value;

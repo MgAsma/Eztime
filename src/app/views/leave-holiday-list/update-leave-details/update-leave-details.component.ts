@@ -64,7 +64,7 @@ export class UpdateLeaveDetailsComponent implements OnInit {
  
   edit(){
     this.api.getData(`${environment.live_url}/${environment.leave_master}/${this.id}/`).subscribe((data:any)=>{
-     console.log(data,"DATA")
+     //console.log(data,"DATA")
     if(data){
       
       this.leaveTypeForm.patchValue({
@@ -82,7 +82,7 @@ export class UpdateLeaveDetailsComponent implements OnInit {
   }
   onSubmit(){
     if(this.leaveTypeForm.invalid){
-      console.log( this.leaveTypeForm.value)
+     // console.log( this.leaveTypeForm.value)
       this.leaveTypeForm.markAllAsTouched()
     }else{
     const data = {
