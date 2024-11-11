@@ -32,7 +32,7 @@
                        top:5px;width: fit-content !important;" (click)="$event.stopPropagation();saveTimesheet(i)">
                         Save
                       </button>
-                      <button mat-button type="button" style="width: fit-content !important;" class="save-btn delete-toolbar-btn webView" *ngIf="project.get('showSave').value && createdProject.length >1" (click)="$event.stopPropagation(); open(i)">
+                      <button mat-button type="button" style="width: fit-content !important;" class="save-btn webView" *ngIf="project.get('showSave').value && createdProject.length >1" (click)="$event.stopPropagation(); open(i)">
                         Delete
                       </button>
                     </div>
@@ -57,7 +57,7 @@
                   
                   <div class="time-save-wrapper">
                     <span><mat-label style="font-size: 13px;"><i class="bi bi-clock"></i> 8 Hours</mat-label></span>
-                    <button mat-button class="save-btn delete-toolbar-btn" *ngIf="project.get('showSave').value && createdProject.length >1" (click)="$event.stopPropagation(); open(i)">Delete</button>
+                    <button mat-button class="save-btn" *ngIf="project.get('showSave').value && createdProject.length >1" (click)="$event.stopPropagation(); open(i)">Delete</button>
                     <button mat-button class="save-btn" (click)="$event.stopPropagation();saveTimesheet(i)">Save</button>
                     <mat-icon>keyboard_arrow_up</mat-icon>
                   </div>
