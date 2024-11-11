@@ -78,7 +78,7 @@
                  
                     <div class="time-save-wrapper" [ngClass]="!isPanelOpen(i) && project.get('isSaved').value ? 'preview-content':''"  >
                      <span> <mat-label><i class="bi bi-clock"></i> 8 Hours</mat-label></span>
-                      <button mat-button type="button" class="save-btn"  style="color:rgb(141, 16, 16);" *ngIf="project.get('showSave').value && createdProject.length >1" (click)="$event.stopPropagation(); open(i)">
+                      <button mat-button type="button" class="save-btn"   *ngIf="project.get('showSave').value && createdProject.length >1" (click)="$event.stopPropagation(); open(i)">
                         Delete
                       </button>
                     
