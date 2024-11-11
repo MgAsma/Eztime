@@ -21,6 +21,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { SharedModule } from 'src/app/shared/shared.module';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { HolidayCalendarComponent } from './holiday-calendar/holiday-calendar.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     RequestAddLeaveComponent,
     LeaveDetailsComponent,
     UpdateLeaveDetailsComponent,
+    HolidayCalendarComponent,
     
   ],
   imports: [ 

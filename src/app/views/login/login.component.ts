@@ -66,15 +66,15 @@ export class LoginComponent implements OnInit {
 
       this.api.loginDetails(this.loginForm.value).subscribe(response => {
         let status = Number(200)
-        console.log(response, "RESPONSE CHECK")
+      //  console.log(response, "RESPONSE CHECK")
         const token = response['token'];
         const decoded:any = jwtDecode(token);
-        console.log(decoded,'decoded');
+      //  console.log(decoded,'decoded');
         sessionStorage.setItem('token', response['token']),
         sessionStorage.setItem('user_id',decoded.user_id )
         this.api.userAccess(decoded.user_id).subscribe(
           (data:any)=>{
-            console.log('user access',data)
+           // console.log('user access',data)
             sessionStorage.setItem('user_role_name', data.user_role);
             sessionStorage.setItem('permissionArr', JSON.stringify(data.access_list));
             sessionStorage.setItem('organization_id', data.organization_id);
@@ -84,7 +84,7 @@ export class LoginComponent implements OnInit {
               this.api.showSuccess('Login successful!');
           },
           (error:any)=>{
-            console.log('error',error)
+           // console.log('error',error)
           }
         )
 

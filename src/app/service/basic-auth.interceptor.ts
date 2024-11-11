@@ -38,7 +38,7 @@ authToken:any;
        request = request.clone({
             setHeaders: {
                 'Authorization': `${this.authToken}`,
-                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/json'
             }
         });
     }

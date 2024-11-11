@@ -78,11 +78,11 @@ export class CreateClientComponent implements OnInit {
   addClient(){
     if(this.clientForm.invalid){
       this.api.showError('Invalid!');
-      console.log(this.clientForm.value)
+    //  console.log(this.clientForm.value)
       this.clientForm.markAllAsTouched();
     }
     else{
-      console.log(this.clientForm.value)
+     // console.log(this.clientForm.value)
       this.api.addClientDetails(this.clientForm.value).subscribe(response=>{
         if(response){
           this.api.showSuccess(response['message']);

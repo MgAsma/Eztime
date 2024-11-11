@@ -9,6 +9,7 @@ import { MyLeavesComponent } from './my-leaves/my-leaves.component';
 import { OfficeWorkingDaysComponent } from './office-working-days/office-working-days.component';
 import { RequestAddLeaveComponent } from './request-add-leave/request-add-leave.component';
 import { UpdateLeaveDetailsComponent } from './update-leave-details/update-leave-details.component';
+import { HolidayCalendarComponent } from './holiday-calendar/holiday-calendar.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,9 @@ const routes: Routes = [
       },
       {
         path:'updateLeaveDetails/:id', component:UpdateLeaveDetailsComponent
+      },
+      {
+        path:'holidayCalendar', component:HolidayCalendarComponent
       }
     ]
   }

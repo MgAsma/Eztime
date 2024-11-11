@@ -112,7 +112,7 @@
               <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Applying To <b class="r-star">*</b></mat-label>
                   <mat-select formControlName="applying_to" placeholder="Select the person to apply to" panelClass="custom-select-panel" [disableOptionCentering]="true">
-                      <mat-option *ngFor="let employees of allEmployees" [value]="employees.user.id">{{employees.user.first_name}}{{employees.user.last_name}}</mat-option>
+                      <mat-option *ngFor="let employees of adminlistData" [value]="employees?.id">{{employees?.first_name}}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="f['applying_to']?.touched && f['applying_to']?.invalid">
                       Applying To is required.
@@ -175,12 +175,13 @@
                     (keyup)="filterEmployees()">
                 </mat-chip-list>
                 <!-- <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedList()"> -->
-                 
-                      <mat-error *ngIf="f['cc_to']?.touched && f['cc_to']?.invalid">
-                        CC is required.
-                      </mat-error>
+                   
               </mat-form-field>
-
+              <mat-error *ngIf="f['cc_to']?.touched && f['cc_to']?.invalid" class="error-ccmsg">
+                
+                CC is required.
+              </mat-error>
+             
               <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" >
                
 

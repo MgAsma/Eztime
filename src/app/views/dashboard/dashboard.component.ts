@@ -34,6 +34,10 @@ export class DashboardComponent implements OnInit {
   departmentsListData: any = [];
   industriesListData: any = [];
   pagination: any;
+  organizationCount: any;
+  adminCount: any;
+  designationCount: any;
+  departmentCount: any;
   constructor(private builder: FormBuilder, private api: ApiserviceService,
     private location: Location,
     private route: ActivatedRoute,
@@ -43,13 +47,20 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    const isloggedIn = sessionStorage.getItem('token');
-    if (isloggedIn) {
-      this.org_id = sessionStorage.getItem('org_id')
+    // const isloggedIn = sessionStorage.getItem('token');
+    // if (isloggedIn) {
+      this.org_id = sessionStorage.getItem('organization_id')
       // this.getCountDetails(isloggedIn);
+    //}
+    this.user_role_name = sessionStorage.getItem('user_role_name').toUpperCase()
+    if(this.user_role_name !== 'SUPERADMIN'){
+      this.getRecentAddedRolesListData()
+      this.getRecentAddedDepartmentListData()
+    }if(this.user_role_name === 'SUPERADMIN'){
+      this.getRecentAddedOrganizationList()
+      this.getRecentAddedAdminlistData()
+      this.getRecentAddeduserslistData()
     }
-    this.user_role_name = sessionStorage.getItem('user_role_name')
-    // this.getUserControls();
   }
   getCountDetails(isloggedIn) {
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
@@ -77,104 +88,53 @@ export class DashboardComponent implements OnInit {
       })
     )
   }
-  getUserControls() {
-    this.user_id = sessionStorage.getItem('user_id')
-    this.org_id = sessionStorage.getItem('org_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.org_id}&pagination=TRUE`).subscribe((res: any) => {
-      if (res.status_code !== '401') {
-        this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
-      }
-      else {
-        this.api.showError("ERROR !")
-      }
-      //console.log(res,'resp from yet');
-
-    }
-
-    )
-
-    this.common_service.permission.subscribe(res => {
-      const accessArr = res
-      if (accessArr.length > 0) {
-        accessArr.forEach((element, i) => {
-          if (element['ROLES']) {
-            this.permissionRoles = element['ROLES'];
-            this.getRecentAddedRolesListData();
-          } if (element['DEPARTMENT']) {
-            this.permissionsDepartment = element['DEPARTMENT'];
-            this.getRecentAddedDepartmentListData();
-          } if (element['INDUSTRY/SECTOR']) {
-            this.permissionsIndustry = element['INDUSTRY/SECTOR'];
-            this.getRecentAddedindustriesListData();
-          }
-
-        });
-      }
-    })
-  }
-
+ 
   // organization list
   getRecentAddedOrganizationList() {
-    let params: any = `page_number=1&data_per_page=5&pagination=TRUE`;
-    this.api.getData(`${environment.live_url}/${environment.organization}?${params}`).subscribe(res => {
+    
+    this.api.getData(`${environment.live_url}/${environment.organization}/`).subscribe((res:any) => {
       if (res) {
-        this.organizationlistData = res['result']['data']
+        this.organizationlistData = res.slice(0,5)
+        this.organizationCount = res?.length
       }
     }, (error => {
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     }))
   }
 
   // Admin List
   getRecentAddedAdminlistData() {
-    let params: any = {
-      page_number: 1,
-      data_per_page: 5,
-      pagination: 'TRUE',
-      organization_id: this.org_id,
-      search_key: 'ADMIN',
-      ignore_super_admin: 'TRUE'
-    }
-    this.api.getSuperAdminPeoplePage(params).subscribe((data: any) => {
-      this.adminlistData = data.result.data;
+   
+    this.api.getData(`${environment.live_url}/${environment.user}/?role_id=2`).subscribe((data: any) => {
+      this.adminlistData = data.slice(0,5);
+      this.adminCount = data?.length
     }, ((error) => {
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     })
     )
   }
   // users list
   getRecentAddeduserslistData() {
-    let params: any = {
-      page_number: 1,
-      data_per_page: 5,
-      pagination: 'TRUE',
-      search_key: '',
-      organization_id: this.org_id,
-    }
-    this.api.getPeopleDetailsPage(params).subscribe((data: any) => {
-      this.userslistData = data.result.data;
+    this.api.getData(`${environment.live_url}/${environment.user}/?role_id=3`).subscribe((data: any) => {
+      this.userslistData = data.slice(0,5);
+      this.userCount = data?.length
     }, ((error) => {
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     })
     )
   }
   // Roles list
   getRecentAddedRolesListData() {
-    let params: any = `page_number=1&data_per_page=5&pagination=TRUE&organization_id=${this.org_id}`;
-    this.api.getUserAccess(params).subscribe((data: any) => {
+  
+    this.api.getData(`${environment.live_url}/${environment.designation}/?organization_id=${this.org_id}`).subscribe((data: any) => {
       this.sortedRolls = []
       if (data) {
-        // this.rolesListData = data.result.data
-        data.result.data.forEach(res=>{
-          if(res.user_role_name!='ADMIN'){
-            this.sortedRolls.push(res)
-          }
-        })
-        this.rolesListData = this.sortedRolls
+       
+        this.rolesListData = data.slice(0, 5);
+        this.designationCount = data?.length
       }
     }, ((error) => {
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     })
 
     )
@@ -182,17 +142,17 @@ export class DashboardComponent implements OnInit {
 
   // Department list
   getRecentAddedDepartmentListData() {
-    let params: any = `page_number=1&data_per_page=5&pagination=TRUE&org_ref_id=${this.org_id}`;
-    this.api.getDepartmentDetailsPage(params).subscribe((res: any) => {
+    this.api.getData(`${environment.live_url}/${environment.department}/?organization_id=${this.org_id}`).subscribe((res: any) => {
       if (res) {
-        this.departmentsListData = res.result.data;
+        this.departmentsListData = res.slice(0,5)
+        this.departmentCount = res?.length
       }
       else {
         this.api.showError('Error!')
       }
 
     }, ((error) => {
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     }))
   }
   // industries list

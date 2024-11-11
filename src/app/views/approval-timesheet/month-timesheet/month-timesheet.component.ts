@@ -351,7 +351,6 @@ export class MonthTimesheetComponent implements OnInit {
   openDialogue(status) {
    
     if (status) {
-      debugger;
       const modelRef = this.modalService.open(GenericDeleteComponent, {
         size: <any>'sm',
         backdrop: true,
