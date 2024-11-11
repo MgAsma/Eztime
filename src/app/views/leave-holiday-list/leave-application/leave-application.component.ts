@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import {
   Validators,
   FormBuilder,
@@ -14,16 +14,13 @@ import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { LocaleConfig } from 'ngx-daterangepicker-material';
 
-import * as dayjs from 'dayjs';
-import * as duration from 'dayjs/plugin/duration';
-import * as isBetween from 'dayjs/plugin/isBetween';
-import * as customParseFormat from 'dayjs/plugin/customParseFormat';
 import { CommonServiceService } from 'src/app/service/common-service.service';
-import { error } from 'console';
-dayjs.extend(duration);
-dayjs.extend(isBetween);
-dayjs.extend(customParseFormat);
-window['dayjs'] = dayjs;
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { map, Observable, startWith } from 'rxjs';
+import { MatSelectionListChange } from '@angular/material/list';
+
 @Component({
   selector: 'app-leave-application',
   templateUrl: './leave-application.component.html',
@@ -64,6 +61,7 @@ export class LeaveApplicationComponent implements OnInit {
   orgId: any;
   fileDataUrl: string | ArrayBuffer | null = null;
   @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('ccTo') ccTo: ElementRef;
  // Dropdown data as array of objects
  
 sessions = [
@@ -74,26 +72,91 @@ sessions = [
   applyingDays: number;
   today: Date;
   allEmployees: any;
+  filteredEmployees: any = [];
+  searchTerm: any;
+  selectedEmployees: any;
+  isDropdownOpen: boolean = false;
+  visible = true;
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   constructor(
     private builder: FormBuilder,
     private api: ApiserviceService,
     private datepipe: DatePipe,
     private location: Location,
     private common_service: CommonServiceService
-  ) { }
-  d = dayjs();
+  ) { 
+    // this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
+    //   startWith(null),
+    //   map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
+   
+  }
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+   
+    // Add our fruit
+    if ((value || '').trim()) {
+      if (!this.ccToList.includes(value)) {  // Assuming selectedEmployees is your list
+        this.ccToList.push(value.trim());
+      }
+      
+    }
 
-  selected: any;
-  locale: LocaleConfig | any = {
-    applyLabel: 'Appliquer',
-    customRangeLabel: ' - ',
-  };
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+
+    this.leaveForm.patchValue({
+      cc_to_input:''
+    })
+  }
+   
+  onSelectionChange(event: MatSelectionListChange): void {
+    const selectedEmployee = event.option.value;
+  
+    // Check if the employee is already selected to avoid duplicates
+    if (event.option.selected) {
+      if (!this.ccToList.includes(selectedEmployee)) {  // Assuming selectedEmployees is your list
+        this.add(selectedEmployee);
+      }
+    } else {
+      this.remove(selectedEmployee);
+    }
+  }
+  
+
+  remove(fruit: string): void {
+    const index = this.ccToList.indexOf(fruit);
+
+    if (index >= 0) {
+      this.ccToList.splice(index, 1);
+      this.isDropdownOpen = false;
+    }
+    
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.ccToList.push(event.option.value);
+      this.ccInput.nativeElement.value = '';
+      this.fruitCtrl.setValue(null);
+      this.leaveForm.patchValue({
+        cc_to_input:''
+      })
+  }
+
   onFileChange($event){}
-  myFilter = (d: Date | null): boolean => {
-    // Disable weekends
-    const day = (d || new Date()).getDay();
-    return day !== 0 && day !== 6;
-  };
+ 
+  fruitCtrl = new FormControl();
+  filteredFruits: Observable<string[]>;
+  ccToList:any = [];
+ // allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+
+  @ViewChild('ccInput') ccInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   goBack(event) {
     event.preventDefault(); // Prevent default back button behavior
@@ -114,6 +177,14 @@ sessions = [
    // this.enableDatepicker();
 
    // this.getAllleaveData();
+  }
+  // Close dropdown and clear filter when clicking outside
+  @HostListener('document:click', ['$event.target'])
+  closeDropdown(target: HTMLElement): void {
+    const isInsideClick = target.closest('.dropdown-container');
+    if (!isInsideClick) {
+      this.isDropdownOpen = false;
+    }
   }
   removeToDate(){
     this.leaveForm.patchValue({
@@ -226,16 +297,36 @@ sessions = [
     this.leaveForm = this.builder.group({
       reason: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
       leave_application_file_attachment: ['',this.fileFormatValidator],
-      cc_to: ['', Validators.required],
+      cc_to: [''],
       leaveApplication_from_date: ['', [Validators.required]],
       leaveApplication_to_date: ['', [Validators.required]],
       leave_type_id: ['', [Validators.required]],
       from1_session: ['', [Validators.required]],
       to1_session: ['', [Validators.required]],
-      applying_to:['',[Validators.required]]
+      applying_to:['',[Validators.required]],
+      cc_to_input:['',Validators.required]
     });
-    
+   
   }
+  // Filtering method
+  filterEmployees(): void {
+    if(this.leaveForm.value.cc_to_input){
+    this.filteredEmployees = this.allEmployees?.filter((employee:any) =>
+      employee.user.first_name.toLowerCase().includes(this.leaveForm.value.cc_to_input.toLowerCase())
+    );
+    this.isDropdownOpen = true;
+  }else{
+    this.filteredEmployees = []
+  }
+  }
+  selectedList():void{
+    this.leaveForm.patchValue({
+      cc_to_input:this.ccTo['_value']
+    })
+  }
+
+  
+
   calculateApplyingDays() {
     const fromDate = this.leaveForm.get('leaveApplication_from_date')?.value;
     const fromSession = this.leaveForm.get('from1_session')?.value;
@@ -276,6 +367,7 @@ sessions = [
       }
     }
   }
+
 
   submit(){
    
@@ -382,68 +474,7 @@ sessions = [
       }
     );
   }
-  getappliedLeave() {
-    let holidayParams = {
-      date: '01/01/2023',
-      country: 'IN',
-      state: 'KA',
-    };
-    this.api.getHolidayList(holidayParams).subscribe((res) => {
-      const holidays = res;
-      //console.log(holidays,"yutre")
-      const startDate = new Date(
-        this.leaveForm.value.leaveApplication_from_date
-      );
-      const endDate = new Date(this.leaveForm.value.leaveApplication_to_date);
-      const selectedFrom = this.leaveForm.value.from1_session;
-      const selectedTo = this.leaveForm.value.to1_session;
-      this.workingDays = this.getWorkingDays(
-        startDate,
-        endDate,
-        holidays,
-        selectedFrom,
-        selectedTo
-      );
-      //console.log( this.workingDays,"WORKING DAYS")
-
-      // if (this.workingDays === 1) {
-      //  // //console.log(selectedFrom,selectedTo)
-      //   this.workingDays = selectedFrom === selectedTo ? 0.5: 1 ;
-      //   this.leaveForm.patchValue({
-      //     days:this.workingDays
-      //    })
-      //  }
-      //  else{
-      //   if(this.workingDays === 2 && selectedFrom === selectedTo){
-      //     this.workingDays = 1.5
-      //     this.leaveForm.patchValue({
-      //       days:this.workingDays
-      //      })
-
-      //   }
-      //   else{
-      //     if(selectedFrom === selectedTo){
-      //       this.workingDays = (this.workingDays - 0.5)
-      //       this.leaveForm.patchValue({
-      //         days:this.workingDays
-      //        })
-      //     }else{
-      //       this.leaveForm.patchValue({
-      //         days:this.workingDays
-      //        })
-      //     }
-      //   }
-
-      //  }
-      this.leaveForm.patchValue({
-        days: this.workingDays,
-      });
-      console.log(`Number of working days: ${this.workingDays}`);
-
-      //console.log(this.leaveForm.value.days,"DAYS")
-      this.getBalance(this.workingDays);
-    });
-  }
+  
   getAllEmployee(){
    
     this.api.getData(`${environment.live_url}/${environment.all_employee}/?organization_id=${this.orgId}`).subscribe((res:any)=>{
@@ -455,42 +486,8 @@ sessions = [
     })
   }
 
-  getWorkingDays(
-    startDate: Date,
-    endDate: Date,
-    _holidays,
-    selectedFrom: string,
-    selectedTo: string
-  ): any {
-    const fromDate = dayjs(new Date(startDate));
-    const toDate = dayjs(new Date(endDate)).subtract(1, 'day');
-    const fromToDuration = dayjs.duration(toDate.diff(fromDate)).asDays()
-    const fromDaySession = fromDate.subtract(
-      selectedFrom === '1' ? 24 : 12,
-      'hours'
-    );
-    const toDaySession = toDate.add(selectedTo === '1' ? 12 : 24, 'hours');
-    const diffMS = toDaySession.diff(fromDaySession);
-    const daysDiff = dayjs.duration(diffMS).asDays();
-    const holidays = Object.values(_holidays?.message[0]);
-    let daysDiffWithHolidays = daysDiff
-    // Exclude weekends from the leaves
-    console.log(daysDiff)
-    for (let i = 0; i < daysDiff; i++) {
-      const currentDay = fromDate.add(i, 'days').format('dddd')
-      const holidayDate = fromDate.add(i, 'days').format('DD/MM/YYYY')
-      const isHoliday = holidays.includes(holidayDate)
-      console.log("CURRENT DAY", currentDay)
-      if (currentDay === 'Saturday' || currentDay === 'Sunday' || isHoliday) {
-        daysDiffWithHolidays--;
-      }
-    }
-    return daysDiffWithHolidays;
-  }
-
-  onPeopleSelect(event: any) {
-    this.peopleId.push(event.id);
-  }
+ 
+ 
   
 
 }

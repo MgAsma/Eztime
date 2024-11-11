@@ -41,6 +41,9 @@
     color: white !important;
     &:disabled{
       opacity: 0.8;
+      cursor: not-allowed;
+      background-color: #efefef !important;
+      color: black !important;
     }
 }
 
@@ -198,8 +201,8 @@
       }
       
       .save-btn{
-        color:#126EB4;
-        background: #f6f6f6;
+        color:white;
+        background: #126EB4;
       }
       .moonPulse{
         animation: pulse 1s linear infinite;

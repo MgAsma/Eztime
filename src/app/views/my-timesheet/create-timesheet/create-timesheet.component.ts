@@ -51,6 +51,7 @@ export class CreateTimesheetComponent implements OnInit {
   taskDetailsList:string[]=[];
   currentDate: Date;
   projectDetailsSet: any;
+  userRole: string;
 
   constructor(
     private builder: FormBuilder,
@@ -66,6 +67,8 @@ export class CreateTimesheetComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('organization_id')
     this.userId = sessionStorage.getItem('user_id')
+    this.userRole = sessionStorage.getItem('user_role_name').toLowerCase()
+  
     this.currentDate = new Date()
     this.initializeForm();
     this.taskInitForm()
@@ -100,7 +103,9 @@ export class CreateTimesheetComponent implements OnInit {
     const remainingHours = totalHours - spentHours;
     this.remainingHours = remainingHours;
     // return remainingHours > 0 ? remainingHours : 0;
-    return this.totalHoursForDate > 0 ? totalHours - this.totalHoursForDate : remainingHours;
+    //return this.totalHoursForDate > 0 ? totalHours - this.totalHoursForDate : remainingHours;
+    
+    return this.totalHoursForDate > 0 ? totalHours - this.totalHoursForDate : +remainingHours;
   }
 
 
@@ -263,6 +268,7 @@ onDateChange(date: string) {
  
   editTask(projectIndex: number, taskIndex: number): void {
     const taskArray = this.getTaskArray(projectIndex);
+    const remainingHours = this.getRemainingHours(projectIndex);
     const taskFormGroup = taskArray?.at(taskIndex) as FormGroup;
   // console.log(taskArray,'ALL DETAILS')
   
@@ -279,10 +285,43 @@ onDateChange(date: string) {
     // console.log('New Time Spent Value:', newTimeSpentValue);
     const hours = 8
     // this.isTaskSubmitted = true;
-     if ((newTimeSpentValue - hours)  > availableHours) {
-    this.api.showError(`The selected hours (${newTimeSpentValue}) cannot exceed the left hours .`);
-  //   this.api.showError(`The selected hours cannot exceed the remaining available hours.`)
-} else {
+    const enteredTaskId = this.taskForm.get('task_id')?.value;
+  
+  if (enteredTaskId) {
+    const isDuplicateTask = taskArray.controls.some((task: FormGroup) => 
+      task.get('task_id').value === enteredTaskId
+    );
+    if (isDuplicateTask) {
+      this.api.showError(`Duplicate task names are not allowed.`);
+      return; // Exit early if duplicate is found
+    }
+  }
+ // Calculate total hours spent across all tasks
+ let totalHoursSpent = 0;
+
+ taskArray.controls.forEach((task: FormGroup, index: number) => {
+   if (index !== taskIndex) {  // Skip the current task being edited
+     const taskHours = task.get('hours_to_complete')?.value;
+     const hours = Number(taskHours); // Force conversion to number
+     console.log(`Task ${index} hours:`, taskHours, 'Converted hours:', hours);  // Debugging output
+     totalHoursSpent += isNaN(hours) ? 0 : hours; // Add valid number, otherwise add 0
+   }
+ });
+ 
+ const newTimeSpentValueNumber = Number(newTimeSpentValue);
+ // Include the new time spent value in the total calculation
+ totalHoursSpent += newTimeSpentValueNumber;
+ console.log('Total Hours Spent:', totalHoursSpent);  // Debugging output
+
+ const maxAllowedHours = 8;  // Maximum allowed hours (8 hours)
+
+ // Check if total hours exceed the maximum allowed (8 hours)
+ if (totalHoursSpent > maxAllowedHours) {
+   this.api.showError(`Tasks cannot exceed ${maxAllowedHours} hours. Current total: ${totalHoursSpent} hours.`);
+   return; // Exit early if total hours exceed 8 hours
+ }
+
+else {
        
       // Update the task with the new value
      // this.toggleTaskEditingState(projectIndex, taskIndex, false);
@@ -344,11 +383,23 @@ saveTask(projectIndex: number): void {
   const totalHoursForDate = this.totalHoursForDate || 0; // Default to 0 if undefined
 
   
+ 
+  const enteredTaskId = this.taskForm.get('task_id')?.value;
+  
+  if (enteredTaskId) {
+    const isDuplicateTask = taskArray.controls.some((task: FormGroup) => 
+      task.get('task_id').value === enteredTaskId
+    );
+    if (isDuplicateTask) {
+      this.api.showError(`Duplicate task names are not allowed.`);
+      return; // Exit early if duplicate is found
+    }
+  }
   if (enteredTime  > remainingHours) {
     this.api.showError(`You have only ${remainingHours } hours left for this date.`);
     projectGroup.get('isTaskForm').setValue(true);
   } 
-  // If everything is okay, save the task
+// If everything is okay, save the task
   else {
   
   // Disable the task details based on editing state
@@ -399,7 +450,8 @@ deleteProject(projectIndex: number): void {
     projectGroup.get('isSaved').setValue(false);
     // Optional: If you need to update any other state or UI after deletion, do it here
     this.api.showWarning('Timesheet deleted successfully!'); // Example of showing a success message
-    this.isSaved = false;
+    this.isSaved = true;
+    this.isTaskSubmitted = true
     // Optional: Reset or update any form states as needed
     this.taskForm.reset();
   }
@@ -621,7 +673,10 @@ deleteProject(projectIndex: number): void {
   getProject(event, index){
     this.currentIndex = index
     this.client_id = event
-    this.api.getData(`${environment.live_url}/${environment.project}/?organization=${this.orgId}&client=${event}`).subscribe((res:any)=>{
+    let query:any;
+    query = this.userRole === 'admin' ? `?organization=${this.orgId}&client=${event}`:`?organization=${this.orgId}&client=${event}&employee_id=${this.userId}`
+    
+    this.api.getData(`${environment.live_url}/${environment.project}/${query}`).subscribe((res:any)=>{
       if(res){
         this.allProject = res
         this.projectList = [...this.allProject]
@@ -636,7 +691,10 @@ deleteProject(projectIndex: number): void {
   }
   getTask(event,index){
     this.project_id = event
-    this.api.getData(`${environment.live_url}/${environment.project_task}/?project=${event}`).subscribe((res:any)=>{
+    let query:any;
+    query = this.userRole === 'admin' ? `?project=${event}`:`?project=${event}&employee_id=${this.userId}`
+    
+    this.api.getData(`${environment.live_url}/${environment.project_task}/${query}`).subscribe((res:any)=>{
       if(res){
        this.allTask = res 
        this.taskList = [...this.allTask]
