@@ -62,7 +62,11 @@ export const environment = {
   update_timesheet_status:`update-timesheet-status`,
   update_leave_details:`update-leave-details`,
   allEmployee:`all-employee`,
-  working_hour:`working-hour`
+  working_hour:`working-hour`,
+  designation:`designation`,
+  department:`department`,
+  user:`user`,
+  holiday_calender:`upload-holiday-calender`
 };
 
 /*
