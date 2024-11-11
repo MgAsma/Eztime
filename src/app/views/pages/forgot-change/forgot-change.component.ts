@@ -30,9 +30,9 @@ export class ForgotChangeComponent implements OnInit {
     // })
     const userName = sessionStorage.getItem('email_id')
     this.changePassword = this.builder.group({
-      username: [userName, [Validators.required]],
+      user_id: [userName, [Validators.required]],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
-      old_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]]
+      confirm_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]]
     }, {
       validators: this.passwordMatchValidator
     })
@@ -40,7 +40,7 @@ export class ForgotChangeComponent implements OnInit {
 
   passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
     const newPassword = control.get('password');
-    const confirmPassword = control.get('old_password');
+    const confirmPassword = control.get('confirm_password');
 
     if (newPassword.value !== confirmPassword.value) {
       return { 'passwordMismatch': true };
@@ -62,7 +62,7 @@ export class ForgotChangeComponent implements OnInit {
     if (this.changePassword.invalid) {
       this.api.showError('Invalid!')
       this.changePassword.markAllAsTouched()
-      //console.log(this.changePassword.value)
+      console.log(this.changePassword.value)
     }
     else {
       this.api.forgotPassword(this.changePassword.value).subscribe(

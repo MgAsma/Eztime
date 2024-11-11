@@ -3,13 +3,14 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 
 @Component({
-  selector: 'app-change-password',
-  templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.scss']
+  selector: 'app-change-passwords',
+  templateUrl: './change-passwords.component.html',
+  styleUrls: ['./change-passwords.component.scss']
 })
-export class ChangePasswordComponent implements OnInit {
+export class ChangePasswordsComponent implements OnInit {
   BreadCrumbsTitle: any = 'Change password';
   userId
   changePassword: FormGroup;
@@ -26,15 +27,17 @@ export class ChangePasswordComponent implements OnInit {
     private builder: FormBuilder,
     private api: ApiserviceService,
     private router: Router,
+    private common_service: CommonServiceService,
     private location: Location
   ) { }
 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.userId = sessionStorage.getItem('user_id')
     this.changePassword = this.builder.group({
       old_password: ['', [Validators.required]],
       new_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
-      confirm_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
+      confirm_new_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
       user_id: [this.userId, [Validators.required]]
     },
     {
@@ -45,7 +48,7 @@ export class ChangePasswordComponent implements OnInit {
   
   passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
     const newPassword = control.get('new_password');
-    const confirmPassword = control.get('confirm_password');
+    const confirmPassword = control.get('confirm_new_password');
 
     if (newPassword.value !== confirmPassword.value) {
       return { 'passwordMismatch': true };
@@ -58,11 +61,6 @@ export class ChangePasswordComponent implements OnInit {
     return this.changePassword.controls;
   }
 
-  goBack(event) {
-    event.preventDefault(); // Prevent default back button behavior
-    this.location.back();
-
-  }
 
 
   sendChangePassword() {
@@ -81,16 +79,18 @@ export class ChangePasswordComponent implements OnInit {
           (response: any) => {
             if (response) {
               //console.log(response)
-
-              this.router.navigate(['../login']);
-              this.api.showSuccess("Password changed successfully!");
+              this.api.showSuccess(response.message);
+              this.changePassword.reset();
+              setTimeout(() => {
+                this.router.navigate(['../login']);
+              }, 3000);
             }
             else {
               this.api.showError('Error !')
             }
 
           }, ((error: any) => {
-            this.api.showError(error ? error.error.error.message : 'Error !')
+            this.api.showError(error.error.message)
           })
 
         )
@@ -134,8 +134,5 @@ export class ChangePasswordComponent implements OnInit {
       this.passwordType3 = 'password'
     }
 
-  }
-  getRedirectLink() {
-    this.location.back();
   }
 }

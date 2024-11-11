@@ -54,12 +54,12 @@ export class ApiserviceService {
   //Register
   // Forgot Password
   ForgotPasswordDetails(data: any) {
-    return this.http.post(`${this.baseurl}/forgot-password-send-otp`, data, { headers: this.headers })
+    return this.http.post(`${this.baseurl}/forgot-password/`, data, { headers: this.headers })
   }
   // Forgot Password
   // Otp
   otp(data: any) {
-    return this.http.post(`${this.baseurl}/otp-verify-forgot-pass`, data, { headers: this.headers })
+    return this.http.post(`${this.baseurl}/verify-otp/`, data, { headers: this.headers })
   }
   // Otp
   // Reset Forgot Password
@@ -467,7 +467,7 @@ export class ApiserviceService {
 
   // change password
   addChangePassword(data: any) {
-    return this.http.post(`${this.baseurl}/change-password`, data, { headers: this.headers })
+    return this.http.post(`${this.baseurl}/change-password/`, data, { headers: this.headers })
   }
   forgotPassword(data: any) {
     return this.http.post(`${this.baseurl}/password-reset`, data)

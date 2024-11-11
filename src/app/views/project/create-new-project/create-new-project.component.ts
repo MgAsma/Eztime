@@ -620,6 +620,7 @@ export class CreateNewProjectComponent implements OnInit {
 
   filteredPeopleGroup= [];
   filterOptions(event: any) {
+    console.log('evenettt',event.target.value)
     let eventw = event.target.value.toLowerCase();
     this.filteredPeopleGroup = this.allPeopleGroup.filter(item =>
       item.first_name.toLowerCase().includes(eventw)

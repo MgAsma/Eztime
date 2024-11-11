@@ -45,7 +45,7 @@ export class DefaultLayoutComponent {
     //   icons:'bi bi-person-add'
     // },
     {
-      link: '/changePassword',
+      link: '/changePasswords',
       page: 'Change Password',
       icons: 'bi bi-key'
     },

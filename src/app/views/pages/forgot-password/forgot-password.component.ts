@@ -15,7 +15,7 @@ export class ForgotPasswordComponent implements OnInit {
   ngOnInit(): void {
   }
   forgotForm = this.builder.group({
-    username:['',[Validators.required, Validators.email]],
+    email:['',[Validators.required, Validators.email]],
  
   })
 
@@ -36,7 +36,8 @@ export class ForgotPasswordComponent implements OnInit {
         (response:any)=>{
           if(response){
           //  //console.log(response.result.details,response)
-            sessionStorage.setItem('email_id',this.forgotForm.value.username)
+          this.api.showSuccess(response.message)
+            sessionStorage.setItem('email_id',this.forgotForm.value.email)
             this.router.navigate(['/otp']);
            }
           else{

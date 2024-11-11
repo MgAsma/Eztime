@@ -36,8 +36,8 @@ export class OtpComponent implements OnInit {
     const otp: string = Object.values(this.otpForm.value).join('');
     const userName = sessionStorage.getItem('email_id')
     const otpdata = {
-      OTP: otp,
-      username: userName
+      otp: Number(otp),
+      email: userName
     }
     if (this.otpForm.invalid) {
       this.api.showError('Invalid')

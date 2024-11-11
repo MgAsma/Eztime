@@ -179,7 +179,7 @@ export class ProfileComponent implements OnInit {
             country: data.country,
             state: data.state,
             city: data.city,
-            address: data.address,
+            address: data?.address || '',
             postal_code: data.postal_code,
             role:data.role
           })

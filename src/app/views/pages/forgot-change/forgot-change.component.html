@@ -24,22 +24,6 @@
                         <form [formGroup]='changePassword' (ngSubmit)='sendChangePassword()'>
                             <div class="row">
                                 <div class="col">
-                                    <!-- <h1 class="text-center py-4">New Password</h1> -->
-
-                                    <!-- <label >Email Id <b>*</b></label>
-                            <input type="email" class="form-control p-3 sizeinput" formControlName='username' placeholder="Enter your email id" aria-describedby="emailHelp"  autocomplete="off">
-                            <div *ngIf="f['username'].touched && f['username'].invalid" class="s-f" >
-                               <p  *ngIf="f['username'].errors['required']" class='s-c'>Email id is required</p>    
-                           </div>  -->
-
-                                    <!-- <label >Confirm Password <b>*</b></label>
-                            <input type="password" class="form-control p-3 sizeinput" formControlName='old_password' placeholder="Confirm Password" aria-describedby="emailHelp"  autocomplete="off">
-                             <div *ngIf="f['old_password'].touched && f['old_password'].invalid" class="s-f" >
-                                <p  *ngIf="f['old_password'].errors['required']" class='s-c'>Confirm Password is Required</p>
-                            </div>
-                            <div *ngIf="f['old_password'].valid && changePassword.hasError('passwordMismatch') && (changePassword.get('old_password').dirty || changePassword.get('old_password').touched)">
-                                <p class="s-c">Confirm Password is mismatched</p>
-                            </div> -->
                                     <div class="row">
                                         <div class="col custome-column p-r mb-3">
                                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
@@ -47,14 +31,6 @@
                                                 <input matInput [type]="passwordType" formControlName='password' placeholder="Password"
                                                 aria-describedby="emailHelp" autocomplete="off" id="password">
                                                 <mat-icon matSuffix  (click)="showPassword()">{{eyeIcon}}</mat-icon>
-                                                <!-- <mat-error  *ngIf="f['password'].touched && f['password'].invalid">
-                                                  <span *ngIf="f['password'].errors && f['password'].errors['required']">Password is required.</span>
-                                                </mat-error> -->
-                                                <!-- <mat-error>
-                                                    <span class="" *ngIf="f['password'].errors && f['password'].hasError('pattern')"> Password should
-                                                        contain at least one special character,one number,one uppercase and one
-                                                        lowercase, and be at least 8 characters long</span>
-                                                </mat-error> -->
                                             </mat-form-field>
                                             <div class="px-2" *ngIf="f['password'].touched && f['password'].invalid">
                                                 <span class="text-errors" *ngIf="f['password'].errors && f['password'].errors['required']">Password is required.</span>
@@ -68,24 +44,18 @@
                                         <div class="col custome-column p-r">
                                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
                                                 <mat-label>Confirm Password<b class="r-star">*</b></mat-label>
-                                                <input matInput [type]="passwordType2" formControlName='old_password' placeholder="Confirm Password"
-                                                aria-describedby="emailHelp" autocomplete="off" id="old_password">
+                                                <input matInput [type]="passwordType2" formControlName='confirm_password' placeholder="Confirm Password"
+                                                aria-describedby="emailHelp" autocomplete="off" id="confirm_password">
                                                 <mat-icon matSuffix  (click)="showPasswordtwo()">{{eyeIcon2}}</mat-icon>
-                                                <!-- <mat-error  *ngIf="f['old_password'].touched && f['old_password'].invalid">
-                                                  <span *ngIf="f['old_password'].errors && f['old_password'].errors['required']">Confirm password is required.</span>
-                                                  <span  *ngIf="f['old_password'].errors && f['old_password'].hasError('pattern')"> Password should
-                                                      contain at least one special character,one number,one uppercase and one
-                                                      lowercase, and be at least 8 characters long</span>
-                                                </mat-error> -->
                                             </mat-form-field>
-                                            <div class="px-2" *ngIf="f['old_password'].touched && f['old_password'].invalid">
-                                                <span class="text-errors" *ngIf="f['old_password'].errors && f['old_password'].errors['required']">Confirm password is required.</span>
-                                                <span class="text-errors" *ngIf="f['old_password'].errors && f['old_password'].hasError('pattern')"> Password should
+                                            <div class="px-2" *ngIf="f['confirm_password'].touched && f['confirm_password'].invalid">
+                                                <span class="text-errors" *ngIf="f['confirm_password'].errors && f['confirm_password'].errors['required']">Confirm password is required.</span>
+                                                <span class="text-errors" *ngIf="f['confirm_password'].errors && f['confirm_password'].hasError('pattern')"> Password should
                                                       contain at least one special character,one number,one uppercase and one
                                                       lowercase, and be at least 8 characters long</span>
                                             </div>
-                                            <div class="px-2" *ngIf="f['old_password'].valid">
-                                                <span class="text-errors" *ngIf="f['old_password'].valid && changePassword.hasError('passwordMismatch') && (changePassword.get('old_password').dirty || changePassword.get('old_password').touched)">
+                                            <div class="px-2" *ngIf="f['confirm_password'].valid">
+                                                <span class="text-errors" *ngIf="f['confirm_password'].valid && changePassword.hasError('passwordMismatch') && (changePassword.get('confirm_password').dirty || changePassword.get('confirm_password').touched)">
                                                  Confirm password is mismatched
                                                 </span>
                                             </div>
@@ -102,17 +72,6 @@
                                 <a routerLink="../login" class="m-0">Go back to Login</a>
                                 <button mat-raised-button class="proceedbtn" type="submit">Submit</button>
                             </div>
-                            <!-- <div class="row" style="text-align: center;">
-                        <div class="col">
-                            <p>Copyright Ⓒ <a href="https://www.ekfrazo.com/"  target="_blank" style="color: #3F51B5;text-decoration: none;">Ekfrazo Technologies Private Limited</a></p>
-                        </div>
-                    </div>
-                    <div class="row" style="text-align: center;">
-                        <div class="col">
-                            <p>All rights reserved.</p>
-                        </div>
-                    </div>
-                  -->
                         </form>
                     </div>
                 </div>

@@ -38,7 +38,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     //   icons:'bi bi-person-add'
     // },
     {
-      link: '/changePassword',
+      link: '/changePasswords',
       page: 'Change Password',
       icons: 'fa fa-key'
     },

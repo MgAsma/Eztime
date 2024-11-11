@@ -108,6 +108,9 @@ const routes: Routes = [
         path:'organization',loadChildren:()=>import('./views/organization/organization.module').then(m => m.OrganizationModule)
       },
       {
+        path:'changePasswords',loadChildren:()=>import('./views/change-passwords/change-passwords.module').then(m => m.ChangePasswordsModule)
+      },
+      {
         path: 'pages',
         loadChildren: () =>
           import('./views/pages/pages.module').then((m) => m.PagesModule)
@@ -175,14 +178,14 @@ const routes: Routes = [
   //     title: 'Notification Page'
   //   }
  // },
-  {
-    path: 'changePassword',canActivate:[AuthGuard],
-    component: ChangePasswordComponent,
-    data: {
-      title: 'Change Password Page'
-    },
+  // {
+  //   path: 'changePassword',canActivate:[AuthGuard],
+  //   component: ChangePasswordComponent,
+  //   data: {
+  //     title: 'Change Password Page'
+  //   },
     
-  }
+  // }
     // { path: '**', redirectTo: 'login' }
 ];
 
