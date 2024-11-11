@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./category-list.component.scss']
 })
 export class CategoryListComponent implements OnInit {
-  BreadCrumbsTitle:any='Project category';
+  BreadCrumbsTitle:any='Project Templates';
   categoryList=[];
   currentIndex = 1;
   page = 1;
@@ -138,7 +138,7 @@ export class CategoryListComponent implements OnInit {
       // if(data){
         this.categoryList = []
         this.ngOnInit()
-        this.api.showWarning('Project category deleted successfully')
+        this.api.showWarning('Project template deleted successfully')
       // }
      
     },((error)=>{

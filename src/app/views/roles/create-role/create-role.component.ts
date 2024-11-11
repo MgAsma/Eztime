@@ -67,7 +67,7 @@ export class CreateRoleComponent implements OnInit {
           if(res){
             console.log(res)
             this.api.showSuccess(res.message);
-            this.roleForm.reset();
+            this.ngOnInit();
             setTimeout(() => {
               this.router.navigate([`/designation/roles-access/${res.result.id}`])
             }, 2000);

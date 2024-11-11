@@ -12,13 +12,13 @@
                             <div class="row">
                                 <div class="col-12 mb-4">
                                     <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
-                                        <mat-label>Category Name <b class="r-star">*</b></mat-label>
-                                        <input matInput placeholder="Enter category name" formControlName="category_name"
+                                        <mat-label>Template Name <b class="r-star">*</b></mat-label>
+                                        <input matInput placeholder="Enter template name" formControlName="category_name"
                                             autocomplete="off" pattern="^(?!\s)(.*\S)?$">
                                     </mat-form-field>
                                     <div class="px-2" *ngIf="f['category_name']?.touched && f['category_name']?.invalid">
                                         <span class="text-errors"
-                                            *ngIf="f['category_name'].errors && f['category_name'].errors['required'] ">Category
+                                            *ngIf="f['category_name'].errors && f['category_name'].errors['required'] ">Template
                                             name is
                                             required</span>
                                         <span class="text-errors"
@@ -27,7 +27,7 @@
                                         </span>
                                         <span class="text-errors"
                                             *ngIf="!f['category_name'].errors?.['required'] && f['category_name'].errors?.['maxlength']">
-                                            Category name cannot exceed more than 50 characters.
+                                            Template name cannot exceed more than 50 characters.
                                         </span>
                                     </div>
                                 </div>
@@ -147,13 +147,13 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
                             <mat-form-field appearance="outline" class=" custom-mat-form-field">
-                                <mat-label>Category Name <b class="r-star">*</b></mat-label>
-                                <input matInput placeholder="Enter category name" formControlName="category_name" pattern="^(?!\s)(.*\S)?$"
+                                <mat-label>Template Name <b class="r-star">*</b></mat-label>
+                                <input matInput placeholder="Enter template name" formControlName="category_name" pattern="^(?!\s)(.*\S)?$"
                                     autocomplete="off">
                             </mat-form-field>
                             <div class="px-2" *ngIf="f['category_name']?.touched && f['category_name']?.invalid">
                                 <span class="text-errors"
-                                    *ngIf="f['category_name'].errors && f['category_name'].errors['required'] ">Category name is
+                                    *ngIf="f['category_name'].errors && f['category_name'].errors['required'] ">Template name is
                                     required</span>
                                 <span class="text-errors"
                                     *ngIf="f['category_name'].invalid && f['category_name'].hasError('pattern')">
@@ -161,7 +161,7 @@
                                 </span>
                                 <span class="text-errors"
                                     *ngIf="!f['category_name'].errors?.['required'] && f['category_name'].errors?.['maxlength']">
-                                    Category name cannot exceed more than 50 characters.
+                                    Template name cannot exceed more than 50 characters.
                                 </span>
                             </div>
                         </div>

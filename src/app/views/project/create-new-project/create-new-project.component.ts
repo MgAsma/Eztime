@@ -77,8 +77,8 @@ export class CreateNewProjectComponent implements OnInit {
     this.location.back();
 
   }
-  onChange(event:any) {
-    console.log('fff',event)
+  onChange(event: any) {
+    console.log('fff', event)
     this.projectForm.patchValue({
       end_date: ''
     })
@@ -103,13 +103,13 @@ export class CreateNewProjectComponent implements OnInit {
     // this.addTask();
   }
 
-  getProjectStatus(){
+  getProjectStatus() {
     this.api.getProjectStatus().subscribe(
-      (res:any)=>{
+      (res: any) => {
         this.status = res;
       },
-      (error:any)=>{
-        console.log('project status error',error)
+      (error: any) => {
+        console.log('project status error', error)
       }
     )
   }
@@ -118,7 +118,7 @@ export class CreateNewProjectComponent implements OnInit {
       organization: this.orgId,
       user_id: this.user_id,
       client_id: ['', [Validators.required]],
-      project_name: ['', [Validators.required,Validators.maxLength(50)]],
+      project_name: ['', [Validators.required, Validators.maxLength(50)]],
       start_date: ['', [Validators.required]],
       end_date: ['', [Validators.required]],
       team: [''],
@@ -134,7 +134,7 @@ export class CreateNewProjectComponent implements OnInit {
   // Client list
   getClient() {
     this.api.getClientListFromUserId(`?${'organization_id'}=${this.orgId}`).subscribe(
-      (res:any)=>{
+      (res: any) => {
         this.allClientList = res;
       },
       (error) => {
@@ -159,7 +159,7 @@ export class CreateNewProjectComponent implements OnInit {
     )
   }
 
-  getReportingManager(){
+  getReportingManager() {
     this.api.getEmployeeList(`?${'organization_id'}=${this.orgId}&${'designation'}=${'manager'}`).subscribe((data: any) => {
       if (data) {
         console.log('manager list', data)
@@ -167,8 +167,8 @@ export class CreateNewProjectComponent implements OnInit {
           this.adminData();
         }
         else {
-          let temp:any [];
-          temp = data.map((element:any)=>element.user)
+          let temp: any[];
+          temp = data.map((element: any) => element.user)
           this.allManager = temp;
         }
       }
@@ -180,12 +180,12 @@ export class CreateNewProjectComponent implements OnInit {
 
     )
   }
-  adminData(){
+  adminData() {
     this.api.getProfileDetails(`${this.user_id}/`).subscribe(
       (res: any) => {
         // console.log('admin',res);
         let data = [];
-        data.push({ 'first_name': res.first_name,'last_name':res?.last_name || '', 'id': res.id });
+        data.push({ 'first_name': res.first_name, 'last_name': res?.last_name || '', 'id': res.id });
         // console.log(data,'ttttttttttttttt')
         this.allManager = data;
       },
@@ -214,7 +214,7 @@ export class CreateNewProjectComponent implements OnInit {
     this.api.getEmployeeList(`?${'organization_id'}=${this.orgId}`).subscribe((data: any) => {
       if (data) {
         let filteredRole = [];
-        data.forEach((element:any)=>{
+        data.forEach((element: any) => {
           filteredRole.push(element.user)
         })
         // console.log(' this.filteredRole', filteredRole)
@@ -231,7 +231,7 @@ export class CreateNewProjectComponent implements OnInit {
     )
   }
 
-  
+
   matTeamSelect() {
     console.log(this.selectedTeamId);
     this.teamFunction(this.selectedTeamId);
@@ -261,7 +261,7 @@ export class CreateNewProjectComponent implements OnInit {
     // console.log('assigneePeoples', this.assigneePeoples)
     // console.log('this.subTasks.value', this.subTasks.value)
   }
-  teamFunction(id:any){
+  teamFunction(id: any) {
     let tempId: any = []
     this.allPeopleGroup.forEach(element => {
       id.forEach(element1 => {
@@ -284,17 +284,17 @@ export class CreateNewProjectComponent implements OnInit {
         });
       }
     });
-    
+
     console.log('assigneePeoples', this.assigneePeoples);
   }
 
-  teamDeselectedFromCard(id:any){
-     this.selectedTeamId = this.selectedTeamId.filter(item => item !== id);
-    console.log('this.selectedTeamId',this.selectedTeamId);
+  teamDeselectedFromCard(id: any) {
+    this.selectedTeamId = this.selectedTeamId.filter(item => item !== id);
+    console.log('this.selectedTeamId', this.selectedTeamId);
     this.teamFunction(this.selectedTeamId);
   }
 
-   isCollapsed: boolean = true;
+  isCollapsed: boolean = true;
 
   // Clear all team items
   clearAll(): void {
@@ -312,7 +312,7 @@ export class CreateNewProjectComponent implements OnInit {
         });
       }
     });
-    this.projectForm.patchValue({team:''})
+    this.projectForm.patchValue({ team: '' })
   }
 
   toggleCollapse(): void {
@@ -347,7 +347,7 @@ export class CreateNewProjectComponent implements OnInit {
 
   createSubTask(): FormGroup {
     return this.builder.group({
-      task_name: ['', [Validators.required,Validators.maxLength(150)]],
+      task_name: ['', [Validators.required, Validators.maxLength(150)]],
       status: ['', Validators.required],
       assignee: null,
       is_saved: false,
@@ -483,7 +483,7 @@ export class CreateNewProjectComponent implements OnInit {
     event.forEach((element: any) => {
       this.peopleId.push(element.id)
     });
-    
+
   }
 
 
@@ -498,11 +498,11 @@ export class CreateNewProjectComponent implements OnInit {
         // task.get('is_template')?.value === true &&
         for (let i = this.subTasks.length - 1; i >= 0; i--) {
           const task = this.subTasks.at(i);
-          if ( task.get('is_saved')?.value === false && task.get('is_cancelled')?.value === false) {
+          if (task.get('is_saved')?.value === false && task.get('is_cancelled')?.value === false) {
             this.subTasks.removeAt(i);
           }
         }
-        console.log('resp',resp)
+        console.log('resp', resp)
         const taskList = resp['projectcategory_task'];
         taskList.forEach(task => {
           this.subTasks.push(this.builder.group({
@@ -567,9 +567,9 @@ export class CreateNewProjectComponent implements OnInit {
 
 
       if (allTasksValid == true && this.invalidDate == false) {
-        let tempTeamIds:any =[];
-        this.selectedTeamId.forEach((element:any)=>{
-          tempTeamIds.push({'employee':element})
+        let tempTeamIds: any = [];
+        this.selectedTeamId.forEach((element: any) => {
+          tempTeamIds.push({ 'employee': element })
         })
         let tempList: any;
         tempList = this.projectForm.value['project_task'].map(({ task_name, status, assignee }) => ({
@@ -601,26 +601,21 @@ export class CreateNewProjectComponent implements OnInit {
           }
           else {
             this.api.showError('Error')
-            
+
           }
 
         }, (error => {
           this.api.showError(error.error.error.message)
-          console.log('project creation error',error)
+          console.log('project creation error', error)
         })
         )
       }
-      else {
-        this.api.showWarning('Invalid date')
-      }
-
-
     }
   }
 
-  filteredPeopleGroup= [];
+  filteredPeopleGroup = [];
   filterOptions(event: any) {
-    console.log('evenettt',event.target.value)
+    console.log('evenettt', event.target.value)
     let eventw = event.target.value.toLowerCase();
     this.filteredPeopleGroup = this.allPeopleGroup.filter(item =>
       item.first_name.toLowerCase().includes(eventw)

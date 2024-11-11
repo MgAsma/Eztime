@@ -12,7 +12,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./update-task-category.component.scss']
 })
 export class UpdateTaskCategoryComponent implements OnInit {
-  BreadCrumbsTitle: any = 'Update category';
+  BreadCrumbsTitle: any = 'Update Project Template'
   id: any;
   user_id:any
   uploadFile: any;

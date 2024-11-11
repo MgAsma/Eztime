@@ -11,7 +11,7 @@ import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.co
   styleUrls: ['./add-new-category.component.scss']
 })
 export class AddNewCategoryComponent implements OnInit {
-  BreadCrumbsTitle: any = 'Create category';
+  BreadCrumbsTitle: any = 'Create Project Template';
   taskCategoryForm!: FormGroup
   user_id:any
   allTaskCategory: any = [];

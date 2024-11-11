@@ -2,13 +2,13 @@
   <div class="row pb-3">
     <div class="col-sm-4 search-div">
       <input type="search" (input)="filterSearch()" class="form-control p-2 sizeinput" [(ngModel)]="term"
-        placeholder="Search by category name" aria-describedby="emailHelp" autocomplete="off">
+        placeholder="Search by template name" aria-describedby="emailHelp" autocomplete="off">
       <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>
     </div>
     <div class="col-sm"></div>
     <div class="col-md-3 col-lg-3 p-1 text-end create-buttons">
       <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/task/add" type="submit">
-       <mat-icon>add</mat-icon> Create Project Category</button>
+       <mat-icon>add</mat-icon> Create Project Template</button>
 
     </div>
   </div>
@@ -19,7 +19,7 @@
           <thead>
             <tr>
               <th scope="col">S.No</th>
-              <th scope="col">Category Name
+              <th scope="col">Template Name
                 <i *ngIf="!arrowState['category_name']" (click)="sort('asc','category_name')" class="bi bi-arrow-up"></i>
                 <i (click)="sort('desc','category_name')" *ngIf="arrowState['category_name']" class="bi bi-arrow-down"></i> 
               </th>
@@ -112,7 +112,7 @@
       <!-- <h1>Project category list</h1> -->
     </div>
     <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-      <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by category name"
+      <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by template name"
         aria-describedby="emailHelp" autocomplete="off">
       <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
     </div>
@@ -129,7 +129,7 @@
           <div class="card outer-card">
             <div class="row py-1">
               <div class="col-6 text-start">
-                <h6 class="card-subtitle">Category name</h6>
+                <h6 class="card-subtitle">Template name</h6>
                 <div class="value-container">{{item.category_name|titlecase}}</div>
               </div>
               <div class="col-6 p-0 text-end">

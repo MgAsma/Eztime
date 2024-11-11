@@ -89,8 +89,8 @@ export class LoginComponent implements OnInit {
         )
 
       }, (error: any) => {
-        this.api.showError(error.error.non_field_errors[0])
         console.log('error',error)
+        this.api.showError(error.error.message);
       }
 
       )

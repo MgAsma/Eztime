@@ -88,7 +88,7 @@ export class UpdateProjectComponent implements OnInit {
       organization: this.org_id,
       user_id: this.user_id,
       client_id: ['', [Validators.required]],
-      project_name: ['', [Validators.required,Validators.maxLength(50)]],
+      project_name: ['', [Validators.required, Validators.maxLength(50)]],
       start_date: ['', [Validators.required]],
       end_date: ['', [Validators.required]],
       team: [''],
@@ -166,7 +166,7 @@ export class UpdateProjectComponent implements OnInit {
       const taskList = data.project_task;
       taskList.forEach(task => {
         this.subTasks.push(this.builder.group({
-          task_name: [task.task_name, [Validators.required,Validators.maxLength(150)]],
+          task_name: [task.task_name, [Validators.required, Validators.maxLength(150)]],
           status: [Number(task.status), Validators.required],
           assignee: [task.assignee],
           id: [task.id],
@@ -218,8 +218,8 @@ export class UpdateProjectComponent implements OnInit {
           this.adminData();
         }
         else {
-          let temp:any [];
-          temp = data.map((element:any)=>element.user)
+          let temp: any[];
+          temp = data.map((element: any) => element.user)
           this.allManager = temp;
         }
       }
@@ -236,7 +236,7 @@ export class UpdateProjectComponent implements OnInit {
       (res: any) => {
         // console.log('admin',res);
         let data = [];
-        data.push({ 'first_name': res.first_name, 'last_name':res?.last_name || '', 'id': res.id });
+        data.push({ 'first_name': res.first_name, 'last_name': res?.last_name || '', 'id': res.id });
         // console.log(data)
         this.allManager = data;
       },
@@ -293,7 +293,7 @@ export class UpdateProjectComponent implements OnInit {
     // console.log('this.selectedTeamId', this.selectedTeamId);
     this.teamFunction(this.selectedTeamId);
   }
-  async openRemoveConfirmation(text:any,id) {
+  async openRemoveConfirmation(text: any, id) {
     try {
       const modalRef = await this.modalService.open(GenericRemoveComponent, {
         size: 'sm',
@@ -303,9 +303,9 @@ export class UpdateProjectComponent implements OnInit {
 
       modalRef.componentInstance.status.subscribe(resp => {
         if (resp === 'ok') {
-          if(text==='group'){
+          if (text === 'group') {
             this.clearAll();
-          } else{
+          } else {
             this.teamDeselectedFromCard(id)
           }
           modalRef.dismiss();
@@ -383,7 +383,7 @@ export class UpdateProjectComponent implements OnInit {
 
   createSubTask(): FormGroup {
     return this.builder.group({
-      task_name: ['', [Validators.required,Validators.maxLength(150)]],
+      task_name: ['', [Validators.required, Validators.maxLength(150)]],
       status: ['', Validators.required],
       assignee: null,
       id: [''],
@@ -419,28 +419,28 @@ export class UpdateProjectComponent implements OnInit {
 
   // delete confirmation popup
   async openDeleteConfirmation(index, id: any) {
-      try {
-        const modalRef = await this.modalService.open(GenericDeleteComponent, {
-          size: 'sm',
-          backdrop: 'static',
-          centered: true
-        });
+    try {
+      const modalRef = await this.modalService.open(GenericDeleteComponent, {
+        size: 'sm',
+        backdrop: 'static',
+        centered: true
+      });
 
-        modalRef.componentInstance.status.subscribe(resp => {
-          if (resp === 'ok') {
-            if (id) {
-              this.deleteTaskFromBackend(id);
-            } else {
-              this.deleteTaskRow(index);
-            }
-            modalRef.dismiss();
+      modalRef.componentInstance.status.subscribe(resp => {
+        if (resp === 'ok') {
+          if (id) {
+            this.deleteTaskFromBackend(id);
           } else {
-            modalRef.dismiss();
+            this.deleteTaskRow(index);
           }
-        });
-      } catch (error) {
-        console.error('Error opening modal:', error);
-      }
+          modalRef.dismiss();
+        } else {
+          modalRef.dismiss();
+        }
+      });
+    } catch (error) {
+      console.error('Error opening modal:', error);
+    }
 
   }
 
@@ -452,19 +452,19 @@ export class UpdateProjectComponent implements OnInit {
   }
 
   // delete task from backend
-  deleteTaskFromBackend(id:any){
+  deleteTaskFromBackend(id: any) {
     this.api.deleteTaskInProjectData(id).subscribe(
-      (res:any)=>{
+      (res: any) => {
         console.log(res);
         this.api.showSuccess('Task deleted successfully.')
         this.subTasks.clear();
         this.edit();
       },
-      (error:any)=>{
-        console.log('error while deleting task inside the projects',error)
+      (error: any) => {
+        console.log('error while deleting task inside the projects', error)
       }
     )
-  } 
+  }
 
   // save task
   save(index1: any) {
@@ -656,16 +656,12 @@ export class UpdateProjectComponent implements OnInit {
         })
         )
       }
-      else {
-        this.api.showWarning('Invalid date')
-      }
-
 
     }
 
   }
 
-  resetValues(){
+  resetValues() {
     // this.subTasks.reset();
     this.subTasks.clear();
     this.getCategory();
@@ -677,7 +673,7 @@ export class UpdateProjectComponent implements OnInit {
     setTimeout(() => {
       this.edit();
     }, 1000);
-    
+
   }
 
 }
