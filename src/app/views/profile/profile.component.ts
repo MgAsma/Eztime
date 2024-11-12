@@ -56,7 +56,7 @@ export class ProfileComponent implements OnInit {
     this.profileForm = this._fb.group({
       first_name: ['', [Validators.required,Validators.maxLength(50)]],
       last_name: ['', [Validators.required,Validators.maxLength(50)]],
-      address: ['', Validators.maxLength(300)],
+      address: [null, Validators.maxLength(300)],
       designation: ['', [Validators.pattern(/^\S.*$/)]],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required]],
@@ -222,7 +222,7 @@ export class ProfileComponent implements OnInit {
         country: profileData.country,
         state: profileData.state,
         city: profileData.city,
-        address: profileData.address,
+        address: profileData?.address || null,
         role:profileData.role,
         postal_code: profileData.postal_code,
         // profile_image: this.fileDataUrl

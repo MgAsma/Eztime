@@ -233,7 +233,6 @@ export class CreateNewProjectComponent implements OnInit {
 
 
   matTeamSelect() {
-    console.log(this.selectedTeamId);
     this.teamFunction(this.selectedTeamId);
     // this.peopleId = event.value;
     // let tempId: any = []
@@ -620,6 +619,7 @@ export class CreateNewProjectComponent implements OnInit {
     this.filteredPeopleGroup = this.allPeopleGroup.filter(item =>
       item.first_name.toLowerCase().includes(eventw)
     );
+    console.log(this.filteredPeopleGroup,'this.filteredPeopleGroup')
   }
 
 }
