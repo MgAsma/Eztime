@@ -40,12 +40,12 @@ export class ChangePasswordsComponent implements OnInit {
       confirm_new_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
       user_id: [this.userId, [Validators.required]]
     },
-    {
-      validators: this.passwordMatchValidator
-    },
-  )
+      {
+        validators: this.passwordMatchValidator
+      },
+    )
   }
-  
+
   passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
     const newPassword = control.get('new_password');
     const confirmPassword = control.get('confirm_new_password');
@@ -83,6 +83,8 @@ export class ChangePasswordsComponent implements OnInit {
               this.changePassword.reset();
               setTimeout(() => {
                 this.router.navigate(['../login']);
+                sessionStorage.clear()
+                localStorage.clear();
               }, 3000);
             }
             else {

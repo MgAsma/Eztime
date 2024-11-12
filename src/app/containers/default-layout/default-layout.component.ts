@@ -59,7 +59,7 @@ export class DefaultLayoutComponent {
   constructor(private ngxService: NgxUiLoaderService,
     private api: ApiserviceService, private modalService: NgbModal,private cdref: ChangeDetectorRef,private common_service: CommonServiceService,
     private router: Router) {
-      this.config = sessionStorage.getItem('user_role_name');
+      // this.config = sessionStorage.getItem('user_role_name');
       this.common_service.profilePhoto$.subscribe(
         (data:any)=>{
           // console.log(data,'profile picccc');
@@ -100,9 +100,12 @@ export class DefaultLayoutComponent {
     this.api.userAccess(sessionStorage.getItem('user_id')).subscribe(
       (res:any)=>{
         console.log('default layout', res.access_list)
-        console.log('this.nav1', this.navItems)
         // const sidebarOptions = filteredNavItems.map((item) => item.name);
-        
+        if(res.user_role=='Employee'){
+          this.user_role_Name = res.designation;
+        } else{
+          this.user_role_Name = res.user_role;
+        }
           this.sidebarNavItems = res.access_list;
       }
     )

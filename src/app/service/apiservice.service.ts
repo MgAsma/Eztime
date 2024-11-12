@@ -470,7 +470,7 @@ export class ApiserviceService {
     return this.http.post(`${this.baseurl}/change-password/`, data, { headers: this.headers })
   }
   forgotPassword(data: any) {
-    return this.http.post(`${this.baseurl}/password-reset`, data)
+    return this.http.post(`${this.baseurl}/set-new-password/`, data)
   }
   // change password
 

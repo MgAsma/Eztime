@@ -45,14 +45,12 @@ export class OtpComponent implements OnInit {
     }
     else {
       this.api.otp(otpdata).subscribe((res: any) => {
-        if (res['result']['message'] == 'OTP matches successfully') {
-          this.api.showSuccess(res['result']['message'])
+        if (res) {
+          this.api.showSuccess(res['message'])
           this.router.navigate(['/forgotChange']);
         }
         else {
-          if (res['error']['message'] === 'Invalid OTP') {
-            this.api.showError('Invalid OTP')
-          }
+            this.api.showError(res['message']);
         }
 
 

@@ -68,17 +68,15 @@ export class ForgotChangeComponent implements OnInit {
       this.api.forgotPassword(this.changePassword.value).subscribe(
         (response: any) => {
           if (response) {
-            //console.log(response)
-
+            this.api.showSuccess(response['message']);
             this.router.navigate(['../login']);
-            this.api.showSuccess("Password changed successfully !");
           }
           else {
-            this.api.showError('Error !')
+            this.api.showError(response['message']);
           }
 
         }, (error => {
-          this.api.showError(error ? error.error.error.message : 'Error !')
+          this.api.showError(error.error.message)
         })
 
       )
