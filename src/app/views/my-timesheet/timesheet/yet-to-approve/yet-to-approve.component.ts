@@ -33,7 +33,7 @@ export class YetToApproveComponent implements OnInit {
   user_id: string;
   accessConfig: any = [];
   orgId: any;
-  @Input() data:any
+  @Input() data:any = [];
   @Input() totalCount:{ 'pageCount': any, 'currentPage': any };
   paginationConfig:any={
     itemsPerPage: 10,
@@ -52,15 +52,15 @@ export class YetToApproveComponent implements OnInit {
 
   ngOnChanges(changes:SimpleChange):void{
     if(changes['data'].currentValue){
-      this.list=changes['data']?.currentValue;
+      this.list=changes['data']?.currentValue ;
     }
-    if(changes['totalCount']?.currentValue){
-      this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
-      this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
-      this.paginationConfig.itemsPerPage=this.tableSize;
-    this.page=changes['totalCount'].currentValue.currentPage;
-    this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
-    }
+    // if(changes['totalCount']?.currentValue){
+    //   this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
+    //   this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
+    //   this.paginationConfig.itemsPerPage=this.tableSize;
+    // this.page=changes['totalCount'].currentValue.currentPage;
+    // this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
+    // }
     this.cdref.detectChanges();
       }
  

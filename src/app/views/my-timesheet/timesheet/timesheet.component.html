@@ -107,7 +107,7 @@
                                 <!-- Pending Tab -->
                                 <mat-tab label="Pending">
                                    
-                                    <ng-container >
+                                    <ng-container *ngIf="allDetails?.length > 0;else noRecords">
                                         <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
                                             <!-- <div class="col-sm-12 col-md-6 search-div">
                                                 <input type="search" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
@@ -126,7 +126,7 @@
                                 <!-- Approved Tab -->
                                 <mat-tab label="Approved">
                                     
-                                    <ng-container >
+                                    <ng-container *ngIf="allDetails?.length > 0;else noRecords">
                                         <!-- <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
                                             <div class="col-sm-12 col-md-6 search-div">
                                                 <input type="search" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
@@ -144,7 +144,7 @@
                                 <!-- Declined Tab -->
                                 <mat-tab label="Declined">
                                     
-                                    <ng-container>
+                                    <ng-container *ngIf="allDetails?.length > 0;else noRecords">
                                         <!-- <div class="row p-r mobileView" style="padding: 1rem 0px 0px;margin: auto;">
                                             <div class="col-sm-12 col-md-6 search-div">
                                                 <input type="search" (input)="searchFiter($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
@@ -161,12 +161,12 @@
 
                             </mat-tab-group>
                              <!-- No Records Template -->
-                            <!-- <ng-template #noRecords>
+                            <ng-template #noRecords>
                                 <div class="no-records text-center">
-                                No records found !!
-                                    <button mat-button (click)="refershPage()" class="proceedbtn" style="width: fit-content;padding:0 10px;">Refresh <i class="fa fa-refresh" aria-hidden="true"></i></button>
+                                No records found !
+                                    
                                 </div>
-                            </ng-template> -->
+                            </ng-template>
                         </div>
                     </div>
                 </div>

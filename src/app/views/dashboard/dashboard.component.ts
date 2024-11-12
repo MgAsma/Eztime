@@ -38,6 +38,8 @@ export class DashboardComponent implements OnInit {
   adminCount: any;
   designationCount: any;
   departmentCount: any;
+  organizationuserslist: any =[];
+  organizationuserCount: any;
   constructor(private builder: FormBuilder, private api: ApiserviceService,
     private location: Location,
     private route: ActivatedRoute,
@@ -56,6 +58,7 @@ export class DashboardComponent implements OnInit {
     if(this.user_role_name !== 'SUPERADMIN'){
       this.getRecentAddedRolesListData()
       this.getRecentAddedDepartmentListData()
+      this.getRecentAddedOrganizationuserslist()
     }if(this.user_role_name === 'SUPERADMIN'){
       this.getRecentAddedOrganizationList()
       this.getRecentAddedAdminlistData()
@@ -118,6 +121,15 @@ export class DashboardComponent implements OnInit {
     this.api.getData(`${environment.live_url}/${environment.user}/?role_id=3`).subscribe((data: any) => {
       this.userslistData = data.slice(0,5);
       this.userCount = data?.length
+    }, ((error) => {
+      this.api.showError(error?.error?.message)
+    })
+    )
+  }
+  getRecentAddedOrganizationuserslist() {
+    this.api.getData(`${environment.live_url}/${environment.user}/?role_id=3&organization_id=${this.org_id}`).subscribe((data: any) => {
+      this.organizationuserslist = data.slice(0,5);
+      this.organizationuserCount = data?.length
     }, ((error) => {
       this.api.showError(error?.error?.message)
     })

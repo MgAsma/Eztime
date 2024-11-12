@@ -59,6 +59,7 @@ export class TimesheetComponent implements OnInit {
     this.orgId = sessionStorage.getItem('organization_id')
     this.userId = sessionStorage.getItem('user_id')
       this.initForm()
+      this.selectedTab = 'Pending'
       this.getByStatus(`?organization=${this.orgId}&status=${1}&user=${this.userId}`)
       this.getStatusCount(`?user=${this.userId}&get-count=true`)
   }
@@ -208,15 +209,15 @@ export class TimesheetComponent implements OnInit {
   }
   
     tabState(data){
-      if(data.tab.textLabel == 'Approved'){
+      if(data.tab.textLabel === 'Approved'){
         this.selectedTab = 'Approved'
         this.selectedTabId = 2
       }
-      else if(data.tab.textLabel == 'Pending' ){
+      else if(data.tab.textLabel === 'Pending' ){
         this.selectedTab = 'Pending'
         this.selectedTabId = 1
       }
-      else if(data.tab.textLabel == 'Declined'){
+      else if(data.tab.textLabel === 'Declined'){
         this.selectedTab = 'Declined'
         this.selectedTabId = 3
       }

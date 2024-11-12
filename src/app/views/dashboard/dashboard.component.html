@@ -92,7 +92,7 @@
                       <li *ngFor="let roles of rolesListData">{{roles?.designation_name |titlecase}}</li>
                     </ul>
                     <!-- <a routerLink="../role/list" *ngIf="access === 'VIEW'">See Roles</a> -->
-                    <a routerLink="../designation/list">See Designation</a>
+                    <a routerLink="../designation/list" *ngIf="user_role_name === 'ADMIN'">See Designation</a>
                   </div>
                 </div>
               </div>
@@ -124,15 +124,41 @@
                     <ul>
                       <li *ngFor="let department of departmentsListData">{{department?.department_name|titlecase}}</li>
                     </ul>
-                    <a routerLink="../department/list" >See Departments</a>
+                    <a routerLink="../department/list" *ngIf="user_role_name === 'ADMIN'">See Departments</a>
                     <!-- <a routerLink="../department/list" *ngIf="access === 'VIEW'">See Departments</a> -->
                   </div>
                 </div>
+                
+  
               </div>
+
+
+             
 
             </ng-container>
           </div>
-        
+          <div class="col-sm-12 col-md-6 col-lg-4 mt-2" >
+            <!-- <a routerLink="../role/list"> -->
+            <div class="card dashboard-card">
+              <div class="c-icon">
+                <i class="bi bi-list-task"></i>
+              </div>
+              <div class="card-body p-3">
+                <div class="h5 heading mb-0 mt-2">{{organizationuserCount || 0}}</div>
+                <div class="text-muted text-uppercase font-weight-bold font-xs"><strong>Employees</strong></div>
+                <div class="recently-add-content">
+                  <ul>
+                    <li *ngFor="let user of organizationuserslist">{{user?.first_name|titlecase}}</li>
+                   
+                  </ul>
+                  <a  routerLink="../people/people-list" *ngIf="user_role_name === 'ADMIN'">See Employees</a>
+                
+                  
+                </div>
+              </div>
+            </div>
+            <!-- </a> -->
+          </div>
         </div>
       </ng-container>
     </div>

@@ -4,7 +4,7 @@
   <div class="bg">
   <div class="row">
       <div class="col px-0">
-          <table class="table table-list">
+          <table class="table table-list" *ngIf="list?.length >0">
               <thead>
                   <tr>
                     <th scope="col">S.No</th>
@@ -60,13 +60,13 @@
                       
                   </tr>
                  
-                  <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="result.length === 0">
-                    No records found!
-                  </div>
+                  
                   </ng-container>
                 </tbody>
             </table>
-           
+            <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="list.length === 0">
+              No records found!
+            </div>
       </div>
   </div>
   

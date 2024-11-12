@@ -239,12 +239,12 @@ button{
     cursor: pointer;
 }
 .no-records {
-    height: 34vh; /* Takes most of the page height */
+    height: 14vh; /* Takes most of the page height */
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column; /* Stacks text and button vertically */
-    font-size: 1rem; /* Optional: Adjust font size for better readability */
+    font-size: 13px; /* Optional: Adjust font size for better readability */
   }
   
     

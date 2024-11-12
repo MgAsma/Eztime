@@ -1,5 +1,5 @@
 
-   <div style="padding: 30px;">
+   <!-- <div style="padding: 30px;">
 
   
       <input type="file" class="file" (change)="onFileSelected($event)" accept=".xlsx, .xls" [(ngModel)]="fileUpload" #inputEl/>
@@ -7,8 +7,36 @@
         <button mat-icon-button type="button"  (click)="submit()" ngbTooltip="Submit">
             <i class="bi bi-arrow-up-right-square-fill"></i>
         </button>
+    </div> -->
+    <div style="padding: 30px;">
+    <form [formGroup]="holidayListForm">
+      <div class="row">
+        <div class="col-md-4">
+          <input type="file" accept=".xlsx, .xls" formControlName="file_attachment" #fileInput (change)="onFileSelected($event)" hidden>
+          <div class="image-container w-100 d-flex justify-content-between align-items-center" style="padding: 3px 15px;">
+             
+              <mat-label >{{fileDataUrl ? fileDataUrl.name : 'Upload Holiday List'}} </mat-label>
+              <button type="button" mat-icon-button (click)="triggerFileInput()">
+                  <!-- <mat-icon matTooltip="{{fileDataUrl ? 'Edit' : 'Upload'}}" class="edit-or-upload-icon">{{fileDataUrl ? 'edit' : 'attach_file'}} </mat-icon>  -->
+                  <i matTooltip="{{fileDataUrl ? 'Edit' : 'Upload Excel'}}" class="{{fileDataUrl ? 'bi bi-pencil-fill' : 'bi bi-file-earmark-spreadsheet'}}" id="edit-or-upload-icon"></i>
+                </button>
+          </div>
+          <div  *ngIf="f['file_attachment']?.touched && f['file_attachment']?.invalid" style="font-size: 11px;padding-left: 10px;color:red">
+            <span *ngIf="f['file_attachment'].errors?.['required']">Upload holiday list is required</span>
+            <span *ngIf="f['file_attachment'].errors?.['accept']">Invalid file format. Only .xlsx, .xls formats are allowed.</span>
+        </div>
+        </div>
+        <div class="col-md-2">
+          <button mat-raised-button type="button" style="float: left;margin-top: 5px;" class="proceed-btn"  (click)="submit()" ngbTooltip="Submit">
+            Submit
+        </button>
+        </div>
+      </div>
+    
+            
+      </form>
     </div>
-    <div class="bg p-1">
+    <div class="bg p-30">
     <mat-card>
         <mat-card-header>
           <mat-card-title>Holiday List</mat-card-title>
