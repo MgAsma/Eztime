@@ -671,7 +671,11 @@ deleteProject(projectIndex: number): void {
 
   getClient(i){
     this.currentIndex = i;
-    this.api.getData(`${environment.live_url}/${environment.client}/?organization_id=${this.orgId}`).subscribe((data:any)=>{
+    let query = `?organization_id=${this.orgId}`
+    if(this.userRole !== 'admin'){
+      query = `?organization_id=${this.orgId}&employee_id=${this.userId}`
+    }
+    this.api.getData(`${environment.live_url}/${environment.client}/${query}`).subscribe((data:any)=>{
       if(data){
         this.allClient = data;
          

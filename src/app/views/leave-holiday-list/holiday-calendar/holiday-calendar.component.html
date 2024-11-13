@@ -1,13 +1,5 @@
 
-   <!-- <div style="padding: 30px;">
-
-  
-      <input type="file" class="file" (change)="onFileSelected($event)" accept=".xlsx, .xls" [(ngModel)]="fileUpload" #inputEl/>
-      
-        <button mat-icon-button type="button"  (click)="submit()" ngbTooltip="Submit">
-            <i class="bi bi-arrow-up-right-square-fill"></i>
-        </button>
-    </div> -->
+   
     <div style="padding: 30px;">
     <form [formGroup]="holidayListForm">
       <div class="row">
@@ -17,7 +9,6 @@
              
               <mat-label >{{fileDataUrl ? fileDataUrl.name : 'Upload Holiday List'}} </mat-label>
               <button type="button" mat-icon-button (click)="triggerFileInput()">
-                  <!-- <mat-icon matTooltip="{{fileDataUrl ? 'Edit' : 'Upload'}}" class="edit-or-upload-icon">{{fileDataUrl ? 'edit' : 'attach_file'}} </mat-icon>  -->
                   <i matTooltip="{{fileDataUrl ? 'Edit' : 'Upload Excel'}}" class="{{fileDataUrl ? 'bi bi-pencil-fill' : 'bi bi-file-earmark-spreadsheet'}}" id="edit-or-upload-icon"></i>
                 </button>
           </div>
@@ -36,8 +27,8 @@
             
       </form>
     </div>
-    <div class="bg p-30">
-    <mat-card>
+    <div class="bg p-30" >
+    <mat-card *ngIf="holidays?.length">
         <mat-card-header>
           <mat-card-title>Holiday List</mat-card-title>
         </mat-card-header>
@@ -51,5 +42,7 @@
           </mat-list>
         </mat-card-content>
       </mat-card>
-      
+      <div class="no-records px-2" *ngIf="holidays.length === 0">
+        No records found !
+        </div>
 </div>

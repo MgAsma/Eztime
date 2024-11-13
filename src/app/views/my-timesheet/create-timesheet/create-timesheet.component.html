@@ -191,7 +191,15 @@
                   <mat-label>Client <b class="r-star">*</b></mat-label>
                   <mat-select (selectionChange)="getProject($event.value, i)" placeholder="Select client" formControlName="client_id"
                   panelClass="custom-select-panel" [disableOptionCentering]="true">
-                    <mat-option *ngFor="let item of allClient" [value]="item.id">{{ item.clint_name }}</mat-option>
+                  <ng-container *ngIf="allClient && allClient?.length > 0; else noDataTemplate">
+                  <mat-option *ngFor="let item of allClient" [value]="item.id">{{ item.clint_name }}</mat-option>
+                  </ng-container>
+                  
+                    <ng-template #noDataTemplate>
+                      <mat-option disabled>
+                        No data found
+                      </mat-option>
+                    </ng-template>
                   </mat-select>
                   <mat-error *ngIf="project.get('client_id').touched && project.get('client_id').invalid">
                     <span class="error-text" *ngIf="project.get('client_id').hasError('required')">Client name is required.</span>
@@ -204,7 +212,14 @@
                   <mat-label>Project <b class="r-star">*</b></mat-label>
                   <mat-select (selectionChange)="getTask($event.value, i)" [ngbTooltip]="!project.get('client_id').value ? 'Please select the client name':''" [disabled]="!project.get('client_id').value" formControlName="project_id"
                   panelClass="custom-select-panel" [disableOptionCentering]="true" placeholder="Select project">
-                    <mat-option *ngFor="let item of createdProject.value[i]?.projectList" [value]="item.id">{{ item.project_name }}</mat-option>
+                  <ng-container *ngIf="createdProject.value[i]?.projectList && createdProject.value[i]?.projectList?.length > 0; else noDataTemplate">
+                  <mat-option *ngFor="let item of createdProject.value[i]?.projectList" [value]="item.id">{{ item.project_name }}</mat-option>
+                  </ng-container>
+                    <ng-template #noDataTemplate>
+                      <mat-option disabled>
+                        No data found
+                      </mat-option>
+                    </ng-template>
                   </mat-select>
                   <mat-error *ngIf="project.get('project_id').touched && project.get('project_id').invalid">
                     <span class="error-text" *ngIf="project.get('project_id').hasError('required')">Project name is required.</span>

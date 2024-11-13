@@ -94,7 +94,7 @@ export class MonthTimesheetComponent implements OnInit {
   changes: boolean = false;
   orgId: any;
   currentMonth: number;
-  selectedTabId: number = 1;
+  selectedTabId: number;
   constructor(
     private fb: FormBuilder,
     private api: ApiserviceService,
@@ -179,8 +179,8 @@ export class MonthTimesheetComponent implements OnInit {
       // this.getAllTimeSheet(c_params)
       // this.tabset.tabs[0].active = true;
       // this.tabsets.tabs[0].active = true;
-     
-        let query= `?status=${this.selectedTabId}&organization=${this.orgId}&month=${this.monthForm.value.fromMonth}`
+      const selectedTabId = this.selectedTabId || 1
+        let query= `?status=${selectedTabId}&organization=${this.orgId}&month=${this.monthForm.value.fromMonth}`
      
       this.getMonthApprovals(query)
     }
@@ -251,7 +251,7 @@ export class MonthTimesheetComponent implements OnInit {
       this.selectedTabId = 3
     }
     let query:string = `?status=${this.selectedTabId}&organization=${this.orgId}&month=${this.currentMonth}`;
-    if(this.submited){
+    if(this.submited && this.monthForm.valid){
       query= `?status=${this.selectedTabId}&organization=${this.orgId}&month=${this.monthForm.value.fromMonth}`
     }
     this.getMonthApprovals(query)
