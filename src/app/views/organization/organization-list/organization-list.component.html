@@ -1,10 +1,10 @@
 <div class="container-wrapper webView">
   <div class="row pb-3">
-    <div class="col-sm-4 search-div">
+    <!-- <div class="col-sm-4 search-div">
       <input type="search" (input)="filterSearch()" class="form-control p-2 sizeinput" [(ngModel)]="term"
         placeholder="Search by organization name" aria-describedby="emailHelp" autocomplete="off">
       <i class="bi bi-search" id="search-icon-tab" ></i>
-    </div>
+    </div> -->
     <div class="col-sm"></div>
     <div class="col-md-3 col-lg-3 p-1 text-end">
       <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/organization/createOrg" type="submit">Create
@@ -57,7 +57,7 @@
                 </td>
                 <td>{{item.organization_name ? item.organization_name :'NA' | titlecase }}</td>
                 <td>{{item.email ? item.email :'NA' | titlecase}}</td>
-                <td class="text-center">{{item.admin_details.length }}</td>
+                <td class="text-center">{{item?.admin_details?.length || 'NA' }}</td>
                 <td>
                   <ng-container>
 
@@ -184,7 +184,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 value-container text-start">
-                      {{item?.admin_details.length || 'NA' }}
+                      {{item?.admin_details?.length || 'NA' }}
                     </div>
                   </div>
                 </div>
