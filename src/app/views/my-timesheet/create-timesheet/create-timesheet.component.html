@@ -220,11 +220,18 @@
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
                   <mat-error *ngIf="project.get('created_date').touched && project.get('created_date').invalid">
-                    <span class="error-text" *ngIf="project.get('created_date').hasError('required')">Created date is required.</span>
+                    <span class="error-text" *ngIf="project.get('created_date')?.hasError('required')">Created date is required.</span>
+                    <span class="error-text" *ngIf="project.get('created_date')?.hasError('duplicateDate')">Duplicate date detected.</span>
+                  
                   </mat-error>
                   
+                    
+                  
                 </mat-form-field>
-              
+                <mat-error *ngIf="duplicateCreatedDate" class="p-r">
+                  <span class="error-text" style="position: absolute;top:-15px;left:15px;">Duplicate dates are not allowed.</span>
+                </mat-error>
+               
               </div>
               <!-- Description -->
               <div class="col-sm-12 col-md-6 col-lg-3 p-2">

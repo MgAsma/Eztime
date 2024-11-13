@@ -47,7 +47,8 @@ export class UpdateLeaveDetailsComponent implements OnInit {
       cary_forward_percentage: ['',[Validators.pattern(/^\d+%?$/),Validators.max(100)] ],
       graceful_days: [null,Validators.min(1)],
       maximum_enhancement: [null,Validators.min(1)],
-      encashment: [false]
+      encashment: [false],
+      accruals_or_carry_forward_chx_bx:[false]
     })
 
     
@@ -75,7 +76,8 @@ export class UpdateLeaveDetailsComponent implements OnInit {
         cary_forward_percentage:data.cary_forward_percentage,
         graceful_days:data.graceful_days ,
         maximum_enhancement:data.maximum_enhancement ,
-        encashment:data.maximum_enhancement ? true : false
+        encashment:data.maximum_enhancement ? true : false,
+        accruals_or_carry_forward_chx_bx: data.graceful_days || data.cary_forward_percentage ? true : false
       })
     }
     })

@@ -43,7 +43,8 @@ export class LeaveDetailsComponent implements OnInit {
       cary_forward_percentage: ['',[Validators.pattern(/^\d+%?$/),Validators.max(100)] ],
       graceful_days: [null,Validators.min(1)],
       maximum_enhancement: [null,Validators.min(1)],
-      encashment: [false]
+      encashment: [false],
+      accruals_or_carry_forward_chx_bx:[false]
     })
 
     

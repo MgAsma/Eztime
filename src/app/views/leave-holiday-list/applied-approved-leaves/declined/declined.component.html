@@ -30,16 +30,9 @@
                             <td class="text-center">{{item.alloted_leaves || 'NA'}}</td>
                             
                             <td class="text-center">{{item.created_datetime | date}}</td>                            
-                            <td class="text-center">{{item.rejected_on | date }}</td>                            
+                            <td class="text-center">{{(item.rejected_on | date) || 'NA' }}</td>                            
                             
-                             <td class="text-center">
-                                <!-- <ng-container >
-                                    <span >
-                                        <button style="border: none;background-color: inherit;" > <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>
-                                    </span>
-                                   
-                                </ng-container> -->
-                            </td>
+                             
                         </tr>
                         <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="result.length === 0">
                           No records found!

@@ -394,19 +394,11 @@ export class MonthTimesheetComponent implements OnInit {
       this.api.showError(error?.error?.message)
     }))
   }
-  refershPage() {
-    let c_params = {
-      module: "TIMESHEET",
-      menu: "MONTH_APPROVAL_TIMESHEET",
-      method: "VIEW",
-      approved_state: this.selectedTab,
-      user_id: this.user_id,
-      page_number: 1,
-      data_per_page: this.itemPerPageCount,
-      search_key: '',
-      timesheets_from_date: this.formattedDate,
-      pagination: 'TRUE'
-    }
-    this.getByStatus(c_params);
+ 
+  reset(){
+    this.monthForm.reset()
+    const selectedTab = this.selectedTabId || 1
+    this.getMonthApprovals(`?status=${selectedTab}&organization=${this.orgId}&month=${this.currentMonth}`)
+   
   }
 }

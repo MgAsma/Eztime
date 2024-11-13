@@ -21,16 +21,14 @@ export class TimesheetComponent implements OnInit {
   params: any = {};
   pagination: { page_number: any; data_per_page: number; };
   page: any = 1;
-  fromDate: any;
-  toDate: any;
+  
   changes: boolean;
-  month: any;
+ 
   selectedTab:string = 'Pending';
   userId:any;
   count: number;
   cardData: any = {};
-  p_FromDate= '2023-03-03';
-  p_ToDate= '2023-03-30';
+
   totalCount: any;
   term:string;
   showSearch=false;
@@ -49,7 +47,7 @@ export class TimesheetComponent implements OnInit {
   {
   event.preventDefault(); // Prevent default back button behavior
   this.location.back();
-  
+  this.selectedTab = 'Pending'
   }
   get f(){
     return this.timeSheetForm.controls;
@@ -59,9 +57,9 @@ export class TimesheetComponent implements OnInit {
     this.orgId = sessionStorage.getItem('organization_id')
     this.userId = sessionStorage.getItem('user_id')
       this.initForm()
-      this.selectedTab = 'Pending'
+      
       this.getByStatus(`?organization=${this.orgId}&status=${1}&user=${this.userId}`)
-      this.getStatusCount(`?user=${this.userId}&get-count=true`)
+      this.getStatusCount(`?user=${this.userId}&get-count=true&organization=${this.orgId}`)
   }
  initForm(){
   this.timeSheetForm = this._fb.group({
@@ -73,15 +71,8 @@ export class TimesheetComponent implements OnInit {
   getByStatus(params){
 
     this.api.getData(`${environment.live_url}/${environment.time_sheets}/${params}`).subscribe((res:any)=>{
-     if( res){
+     if(res){
        this.allDetails = res
-      //  this.cardData = {
-      //   approved_count:res.total_approve_count,
-      //   request_count:res.total_pending_count,
-      //   declined_count:res.total_declined_count,
-      //   total_count:res.total_status_count,
-      // }
-      
       //  this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
      }
     
@@ -89,12 +80,15 @@ export class TimesheetComponent implements OnInit {
       this.api.showError(error?.error?.message)
     })
  }
-
+reset(){
+  this.timeSheetForm.reset()
+  const selectedTab = this.selectedTabId || 1
+  this.getByStatus(`?organization=${this.orgId}&status=${selectedTab}&user=${this.userId}`)
+}
   getStatusCount(params){ 
     this.api.getData(`${environment.live_url}/${environment.time_sheets}/${params}`).subscribe((res:any)=>{
       if( res){
-        this.allDetails = res
-     
+        
         this.cardData = {
           approved_count:res.Approved,
           request_count:res.Pending,
@@ -108,11 +102,13 @@ export class TimesheetComponent implements OnInit {
 
   }
   changeFormat(){
-    this.fromDate = this.timeSheetForm.value.from_date
-    this.toDate   = this.timeSheetForm.value.to_date
+    // this.fromDate = this.timeSheetForm.value.from_date
+    // this.toDate   = this.timeSheetForm.value.to_date
     this.changes  = true;
-    this.month    = this.timeSheetForm.value.to_date
-
+    //this.month    = this.timeSheetForm.value.to_date
+    this.timeSheetForm.patchValue({
+      to_date:''
+    })
    }
    dateModified(){
     this.timeSheetForm.patchValue({
@@ -148,32 +144,32 @@ export class TimesheetComponent implements OnInit {
     }
   }
   searchFiter(event){
-    if(event){
-      this.cdref.detectChanges();
-      let c_params={}
-      if(this.changes){
-        c_params={
-          status:this.selectedTab? this.selectedTab :'Pending',
-          // user_id:this.userId,
-          // page_number:this.page,
-          // data_per_page:this.tableSize,
-          search_key:this.term,
-          timesheets_to_date:this.datepipe.transform(this.toDate,'yyyy-MM-dd'),
-          timesheets_from_date:this.datepipe.transform(this.fromDate,'yyyy-MM-dd') 
-         }
-      }
-    else{
-      c_params={
-        status:this.selectedTab? this.selectedTab :'Pending',
-        page_number:this.page,
-        data_per_page:this.tableSize,
-        search_key:this.term,
-       }
+    // if(event){
+    //   this.cdref.detectChanges();
+    //   let c_params={}
+    //   if(this.changes){
+    //     c_params={
+    //       status:this.selectedTab? this.selectedTab :'Pending',
+    //       // user_id:this.userId,
+    //       // page_number:this.page,
+    //       // data_per_page:this.tableSize,
+    //       search_key:this.term,
+    //       timesheets_to_date:this.datepipe.transform(this.toDate,'yyyy-MM-dd'),
+    //       timesheets_from_date:this.datepipe.transform(this.fromDate,'yyyy-MM-dd') 
+    //      }
+    //   }
+    // else{
+    //   c_params={
+    //     status:this.selectedTab? this.selectedTab :'Pending',
+    //     page_number:this.page,
+    //     data_per_page:this.tableSize,
+    //     search_key:this.term,
+    //    }
        
-    }
-    this.allDetails = []
-    this.getByStatus(c_params)
-    }
+    // }
+    // this.allDetails = []
+    // this.getByStatus(c_params)
+    // }
     
   }
   
@@ -189,16 +185,16 @@ export class TimesheetComponent implements OnInit {
       
         c_params = {
           status: this.selectedTab ? this.selectedTab : 'Pending',
-          timesheets_to_date: this.datepipe.transform(this.toDate, 'yyyy-MM-dd'),
-          timesheets_from_date: this.datepipe.transform(this.fromDate, 'yyyy-MM-dd')
+          timesheets_to_date: this.datepipe.transform(this.timeSheetForm.value.to_date, 'yyyy-MM-dd'),
+          timesheets_from_date: this.datepipe.transform(this.timeSheetForm.value.from_date, 'yyyy-MM-dd')
         };
 
         this.allDetails = [];
         let query:string;
         if(this.selectedTabId){
-         query = `?from-date=${c_params['timesheets_from_date']}&to-date=${c_params['timesheets_to_date']}&status=${this.selectedTabId}`
+         query = `?from-date=${c_params['timesheets_from_date']}&to-date=${c_params['timesheets_to_date']}&status=${this.selectedTabId}&organization=${this.orgId}&user=${this.userId}`
         }else{
-          query = `?from-date=${c_params['timesheets_from_date']}&to-date=${c_params['timesheets_to_date']}&status=${1}`
+          query = `?from-date=${c_params['timesheets_from_date']}&to-date=${c_params['timesheets_to_date']}&status=${1}&organization=${this.orgId}&user=${this.userId}`
         }
         this.getByStatus(query);  
         this.submitted = true
@@ -222,10 +218,12 @@ export class TimesheetComponent implements OnInit {
         this.selectedTabId = 3
       }
      let query = `?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.userId}`
-     if(this.submitted){
-      const to_date = this.datepipe.transform(this.toDate, 'yyyy-MM-dd')
-      const from_date =  this.datepipe.transform(this.fromDate, 'yyyy-MM-dd')
+     if(this.submitted && this.timeSheetForm.valid){
+      const to_date = this.datepipe.transform(this.timeSheetForm.value.to_date, 'yyyy-MM-dd')
+      const from_date =  this.datepipe.transform(this.timeSheetForm.value.to_date, 'yyyy-MM-dd')
       query=`?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.userId}&from-date=${from_date}&to-date=${to_date}`
+     }else{
+      query=`?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.userId}`
      }
       this.getByStatus(query)
     

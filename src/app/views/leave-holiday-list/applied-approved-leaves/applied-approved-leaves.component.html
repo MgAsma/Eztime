@@ -53,7 +53,7 @@
                                 <mat-form-field appearance="outline" class="w-100" [attr.disabled]="!appliedLeaveForm.value.from_date">
                                     <mat-label>To date <b class="r-star">*</b></mat-label>
                                     <input matInput [matDatepicker]="toDatePicker" formControlName="to_date"
-                                        [min]="appliedLeaveForm.value.from_date" (dateChange)="changeFormat()">
+                                        [min]="f['from_date']?.value" >
                                     <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
                                     <mat-datepicker #toDatePicker></mat-datepicker>
                                     <mat-error *ngIf="f['to_date'].touched && f['to_date'].invalid">
@@ -66,7 +66,7 @@
                                 <button mat-icon-button type="button"  (click)="submit()" ngbTooltip="Submit">
                                     <i class="bi bi-arrow-up-right-square-fill"></i>
                                 </button>
-                                <button mat-icon-button type="reset" class="submit-btn" style="margin-left: 10px;" ngbTooltip="Reset">
+                                <button mat-icon-button type="reset" class="submit-btn" style="margin-left: 10px;" (click)="reset()" ngbTooltip="Reset">
                                     <i class="bi bi-arrow-repeat"></i>
                                 </button>
                             </div>
