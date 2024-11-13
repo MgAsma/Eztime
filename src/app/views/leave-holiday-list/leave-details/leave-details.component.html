@@ -58,7 +58,10 @@
                   </div>
               </div>
               <!-- Accruals & Carry Forward Section -->
-              <h5 class="c-header">Accruals & Carry Forward</h5>
+              <section class="d-flex align-items-center mb-2 p-1">
+                <mat-checkbox color="primary" class="example-margin" formControlName="accruals_or_carry_forward_chx_bx"><h5 class="c-header">Accruals & Carry Forward</h5></mat-checkbox>
+              </section>
+              <section *ngIf="leaveTypeForm?.get('accruals_or_carry_forward_chx_bx')?.value">
               <div class="row">
                 <div class="col-md-4">
                   <mat-label  style="margin-right: 10px;" [ngClass]="!leaveTypeForm?.get('accruals_or_carry_forward')?.value ? 'active-accruals':''">Monthly</mat-label> 
@@ -88,7 +91,7 @@
                   </mat-form-field>
                 </div>
               </div>
-          
+            </section>
               <!-- Graceful/Encashment Days Section -->
               <h5 class="c-header">Graceful/Encashment Days</h5>
               <div class="row">
@@ -107,8 +110,8 @@
               
               </div>
             
-             <section class="d-flex align-items-center mb-2">
-                <mat-checkbox color="primary" class="example-margin" formControlName="encashment">Encashment</mat-checkbox>
+             <section class="d-flex align-items-center mb-2 p-1">
+                <mat-checkbox color="primary" class="example-margin" formControlName="encashment"><h5 class="c-header">Encashment</h5></mat-checkbox>
               </section>
               <div class="row" *ngIf="leaveTypeForm?.get('encashment')?.value">
                 <div class="col-md-4 mat-custom-input">

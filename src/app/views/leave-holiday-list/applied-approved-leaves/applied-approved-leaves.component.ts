@@ -194,7 +194,8 @@ export class AppliedApprovedLeavesComponent implements OnInit {
    reset(){
     this.appliedLeaveForm.reset()
     this.AllListData = []
-    this.getByStatus(`?status=1&employee-id=${this.user_id}&organization=${this.orgId}`)
+    const selectedTab = this.selectedTabId || 1
+    this.getByStatus(`?status=${selectedTab}&employee-id=${this.user_id}&organization=${this.orgId}`)
    }
     async submit() {
       let c_params = {};
