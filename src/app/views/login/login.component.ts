@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   minValue = 0.01;
   ngOnInit(): void {
     this.getWelomeMessage();
+    sessionStorage.clear();
     this.loginForm = this.builder.group({
       // username: ['', [Validators.required, Validators.email]],
       // password: ['', [Validators.required]],

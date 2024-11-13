@@ -47,6 +47,7 @@ export class OtpComponent implements OnInit {
       this.api.otp(otpdata).subscribe((res: any) => {
         if (res) {
           this.api.showSuccess(res['message'])
+          sessionStorage.setItem('user_id',res['user_id'])
           this.router.navigate(['/forgotChange']);
         }
         else {

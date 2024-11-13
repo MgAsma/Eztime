@@ -28,9 +28,9 @@ export class ForgotChangeComponent implements OnInit {
     // },{
     //   validators: this.passwordMatchValidator
     // })
-    const userName = sessionStorage.getItem('email_id')
+    const user_id = sessionStorage.getItem('user_id')
     this.changePassword = this.builder.group({
-      user_id: [userName, [Validators.required]],
+      user_id: [user_id, [Validators.required]],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
       confirm_password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]]
     }, {
