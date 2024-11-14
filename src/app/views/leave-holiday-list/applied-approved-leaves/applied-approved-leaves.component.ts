@@ -240,13 +240,13 @@ export class AppliedApprovedLeavesComponent implements OnInit {
         this.selectedTab = 'Declined'
         this.selectedTabId = 3
       }
-      let query:string = `?organization=${this.orgId}&status-id=${this.selectedTabId}&employee-id=${this.user_id}`;
+      let query:string = `?organization=${this.orgId}&status=${this.selectedTabId}&employee-id=${this.user_id}`;
       if(this.submitted && this.appliedLeaveForm.valid){
         const to_date = this.datepipe.transform(this.appliedLeaveForm.value.to_date, 'yyyy-MM-dd')
         const from_date =  this.datepipe.transform(this.appliedLeaveForm.value.from_date, 'yyyy-MM-dd')
-        query=`?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.user_id}&from-date=${from_date}&to-date=${to_date}`
+        query=`?organization=${this.orgId}&status=${this.selectedTabId}&employee-id=${this.user_id}&from-date=${from_date}&to-date=${to_date}`
        }else{
-        query=`?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.user_id}`
+        query=`?organization=${this.orgId}&status=${this.selectedTabId}&employee-id=${this.user_id}`
        }
       this.getByStatus(query)
  

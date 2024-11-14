@@ -38,6 +38,7 @@ export class CreateTimesheetComponent implements OnInit {
   params = {
     pagination: "FALSE"
   };
+  @ViewChildren(MatExpansionPanel) panels: QueryList<MatExpansionPanel>;
   //isTaskForm: boolean = false;
   originalTaskData: any = [];
   isSaved: boolean = false;
@@ -53,6 +54,8 @@ export class CreateTimesheetComponent implements OnInit {
   projectDetailsSet: any;
   userRole: string;
   duplicateCreatedDate: boolean = false;
+  timesheetDate: string;
+  selectedProjectId: any;
 
   constructor(
     private builder: FormBuilder,
@@ -62,8 +65,7 @@ export class CreateTimesheetComponent implements OnInit {
     private modalService:NgbModal,
   ) {}
   panelOpenState = false
-  @ViewChildren(MatExpansionPanel) panels: QueryList<MatExpansionPanel>;
-
+ 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('organization_id')
@@ -156,7 +158,7 @@ async open(index) {
 
   initializeForm(): void {
     this.timeSheetForm = this.builder.group({
-      response: this.builder.array([],this.uniqueDateValidator('created_date'))
+      response: this.builder.array([])
     });
 
   }
@@ -174,69 +176,69 @@ getValue(i,j,value,type?){
  
 
 }
-uniqueDateValidator(dateControlName: string): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const formArray = control as FormArray;
+// uniqueDateValidator(dateControlName: string): ValidatorFn {
+//   return (control: AbstractControl): ValidationErrors | null => {
+//     const formArray = control as FormArray;
 
-    // Convert date values to just the "YYYY-MM-DD" format to ignore time
-    const dateValues = formArray.controls.map(group => {
-      const date = group.get(dateControlName)?.value;
-      return date ? new Date(date).toISOString().split('T')[0] : null;
-    });
+//     // Convert date values to just the "YYYY-MM-DD" format to ignore time
+//     const dateValues = formArray.controls.map(group => {
+//       const date = group.get(dateControlName)?.value;
+//       return date ? new Date(date).toISOString().split('T')[0] : null;
+//     });
 
-    // Check for duplicates in the processed date values
-    const hasDuplicates = dateValues.some((date, index) =>
-      date && dateValues.indexOf(date) !== index
-    );
-    this.duplicateCreatedDate = hasDuplicates
+//     // Check for duplicates in the processed date values
+//     const hasDuplicates = dateValues.some((date, index) =>
+//       date && dateValues.indexOf(date) !== index
+//     );
+//     this.duplicateCreatedDate = hasDuplicates
    
-    return hasDuplicates ? { duplicateDate: true } : null;
-  };
-}
-onDateChange(date: string) {
-  const maxHours = 8; // Max allowed hours for each date
-  const selectedDate = this.datepipe.transform(date, 'dd/MM/yyyy');
+//     return hasDuplicates ? { duplicateDate: true } : null;
+//   };
+// }
+  onDateChange(date: string) {
+    const maxHours = 8; // Max allowed hours for each date
+    const selectedDate = this.datepipe.transform(date, 'dd/MM/yyyy');
+    this.timesheetDate = selectedDate
+    // Filter the responseArray by matching dates
+    const matchedDates = this.responseArray.getRawValue().filter((group: any) => 
+      this.datepipe.transform(group.created_date, 'dd/MM/yyyy') === this.datepipe.transform(selectedDate, 'dd/MM/yyyy')
+    );
 
-  // Filter the responseArray by matching dates
-  const matchedDates = this.responseArray.getRawValue().filter((group: any) => 
-    this.datepipe.transform(group.created_date, 'dd/MM/yyyy') === selectedDate
-  );
-
-  if (matchedDates?.length > 0) {
-    // Sum up the hours for the matching dates
-    this.totalHoursForDate = 0;
-    
-    // matchedDates?.forEach((group: any) => {
-    //   group.task_list?.forEach((task: any) => {
-    //     // Extract hours from hours_to_complete (assuming "X hr" format)
-    //     const hours = task?.hours_to_complete
-    //     this.totalHoursForDate += hours;
-    //   });
-    // });
-    // alert(this.totalHoursForDate)
-    matchedDates?.forEach((group: any) => {
-      group.task_list?.forEach((task: any) => {
-        // Extract hours from hours_to_complete, converting the numeric part to a number
-        const hours = parseFloat(task?.hours_to_complete);
-        if (!isNaN(hours)) {
-          this.totalHoursForDate += hours;
-        }
+    if (matchedDates?.length > 0) {
+      // Sum up the hours for the matching dates
+      this.totalHoursForDate = 0;
+      
+      // matchedDates?.forEach((group: any) => {
+      //   group.task_list?.forEach((task: any) => {
+      //     // Extract hours from hours_to_complete (assuming "X hr" format)
+      //     const hours = task?.hours_to_complete
+      //     this.totalHoursForDate += hours;
+      //   });
+      // });
+      // alert(this.totalHoursForDate)
+      matchedDates?.forEach((group: any) => {
+        group.task_list?.forEach((task: any) => {
+          // Extract hours from hours_to_complete, converting the numeric part to a number
+          const hours = parseFloat(task?.hours_to_complete);
+          if (!isNaN(hours)) {
+            this.totalHoursForDate += hours;
+          }
+        });
       });
-    });
-    
-    // Check if total hours exceed the max hours
-    if (this.totalHoursForDate >= maxHours && !this.duplicateCreatedDate) {
-      this.duplicateDate = selectedDate
-      this.api.showError(`No slots are available in this date.`);
-    }else{
-      this.duplicateDate = "";
+      
+      // Check if total hours exceed the max hours
+      if (this.totalHoursForDate >= maxHours && !this.duplicateCreatedDate) {
+        this.duplicateDate = selectedDate
+        this.api.showError(`No slots are available in this date.`);
+      }else{
+        this.duplicateDate = "";
+      }
+      // else {
+      //   const availableHours = maxHours - totalHoursForDate;
+      //   this.api.showError(`You can assign up to ${availableHours} more hours for this date (${selectedDate}).`);
+      // }
     }
-    // else {
-    //   const availableHours = maxHours - totalHoursForDate;
-    //   this.api.showError(`You can assign up to ${availableHours} more hours for this date (${selectedDate}).`);
-    // }
   }
-}
 
   taskInitForm(){
     this.taskForm = this.builder.group({
@@ -520,13 +522,33 @@ deleteProject(projectIndex: number): void {
    // Loop through the FormArray
    tasksArray?.controls.forEach((taskGroup: FormGroup, index: number) => {
      const taskIsEditing = taskGroup.get('isEditing')?.value;
-     console.log(`Task ${index + 1}: isEditing =`, taskIsEditing);
+    // console.log(`Task ${index + 1}: isEditing =`, taskIsEditing);
  
      // Update isEditing if any task is being edited
      if (taskIsEditing === true) {
        isEditing = true;
      }
    });
+   const uniqueEntries = new Set<string>();
+    let hasDuplicate = false;
+    let date:any;
+    let projectId:any;
+      
+    this.responseArray.getRawValue().forEach((group: any) => {
+    date = this.datepipe.transform(group.created_date, 'dd/MM/yyyy');
+    projectId = group.project_id;
+      
+    // Create a unique identifier by combining date and project_id
+    const uniqueIdentifier = `${date}-${projectId}`;
+
+    // Check if this identifier already exists in the Set
+    if (uniqueEntries.has(uniqueIdentifier)) {
+      hasDuplicate = true;
+    } else {
+      uniqueEntries.add(uniqueIdentifier); // Add unique entry to the Set
+    }
+  });
+
    if (isProjectGroupInvalid || isTaskFormInvalid) {
      // Mark all controls as touched for the specific index
      projectGroup.markAllAsTouched();
@@ -538,7 +560,10 @@ deleteProject(projectIndex: number): void {
      projectGroup.get('isSaved').setValue(false);
      this.isSaved = false;
      this.isTaskSubmitted = true;
-   } else {
+      }else if(hasDuplicate){
+        this.api.showError(`Timesheet already present for this project`);
+      }
+      else {
      if (isEditing || (projectGroup.get('isTaskForm').value && this.taskForm.invalid) || (projectGroup.get('isTaskForm').value && this.taskForm.valid )) {
        this.api.showWarning('Please add task details before save');
        this.isTaskSubmitted = true;
@@ -546,6 +571,7 @@ deleteProject(projectIndex: number): void {
        this.isTaskSubmitted = false;
        projectGroup.get('showSave').setValue(true);
        projectGroup.get('isSaved').setValue(true);
+       this.panels.toArray()[i].close();
        this.isSaved = true;
      }
      
@@ -743,4 +769,5 @@ deleteProject(projectIndex: number): void {
       this.api.showError(error?.error?.message)
     })) 
   }
+  closePanel(){}
 }

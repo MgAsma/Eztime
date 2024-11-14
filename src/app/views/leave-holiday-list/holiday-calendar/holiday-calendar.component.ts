@@ -2,7 +2,6 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
-
 @Component({
   selector: 'app-holiday-calendar',
   templateUrl: './holiday-calendar.component.html',
@@ -15,7 +14,7 @@ export class HolidayCalendarComponent implements OnInit {
   organization_id: string;
   holidays: any = [];
   holidayListForm:FormGroup
- 
+  reference = `${environment.live_url}/${environment.holiday_calender}/?export_sample_file=true`
   @ViewChild('fileInput') fileInput: ElementRef;
   fileDataUrl:any;
   constructor(
@@ -99,5 +98,11 @@ export class HolidayCalendarComponent implements OnInit {
      },(error:any)=>{
       this.api.showError(error?.error.message)
      })
+  }
+  downloadExcelSample() {
+    setTimeout(() => {
+      this.api.showSuccess(`Sample file downloaded successfully!`)  
+    }, 5000);
+    
   }
 }
