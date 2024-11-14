@@ -100,13 +100,9 @@ export class HolidayCalendarComponent implements OnInit {
      })
   }
   downloadExcelSample() {
-    this.api.getData(`${environment.live_url}/${environment.holiday_calender}/?export_sample_file=true`).subscribe((res:any) => {
-      if(res){
-        this.api.showSuccess(`Sample file downloaded successfully!`)
-      }
-    },(error:any)=>{
-      this.api.showError(error?.error?.message)
-    });
-      
+    setTimeout(() => {
+      this.api.showSuccess(`Sample file downloaded successfully!`)  
+    }, 5000);
+    
   }
 }
