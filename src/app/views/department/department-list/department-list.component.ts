@@ -101,21 +101,21 @@ export class DepartmentListComponent implements OnInit {
    
     }
     filterSearch(){
-      this.api.getData(`${environment.live_url}/${environment.org_department}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`).subscribe((res:any) =>{
-        if(res){
-          this.allDepartmentList= res.result.data;
-          const noOfPages:number = res['result'].pagination.number_of_pages
-          this.count  = noOfPages * this.tableSize;
-          this.page=res['result'].pagination.current_page;
+      // this.api.getData(`${environment.live_url}/${environment.org_department}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`).subscribe((res:any) =>{
+      //   if(res){
+      //     this.allDepartmentList= res.result.data;
+      //     const noOfPages:number = res['result'].pagination.number_of_pages
+      //     this.count  = noOfPages * this.tableSize;
+      //     this.page=res['result'].pagination.current_page;
 
-        }
-        else{
-          this.api.showError('Error!')
-        }
+      //   }
+      //   else{
+      //     this.api.showError('Error!')
+      //   }
   
-      },((error)=>{
-        this.api.showError(error.error.error.message)
-      }))
+      // },((error)=>{
+      //   this.api.showError(error.error.error.message)
+      // }))
     }
   getDepartment(params){
     this.api.getDepartmentDetailsPage(params).subscribe((res:any) =>{

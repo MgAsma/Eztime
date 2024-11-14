@@ -70,18 +70,18 @@ export class CategoryListComponent implements OnInit {
     // this.getUserControls()
   }
   filterSearch(){
-    this.api.getData(`${environment.live_url}/${environment.project_tasks}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe(data=>{
+    // this.api.getData(`${environment.live_url}/${environment.project_tasks}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe(data=>{
       
-      if(data['result'].data){
-        this.categoryList= data['result'].data;
-        //console.log(this.categoryList,"CATEGORY")
-        const noOfPages:number = data['result'].pagination.number_of_pages
-        this.count  = noOfPages * this.tableSize;
-        this.page=data['result'].pagination.current_page;      }
+    //   if(data['result'].data){
+    //     this.categoryList= data['result'].data;
+    //     //console.log(this.categoryList,"CATEGORY")
+    //     const noOfPages:number = data['result'].pagination.number_of_pages
+    //     this.count  = noOfPages * this.tableSize;
+    //     this.page=data['result'].pagination.current_page;      }
       
-    },((error)=>{
-      this.api.showError(error.error.error.message)
-    }))
+    // },((error)=>{
+    //   this.api.showError(error.error.error.message)
+    // }))
   }
   getUserControls(){
     this.user_id = sessionStorage.getItem('user_id')

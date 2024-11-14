@@ -141,16 +141,16 @@ export class PeopleListComponent implements OnInit {
     };
   }
   filterSearch() {
-    this.api.getData(`${environment.live_url}/${environment.people_list}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`).subscribe((data: any) => {
-      this.allPeople = data.result.data;
-      const noOfPages: number = data['result'].pagination.number_of_pages
-      this.count = noOfPages * this.tableSize;
-      this.page = data['result'].pagination.current_page;
+    // this.api.getData(`${environment.live_url}/${environment.people_list}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`).subscribe((data: any) => {
+    //   this.allPeople = data.result.data;
+    //   const noOfPages: number = data['result'].pagination.number_of_pages
+    //   this.count = noOfPages * this.tableSize;
+    //   this.page = data['result'].pagination.current_page;
 
-    }, ((error) => {
-      this.api.showError(error.error.error.message)
-    })
-    )
+    // }, ((error) => {
+    //   this.api.showError(error.error.error.message)
+    // })
+    // )
   }
   delete(id: any) {
     this.api.deleteEmployees(id).subscribe((data: any) => {

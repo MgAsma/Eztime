@@ -17,9 +17,11 @@ export class RoleListComponent implements OnInit {
   BreadCrumbsTitle:any='Designation';
   allRoleList=[];
   currentIndex:any = 1;
-  page = 1;
+  page :any= 1;
+  count = 0;
   tableSize = 10;
   tableSizes = [10,25,50,100];
+
   show = false
 
   term:any='';
@@ -33,8 +35,7 @@ export class RoleListComponent implements OnInit {
     itemsPerPage: 0,
     totalItems:0
   }
-  
-  count:any ;
+  defaultUrl:any ;
   totalCount: number;
   permission: any = [];
   admin: boolean = false;
@@ -60,8 +61,10 @@ export class RoleListComponent implements OnInit {
     this.org_id = sessionStorage.getItem('organization_id')
     // this.getRole(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`)
     this.enabled = true
-    this.role = sessionStorage.getItem('user_role_name')
-    this.user_id = sessionStorage.getItem('user_id')
+    this.role = sessionStorage.getItem('user_role_name');
+    this.user_id = sessionStorage.getItem('user_id');
+    // this.defaultUrl = `?organization_id=${this.org_id}&page=${this.page}&page_size=${this.tableSize}`;
+    this.defaultUrl = `?organization_id=${this.org_id}`;
     this.getAllDesignations();
     
     
@@ -69,74 +72,19 @@ export class RoleListComponent implements OnInit {
   
   }
   getAllDesignations(){
-    this.api.getDesignationList(`?organization_id=${this.org_id}`).subscribe(
+    this.api.getDesignationList(this.defaultUrl).subscribe(
       (res:any)=>{
         console.log('desinations',res);
         this.allRoleList = res;
+        // this.count = res.total_no_of_record;
       }
     )
   }
   filterSearch(){
-    this.getRole(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`)
   }
-  getUserControls(){
-    this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=FALSE&organization_id=${this.org_id}`).subscribe((res:any)=>{
-      if(res.status_code !== '401'){
-        console.log(res,'controlsss')
-        this.common_service.permission.next(res['data'][0]['permissions'])
-      }
-      else{
-        this.api.showError("ERROR !")
-      }
-    }
-  
-    )
-  
-    this.common_service.permission.subscribe(res=>{
-      const accessArr = res
-      if(accessArr.length > 0){
-        accessArr.forEach((element,i) => {
-          if(element['ROLES']){
-            this.permissions = element['ROLES']
-          }
-          
-        });
-      } 
-    })
-   
-    }
-  
+ 
   isArray(value: any): boolean {
     return Array.isArray(value);
-  }
-  getRole(params){
-    this.api.getUserAccess(params).subscribe((data:any)=>{
-    console.log(data,'dataaa')
-    this.sortedRolls = [];
-      if(data){
-        data.result.data.forEach(res=>{
-          this.permission.push(res)
-          if(res.user_role_name!='ADMIN'){
-            this.sortedRolls.push(res)
-          }
-        })
-        this.allRoleList = this.sortedRolls;
-          const noOfPages:number = data['result'].pagination.number_of_pages
-           this.totalCount  = noOfPages * this.tableSize
-           this.page=data['result'].pagination.current_page;
-            this.config = { 
-              currentPage: this.page,
-              itemsPerPage: this.tableSize,
-              totalItems: this.totalCount
-            }  
-        }
-      
-    },((error)=>{
-      this.api.showError(error.error.error.message)
-    })
-
-    )
   }
 
   delete(id:any){
@@ -163,12 +111,18 @@ export class RoleListComponent implements OnInit {
   }
   
   onTableDataChange(event:any){
-    this.page = event;
-    //console.log(this.page,"EVENT PAGE---")
-    this.getRole(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`);
-  }  
+    // console.log(event,"EVENT PAGE---");
+    // this.page = event;
+    // const updatedUrl:any = this.defaultUrl;
+    // const page:any = "page";
+    // updatedUrl.searchParams.set(page,this.page)
+    // this.defaultUrl= updatedUrl.toString().replace(/%26/g, "&");
+    // console.log('this.defaultUrl',this.defaultUrl)
+    // this.filtersCommonAPI(this.defaultUrl)
+     }  
+
   onTableSizeChange(event:any): void {
-    //console.log(event,"EVENT CHECK")
+    console.log(event,"EVENT CHECK")
     this.tableSize = Number(event.target.value);
     this.count = 0
     // Calculate new page number
@@ -177,7 +131,7 @@ export class RoleListComponent implements OnInit {
     if(calculatedPageNo < this.page){
       this.page = 1
     }
-    this.getRole(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`);
+    // this.getRole(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`);
   }  
 
  
@@ -220,6 +174,19 @@ export class RoleListComponent implements OnInit {
   }
   getContinuousIndex(index: number):number {
     return (this.page-1)*this.tableSize+ index + 1;
+  }
+
+  filtersCommonAPI(url:any){
+    this.api.getDesignationList(decodeURIComponent(url)).subscribe(
+      (res:any)=>{
+        console.log('desinations',res);
+        this.allRoleList = res.results;
+        this.count = res.total_no_of_record;
+      },
+      (error:any)=>{
+        console.log('error',error)
+      }
+    )
   }
 }
  

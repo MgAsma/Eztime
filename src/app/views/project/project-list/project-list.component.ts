@@ -76,21 +76,21 @@ export class ProjectListComponent implements OnInit {
     this.getProject();
   }
   filterSearch() {
-    this.api.getProjectDetails(`organization_id=${this.orgId}&search=${this.term}`).subscribe((data: any) => {
-      if (data) {
-        this.allProjectList = data
-        // //console.log( this.allProjectList,"ALL")
-        // const noOfPages: number = data['result'].pagination.number_of_pages
-        // this.count = noOfPages * this.tableSize;
-        // this.page = data['result'].pagination.current_page;
-      }
+    // this.api.getProjectDetails(`organization_id=${this.orgId}&search=${this.term}`).subscribe((data: any) => {
+    //   if (data) {
+    //     this.allProjectList = data
+    //     // //console.log( this.allProjectList,"ALL")
+    //     // const noOfPages: number = data['result'].pagination.number_of_pages
+    //     // this.count = noOfPages * this.tableSize;
+    //     // this.page = data['result'].pagination.current_page;
+    //   }
 
-    }, ((error: any) => {
-      this.api.showError(error.error.error.message)
+    // }, ((error: any) => {
+    //   this.api.showError(error.error.error.message)
 
-    })
+    // })
 
-    )
+    // )
   }
   getUserControls() {
     this.api.getUserRoleById(`user_id=${this.user_id}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res: any) => {

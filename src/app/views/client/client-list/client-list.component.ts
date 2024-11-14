@@ -101,16 +101,16 @@ export class ClientListComponent implements OnInit {
     })
     }
     filterSearch(){
-      this.api.getData(`${environment.live_url}/${environment.clients}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe((res:any)=>{
-        if(res){
-          this.allClientList= res.result.data;
-            const noOfPages:number = res['result'].pagination.number_of_pages
-            this.count  = noOfPages * this.tableSize
-            this.page=res['result'].pagination.current_page;
-        }
-        },((error:any)=>{
-          this.api.showError(error.error.error.message)
-        }))
+      // this.api.getData(`${environment.live_url}/${environment.clients}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe((res:any)=>{
+      //   if(res){
+      //     this.allClientList= res.result.data;
+      //       const noOfPages:number = res['result'].pagination.number_of_pages
+      //       this.count  = noOfPages * this.tableSize
+      //       this.page=res['result'].pagination.current_page;
+      //   }
+      //   },((error:any)=>{
+      //     this.api.showError(error.error.error.message)
+      //   }))
     }
 
     getNewClients(){
