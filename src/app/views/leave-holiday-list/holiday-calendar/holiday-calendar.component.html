@@ -17,11 +17,15 @@
             <span *ngIf="f['file_attachment'].errors?.['accept']">Invalid file format. Only .xlsx, .xls formats are allowed.</span>
         </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
           <button mat-raised-button type="button" style="float: left;margin-top: 5px;" class="proceed-btn"  (click)="submit()" ngbTooltip="Submit">
             Submit
         </button>
+        <button mat-raised-button type="button" style="float: left;margin: 5px 10px 0;" class="proceed-btn"  (click)="downloadExcelSample()" ngbTooltip="Sample File">
+          <a [href]="reference" style="text-decoration: none;color:white;"> <i class="bi bi-download" style="color:white"></i> Sample File</a>
+        </button>
         </div>
+        
       </div>
     
             

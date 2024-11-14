@@ -5,21 +5,21 @@
     <div 
       (click)="selectedSection = 'lists'" 
       [ngClass]="{'active-tab': selectedSection === 'lists'}"
-      style="cursor: pointer;padding: 5px;">
+       class="tab-size">
       Lists
     </div>
     <div 
       class="ml-2" 
       (click)="selectedSection = 'leaves'" 
       [ngClass]="{'active-tab': selectedSection === 'leaves'}"
-      style="cursor: pointer;padding: 5px;">
+       class="tab-size">
       Leaves
     </div>
     <div 
       class="ml-2" 
       (click)="selectedSection = 'timesheets'" 
       [ngClass]="{'active-tab': selectedSection === 'timesheets'}"
-      style="cursor: pointer;padding: 5px;">
+       class="tab-size">
       Timesheets
     </div>
   </div>
@@ -193,8 +193,8 @@
                 <th>Employee Name</th>
                 <th>Client</th>
                 <th>Project Name</th>
-                <th>Hours</th>
                 <th>Tasks</th>
+                <th>Hours</th>
                 <th>Action</th>
               </tr>
             </thead>

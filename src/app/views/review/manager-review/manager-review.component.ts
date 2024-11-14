@@ -70,7 +70,7 @@ export class ManagerReviewComponent implements OnInit {
     this.orgId = sessionStorage.getItem('organization_id')
     this.user_id = sessionStorage.getItem('user_id')
     this.getAllTimesheets(`?organization=${this.orgId}&status=1`)
-    this.getAllLeaves(`?status-id=1&organization=${this.orgId}`)
+    this.getAllLeaves(`?status=1&organization=${this.orgId}`)
     this.getEmployeeData() 
   }
  
@@ -136,7 +136,7 @@ export class ManagerReviewComponent implements OnInit {
       this.selectedTimesheetTab = 'Declined'
       this.selectedTimesheetTabId = 3
     }
-    let query:string = `?organization=${this.orgId}&status-id=${this.selectedTimesheetTabId}`;
+    let query:string = `?organization=${this.orgId}&status=${this.selectedTimesheetTabId}`;
    
     this.getAllLeaves(query)
 
@@ -234,11 +234,11 @@ export class ManagerReviewComponent implements OnInit {
 
       if (res) {
         this.api.showSuccess(`Leave ${confirmText} successfully`)
-        this.getAllLeaves(`?status-id=1&organization=${this.orgId}`)
+        this.getAllLeaves(`?status=1&organization=${this.orgId}`)
       }
 
     }, ((error: any) => {
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     }))
   }
 }
