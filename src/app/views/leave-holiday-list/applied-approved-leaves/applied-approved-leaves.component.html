@@ -63,12 +63,15 @@
                             </div>
 
                             <div class="col-sm-2 col-md-1 col-lg-1 d-flex align-items-center p-0">
-                                <button mat-icon-button type="button"  (click)="submit()" ngbTooltip="Submit">
+                                <!-- <button mat-icon-button type="button"  (click)="submit()" ngbTooltip="Submit">
                                     <i class="bi bi-arrow-up-right-square-fill"></i>
                                 </button>
                                 <button mat-icon-button type="reset" class="submit-btn" style="margin-left: 10px;" (click)="reset()" ngbTooltip="Reset">
                                     <i class="bi bi-arrow-repeat"></i>
-                                </button>
+                                </button> -->
+                                <img src="../../../../assets/images/Go.svg" class="icon-submit-btn" ngbTooltip="Submit" (click)="submit()" />
+                               
+                                <img src="../../../../assets/images/refresh.svg" class="icon-submit-btn" ngbTooltip="Reset" (click)="reset()" />
                             </div>
                         </div>
                     </form>

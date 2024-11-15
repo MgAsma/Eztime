@@ -15,13 +15,14 @@
                     </mat-error>
                   </mat-form-field>
           
-                  <button mat-icon-button type="button" class="submit-btn"  ngbTooltip="Submit" (click)="submit()">
+                  <!-- <button mat-icon-button type="button" class="submit-btn" style="margin: auto;"  ngbTooltip="Submit" (click)="submit()">
                       <i class="bi bi-arrow-up-right-square-fill" ></i>
-                  </button>
-                  
-                  <button mat-icon-button type="reset" class="submit-btn"  ngbTooltip="Reset" (click)="reset()">
-                    <i class="bi bi-arrow-repeat"></i>
-                </button>
+                      <img src="../../../../assets/images/right.svg" style="height:17px;"/>
+                  </button> -->
+                  <img src="../../../../assets/images/Go.svg" class="icon-submit-btn" ngbTooltip="Submit" (click)="submit()" />
+                               
+                  <img src="../../../../assets/images/refresh.svg" class="icon-submit-btn" ngbTooltip="Reset" (click)="reset()" />
+               
              
             </form>
     
