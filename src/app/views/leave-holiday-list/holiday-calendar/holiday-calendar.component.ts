@@ -16,7 +16,8 @@ export class HolidayCalendarComponent implements OnInit {
   holidayListForm:FormGroup
   reference = `${environment.live_url}/${environment.holiday_calender}/?export_sample_file=true`
   @ViewChild('fileInput') fileInput: ElementRef;
-  fileDataUrl:any;
+  fileDataUrl: any;
+  
   constructor(
     private api:ApiserviceService,
     private fb:FormBuilder
@@ -38,6 +39,7 @@ export class HolidayCalendarComponent implements OnInit {
   selectedFile: File | null = null;
 
   onFileSelected(event: Event): void {
+    if(event){
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       this.file = input.files[0];
@@ -53,6 +55,7 @@ export class HolidayCalendarComponent implements OnInit {
       //   this.selectedFile = null; // Reset if file type is invalid
       // }
     }
+  }
   }
   get f(){
     return this.holidayListForm.controls
@@ -70,8 +73,9 @@ export class HolidayCalendarComponent implements OnInit {
       this.api.postData(`${environment.live_url}/${environment.holiday_calender}/`,this.formData).subscribe((res:any)=>{
        if(res){
          this.api.showSuccess(`Holiday list uploaded successfully!`)
-         this.fileDataUrl = ""
          this.getHolidayList()
+         this.holidayListForm.reset()
+         this.fileDataUrl = ""
        }
       },(error:any)=>{
        this.api.showError(error?.error.message)

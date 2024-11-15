@@ -12,7 +12,7 @@
                           <th scope="col" class="text-center">From Date</th>
                           <th scope="col" class="text-center">To Date</th>
                           <th scope="col" class="text-center">Applied Days</th>
-                          <th scope="col" class="text-center">Alloted</th>
+                          <th scope="col" class="text-center">Leave Type</th> 
                           <th scope="col" class="text-center">Applied On</th>
                           <!-- <th scope="col">Rejected By</th> -->
                           <th scope="col" class="text-center">Rejected On</th>
@@ -27,7 +27,7 @@
                           <td class="text-center">{{item.from_date | date}}</td>
                             <td class="text-center">{{item.to_date | date}}</td>
                             <td class="text-center">{{item.number_of_leaves_applying_for || 'NA'}}</td>
-                            <td class="text-center">{{item.alloted_leaves || 'NA'}}</td>
+                            <td class="text-center">{{item.leave_type_name}}</td>
                             
                             <td class="text-center">{{item.created_datetime | date}}</td>                            
                             <td class="text-center">{{(item.rejected_on | date) || 'NA' }}</td>                            

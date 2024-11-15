@@ -201,8 +201,8 @@ export class ManagerReviewComponent implements OnInit {
       employee: content.created_by,
       approved_by: status === 'Approve' ? this.user_id :null,
       approved_on: status === 'Approve' ? formattedDate :null,
-      rejected_by: status === 'Declined' ? this.user_id :null,
-      rejected_on: status === 'Declined' ? formattedDate :null
+      rejected_by: status === 'Decline' ? this.user_id :null,
+      rejected_on: status === 'Decline' ? formattedDate :null 
   }
     this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
       if (res) {
@@ -226,8 +226,8 @@ export class ManagerReviewComponent implements OnInit {
       leave_type:content.leave_type,
       approved_by: status === 'Approve' ? this.user_id :null,
       approved_on: status === 'Approve' ? formattedDate :null,
-      rejected_by: status === 'Declined' ? this.user_id :null,
-      rejected_on: status === 'Declined' ? formattedDate :null
+      rejected_by: status === 'Decline' ? this.user_id :null,
+      rejected_on: status === 'Decline' ? formattedDate :null
   }
   
     this.api.updateData(`${environment.live_url}/${environment.update_leave_details}/`,data).subscribe(res => {

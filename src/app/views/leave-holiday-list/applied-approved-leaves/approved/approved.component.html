@@ -10,6 +10,7 @@
                           <th scope="col" class="text-center">From Date</th>
                           <th scope="col" class="text-center">To Date</th>
                           <th scope="col" class="text-center">Applied Days</th>
+                          <th scope="col" class="text-center">Leave Type</th>
                           <th scope="col" class="text-center">Applied On</th>
                           <th scope="col" class="text-center">Approved By</th>
                           <th scope="col" class="text-center">Approved Date</th>
@@ -27,7 +28,8 @@
                             
                           
                             <td class="text-center">{{item.number_of_leaves_applying_for}}</td>
-                            <td class="text-center">{{(item.created_datetimetime | date)|| 'NA'}}</td>
+                            <td class="text-center">{{item.leave_type_name}}</td>
+                            <td class="text-center">{{(item?.created_datetime | date) || 'NA' }}</td>
                             <td class="text-center">{{item.approved_by_name|| 'NA'}}</td>
                             <td class="text-center">{{(item.approved_on | date)|| 'NA'}}</td>                            
                             
@@ -165,7 +167,7 @@
                     <div class="col-6">
                       <div class="row">
                         <div class="col-12">
-                          <h6 class="card-subtitle">Approved Date</h6>
+                          <h6 class="card-subtitle">Approved On</h6>
                         </div>
                       </div>
                       <div class="row">
@@ -180,7 +182,7 @@
                     <div class="col-6">
                       <div class="row">
                         <div class="col-12">
-                          <h6 class="card-subtitle">Applied Date</h6>
+                          <h6 class="card-subtitle">Applied On</h6>
                         </div>
                       </div>
                       <div class="row">

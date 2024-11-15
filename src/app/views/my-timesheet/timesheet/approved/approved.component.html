@@ -25,18 +25,18 @@
                     <td>{{getContinuousIndex(i)}}</td>
                     <td class="text-center">{{item.created_date | date:'dd/MM/YYYY'}}</td>
                         <td class="text-center">{{item.created_by_first_name |titlecase}}</td>
-                        <td class="text-center" *ngIf="item.tasks.length">
-                          <div *ngFor="let task of item.tasks; let j = index">
+                        <td class="text-center" *ngIf="item.tasks?.length">
+                          <div *ngFor="let task of item?.tasks; let j = index">
                             <div>
                               {{ task?.task__task_name || 'NA' }} <br/>
                             </div>
                           </div>
                         </td>
-                        <td *ngIf="item.tasks.length === 0">
+                        <td *ngIf="item?.tasks.length === 0">
                           {{'NA'}}
                         </td>
-                        <td class="text-center" *ngIf="item.tasks.length">
-                          <div *ngFor="let task of item.tasks; let j = index">
+                        <td class="text-center" *ngIf="item?.tasks?.length">
+                          <div *ngFor="let task of item?.tasks; let j = index">
                             <div>
                               {{ task?.time_required_to_complete || 'NA' }}
                             </div>
