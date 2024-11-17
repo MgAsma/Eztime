@@ -265,7 +265,7 @@
                   <h6 class="mb-0" style="color:black">Create Multiple Task</h6>
                 </div>
                 <!-- <div class="col"></div> -->
-                <div class="col-2 text-end pe-0" *ngIf="!project.get('isTaskForm').value && getRemainingHours(i) > 0" >
+                <div class="col-2 text-end pe-0" *ngIf="!project.get('isTaskForm').value && calculateTotalHoursForDate(project.get('created_date')?.value)  > 0" >
                   <button type="button" mat-raised-button class="addTask w-100" color="primary"
                     (click)="openTaskForm(i)">+ Add Task</button>
                 </div>
@@ -401,8 +401,8 @@
 
               <div class="row w-100 my-2">
                 <div class="col"></div>
+                <!-- <div class="col-4 text-end" ><mat-label>Hours left :{{calculateTotalHoursForDate(project.get('created_date')?.value) >= 0 ? calculateTotalHoursForDate(project.get('created_date')?.value) : 0}}</mat-label></div> -->
                 <div class="col-4 text-end" ><mat-label>Hours left :{{calculateTotalHoursForDate(project.get('created_date')?.value) >= 0 ? calculateTotalHoursForDate(project.get('created_date')?.value) : 0}}</mat-label></div>
-                <!-- <div class="col-4 text-end" ><mat-label>Hours left :{{getRemainingHours(i)}}</mat-label></div> -->
                 <div class="col-2"></div>
               </div>
             </div> 

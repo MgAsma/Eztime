@@ -56,6 +56,9 @@ export class CreateTimesheetComponent implements OnInit {
   duplicateCreatedDate: boolean = false;
   timesheetDate: string;
   selectedProjectId: any;
+  createdTaskList = [];
+  updatedTasks: any[];
+  totalHoursWorked: any;
 
   constructor(
     private builder: FormBuilder,
@@ -115,22 +118,21 @@ export class CreateTimesheetComponent implements OnInit {
   calculateTotalHoursForDate(selectedDate: string): number {
     let totalHours = 8;
 
-    // Iterate through all projects in the response FormArray
-    this.createdProject?.controls?.forEach((projectGroup: FormGroup) => {
-        const taskArray = projectGroup.get('task_list') as FormArray;
-
-        // Iterate through all tasks in the current project
-        taskArray?.controls?.forEach((taskControl: FormGroup) => {
-            const taskDate = projectGroup.get('created_date')?.value;
-            const timeSpent = taskControl.get('hours_to_complete')?.value;
-
-            // Add the hours for tasks with the matching selected date
-            if (taskDate === selectedDate && timeSpent) {
-                totalHours -= parseFloat(timeSpent);
-            }
-        });
-    });
-
+    const selectedArr = this.timeSheetForm.getRawValue().response
+  
+    selectedArr?.forEach((projects:any)=>{
+      projects?.task_list?.forEach((tasks:any)=>{
+        const taskDate = tasks?.created_date
+        const timeSpent = tasks['hours_to_complete']
+        if (taskDate === this.datepipe.transform(selectedDate,'dd/MM/yyyy') && timeSpent) {
+          
+            totalHours -= parseFloat(timeSpent);
+            console.log(totalHours)
+         }
+      })
+      
+    })
+    
     return totalHours;
 }
 async open(index) {
@@ -176,46 +178,21 @@ getValue(i,j,value,type?){
  
 
 }
-// uniqueDateValidator(dateControlName: string): ValidatorFn {
-//   return (control: AbstractControl): ValidationErrors | null => {
-//     const formArray = control as FormArray;
 
-//     // Convert date values to just the "YYYY-MM-DD" format to ignore time
-//     const dateValues = formArray.controls.map(group => {
-//       const date = group.get(dateControlName)?.value;
-//       return date ? new Date(date).toISOString().split('T')[0] : null;
-//     });
-
-//     // Check for duplicates in the processed date values
-//     const hasDuplicates = dateValues.some((date, index) =>
-//       date && dateValues.indexOf(date) !== index
-//     );
-//     this.duplicateCreatedDate = hasDuplicates
-   
-//     return hasDuplicates ? { duplicateDate: true } : null;
-//   };
-// }
   onDateChange(date: string) {
     const maxHours = 8; // Max allowed hours for each date
     const selectedDate = this.datepipe.transform(date, 'dd/MM/yyyy');
-    this.timesheetDate = selectedDate
+    this.timesheetDate = date
     // Filter the responseArray by matching dates
     const matchedDates = this.responseArray.getRawValue().filter((group: any) => 
-      this.datepipe.transform(group.created_date, 'dd/MM/yyyy') === this.datepipe.transform(selectedDate, 'dd/MM/yyyy')
+      this.datepipe.transform(group.created_date, 'dd/MM/yyyy') === selectedDate
     );
 
     if (matchedDates?.length > 0) {
       // Sum up the hours for the matching dates
       this.totalHoursForDate = 0;
       
-      // matchedDates?.forEach((group: any) => {
-      //   group.task_list?.forEach((task: any) => {
-      //     // Extract hours from hours_to_complete (assuming "X hr" format)
-      //     const hours = task?.hours_to_complete
-      //     this.totalHoursForDate += hours;
-      //   });
-      // });
-      // alert(this.totalHoursForDate)
+      
       matchedDates?.forEach((group: any) => {
         group.task_list?.forEach((task: any) => {
           // Extract hours from hours_to_complete, converting the numeric part to a number
@@ -227,15 +204,15 @@ getValue(i,j,value,type?){
       });
       
       // Check if total hours exceed the max hours
-      if (this.totalHoursForDate >= maxHours && !this.duplicateCreatedDate) {
+      if (this.totalHoursForDate >= maxHours) {
         this.duplicateDate = selectedDate
-        this.api.showError(`No slots are available in this date.`);
+        this.api.showWarning(`No slots are available in this date.`);
       }else{
         this.duplicateDate = "";
       }
       // else {
       //   const availableHours = maxHours - totalHoursForDate;
-      //   this.api.showError(`You can assign up to ${availableHours} more hours for this date (${selectedDate}).`);
+      //   this.api.showWarning(`You can assign up to ${availableHours} more hours for this date (${selectedDate}).`);
       // }
     }
   }
@@ -245,7 +222,8 @@ getValue(i,j,value,type?){
       task_id: ['', Validators.required],
       hours_to_complete: ['', Validators.required],
       hours_left:[''],
-      isEditing: [false]
+      isEditing: [false],
+      created_date:['']
     });
   }
   
@@ -300,23 +278,13 @@ getValue(i,j,value,type?){
  
   editTask(projectIndex: number, taskIndex: number): void {
     const taskArray = this.getTaskArray(projectIndex);
-    const remainingHours = this.getRemainingHours(projectIndex);
+   
     const taskFormGroup = taskArray?.at(taskIndex) as FormGroup;
     const enteredTaskId = taskFormGroup.get('task_id')?.value;
-  // console.log(taskArray,'ALL DETAILS')
   
-    const newTimeSpentValue = taskFormGroup.get('hours_to_complete').value;
-  
-    // Get the original (old) time spent before editing
-  //  const oldTimeSpentValue = this.extractNumber(this.originalTaskData[projectIndex][taskIndex]?.hours_to_complete || 0);
-  
-    // Calculate the available hours by excluding the current task's old hours_to_complete
-    // const availableHours = this.getRemainingHours(projectIndex) + oldTimeSpentValue;
-
-    const availableHours = this.getRemainingHours(projectIndex) ;
-    // console.log('Available Hours:', availableHours);
-    // console.log('New Time Spent Value:', newTimeSpentValue);
-    const hours = 8
+    const remainingHours = this.calculateTotalHoursForDate(this.timesheetDate);
+    const enteredTime = this.taskForm.get('hours_to_complete')?.value;
+    
     // this.isTaskSubmitted = true;
     const taskIdSet = new Set<string | number>(); // To store unique task IDs
   
@@ -337,47 +305,23 @@ getValue(i,j,value,type?){
     });
   
     if (isDuplicateTask) {
-      this.api.showError(`Duplicate task IDs are not allowed.`);
+      this.api.showWarning(`Duplicate task names are not allowed.`);
       return; // Exit if duplicate task_id is found
     }
- // Calculate total hours spent across all tasks
- let totalHoursSpent = 0;
-
- taskArray.controls.forEach((task: FormGroup, index: number) => {
-   if (index !== taskIndex) {  // Skip the current task being edited
-     const taskHours = task.get('hours_to_complete')?.value;
-     const hours = Number(taskHours); // Force conversion to number
-     console.log(`Task ${index} hours:`, taskHours, 'Converted hours:', hours);  // Debugging output
-     totalHoursSpent += isNaN(hours) ? 0 : hours; // Add valid number, otherwise add 0
-   }
- });
- 
- const newTimeSpentValueNumber = Number(newTimeSpentValue);
- // Include the new time spent value in the total calculation
- totalHoursSpent += newTimeSpentValueNumber;
- console.log('Total Hours Spent:', totalHoursSpent);  // Debugging output
-
- const maxAllowedHours = 8;  // Maximum allowed hours (8 hours)
-
- // Check if total hours exceed the maximum allowed (8 hours)
- if (totalHoursSpent > maxAllowedHours && !this.duplicateCreatedDate) {
-   this.api.showError(`Tasks cannot exceed ${maxAllowedHours} hours. Current total: ${totalHoursSpent} hours.`);
-   return; // Exit early if total hours exceed 8 hours
- }
-
-else {
-       
-      // Update the task with the new value
-     // this.toggleTaskEditingState(projectIndex, taskIndex, false);
-      // Replace the original value with the new value in the data
-     // console.log(taskFormGroup.value)
-      this.originalTaskData[projectIndex][taskIndex] = taskFormGroup?.value;
-      // this.isTaskSubmitted = false;
-      this.timeSheetForm.markAsTouched();
-      taskFormGroup?.get('isEditing')?.setValue(false);
-      this.disableTaskDetailsBasedOnEditing(projectIndex, taskIndex,false);
+    if (enteredTime  > remainingHours) {
+      this.api.showWarning(`You have exceeded ${Math.abs(remainingHours)} hours for this date.`);
+      return
     }
-    
+   
+    else {
+        
+          this.originalTaskData[projectIndex][taskIndex] = taskFormGroup?.value;
+          // this.isTaskSubmitted = false;
+          this.timeSheetForm.markAsTouched();
+          taskFormGroup?.get('isEditing')?.setValue(false);
+          this.disableTaskDetailsBasedOnEditing(projectIndex, taskIndex,false);
+        }
+        
   
   }
   
@@ -385,29 +329,7 @@ else {
   getProjectControl(index: number): FormGroup {
     return this.createdProject.at(index) as FormGroup;
   }
-  hoursList = [];
-
-  generateHoursList(projectIndex: number): void {
-    const taskArray = this.getTaskArray(projectIndex);
-    
-    taskArray?.controls.forEach(taskControl => {
-      const taskDate = taskControl.get('created_date')?.value;
-      const timeSpent = taskControl.get('hours_to_complete')?.value;
-  
-      if (taskDate && timeSpent) {
-        const existingDate = this.hoursList.find(item => item.date === taskDate);
-        
-        if (existingDate) {
-          existingDate.totalHours += parseFloat(timeSpent);
-        } else {
-          this.hoursList.push({
-            date: taskDate,
-            totalHours: parseFloat(timeSpent)
-          });
-        }
-      }
-    });
-  }
+ 
 
 saveTask(projectIndex: number): void {
   const projectGroup = this.getProjectControl(projectIndex);
@@ -415,14 +337,14 @@ saveTask(projectIndex: number): void {
   
   if (this.taskForm.invalid || this.duplicateDate) {
     this.taskForm.markAllAsTouched();
-    if (this.duplicateDate) {
-      this.api.showError(`This date (${this.duplicateDate}) is already fully reserved with max hours.`);
-    }
+    
     return; // Exit early if there are validation errors
   }
+  const selectedDate = projectGroup.get('created_date').value
 
   // Calculate values
-  const remainingHours = this.getRemainingHours(projectIndex);
+  // const remainingHours = this.getRemainingHours(projectIndex);
+  const remainingHours = this.calculateTotalHoursForDate(selectedDate);
   const enteredTime = this.taskForm.get('hours_to_complete').value;
   const totalHoursForDate = this.totalHoursForDate || 0; // Default to 0 if undefined
 
@@ -434,25 +356,24 @@ saveTask(projectIndex: number): void {
     const isDuplicateTask = taskArray.controls.some((task: FormGroup) => 
       task.get('task_id').value === enteredTaskId
     );
-    if (isDuplicateTask && !this.duplicateCreatedDate) {
-      this.api.showError(`Duplicate task names are not allowed.`);
+    if (isDuplicateTask ) {
+      this.api.showWarning(`Duplicate task names are not allowed.`);
       return; // Exit early if duplicate is found
     }
   }
-  if (enteredTime  > remainingHours && !this.duplicateCreatedDate) {
-    this.api.showError(`You have only ${remainingHours } hours left for this date.`);
+  if (enteredTime  > remainingHours ) {
+    this.api.showWarning(`You have only ${remainingHours } hours left for this date.`);
     projectGroup.get('isTaskForm').setValue(true);
   } 
 // If everything is okay, save the task
   else {
-  
-  // Disable the task details based on editing state
-  
-  // Add the new task to the form array
-  // const newTaskGroup = this.builder.group(this.taskForm.value);
-  // taskArray.push(newTaskGroup);
+
+  this.taskForm.patchValue({
+    created_date:this.datepipe.transform(projectGroup.get('created_date')?.value,'dd/MM/yyyy'),
+  })
   taskArray.push(this.builder.group(this.taskForm.value));
-   console.log(taskArray)
+  this.createdTaskList.push(this.taskForm.value)
+  
   const taskIndex = taskArray?.length ? taskArray?.length - 1 : 0
   const task = taskArray.at(taskIndex) as FormGroup;
   task?.get('task_id')?.disable();
@@ -462,15 +383,32 @@ saveTask(projectIndex: number): void {
     this.taskForm.reset();
   }
 }
+// calculateHoursLeft(taskList: any[], maxHoursPerDay: number = 8): any[] {
+//   const hoursByDate: { [date: string]: number } = {};
+
+//   // Calculate total hours_to_complete for each date
+//   taskList.forEach(task => {
+//     const date = task.created_date;
+//     const hours = parseFloat(task.hours_to_complete) || 0;
+//     if (!hoursByDate[date]) {
+//       hoursByDate[date] = 0;
+//     }
+//     hoursByDate[date] += hours;
+//   });
+
+//   // Update hours_left for each task
+//   taskList.forEach(task => {
+//     const date = task.created_date;
+//     const totalHoursForDate = hoursByDate[date] || 0;
+//     task.hours_left = Math.max(0, maxHoursPerDay - totalHoursForDate);
+//   });
+
+//   return taskList;
+// }
 
 disableTaskDetailsBasedOnEditing(projectIndex: number, taskIndex: number,isEditing:boolean): void {
   const taskArray = this.getTaskArray(projectIndex); // Get the FormArray containing tasks
   const task = taskArray.at(taskIndex) as FormGroup; // Access the specific task form group
-
-  // Check if isEditing is true or false
-  // const isEditing = task?.get('isEditing')?.value;
-  // const isEditingArr  = this.taskDetailsList?.[taskIndex]['isEditing']
- //console.log(this.taskDetailsList[taskIndex]['isEditing'])
   if (isEditing) {
     // If isEditing is true, enable the fields
     task?.get('task_id')?.enable();
@@ -503,12 +441,7 @@ deleteProject(projectIndex: number): void {
 
 
 
-  // extractNumber(value: string): number {
-  //   const numericValue = value?.match(/\d+/);
-  //   return numericValue ? +numericValue[0] : null;
-  // }
-
- 
+  
   saveTimesheet(i: number): void {
     const projectGroup = this.getProjectControl(i);
     
@@ -561,7 +494,7 @@ deleteProject(projectIndex: number): void {
      this.isSaved = false;
      this.isTaskSubmitted = true;
       }else if(hasDuplicate){
-        this.api.showError(`Timesheet already present for this project`);
+        this.api.showWarning(`Timesheet already present for this project`);
       }
       else {
      if (isEditing || (projectGroup.get('isTaskForm').value && this.taskForm.invalid) || (projectGroup.get('isTaskForm').value && this.taskForm.valid )) {
@@ -607,11 +540,8 @@ deleteProject(projectIndex: number): void {
     } else {
       // Revert to the original task data when cancelling
       const originalData = this.originalTaskData[i]?.[j];
-      // if (originalData) {
-      //   task?.setValue(originalData);
-      // }
+      
       if (originalData && originalData.task_id && originalData.hours_to_complete) {
-        console.log(originalData)
         task?.patchValue(originalData); // Use patchValue to avoid errors
       } else {
        // alert("Missing data for task_id or hours_to_complete");
@@ -655,7 +585,7 @@ deleteProject(projectIndex: number): void {
   addTimeSheet(): void {
     if (this.timeSheetForm.invalid) {
       this.timeSheetForm.markAllAsTouched();
-      this.api.showError('Please enter the mandatory fields');
+      this.api.showWarning('Please enter the mandatory fields');
       return;
     }
 
