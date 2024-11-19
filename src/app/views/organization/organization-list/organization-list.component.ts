@@ -29,8 +29,8 @@ export class OrganizationListComponent implements OnInit {
   directionValue: string = '';
   page = 1;
   count = 0;
-  tableSize = 10;
-  tableSizes = [10,25,50,100];
+  tableSize = 5;
+  tableSizes = [5,10,25,50,100];
   url: any;
   organizationData: any = [];
 currentIndex: any;
@@ -51,8 +51,8 @@ currentIndex: any;
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.user_id = sessionStorage.getItem('user_id')
     this.org_id = sessionStorage.getItem('org_id') 
-  //  this.getOrgDetails(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`)
-    this.getOrgDetails(``)
+  this.getOrgDetails(`?page=${1}&page_size=${5}`)
+
     
     // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
 
@@ -67,37 +67,7 @@ currentIndex: any;
     // }
     //this.getUserControls()
   }
-  getUserControls(){
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe((res:any)=>{
-      if(res.status_code !== '401'){
-        this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
-      }
-      else{
-        this.api.showError("ERROR !")
-      }
-      //console.log(res,'resp from yet');
-      
-    },((error:any)=>{
-     
-        this.api.showError(error?.error.error.message)
-    
-    })
-  
-    )
-  
-    this.common_service.permission.subscribe(res=>{
-      const accessArr = res
-      if(accessArr.length > 0){
-        accessArr.forEach(element => {
-          if(element['ORGANIZATION']){
-            this.permissions = element['ORGANIZATION']
-          }
-          
-        });
-      }
-    })
-    }
+ 
   // arrow:boolean=false
   // sort(direction:any,value:any){
   //   if(direction=='asc'){
@@ -124,17 +94,18 @@ currentIndex: any;
     this.sortValue = column;
   }
   
-  getOrgDetails(pagination){
-    this.api.getData(`${environment.live_url}/${environment.organization}/`).subscribe(res=>{
+  getOrgDetails(params){
+    this.api.getData(`${environment.live_url}/${environment.organization}/${params}`).subscribe(res=>{
       if(res){
-       this.organizationData = res
-      //  const noOfPages:number = res['result'].pagination.number_of_pages
-      //  this.count  = noOfPages * this.tableSize;
-      //  this.page=res['result'].pagination.current_page;
-
+       this.organizationData = res?.['results']
+      
+      const noOfPages:number = res?.['total_pages']
+      this.count  = noOfPages * this.tableSize;
+      this.count = res?.['total_no_of_record']
+      this.page=res?.['current_page'];
       }
     },(error =>{
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     }))
   }
   filterSearch(){
@@ -151,19 +122,22 @@ currentIndex: any;
   }
   onTableDataChange(event:any){
     this.page = event;
-    this.getOrgDetails(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`)
+    this.getOrgDetails(`?page=${this.page}&page_size=${this.tableSize}`)
   }  
   onTableSizeChange(event:any): void {
-    // this.tableSize = Number(event.target.value);
     if(event){
-    this.count = 0
-    // Calculate new page number
-    const calculatedPageNo = this.count / this.tableSize
+     
+    this.tableSize = Number(event.value);
+   
+    // this.count = 0
+    // // Calculate new page number
+    // const calculatedPageNo = this.count / this.tableSize
     
-    if(calculatedPageNo < this.page){
-      this.page = 1
-    }
-    this.getOrgDetails(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`)
+    // if(calculatedPageNo < this.page){
+    //   this.page = 1
+    // }
+   
+    this.getOrgDetails(`?page=${1}&page_size=${this.tableSize}`)
     }
   } 
   delete(id:any){
