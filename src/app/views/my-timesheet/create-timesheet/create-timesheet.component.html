@@ -231,7 +231,7 @@
                 <mat-form-field appearance="outline" class="full-width date-picker">
                   <mat-label>Created Date <b class="r-star">*</b></mat-label>
                   <input matInput [matDatepicker]="picker" formControlName="created_date" placeholder="Select date"
-                  (dateChange)="onDateChange($event.value)" [max]="currentDate">
+                  (dateChange)="onDateChange($event.value,i)" [max]="currentDate">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
                   <mat-error *ngIf="project.get('created_date').touched && project.get('created_date').invalid">

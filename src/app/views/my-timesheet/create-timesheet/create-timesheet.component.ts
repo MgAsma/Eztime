@@ -127,7 +127,6 @@ export class CreateTimesheetComponent implements OnInit {
         if (taskDate === this.datepipe.transform(selectedDate,'dd/MM/yyyy') && timeSpent) {
           
             totalHours -= parseFloat(timeSpent);
-            console.log(totalHours)
          }
       })
       
@@ -179,7 +178,7 @@ getValue(i,j,value,type?){
 
 }
 
-  onDateChange(date: string) {
+  onDateChange(date: string,projectIndex:number) {
     const maxHours = 8; // Max allowed hours for each date
     const selectedDate = this.datepipe.transform(date, 'dd/MM/yyyy');
     this.timesheetDate = date
@@ -187,7 +186,7 @@ getValue(i,j,value,type?){
     const matchedDates = this.responseArray.getRawValue().filter((group: any) => 
       this.datepipe.transform(group.created_date, 'dd/MM/yyyy') === selectedDate
     );
-
+    this.clearTaskList(projectIndex)
     if (matchedDates?.length > 0) {
       // Sum up the hours for the matching dates
       this.totalHoursForDate = 0;
@@ -557,7 +556,13 @@ deleteProject(projectIndex: number): void {
   }
   
   
-  
+  clearTaskList(projectIndex: number): void {
+    const taskArray = this.getTaskArray(projectIndex);
+    taskArray.clear(); // Removes all tasks in the `task_list` without deleting the project
+    const projectGroup = this.getProjectControl(projectIndex);
+    projectGroup.get('isTaskForm').setValue(true);
+    this.taskForm.reset()
+  }
 
   resetTaskForm(i): void {
     this.taskForm.reset();
@@ -654,13 +659,15 @@ deleteProject(projectIndex: number): void {
     this.client_id = event
     let query:any;
     query = this.userRole === 'admin' ? `?organization=${this.orgId}&client=${event}`:`?organization=${this.orgId}&client=${event}&employee_id=${this.userId}`
-    
+    this.createdProject?.at(index)?.patchValue({projectList: []})
+    this.createdProject.at(index)?.patchValue({taskList: []})
     this.api.getData(`${environment.live_url}/${environment.project}/${query}`).subscribe((res:any)=>{
       if(res){
         this.allProject = res
         this.projectList = [...this.allProject]
         this.createdProject?.at(index)?.patchValue({projectList: this.projectList})
-        
+        this.clearTaskList(index)
+
         // ----------------
       }
      
@@ -679,6 +686,7 @@ deleteProject(projectIndex: number): void {
        this.taskList = [...this.allTask]
         // console.log(res.data[0].project_related_task_list,"RESPONSETASK n/----------------")
         this.createdProject.at(index)?.patchValue({taskList: this.taskList})
+        this.clearTaskList(index)
       }
       
     },(error =>{
