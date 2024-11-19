@@ -207,8 +207,7 @@ onTableDataChange(event: any): void {
   this.page = event;
   let tableData ={
     page:this.page,
-    tableSize:this.tableSize,
-    search_key:this.term
+    tableSize:this.tableSize
    }
   this.buttonClick.emit(tableData);
 }
@@ -223,10 +222,9 @@ onTableSizeChange(event:any): void {
   if(calculatedPageNo < this.page){
     this.page = 1
   }
-  let tableData ={
+  let tableData={
     page:this.page,
-    tableSize:this.tableSize,
-    search_key:this.term
+    tableSize:this.tableSize
    }
   // alert(tableData.tableSize)
   this.buttonClick.emit(tableData);

@@ -255,8 +255,9 @@ getValue(i,j,value,type?){
     const tasks = project.get('task_list') as FormArray;
     return tasks ? tasks.length : 0;
   }
-  getProjectNameById(projectId: number): string {
-    const project = this.allProject.find(p => p.id === projectId);
+  getProjectNameById(projectId: number,projectIndex:number): string {
+    const projectGroup = this.getProjectControl(projectIndex);
+    const project = projectGroup.get('projectList').getRawValue()?.find(p => p.id === projectId);
     return project ? project.project_name : 'NA';
   }
   
@@ -524,7 +525,6 @@ deleteProject(projectIndex: number): void {
   toggleTaskEditingState(i: number, j: number, isEditing: boolean): void {
     const taskArray = this.getTaskArray(i);
     const task = taskArray?.at(j) as FormGroup;
-    console.log(task)
     // Check if we're enabling or disabling editing mode
     if (isEditing) {
       // Store the initial task data before editing
@@ -666,6 +666,7 @@ deleteProject(projectIndex: number): void {
         this.allProject = res
         this.projectList = [...this.allProject]
         this.createdProject?.at(index)?.patchValue({projectList: this.projectList})
+
         this.clearTaskList(index)
 
         // ----------------

@@ -100,7 +100,7 @@
                     <!-- Project Name -->
                     <div class="flex-grow-1">
                       <mat-label class="text-muted">Project Name</mat-label>
-                      <div class="preview-label">{{ getProjectNameById(project.get('project_id')?.value) }}</div>
+                      <div class="preview-label">{{ getProjectNameById(project.get('project_id')?.value,i) }}</div>
                     </div>
                     <!-- Timesheet Date -->
                     <div class="flex-grow-1">
@@ -158,7 +158,7 @@
                       <!-- Project Name -->
                       <div class="flex-grow-1">
                         <mat-label class="text-muted">Project Name</mat-label>
-                        <div class="preview-label">{{ getProjectNameById(project.get('project_id')?.value) }}</div>
+                        <div class="preview-label">{{ getProjectNameById(project.get('project_id')?.value,i) }}</div>
                       </div>
                       <!-- Timesheet Date -->
                       <div class="flex-grow-1">
