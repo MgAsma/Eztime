@@ -77,25 +77,32 @@
     // position: absolute !important;
     top: -2px !important;
 }
-.create-project .task-labels{
+
+.create-project .task-labels {
     font-size: 10px;
     margin-right: 2px;
 }
+
 .auto-height {
     height: auto !important;
-  }
-::ng-deep  .mat-select-panel {
+}
+
+::ng-deep .mat-select-panel {
     margin-left: 20px !important;
 }
+
 .create-project .custom-search input {
     width: 100%;
-    box-sizing: border-box; /* Ensure padding doesn't increase width */
+    box-sizing: border-box;
+    /* Ensure padding doesn't increase width */
 }
-.create-project .team-border{
+
+.create-project .team-border {
     border: 1px solid rgb(231, 229, 229);
     border-radius: 5px;
 }
-.create-project .tag-item i{
+
+.create-project .tag-item i {
     text-align: center;
     cursor: pointer !important;
 
@@ -105,38 +112,42 @@
 .create-project .tag-container {
     display: flex;
     flex-wrap: wrap;
-    max-height: 150px; /* Adjust this height to set the maximum height */
-    overflow-y: auto; /* Allow vertical scrolling when there is more data */
+    max-height: 150px;
+    /* Adjust this height to set the maximum height */
+    overflow-y: auto;
+    /* Allow vertical scrolling when there is more data */
     padding: 10px;
-  }
-  
-  .create-project .tag-container.collapsed {
-    max-height: 100px; /* Adjust height for collapsed view */
-    overflow-y: hidden; /* Hide scroll in collapsed view */
-  }
-  
-  .create-project .tag-item {
+}
+
+.create-project .tag-container.collapsed {
+    max-height: 100px;
+    /* Adjust height for collapsed view */
+    overflow-y: hidden;
+    /* Hide scroll in collapsed view */
+}
+
+.create-project .tag-item {
     background-color: lightblue;
     margin: 4px;
     padding: 4px 8px;
     border-radius: 4px;
     display: inline-flex;
     align-items: center;
-  }
-  
-  .create-project .remove-btn {
+}
+
+.create-project .remove-btn {
     margin-left: 8px;
     background-color: transparent;
     border: none;
     cursor: pointer;
-  }
-  
-  .create-project .controls {
+}
+
+.create-project .controls {
     margin-top: 10px;
     text-align: end;
-  }
-  
-  .create-project .toggle-btn {
+}
+
+.create-project .toggle-btn {
     margin-right: 10px;
     background-color: #418BC3;
     color: white;
@@ -146,8 +157,9 @@
     cursor: pointer;
     padding: 8px;
 
-  }
-  .create-project .clear-btn {
+}
+
+.create-project .clear-btn {
     border: none;
     margin-right: 10px;
     background-color: #DEDEDE;
@@ -157,5 +169,8 @@
     cursor: pointer;
     padding: 7px 10px;
 
-  }
-  
+}
+
+::ng-deep .create-project .mat-form-field-appearance-outline .mat-form-field-suffix {
+    top: .25em !important;
+}

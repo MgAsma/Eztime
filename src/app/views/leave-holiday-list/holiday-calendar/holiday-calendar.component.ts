@@ -2,12 +2,14 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
+import { CommonServiceService } from 'src/app/service/common-service.service';
 @Component({
   selector: 'app-holiday-calendar',
   templateUrl: './holiday-calendar.component.html',
   styleUrls: ['./holiday-calendar.component.scss']
 })
 export class HolidayCalendarComponent implements OnInit {
+  BreadCrumbsTitle: any = 'Holiday Calendar';
   file: any;
   fileUpload;
   formData:any;
@@ -20,10 +22,12 @@ export class HolidayCalendarComponent implements OnInit {
   
   constructor(
     private api:ApiserviceService,
-    private fb:FormBuilder
+    private fb:FormBuilder,
+    private common_service:CommonServiceService
   ) { }
 
   ngOnInit(): void {
+    this.common_service.setTitle(this.BreadCrumbsTitle);
     this.organization_id = sessionStorage.getItem('organization_id')
     this.getHolidayList()
     this.initForm()

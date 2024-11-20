@@ -36,7 +36,6 @@ export class UserGuideModalComponent implements OnInit {
         { image: '../../../assets/images/Screenshots/15.png' },
         { image: '../../../assets/images/Screenshots/16.png' },
         { image: '../../../assets/images/Screenshots/17.png' },
-        { image: '../../../assets/images/Screenshots/18-1.png' },
         { image: '../../../assets/images/Screenshots/18.png' },
         { image: '../../../assets/images/Screenshots/19.png' },
         { image: '../../../assets/images/Screenshots/20.png' },
@@ -47,17 +46,37 @@ export class UserGuideModalComponent implements OnInit {
       this.imageSlides = [];
     }
     else if (sessionStorage.getItem('user_role_name') === 'Employee') {
-      this.imageSlides = [
-        { image: '../../../assets/images/Screenshots/9.png' },
-        { image: '../../../assets/images/Screenshots/10.png' },
-        { image: '../../../assets/images/Screenshots/12.png' },
-        { image: '../../../assets/images/Screenshots/13.png' },
-        { image: '../../../assets/images/Screenshots/14.png' },
-        { image: '../../../assets/images/Screenshots/15.png' },
-        { image: '../../../assets/images/Screenshots/16.png' },
-        { image: '../../../assets/images/Screenshots/17.png' },
-        { image: '../../../assets/images/Screenshots/18-1.png' },
-      ]
+      let designation:any = sessionStorage.getItem('designation');
+      if (designation.toLowerCase().includes('manager')) {
+        // console.log('The string contains "manager".');
+        this.imageSlides = [
+          { image: '../../../assets/images/Screenshots/9.png' },
+          { image: '../../../assets/images/Screenshots/10.png' },
+          { image: '../../../assets/images/Screenshots/12.png' },
+          { image: '../../../assets/images/Screenshots/13.png' },
+          { image: '../../../assets/images/Screenshots/14.png' },
+          { image: '../../../assets/images/Screenshots/15.png' },
+          { image: '../../../assets/images/Screenshots/16.png' },
+          { image: '../../../assets/images/Screenshots/17.png' },
+          { image: '../../../assets/images/Screenshots/18.png' },
+          { image: '../../../assets/images/Screenshots/19.png' },
+          { image: '../../../assets/images/Screenshots/20.png' },
+        ]
+      } else {
+        // console.log('The string does not contain "manager".');
+        this.imageSlides = [
+          { image: '../../../assets/images/Screenshots/9.png' },
+          { image: '../../../assets/images/Screenshots/10.png' },
+          { image: '../../../assets/images/Screenshots/12.png' },
+          { image: '../../../assets/images/Screenshots/13.png' },
+          { image: '../../../assets/images/Screenshots/14.png' },
+          { image: '../../../assets/images/Screenshots/15.png' },
+          { image: '../../../assets/images/Screenshots/16.png' },
+          { image: '../../../assets/images/Screenshots/17.png' },
+          { image: '../../../assets/images/Screenshots/18.png' },
+        ]
+      }
+     
     }
   }
 

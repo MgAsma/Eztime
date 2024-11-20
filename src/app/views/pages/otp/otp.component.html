@@ -1,11 +1,11 @@
 <div class="container-fluid login-main-bg" style="margin: 0;padding: 5px 0px;">
     <div class="row login-content-bg">
         <div
-            class="col-12 col-md-12 col-lg-6 col-xl-6 login-left-content order-2 order-sm-2 order-md-2 order-lg-1 order-xl-1 ">
+            class="col-12 col-md-12 col-lg-8 col-xl-8 login-left-content order-2 order-sm-2 order-md-2 order-lg-1 order-xl-1 ">
             <img src="./../../../assets/images/login-left-content.png" class="left-content-img"
                 alt="left-content-img" />
         </div>
-        <div class="col-12 col-md-12 col-lg-6 col-xl-6 order-1 order-sm-1 order-md-1 order-lg-2 order-xl-2"
+        <div class="col-12 col-md-12 col-lg-4 col-xl-4 order-1 order-sm-1 order-md-1 order-lg-2 order-xl-2"
             style="position: relative; align-self: center;">
             <div class="login-right-content">
                 <div class="row">
@@ -51,6 +51,13 @@
                                     formControlName="num6" on-keyup="valCheck()"
                                     (keydown)="handleBackspace($event, 'num6')">
                             </div>
+                            <div class="text-end mb-3">
+                                <p *ngIf="!isButtonEnabled" class="fw-medium">resend OTP in {{countdown}} seconds</p>
+                                <div *ngIf="isButtonEnabled">
+                                    <button type="button" class="btn btn-sm btn-link"  [disabled]="resendButtonClicked"  (click)="resendOtp()">Resend OTP</button>
+                                </div>
+                            </div>
+                           
                             <!-- <div class="text-center mt-5">
                         <span class="d-block email-text">Don't receive the code? <span class="cursor fw-bold" (click)="resendOTP()">Resend</span></span>
                     </div> -->

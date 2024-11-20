@@ -194,4 +194,6 @@
     padding: 7px 10px;
 
   }
-  
+  ::ng-deep .update-project-details .mat-form-field-appearance-outline .mat-form-field-suffix {
+    top: .25em !important;
+}

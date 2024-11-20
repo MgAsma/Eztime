@@ -15,11 +15,15 @@ export class OtpComponent implements OnInit {
   @ViewChild('num3', { static: false }) num3: ElementRef;
 
   constructor(private builder: FormBuilder, private api: ApiserviceService, private router: Router) { }
-
+  countdown: number = 59;
+  isButtonEnabled: boolean = false;
+  timer: any;
+  resendButtonClicked: boolean = false;
   ngOnInit(): void {
     this.initForm();
 
   }
+
   initForm() {
     this.otpForm = this.builder.group({
       num1: ['', Validators.required],
@@ -29,6 +33,49 @@ export class OtpComponent implements OnInit {
       num5: ['', Validators.required],
       num6: ['', Validators.required],
     })
+    setTimeout(() => {
+      this.startCountdown();
+    }, 1000);
+  }
+  startCountdown() {
+    this.isButtonEnabled = false;
+    this.resendButtonClicked = false;
+    this.countdown = 59;
+    this.timer = setInterval(() => {
+      if (this.countdown > 0) {
+        this.countdown--;
+      } else {
+        clearInterval(this.timer);
+        this.isButtonEnabled = true;
+      }
+    }, 1000);
+  }
+  resendOtp() {
+    this.resendButtonClicked = true;
+    let data = {
+      email: sessionStorage.getItem('email_id')
+    }
+    this.api.ForgotPasswordDetails(data).subscribe(
+      (response: any) => {
+        if (response) {
+          //  //console.log(response.result.details,response)
+          this.api.showSuccess(response.message)
+          this.initForm();
+          setTimeout(() => {
+            this.startCountdown();
+          }, 1000);
+        }
+        else {
+          //console.log('error message')
+          this.api.showError(response.error.message)
+          this.api.showError('ERROR !')
+        }
+
+      }, (error => {
+        //console.log(error,"MESSAGE")
+        this.api.showError(error.error.message)
+      })
+    )
   }
   sendOTP() {
     // let int = this.otpForm.value.num1
@@ -47,16 +94,16 @@ export class OtpComponent implements OnInit {
       this.api.otp(otpdata).subscribe((res: any) => {
         if (res) {
           this.api.showSuccess(res['message'])
-          sessionStorage.setItem('user_id',res['user_id'])
+          sessionStorage.setItem('user_id', res['user_id'])
           this.router.navigate(['/forgotChange']);
         }
         else {
-            this.api.showError(res['message']);
+          this.api.showError(res['message']);
         }
 
 
       }, (error => {
-        this.api.showError(error.error.error.message)
+        this.api.showError(error.error.message)
       }))
     }
 
@@ -66,7 +113,7 @@ export class OtpComponent implements OnInit {
 
   handleBackspace(event, currentControlName) {
     // console.log(event,event.key,"EVENT>KEY")
-    if (event.keyCode === 8 && event.target.value =='') {
+    if (event.keyCode === 8 && event.target.value == '') {
       event.preventDefault();
       const currentControl = this.otpForm.get(currentControlName);
       currentControl.setValue("");
