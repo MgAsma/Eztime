@@ -71,7 +71,8 @@ export class LoginComponent implements OnInit {
         const token = response['token'];
         const decoded:any = jwtDecode(token);
       //  console.log(decoded,'decoded');
-        sessionStorage.setItem('token', response['token']),
+      sessionStorage.setItem('token', response['token']),
+      sessionStorage.setItem('logged_count', response['logged_in_time']);
         sessionStorage.setItem('user_id',decoded.user_id )
         this.api.userAccess(decoded.user_id).subscribe(
           (data:any)=>{

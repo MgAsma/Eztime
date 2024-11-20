@@ -10,6 +10,10 @@ import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { NotificationComponent } from 'src/app/views/pages/notification/notification.component';
 import { environment } from 'src/environments/environment';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { UserGuideModalComponent } from 'src/app/views/user-guide-modal/user-guide-modal.component';
+import { MatDialog } from '@angular/material/dialog';
+import { UserWelcomeMsgComponent } from 'src/app/views/user-welcome-msg/user-welcome-msg.component';
 
 @Component({
   selector: 'app-default-header',
@@ -55,12 +59,12 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   orgId: any;
   permissionArr:any = [];
   dashboardAccess: any;
-  
+  bsModalRef?: BsModalRef;
   constructor(private classToggler: ClassToggleService, private modalService: NgbModal,
     private router: Router,
     private api: ApiserviceService, private cdref: ChangeDetectorRef,
-    private common_service: CommonServiceService,
-   private location:Location) {
+    private common_service: CommonServiceService, private userGuideModel: BsModalService,
+   private location:Location, public dialog: MatDialog,) {
     super();
     this.getScreenSize()
   }
@@ -196,4 +200,49 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
       // this.api.showError(error.error.error.message)
     }))
   }
+
+  openUserGuideModalComponent(){
+    this.isModalOpen = true;
+    const initialState: ModalOptions = {
+      initialState: {
+       
+      },
+      class: 'modal-dialog-centered custom-modal-lg',
+      ignoreBackdropClick: true,
+      keyboard: false,
+    };
+    this.bsModalRef = this.userGuideModel.show(UserGuideModalComponent, initialState);
+  }
+
+  isModalOpen = false;
+  openWelcomeDialog(){
+    this.openUserGuideModalComponent();
+    // this.isModalOpen = true;
+    // let data= {
+    //   title:'Hello',
+    //   message1:`Welcome to Project Ace!. We’re thrilled to have you here. Let us guide you through the main features of our website.`,
+    //   message2:`Click 'Next' to begin the tour or 'Skip' to explore on your own.`,
+    //   isModalOpen:this.isModalOpen
+    // }
+    //   const modelRef = this.modalService.open(UserWelcomeMsgComponent, {
+    //     size: <any>'sm',
+    //     backdrop: 'static',
+    //     centered: false,
+    //     windowClass: 'welcome-msg'
+        
+    //   });
+    //   modelRef.componentInstance.data = data;
+    //   modelRef.componentInstance.status.subscribe(resp => {
+    //     if (resp == "ok") {
+    //       modelRef.close();
+    //       this.isModalOpen = false;
+    //       this.openUserGuideModalComponent();
+    //     }
+    //     else {
+    //       modelRef.close();
+    //       this.isModalOpen = false;
+    //     }
+    //   })
+  }
+  
 }

@@ -69,7 +69,11 @@ import { AuthGuard } from './auth.guard';
 import { OrgAuthGuard } from './org-auth.guard';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { CommonModule } from '@angular/common';
-
+import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { UserGuideModalComponent } from './views/user-guide-modal/user-guide-modal.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { UserWelcomeMsgComponent } from './views/user-welcome-msg/user-welcome-msg.component';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -84,6 +88,8 @@ const APP_CONTAINERS = [
     LoginComponent,
     ...APP_CONTAINERS,
     VirtualScrollDirective,
+    UserGuideModalComponent,
+    UserWelcomeMsgComponent,
     
   ],
   imports: [
@@ -126,6 +132,9 @@ const APP_CONTAINERS = [
     NgMultiSelectDropDownModule,
     SharedModule,
     DragDropModule,
+    MatDialogModule,
+    CarouselModule.forRoot(),
+    ModalModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: "toast-top-right",
@@ -149,6 +158,7 @@ const APP_CONTAINERS = [
     //   provide: LocationStrategy,
     //   useClass: HashLocationStrategy,
     // },
+    BsModalService,
     ActivateChildGuard,
     AuthGuard,
     OrgAuthGuard,

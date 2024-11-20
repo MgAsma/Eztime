@@ -1,3 +1,5 @@
+$primay-color: #126EB4;
+$secondary-color:#FFFFFF4D;
 .user-id{
     border: 1px solid #c1c0c0;
     padding: 2px 5px;
@@ -138,3 +140,51 @@ h1.breadcrumb-title{
    
 }
 
+.user-guide-btn{
+    padding: 3px 10px;
+    background: #fff1aa;
+    white-space: nowrap;
+    border-radius: 5px;
+    color: black;
+    font-weight: 500;
+    margin-right: 15px;
+    position: relative;
+    border: 1px solid #000000;
+    box-shadow: 0px 4px 0px 0px #0000004D;
+
+}
+.user-guide-btn.active {
+    background: $primay-color; /* Highlighted border */
+    color: white !important;
+    padding: 3px 10px;
+    white-space: nowrap;
+    border-radius: 5px;
+    color: black;
+    font-weight: 500;
+    margin-right: 15px;
+    position: relative;
+    border: 1px solid #000000;
+    box-shadow: 0px 4px 0px 0px #0000004D;
+  }
+ 
+
+// .modal-title {
+//     padding-bottom: 15px;
+//     font-weight: 600;
+//     font-size: 14px;
+// }
+// button.btn-cancel {  
+//     background-color:  #d3d3d34f !important;
+//     margin-right: 10px;
+// }
+
+// button.btn-yes {
+//     background-color: $primay-color !important;
+//     width: auto;
+//     color: #fff !important;;
+//     margin: 0;
+//     border-radius: 4px;
+// }
+// .header-content .cdk-overlay-backdrop {
+//     background-color: rgb(225, 222, 222);
+// }
