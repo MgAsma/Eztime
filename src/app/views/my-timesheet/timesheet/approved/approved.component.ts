@@ -60,6 +60,7 @@ export class ApprovedComponent implements OnInit {
         this.paginationConfig.itemsPerPage=this.tableSize;
       this.page=changes['totalCount'].currentValue.currentPage;
       this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
+      this.tableSize = changes['totalCount'].currentValue.reset ? changes['totalCount'].currentValue.itemsPerPage : this.tableSize
       }
       // this.cdref.detectChanges();
         }
