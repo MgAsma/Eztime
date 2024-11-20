@@ -82,7 +82,7 @@ export class LeaveMasterComponent implements OnInit {
   
   getLeaveType(){
   
-    this.api.getData(`${environment.live_url}/${environment.leave_master}/?organization=${this.organization_id}`).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.leave_master}/?organization=${this.organization_id}&page=${1}&page_size=${5}`).subscribe((data:any)=>{
       this.leaveMasterList= data;
       // const noOfPages:number = data['result'].pagination.number_of_pages
       // this.count  = noOfPages * this.tableSize;

@@ -26,8 +26,8 @@ export class YetToApproveComponent implements OnInit {
   action:any;
   term:any='';
   page:any=1;
-  tableSize = 10;
-  tableSizes = [10,25,50,100];
+  tableSize = 5;
+  tableSizes = [5,10,25,50,100];
   count:any = 0
   entryPoint: any;
   user_id: string;
@@ -54,13 +54,13 @@ export class YetToApproveComponent implements OnInit {
     if(changes['data'].currentValue){
       this.list=changes['data']?.currentValue ;
     }
-    // if(changes['totalCount']?.currentValue){
-    //   this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
-    //   this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
-    //   this.paginationConfig.itemsPerPage=this.tableSize;
-    // this.page=changes['totalCount'].currentValue.currentPage;
-    // this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
-    // }
+    if(changes['totalCount']?.currentValue){
+      this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
+      this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
+      this.paginationConfig.itemsPerPage=this.tableSize;
+    this.page=changes['totalCount'].currentValue.currentPage;
+    this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
+    }
     this.cdref.detectChanges();
       }
  
@@ -207,14 +207,14 @@ onTableDataChange(event: any): void {
   this.page = event;
   let tableData ={
     page:this.page,
-    tableSize:this.tableSize
+    page_size:this.tableSize
    }
   this.buttonClick.emit(tableData);
 }
 onTableSizeChange(event:any): void {
   if(event){
     
-  this.tableSize = this.tableSize
+  this.tableSize = event.value
   this.count = 0
   // Calculate new page number
   const calculatedPageNo = this.count / this.tableSize
@@ -224,7 +224,7 @@ onTableSizeChange(event:any): void {
   }
   let tableData={
     page:this.page,
-    tableSize:this.tableSize
+    page_size:this.tableSize
    }
   // alert(tableData.tableSize)
   this.buttonClick.emit(tableData);

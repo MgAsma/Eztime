@@ -31,8 +31,8 @@ export class ApprovedComponent implements OnInit {
   list: any = [];
   page:any = 1;
   count = 0;
-  tableSize = 10;
-  tableSizes = [10,25,50,100];
+  tableSize = 5;
+  tableSizes = [5,10,25,50,100];
   entryPoint: any;
   user_id: string;
   accessConfig: any;
@@ -54,13 +54,13 @@ export class ApprovedComponent implements OnInit {
       if(changes['data'].currentValue){
         this.list=changes['data'].currentValue;
       }
-      // if(changes['totalCount'].currentValue){
-      //   this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
-      //   this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
-      //   this.paginationConfig.itemsPerPage=this.tableSize;
-      // this.page=changes['totalCount'].currentValue.currentPage;
-      // this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
-      // }
+      if(changes['totalCount'].currentValue){
+        this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
+        this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
+        this.paginationConfig.itemsPerPage=this.tableSize;
+      this.page=changes['totalCount'].currentValue.currentPage;
+      this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
+      }
       // this.cdref.detectChanges();
         }
   
@@ -105,18 +105,16 @@ export class ApprovedComponent implements OnInit {
 
   onTableDataChange(event:any){
     this.page = event;
-    let tableData ={
+     let tableData={
       page:this.page,
-      tableSize:this.tableSize,
-      search_key:this.term
-      
+      page_size:this.tableSize
      }
     this.buttonClick.emit(tableData);
   }  
   onTableSizeChange(event:any): void {
     if(event){
     
-      this.tableSize = this.tableSize
+    this.tableSize = this.tableSize
     this.count = 0
     // Calculate new page number
     const calculatedPageNo = this.count / this.tableSize
@@ -124,10 +122,9 @@ export class ApprovedComponent implements OnInit {
     if(calculatedPageNo < this.page){
       this.page = 1
     }
-    let tableData ={
+    let tableData={
       page:this.page,
-      tableSize:this.tableSize,
-      search_key:this.term
+      page_size:this.tableSize
      }
     this.buttonClick.emit(tableData);
     }

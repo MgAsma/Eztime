@@ -39,6 +39,9 @@ export class AppliedApprovedLeavesComponent implements OnInit {
   allCardData: Object;
   selectedTabId: number;
   submitted: boolean = false;
+  page_size: number = 5;
+  page: number = 1;
+  refresh: boolean = false;
   constructor(
     private api:ApiserviceService,
     private datepipe:DatePipe,
@@ -49,7 +52,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
     ) {}
   goBack(event)
   {
-    event.preventDefault(); // Prevent default back button behavior
+  event.preventDefault(); // Prevent default back button behavior
   this.location.back();
   
   }
@@ -65,7 +68,7 @@ export class AppliedApprovedLeavesComponent implements OnInit {
     this.initForm();
     // this.getAppliedLeaves('')
     this.getCount()
-    this.getByStatus(`?status=1&employee-id=${this.user_id}&organization=${this.orgId}`)
+    this.getByStatus(`?status=1&employee-id=${this.user_id}&organization=${this.orgId}&page=${this.page}&page_size=${this.page_size}`)
   }
   getCount(){
     this.api.getData(`${environment.live_url}/${environment.employee_leave_details}/?get-count=true&employee-id=${this.user_id}&organization=${this.orgId}`).subscribe(res=>{
@@ -115,42 +118,25 @@ export class AppliedApprovedLeavesComponent implements OnInit {
     }
     
   }
-  refershPage(){}
+  
   buttonClick(event){
     if(event){
       this.cdref.detectChanges();
-      // if(this.changes){
-      //   let params= {
-      //     module:"LEAVE/HOLIDAY_LIST",
-      //     menu:"APPLIED/APPROVIED_LEAVES",
-      //     method:"VIEW",
-      //     page_number:event.page,
-      //     data_per_page:event.tableSize,
-      //     search_key:event.search_key,
-      //     user_id:this.user_id,
-      //     pagination:"TRUE",
-      //     approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-      //     leaveApplication_from_date:this.fromDate,
-      //     leaveApplication_to_date:this.toDate
-      //   }
-      //  this.getAppliedLeaves(params);
-      // }
-      // else{
-      //   let params= {
-      //     module:"LEAVE/HOLIDAY_LIST",
-      //     menu:"APPLIED/APPROVIED_LEAVES",
-      //     method:"VIEW",
-      //     page_number:event.page,
-      //     data_per_page:event.tableSize,
-      //     search_key:event.search_key,
-      //     user_id:this.user_id,
-      //     pagination:"TRUE",
-      //     approved_state:this.selectedTab? this.selectedTab :'YET_TO_APPROVED',
-      //   }
-      //   this.getByStatus(`?organization=${this.orgId}&status=${this.selectedTabId}&employee-id=${this.user_id}`)
-      //   this.getCount()
-      // } 
-      this.reset() 
+      const status = this.selectedTabId || 1
+      let query = `?organization=${this.orgId}&status=${status}&employee-id=${this.user_id}&page=${event.page}&page_size=${event.page_size}`;
+      let c_params = {
+        status: this.selectedTab ? this.selectedTab : 'Pending',
+        leave_to_date: this.datepipe.transform(this.appliedLeaveForm.value.to_date, 'yyyy-MM-dd'),
+        leave_from_date: this.datepipe.transform(this.appliedLeaveForm.value.from_date, 'yyyy-MM-dd')
+      };
+      if(this.appliedLeaveForm.valid && this.submitted){
+       
+        query +=`&from-date=${c_params['leave_from_date']}&to-date=${c_params['leave_to_date']}`
+      }
+      this.refresh = false
+      this.getByStatus(query)
+        this.getCount()
+       
     }
   }
   get f(){
@@ -160,24 +146,24 @@ export class AppliedApprovedLeavesComponent implements OnInit {
     // this.api.getData(`${environment.live_url}/${environment.employee_leave_details}/?status-id=${this.selectedTabId}&employee-id=${this.user_id}`).subscribe(res=>{
       this.api.getData(`${environment.live_url}/${environment.employee_leave_details}/${params}`).subscribe(res=>{
     if(res){ 
-        this.AllListData = res
-       // this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
+        this.AllListData = res?.['results']
+       this.totalCount = { pageCount: res?.['total_pages'], currentPage: res?.['current_page'],itemsPerPage:5,totalCount:res?.['total_no_of_record'],reset:this.refresh};
     }
   },(error:any)=>{
     this.api.showError(error?.error?.message)
   })
   }
-  getAppliedLeaves(paginate){
-    this.api.getData(`${environment.live_url}/${environment.employee_leave_details}/?status=1&employee-id=${this.user_id}&organization=${this.orgId}`).subscribe(res=>{
-        if(res){ 
-        this.AllListData = res
-        //this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10}; 
-      }
-    },(error:any)=>{
-      this.api.showError(error?.error?.message)
-    })
+  // getAppliedLeaves(paginate){
+  //   this.api.getData(`${environment.live_url}/${environment.employee_leave_details}/?status=1&employee-id=${this.user_id}&organization=${this.orgId}`).subscribe(res=>{
+  //       if(res){ 
+  //       this.AllListData = res
+  //       //this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10}; 
+  //     }
+  //   },(error:any)=>{
+  //     this.api.showError(error?.error?.message)
+  //   })
     
-  }
+  // }
 
    changeFormat(){
     //console.log(this.appliedLeaveForm.value.from_date,"CHANGE")
@@ -195,8 +181,9 @@ export class AppliedApprovedLeavesComponent implements OnInit {
     this.appliedLeaveForm.reset()
     this.AllListData = []
     const selectedTab = this.selectedTabId || 1
-    this.getByStatus(`?status=${selectedTab}&employee-id=${this.user_id}&organization=${this.orgId}`)
-   }
+    this.refresh = true
+    this.getByStatus(`?status=${selectedTab}&employee-id=${this.user_id}&organization=${this.orgId}&page=${this.page}&page_size=${this.page_size}`)
+  }
     async submit() {
       let c_params = {};
       
@@ -216,9 +203,9 @@ export class AppliedApprovedLeavesComponent implements OnInit {
           this.AllListData = [];
           let query:string;
           if(this.selectedTabId){
-           query = `?from-date=${c_params['leave_from_date']}&to-date=${c_params['leave_to_date']}&status=${this.selectedTabId}&employee-id=${this.user_id}&organization=${this.orgId}`
+           query = `?from-date=${c_params['leave_from_date']}&to-date=${c_params['leave_to_date']}&status=${this.selectedTabId}&employee-id=${this.user_id}&organization=${this.orgId}&page=${1}&page_size=${5}`
           }else{
-            query = `?from-date=${c_params['leave_from_date']}&to-date=${c_params['leave_to_date']}&status=${1}&employee-id=${this.user_id}&organization=${this.orgId}`
+            query = `?from-date=${c_params['leave_from_date']}&to-date=${c_params['leave_to_date']}&status=${1}&employee-id=${this.user_id}&organization=${this.orgId}&page=${1}&page_size=${5}`
           }
           this.getByStatus(query);  
           this.submitted = true
@@ -244,9 +231,9 @@ export class AppliedApprovedLeavesComponent implements OnInit {
       if(this.submitted && this.appliedLeaveForm.valid){
         const to_date = this.datepipe.transform(this.appliedLeaveForm.value.to_date, 'yyyy-MM-dd')
         const from_date =  this.datepipe.transform(this.appliedLeaveForm.value.from_date, 'yyyy-MM-dd')
-        query=`?organization=${this.orgId}&status=${this.selectedTabId}&employee-id=${this.user_id}&from-date=${from_date}&to-date=${to_date}`
+        query=`?organization=${this.orgId}&status=${this.selectedTabId}&employee-id=${this.user_id}&from-date=${from_date}&to-date=${to_date}&page=${1}&page_size=${5}`
        }else{
-        query=`?organization=${this.orgId}&status=${this.selectedTabId}&employee-id=${this.user_id}`
+        query=`?organization=${this.orgId}&status=${this.selectedTabId}&employee-id=${this.user_id}&page=${1}&page_size=${5}`
        }
       this.getByStatus(query)
  

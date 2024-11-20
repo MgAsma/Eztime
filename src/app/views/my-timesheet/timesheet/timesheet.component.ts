@@ -34,9 +34,10 @@ export class TimesheetComponent implements OnInit {
   showSearch=false;
   @ViewChild('tabset') tabset: TabsetComponent;
   orgId: any;
-  tableSize: any = 10;
+  // tableSize: any = 10;
   selectedTabId: number;
   submitted: boolean = false;
+  page_size:number = 5;
   constructor(
     private _fb:FormBuilder,
     private api:ApiserviceService,
@@ -58,7 +59,7 @@ export class TimesheetComponent implements OnInit {
     this.userId = sessionStorage.getItem('user_id')
       this.initForm()
       
-      this.getByStatus(`?organization=${this.orgId}&status=${1}&user=${this.userId}`)
+      this.getByStatus(`?organization=${this.orgId}&status=${1}&user=${this.userId}&page=${1}&page_size=${5}`)
       this.getStatusCount(`?user=${this.userId}&get-count=true&organization=${this.orgId}`)
   }
  initForm(){
@@ -72,8 +73,8 @@ export class TimesheetComponent implements OnInit {
 
     this.api.getData(`${environment.live_url}/${environment.time_sheets}/${params}`).subscribe((res:any)=>{
      if(res){
-       this.allDetails = res
-      //  this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
+       this.allDetails = res?.['results']
+      this.totalCount = { pageCount: res?.total_pages, currentPage: res?.current_page,itemsPerPage:10};
      }
     
     },(error)=>{
@@ -139,7 +140,7 @@ reset(){
     //    this.getByStatus(c_params)
     // }
     const selectedTab = this.selectedTabId || 1
-    this.getByStatus(`?organization=${this.orgId}&status=${selectedTab}&user=${this.userId}`)
+    this.getByStatus(`?organization=${this.orgId}&status=${selectedTab}&user=${this.userId}&page=${event.page}&page_size=${event.page_size}`)
     this.getStatusCount(`?user=${this.userId}&get-count=true`)
     }
   }
@@ -192,9 +193,9 @@ reset(){
         this.allDetails = [];
         let query:string;
         if(this.selectedTabId){
-         query = `?from-date=${c_params['timesheets_from_date']}&to-date=${c_params['timesheets_to_date']}&status=${this.selectedTabId}&organization=${this.orgId}&user=${this.userId}`
+         query = `?from-date=${c_params['timesheets_from_date']}&to-date=${c_params['timesheets_to_date']}&status=${this.selectedTabId}&organization=${this.orgId}&user=${this.userId}&page=${this.page}&page_size=${this.page_size}`
         }else{
-          query = `?from-date=${c_params['timesheets_from_date']}&to-date=${c_params['timesheets_to_date']}&status=${1}&organization=${this.orgId}&user=${this.userId}`
+          query = `?from-date=${c_params['timesheets_from_date']}&to-date=${c_params['timesheets_to_date']}&status=${1}&organization=${this.orgId}&user=${this.userId}&page=${this.page}&page_size=${this.page_size}`
         }
         this.getByStatus(query);  
         this.submitted = true
@@ -220,10 +221,10 @@ reset(){
      let query = `?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.userId}`
      if(this.submitted && this.timeSheetForm.valid){
       const to_date = this.datepipe.transform(this.timeSheetForm.value.to_date, 'yyyy-MM-dd')
-      const from_date =  this.datepipe.transform(this.timeSheetForm.value.to_date, 'yyyy-MM-dd')
-      query=`?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.userId}&from-date=${from_date}&to-date=${to_date}`
+      const from_date =  this.datepipe.transform(this.timeSheetForm.value.from_date, 'yyyy-MM-dd')
+      query=`?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.userId}&from-date=${from_date}&to-date=${to_date}&page=${this.page}&page_size=${this.page_size}`
      }else{
-      query=`?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.userId}`
+      query=`?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.userId}&page=${this.page}&page_size=${this.page_size}`
      }
       this.getByStatus(query)
     
