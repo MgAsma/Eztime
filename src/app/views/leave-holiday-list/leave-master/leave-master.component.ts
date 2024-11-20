@@ -18,8 +18,8 @@ export class LeaveMasterComponent implements OnInit {
   currentIndex:any;
   page = 1;
   count = 0;
-  tableSize = 10;
-  tableSizes = [10,25,50,100];
+  tableSize = 5;
+  tableSizes = [5,10,25,50,100];
 
   term:any='';
   slno:any;
@@ -63,7 +63,7 @@ export class LeaveMasterComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.organization_id = JSON.parse(sessionStorage.getItem('organization_id'))
-    this.getLeaveType();
+    this.getLeaveType(`?organization=${this.organization_id}&page=${this.page}&page_size=${this.tableSize}`);
   }
   filterSearch(){
     // this.api.getData(`${environment.live_url}/${environment.master_leave_list}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
@@ -80,13 +80,13 @@ export class LeaveMasterComponent implements OnInit {
   }
 
   
-  getLeaveType(){
+  getLeaveType(query){
   
-    this.api.getData(`${environment.live_url}/${environment.leave_master}/?organization=${this.organization_id}&page=${1}&page_size=${5}`).subscribe((data:any)=>{
-      this.leaveMasterList= data;
-      // const noOfPages:number = data['result'].pagination.number_of_pages
-      // this.count  = noOfPages * this.tableSize;
-      // this.page=data['result'].pagination.current_page;
+    this.api.getData(`${environment.live_url}/${environment.leave_master}/${query}`).subscribe((data:any)=>{
+      this.leaveMasterList= data?.['results'];
+      const noOfPages:number = data.total_pages
+      this.count  = noOfPages * this.tableSize;
+      this.page=data?.['current_page'];
 
     },(error=>{
      this.api.showError(error?.error?.message)
@@ -99,7 +99,7 @@ export class LeaveMasterComponent implements OnInit {
     this.api.delete(`${environment.live_url}/${environment.leave_master}/${id}/`).subscribe((data:any)=>{
       this.enabled = true
       this.api.showWarning('Deleted successfully!')
-      this.getLeaveType();
+      this.getLeaveType(`?organization=${this.organization_id}&page=${this.page}&page_size=${this.tableSize}`);
 
     },error=>{
       this.api.showError(error?.error?.message);
@@ -134,17 +134,17 @@ export class LeaveMasterComponent implements OnInit {
   }
   onTableDataChange(event:any){
     this.page = event;
-    this.getLeaveType();
+    this.getLeaveType(`?organization=${this.organization_id}&page=${this.page}&page_size=${this.tableSize}`);
   }  
   onTableSizeChange(event:any): void {
-    this.tableSize = Number(event.target.value);
+    this.tableSize = Number(event.value);
     this.count = 0
     // Calculate new page number
     const calculatedPageNo = this.count / this.tableSize 
     if(calculatedPageNo < this.page){
       this.page = 1
     }
-    this.getLeaveType();
+    this.getLeaveType(`?organization=${this.organization_id}&page=${this.page}&page_size=${this.tableSize}`);
   }  
   open(content) {
     if(content){
