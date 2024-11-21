@@ -165,14 +165,14 @@ export class ManagerReviewComponent implements OnInit {
   
   }
   openDialogue(content, status) {
+    const title = status.toLowerCase()
     if (content) {
       const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: <any>'sm'
-        ,
+        size: status === 'Decline' ? <any>'md' : 'sm',
         backdrop: true,
         centered: true
       });
-      modelRef.componentInstance.title = `Are you sure you want to ${status}`;
+      modelRef.componentInstance.title = `Are you sure you want to ${title}`;
       modelRef.componentInstance.message = `${status}`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {
@@ -221,15 +221,15 @@ export class ManagerReviewComponent implements OnInit {
     }
     }
   } 
-  open(content, status) {
+  open(content, status:string) {
+    const title = status.toLowerCase();
     if (content) {
       const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: <any>'sm'
-        ,
+        size: status === 'Decline' ? <any>'md' : 'sm',
         backdrop: true,
         centered: true
       });
-      modelRef.componentInstance.title = `Are you sure you want to ${status}`;
+      modelRef.componentInstance.title = `Are you sure you want to ${title}`;
       modelRef.componentInstance.message = `${status}`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {
@@ -260,7 +260,7 @@ export class ManagerReviewComponent implements OnInit {
     this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
       if (res) {
         this.api.showSuccess(`Timesheet ${confirmText} successfully`)
-        this.getAllTimesheets(`?organization=${this.orgId}&status=1`)
+        this.getAllTimesheets(`?organization=${this.orgId}&status=1&page=${1}&page_size=${10}`)
       }
     }, (error => {
       this.api.showError(error?.error?.message)
@@ -287,7 +287,7 @@ export class ManagerReviewComponent implements OnInit {
 
       if (res) {
         this.api.showSuccess(`Leave ${confirmText} successfully`)
-        this.getAllLeaves(`?status=1&organization=${this.orgId}`)
+        this.getAllLeaves(`?status=1&organization=${this.orgId}&page=${1}&page_size=${10}`)
       }
 
     }, ((error: any) => {

@@ -9,8 +9,23 @@
         <h4 class="modal-title" *ngIf="!message"><i class="bi bi-exclamation-circle"></i> Delete</h4>
         <h4 class="modal-title" *ngIf="message"><i class="bi bi-box-arrow-right"></i> {{message}}</h4>
         <p *ngIf="!title"> Are you sure you want to delete ?</p>
-        <p *ngIf="title" >{{title}}?</p>
+        <p *ngIf="title && message !== 'Decline'" >{{title}}?</p>
+        
+        <p *ngIf="title && message === 'Decline'" >{{title}}? Please enter the reason for decline</p>
+       
+        <form  [formGroup]="declineForm" *ngIf="message === 'Decline'" class="pt-3" >
+        <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Comment <b class="r-star">*</b></mat-label>
+        <textarea matInput placeholder="Enter comments"  class="w-100"
+        formControlName="comments" pattern="^(?!\s)(.*\S)?$" autocomplete="off">
+       </textarea>
+      <mat-error *ngIf="f['comments'].touched && f['comments'].invalid">
+        Comment is required.
+      </mat-error>
+      </mat-form-field>
+    </form>
     </div>
+
     <!-- <div class="modal-footer" [ngClass]="title ? 'justify-content-center':''">
         <button type="button"  class="act-btn btn-cancel"  (click)="modalStatus('cancel')">Cancel</button>
         <button type="button" class="act-btn btn-yes" (click)="modalStatus('ok')">Yes</button>

@@ -30,7 +30,7 @@
     <!-- Lists Section: Employee Table -->
     <div class="scroll-h">
     <div class="table-responsive">
-      <table class="table table-bordered table-list" *ngIf="empInfoList.length">
+      <table class="table table-bordered table-list" *ngIf="empInfoList?.length">
         <thead>
           <tr>
             <th>Sl No</th>
@@ -84,7 +84,7 @@
         <!-- Pending Leaves Table -->
         <div class="scroll-h">
         <div class="table-responsive">
-          <table class="table table-bordered table-list" *ngIf="leaveList.length">
+          <table class="table table-bordered table-list" *ngIf="leaveList?.length">
             <thead>
               <tr>
                 <th>Sl No</th>
@@ -254,7 +254,7 @@
       <mat-tab label="Pending">
         <!-- Pending Timesheets Table -->
         <div class="scroll-h">
-          <table class="table table-bordered table-list" *ngIf="timesheetList.length">
+          <table class="table table-bordered table-list" *ngIf="timesheetList?.length">
             <thead>
               <tr>
                 <th>Sl No</th>
@@ -278,24 +278,24 @@
                 <td>{{ timesheet.client_name }}</td>
                 <td>{{ timesheet.project_name }}</td>
                
-                <td class="text-center" *ngIf="timesheet.tasks.length">
+                <td class="text-center" *ngIf="timesheet?.tasks?.length">
                   <div *ngFor="let task of timesheet.tasks; let j = index">
                     <div>
                       {{ task?.task__task_name || 'NA' }} <br/>
                     </div>
                   </div>
                 </td>
-                <td *ngIf="timesheet.tasks.length === 0">
+                <td *ngIf="timesheet?.tasks?.length === 0">
                   {{'NA'}}
                 </td>
-                <td class="text-center" *ngIf="timesheet.tasks.length">
-                  <div *ngFor="let task of timesheet.tasks; let j = index">
+                <td class="text-center" *ngIf="timesheet?.tasks?.length">
+                  <div *ngFor="let task of timesheet?.tasks; let j = index">
                     <div>
                       {{ task?.time_required_to_complete || 'NA' }}
                     </div>
                   </div>
                 </td>
-                <td *ngIf="timesheet.tasks.length === 0">
+                <td *ngIf="timesheet?.tasks?.length === 0">
                   {{'NA'}}
                 </td>
               
@@ -336,7 +336,7 @@
       <mat-tab label="Approved">
         <!-- Pending Timesheets Table -->
         <div class="scroll-h">
-          <table class="table table-bordered table-list" *ngIf="timesheetList.length">
+          <table class="table table-bordered table-list" *ngIf="timesheetList?.length">
             <thead>
               <tr>
                 <th>Sl No</th>
@@ -359,24 +359,24 @@
                 <td>{{ timesheet.client_name }}</td>
                 <td>{{ timesheet.project_name }}</td>
                
-                <td class="text-center" *ngIf="timesheet.tasks.length">
-                  <div *ngFor="let task of timesheet.tasks; let j = index">
+                <td class="text-center" *ngIf="timesheet?.tasks?.length">
+                  <div *ngFor="let task of timesheet?.tasks; let j = index">
                     <div>
                       {{ task?.task__task_name || 'NA' }} <br/>
                     </div>
                   </div>
                 </td>
-                <td *ngIf="timesheet.tasks.length === 0">
+                <td *ngIf="timesheet?.tasks?.length === 0">
                   {{'NA'}}
                 </td>
-                <td class="text-center" *ngIf="timesheet.tasks.length">
-                  <div *ngFor="let task of timesheet.tasks; let j = index">
+                <td class="text-center" *ngIf="timesheet?.tasks?.length">
+                  <div *ngFor="let task of timesheet?.tasks; let j = index">
                     <div>
                       {{ task?.time_required_to_complete || 'NA' }}
                     </div>
                   </div>
                 </td>
-                <td *ngIf="timesheet.tasks.length === 0">
+                <td *ngIf="timesheet?.tasks?.length === 0">
                   {{'NA'}}
                 </td>
               
@@ -436,24 +436,24 @@
                 <td>{{ timesheet.client_name }}</td>
                 <td>{{ timesheet.project_name }}</td>
                
-                <td class="text-center" *ngIf="timesheet.tasks.length">
-                  <div *ngFor="let task of timesheet.tasks; let j = index">
+                <td class="text-center" *ngIf="timesheet?.tasks?.length">
+                  <div *ngFor="let task of timesheet?.tasks; let j = index">
                     <div>
                       {{ task?.task__task_name || 'NA' }} <br/>
                     </div>
                   </div>
                 </td>
-                <td *ngIf="timesheet.tasks.length === 0">
+                <td *ngIf="timesheet?.tasks?.length === 0">
                   {{'NA'}}
                 </td>
-                <td class="text-center" *ngIf="timesheet.tasks.length">
-                  <div *ngFor="let task of timesheet.tasks; let j = index">
+                <td class="text-center" *ngIf="timesheet?.tasks?.length">
+                  <div *ngFor="let task of timesheet?.tasks; let j = index">
                     <div>
                       {{ task?.time_required_to_complete || 'NA' }}
                     </div>
                   </div>
                 </td>
-                <td *ngIf="timesheet.tasks.length === 0">
+                <td *ngIf="timesheet?.tasks?.length === 0">
                   {{'NA'}}
                 </td>
                
