@@ -29,8 +29,8 @@ export class MonthYetApproveComponent implements OnInit {
   //userId: any = 1;
   page: any = 1;
   count = 0;
-  tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSize = 5;
+  tableSizes = [5,10, 25, 50, 100];
   yetcount = 0;
   user_id: any;
   accessConfig: any = [];
@@ -39,7 +39,7 @@ export class MonthYetApproveComponent implements OnInit {
   @Input() data: any;
   @Input() totalCount: { 'pageCount': any, 'currentPage': any };
   paginationConfig: any = {
-    itemsPerPage: 10,
+    itemsPerPage: this.tableSize,
     currentPage: 1,
     totalItems: 0
   }
@@ -87,9 +87,9 @@ export class MonthYetApproveComponent implements OnInit {
       this.paginationConfig.totalItems = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
       this.paginationConfig.currentPage = changes['totalCount'].currentValue.currentPage;
       this.paginationConfig.itemsPerPage = changes['totalCount'].currentValue.itemsPerPage;
-      this.tableSize = changes['totalCount'].currentValue.itemsPerPage;
       this.page = changes['totalCount'].currentValue.currentPage;
       this.count = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
+      this.tableSize = changes['totalCount'].currentValue.reset ? changes['totalCount'].currentValue.itemsPerPage : this.tableSize
     }
     this.cdref.detectChanges();
   }
@@ -106,23 +106,21 @@ export class MonthYetApproveComponent implements OnInit {
   onTableDataChange(event: any) {
     this.page = event;
     let tableData = {
-      search_key: this.term,
       page: this.page,
-      tableSize: this.tableSize
+      page_size: this.tableSize
     }
     this.buttonClick.emit(tableData)
   }
   onTableSizeChange(event: any): void {
-    this.tableSize = Number(event.target.value);
+    this.tableSize = Number(event.value);
     this.count = 0
     const calculatedPageNo = this.count / this.tableSize
     if (calculatedPageNo < this.page) {
       this.page = 1
     }
     let tableData = {
-      search_key: this.term,
       page: this.page,
-      tableSize: this.tableSize
+      page_size: this.tableSize
     }
     this.buttonClick.emit(tableData)
   }

@@ -95,6 +95,8 @@ export class MonthTimesheetComponent implements OnInit {
   orgId: any;
   currentMonth: number;
   selectedTabId: number;
+  refresh: boolean = false;
+  page_size: number = 5;
   constructor(
     private fb: FormBuilder,
     private api: ApiserviceService,
@@ -119,7 +121,7 @@ export class MonthTimesheetComponent implements OnInit {
  
     
     
-   this.getMonthApprovals(`?status=1&organization=${this.orgId}&month=${this.currentMonth}`)
+   this.getMonthApprovals(`?status=1&organization=${this.orgId}&month=${this.currentMonth}&page=${this.page}&page_size=${this.page_size}`)
    
   }
   getMonthApprovals(params) {
@@ -127,8 +129,8 @@ export class MonthTimesheetComponent implements OnInit {
    // this.timesheetService.getTodaysApprovalTimesheet(params).subscribe(res => {
       this.api.getData(`${environment.live_url}/${environment.timesheets}/${params}`).subscribe((res:any) =>{
       if (res) {
-        this.allDetails = res;
-       // this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.table_size };
+        this.allDetails = res?.['results'];
+        this.totalCount = { pageCount: res?.['total_pages'], currentPage: res?.['current_page'],itemsPerPage:5,totalCount:res?.['total_no_of_record'],reset:this.refresh};
       }
     })
   }
@@ -162,25 +164,9 @@ export class MonthTimesheetComponent implements OnInit {
     else {
       this.allDetails = []
       this.submited = true;
-     // this.handleMonthSelection(this.monthForm.value['fromMonth'])
-      // let c_params = {
-      //   module: "TIMESHEET",
-      //   menu: "MONTH_APPROVAL_TIMESHEET",
-      //   method: "VIEW",
-      //   approved_state: 'YET_TO_APPROVED',
-      //   user_id: this.user_id,
-      //   page_number: 1,
-      //   data_per_page: this.itemPerPageCount,
-      //   search_key: '',
-      //   timesheets_from_date: this.formattedDate,
-      //   pagination: 'TRUE'
-      // }
-
-      // this.getAllTimeSheet(c_params)
-      // this.tabset.tabs[0].active = true;
-      // this.tabsets.tabs[0].active = true;
+     
       const selectedTabId = this.selectedTabId || 1
-        let query= `?status=${selectedTabId}&organization=${this.orgId}&month=${this.monthForm.value.fromMonth}`
+        let query= `?status=${selectedTabId}&organization=${this.orgId}&month=${this.monthForm.value.fromMonth}&page=${this.page}&page_size=${this.page_size}`
      
       this.getMonthApprovals(query)
     }
@@ -194,7 +180,7 @@ export class MonthTimesheetComponent implements OnInit {
       if (res ) {
         
           this.allDetails = res?.['timesheets']
-         // this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.itemPerPageCount };
+          this.totalCount = { pageCount: res?.['total_pages'], currentPage: res?.['current_page'],itemsPerPage:5,totalCount:res?.['total_no_of_record'],reset:this.refresh};
       }
     }, ((error: any) => {
       this.api.showError(error.error.error.message)
@@ -250,60 +236,22 @@ export class MonthTimesheetComponent implements OnInit {
       this.selectedTab = 'Declined'
       this.selectedTabId = 3
     }
-    let query:string = `?status=${this.selectedTabId}&organization=${this.orgId}&month=${this.currentMonth}`;
+    let query:string = `?status=${this.selectedTabId}&organization=${this.orgId}&month=${this.currentMonth}&page=${this.page}&page_size=${this.page_size}`;
     if(this.submited && this.monthForm.valid){
-      query= `?status=${this.selectedTabId}&organization=${this.orgId}&month=${this.monthForm.value.fromMonth}`
+      query= `?status=${this.selectedTabId}&organization=${this.orgId}&month=${this.monthForm.value.fromMonth}&page=${this.page}&page_size=${this.page_size}`
     }
     this.getMonthApprovals(query)
-    // this.handleMonthSelection(this.monthForm.value['fromMonth'])
-    // if (this.monthForm.value['fromMonth'] !== '') {
-    //   let c_params = {
-    //     module: "TIMESHEET",
-    //     menu: "MONTH_APPROVAL_TIMESHEET",
-    //     method: "VIEW",
-    //     approved_state: this.selectedTab,
-    //     user_id: this.user_id,
-    //     page_number: 1,
-    //     data_per_page: this.itemPerPageCount,
-    //     search_key: '',
-    //     timesheets_from_date: this.formattedDate,
-    //     pagination: 'TRUE'
-    //   }
-
-    //   if (this.monthForm.invalid) {
-    //     this.monthForm.markAllAsTouched()
-    //     this.api.showWarning('Please select month')
-    //   }
-    //   else {
-    //     this.allDetails = []
-    //     this.getAllTimeSheet(c_params)
-    //   }
-    // }
-    // else {
-    //   let c_params = {
-    //     module: "TIMESHEET",
-    //     menu: "MONTH_APPROVAL_TIMESHEET",
-    //     method: "VIEW",
-    //     approved_state: this.selectedTab,
-    //     user_id: this.user_id,
-    //     page_number: 1,
-    //     data_per_page: this.itemPerPageCount,
-    //     search_key: '',
-    //     pagination: 'TRUE'
-    //   }
-    //   this.getByStatus(c_params)
-    // }
-
-
+    
 
   }
 
   buttonClick(event) {
-    
+    const selectedTab = this.selectedTabId || 1
+    this.refresh = false
     if(event){
-      console.log(event,'event')
+      this.getMonthApprovals(`?status=${selectedTab}&organization=${this.orgId}&month=${this.currentMonth}&page=${event.page}&page_size=${event.page_size}`)
     }else{
-      this.getMonthApprovals(`?status=1&organization=${this.orgId}&month=${this.currentMonth}`)
+      this.getMonthApprovals(`?status=${selectedTab}&organization=${this.orgId}&month=${this.currentMonth}&page=${this.page}&page_size=${this.page_size}`)
     }
     
   }
@@ -398,7 +346,8 @@ export class MonthTimesheetComponent implements OnInit {
   reset(){
     this.monthForm.reset()
     const selectedTab = this.selectedTabId || 1
-    this.getMonthApprovals(`?status=${selectedTab}&organization=${this.orgId}&month=${this.currentMonth}`)
+    this.refresh = true
+    this.getMonthApprovals(`?status=${selectedTab}&organization=${this.orgId}&month=${this.currentMonth}&page=${this.page}&page_size=${this.page_size}`)
    
   }
 }

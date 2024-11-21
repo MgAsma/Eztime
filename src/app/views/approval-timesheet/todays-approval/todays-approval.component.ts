@@ -18,11 +18,13 @@ export class TodaysApprovalComponent implements OnInit {
   currDate: any;
   user_id: string;
   orgId: any;
-  table_size: any = 10;
+  // table_size: any = 10;
   showSearch:boolean = false;
   term:string;
-  page:any = 1;
+  page:number = 1;
   selectedTabId: number;
+  page_size:number = 5;
+ 
   constructor(
     private timesheetService: TimesheetService,
     private location: Location,
@@ -44,22 +46,26 @@ export class TodaysApprovalComponent implements OnInit {
     this.orgId = sessionStorage.getItem('organization_id')
    
    
-    this.getTodaysApprovals(`?status=1&organization=${this.orgId}&created-date=${this.currDate}`)
+    this.getTodaysApprovals(`?status=1&organization=${this.orgId}&created-date=${this.currDate}&page=${this.page}&page_size=${this.page_size}`)
   }
   getTodaysApprovals(params) {
     this.allDetails = [];
    // this.timesheetService.getTodaysApprovalTimesheet(params).subscribe(res => {
       this.api.getData(`${environment.live_url}/${environment.timesheets}/${params}`).subscribe((res:any) =>{
       if (res) {
-        this.allDetails = res;
-       // this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page, itemsPerPage: this.table_size };
+        this.allDetails = res?.['results'];
+        this.totalCount = { pageCount: res?.['total_pages'], currentPage: res?.['current_page'],itemsPerPage:5,totalCount:res?.['total_no_of_record']};
       }
     })
   }
   buttonClick(event) {
     const selectedTab = this.selectedTabId || 1
-    this.getTodaysApprovals(`?status=${selectedTab}&organization=${this.orgId}&created-date=${this.currDate}`);
-   
+
+    if(event){
+    this.getTodaysApprovals(`?status=${selectedTab}&organization=${this.orgId}&created-date=${this.currDate}&page=${event.page}&page_size=${event.page_size}`);
+    }else{
+      this.getTodaysApprovals(`?status=${selectedTab}&organization=${this.orgId}&created-date=${this.currDate}&page=${this.page}&page_size=${this.page_size}`);
+    }
   }
 
   searchFiter(event) {
@@ -85,10 +91,10 @@ export class TodaysApprovalComponent implements OnInit {
       this.selectedTab = 'Declined'
       this.selectedTabId = 3
     }
-    this.getTodaysApprovals(`?status=${this.selectedTabId}&organization=${this.orgId}&created-date=${this.currDate}`);
+    this.getTodaysApprovals(`?status=${this.selectedTabId}&organization=${this.orgId}&created-date=${this.currDate}&page=${this.page}&page_size=${this.page_size}`);
   }
   refershPage() {
     
-    this.getTodaysApprovals(`?status=1&organization=${this.orgId}&created-date=${this.currDate}`);
+    this.getTodaysApprovals(`?status=1&organization=${this.orgId}&created-date=${this.currDate}&page=${this.page}&page_size=${this.page_size}`);
   }
 }

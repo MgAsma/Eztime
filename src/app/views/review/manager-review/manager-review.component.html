@@ -3,21 +3,21 @@
   <!-- Tabs Section using Flexbox -->
   <div class="d-flex justify-content-start mb-3" style="border: 1px solid #f4f4f4;width:fit-content;font-family: 'Exo FT' !important;">
     <div 
-      (click)="selectedSection = 'lists'" 
+      (click)="selectedTab('lists')" 
       [ngClass]="{'active-tab': selectedSection === 'lists'}"
        class="tab-size">
       Lists
     </div>
     <div 
       class="ml-2" 
-      (click)="selectedSection = 'leaves'" 
+      (click)="selectedTab('leaves')" 
       [ngClass]="{'active-tab': selectedSection === 'leaves'}"
        class="tab-size">
       Leaves
     </div>
     <div 
       class="ml-2" 
-      (click)="selectedSection = 'timesheets'" 
+      (click)="selectedTab('timesheets')" 
       [ngClass]="{'active-tab': selectedSection === 'timesheets'}"
        class="tab-size">
       Timesheets
@@ -42,7 +42,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let employee of empInfoList; let i = index">
+          <tr *ngFor="let employee of empInfoList |paginate : {
+            itemsPerPage: tableSize,
+            currentPage: page,
+            totalItems: count
+          }; let i = index">
             <td>{{ i + 1 }}</td>
             <td>{{ employee.user.first_name || 'NA'}} {{ employee.user.last_name || 'NA'}}</td>
             <td>{{ employee.user.id || 'NA'}}</td>
@@ -57,7 +61,20 @@
         No records found!
       </div>
     </div>
+    <div class="pagination-container p-0 py-4" *ngIf="empInfoList?.length > 0">
+      <!-- Pagination Controls (Center-Aligned) -->
+      <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+      </pagination-controls>
+    
+      <!-- Items Per Page Selector (Right-Aligned) -->
+      <div class="items-per-page-container">
+        <div>Items per page</div>
+        <mat-select  [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10" class="page-size">
+          <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+        </mat-select>
+      </div>
     </div>
+  </div>
   </div>
 
   <!-- Leaves Section -->
@@ -82,7 +99,11 @@
             </thead>
             <tbody>
              
-              <tr *ngFor="let leave of leaveList; let i = index">
+              <tr *ngFor="let leave of leaveList |paginate : {
+                itemsPerPage: tableSize,
+                currentPage: page,
+                totalItems: count
+              }; let i = index">
                 <td>{{ i + 1 }}</td>
                 <td>{{ leave.employee_name }}</td>
                 <td>{{ leave.leave_type_name }}</td>
@@ -105,6 +126,19 @@
             No records found!
           </div>
         </div>
+        <div class="pagination-container p-0 py-4" *ngIf="leaveList?.length > 0">
+          <!-- Pagination Controls (Center-Aligned) -->
+          <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+          </pagination-controls>
+        
+          <!-- Items Per Page Selector (Right-Aligned) -->
+          <div class="items-per-page-container">
+            <div>Items per page</div>
+            <mat-select  [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10" class="page-size">
+              <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+            </mat-select>
+          </div>
+        </div>
         </div>
       </mat-tab>
 
@@ -125,7 +159,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let leave of leaveList; let i = index">
+              <tr *ngFor="let leave of leaveList |paginate : {
+                itemsPerPage: tableSize,
+                currentPage: page,
+                totalItems: count
+              }; let i = index">
                 <td>{{ i + 1 }}</td>
                 <td>{{ leave.employee_name }}</td>
                 <td>{{ leave.leave_type_name }}</td>
@@ -138,6 +176,19 @@
           </table>
           <div class="no-records" *ngIf="leaveList?.length === 0">
             No records found!
+          </div>
+        </div>
+        <div class="pagination-container p-0 py-4" *ngIf="leaveList?.length > 0">
+          <!-- Pagination Controls (Center-Aligned) -->
+          <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+          </pagination-controls>
+        
+          <!-- Items Per Page Selector (Right-Aligned) -->
+          <div class="items-per-page-container">
+            <div>Items per page</div>
+            <mat-select  [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10" class="page-size">
+              <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+            </mat-select>
           </div>
         </div>
         </div>
@@ -160,7 +211,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let leave of leaveList; let i = index">
+              <tr *ngFor="let leave of leaveList |paginate : {
+                itemsPerPage: tableSize,
+                currentPage: page,
+                totalItems: count
+              }; let i = index">
                 <td>{{ i + 1 }}</td>
                 <td>{{ leave.employee_name }}</td>
                 <td>{{ leave.leave_type_name }}</td>
@@ -173,6 +228,19 @@
           </table>
           <div class="no-records" *ngIf="leaveList?.length === 0">
             No records found!
+          </div>
+        </div>
+        <div class="pagination-container p-0 py-4" *ngIf="leaveList?.length > 0">
+          <!-- Pagination Controls (Center-Aligned) -->
+          <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+          </pagination-controls>
+        
+          <!-- Items Per Page Selector (Right-Aligned) -->
+          <div class="items-per-page-container">
+            <div>Items per page</div>
+            <mat-select  [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10" class="page-size">
+              <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+            </mat-select>
           </div>
         </div>
         </div>
@@ -200,7 +268,11 @@
             </thead>
             <tbody>
               <ng-container *ngIf="(timesheetList) as result">
-              <tr *ngFor="let timesheet of result; let i = index">
+              <tr *ngFor="let timesheet of result |paginate : {
+                itemsPerPage: tableSize,
+                currentPage: page,
+                totalItems: count
+              };  ; let i = index">
                 <td>{{ i + 1 }}</td>
                 <td>{{ timesheet.created_by_name }}</td>
                 <td>{{ timesheet.client_name }}</td>
@@ -245,6 +317,19 @@
           <div class="no-records" *ngIf="timesheetList?.length === 0">
             No records found!
           </div>
+          <div class="pagination-container p-0 py-4" *ngIf="timesheetList?.length > 0">
+            <!-- Pagination Controls (Center-Aligned) -->
+            <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+          
+            <!-- Items Per Page Selector (Right-Aligned) -->
+            <div class="items-per-page-container">
+              <div>Items per page</div>
+              <mat-select  [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10" class="page-size">
+                <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+              </mat-select>
+            </div>
+          </div>
         </div> 
       </mat-tab>
 
@@ -264,7 +349,11 @@
             </thead>
             <tbody>
               <ng-container *ngIf="(timesheetList) as result">
-              <tr *ngFor="let timesheet of result; let i = index">
+              <tr *ngFor="let timesheet of result |paginate : {
+                itemsPerPage: tableSize,
+                currentPage: page,
+                totalItems: count
+                };let i = index">
                 <td>{{ i + 1 }}</td>
                 <td>{{ timesheet.created_by_name }}</td>
                 <td>{{ timesheet.client_name }}</td>
@@ -305,6 +394,19 @@
           <div class="no-records" *ngIf="timesheetList?.length === 0">
             No records found!
           </div>
+          <div class="pagination-container p-0 py-4" *ngIf="timesheetList?.length > 0">
+            <!-- Pagination Controls (Center-Aligned) -->
+            <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+          
+            <!-- Items Per Page Selector (Right-Aligned) -->
+            <div class="items-per-page-container">
+              <div>Items per page</div>
+              <mat-select  [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10" class="page-size">
+                <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+              </mat-select>
+            </div>
+          </div>
         </div>
       </mat-tab>
 
@@ -324,7 +426,11 @@
             </thead>
             <tbody>
               <ng-container *ngIf="(timesheetList) as result">
-              <tr *ngFor="let timesheet of result; let i = index">
+              <tr *ngFor="let timesheet of result |paginate : {
+                itemsPerPage: tableSize,
+                currentPage: page,
+                totalItems: count
+              };let i = index">
                 <td>{{ i + 1 }}</td>
                 <td>{{ timesheet.created_by_name }}</td>
                 <td>{{ timesheet.client_name }}</td>
@@ -358,6 +464,19 @@
           </table>
           <div class="no-records" *ngIf="timesheetList?.length === 0">
             No records found!
+          </div>
+          <div class="pagination-container p-0 py-4" *ngIf="timesheetList?.length > 0">
+            <!-- Pagination Controls (Center-Aligned) -->
+            <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+          
+            <!-- Items Per Page Selector (Right-Aligned) -->
+            <div class="items-per-page-container">
+              <div>Items per page</div>
+              <mat-select  [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10" class="page-size">
+                <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+              </mat-select>
+            </div>
           </div>
         </div>
       </mat-tab>
