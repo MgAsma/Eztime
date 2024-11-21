@@ -34,7 +34,7 @@
       
      
       <div class="d-flex justify-content-between">
-        <button type="click" class="user-guide-btn"  (click)="openWelcomeDialog()">
+        <button *ngIf="user_role_Name!='SuperAdmin'" type="click" class="user-guide-btn"  (click)="openWelcomeDialog()">
           <img src="../../../assets/images/bulb.svg" width="25" height="25">
             Get Started
         </button>

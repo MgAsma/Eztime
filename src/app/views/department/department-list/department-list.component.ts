@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {  Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from '../../../service/apiservice.service';
@@ -14,19 +14,18 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./department-list.component.scss'],
   providers: [
     SortPipe
-]
+  ]
 })
 export class DepartmentListComponent implements OnInit {
-  BreadCrumbsTitle:any='Departments';
-  currentIndex:any = 1;
-  public searchText : any;
-  allDepartmentList=[];
+  BreadCrumbsTitle: any = 'Departments';
+  public searchText: any;
+  allDepartmentList = [];
   page = 1;
   count = 0;
-  tableSize = 10;
-  tableSizes = [10,25,50,100];
-
-  term:any='';
+  tableSize = 5;
+  tableSizes = [5, 10, 25, 50, 100];
+  currentIndex: any;
+  term: any = '';
   selectedId: any;
   enabled: boolean = true;
   // @Input() selectedSortValue1:Subject<any> = new Subject<any>();
@@ -41,135 +40,105 @@ export class DepartmentListComponent implements OnInit {
   permissions: any = [];
   user_id: string;
   org_id: string;
+  filterBaseUrl: any;
+  constructor(private api: ApiserviceService, private router: Router,
+    private modalService: NgbModal,
+    private location: Location,
+    private common_service: CommonServiceService,
+  ) { }
 
-  constructor(private api:ApiserviceService,private router:Router,
-    private modalService:NgbModal,
-    private location:Location,
-    private common_service:CommonServiceService
-    ) { }
 
-    
- goBack(event){
-  event.preventDefault(); // Prevent default back button behavior
-  this.location.back();
-  
-}
+  goBack(event) {
+    event.preventDefault(); // Prevent default back button behavior
+    this.location.back();
+
+  }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-     this.org_id = sessionStorage.getItem('organization_id');
-     this.getAllDepartmentList();
+    this.org_id = sessionStorage.getItem('organization_id');
+    this.getAllDepartmentList(`?organization_id=${this.org_id}&page=${1}&page_size=${5}`);
+    // this.filterBaseUrl = `${environment.live_url}/department/?organization_id=${this.org_id}&page=${this.page}&page_size=${this.tableSize}`
     // this.getDepartment(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`); 
     this.enabled = true;
-    // this.getUserControls()
+  }
+  getFilterBaseUrl(): string {
+    return `?organization_id=${this.org_id}&page=${this.page}&page_size=${this.tableSize}`;
   }
 
-  getAllDepartmentList(){
-    this.api.getDepartmentList(`?organization_id=${this.org_id}`).subscribe(
-      (res:any)=>{
-        this.allDepartmentList= res
+  getAllDepartmentList(params: any) {
+    this.api.getData(`${environment.live_url}/${environment.department}/${params}`).subscribe(
+      (res: any) => {
+        this.allDepartmentList = res.results;
+        const noOfPages: number = res?.['total_pages']
+        this.count = noOfPages * this.tableSize;
+        this.count = res?.['total_no_of_record']
+        this.page = res?.['current_page'];
       }
     )
   }
-  getUserControls(){
-    this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=FALSE&organization_id=${this.org_id}`).subscribe((res:any)=>{
-      if(res.status_code !== '401'){
-        this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
-      }
-      else{
-        this.api.showError("ERROR !")
-      }
-      //console.log(res,'resp from yet');
-      
+  filterSearch() {
+    let query = this.getFilterBaseUrl()
+    query+=`&search=${this.term}`
+    console.log(query)
+    if(this.term){
+      // console.log(this.term)
+      this.getAllDepartmentList(query);
+    } else{
+      // console.log(this.term,'no')
+      this.getAllDepartmentList(this.getFilterBaseUrl());
     }
-  
-    )
-  
-    this.common_service.permission.subscribe(res=>{
-      const accessArr = res
-      if(accessArr.length > 0){
-        accessArr.forEach((element,i) => {
-          if(element['DEPARTMENT']){
-            this.permissions = element['DEPARTMENT']
-          }
-          
-        });
-      }
-   
-    })
-   
-    }
-    filterSearch(){
-      // this.api.getData(`${environment.live_url}/${environment.org_department}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`).subscribe((res:any) =>{
-      //   if(res){
-      //     this.allDepartmentList= res.result.data;
-      //     const noOfPages:number = res['result'].pagination.number_of_pages
-      //     this.count  = noOfPages * this.tableSize;
-      //     this.page=res['result'].pagination.current_page;
-
-      //   }
-      //   else{
-      //     this.api.showError('Error!')
-      //   }
-  
-      // },((error)=>{
-      //   this.api.showError(error.error.error.message)
-      // }))
-    }
-  getDepartment(params){
-    this.api.getDepartmentDetailsPage(params).subscribe((res:any) =>{
-      if(res){
-        this.allDepartmentList= res.result.data;
-        const noOfPages:number = res['result'].pagination.number_of_pages
-        this.count  = noOfPages * this.tableSize;
-        this.page=res['result'].pagination.current_page;
-
-      }
-      else{
-        this.api.showError('Error!')
-      }
-
-    },((error)=>{
-      this.api.showError(error.error.error.message)
-    }))
   }
-  delete(id:any){
-    this.api.deleteDepartmentList(id).subscribe((data:any)=>{
+  
+  delete(id: any) {
+    this.api.deleteDepartmentList(id).subscribe((data: any) => {
       this.ngOnInit();
       this.api.showWarning('Department deleted successfully!')
       this.ngOnInit()
-    },((error)=>{
+    }, ((error) => {
       this.api.showError(error.error.error.message)
     }))
-    
+
   }
-  cardId(selected):any{
+  cardId(selected): any {
     this.selectedId = selected.id;
-    
-   }
-  deleteCard(id){
-    this.delete(id)  
+
   }
-  editCard(id){
+  deleteCard(id) {
+    this.delete(id)
+  }
+  editCard(id) {
     this.router.navigate([`/department/update/${id}/${this.page}/${this.tableSize}`])
   }
-  onTableDataChange(event:any){
+  onTableDataChange(event: any) {
     this.page = event;
-    this.getDepartment(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`);
-  }  
-  onTableSizeChange(event:any): void {
-    this.tableSize = Number(event.target.value);
-    this.count = 0
-    // Calculate new page number
-    const calculatedPageNo = this.count / this.tableSize
-    
-    if(calculatedPageNo < this.page){
-      this.page = 1
+    if(this.term){
+      let query = this.getFilterBaseUrl()
+      query+=`&search=${this.term}`
+      // console.log(this.term)
+      this.getAllDepartmentList(query);
+    } else{
+      // console.log(this.term,'no')
+      this.getAllDepartmentList(this.getFilterBaseUrl());
     }
-    this.getDepartment(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`);
-  } 
-  arrow:boolean=false
+  }
+
+  onTableSizeChange(event: any): void {
+    if (event) {
+
+      this.tableSize = Number(event.value);
+      if(this.term){
+        let query = this.getFilterBaseUrl()
+        query+=`&search=${this.term}`
+        // console.log(this.term)
+        this.getAllDepartmentList(query);
+      } else{
+        // console.log(this.term,'no')
+        this.getAllDepartmentList(this.getFilterBaseUrl());
+      }
+    }
+  }
+  
+  arrow: boolean = false
   sort(direction: string, column: string) {
     Object.keys(this.arrowState).forEach(key => {
       this.arrowState[key] = false;
@@ -179,29 +148,30 @@ export class DepartmentListComponent implements OnInit {
     this.sortValue = column;
   }
   open(content) {
-    if(content){
-      const modelRef =   this.modalService.open(GenericDeleteComponent, {
+    if (content) {
+      const modelRef = this.modalService.open(GenericDeleteComponent, {
         size: <any>'sm',
         backdrop: true,
-        centered:true
+        centered: true
       });
-     
+
       modelRef.componentInstance.status.subscribe(resp => {
-        if(resp == "ok"){
-         this.delete(content);
-         modelRef.close();
-        }
-        else{
+        if (resp == "ok") {
+          this.delete(content);
           modelRef.close();
         }
-    })
-	
-	}
-  
+        else {
+          modelRef.close();
+        }
+      })
 
-  
-}
-getContinuousIndex(index: number):number {
-  return (this.page-1)*this.tableSize+ index + 1;
-}
+    }
+
+
+
+  }
+  getContinuousIndex(index: number): number {
+    return (this.page - 1) * this.tableSize + index + 1;
+  }
+
 }

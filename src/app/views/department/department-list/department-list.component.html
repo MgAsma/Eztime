@@ -7,8 +7,7 @@
     </div>
     <div class="col-sm"></div>
     <div class="col-md-3 col-lg-3 p-1 text-end create-buttons">
-      <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/department/create" type="button"
-       >
+      <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/department/create" type="button">
         <mat-icon>add</mat-icon>Create Department</button>
 
     </div>
@@ -22,13 +21,17 @@
           <thead>
             <tr>
               <th scope="col"> S.No</th>
-              <th scope="col">Department Name 
-                <i *ngIf="!arrowState['department_name']" (click)="sort('asc','department_name')" class="bi bi-arrow-up"></i>
-                <i (click)="sort('desc','department_name')" *ngIf="arrowState['department_name']" class="bi bi-arrow-down"></i>
-                </th>
-              <th scope="col">Added Date 
-                <i *ngIf="!arrowState['created_datetime']" (click)="sort('asc','created_datetime')" class="bi bi-arrow-up"></i>
-                <i (click)="sort('desc','created_datetime')" *ngIf="arrowState['created_datetime']" class="bi bi-arrow-down"></i>
+              <th scope="col">Department Name
+                <i *ngIf="!arrowState['department_name']" (click)="sort('asc','department_name')"
+                  class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','department_name')" *ngIf="arrowState['department_name']"
+                  class="bi bi-arrow-down"></i>
+              </th>
+              <th scope="col">Added Date
+                <i *ngIf="!arrowState['created_datetime']" (click)="sort('asc','created_datetime')"
+                  class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','created_datetime')" *ngIf="arrowState['created_datetime']"
+                  class="bi bi-arrow-down"></i>
               </th>
               <!-- <th scope="col">Status <i *ngIf="!arrow" (click)="sort('asc','od_status')" class="bi bi-arrow-up"></i><i
                   *ngIf="arrow" (click)="sort('desc','od_status')" class="bi bi-arrow-down"></i></th> -->
@@ -38,7 +41,12 @@
           <tbody>
 
             <ng-container *ngIf="(allDepartmentList) as result">
-              <tr *ngFor='let item of result | customSort:directionValue:sortValue;let i=index' [class.active]="i == currentIndex">
+              <tr *ngFor='let item of result | customSort:directionValue:sortValue
+                   |paginate : {
+                            itemsPerPage: tableSize,
+                            currentPage: page,
+                            totalItems: count
+                          }; let i=index'>
                 <td>{{getContinuousIndex(i)}}</td>
                 <td>{{item.department_name|titlecase }}</td>
                 <td>{{item.created_datetime | date:'mediumDate'}}</td>
@@ -46,8 +54,7 @@
                 <td>
                   <ng-container>
                     <img src="../../../../assets/images/Edit.svg" class="icon-image"
-                      routerLink="/department/update/{{item.id}}" container="body"
-                      ngbTooltip="Edit" />
+                      routerLink="/department/update/{{item.id}}" container="body" ngbTooltip="Edit" />
                     <img src="../../../../assets/images/Delete.svg" class="icon-image" container="body"
                       ngbTooltip="Delete" (click)="open(item.id)" />
                   </ng-container>
@@ -76,8 +83,11 @@
 
   </div>
   <div class="pagination-container p-0 pt-2">
+    <!-- Pagination Controls (Center-Aligned) -->
     <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
     </pagination-controls>
+
+    <!-- Items Per Page Selector (Right-Aligned) -->
     <div class="items-per-page-container">
       <div>Items per page</div>
       <mat-select [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10"
@@ -86,23 +96,6 @@
       </mat-select>
     </div>
   </div>
-  <!-- <div class="row">
-      <div class="col-sm" >
-          <div class="d-flex justify-content-center p-nav">
-              <pagination-controls 
-                previousLabel="Prev" 
-                nextLabel="Next" 
-                (pageChange)="onTableDataChange($event)">
-              </pagination-controls>
-            </div>
-      </div>
-  </div> -->
-  <!-- <ng-container *ngFor="let access of permissions">
-    <button  mat-fab color="primary" *ngIf="access == 'CREATE'" routerLink="/department/create" class="createbtn" placement="top" container="body" ngbTooltip="Add department">
-      <i class="fa fa-plus"></i>
-  
-    </button>
-  </ng-container> -->
 
 </div>
 
@@ -121,10 +114,10 @@
   <div class="bg row mx-0 my-1">
     <ng-container *ngIf="(allDepartmentList) as result">
       <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of result|paginate : {
-          itemsPerPage: tableSize,
-          currentPage: page,
-          totalItems: count
-        } ;let i=index'>
+        itemsPerPage: tableSize,
+        currentPage: page,
+        totalItems: count
+      } ;let i=index'>
         <div class="card outer-card" (click)="cardId(item)">
           <div class="row p-c">
             <div class="col-7">
@@ -189,22 +182,24 @@
         <app-generic-norecards></app-generic-norecards>
       </div>
     </ng-container>
-    <div class="row mobile-pagination" *ngIf="allDepartmentList.length !== 0">
-      <div class="col-sm-12">
-        <div class="mobile-pagination-content">
+    <div class="pagination-container p-0 pt-2">
+      <!-- Pagination Controls (Center-Aligned) -->
+      <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+      </pagination-controls>
 
-          <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
-          </pagination-controls>
-          <div><button *ngFor="let size of tableSizes" class="page-size-btn" [value]="size"
-              (click)="onTableSizeChange($event)" [ngClass]="{'active-size': tableSize === size}">{{size}}</button>
-          </div>
-        </div>
+      <!-- Items Per Page Selector (Right-Aligned) -->
+      <div class="items-per-page-container">
+        <div>Items per page</div>
+        <mat-select [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10"
+          class="page-size">
+          <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+        </mat-select>
       </div>
     </div>
     <div class="s-position">
-      <ng-container *ngFor="let access of permissions">
-        <button mat-fab type="button" routerLink="/department/create" *ngIf="access === 'CREATE'" class="createbtn-new"
-          placement="top" container="body" ngbTooltip="Add">
+      <ng-container>
+        <button mat-fab type="button" routerLink="/department/create" class="createbtn-new" placement="top"
+          container="body" ngbTooltip="Add">
           <i class="fa fa-plus"></i>
         </button>
       </ng-container>
