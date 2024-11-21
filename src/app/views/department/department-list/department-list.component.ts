@@ -80,7 +80,6 @@ export class DepartmentListComponent implements OnInit {
     if (this.term) {
       let query = this.getFilterBaseUrl()
       query += `&search=${this.term}`
-      console.log(query)
       // console.log(this.term)
       this.getAllDepartmentList(query);
     } else {

@@ -20,13 +20,12 @@ import { error } from 'console';
 export class ClientListComponent implements OnInit {
   BreadCrumbsTitle:any='Client list';
   allClientList=[];
-  currentIndex = 1;
   page = 1;
   count = 0;
-  tableSize = 10;
-  tableSizes = [10,25,50,100];
-  
-  term:any='';
+  tableSize = 5;
+  tableSizes = [5, 10, 25, 50, 100];
+  currentIndex: any;
+  term: any = '';
   slno:any;
   code:any;
   name:any;
@@ -65,86 +64,40 @@ export class ClientListComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('organization_id')
-    // this.getClient();
-    this.getNewClients();
+    this.getNewClients(`?organization_id=${this.orgId}&page=${1}&page_size=${5}`);
     this.enabled = true
- 
-    // this.getUserControls()
   }
-  getUserControls(){
-    this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
-      if(res.status_code !== '401'){
-        this.common_service.permission.next(res['data'][0]['permissions'])
-      }
-      else{
-        this.api.showError("ERROR !")
-      }
-    },(error=>{
-      this.api.showError(error.error.error.message)
-   })
-  
-    )
-  
-    this.common_service.permission.subscribe(res=>{
-      const accessArr = res
-      if(accessArr.length > 0){
-        accessArr.forEach(element => {
-          if(element['CLIENTS']){
-            this.permissions = element['CLIENTS']
-          }
-          
-        });
-        
-      }
-   
-    })
-    }
-    filterSearch(){
-      // this.api.getData(`${environment.live_url}/${environment.clients}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe((res:any)=>{
-      //   if(res){
-      //     this.allClientList= res.result.data;
-      //       const noOfPages:number = res['result'].pagination.number_of_pages
-      //       this.count  = noOfPages * this.tableSize
-      //       this.page=res['result'].pagination.current_page;
-      //   }
-      //   },((error:any)=>{
-      //     this.api.showError(error.error.error.message)
-      //   }))
-    }
 
-    getNewClients(){
-      this.api.getClientListFromUserId(`?${'organization_id'}=${this.orgId}`).subscribe(
+    filterSearch() {
+    if (this.term) {
+      let query = this.getFilterBaseUrl()
+      query += `&search=${this.term}`
+      // console.log(this.term)
+      this.getNewClients(query);
+    } else {
+      // console.log(this.term,'no')
+      this.getNewClients(this.getFilterBaseUrl());
+    }
+  }
+    getFilterBaseUrl(): string {
+      return `?organization_id=${this.orgId}&page=${this.page}&page_size=${this.tableSize}`;
+    }
+  
+
+    getNewClients(params:any){
+      this.api.getData(`${environment.live_url}/${environment.client}/${params}`).subscribe(
         (res:any)=>{
-          this.allClientList = res;
+          this.allClientList = res.results;
+          const noOfPages: number = res?.['total_pages']
+          this.count = noOfPages * this.tableSize;
+          this.count = res?.['total_no_of_record']
+          this.page = res?.['current_page'];
         },
         (error) => {
           this.api.showError(error.error.error.message)
         }
       )
     }
-  getClient(){
-    let params = {
-      page_number:this.page,
-      data_per_page:this.tableSize,
-      search_key:this.term
-  }
-  this.api.getData(`${environment.live_url}/${environment.clients}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe((res:any)=>{
-      if(res){
-        this.allClientList= res.result.data;
-        const noOfPages:number = res['result'].pagination.number_of_pages
-        this.count  = noOfPages * this.tableSize;
-        this.page=res['result'].pagination.current_page;
-      }
-     else{
-      this.api.showError('ERROR !')
-     }
-      
-    },((error:any)=>{
-      this.api.showError(error.error.error.message)
-    })
-    )
-  }
   delete(id:any){
     this.api.deleteClient(id).subscribe((data:any)=>{
       this.ngOnInit();
@@ -163,35 +116,36 @@ export class ClientListComponent implements OnInit {
   editCard(id){
     this.router.navigate([`/client/update/${id}/${this.page}/${this.tableSize}`])
   }
-  onTableDataChange(event:any){
+  onTableDataChange(event: any) {
     this.page = event;
-    this.getClient();
-  }  
-  onTableSizeChange(event:any): void {
-    this.tableSize = Number(event.target.value);
-    this.count = 0
-    // Calculate new page number
-    const calculatedPageNo = this.count / this.tableSize
-    
-    if(calculatedPageNo < this.page){
-      this.page = 1
+    if (this.term) {
+      let query = this.getFilterBaseUrl()
+      query += `&search=${this.term}`
+      // console.log(this.term)
+      this.getNewClients(query);
+    } else {
+      // console.log(this.term,'no')
+      this.getNewClients(this.getFilterBaseUrl());
     }
-    this.getClient();
-  }  
-  arrow:boolean=false;
-  // sort(direction:any,value:any){
-  //   if(direction=='asc'){
-  //     this.arrow=true
-  //     this.directionValue= direction
-  //     this.sortValue= value
-  //   }
-  //   else{
-  //     this.arrow=false
-  //     this.directionValue= direction
-  //     this.sortValue= value
-  //   }
-  // }
+  }
 
+  onTableSizeChange(event: any): void {
+    if (event) {
+
+      this.tableSize = Number(event.value);
+      if (this.term) {
+        let query = this.getFilterBaseUrl()
+        query += `&search=${this.term}`
+        // console.log(this.term)
+        this.getNewClients(query);
+      } else {
+        // console.log(this.term,'no')
+        this.getNewClients(this.getFilterBaseUrl());
+      }
+    }
+  }
+
+  arrow:boolean=false;
   sort(direction: string, column: string) {
     Object.keys(this.arrowState).forEach(key => {
       this.arrowState[key] = false;

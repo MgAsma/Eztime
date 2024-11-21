@@ -38,7 +38,6 @@ export const environment = {
   tag: `tag`,
   master_leave_list: `master-leave-types`,
   type_of_industries: `type-of-industries`,
-  clients: `clients`,
   main_category: `project-status-main-category`,
   sub_category: `project-status-sub-category`,
   project_tasks: `task-project-categories`,

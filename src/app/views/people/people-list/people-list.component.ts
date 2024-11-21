@@ -13,12 +13,12 @@ import { environment } from 'src/environments/environment';
 })
 export class PeopleListComponent implements OnInit {
   BreadCrumbsTitle: any = 'Employees list';
-  currentIndex: any;
   allPeople = [];
   page = 1;
   count = 0;
-  tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSize = 5;
+  tableSizes = [5, 10, 25, 50, 100];
+  currentIndex: any;
   pNav: boolean = true;
   term: any = '';
   slno: any;
@@ -65,36 +65,9 @@ export class PeopleListComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.org_id = sessionStorage.getItem('organization_id')
     localStorage.removeItem('employee_id');
-    this.getPeople();
+    this.getPeople(`?organization_id=${this.org_id}&page=${1}&page_size=${5}`);
     this.enabled = true;
     //  this.getUserControls()
-  }
-  getUserControls() {
-    this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.org_id}&pagination=FALSE`).subscribe((res: any) => {
-      if (res.status_code !== '401') {
-        this.common_service.permission.next(res['data'][0]['permissions'])
-      }
-      else {
-        this.api.showError("ERROR !")
-      }
-    }
-
-    )
-
-    this.common_service.permission.subscribe(res => {
-      const accessArr = res
-      if (accessArr.length > 0) {
-        accessArr.forEach((element, i) => {
-          if (element['PEOPLE']) {
-            this.permissions = element['PEOPLE']
-          }
-
-        });
-      }
-
-    })
-
   }
 
   changeYearStartDate(event: any) {
@@ -108,25 +81,22 @@ export class PeopleListComponent implements OnInit {
     return date instanceof Date && !isNaN(date.getTime());
   }
 
+  getFilterBaseUrl(): string {
+    return `?organization_id=${this.org_id}&page=${this.page}&page_size=${this.tableSize}`;
+  }
 
-  getPeople() {
-    let params = {
-      page_number: this.page,
-      data_per_page: this.tableSize,
-      organization_id: this.org_id,
-      search_key: this.term
-    }
-    this.api.getEmployeeList(`?${'organization_id'}=${this.org_id}`).subscribe((data: any) => {
-      const transformedData = data.map(item => {
+  getPeople(params:any) {
+    this.api.getData(`${environment.live_url}/${environment.allEmployee}/${params}`).subscribe((data: any) => {
+      const transformedData = data.results.map(item => {
         return Object.assign({}, item, item.user, { user: '' });
       });
 
       this.allPeople = transformedData;
-      console.log('all employees', this.allPeople)
-
-      // const noOfPages:number = data['result'].pagination.number_of_pages
-      // this.count  = noOfPages * this.tableSize;
-      // this.page=data['result'].pagination.current_page;
+      // console.log('all employees', this.allPeople)
+      const noOfPages: number = data?.['total_pages']
+      this.count = noOfPages * this.tableSize;
+      this.count = data?.['total_no_of_record']
+      this.page = data?.['current_page'];
 
     }, ((error) => {
       this.api.showError(error.error.error.message)
@@ -141,16 +111,15 @@ export class PeopleListComponent implements OnInit {
     };
   }
   filterSearch() {
-    // this.api.getData(`${environment.live_url}/${environment.people_list}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.org_id}`).subscribe((data: any) => {
-    //   this.allPeople = data.result.data;
-    //   const noOfPages: number = data['result'].pagination.number_of_pages
-    //   this.count = noOfPages * this.tableSize;
-    //   this.page = data['result'].pagination.current_page;
-
-    // }, ((error) => {
-    //   this.api.showError(error.error.error.message)
-    // })
-    // )
+    if (this.term) {
+      let query = this.getFilterBaseUrl()
+      query += `&search=${this.term}`
+      // console.log(this.term)
+      this.getPeople(query);
+    } else {
+      // console.log(this.term,'no')
+      this.getPeople(this.getFilterBaseUrl());
+    }
   }
   delete(id: any) {
     this.api.deleteEmployees(id).subscribe((data: any) => {
@@ -176,17 +145,31 @@ export class PeopleListComponent implements OnInit {
   }
   onTableDataChange(event: any) {
     this.page = event;
-    this.getPeople();
-  }
-  onTableSizeChange(event: any): void {
-    this.tableSize = Number(event.target.value);
-    this.count = 0
-    // Calculate new page number
-    const calculatedPageNo = this.count / this.tableSize
-    if (calculatedPageNo < this.page) {
-      this.page = 1
+    if (this.term) {
+      let query = this.getFilterBaseUrl()
+      query += `&search=${this.term}`
+      // console.log(this.term)
+      this.getPeople(query);
+    } else {
+      // console.log(this.term,'no')
+      this.getPeople(this.getFilterBaseUrl());
     }
-    this.getPeople();
+  }
+
+  onTableSizeChange(event: any): void {
+    if (event) {
+
+      this.tableSize = Number(event.value);
+      if (this.term) {
+        let query = this.getFilterBaseUrl()
+        query += `&search=${this.term}`
+        // console.log(this.term)
+        this.getPeople(query);
+      } else {
+        // console.log(this.term,'no')
+        this.getPeople(this.getFilterBaseUrl());
+      }
+    }
   }
   open(content) {
     if (content) {
