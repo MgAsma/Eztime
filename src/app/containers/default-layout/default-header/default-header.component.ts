@@ -73,8 +73,8 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     // this.orgId = sessionStorage.getItem('org_id')
     this.user_role_Name = sessionStorage.getItem('user_role_name');
     this.permissionArr = JSON.parse(sessionStorage.getItem('permissionArr'));
+    this.welcomeMsg();
     this.getProfiledata()
-    // this.getNotification();
     this.common_service.title$.subscribe(title => {
       this.pageName = title;
       this.cdref.detectChanges();
@@ -84,6 +84,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     })
     this.getaccessDetails()
   }
+  
   getaccessDetails(){
     this.dashboardAccess = this.permissionArr?.find((element,i) =>element?.name === 'Dashboard')
     console.log(this.dashboardAccess,"DASHBOARD")
@@ -201,6 +202,12 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     }))
   }
 
+  welcomeMsg() {
+    let count: any = sessionStorage.getItem('logged_count')
+    if (count == 1) {
+      this.openWelcomeDialog();
+    }
+  }
   openUserGuideModalComponent(){
     this.isModalOpen = true;
     const initialState: ModalOptions = {
@@ -216,33 +223,34 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
 
   isModalOpen = false;
   openWelcomeDialog(){
-    this.openUserGuideModalComponent();
-    // this.isModalOpen = true;
-    // let data= {
-    //   title:'Hello',
-    //   message1:`Welcome to Project Ace!. We’re thrilled to have you here. Let us guide you through the main features of our website.`,
-    //   message2:`Click 'Next' to begin the tour or 'Skip' to explore on your own.`,
-    //   isModalOpen:this.isModalOpen
-    // }
-    //   const modelRef = this.modalService.open(UserWelcomeMsgComponent, {
-    //     size: <any>'sm',
-    //     backdrop: 'static',
-    //     centered: false,
-    //     windowClass: 'welcome-msg'
-        
-    //   });
-    //   modelRef.componentInstance.data = data;
-    //   modelRef.componentInstance.status.subscribe(resp => {
-    //     if (resp == "ok") {
-    //       modelRef.close();
-    //       this.isModalOpen = false;
-    //       this.openUserGuideModalComponent();
-    //     }
-    //     else {
-    //       modelRef.close();
-    //       this.isModalOpen = false;
-    //     }
-    //   })
+    this.isModalOpen = true;
+    let data = {
+      title: 'Hello',
+      message1: `Welcome to Project Ace!. We’re thrilled to have you here. Let us guide you through the main features of our website.`,
+      message2: `Click 'Next' to begin the tour or 'Skip' to explore on your own.`,
+      isModalOpen: this.isModalOpen
+    }
+    const modelRef = this.modalService.open(UserWelcomeMsgComponent, {
+      size: <any>'sm',
+      backdrop: 'static',
+      centered: true,
+      windowClass: 'welcome-msg'
+
+    });
+    modelRef.componentInstance.data = data;
+    modelRef.componentInstance.status.subscribe(resp => {
+      if (resp == "ok") {
+        modelRef.close();
+        this.isModalOpen = false;
+        sessionStorage.setItem('logged_count', '2');
+        this.openUserGuideModalComponent();
+      }
+      else {
+        modelRef.close();
+        sessionStorage.setItem('logged_count', '2');
+        this.isModalOpen = false;
+      }
+    })
   }
   
 }

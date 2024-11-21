@@ -5,8 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { environment } from 'src/environments/environment';
-import { UserWelcomeMsgComponent } from '../user-welcome-msg/user-welcome-msg.component';
-import { UserGuideModalComponent } from '../user-guide-modal/user-guide-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 
@@ -48,19 +46,13 @@ export class DashboardComponent implements OnInit {
   constructor(private builder: FormBuilder, private api: ApiserviceService,
     private location: Location,
     private route: ActivatedRoute,
-    private common_service: CommonServiceService, private modalService: NgbModal,
-    private userGuideModel: BsModalService,) {
+    private common_service: CommonServiceService, ) {
 
   }
 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    // const isloggedIn = sessionStorage.getItem('token');
-    // if (isloggedIn) {
     this.org_id = sessionStorage.getItem('organization_id')
-    // this.getCountDetails(isloggedIn);
-    //}
-    this.welcomeMsg();
     this.user_role_name = sessionStorage.getItem('user_role_name').toUpperCase()
     if (this.user_role_name !== 'SUPERADMIN') {
       this.getRecentAddedRolesListData()
@@ -71,56 +63,6 @@ export class DashboardComponent implements OnInit {
       this.getRecentAddedAdminlistData()
       this.getRecentAddeduserslistData()
     }
-  }
-
-  isModalOpen = false;
-  welcomeMsg() {
-    let count: any = sessionStorage.getItem('logged_count')
-    if (count == 1) {
-      this.openWelcomeDialog();
-    }
-  }
-  openWelcomeDialog() {
-    this.isModalOpen = true;
-    let data = {
-      title: 'Hello',
-      message1: `Welcome to Project Ace!. We’re thrilled to have you here. Let us guide you through the main features of our website.`,
-      message2: `Click 'Next' to begin the tour or 'Skip' to explore on your own.`,
-      isModalOpen: this.isModalOpen
-    }
-    const modelRef = this.modalService.open(UserWelcomeMsgComponent, {
-      size: <any>'sm',
-      backdrop: 'static',
-      centered: true,
-      windowClass: 'welcome-msg'
-
-    });
-    modelRef.componentInstance.data = data;
-    modelRef.componentInstance.status.subscribe(resp => {
-      if (resp == "ok") {
-        modelRef.close();
-        this.isModalOpen = false;
-        this.openUserGuideModalComponent();
-      }
-      else {
-        modelRef.close();
-        sessionStorage.setItem('logged_count', '2');
-        this.isModalOpen = false;
-      }
-    })
-  }
-
-  openUserGuideModalComponent() {
-    sessionStorage.setItem('logged_count', '2');
-    const initialState: ModalOptions = {
-      initialState: {
-
-      },
-      class: 'modal-dialog-centered custom-modal-lg',
-      ignoreBackdropClick: true,
-      keyboard: false,
-    };
-    this.bsModalRef = this.userGuideModel.show(UserGuideModalComponent, initialState);
   }
   getCountDetails(isloggedIn) {
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))

@@ -77,18 +77,18 @@ export class DepartmentListComponent implements OnInit {
     )
   }
   filterSearch() {
-    let query = this.getFilterBaseUrl()
-    query+=`&search=${this.term}`
-    console.log(query)
-    if(this.term){
+    if (this.term) {
+      let query = this.getFilterBaseUrl()
+      query += `&search=${this.term}`
+      console.log(query)
       // console.log(this.term)
       this.getAllDepartmentList(query);
-    } else{
+    } else {
       // console.log(this.term,'no')
       this.getAllDepartmentList(this.getFilterBaseUrl());
     }
   }
-  
+
   delete(id: any) {
     this.api.deleteDepartmentList(id).subscribe((data: any) => {
       this.ngOnInit();
@@ -111,12 +111,12 @@ export class DepartmentListComponent implements OnInit {
   }
   onTableDataChange(event: any) {
     this.page = event;
-    if(this.term){
+    if (this.term) {
       let query = this.getFilterBaseUrl()
-      query+=`&search=${this.term}`
+      query += `&search=${this.term}`
       // console.log(this.term)
       this.getAllDepartmentList(query);
-    } else{
+    } else {
       // console.log(this.term,'no')
       this.getAllDepartmentList(this.getFilterBaseUrl());
     }
@@ -126,18 +126,18 @@ export class DepartmentListComponent implements OnInit {
     if (event) {
 
       this.tableSize = Number(event.value);
-      if(this.term){
+      if (this.term) {
         let query = this.getFilterBaseUrl()
-        query+=`&search=${this.term}`
+        query += `&search=${this.term}`
         // console.log(this.term)
         this.getAllDepartmentList(query);
-      } else{
+      } else {
         // console.log(this.term,'no')
         this.getAllDepartmentList(this.getFilterBaseUrl());
       }
     }
   }
-  
+
   arrow: boolean = false
   sort(direction: string, column: string) {
     Object.keys(this.arrowState).forEach(key => {
