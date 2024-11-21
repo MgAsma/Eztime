@@ -10,6 +10,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
 @NgModule({
   declarations: [
     ReviewComponent,
@@ -23,7 +25,9 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     MatButtonModule,
     MatTabsModule,
     SharedModule,
-    NgbTooltipModule
+    NgbTooltipModule,
+    FormsModule,
+    NgxPaginationModule
   ]
 })
 export class ReviewModule { }

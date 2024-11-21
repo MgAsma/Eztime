@@ -31,8 +31,8 @@ export class MonthDeclinedComponent implements OnInit {
   //userId: any = 1;
   page: any = 1;
   count = 0;
-  tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSize = 5;
+  tableSizes = [5,10, 25, 50, 100];
   declinedCount = 0;
   user_id: any;
   accessConfig: any = [];
@@ -46,14 +46,13 @@ export class MonthDeclinedComponent implements OnInit {
   }
   constructor(private _timesheet: TimesheetService,
     private modalService: NgbModal,
-    private api: ApiserviceService, private cdref: ChangeDetectorRef,
-    private common_service: CommonServiceService) {
+    private api: ApiserviceService, private cdref: ChangeDetectorRef) {
 
   }
 
   ngOnInit() {
     this.user_id = sessionStorage.getItem('user_id')
-    this.org_id = sessionStorage.getItem('org_id')
+    this.org_id = sessionStorage.getItem('organization_id')
   }
 
   ngOnChanges(changes: SimpleChange): void {
@@ -64,72 +63,40 @@ export class MonthDeclinedComponent implements OnInit {
       this.paginationConfig.totalItems = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
       this.paginationConfig.currentPage = changes['totalCount'].currentValue.currentPage;
       this.paginationConfig.itemsPerPage = changes['totalCount'].currentValue.itemsPerPage;
-      this.tableSize = changes['totalCount'].currentValue.itemsPerPage;
       this.page = changes['totalCount'].currentValue.currentPage;
       this.count = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
+      this.tableSize = changes['totalCount'].currentValue.reset ? changes['totalCount'].currentValue.itemsPerPage : this.tableSize
     }
     this.cdref.detectChanges();
   }
-  getUserControls() {
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&organization_id=${this.org_id}&pagination=TRUE`).subscribe((res: any) => {
-      if (res.status_code !== '401') {
-        this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
-      }
-      else {
-        this.api.showError("ERROR !")
-      }
-      //console.log(res,'resp from yet');
-
-    }
-
-    )
-
-
-    this.common_service.permission.subscribe(res => {
-      const accessArr = res
-      if (accessArr.length > 0) {
-        accessArr.forEach((element, i) => {
-          if (element['MONTH_APPROVAL_TIMESHEET']) {
-            this.accessConfig = element['MONTH_APPROVAL_TIMESHEET']
-          }
-
-        });
-      }
-
-    })
-
-  }
-
+  
 
   filterSearch() {
     let tableData = {
       search_key: this.term,
       page: this.page,
-      tableSize: this.tableSize
+      page_size: this.tableSize
     }
     this.filter.emit(tableData);
   }
   onTableDataChange(event: any) {
     this.page = event;
     let tableData = {
-      search_key: this.term,
       page: this.page,
-      tableSize: this.tableSize
+      page_size: this.tableSize
     }
     this.buttonClick.emit(tableData)
   }
   onTableSizeChange(event: any): void {
-    this.tableSize = Number(event.target.value);
+    this.tableSize = Number(event.value);
     this.count = 0
     const calculatedPageNo = this.count / this.tableSize
     if (calculatedPageNo < this.page) {
       this.page = 1
     }
     let tableData = {
-      search_key: this.term,
       page: this.page,
-      tableSize: this.tableSize
+      page_size: this.tableSize
     }
     this.buttonClick.emit(tableData)
   }

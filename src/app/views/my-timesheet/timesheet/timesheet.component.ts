@@ -34,9 +34,11 @@ export class TimesheetComponent implements OnInit {
   showSearch=false;
   @ViewChild('tabset') tabset: TabsetComponent;
   orgId: any;
-  tableSize: any = 10;
+  // tableSize: any = 10;
   selectedTabId: number;
   submitted: boolean = false;
+  page_size:number = 5;
+  refresh: boolean = false;
   constructor(
     private _fb:FormBuilder,
     private api:ApiserviceService,
@@ -58,7 +60,7 @@ export class TimesheetComponent implements OnInit {
     this.userId = sessionStorage.getItem('user_id')
       this.initForm()
       
-      this.getByStatus(`?organization=${this.orgId}&status=${1}&user=${this.userId}`)
+      this.getByStatus(`?organization=${this.orgId}&status=${1}&user=${this.userId}&page=${1}&page_size=${5}`)
       this.getStatusCount(`?user=${this.userId}&get-count=true&organization=${this.orgId}`)
   }
  initForm(){
@@ -72,8 +74,8 @@ export class TimesheetComponent implements OnInit {
 
     this.api.getData(`${environment.live_url}/${environment.time_sheets}/${params}`).subscribe((res:any)=>{
      if(res){
-       this.allDetails = res
-      //  this.totalCount = { pageCount: res['result']['pagination'].number_of_pages, currentPage: res['result']['pagination'].current_page,itemsPerPage:10};
+       this.allDetails = res?.['results']
+       this.totalCount = { pageCount: res?.['total_pages'], currentPage: res?.['current_page'],itemsPerPage:5,totalCount:res?.['total_no_of_record'],reset:this.refresh};
      }
     
     },(error)=>{
@@ -82,8 +84,9 @@ export class TimesheetComponent implements OnInit {
  }
 reset(){
   this.timeSheetForm.reset()
+  this.refresh = true
   const selectedTab = this.selectedTabId || 1
-  this.getByStatus(`?organization=${this.orgId}&status=${selectedTab}&user=${this.userId}`)
+  this.getByStatus(`?organization=${this.orgId}&status=${selectedTab}&user=${this.userId}&page=${this.page}&page_size=${this.page_size}`)
 }
   getStatusCount(params){ 
     this.api.getData(`${environment.live_url}/${environment.time_sheets}/${params}`).subscribe((res:any)=>{
@@ -116,60 +119,26 @@ reset(){
     })
    }
    buttonClick(event){
+    const selectedTab = this.selectedTabId || 1
+    this.refresh = false
+
     if(event){
       this.cdref.detectChanges();
-     // let c_params={}
-      //this.tableSize = event.tableSize
-    //   if(this.changes){
-    //     c_params={
-        
-    //       status:this.selectedTab? this.selectedTab :'Pending',
-    //       timesheets_to_date:this.datepipe.transform(this.toDate,'yyyy-MM-dd'),
-    //       timesheets_from_date:this.datepipe.transform(this.fromDate,'yyyy-MM-dd') 
-    //      }
-    //      this.getAllTimeSheet(c_params);
-    //   }
-    // else{
-    //   c_params={
-    //     status:this.selectedTab? this.selectedTab :'Pending',
-    //     page_number:event.page,
-    //     data_per_page:event.tableSize,
-    //     search_key:event.search_key,
-    //    }
-    //    this.getByStatus(c_params)
-    // }
-    const selectedTab = this.selectedTabId || 1
-    this.getByStatus(`?organization=${this.orgId}&status=${selectedTab}&user=${this.userId}`)
-    this.getStatusCount(`?user=${this.userId}&get-count=true`)
+      let query = `?organization=${this.orgId}&status=${selectedTab}&user=${this.userId}&page=${event.page}&page_size=${event.page_size}`
+      let c_params = {
+        status: this.selectedTab ? this.selectedTab : 'Pending',
+        timesheets_to_date: this.datepipe.transform(this.timeSheetForm.value.to_date, 'yyyy-MM-dd'),
+        timesheets_from_date: this.datepipe.transform(this.timeSheetForm.value.from_date, 'yyyy-MM-dd')
+      };
+      if(this.submitted && this.timeSheetForm.valid){
+         query += `&from-date=${c_params['timesheets_from_date']}&to-date=${c_params['timesheets_to_date']}`
+      }
+    this.getByStatus(query)
+    }else{
+      this.getByStatus(`?organization=${this.orgId}&status=${selectedTab}&user=${this.userId}&page=${this.page}&page_size=${this.page_size}`)
     }
   }
   searchFiter(event){
-    // if(event){
-    //   this.cdref.detectChanges();
-    //   let c_params={}
-    //   if(this.changes){
-    //     c_params={
-    //       status:this.selectedTab? this.selectedTab :'Pending',
-    //       // user_id:this.userId,
-    //       // page_number:this.page,
-    //       // data_per_page:this.tableSize,
-    //       search_key:this.term,
-    //       timesheets_to_date:this.datepipe.transform(this.toDate,'yyyy-MM-dd'),
-    //       timesheets_from_date:this.datepipe.transform(this.fromDate,'yyyy-MM-dd') 
-    //      }
-    //   }
-    // else{
-    //   c_params={
-    //     status:this.selectedTab? this.selectedTab :'Pending',
-    //     page_number:this.page,
-    //     data_per_page:this.tableSize,
-    //     search_key:this.term,
-    //    }
-       
-    // }
-    // this.allDetails = []
-    // this.getByStatus(c_params)
-    // }
     
   }
   
@@ -192,9 +161,9 @@ reset(){
         this.allDetails = [];
         let query:string;
         if(this.selectedTabId){
-         query = `?from-date=${c_params['timesheets_from_date']}&to-date=${c_params['timesheets_to_date']}&status=${this.selectedTabId}&organization=${this.orgId}&user=${this.userId}`
+         query = `?from-date=${c_params['timesheets_from_date']}&to-date=${c_params['timesheets_to_date']}&status=${this.selectedTabId}&organization=${this.orgId}&user=${this.userId}&page=${this.page}&page_size=${this.page_size}`
         }else{
-          query = `?from-date=${c_params['timesheets_from_date']}&to-date=${c_params['timesheets_to_date']}&status=${1}&organization=${this.orgId}&user=${this.userId}`
+          query = `?from-date=${c_params['timesheets_from_date']}&to-date=${c_params['timesheets_to_date']}&status=${1}&organization=${this.orgId}&user=${this.userId}&page=${this.page}&page_size=${this.page_size}`
         }
         this.getByStatus(query);  
         this.submitted = true
@@ -220,25 +189,14 @@ reset(){
      let query = `?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.userId}`
      if(this.submitted && this.timeSheetForm.valid){
       const to_date = this.datepipe.transform(this.timeSheetForm.value.to_date, 'yyyy-MM-dd')
-      const from_date =  this.datepipe.transform(this.timeSheetForm.value.to_date, 'yyyy-MM-dd')
-      query=`?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.userId}&from-date=${from_date}&to-date=${to_date}`
+      const from_date =  this.datepipe.transform(this.timeSheetForm.value.from_date, 'yyyy-MM-dd')
+      query=`?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.userId}&from-date=${from_date}&to-date=${to_date}&page=${this.page}&page_size=${this.page_size}`
      }else{
-      query=`?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.userId}`
+      query=`?organization=${this.orgId}&status=${this.selectedTabId}&user=${this.userId}&page=${this.page}&page_size=${this.page_size}`
      }
       this.getByStatus(query)
     
    
     }
-    refershPage(){
-      let params={
-       
-        status:this.selectedTab? this.selectedTab :'YET_TO_APPROVED', 
-        // page_number:this.page,
-        // data_per_page:this.tableSize,
-        // search_key:'',
-       }
-       
-        this.getByStatus(params)
-    }
-
+  
 }

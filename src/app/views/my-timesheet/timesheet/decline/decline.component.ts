@@ -26,8 +26,8 @@ export class DeclineComponent implements OnInit {
   action:any;
   term:any='';
   page:any=1;
-  tableSize = 10;
-  tableSizes = [10,25,50,100];
+  tableSize = 5;
+  tableSizes = [5,10,25,50,100];
   count:any = 0
   entryPoint: any;
   user_id: any;
@@ -56,6 +56,7 @@ export class DeclineComponent implements OnInit {
       this.paginationConfig.itemsPerPage=this.tableSize;
     this.page=changes['totalCount'].currentValue.currentPage;
     this.count=changes['totalCount'].currentValue.pageCount * this.tableSize;
+    this.tableSize = changes['totalCount'].currentValue.reset ? changes['totalCount'].currentValue.itemsPerPage : this.tableSize
     }
     this.cdref.detectChanges();
       }
@@ -164,17 +165,16 @@ filterSearch(){
 }
 onTableDataChange(event:any){
   this.page = event;
-  let tableData ={
+  let tableData={
     page:this.page,
-    tableSize:this.tableSize,
-    search_key:this.term
+    page_size:this.tableSize
    }
   this.buttonClick.emit(tableData);
 }  
 onTableSizeChange(event:any): void {
   if(event){
     
-    this.tableSize = this.tableSize
+    this.tableSize = event.value
   this.count = 0
   // Calculate new page number
   const calculatedPageNo = this.count / this.tableSize
@@ -182,10 +182,9 @@ onTableSizeChange(event:any): void {
   if(calculatedPageNo < this.page){
     this.page = 1
   }
-  let tableData ={
+  let tableData={
     page:this.page,
-    tableSize:this.tableSize,
-    search_key:this.term
+    page_size:this.tableSize
    }
   this.buttonClick.emit(tableData);
   }

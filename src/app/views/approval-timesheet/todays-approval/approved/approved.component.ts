@@ -27,8 +27,8 @@ export class ApprovedComponent implements OnInit {
   term: any = '';
   page: any = 1;
   count = 0;
-  tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSize = 5;
+  tableSizes = [5,10, 25, 50, 100];
   approvedAll: any = [];
   list: any = [];
   entryPoint: any;
@@ -38,7 +38,7 @@ export class ApprovedComponent implements OnInit {
   @Input() data: any
   @Input() totalCount: { 'pageCount': any, 'currentPage': any };
   paginationConfig: any = {
-    itemsPerPage: 10,
+    itemsPerPage: this.tableSize,
     currentPage: 1,
     totalItems: 0
   }
@@ -56,14 +56,13 @@ export class ApprovedComponent implements OnInit {
     if (changes['data'].currentValue) {
       this.list = changes['data'].currentValue;
     }
-    if (changes['totalCount']?.currentValue) {
-      this.paginationConfig.totalItems = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
-      this.paginationConfig.currentPage = changes['totalCount'].currentValue.currentPage;
-      this.paginationConfig.itemsPerPage = changes['totalCount'].currentValue.itemsPerPage;
-      this.tableSize = changes['totalCount'].currentValue.itemsPerPage;
-      this.page = changes['totalCount'].currentValue.currentPage;
-      this.count = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
-    }
+    if(changes['totalCount']?.currentValue){
+      this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
+      this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
+      this.paginationConfig.itemsPerPage=this.tableSize;
+      this.page=changes['totalCount'].currentValue.currentPage;
+      this.count=changes['totalCount'].currentValue.totalCount;
+      }
     this.cdref.detectChanges();
   }
   
@@ -118,23 +117,22 @@ export class ApprovedComponent implements OnInit {
   onTableDataChange(event: any) {
     this.page = event;
     let tableData = {
-      search_key: this.term,
       page: this.page,
-      tableSize: this.tableSize
+      page_size: this.tableSize
     }
     this.buttonClick.emit(tableData)
   }
   onTableSizeChange(event: any): void {
    if(event){
+    this.tableSize = Number(event.value)
     this.count = 0
     const calculatedPageNo = this.count / this.tableSize
     if (calculatedPageNo < this.page) {
       this.page = 1
     }
     let tableData = {
-      search_key: this.term,
       page: this.page,
-      tableSize: this.tableSize
+      page_size: this.tableSize
     }
     this.buttonClick.emit(tableData)
   }
@@ -144,8 +142,7 @@ export class ApprovedComponent implements OnInit {
       const selectedStatus = status === 'APPROVED' ? 'approve' : 'decline'
       const confirmText = status === 'APPROVED' ? 'Approve' : 'Decline'
       const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: <any>'sm'
-        ,
+        size: <any>'sm',
         backdrop: true,
         centered: true
       });

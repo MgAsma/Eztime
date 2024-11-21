@@ -27,8 +27,8 @@ export class DeclinedComponent implements OnInit {
   term: any = '';
   page: any = 1;
   count = 0;
-  tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSize = 5;
+  tableSizes = [5,10, 25, 50, 100];
   declinedAll: any = [];
   list: string;
   entryPoint: any;
@@ -39,7 +39,7 @@ export class DeclinedComponent implements OnInit {
   @Input() totalCount: { 'pageCount': any, 'currentPage': any };
 
   paginationConfig: any = {
-    itemsPerPage: 10,
+    itemsPerPage: this.tableSize,
     currentPage: 1,
     totalItems: 0
   }
@@ -56,56 +56,19 @@ export class DeclinedComponent implements OnInit {
     if (changes['data'].currentValue) {
       this.declinedAll = changes['data'].currentValue;
     }
-    if (changes['totalCount']?.currentValue) {
-      this.paginationConfig.totalItems = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
-      this.paginationConfig.currentPage = changes['totalCount'].currentValue.currentPage;
-      this.paginationConfig.itemsPerPage = changes['totalCount'].currentValue.itemsPerPage;
-      this.tableSize = changes['totalCount'].currentValue.itemsPerPage;
-      this.page = changes['totalCount'].currentValue.currentPage;
-      this.count = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
-    }
+    if(changes['totalCount']?.currentValue){
+      this.paginationConfig.totalItems=changes['totalCount'].currentValue.pageCount * this.tableSize;
+      this.paginationConfig.currentPage=changes['totalCount'].currentValue.currentPage;
+      this.paginationConfig.itemsPerPage=this.tableSize;
+      this.page=changes['totalCount'].currentValue.currentPage;
+      this.count=changes['totalCount'].currentValue.totalCount;
+      }
     this.cdref.detectChanges();
   }
   
 
-  delete(items: any) {
-    let params = {
-      module: "LEAVE/HOLIDAY_LIST",
-      menu: "TODAY_APPROVAL_TIMESHEET",
-      method: "DELETE",
-      user_id: this.user_id
-    }
-    this._timeSheetService.deleteTodaysApproval(items.id, params).subscribe((data: any) => {
-      this.api.showWarning('Declined TimeSheet Deleted Successfully')
-    }, error => {
-      //console.log(error);
-
-    })
-
-  }
-  open(content) {
-    if (content) {
-      const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: <any>'sm',
-        backdrop: true,
-        centered: true
-      });
-
-      modelRef.componentInstance.status.subscribe(resp => {
-        if (resp == "ok") {
-          this.delete(content);
-          modelRef.close();
-        }
-        else {
-          modelRef.close();
-        }
-      })
-
-    }
-
-
-
-  }
+  
+ 
   filterSearch() {
     let tableData = {
       search_key: this.term,
@@ -117,74 +80,27 @@ export class DeclinedComponent implements OnInit {
   onTableDataChange(event: any) {
     this.page = event;
     let tableData = {
-      search_key: this.term,
       page: this.page,
-      tableSize: this.tableSize
+      page_size: this.tableSize
     }
     this.buttonClick.emit(tableData)
   }
   onTableSizeChange(event: any): void {
     if(event){
+      this.tableSize = Number(event.value)
     this.count = 0
     const calculatedPageNo = this.count / this.tableSize
     if (calculatedPageNo < this.page) {
       this.page = 1
     }
     let tableData = {
-      search_key: this.term,
       page: this.page,
-      tableSize: this.tableSize
+      page_size: this.tableSize
     }
     this.buttonClick.emit(tableData)
   }
   }
-  openDialogue(content, status) {
-    if (content) {
-      const selectedStatus = status === 'APPROVED' ? 'approve' : 'decline'
-      const confirmText = status === 'APPROVED' ? 'Approve' : 'Decline'
-      const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: <any>'sm'
-        ,
-        backdrop: true,
-        centered: true
-      });
-      modelRef.componentInstance.title = `Are you sure you want to ${selectedStatus}`;
-      modelRef.componentInstance.message = `${confirmText} confirmation`;
-      modelRef.componentInstance.status.subscribe(resp => {
-        if (resp == "ok") {
-          this.updateStatus(content, status);
-          modelRef.close();
-        }
-        else {
-          modelRef.close();
-        }
-      })
-
-    }
-  }
-  updateStatus(content, status) {
-    // let currStatus =  status === 'Approved'?  "APPROVED": "DECLINED";
-    let currMethod = status === 'DECLINED' ? 'REJECT' : 'ACCEPT'
-    let manager_id = sessionStorage.getItem('manager_id')
-    let data = {
-      time_sheet_ids: null,
-      time_sheet_id: content,
-      status_name: status,
-      reporting_manager_ref: manager_id,
-      module: "TIMESHEET",
-      menu: "TODAY_APPROVAL_TIMESHEET",
-      method: currMethod,
-      user_id: this.user_id
-    }
-    this._timeSheetService.updateStatus(data).subscribe(res => {
-      if (res) {
-        const toastText = status === 'DECLINED' ? 'declined' : 'approved'
-        this.api.showSuccess(`Timesheet ${toastText} successfully`)
-        this.buttonClick.emit(this.page)
-      }
-
-    })
-  }
+ 
   getContinuousIndex(index: number): number {
     return (this.page - 1) * this.tableSize + index + 1;
   }

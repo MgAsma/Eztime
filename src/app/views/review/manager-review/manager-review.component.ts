@@ -27,7 +27,8 @@ export class ManagerReviewComponent implements OnInit {
   leaveAccess: any;
   orgId: any;
   selectedSection = 'lists';
-
+  tableSize = 10;
+  tableSizes = [10,25,50,100];
   employeeList = [
     { name: 'Surya', id: 149, role: 'Designer', email: 'Surya@ekfrazon.in', contact: '62695723681' },
     { name: 'Manoj', id: 150, role: 'Tester', email: 'Manoj@ekfrazon.in', contact: '98792036781' }
@@ -39,18 +40,12 @@ export class ManagerReviewComponent implements OnInit {
 
   selectedTimesheetTabId: number;
   selectedTimesheetTab: string;
-  // = {
-  //   pending: [
-  //     { employeeName: 'Surya', client: 'MTN', projectName: 'eShop', time: '8 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Redesigning UI' },
-  //     { employeeName: 'Manoj', client: 'MTN', projectName: 'eShop', time: '2 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Library updates' }
-  //   ],
-  //   approved: [
-  //     { employeeName: 'Karthik', client: 'MTN', projectName: 'eShop', time: '6 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Bug fixes' }
-  //   ],
-  //   declined: [
-  //     { employeeName: 'Ravi', client: 'MTN', projectName: 'eShop', time: '1 hr', duration: '01/08/2024 - 01/08/2024', tasks: 'Meeting' }
-  //   ]
-  // };
+  page = 1;
+  count:any= 0;
+  selectedLeaveTab: string;
+  selectedLeaveTabId: number;
+  
+  
   constructor(
     private api: ApiserviceService,
     private modalService: NgbModal,
@@ -69,26 +64,49 @@ export class ManagerReviewComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('organization_id')
     this.user_id = sessionStorage.getItem('user_id')
-    this.getAllTimesheets(`?organization=${this.orgId}&status=1`)
-    this.getAllLeaves(`?status=1&organization=${this.orgId}`)
-    this.getEmployeeData() 
+    
+    this.getEmployeeData(`page=${this.page}&page_size=${this.tableSize}`)
   }
  
-  getEmployeeData() {
-    this.api.getData(`${environment.live_url}/${environment.all_employee}/?organization_id=${this.orgId}`).subscribe(response => {
+  getEmployeeData(params) {
+    this.api.getData(`${environment.live_url}/${environment.all_employee}/?organization_id=${this.orgId}&${params}`).subscribe(response => {
       if (response) {
-        this.empInfoList = response;
+        this.empInfoList = response?.['results'];
+        const noOfPages:number = response?.['total_pages']
+        this.count  = noOfPages * this.tableSize;
+        this.page=response?.['current_page'];
       }
     }, (error => {
       this.api.showError(error?.error?.message)
     }))
   }
-
+  selectedTab(event){
+    if(event){
+      this.selectedSection = event
+    }
+    if(event === 'lists'){
+      this.count = 0;
+      this.page = 1
+      this.getEmployeeData(`page=${this.page}&page_size=${this.tableSize}`)
+    }else if(event === 'leaves'){
+      this.count = 0;
+      this.page = 1
+      this.getAllLeaves(`?status=1&organization=${this.orgId}&page=${this.page}&page_size=${this.tableSize}`)
+    }else if(event === 'timesheets'){
+      this.count = 0;
+      this.page = 1
+      this.getAllTimesheets(`?organization=${this.orgId}&status=1&page=${this.page}&page_size=${this.tableSize}`)
+    }
+    
+  }
   getAllTimesheets(params){
     this.api.getData(`${environment.live_url}/${environment.time_sheets}/${params}`).subscribe(response => {
       if (response) {
-        this.timesheetList = response
-        console.log(this.timesheetList)
+        this.timesheetList = response?.['results']
+        const noOfPages:number = response?.['total_pages']
+        this.count  = noOfPages * this.tableSize;
+        this.page= response?.['current_page'];
+       
     }
   },(error)=>{
     this.api.showError(error?.error?.message)
@@ -97,7 +115,10 @@ export class ManagerReviewComponent implements OnInit {
   getAllLeaves(params){
     this.api.getData(`${environment.live_url}/${environment.employee_leave_details}/${params}`).subscribe((res:any)=>{
       if(res){
-        this.leaveList = res
+        this.leaveList = res?.['results']
+        const noOfPages:number = res?.['total_pages']
+        this.count  = noOfPages * this.tableSize;
+        this.page=res?.['current_page'];
       }
     },(error)=>{
       this.api.showError(error?.error?.message)
@@ -116,7 +137,7 @@ export class ManagerReviewComponent implements OnInit {
       this.selectedTimesheetTab = 'Declined'
       this.selectedTimesheetTabId = 3
     }
-    let query:string = `?organization=${this.orgId}&status=${this.selectedTimesheetTabId}`;
+    let query:string = `?organization=${this.orgId}&status=${this.selectedTimesheetTabId}&page=${1}&page_size=${this.tableSize}`;
    
     this.getAllTimesheets(query)
 
@@ -125,18 +146,18 @@ export class ManagerReviewComponent implements OnInit {
   }
   tabLeaveSection(data){
     if(data.tab.textLabel === 'Approved'){
-      this.selectedTimesheetTab = 'Approved'
+      this.selectedLeaveTab = 'Approved'
       this.selectedTimesheetTabId = 2
     }
     else if(data.tab.textLabel === 'Pending' ){
-      this.selectedTimesheetTab = 'Pending' 
-      this.selectedTimesheetTabId = 1
+      this.selectedLeaveTab = 'Pending' 
+      this.selectedLeaveTabId = 1
     }
     else if(data.tab.textLabel === 'Declined'){
-      this.selectedTimesheetTab = 'Declined'
-      this.selectedTimesheetTabId = 3
+      this.selectedLeaveTab = 'Declined'
+      this.selectedLeaveTabId = 3
     }
-    let query:string = `?organization=${this.orgId}&status=${this.selectedTimesheetTabId}`;
+    let query:string = `?organization=${this.orgId}&status=${this.selectedTimesheetTabId}&page=${1}&page_size=${this.tableSize}`;
    
     this.getAllLeaves(query)
 
@@ -145,8 +166,6 @@ export class ManagerReviewComponent implements OnInit {
   }
   openDialogue(content, status) {
     if (content) {
-      // const statusText = status === 'DECLINED' ? 'decline' : 'approve'
-      // const confirmText = status === 'APPROVED' ? 'Approve' : 'Decline'
       const modelRef = this.modalService.open(GenericDeleteComponent, {
         size: <any>'sm'
         ,
@@ -168,6 +187,40 @@ export class ManagerReviewComponent implements OnInit {
     }
 
   }
+  onTableDataChange(event:any){
+    this.page = event;
+    const leaveStatusId = this.selectedLeaveTabId || 1
+    const timesheetTabId = this.selectedTimesheetTabId
+    if(this.selectedSection === 'lists'){
+      this.count = 0;
+      this.getEmployeeData(`page=${this.page}&page_size=${this.tableSize}`)
+    }else if(this.selectedSection === 'leaves'){
+      this.count = 0;
+      this.getAllLeaves(`?status=${leaveStatusId}&organization=${this.orgId}&page=${this.page}&page_size=${this.tableSize}`)
+    }else if(this.selectedSection === 'timesheets'){
+      this.count = 0;
+      this.getAllTimesheets(`?organization=${this.orgId}&status=${timesheetTabId}&page=${this.page}&page_size=${this.tableSize}`)
+    }
+  }  
+  onTableSizeChange(event:any): void {
+    if(event){
+     
+    this.tableSize = Number(event.value);
+   
+    const leaveStatusId = this.selectedLeaveTabId || 1
+    const timesheetTabId = this.selectedTimesheetTabId
+    if(this.selectedSection === 'lists'){
+      this.count = 0;
+      this.getEmployeeData(`page=${1}&page_size=${this.tableSize}`)
+    }else if(this.selectedSection === 'leaves'){
+      this.count = 0;
+      this.getAllLeaves(`?status=${leaveStatusId}&organization=${this.orgId}&page=${1}&page_size=${this.tableSize}`)
+    }else if(this.selectedSection === 'timesheets'){
+      this.count = 0;
+      this.getAllTimesheets(`?organization=${this.orgId}&status=${timesheetTabId}&page=${1}&page_size=${this.tableSize}`)
+    }
+    }
+  } 
   open(content, status) {
     if (content) {
       const modelRef = this.modalService.open(GenericDeleteComponent, {

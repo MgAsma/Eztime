@@ -29,8 +29,8 @@ export class MonthApproveComponent implements OnInit {
   userId: any = 1;
   page: any = 1;
   approveCount = 0;
-  tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSize = 5;
+  tableSizes = [5,10, 25, 50, 100];
   count = 0;
   accessConfig: any = [];
   user_id: any;
@@ -44,12 +44,7 @@ export class MonthApproveComponent implements OnInit {
     currentPage: 1,
     totalItems: 0
   }
-  constructor(private _timesheet: TimesheetService,
-    private modalService: NgbModal,
-    private api: ApiserviceService, private cdref: ChangeDetectorRef,
-    private common_service: CommonServiceService) {
-
-  }
+  constructor( private cdref: ChangeDetectorRef) {}
   ngOnInit() {
     this.user_id = sessionStorage.getItem('user_id')
     this.org_id = sessionStorage.getItem('organization_id')
@@ -64,9 +59,9 @@ export class MonthApproveComponent implements OnInit {
       this.paginationConfig.totalItems = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
       this.paginationConfig.currentPage = changes['totalCount'].currentValue.currentPage;
       this.paginationConfig.itemsPerPage = changes['totalCount'].currentValue.itemsPerPage;
-      this.tableSize = changes['totalCount'].currentValue.itemsPerPage;
       this.page = changes['totalCount'].currentValue.currentPage;
       this.count = changes['totalCount'].currentValue.pageCount * changes['totalCount'].currentValue.itemsPerPage;
+      this.tableSize = changes['totalCount'].currentValue.reset ? changes['totalCount'].currentValue.itemsPerPage : this.tableSize
     }
     this.cdref.detectChanges();
   }
@@ -83,23 +78,21 @@ export class MonthApproveComponent implements OnInit {
   onTableDataChange(event: any) {
     this.page = event;
     let tableData = {
-      search_key: this.term,
       page: this.page,
-      tableSize: this.tableSize
+      page_size: this.tableSize
     }
     this.buttonClick.emit(tableData)
   }
   onTableSizeChange(event: any): void {
-    this.tableSize = Number(event.target.value);
+    this.tableSize = Number(event.value);
     this.count = 0
     const calculatedPageNo = this.count / this.tableSize
     if (calculatedPageNo < this.page) {
       this.page = 1
     }
     let tableData = {
-      search_key: this.term,
       page: this.page,
-      tableSize: this.tableSize
+      page_size: this.tableSize
     }
     this.buttonClick.emit(tableData)
   }
