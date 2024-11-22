@@ -232,12 +232,14 @@ export class UpdateProjectComponent implements OnInit {
     )
   }
   adminData() {
-    this.api.getProfileDetails(`${this.user_id}/`).subscribe(
+    this.api.getProfileDetails(`?role_id=${2}&organization_id=${this.org_id}`).subscribe(
       (res: any) => {
         // console.log('admin',res);
         let data = [];
-        data.push({ 'first_name': res.first_name, 'last_name': res?.last_name || '', 'id': res.id });
-        // console.log(data)
+        // data.push({ 'first_name': res.first_name, 'last_name': res?.last_name || '', 'id': res.id });
+        res.forEach((element:any) => {
+          data.push({ 'first_name': element.first_name, 'last_name': element?.last_name || '', 'id': element.id }); 
+        });
         this.allManager = data;
       },
       (error: any) => {

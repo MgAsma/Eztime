@@ -15,13 +15,12 @@ import { environment } from 'src/environments/environment';
 export class CategoryListComponent implements OnInit {
   BreadCrumbsTitle:any='Project Templates';
   categoryList=[];
-  currentIndex = 1;
   page = 1;
   count = 0;
-  tableSize = 10;
-  tableSizes = [10,25,50,100];
-
-  term:any='';
+  tableSize = 5;
+  tableSizes = [5, 10, 25, 50, 100];
+  currentIndex: any;
+  term: any = '';
   slno:any;
   name:any;
   date:any;
@@ -55,82 +54,24 @@ export class CategoryListComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('organization_id')
-    this.getCategory();
-    // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
-
-    // if (accessAction.length) {
-    //   accessAction.forEach((res) => {
-    //   // console.log(res.module_name, res.permissions, "RESP");
-    //     if (res.module_name === 'PROJECT_TASK_CATEGORIES') {
-    //       this.permissions = res.permissions['PROJECT_TASK_CATEGORIES'];
-    //    //   console.log(this.permissions, "Permissions for PROJECT_TASK_CATEGORIES");
-    //     }
-    //   });
-    // }
-    // this.getUserControls()
+    this.getCategory(`?organization_id=${this.orgId}&page=${1}&page_size=${5}`);
   }
-  filterSearch(){
-    // this.api.getData(`${environment.live_url}/${environment.project_tasks}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.orgId}`).subscribe(data=>{
-      
-    //   if(data['result'].data){
-    //     this.categoryList= data['result'].data;
-    //     //console.log(this.categoryList,"CATEGORY")
-    //     const noOfPages:number = data['result'].pagination.number_of_pages
-    //     this.count  = noOfPages * this.tableSize;
-    //     this.page=data['result'].pagination.current_page;      }
-      
-    // },((error)=>{
-    //   this.api.showError(error.error.error.message)
-    // }))
+  getFilterBaseUrl(): string {
+    return `?organization_id=${this.orgId}&page=${this.page}&page_size=${this.tableSize}`;
   }
-  getUserControls(){
-    this.user_id = sessionStorage.getItem('user_id')
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
-      if(res.status_code !== '401'){
-        this.common_service.permission.next(res['data'][0]['permissions'])
-      }
-      else{
-        this.api.showError("ERROR !")
-      }
-     
-    },(error=>{
-      this.api.showError(error.error.error.message)
-   })
-  
-    )
-  
-    this.common_service.permission.subscribe(res=>{
-      const accessArr = res
-      if(accessArr.length > 0){
-        accessArr.forEach(element => {
-          if(element['PROJECT_TASK_CATEGORIES']){
-            this.permissions = element['PROJECT_TASK_CATEGORIES']
-          }
-          
-        });  
-      }
-    
-    })
-    }
-  getCategory(){
-    let params = {
-      page_number:this.page,
-      data_per_page:this.tableSize,
-      org_ref_id:this.orgId,
-      search_key:this.term
-  }
-
-    this.api.getProjCategory(`${'organization_id'}=${this.orgId}`).subscribe((data:any)=>{
-      
+ 
+  getCategory(params:any){
+    this.api.getData(`${environment.live_url}/${environment.project_template}/${params}`).subscribe((data:any)=>{     
       if(data){
-        this.categoryList = data;
-        // const noOfPages:number = data['result'].pagination.number_of_pages
-        // this.count  = noOfPages * this.tableSize;
-        // this.page=data['result'].pagination.current_page;      
+        this.categoryList = data.results;
+        const noOfPages: number = data?.['total_pages']
+        this.count = noOfPages * this.tableSize;
+        this.count = data?.['total_no_of_record']
+        this.page = data?.['current_page'];
       }
       
     },((error)=>{
-      this.api.showError(error.error.error.message)
+      this.api.showError(error.error.message)
     }))
   }
   delete(id:any){
@@ -142,7 +83,7 @@ export class CategoryListComponent implements OnInit {
       // }
      
     },((error)=>{
-      this.api.showError(error.error.error.message)
+      this.api.showError(error.error.message)
     }))
     
   }
@@ -154,21 +95,38 @@ export class CategoryListComponent implements OnInit {
   editCard(id){
     this.router.navigate([`/task/update/${id}/${this.page}/${this.tableSize}`])
   }
-  onTableDataChange(event:any){
+  filterSearch(){
+   
+  }
+  onTableDataChange(event: any) {
     this.page = event;
-    this.getCategory();
-  }  
-  onTableSizeChange(event:any): void {
-    this.tableSize = Number(event.target.value);
-    this.count = 0
-    // Calculate new page number
-    const calculatedPageNo = this.count / this.tableSize
-    
-    if(calculatedPageNo < this.page){
-      this.page = 1
+    if (this.term) {
+      let query = this.getFilterBaseUrl()
+      query += `&search=${this.term}`
+      // console.log(this.term)
+      this.getCategory(query);
+    } else {
+      // console.log(this.term,'no')
+      this.getCategory(this.getFilterBaseUrl());
     }
-    this.getCategory();
-  }  
+  }
+
+  onTableSizeChange(event: any): void {
+    if (event) {
+      this.page = 1;
+      this.tableSize = Number(event.value);
+      if (this.term) {
+        let query = this.getFilterBaseUrl()
+        query += `&search=${this.term}`
+        // console.log(this.term)
+        this.getCategory(query);
+      } else {
+        // console.log(this.term,'no')
+        this.getCategory(this.getFilterBaseUrl());
+      }
+    }
+  }
+
   open(content) {
     if(content){
       const modelRef =   this.modalService.open(GenericDeleteComponent, {

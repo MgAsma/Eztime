@@ -158,7 +158,7 @@ export class PeopleListComponent implements OnInit {
 
   onTableSizeChange(event: any): void {
     if (event) {
-
+      this.page =1;
       this.tableSize = Number(event.value);
       if (this.term) {
         let query = this.getFilterBaseUrl()

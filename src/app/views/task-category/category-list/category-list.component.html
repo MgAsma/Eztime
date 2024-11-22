@@ -8,7 +8,7 @@
     <div class="col-sm"></div>
     <div class="col-md-3 col-lg-3 p-1 text-end create-buttons">
       <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/task/add" type="submit">
-       <mat-icon>add</mat-icon> Create Project Template</button>
+        <mat-icon>add</mat-icon> Create Project Template</button>
 
     </div>
   </div>
@@ -20,13 +20,17 @@
             <tr>
               <th scope="col">S.No</th>
               <th scope="col">Template Name
-                <i *ngIf="!arrowState['category_name']" (click)="sort('asc','category_name')" class="bi bi-arrow-up"></i>
-                <i (click)="sort('desc','category_name')" *ngIf="arrowState['category_name']" class="bi bi-arrow-down"></i> 
+                <i *ngIf="!arrowState['category_name']" (click)="sort('asc','category_name')"
+                  class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','category_name')" *ngIf="arrowState['category_name']"
+                  class="bi bi-arrow-down"></i>
               </th>
-              <th scope="col">Added Date 
-                <i *ngIf="!arrowState['created_datetime']" (click)="sort('asc','created_datetime')" class="bi bi-arrow-up"></i>
-                <i (click)="sort('desc','created_datetime')" *ngIf="arrowState['created_datetime']" class="bi bi-arrow-down"></i> 
-                </th>
+              <th scope="col">Added Date
+                <i *ngIf="!arrowState['created_datetime']" (click)="sort('asc','created_datetime')"
+                  class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','created_datetime')" *ngIf="arrowState['created_datetime']"
+                  class="bi bi-arrow-down"></i>
+              </th>
               <!-- <th scope="col">Status <i  *ngIf="!arrow" (click)="sort('asc','tpc_status')" class="bi bi-arrow-up"></i><i (click)="sort('desc','tpc_status')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
               <th scope="col">Action</th>
 
@@ -35,11 +39,12 @@
           <tbody>
 
             <ng-container *ngIf="(categoryList) as result">
-              <tr *ngFor='let item of result|customSort:directionValue:sortValue| paginate : {
-                            itemsPerPage: tableSize,
-                            currentPage: page,
-                            totalItems: count
-                          };let i=index'>
+              <tr *ngFor='let item of result | customSort:directionValue:sortValue
+                    |paginate : {
+                       itemsPerPage: tableSize,
+                       currentPage: page,
+                       totalItems: count
+                     }; let i=index'>
                 <td>{{getContinuousIndex(i)}}</td>
                 <td>{{item.category_name ?item.category_name:"NA" | titlecase }}</td>
                 <td>{{item.created_datetime| date:'mediumDate' | titlecase}}</td>
@@ -56,9 +61,11 @@
                     </button>
                   </ng-container> -->
                   <ng-container>
-                      <img src="../../../../assets/images/Edit.svg" class="icon-image"   routerLink="/task/update/{{item.id}}/{{page}}/{{tableSize}}" container="body" ngbTooltip="Edit" />
-                      <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.id)"/>
-                     
+                    <img src="../../../../assets/images/Edit.svg" class="icon-image"
+                      routerLink="/task/update/{{item.id}}/{{page}}/{{tableSize}}" container="body" ngbTooltip="Edit" />
+                    <img src="../../../../assets/images/Delete.svg" class="icon-image" container="body"
+                      ngbTooltip="Delete" (click)="open(item.id)" />
+
                   </ng-container>
 
                   <!-- <a routerLink="/task/update/{{item.id}}/{{page}}/{{tableSize}}"><i class="bi bi-pencil-square"  container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i></a>
@@ -90,7 +97,8 @@
     </pagination-controls>
     <div class="items-per-page-container">
       <div>Items per page</div>
-      <mat-select [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10" class="page-size">
+      <mat-select [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10"
+        class="page-size">
         <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
       </mat-select>
     </div>
@@ -118,60 +126,60 @@
     </div>
   </div>
   <div class="bg row mx-0 my-1">
-      <ng-container *ngIf="(categoryList) as result">
-        <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of result
+    <ng-container *ngIf="(categoryList) as result">
+      <div class="col-sm-12 col-md-6 main-col" *ngFor='let item of result
         |paginate : {
             itemsPerPage: tableSize,
             currentPage: page,
             totalItems: count
           }'>
 
-          <div class="card outer-card">
-            <div class="row py-1">
-              <div class="col-6 text-start">
-                <h6 class="card-subtitle">Template name</h6>
-                <div class="value-container">{{item.category_name|titlecase}}</div>
-              </div>
-              <div class="col-6 p-0 text-end">
-                <img src="../../../../assets/images/Edit.svg" class="icon-image" (click)='editCard(item.id
-    )' container="body" ngbTooltip="Edit" />
-                <img src="../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete"
-                  (click)="open(item.id
-    )" />
-              </div>
+        <div class="card outer-card">
+          <div class="row py-1">
+            <div class="col-6 text-start">
+              <h6 class="card-subtitle">Template name</h6>
+              <div class="value-container">{{item.category_name|titlecase}}</div>
             </div>
-            <div class="row ">
+            <div class="col-6 p-0 text-end">
+              <img src="../../../../assets/images/Edit.svg" class="icon-image" (click)='editCard(item.id
+    )' container="body" ngbTooltip="Edit" />
+              <img src="../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete"
+                (click)="open(item.id
+    )" />
+            </div>
+          </div>
+          <div class="row ">
 
-              <div class="col-6 text-start">
-                <h6 class="card-subtitle">Added date</h6>
-                <div class="value-container">{{item.created_datetime| date:'mediumDate'}}</div>
-              </div>
-              <!-- <div class="col-4 c-1">
+            <div class="col-6 text-start">
+              <h6 class="card-subtitle">Added date</h6>
+              <div class="value-container">{{item.created_datetime| date:'mediumDate'}}</div>
+            </div>
+            <!-- <div class="col-4 c-1">
                     <h6 class="card-subtitle">Status</h6>
                     <div class="value-container">{{item.tpc_status}}</div>
                 </div> -->
-            </div>
           </div>
         </div>
+      </div>
 
-        <div *ngIf="result.length === 0">
-          <app-generic-norecards></app-generic-norecards>
-        </div>
-      </ng-container>
+      <div *ngIf="result.length === 0">
+        <app-generic-norecards></app-generic-norecards>
+      </div>
+    </ng-container>
     <div class="pagination-container p-0 pt-2">
       <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
       </pagination-controls>
       <div class="items-per-page-container">
         <div>Items per page</div>
-        <mat-select [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10" class="page-size">
+        <mat-select [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10"
+          class="page-size">
           <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
         </mat-select>
       </div>
     </div>
     <div class="s-position">
       <ng-container>
-        <button routerLink="/task/add" type="button" mat-fab
-          class="createbtn-new mat-btn-s"><i class="fa fa-plus"></i>
+        <button routerLink="/task/add" type="button" mat-fab class="createbtn-new mat-btn-s"><i class="fa fa-plus"></i>
         </button>
       </ng-container>
     </div>

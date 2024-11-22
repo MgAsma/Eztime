@@ -83,11 +83,8 @@
 
   </div>
   <div class="pagination-container p-0 pt-2">
-    <!-- Pagination Controls (Center-Aligned) -->
     <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
     </pagination-controls>
-
-    <!-- Items Per Page Selector (Right-Aligned) -->
     <div class="items-per-page-container">
       <div>Items per page</div>
       <mat-select [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10"

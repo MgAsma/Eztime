@@ -13,24 +13,13 @@ import { environment } from 'src/environments/environment';
 })
 export class ProjectListComponent implements OnInit {
   BreadCrumbsTitle: any = 'Project list';
-  currentIndex: any;
   allProjectList: any = [];
   page = 1;
   count = 0;
-  tableSize = 10;
-  tableSizes = [10, 25, 50, 100];
+  tableSize = 5;
+  tableSizes = [5, 10, 25, 50, 100];
+  currentIndex: any;
   term: any = '';
-  slno: any;
-  project: any;
-  client: any;
-  reporter: any;
-  approver: any;
-  start_date: any;
-  end_date: any;
-  status: any;
-  task: any;
-  action: any;
-  selectedId: any;
   enabled: boolean = true;
   permissions: any = [];
   user_id: string;
@@ -68,84 +57,35 @@ export class ProjectListComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.enabled = true;
     if(this.userRole==='Employee'){
-      this.baseUrl = `${'organization'}=${this.orgId}&${'employee_id'}=${this.user_id}`
+      this.baseUrl = `?${'organization'}=${this.orgId}&${'employee_id'}=${this.user_id}&page=${1}&page_size=${5}`
     } else{
-      this.baseUrl = `${'organization'}=${this.orgId}&${'created_by'}=${this.user_id}`
+      this.baseUrl = `?${'organization'}=${this.orgId}&${'created_by'}=${this.user_id}&page=${1}&page_size=${5}`
     }
-    // this.getUserControls()
-    this.getProject();
+    this.getProject(this.baseUrl);
   }
-  filterSearch() {
-    // this.api.getProjectDetails(`organization_id=${this.orgId}&search=${this.term}`).subscribe((data: any) => {
-    //   if (data) {
-    //     this.allProjectList = data
-    //     // //console.log( this.allProjectList,"ALL")
-    //     // const noOfPages: number = data['result'].pagination.number_of_pages
-    //     // this.count = noOfPages * this.tableSize;
-    //     // this.page = data['result'].pagination.current_page;
-    //   }
-
-    // }, ((error: any) => {
-    //   this.api.showError(error.error.error.message)
-
-    // })
-
-    // )
-  }
-  getUserControls() {
-    this.api.getUserRoleById(`user_id=${this.user_id}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res: any) => {
-      if (res.status_code !== '401') {
-        this.common_service.permission.next(res['data'][0]['permissions'])
-        //console.log(this.common_service.permission,"PERMISSION")
-      }
-      else {
-        this.api.showError("ERROR !")
-      }
-      //console.log(res,'resp from yet');
-
-    }, (error => {
-      this.api.showError(error.error.error.message)
-    })
-
-    )
-
-    this.common_service.permission.subscribe(res => {
-      const accessArr = res
-      if (accessArr.length > 0) {
-        accessArr.forEach(element => {
-          if (element['PROJECTS']) {
-            this.permissions = element['PROJECTS']
-          }
-
-        });
-
-      }
-
-    })
-  }
-
   
-  getProject() {
-    let params = {
-      page_number: this.page,
-      data_per_page: this.tableSize,
-      organization_id: this.orgId,
-      // search_key: this.term,
-      user_id: this.user_id
-    }
-
-    this.api.getProjectDetails(this.baseUrl).subscribe((data: any) => {
-      this.allProjectList = data;
-      console.log( data,"ALL")
-      // const noOfPages: number = data['result'].pagination.number_of_pages
-      // this.count = noOfPages * this.tableSize;
-      // this.page = data['result'].pagination.current_page;
+  getProject(params:any) {
+    this.api.getData(`${environment.live_url}/${environment.project}/${params}`).subscribe((data: any) => {
+      // console.log( data,"ALL")
+      this.allProjectList = data.results;
+      const noOfPages: number = data?.['total_pages']
+      this.count = noOfPages * this.tableSize;
+      this.count = data?.['total_no_of_record']
+      this.page = data?.['current_page'];
     }, ((error: any) => {
-      this.api.showError(error.error.error.message)
-
+      this.api.showError(error.error.message)
     })
 
     )
+  }
+
+  getFilterBaseUrl(): string {
+    if(this.userRole==='Employee'){
+      return `?${'organization'}=${this.orgId}&${'employee_id'}=${this.user_id}&page=${this.page}&page_size=${this.tableSize}`
+    } else{
+      return `?${'organization'}=${this.orgId}&${'created_by'}=${this.user_id}&page=${this.page}&page_size=${this.tableSize}`
+    }
+   
   }
 
   delete(id: any) {
@@ -168,21 +108,39 @@ export class ProjectListComponent implements OnInit {
   editCard(id) {
     this.router.navigate([`/project/update/${id}`])
   }
+  filterSearch() {
+   
+  }
+  
   onTableDataChange(event: any) {
     this.page = event;
-    this.getProject();
-  }
-  onTableSizeChange(event: any): void {
-    this.tableSize = Number(event.target.value);
-    this.count = 0
-    // Calculate new page number
-    const calculatedPageNo = this.count / this.tableSize
-
-    if (calculatedPageNo < this.page) {
-      this.page = 1
+    if (this.term) {
+      let query = this.getFilterBaseUrl()
+      query += `&search=${this.term}`
+      // console.log(this.term)
+      this.getProject(query);
+    } else {
+      // console.log(this.term,'no')
+      this.getProject(this.getFilterBaseUrl());
     }
-    this.getProject();
   }
+
+  onTableSizeChange(event: any): void {
+    if (event) {
+      this.page = 1
+      this.tableSize = Number(event.value);
+      if (this.term) {
+        let query = this.getFilterBaseUrl()
+        query += `&search=${this.term}`
+        // console.log(this.term)
+        this.getProject(query);
+      } else {
+        // console.log(this.term,'no')
+        this.getProject(this.getFilterBaseUrl());
+      }
+    }
+  }
+
   open(content) {
     if (content) {
       const modelRef = this.modalService.open(GenericDeleteComponent, {

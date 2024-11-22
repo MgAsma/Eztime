@@ -76,18 +76,7 @@ export class DepartmentListComponent implements OnInit {
       }
     )
   }
-  filterSearch() {
-    if (this.term) {
-      let query = this.getFilterBaseUrl()
-      query += `&search=${this.term}`
-      // console.log(this.term)
-      this.getAllDepartmentList(query);
-    } else {
-      // console.log(this.term,'no')
-      this.getAllDepartmentList(this.getFilterBaseUrl());
-    }
-  }
-
+  
   delete(id: any) {
     this.api.deleteDepartmentList(id).subscribe((data: any) => {
       this.ngOnInit();
@@ -108,6 +97,22 @@ export class DepartmentListComponent implements OnInit {
   editCard(id) {
     this.router.navigate([`/department/update/${id}/${this.page}/${this.tableSize}`])
   }
+
+  filterSearch() {
+    // console.log('this.term.trim()',this.term.trim())
+    if (this.term) {
+      if (this.term.length >= 3) {
+        console.log(this.term.length);
+        let query = this.getFilterBaseUrl()
+        query += `&search=${this.term}`
+        this.getAllDepartmentList(query);
+      }
+
+    } else {
+      this.getAllDepartmentList(this.getFilterBaseUrl());
+    }
+  }
+
   onTableDataChange(event: any) {
     this.page = event;
     if (this.term) {
@@ -123,7 +128,7 @@ export class DepartmentListComponent implements OnInit {
 
   onTableSizeChange(event: any): void {
     if (event) {
-
+      this.page = 1;
       this.tableSize = Number(event.value);
       if (this.term) {
         let query = this.getFilterBaseUrl()
