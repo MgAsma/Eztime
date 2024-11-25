@@ -51,36 +51,10 @@ currentIndex: any;
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.user_id = sessionStorage.getItem('user_id')
     this.org_id = sessionStorage.getItem('org_id') 
-  this.getOrgDetails(`?page=${1}&page_size=${5}`)
-
-    
-    // const accessAction = JSON.parse(sessionStorage.getItem('permissionArr'));
-
-    // if (accessAction.length) {
-    //   accessAction.forEach((res) => {
-    //  //  console.log(res.module_name, res.permissions, "RESP");
-    //     if (res.module_name === 'ORGANIZATION') {
-    //       this.permissions = res.permissions['ORGANIZATION'];
-    //    //   console.log(this.permissions, "Permissions for DEPARTMENT");
-    //     }
-    //   });
-    // }
-    //this.getUserControls()
+    this.getOrgDetails(`?page=${1}&page_size=${5}`)
   }
  
-  // arrow:boolean=false
-  // sort(direction:any,value:any){
-  //   if(direction=='asc'){
-  //     this.arrow=true
-  //     this.directionValue= direction
-  //     this.sortValue= value
-  //   }
-  //   else{
-  //     this.arrow=false
-  //     this.directionValue= direction
-  //     this.sortValue= value
-  //   }
-  // } 
+  
   sort(direction: string, column: string) {
     // Reset the state of all columns except the one being sorted
     Object.keys(this.arrowState).forEach(key => {
@@ -108,36 +82,35 @@ currentIndex: any;
       this.api.showError(error?.error?.message)
     }))
   }
-  filterSearch(){
-    this.api.getData(`${environment.live_url}/${environment.organization}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE`).subscribe((res:any)=>{
-      if(res){
-        this.organizationData= res.result.data;
-        const noOfPages:number = res['result'].pagination.number_of_pages
-        this.count  = noOfPages * this.tableSize;
-        this.page = res['result'].pagination.current_page;
-      }
-    },((error:any)=>{
-      this.api.showError(error.error.error.message)
-    }))
+  filterSearch(event){
+    const input = event?.target?.value?.trim() || ''; // Fallback to empty string if undefined
+    if (input && input.length >= 3) {
+      this.term = input;
+      const query = `?page=1&page_size=${this.tableSize}&search=${this.term}`;
+      this.getOrgDetails(query);
+    } if(!input) {
+      const query = `?page=${this.page}&page_size=${this.tableSize}`;
+      this.getOrgDetails(query);
+    }
   }
   onTableDataChange(event:any){
     this.page = event;
-    this.getOrgDetails(`?page=${this.page}&page_size=${this.tableSize}`)
+    let query = `?page=${this.page}&page_size=${this.tableSize}`
+    if(this.term){
+      query +=`&search=${this.term}`
+    }
+    this.getOrgDetails(query)
   }  
   onTableSizeChange(event:any): void {
     if(event){
      
     this.tableSize = Number(event.value);
-   
-    // this.count = 0
-    // // Calculate new page number
-    // const calculatedPageNo = this.count / this.tableSize
+    let query = `?page=${1}&page_size=${this.tableSize}`
+    if(this.term){
+      query +=`&search=${this.term}`
+    }
     
-    // if(calculatedPageNo < this.page){
-    //   this.page = 1
-    // }
-   
-    this.getOrgDetails(`?page=${1}&page_size=${this.tableSize}`)
+    this.getOrgDetails(query)
     }
   } 
   delete(id:any){
@@ -145,12 +118,17 @@ currentIndex: any;
       if(data){
         this.organizationData = []
         this.api.showWarning('Organization deleted successfully!!')
-        await this.ngOnInit()
+        let query = `?page=${1}&page_size=${this.tableSize}`
+        if(this.term){
+          query +=`&search=${this.term}`
+        }
+        
+        this.getOrgDetails(query)
       }
       
     },(error =>{
-      this.api.showError(error.error.error.message)
-    })) 
+      this.api.showError(error?.error?.message)
+    }))
   }
   editCard(id){
     this.router.navigate([`/organization/updateOrg/${id}`])

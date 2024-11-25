@@ -145,43 +145,44 @@ export class ManagerReviewComponent implements OnInit {
   
   }
   tabLeaveSection(data){
-    if(data.tab.textLabel === 'Approved'){
-      this.selectedLeaveTab = 'Approved'
-      this.selectedTimesheetTabId = 2
-    }
-    else if(data.tab.textLabel === 'Pending' ){
+    if(data.tab.textLabel === 'Pending' ){
       this.selectedLeaveTab = 'Pending' 
       this.selectedLeaveTabId = 1
+      
     }
+    else if(data.tab.textLabel === 'Approved'){
+      this.selectedLeaveTab = 'Approved'
+      this.selectedLeaveTabId = 2
+    }
+   
     else if(data.tab.textLabel === 'Declined'){
       this.selectedLeaveTab = 'Declined'
       this.selectedLeaveTabId = 3
     }
-    let query:string = `?organization=${this.orgId}&status=${this.selectedTimesheetTabId}&page=${1}&page_size=${this.tableSize}`;
-   
+    let query = `?organization=${this.orgId}&status=${this.selectedLeaveTabId}&page=${1}&page_size=${this.tableSize}`;
     this.getAllLeaves(query)
-
- 
-  
   }
   openDialogue(content, status) {
+    const title = status.toLowerCase()
     if (content) {
       const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: <any>'sm'
-        ,
+        size: status === 'Decline' ? <any>'md' : 'sm',
         backdrop: true,
         centered: true
       });
-      modelRef.componentInstance.title = `Are you sure you want to ${status}`;
+      modelRef.componentInstance.title = `Are you sure you want to ${title}`;
       modelRef.componentInstance.message = `${status}`;
       modelRef.componentInstance.status.subscribe(resp => {
-        if (resp == "ok") {
-          this.updateTimesheetStatus(content, status)
-          modelRef.close();
-        }
-        else {
-          modelRef.close();
-        }
+        modelRef.componentInstance.comments?.subscribe(comments => {
+          if (resp == "ok") {
+            this.updateTimesheetStatus(content, status,comments)
+            modelRef.close();
+          }
+          else {
+            modelRef.close();
+          }
+        })
+       
       })
 
     }
@@ -189,8 +190,8 @@ export class ManagerReviewComponent implements OnInit {
   }
   onTableDataChange(event:any){
     this.page = event;
-    const leaveStatusId = this.selectedLeaveTabId || 1
-    const timesheetTabId = this.selectedTimesheetTabId
+    let leaveStatusId = this.selectedLeaveTabId || 1
+    let timesheetTabId = this.selectedTimesheetTabId || 1
     if(this.selectedSection === 'lists'){
       this.count = 0;
       this.getEmployeeData(`page=${this.page}&page_size=${this.tableSize}`)
@@ -207,13 +208,14 @@ export class ManagerReviewComponent implements OnInit {
      
     this.tableSize = Number(event.value);
    
-    const leaveStatusId = this.selectedLeaveTabId || 1
-    const timesheetTabId = this.selectedTimesheetTabId
+    let leaveStatusId = this.selectedLeaveTabId || 1
+    let timesheetTabId = this.selectedTimesheetTabId || 1
     if(this.selectedSection === 'lists'){
       this.count = 0;
       this.getEmployeeData(`page=${1}&page_size=${this.tableSize}`)
     }else if(this.selectedSection === 'leaves'){
       this.count = 0;
+      alert(leaveStatusId)
       this.getAllLeaves(`?status=${leaveStatusId}&organization=${this.orgId}&page=${1}&page_size=${this.tableSize}`)
     }else if(this.selectedSection === 'timesheets'){
       this.count = 0;
@@ -221,29 +223,32 @@ export class ManagerReviewComponent implements OnInit {
     }
     }
   } 
-  open(content, status) {
+  open(content, status:string) {
+    const title = status.toLowerCase();
     if (content) {
       const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: <any>'sm'
-        ,
+        size: status === 'Decline' ? <any>'md' : 'sm',
         backdrop: true,
         centered: true
       });
-      modelRef.componentInstance.title = `Are you sure you want to ${status}`;
+      modelRef.componentInstance.title = `Are you sure you want to ${title}`;
       modelRef.componentInstance.message = `${status}`;
       modelRef.componentInstance.status.subscribe(resp => {
-        if (resp == "ok") {
-          this.updateStatus(content, status)
-          modelRef.close();
-        }
-        else {
-          modelRef.close();
-        }
+        modelRef.componentInstance.comments.subscribe(comments => {
+          if (resp == "ok") {
+            this.updateStatus(content, status,comments)
+            modelRef.close();
+          }
+          else {
+            modelRef.close();
+          }
+        })
+       
       })
 
     }
   }
-  updateTimesheetStatus(content, status) {
+  updateTimesheetStatus(content, status,comments?) {
     const confirmText = status === 'Approve' ? 'approved' : 'declined'
     let date = new Date()
     let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
@@ -257,16 +262,33 @@ export class ManagerReviewComponent implements OnInit {
       rejected_by: status === 'Decline' ? this.user_id :null,
       rejected_on: status === 'Decline' ? formattedDate :null 
   }
+  if(status === 'Approve'){
     this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
       if (res) {
         this.api.showSuccess(`Timesheet ${confirmText} successfully`)
-        this.getAllTimesheets(`?organization=${this.orgId}&status=1`)
+        this.getAllTimesheets(`?organization=${this.orgId}&status=1&page=${1}&page_size=${10}`)
       }
     }, (error => {
       this.api.showError(error?.error?.message)
     }))
+  }if(status === 'Decline'){
+    const data = {
+      timesheet_id: content.id,
+      comment: comments,
+      status:3
+    }
+  this.api.postData(`${environment.live_url}/${environment.timesheet_comment}/`,data).subscribe(res => {
+    if (res) {
+      this.api.showSuccess(`Timesheet ${confirmText} successfully`)
+      this.getAllTimesheets(`?organization=${this.orgId}&status=1&page=${1}&page_size=${10}`)
+    }
+  }, (error => {
+    this.api.showError(error?.error?.message)
+  }))
   }
-  updateStatus(content, status) {
+   
+  }
+  updateStatus(content, status,comments) {
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
     let date = new Date()
     let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
@@ -282,16 +304,33 @@ export class ManagerReviewComponent implements OnInit {
       rejected_by: status === 'Decline' ? this.user_id :null,
       rejected_on: status === 'Decline' ? formattedDate :null
   }
-  
+   if(status === 'Approve'){
     this.api.updateData(`${environment.live_url}/${environment.update_leave_details}/`,data).subscribe(res => {
 
       if (res) {
         this.api.showSuccess(`Leave ${confirmText} successfully`)
-        this.getAllLeaves(`?status=1&organization=${this.orgId}`)
+        this.getAllLeaves(`?status=1&organization=${this.orgId}&page=${1}&page_size=${10}`)
       }
 
     }, ((error: any) => {
       this.api.showError(error?.error?.message)
     }))
+   }if(status === 'Decline'){
+   const data ={
+    comment: comments,
+    leave_id: content.id,
+    status:3
+    }
+    this.api.postData(`${environment.live_url}/${environment.leave_comment}/`,data).subscribe(res => {
+      if (res) {
+        this.api.showSuccess(`Leave ${confirmText} successfully`)
+        this.getAllLeaves(`?status=1&organization=${this.orgId}&page=${1}&page_size=${10}`)
+      }
+
+    }, ((error: any) => {
+      this.api.showError(error?.error?.message)
+    }))
+   }
+   
   }
 }

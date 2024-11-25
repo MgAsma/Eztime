@@ -66,7 +66,9 @@ export const environment = {
   department:`department`,
   user:`user`,
   holiday_calender:`upload-holiday-calender`,
-  project_template:`project_category`
+  project_template:`project_category`,
+  timesheet_comment:`timesheet-comment`,
+  leave_comment:`leave-comment`
 };
 
 /*

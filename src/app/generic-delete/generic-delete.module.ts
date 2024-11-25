@@ -4,6 +4,8 @@ import { GenericDeleteComponent } from './generic-delete.component';
 import { GenericDeleteRoutingModule } from './generic-delete-routing.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +15,10 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     GenericDeleteRoutingModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    FormsModule,
+    SharedModule,
+    ReactiveFormsModule
   ],
   exports:[
     GenericDeleteComponent,

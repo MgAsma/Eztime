@@ -128,15 +128,14 @@ export class MonthYetApproveComponent implements OnInit {
 
   
   openDialogue(content?, status?) {
-    
+    const statusText = status === 'Decline' ? 'decline' : 'approve' 
       
       const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: <any>'sm'
-        ,
+        size: status === 'Decline' ? <any>'md' : <any>'sm',
         backdrop: true,
         centered: true
       });
-      modelRef.componentInstance.title = `Are you sure you want to ${status}`;
+      modelRef.componentInstance.title = `Are you sure you want to ${statusText}`;
       modelRef.componentInstance.message = `${status}`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {

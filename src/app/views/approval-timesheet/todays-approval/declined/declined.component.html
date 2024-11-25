@@ -2,7 +2,7 @@
   <div class="bg">
     <div class="row">
       <div class="col px-0">
-        <table class="table table-list">
+        <table class="table table-list" *ngIf="declinedAll?.length">
           <thead>
             <tr>
               <th scope="col">S.No</th>
@@ -13,7 +13,7 @@
               <!-- <th scope="col">Saved On</th> -->
               <th scope="col" class="text-center">Rejected On</th>
               <th scope="col" class="text-center">Rejected By</th>
-            
+              <th scope="col" class="text-center">Comments</th>
               <!-- <th scope="col">Action</th> -->
             </tr>
           </thead>
@@ -48,27 +48,15 @@
                 <td class="text-center">{{(item.rejected_on | date) || 'NA'}}</td>
                 <td class="text-center">{{item.rejected_by_name?item.rejected_by_name:'NA'}}</td>
               
-                <!-- <td>
-                        <ng-container *ngFor="let approval of accessConfig">
-                            <span *ngIf="approval == 'DELETE'">
-                                <button  style="border: none;background-color: inherit;" (click)="open(item)"> <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>
-                            </span>
-                            <span *ngIf="approval == 'ACCEPT'">
-                                <button style="border: none;background-color: inherit;" (click)="openDialogue(item.id,'APPROVED')"><i class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>
-                            </span>
-                            <span *ngIf="approval == 'REJECT'">
-                                <button style="border: none;background-color: inherit;" (click)="openDialogue(item.id,'DECLINED')"><i class="bi bi-x-circle" container="body" ngbTooltip="Reject" style="color:red"></i></button>
-                            </span>
-                        </ng-container>
-                    </td>   -->
+                <td class="text-center">{{item.comment || 'NA'}}</td>
               </tr>
-              <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="result.length === 0">
-                No records found!
-              </div>
+            
             </ng-container>
           </tbody>
         </table>
-
+        <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="declinedAll?.length === 0">
+          No records found!
+        </div>
       </div>
     </div>
 
@@ -108,18 +96,7 @@
               </div>
             </div>
             <div class="col-5">
-              <!-- <ng-container *ngFor="let approval of accessConfig">
-                      <span *ngIf="approval == 'DELETE'" style="float: right;">
-                          <button type="button" class="toolbar-btn "   (click)="open(item)"  ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button>
-                        
-                        </span>
-                        <span *ngIf="approval == 'ACCEPT'" style="float: right;">
-                            <button type="button" class="toolbar-btn " (click)="openDialogue(item.id,'APPROVED')"><i class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>
-                        </span>
-                        <span *ngIf="approval == 'REJECT'" style="float: right;">
-                            <button type="button" class="toolbar-btn " (click)="openDialogue(item.id,'DECLINED')"><i class="bi bi-x-circle" container="body" ngbTooltip="Reject" style="color:red"></i></button>
-                        </span>
-                  </ng-container>   -->
+             
             </div>
           </div>
 
@@ -218,6 +195,21 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-12">
+                      <h6 class="card-subtitle">Comments</h6>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 val-r">
+                      {{ item['comments'] || 'NA' }}
+                    </div>
+                  </div>
+                </div>
+               
               </div>
             </div>
           </div>
