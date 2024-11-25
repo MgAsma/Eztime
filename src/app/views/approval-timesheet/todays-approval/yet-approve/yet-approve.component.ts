@@ -152,14 +152,14 @@ export class YetApproveComponent implements OnInit {
   }
   openDialogue(content, status) {
     if (content) {
-      // const statusText = status === 'DECLINED' ? 'decline' : 'approve'
-      // const confirmText = status === 'APPROVED' ? 'Approve' : 'Decline'
+      const statusText = status === 'Decline' ? 'decline' : 'approve'
+      
       const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: <any>'sm',
+        size: status === 'Decline' ? <any>'md' : <any>'sm' ,
         backdrop: true,
         centered: true
       });
-      modelRef.componentInstance.title = `Are you sure you want to ${status}`;
+      modelRef.componentInstance.title = `Are you sure you want to ${statusText}`;
       modelRef.componentInstance.message = `${status}`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {

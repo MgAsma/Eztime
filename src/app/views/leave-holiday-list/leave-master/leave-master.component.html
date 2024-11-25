@@ -3,7 +3,7 @@
       
         <div class="row px-3 pt-2 d-flex justify content-center align-items-center">
             <div class="col-sm-4 mx-2 search-div">
-              <input type="search" (input)="filterSearch()" class="form-control p-2 sizeinput" [(ngModel)]="term"
+              <input type="search" (input)="filterSearch($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
                 placeholder="Search by leave type" aria-describedby="emailHelp" autocomplete="off">
               <i class="bi bi-search" id="search-icon-tab" ></i>
             </div>
@@ -86,12 +86,11 @@
 
 <div class="container-wrapper mobileView">
     <div class="row mx-1 my-2">
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <!-- <h1>Master Leave Types</h1> -->
-        </div>
-        <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-            <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by leave type"aria-describedby="emailHelp"  autocomplete="off">
-            <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
+        
+        <div class="col-sm-6 col-md-6 mb-1 search-div">
+          <input type="search" (input)="filterSearch($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+            placeholder="Search by leave type" aria-describedby="emailHelp" autocomplete="off">
+          <i class="bi bi-search" id="search-icon-tab" ></i>
         </div>
     </div>
     <div class="bg">

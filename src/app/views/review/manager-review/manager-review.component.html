@@ -208,6 +208,7 @@
                 <th>From Date</th>
                 <th>To Date</th>
                 <th>Reason</th>
+                <th>Comments</th>
               </tr>
             </thead>
             <tbody>
@@ -223,6 +224,7 @@
                 <td>{{ leave.from_date }}</td>
                 <td>{{ leave.to_date }}</td>
                 <td>{{ leave.message }}</td>
+                <td>{{ leave.comment || 'NA' }}</td>
               </tr>
             </tbody>
           </table>
@@ -422,6 +424,7 @@
                 <th>Project Name</th>
                 <th>Tasks</th>
                 <th>Hours</th>
+                <th>Comments</th>
               </tr>
             </thead>
             <tbody>
@@ -456,7 +459,9 @@
                 <td *ngIf="timesheet?.tasks?.length === 0">
                   {{'NA'}}
                 </td>
-               
+                <td>
+                  {{timesheet.comment || 'NA'}}
+                </td>
               </tr>
              
             </ng-container>

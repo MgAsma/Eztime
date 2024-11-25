@@ -65,24 +65,24 @@ export class LeaveMasterComponent implements OnInit {
     this.organization_id = JSON.parse(sessionStorage.getItem('organization_id'))
     this.getLeaveType(`?organization=${this.organization_id}&page=${this.page}&page_size=${this.tableSize}`);
   }
-  filterSearch(){
-    // this.api.getData(`${environment.live_url}/${environment.master_leave_list}?search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&organization_id=${this.orgId}`).subscribe((res:any)=>{
-    //   if(res){
-    //     this.leaveMasterList= res.result.data;
-    //     const noOfPages:number = res['result'].pagination.number_of_pages
-    //     this.count  = noOfPages * this.tableSize
-    //     this.page=res['result'].pagination.current_page;
+  filterSearch(event){
+    const input = event?.target?.value?.trim() || ''; // Fallback to empty string if undefined
+    if (input && input.length >= 3) {
+      this.term = input;
+      const query = `?organization=${this.organization_id}&page=1&page_size=${this.tableSize}&search=${this.term}`;
+      this.getLeaveType(query);
+    } if(!input) {
+      const query = `?organization=${this.organization_id}&page=${this.page}&page_size=${this.tableSize}`;
+      this.getLeaveType(query);
+    }
 
-    //   }
-    // },((error:any)=>{
-    //   this.api.showError(error.error.error.message)
-    // }))
+  
   }
 
   
-  getLeaveType(query){
+  getLeaveType(params){
   
-    this.api.getData(`${environment.live_url}/${environment.leave_master}/${query}`).subscribe((data:any)=>{
+    this.api.getData(`${environment.live_url}/${environment.leave_master}/${params}`).subscribe((data:any)=>{
       this.leaveMasterList= data?.['results'];
       const noOfPages:number = data.total_pages
       this.count  = noOfPages * this.tableSize;
@@ -99,7 +99,11 @@ export class LeaveMasterComponent implements OnInit {
     this.api.delete(`${environment.live_url}/${environment.leave_master}/${id}/`).subscribe((data:any)=>{
       this.enabled = true
       this.api.showWarning('Deleted successfully!')
-      this.getLeaveType(`?organization=${this.organization_id}&page=${this.page}&page_size=${this.tableSize}`);
+      let query = `?organization=${this.organization_id}&page=${this.page}&page_size=${this.tableSize}`
+      if(this.term){
+        query +=`&search=${this.term}`
+      }
+      this.getLeaveType(query);
 
     },error=>{
       this.api.showError(error?.error?.message);
@@ -134,7 +138,11 @@ export class LeaveMasterComponent implements OnInit {
   }
   onTableDataChange(event:any){
     this.page = event;
-    this.getLeaveType(`?organization=${this.organization_id}&page=${this.page}&page_size=${this.tableSize}`);
+    let query = `?organization=${this.organization_id}&page=${this.page}&page_size=${this.tableSize}`
+    if(this.term){
+      query +=`&search=${this.term}`
+    }
+    this.getLeaveType(query);
   }  
   onTableSizeChange(event:any): void {
     this.tableSize = Number(event.value);
@@ -144,7 +152,11 @@ export class LeaveMasterComponent implements OnInit {
     if(calculatedPageNo < this.page){
       this.page = 1
     }
-    this.getLeaveType(`?organization=${this.organization_id}&page=${this.page}&page_size=${this.tableSize}`);
+    let query = `?organization=${this.organization_id}&page=${this.page}&page_size=${this.tableSize}`
+    if(this.term){
+      query +=`&search=${this.term}`
+    }
+    this.getLeaveType(query);
   }  
   open(content) {
     if(content){

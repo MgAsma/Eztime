@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class GenericDeleteComponent implements OnInit {
 @Output() status: EventEmitter<any> = new EventEmitter<any>();
+@Output() comments: EventEmitter<any> = new EventEmitter<any>();
 @Input()title:any;
 @Input()message:any;
 
@@ -18,6 +19,10 @@ constructor(private fb:FormBuilder){}
       this.declineForm.markAllAsTouched()
     }else{
       this.status.emit(data)
+      if(data === 'ok' && this.message === 'Decline'){
+        this.comments.emit(this.declineForm.value.comments)
+      }
+     
     }
 
   }

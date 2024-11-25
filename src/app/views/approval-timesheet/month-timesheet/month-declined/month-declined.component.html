@@ -4,7 +4,7 @@
   <div class="bg">
     <div class="row">
       <div class="col">
-        <table class="table table-hover table-list" *ngIf="declinedAll.length">
+        <table class="table table-hover table-list" *ngIf="declinedAll?.length">
           <thead>
             <tr>
               <th scope="col">S.No</th>
@@ -15,7 +15,7 @@
               <th scope="col" class="text-center">Saved On</th>
               <th scope="col" class="text-center">Rejected On</th>
               <th scope="col" class="text-center">Rejected By</th>
-              
+              <th scope="col" class="text-center">Comments</th>
             </tr>
           </thead>
           <tbody>
@@ -49,14 +49,14 @@
                 <!-- <td class="text-center">{{items.created_by_id?items.created_by_id:"NA"|titlecase}}</td> -->
                 <td class="text-center">{{items.rejected_on| date :'mediumDate'}}</td>
                 <td class="text-center">{{items.rejected_by_name?items.rejected_by_name:'NA'|titlecase}}</td>
-                
+                <td class="text-center">{{items.comment || 'NA'}}</td>
               
               </tr>
              
             </ng-container>
           </tbody>
         </table>
-        <div *ngIf="declinedAll.length === 0" class="text-center">
+        <div *ngIf="declinedAll?.length === 0" class="text-center">
           No records found!
         </div>
 
