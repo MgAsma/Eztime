@@ -624,7 +624,7 @@ export class UpdateProjectComponent implements OnInit {
         }));
         let data = {
           organization: this.updateForm.value.organization,
-          created_by: this.updateForm.value.user_id,
+          updated_by: this.updateForm.value.user_id,
           client: this.updateForm.value.client_id,
           project_name: this.updateForm.value.project_name,
           start_date: this.datepipe.transform(startDate, 'yyyy-MM-dd'),

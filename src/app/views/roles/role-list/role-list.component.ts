@@ -78,15 +78,16 @@ export class RoleListComponent implements OnInit {
   getFilterBaseUrl(): string {
     return `?organization_id=${this.org_id}&page=${this.page}&page_size=${this.tableSize}`;
   }
-  filterSearch(){
-    if (this.term) {
-      let query = this.getFilterBaseUrl()
-      query += `&search=${this.term}`
-      // console.log(this.term)
-      this.getAllDesignations(query);
-    } else {
-      // console.log(this.term,'no')
-      this.getAllDesignations(this.getFilterBaseUrl());
+  filterSearch(event:any){
+    this.term = event.target.value?.trim();
+    if (this.term &&this.term.length >= 3) {
+        this.page = 1;
+        let query = this.getFilterBaseUrl()
+        query += `&search=${this.term}`
+        this.getAllDesignations(query);
+      }
+       else if(!this.term) {
+        this.getAllDesignations(this.getFilterBaseUrl());
     }
   }
  

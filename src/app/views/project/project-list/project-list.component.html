@@ -1,9 +1,9 @@
 <div class="container-wrapper webView">
   <div class="row pb-3">
     <div class="col-sm-4 search-div">
-      <input type="search" (input)="filterSearch()" class="form-control p-2 sizeinput" [(ngModel)]="term"
+      <input type="search" (input)="filterSearch($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
         placeholder="Search by project/client" aria-describedby="emailHelp" autocomplete="off">
-      <i class="bi bi-search" id="search-icon-tab" (click)="filterSearch()"></i>
+      <i class="bi bi-search" id="search-icon-tab"></i>
     </div>
     <div class="col-sm"></div>
     <div class="col-md-3 col-lg-3 p-1 text-end create-buttons">
@@ -135,9 +135,9 @@
       <!-- <h1 class="mx-3">Project list</h1> -->
     </div>
     <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-      <input type="text" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by project/client"
+      <input type="text" class="form-control py-3 px-4" (input)="filterSearch($event)" [(ngModel)]="term" placeholder="Search by project/client"
         aria-describedby="emailHelp" autocomplete="off">
-      <i class="bi bi-search" id="search-icon" (click)="filterSearch()"></i>
+      <i class="bi bi-search" id="search-icon"></i>
     </div>
   </div>
   <div class="bg row mx-0 my-1">

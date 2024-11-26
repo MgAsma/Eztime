@@ -98,18 +98,16 @@ export class DepartmentListComponent implements OnInit {
     this.router.navigate([`/department/update/${id}/${this.page}/${this.tableSize}`])
   }
 
-  filterSearch() {
-    // console.log('this.term.trim()',this.term.trim())
-    if (this.term) {
-      if (this.term.length >= 3) {
-        console.log(this.term.length);
+  filterSearch(event:any) {
+    this.term = event.target.value?.trim();
+    if (this.term &&this.term.length >= 3) {
+        this.page = 1;
         let query = this.getFilterBaseUrl()
         query += `&search=${this.term}`
         this.getAllDepartmentList(query);
       }
-
-    } else {
-      this.getAllDepartmentList(this.getFilterBaseUrl());
+       else if(!this.term) {
+        this.getAllDepartmentList(this.getFilterBaseUrl());
     }
   }
 

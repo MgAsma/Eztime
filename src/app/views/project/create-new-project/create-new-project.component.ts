@@ -188,7 +188,6 @@ export class CreateNewProjectComponent implements OnInit {
         let data = [];
         res.forEach((element:any) => {
           data.push({ 'first_name': element.first_name, 'last_name': element?.last_name || '', 'id': element.id });
-          
         });
         // console.log(data,'ttttttttttttttt')
         this.allManager = data;

@@ -108,8 +108,17 @@ export class ProjectListComponent implements OnInit {
   editCard(id) {
     this.router.navigate([`/project/update/${id}`])
   }
-  filterSearch() {
-   
+  filterSearch(event:any) {
+    this.term = event.target.value?.trim();
+    if (this.term &&this.term.length >= 3) {
+        this.page = 1;
+        let query = this.getFilterBaseUrl()
+        query += `&search=${this.term}`
+        this.getProject(query);
+      }
+       else if(!this.term) {
+        this.getProject(this.getFilterBaseUrl());
+    }
   }
   
   onTableDataChange(event: any) {

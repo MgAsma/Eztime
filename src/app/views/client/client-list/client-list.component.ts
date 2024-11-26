@@ -68,15 +68,16 @@ export class ClientListComponent implements OnInit {
     this.enabled = true
   }
 
-    filterSearch() {
-    if (this.term) {
-      let query = this.getFilterBaseUrl()
-      query += `&search=${this.term}`
-      // console.log(this.term)
-      this.getNewClients(query);
-    } else {
-      // console.log(this.term,'no')
-      this.getNewClients(this.getFilterBaseUrl());
+    filterSearch(event:any) {
+      this.term = event.target.value?.trim();
+    if (this.term &&this.term.length >= 3) {
+        this.page = 1;
+        let query = this.getFilterBaseUrl()
+        query += `&search=${this.term}`
+        this.getNewClients(query);
+      }
+       else if(!this.term) {
+        this.getNewClients(this.getFilterBaseUrl());
     }
   }
     getFilterBaseUrl(): string {

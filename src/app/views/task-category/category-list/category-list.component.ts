@@ -95,8 +95,17 @@ export class CategoryListComponent implements OnInit {
   editCard(id){
     this.router.navigate([`/task/update/${id}/${this.page}/${this.tableSize}`])
   }
-  filterSearch(){
-   
+  filterSearch(event:any){
+    this.term = event.target.value?.trim();
+    if (this.term &&this.term.length >= 3) {
+        this.page = 1;
+        let query = this.getFilterBaseUrl()
+        query += `&search=${this.term}`
+        this.getCategory(query);
+      }
+       else if(!this.term) {
+        this.getCategory(this.getFilterBaseUrl());
+    }
   }
   onTableDataChange(event: any) {
     this.page = event;
