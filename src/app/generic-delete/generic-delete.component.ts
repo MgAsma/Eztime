@@ -9,9 +9,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class GenericDeleteComponent implements OnInit {
 @Output() status: EventEmitter<any> = new EventEmitter<any>();
 @Output() comments: EventEmitter<any> = new EventEmitter<any>();
-@Input()title:any;
-@Input()message:any;
-
+@Input()title:string;
+@Input()message:string;
+@Input()bulkAction:string;
 declineForm:FormGroup;
 constructor(private fb:FormBuilder){}
   modalStatus(data){

@@ -182,9 +182,16 @@ export class ManagerReviewComponent implements OnInit {
             modelRef.close();
           }
         })
-       
+        if (resp == "ok") {
+          this.updateTimesheetStatus(content, status)
+          modelRef.close();
+        }
+        else {
+          modelRef.close();
+        }
+        modelRef.close();
       })
-
+     
     }
 
   }
@@ -243,9 +250,15 @@ export class ManagerReviewComponent implements OnInit {
             modelRef.close();
           }
         })
-       
+        if (resp == "ok") {
+          this.updateStatus(content, status)
+          modelRef.close();
+        }
+        else {
+          modelRef.close();
+        }
+        modelRef.close();
       })
-
     }
   }
   updateTimesheetStatus(content, status,comments?) {
@@ -288,7 +301,7 @@ export class ManagerReviewComponent implements OnInit {
   }
    
   }
-  updateStatus(content, status,comments) {
+  updateStatus(content, status,comments?) {
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
     let date = new Date()
     let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')

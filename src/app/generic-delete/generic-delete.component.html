@@ -11,9 +11,11 @@
         <p *ngIf="!title"> Are you sure you want to delete ?</p>
         <p *ngIf="title && message !== 'Decline'" >{{title}}?</p>
         
-        <p *ngIf="title && message === 'Decline'" >{{title}}? Please enter the reason for decline</p>
+        <p *ngIf="title && message === 'Decline' && bulkAction !== 'bulk'" >{{title}}? Please enter the reason for decline</p>
+        <p *ngIf="title && message === 'Decline' && bulkAction === 'bulk'" >{{title}}?</p>
        
-        <form  [formGroup]="declineForm" *ngIf="message === 'Decline'" class="pt-3" >
+
+        <form  [formGroup]="declineForm" *ngIf="message === 'Decline' && bulkAction !== 'bulk'" class="pt-3" >
         <mat-form-field appearance="outline" class="w-100">
         <mat-label>Comment <b class="r-star">*</b></mat-label>
         <textarea matInput placeholder="Enter comments"  class="w-100"

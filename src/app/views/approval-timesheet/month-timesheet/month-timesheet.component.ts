@@ -296,52 +296,7 @@ export class MonthTimesheetComponent implements OnInit {
     this.openDropdown = !this.openDropdown
   }
 
-  openDialogue(status) {
-    const statusText = status === 'Decline' ? 'decline' : 'approve' 
-    if (status) {
-      const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: status === 'Decline' ? <any>'md' : <any>'sm' ,
-        backdrop: true,
-        centered: true
-      });
-      modelRef.componentInstance.title = `Are you sure you want to ${statusText}`;
-      modelRef.componentInstance.message = `${status}`;
-      modelRef.componentInstance.status.subscribe(resp => {
-        if (resp == "ok") {
-          this.updateTimesheetStatus(status)
-          modelRef.close();
-        }
-        else {
-          modelRef.close();
-        }
-      })
-
-    }
-
-  }
-  updateTimesheetStatus(status) {
-    const confirmText = status === 'Approve' ? 'approved' : 'declined'
-    let date = new Date()
-    let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
-    let data =   {
-      id: '',
-      status: status === 'Approve' ? 2 : 3,
-      organization: this.orgId,
-      employee: '',
-      approved_by: status === 'Approve' ? this.user_id :null,
-      approved_on: status === 'Approve' ? formattedDate :null,
-      rejected_by: status === 'Decline' ? this.user_id :null,
-      rejected_on: status === 'Decline' ? formattedDate :null
-  }
-    this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
-      if (res) {
-        this.api.showSuccess(`Timesheet ${confirmText} successfully!`)
   
-      }
-    }, (error => {
-      this.api.showError(error?.error?.message)
-    }))
-  }
  
   reset(){
     this.monthForm.reset()

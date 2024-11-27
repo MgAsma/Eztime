@@ -13,7 +13,7 @@
                       <th scope="col" class="text-center">Hours</th>
                       <th scope="col" class="text-center">Rejected On</th>
                       <th scope="col" class="text-center">Rejected By</th>
-                      <!-- <th scope="col" class="text-center">Action</th> -->
+                      <th scope="col" class="text-center">Comments</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -32,30 +32,21 @@
                         <td *ngIf="item.tasks.length === 0">
                           {{'NA'}}
                         </td>
-                        <td class="text-center" *ngIf="item.tasks.length">
-                          <div *ngFor="let task of item.tasks; let j = index">
+                        <td class="text-center" *ngIf="item?.tasks.length">
+                          <div *ngFor="let task of item?.tasks; let j = index">
                             <div>
                               {{ task?.time_required_to_complete || 'NA' }}
                             </div>
                           </div>
                         </td>
-                        <td *ngIf="item.tasks.length === 0">
+                        <td *ngIf="item?.tasks?.length === 0">
                           {{'NA'}}
                         </td>
                         <td class="text-center">{{(item.rejected_on |date) || 'NA'}}</td>
                         <td class="text-center">{{(item.rejected_by_name  |titlecase) || 'NA'}}</td>
-                                                                          
+                        <td class="text-center">{{item.comment || 'NA'}}</td>                                                  
                         
-                       <!-- <td class="text-center"> -->
-                       
-                         <!-- <ng-container>
-                           <span>
-                             <img src="../../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete" (click)="open(item)"/>
-                           </span>
-                         </ng-container> -->
                       
-                      
-                        <!-- </td> -->
                     </tr>
                     <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="result.length === 0">
                       No records found!
@@ -218,6 +209,28 @@
                   </div>
                
                 </div>
+
+                <div class="row">
+                  
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="col-12">
+                        <h6 class="card-subtitle">Comments</h6>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 val-r" >
+                          <div>
+                            {{ item.comment || 'NA' }}
+                          </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                 
+               
+                </div>
+
               </div>
             </div>
           </div>
