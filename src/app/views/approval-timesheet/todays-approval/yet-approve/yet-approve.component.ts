@@ -162,19 +162,27 @@ export class YetApproveComponent implements OnInit {
       modelRef.componentInstance.title = `Are you sure you want to ${statusText}`;
       modelRef.componentInstance.message = `${status}`;
       modelRef.componentInstance.status.subscribe(resp => {
+        modelRef.componentInstance.comments?.subscribe(comment => {
+
+          if (resp == "ok") {
+            this.updateTimesheetStatus(content,status,comment)
+            modelRef.close();
+          }
+          else {
+            modelRef.close();
+          }
+        })
         if (resp == "ok") {
-          this.updateTimesheetStatus(content, status)
+          this.updateTimesheetStatus(content,status)
           modelRef.close();
         }
-        else {
-          modelRef.close();
-        }
+        modelRef.close();
       })
 
     }
 
   }
-  updateTimesheetStatus(content, status) {
+  updateTimesheetStatus(content,status,comments?) {
     const confirmText = status === 'Approve' ? 'approved' : 'declined'
     let date = new Date()
     let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
@@ -187,15 +195,32 @@ export class YetApproveComponent implements OnInit {
       approved_on: status === 'Approve' ? formattedDate :null,
       rejected_by: status === 'Decline' ? this.user_id :null,
       rejected_on: status === 'Decline' ? formattedDate :null
-  }
-    this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
+    }
+    if(status === 'Approve'){
+      this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
+        if (res) {
+          this.api.showSuccess(`Timesheet ${confirmText} successfully`)
+          this.buttonClick.emit('')
+        }
+      }, (error => {
+        this.api.showError(error?.error?.message)
+      }))
+    }if(status === 'Decline'){
+      const data = {
+        timesheet_id: content.id,
+        comment: comments,
+        status:3
+      }
+    this.api.postData(`${environment.live_url}/${environment.timesheet_comment}/`,data).subscribe(res => {
       if (res) {
-        this.api.showSuccess(`Timesheet ${confirmText} successfully!`)
+        this.api.showSuccess(`Timesheet ${confirmText} successfully`)
         this.buttonClick.emit('')
       }
     }, (error => {
       this.api.showError(error?.error?.message)
     }))
+    }
+   
   }
   getContinuousIndex(index: number): number {
     return (this.page - 1) * this.tableSize + index + 1;

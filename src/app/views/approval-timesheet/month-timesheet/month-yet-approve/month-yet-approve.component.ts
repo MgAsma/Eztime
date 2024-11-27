@@ -127,9 +127,9 @@ export class MonthYetApproveComponent implements OnInit {
  
 
   
-  openDialogue(content?, status?) {
+  openDialogue(content?, status?,bulk?) {
     const statusText = status === 'Decline' ? 'decline' : 'approve' 
-      
+    const action = bulk
       const modelRef = this.modalService.open(GenericDeleteComponent, {
         size: status === 'Decline' ? <any>'md' : <any>'sm',
         backdrop: true,
@@ -137,25 +137,35 @@ export class MonthYetApproveComponent implements OnInit {
       });
       modelRef.componentInstance.title = `Are you sure you want to ${statusText}`;
       modelRef.componentInstance.message = `${status}`;
+      modelRef.componentInstance.bulkAction = action
       modelRef.componentInstance.status.subscribe(resp => {
+        modelRef.componentInstance.comments.subscribe(comment => {
+          if (resp == "ok") {
+            this.updateTimesheetStatus(content, status,comment)
+            modelRef.close();
+          }else {
+            modelRef.close();
+          }
+        })
         if (resp == "ok") {
           this.updateTimesheetStatus(content, status)
           modelRef.close();
-        }
-        else {
+        }else {
           modelRef.close();
         }
+        modelRef.close();
       })
 
     
 
   }
-  updateTimesheetStatus(content, status) {
+  updateTimesheetStatus(content, status,comment?) {
     const confirmText = status === 'Approve' ? 'approved' : 'declined'
     let date = new Date()
     let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
     let data =   {}
     if(content){
+      if(status === 'Approve'){
       data =   {
         id: content.id,
         status: status === 'Approve' ? 2 : 3,
@@ -174,6 +184,22 @@ export class MonthYetApproveComponent implements OnInit {
       }, (error => {
         this.api.showError(error?.error?.message)
       }))
+    }if(status === 'Decline'){
+        const data = {
+          timesheet_id: content.id,
+          comment: comment,
+          status:3
+        }
+      this.api.postData(`${environment.live_url}/${environment.timesheet_comment}/`,data).subscribe(res => {
+        if (res) {
+          this.api.showSuccess(`Timesheet ${confirmText} successfully`)
+          this.buttonClick.emit('')
+        }
+      }, (error => {
+        this.api.showError(error?.error?.message)
+      }))
+    }
+      
     }else{
       data =   {
         id: this.timesheetId,

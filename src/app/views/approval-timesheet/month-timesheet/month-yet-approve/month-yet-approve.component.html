@@ -5,8 +5,8 @@
     <div class="row my-2" >
      
       <div class="col text-end" *ngIf="yetToApproveAll?.length">
-        <button mat-raised-button type="button" class="bulk-action-btn" style="background: #3CA300;margin-right: 5px;" (click)="openDialogue('','Approve')"><i class="bi bi-check-circle"></i>APPROVE</button>
-        <button mat-raised-button type="button" class="bulk-action-btn" style="background: #B41212;" (click)="openDialogue('','Decline')"><i class="bi bi-x-circle"></i>DECLINE</button>
+        <button mat-raised-button type="button" class="bulk-action-btn" style="background: #3CA300;margin-right: 5px;" (click)="openDialogue('','Approve','bulk')"><i class="bi bi-check-circle"></i>APPROVE</button>
+        <button mat-raised-button type="button" class="bulk-action-btn" style="background: #B41212;" (click)="openDialogue('','Decline','bulk')"><i class="bi bi-x-circle"></i>DECLINE</button>
       </div>
         
     </div>
