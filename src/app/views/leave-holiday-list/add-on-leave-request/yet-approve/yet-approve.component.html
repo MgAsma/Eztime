@@ -30,7 +30,7 @@
                       <th scope="col" class="text-center">Action</th>
                     </tr>
                   </thead>
-                  <tbody id="i-cr">
+                  <tbody>
                     <ng-container *ngIf="list.length > 0">
                         <ng-container *ngIf="(list | filter:term) as result">
                             <tr *ngFor='let item of result?result:""| filter:term| paginate : {

@@ -16,10 +16,10 @@
                           <th scope="col" class="text-center">Applied On</th>
                           <!-- <th scope="col">Rejected By</th> -->
                           <th scope="col" class="text-center">Rejected On</th>
-                          <!-- <th scope="col" class="text-center">Action</th> -->
+                          <th scope="col" class="text-center">Comments</th>
                         </tr>
                       </thead>
-                      <tbody id="i-cr">
+                      <tbody>
                         
                         <ng-container *ngIf="(data) as result">
                         <tr *ngFor='let item of result|paginate:paginationConfig; let i=index'>
@@ -31,7 +31,7 @@
                             
                             <td class="text-center">{{item.created_datetime | date}}</td>                            
                             <td class="text-center">{{(item.rejected_on | date) || 'NA' }}</td>                            
-                            
+                            <td class="text-center">{{item.comment || 'NA' }}</td>
                              
                         </tr>
                         <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="result.length === 0">
@@ -184,6 +184,21 @@
                         </div>
                       </div>
                     </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="col-12">
+                          <h6 class="card-subtitle">Comments</h6>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 val-r">
+                          {{ item.comment || 'NA' }}
+                        </div>
+                      </div>
+                    </div>
+                  
                   </div>
               </div>
             </div>

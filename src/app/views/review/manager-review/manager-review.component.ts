@@ -182,9 +182,9 @@ export class ManagerReviewComponent implements OnInit {
             modelRef.close();
           }
         })
-       
+        modelRef.close();
       })
-
+     
     }
 
   }
@@ -243,9 +243,8 @@ export class ManagerReviewComponent implements OnInit {
             modelRef.close();
           }
         })
-       
+        modelRef.close();
       })
-
     }
   }
   updateTimesheetStatus(content, status,comments?) {
