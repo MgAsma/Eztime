@@ -6,8 +6,8 @@ import { TimesheetService } from 'src/app/service/timesheet.service';
 import { environment } from 'src/environments/environment';
 import { DatePipe, Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
-import { error } from 'console';
-
+import { Subject, take } from 'rxjs';
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-manager-review',
   templateUrl: './manager-review.component.html',
@@ -27,12 +27,12 @@ export class ManagerReviewComponent implements OnInit {
   leaveAccess: any;
   orgId: any;
   selectedSection = 'lists';
-  tableSize = 10;
-  tableSizes = [10,25,50,100];
-  employeeList = [
-    { name: 'Surya', id: 149, role: 'Designer', email: 'Surya@ekfrazon.in', contact: '62695723681' },
-    { name: 'Manoj', id: 150, role: 'Tester', email: 'Manoj@ekfrazon.in', contact: '98792036781' }
-  ];
+  tableSize = 5;
+  tableSizes = [5,10,25,50,100];
+  // employeeList = [
+  //   { name: 'Surya', id: 149, role: 'Designer', email: 'Surya@ekfrazon.in', contact: '62695723681' },
+  //   { name: 'Manoj', id: 150, role: 'Tester', email: 'Manoj@ekfrazon.in', contact: '98792036781' }
+  // ];
 
   leaveList:any = []
 
@@ -44,6 +44,7 @@ export class ManagerReviewComponent implements OnInit {
   count:any= 0;
   selectedLeaveTab: string;
   selectedLeaveTabId: number;
+  allDetailsExport = new Subject<any>();
   
   
   constructor(
@@ -100,14 +101,16 @@ export class ManagerReviewComponent implements OnInit {
     
   }
   getAllTimesheets(params){
-    this.api.getData(`${environment.live_url}/${environment.time_sheets}/${params}`).subscribe(response => {
-      if (response) {
+    this.api.getData(`${environment.live_url}/${environment.time_sheets}/${params}`).subscribe((response:any) => {
+      if (response?.['results']) {
         this.timesheetList = response?.['results']
         const noOfPages:number = response?.['total_pages']
         this.count  = noOfPages * this.tableSize;
-        this.page= response?.['current_page'];
-       
-    }
+        this.page= response?.['current_page']; 
+    }else if(response){
+      const processedRows = this.prepareRows(response);
+      this.allDetailsExport.next(processedRows);
+     }
   },(error)=>{
     this.api.showError(error?.error?.message)
   })
@@ -301,6 +304,80 @@ export class ManagerReviewComponent implements OnInit {
   }
    
   }
+  prepareRows(data: any[]): any[] {
+    const selectedTab = this.selectedTimesheetTabId || 1
+    return data?.map((item: any, index: number) => {
+      const tasks = item.tasks.map((task: any) => task.task__task_name).join(', ') || 'NA';
+      const hours = item.tasks.map((task: any) => task.time_required_to_complete).join(', ') || 'NA';
+       // Common columns
+    const row = [
+      index + 1,
+      item.created_date ? new Date(item.created_date).toLocaleDateString() : 'NA',
+      item.created_by_first_name || 'NA',
+      item.client_name,
+      item.project_name,
+      tasks,
+      hours,
+      item.status_name || 'NA',
+      item.updated_datetime ? new Date(item.updated_datetime).toLocaleDateString() : 'NA',
+    ];
+
+    // Add specific columns based on selectedTab
+    if (selectedTab === 2) { // Approved Tab
+      row.push(
+        item.approved_on ? new Date(item.approved_on).toLocaleDateString() : 'NA',
+        item.approved_by_name || 'NA'
+      );
+    } else if (selectedTab === 3) { // Rejected Tab
+      row.push(
+        item.rejected_on ? new Date(item.rejected_on).toLocaleDateString() : 'NA',
+        item.rejected_by_name || 'NA',
+        item.comment || 'NA'
+      );
+    }
+
+    return row;
+    });
+  }
+  exportToExcel() {
+    const timesheetTabId = this.selectedTimesheetTabId || 1
+    this.getAllTimesheets(`?organization=${this.orgId}&status=${timesheetTabId}`)
+    this.allDetailsExport.pipe(take(1)).subscribe({
+      next: (rows: any[][]) => {
+        if (!rows || rows.length === 0) {
+          console.error('No data available for export.');
+          return;
+        }
+    
+        // Define column headers manually
+        const headers = ['S.No', 'Created Date', 'Employee','Client Name','Project Name', 'Task', 'Hours', 'Status', 'Saved On'];
+        if (timesheetTabId === 2) {
+          headers.push('Approved On', 'Approved By');
+        } else if (timesheetTabId === 3) {
+          headers.push('Rejected On', 'Rejected By','Comments');
+        }
+        // Merge headers and data
+        const data = [headers, ...rows];
+    
+        // Convert 2D array to worksheet
+        const worksheet = XLSX.utils.aoa_to_sheet(data); // Converts array of arrays into a sheet
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Table Data');
+    
+        // Save the workbook as an Excel file
+        XLSX.writeFile(workbook, 'Timesheet.xlsx');
+      },
+      error: (err) => {
+        console.error('Error fetching data for export:', err);
+      },
+    });
+    
+    
+   
+  
+    
+  }
+  
   updateStatus(content, status,comments?) {
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
     let date = new Date()

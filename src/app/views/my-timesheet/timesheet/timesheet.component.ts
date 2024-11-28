@@ -3,11 +3,15 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
-import { TimesheetService } from 'src/app/service/timesheet.service';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
-import { error } from 'console';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import { Subject, take } from 'rxjs';
+// import * as XLSX from 'xlsx';
+// import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-timesheet',
@@ -39,12 +43,14 @@ export class TimesheetComponent implements OnInit {
   submitted: boolean = false;
   page_size:number = 5;
   refresh: boolean = false;
+  allDetailsExport = new Subject<any>();
   constructor(
     private _fb:FormBuilder,
     private api:ApiserviceService,
     private datepipe:DatePipe,
     private location:Location,private cdref: ChangeDetectorRef,
-    private common_service:CommonServiceService) { }
+    private common_service:CommonServiceService,
+    private commonService:CommonServiceService) { }
   goBack(event)
   {
   event.preventDefault(); // Prevent default back button behavior
@@ -73,9 +79,13 @@ export class TimesheetComponent implements OnInit {
   getByStatus(params){
 
     this.api.getData(`${environment.live_url}/${environment.time_sheets}/${params}`).subscribe((res:any)=>{
-     if(res){
-       this.allDetails = res?.['results']
+     if(res?.['results']){
+       this.allDetails = res?.['results'] 
        this.totalCount = { pageCount: res?.['total_pages'], currentPage: res?.['current_page'],itemsPerPage:5,totalCount:res?.['total_no_of_record'],reset:this.refresh};
+     }else if(res){
+      const processedRows = this.prepareRows(res);
+      this.allDetailsExport.next(processedRows);
+      
      }
     
     },(error)=>{
@@ -139,9 +149,94 @@ reset(){
     }
   }
   searchFiter(event){
-    
+   // console.log(event)
+  }
+  prepareRows(data: any[]): any[] {
+    const selectedTab = this.selectedTabId || 1
+    return data?.map((item: any, index: number) => {
+      const tasks = item.tasks.map((task: any) => task.task__task_name).join(', ') || 'NA';
+      const hours = item.tasks.map((task: any) => task.time_required_to_complete).join(', ') || 'NA';
+       // Common columns
+    const row = [
+      index + 1,
+      item.created_date ? new Date(item.created_date).toLocaleDateString() : 'NA',
+      item.created_by_first_name || 'NA',
+      tasks,
+      hours,
+      item.status_name || 'NA',
+      item.updated_datetime ? new Date(item.updated_datetime).toLocaleDateString() : 'NA',
+    ];
+
+    // Add specific columns based on selectedTab
+    if (selectedTab === 2) { // Approved Tab
+      row.push(
+        item.approved_on ? new Date(item.approved_on).toLocaleDateString() : 'NA',
+        item.approved_by_name || 'NA'
+      );
+    } else if (selectedTab === 3) { // Rejected Tab
+      row.push(
+        item.rejected_on ? new Date(item.rejected_on).toLocaleDateString() : 'NA',
+        item.rejected_by_name || 'NA',
+        item.comment || 'NA'
+      );
+    }
+
+    return row;
+    });
+  }
+  exportToPDF() {
+    const selectedTab = this.selectedTabId || 1
+    this.getByStatus(`?organization=${this.orgId}&status=${selectedTab}&user=${this.userId}`)
+   
+    this.allDetailsExport.pipe(take(1)).subscribe((rows: any[]) => {
+      const columns = ['S.No', 'Created Date', 'Employee', 'Task', 'Hours', 'Status', 'Saved On'];
+      if (selectedTab === 2) {
+        columns.push('Approved On', 'Approved By');
+      } else if (selectedTab === 3) {
+        columns.push('Rejected On', 'Rejected By','Comments');
+      }
+      this.commonService.exportToPDF(rows, columns, 'Timesheet');
+    });
   }
   
+  exportToExcel() {
+    const selectedTab = this.selectedTabId || 1
+    this.getByStatus(`?organization=${this.orgId}&status=${selectedTab}&user=${this.userId}`)
+    this.allDetailsExport.pipe(take(1)).subscribe({
+      next: (rows: any[][]) => {
+        if (!rows || rows.length === 0) {
+          console.error('No data available for export.');
+          return;
+        }
+    
+        // Define column headers manually
+        const headers = ['S.No', 'Created Date', 'Employee', 'Task', 'Hours', 'Status', 'Saved On'];
+        if (selectedTab === 2) {
+          headers.push('Approved On', 'Approved By');
+        } else if (selectedTab === 3) {
+          headers.push('Rejected On', 'Rejected By','Comments');
+        }
+        // Merge headers and data
+        const data = [headers, ...rows];
+    
+        // Convert 2D array to worksheet
+        const worksheet = XLSX.utils.aoa_to_sheet(data); // Converts array of arrays into a sheet
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Table Data');
+    
+        // Save the workbook as an Excel file
+        XLSX.writeFile(workbook, 'table-data.xlsx');
+      },
+      error: (err) => {
+        console.error('Error fetching data for export:', err);
+      },
+    });
+    
+    
+   
+  
+    
+  }
   async submit() {
     let c_params = {};
     
