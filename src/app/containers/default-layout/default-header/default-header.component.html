@@ -28,36 +28,45 @@
   </div>
    
     <c-header-nav class="p-r">
-      <!-- <div class="notification-container">
-        <i class="bi bi-bell"  [matBadge]="notes?.length"  matBadgeColor="warn" (click)="openNotification()"></i>
-      </div> -->
+      <div class="row">
+        <div class="col">
+          <div class="notification-container ">
+            <i class="bi bi-bell"  [matBadge]="notes?.length"  matBadgeColor="warn"  (click)="openNotification()"></i>
+          </div>
+        </div>
+        <div class="col">
+          <div class="d-flex justify-content-between">
+       
+            <button *ngIf="user_role_Name!='SuperAdmin'" type="click" class="user-guide-btn"  (click)="openWelcomeDialog()">
+              <img src="../../../assets/images/bulb.svg" width="25" height="25">
+                Get Started
+            </button>
+            <!-- [class.active]="isModalOpen"  -->
+            <!-- <button class="user-guide-btn"  [matMenuTriggerFor]="menu" #menuTrigger> 
+              <img src="../../../assets/images/bulb.png" width="25" height="25">
+              Get Started</button>
+            <mat-menu #menu="matMenu">
+              <div class="p-2">
+                <h4 class="modal-title">Hello</h4>
+                <p>Welcome to Project Ace!. We’re thrilled to have you here. Let us guide you through the main features of our website.</p>
+                <p>Click 'Next' to begin the tour or 'Skip' to explore on your own.</p>
+              </div>
+              <div class="d-flex justify-content-evenly">
+                <button mat-button type="button"  class="btn-cancel">Skip</button>
+                <button mat-menu-item  type="button"  class="btn-yes" (click)="openWelcomeDialog()">Next</button>
+              </div>
+            </mat-menu> -->
+            <button mat-stroked-button class="settings-btn"  type="click" (click)="openDialogue()">
+              <!-- <img src="../../../assets/images/Logout.png" width="35" height="35">Logout -->
+              <i class="bi bi-box-arrow-right fs-6"></i> Logout
+            </button>
+          </div>
+        </div>
+       
+      </div>
       
      
-      <div class="d-flex justify-content-between">
-        <button *ngIf="user_role_Name!='SuperAdmin'" type="click" class="user-guide-btn"  (click)="openWelcomeDialog()">
-          <img src="../../../assets/images/bulb.svg" width="25" height="25">
-            Get Started
-        </button>
-        <!-- [class.active]="isModalOpen"  -->
-        <!-- <button class="user-guide-btn"  [matMenuTriggerFor]="menu" #menuTrigger> 
-          <img src="../../../assets/images/bulb.png" width="25" height="25">
-          Get Started</button>
-        <mat-menu #menu="matMenu">
-          <div class="p-2">
-            <h4 class="modal-title">Hello</h4>
-            <p>Welcome to Project Ace!. We’re thrilled to have you here. Let us guide you through the main features of our website.</p>
-            <p>Click 'Next' to begin the tour or 'Skip' to explore on your own.</p>
-          </div>
-          <div class="d-flex justify-content-evenly">
-            <button mat-button type="button"  class="btn-cancel">Skip</button>
-            <button mat-menu-item  type="button"  class="btn-yes" (click)="openWelcomeDialog()">Next</button>
-          </div>
-        </mat-menu> -->
-        <button mat-stroked-button class="settings-btn"  type="click" (click)="openDialogue()">
-          <!-- <img src="../../../assets/images/Logout.png" width="35" height="35">Logout -->
-          <i class="bi bi-box-arrow-right fs-6"></i> Logout
-        </button>
-      </div>
+     
     </c-header-nav>
    
   </c-container>
