@@ -23,8 +23,8 @@
             <ng-container *ngIf="(declinedAll) as result">
               <tr *ngFor="let items of result|paginate:paginationConfig;let i=index">
                 <td>{{getContinuousIndex(i)}}</td>
-                <td class="text-center">{{items.created_date | date :'mediumDate'}}</td>
-                <td class="text-center">{{items.created_by_name?items.created_by_name:"NA"|titlecase}}</td>
+                <td class="text-center">{{(items.created_date | date :'mediumDate') || 'NA'}}</td>
+                <td class="text-center">{{(items?.created_by_name|titlecase) || 'NA'}}</td>
                 <td class="text-center" *ngIf="items.tasks.length">
                   <div *ngFor="let task of items.tasks; let j = index">
                     <div>
@@ -47,9 +47,9 @@
                 </td>
                 <td class="text-center">{{(items.updated_datetime|date) || "NA"}}</td>
                 <!-- <td class="text-center">{{items.created_by_id?items.created_by_id:"NA"|titlecase}}</td> -->
-                <td class="text-center">{{items.rejected_on| date :'mediumDate'}}</td>
-                <td class="text-center">{{items.rejected_by_name?items.rejected_by_name:'NA'|titlecase}}</td>
-                <td class="text-center">{{items.comment || 'NA'}}</td>
+                <td class="text-center">{{(items.rejected_on| date :'mediumDate') || 'NA'}}</td>
+                <td class="text-center">{{(items?.rejected_by_name|titlecase) || 'NA'}}</td>
+                <td class="text-center">{{items?.comment || 'NA'}}</td>
               
               </tr>
              
@@ -116,7 +116,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{item['created_date'] | date : 'mediumDate'}}
+                      {{(item['created_date'] | date : 'mediumDate') || 'NA'}}
                     </div>
                   </div>
                 </div>
@@ -128,7 +128,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{ item.created_by_name ?item.created_by_name :'NA' |titlecase}}
+                      {{ (item?.created_by_name |titlecase) || 'NA'}}
                     </div>
                   </div>
                 </div>
@@ -145,7 +145,7 @@
                     <div class="col-12 val-r" *ngIf="item.tasks.length">
                       <div *ngFor="let task of item.tasks; let j = index">
                         <div>
-                          {{ task?.time_required_to_complete || 'NA' }}
+                          {{ (task?.time_required_to_complete) || 'NA' }}
                         </div>
                       </div>
                     </div>
@@ -185,7 +185,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{ item['rejected_on'] | date : 'mediumDate' |titlecase}}
+                      {{ item['rejected_on'] | date : 'mediumDate' ||'NA'}}
                     </div>
                   </div>
                 </div>
@@ -197,7 +197,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{ item.rejected_by_name?item.rejected_by_name:'NA' |titlecase }}
+                      {{ (item?.rejected_by_name|titlecase) || 'NA' }}
                     </div>
                   </div>
                 </div>

@@ -6,11 +6,7 @@ import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import { Subject, take } from 'rxjs';
-// import * as XLSX from 'xlsx';
-// import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -50,7 +46,7 @@ export class TimesheetComponent implements OnInit {
     private datepipe:DatePipe,
     private location:Location,private cdref: ChangeDetectorRef,
     private common_service:CommonServiceService,
-    private commonService:CommonServiceService) { }
+) { }
   goBack(event)
   {
   event.preventDefault(); // Prevent default back button behavior
@@ -184,20 +180,7 @@ reset(){
     return row;
     });
   }
-  exportToPDF() {
-    const selectedTab = this.selectedTabId || 1
-    this.getByStatus(`?organization=${this.orgId}&status=${selectedTab}&user=${this.userId}`)
-   
-    this.allDetailsExport.pipe(take(1)).subscribe((rows: any[]) => {
-      const columns = ['S.No', 'Created Date', 'Employee', 'Task', 'Hours', 'Status', 'Saved On'];
-      if (selectedTab === 2) {
-        columns.push('Approved On', 'Approved By');
-      } else if (selectedTab === 3) {
-        columns.push('Rejected On', 'Rejected By','Comments');
-      }
-      this.commonService.exportToPDF(rows, columns, 'Timesheet');
-    });
-  }
+  
   
   exportToExcel() {
     const selectedTab = this.selectedTabId || 1

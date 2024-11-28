@@ -104,9 +104,7 @@ export class MonthTimesheetComponent implements OnInit {
     private location: Location,
     private _timesheet: TimesheetService, 
     private cdref: ChangeDetectorRef,
-    private common_service: CommonServiceService,
-    private datepipe:DatePipe,
-    private commonService:CommonServiceService) {
+    private common_service: CommonServiceService) {
     this.currentMonth = new Date().getMonth() + 1;
      }
   goBack(event) {
@@ -299,21 +297,7 @@ export class MonthTimesheetComponent implements OnInit {
     return row;
     });
   }
-  exportToPDF() {
-    const selectedTab = this.selectedTabId || 1
-    this.getMonthApprovals(`?status=${selectedTab}&organization=${this.orgId}&month=${this.monthForm.value.fromMonth}`)
-    
-  this.allDetailsExport.pipe(take(1)).subscribe((rows: any[]) => {
-    const columns = ['S.No', 'Created Date', 'Employee', 'Task', 'Hours', 'Status', 'Saved On'];
-    if (selectedTab === 2) {
-      columns.push('Approved On', 'Approved By');
-    } else if (selectedTab === 3) {
-      columns.push('Rejected On', 'Rejected By','Comments');
-    }
-    this.commonService.exportToPDF(rows, columns, 'Timesheet');
-  });
-  }
-  
+ 
   exportToExcel() {
     const selectedTab = this.selectedTabId || 1
     this.getMonthApprovals(`?status=${selectedTab}&organization=${this.orgId}&month=${this.monthForm.value.fromMonth}`)

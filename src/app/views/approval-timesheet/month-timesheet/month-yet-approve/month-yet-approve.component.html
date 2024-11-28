@@ -31,8 +31,8 @@
                 <td><input type="checkbox" [(ngModel)]="item.selected" (change)="onCheckboxChange(item.id)"/></td>
                 <td>{{getContinuousIndex(i)}}</td>
                
-                <td class="text-center">{{item.created_date | date }}</td>
-                <td class="text-center">{{item.created_by_first_name ?item.created_by_first_name :'NA' |titlecase}}</td>
+                <td class="text-center">{{(item?.created_date | date) || 'NA' }}</td>
+                <td class="text-center">{{(item?.created_by_first_name |titlecase) || 'NA'}}</td>
                
                 <td class="text-center" *ngIf="item.tasks.length">
                   <div *ngFor="let task of item.tasks; let j = index">
@@ -111,10 +111,7 @@
             </div>
             <div class="col-5">
               <ng-container>
-                <!-- <span *ngIf="approval == 'DELETE'" style="float: right;">
-                          <button type="button" class="toolbar-btn "   (click)="openDialogue(item)"  ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button>
-                        
-                        </span> -->
+              
                 <span  style="float: right;">
                   <button type="button" class="toolbar-btn " (click)="openDialogue(item,'Approved')"><i
                       class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>
@@ -137,7 +134,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{item['created_date'] | date : 'mediumDate'}}
+                      {{(item['created_date'] | date : 'mediumDate') || 'NA'}}
                     </div>
                   </div>
                 </div>
@@ -149,7 +146,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{ item.created_by_first_name ?item.created_by_first_name :'NA' |titlecase}}
+                      {{ (item?.created_by_first_name |titlecase) || 'NA'}}
                     </div>
                   </div>
                 </div>
