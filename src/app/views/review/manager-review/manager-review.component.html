@@ -1,29 +1,42 @@
 <div class="container-fluid p-30">
   <div class="heading-1 mb-4">Employees</div>
-  <!-- Tabs Section using Flexbox -->
-  <div class="d-flex justify-content-start mb-3" style="border: 1px solid #f4f4f4;width:fit-content;font-family: 'Exo FT' !important;">
-    <div 
-      (click)="selectedTab('lists')" 
-      [ngClass]="{'active-tab': selectedSection === 'lists'}"
-       class="tab-size">
-      Lists
+  <div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-3">
+      <div class="d-flex justify-content-start mb-3" style="border: 1px solid #f4f4f4;width:fit-content;font-family: 'Exo FT' !important;">
+        <div 
+          (click)="selectedTab('lists')" 
+          [ngClass]="{'active-tab': selectedSection === 'lists'}"
+           class="tab-size">
+          Lists
+        </div>
+        <div 
+          class="ml-2" 
+          (click)="selectedTab('leaves')" 
+          [ngClass]="{'active-tab': selectedSection === 'leaves'}"
+           class="tab-size">
+          Leaves
+        </div>
+        <div 
+          class="ml-2" 
+          (click)="selectedTab('timesheets')" 
+          [ngClass]="{'active-tab': selectedSection === 'timesheets'}"
+           class="tab-size">
+          Timesheets
+        </div>
+        
+      </div>
+     
     </div>
-    <div 
-      class="ml-2" 
-      (click)="selectedTab('leaves')" 
-      [ngClass]="{'active-tab': selectedSection === 'leaves'}"
-       class="tab-size">
-      Leaves
-    </div>
-    <div 
-      class="ml-2" 
-      (click)="selectedTab('timesheets')" 
-      [ngClass]="{'active-tab': selectedSection === 'timesheets'}"
-       class="tab-size">
-      Timesheets
-    </div>
+    <div class="col-sm-2 col-md-1 col-lg-1 mx-3 d-flex justify-content-start mb-3" *ngIf="selectedSection === 'timesheets'">
+      <button type="button" mat-icon-button (click)="exportToExcel()" ngbTooltip="Download Excel" style="transform: scale(0.98);background-color: #f6f6f6;color:green">
+          <i class="bi bi-file-earmark-excel-fill" style="font-size: 17px;"></i>
+      </button>
+      
+  </div>
   </div>
   
+  <!-- Tabs Section using Flexbox -->
+ 
 
   <!-- Section Content -->
   <div *ngIf="selectedSection === 'lists'">
@@ -252,6 +265,7 @@
 
   <!-- Timesheets Section -->
   <div *ngIf="selectedSection === 'timesheets'">
+    
     <mat-tab-group class="custom-tab-group custom-tab-height" (selectedTabChange)="tabTimesheet($event)">
       <mat-tab label="Pending">
         <!-- Pending Timesheets Table -->
@@ -260,11 +274,13 @@
             <thead>
               <tr>
                 <th>Sl No</th>
+                <th>Created Date</th>
                 <th>Employee Name</th>
-                <th>Client</th>
-                <th>Project Name</th>
+                <!-- <th>Client</th>
+                <th>Project Name</th> -->
                 <th>Tasks</th>
                 <th>Hours</th>
+                <th>Saved On</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -276,9 +292,10 @@
                 totalItems: count
               };  ; let i = index">
                 <td>{{ i + 1 }}</td>
+                <td>{{(timesheet.created_date | date :'mediumDate') || 'NA'}}</td>
                 <td>{{ timesheet.created_by_name }}</td>
-                <td>{{ timesheet.client_name }}</td>
-                <td>{{ timesheet.project_name }}</td>
+                <!-- <td>{{ timesheet.client_name }}</td>
+                <td>{{ timesheet.project_name }}</td> -->
                
                 <td class="text-center" *ngIf="timesheet?.tasks?.length">
                   <div *ngFor="let task of timesheet.tasks; let j = index">
@@ -300,7 +317,9 @@
                 <td *ngIf="timesheet?.tasks?.length === 0">
                   {{'NA'}}
                 </td>
-              
+                <td>
+                  {{(timesheet.updated_datetime | date :'mediumDate') || 'NA'}}
+                </td>
                 <td>
                   <span>
                     <img src="../../../../../assets/images/tick.svg" class="icon-image"  ngbTooltip="Approve" (click)="openDialogue(timesheet,'Approve')"/>
@@ -342,11 +361,14 @@
             <thead>
               <tr>
                 <th>Sl No</th>
+                <th>Created Date</th>
                 <th>Employee Name</th>
-                <th>Client</th>
-                <th>Project Name</th>
+                <!-- <th>Client</th>
+                <th>Project Name</th> -->
                 <th>Tasks</th>
                 <th>Hours</th>
+                <th>Approved On</th>
+                <th>Approved By</th>
               </tr>
             </thead>
             <tbody>
@@ -357,9 +379,10 @@
                 totalItems: count
                 };let i = index">
                 <td>{{ i + 1 }}</td>
+                <td>{{timesheet.created_date | date :'mediumDate'}}</td>
                 <td>{{ timesheet.created_by_name }}</td>
-                <td>{{ timesheet.client_name }}</td>
-                <td>{{ timesheet.project_name }}</td>
+                <!-- <td>{{ timesheet.client_name }}</td>
+                <td>{{ timesheet.project_name }}</td> -->
                
                 <td class="text-center" *ngIf="timesheet?.tasks?.length">
                   <div *ngFor="let task of timesheet?.tasks; let j = index">
@@ -381,7 +404,13 @@
                 <td *ngIf="timesheet?.tasks?.length === 0">
                   {{'NA'}}
                 </td>
-              
+                <td>
+                  {{(timesheet.approved_on | date : 'mediumDate') || 'NA'}}
+                </td>
+                <td>
+                  {{timesheet.approved_by_name?timesheet.approved_by_name:'NA'|titlecase}}
+                </td>
+                
                 
               </tr>
               <!-- <div class="no-records"  *ngIf="result?.length === 0">
@@ -419,11 +448,14 @@
             <thead>
               <tr>
                 <th>Sl No</th>
+                <th>Created Date</th>
                 <th>Employee Name</th>
-                <th>Client</th>
-                <th>Project Name</th>
+                <!-- <th>Client</th>
+                <th>Project Name</th> -->
                 <th>Tasks</th>
                 <th>Hours</th>
+                <th>Rejected On</th>
+                <th>Rejected By</th>
                 <th>Comments</th>
               </tr>
             </thead>
@@ -435,9 +467,10 @@
                 totalItems: count
               };let i = index">
                 <td>{{ i + 1 }}</td>
+                <td>{{(timesheet?.created_date | date :'mediumDate') || 'NA'}}</td>
                 <td>{{ timesheet.created_by_name }}</td>
-                <td>{{ timesheet.client_name }}</td>
-                <td>{{ timesheet.project_name }}</td>
+                <!-- <td>{{ timesheet.client_name }}</td>
+                <td>{{ timesheet.project_name }}</td> -->
                
                 <td class="text-center" *ngIf="timesheet?.tasks?.length">
                   <div *ngFor="let task of timesheet?.tasks; let j = index">
@@ -459,9 +492,17 @@
                 <td *ngIf="timesheet?.tasks?.length === 0">
                   {{'NA'}}
                 </td>
+                
+                <td>
+                  {{(timesheet.rejected_on | date :'mediumDate') || 'NA'}}
+                </td>
+                <td>
+                  {{timesheet.rejected_by_name?timesheet.rejected_by_name:'NA'|titlecase}}
+                </td>
                 <td>
                   {{timesheet.comment || 'NA'}}
                 </td>
+                
               </tr>
              
             </ng-container>

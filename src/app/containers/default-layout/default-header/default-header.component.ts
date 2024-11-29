@@ -131,27 +131,27 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     this.screenWidth = window.innerWidth;
   }
   openNotification() {
-    if (this.notes?.length > 0) {
-      const modelRef = this.modalService.open(NotificationComponent, {
-        size: <any>'md',
-        backdrop: true,
-        centered: this.screenWidth < 1023 ? true : false,
-        modalDialogClass: 'c_class'
-      });
+    // if (this.notes?.length > 0) {
+    //   const modelRef = this.modalService.open(NotificationComponent, {
+    //     size: <any>'md',
+    //     backdrop: true,
+    //     centered: this.screenWidth < 1023 ? true : false,
+    //     modalDialogClass: 'c_class'
+    //   });
 
-      modelRef.componentInstance.status.subscribe(resp => {
-        if (resp == "ok") {
-          //  this.delete(content);
-          modelRef.close();
-        }
-        else {
-          modelRef.close();
-        }
-      })
+    //   modelRef.componentInstance.status.subscribe(resp => {
+    //     if (resp == "ok") {
+    //       //  this.delete(content);
+    //       modelRef.close();
+    //     }
+    //     else {
+    //       modelRef.close();
+    //     }
+    //   })
 
-    } else {
-      this.api.showWarning('No new notifications')
-    }
+    // } else {
+    //   this.api.showWarning('No new notifications')
+    // }
 
 
 

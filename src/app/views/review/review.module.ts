@@ -6,8 +6,8 @@ import { ReviewComponent } from './review.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ManagerReviewComponent } from './manager-review/manager-review.component'
 import {MatCardModule} from '@angular/material/card';
-import {MatButtonModule} from '@angular/material/button';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatButtonModule} from '@angular/material/button';
+import { MatTabsModule} from '@angular/material/tabs';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';

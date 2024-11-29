@@ -15,15 +15,15 @@
                     </mat-error>
                   </mat-form-field>
           
-                  <!-- <button mat-icon-button type="button" class="submit-btn" style="margin: auto;"  ngbTooltip="Submit" (click)="submit()">
-                      <i class="bi bi-arrow-up-right-square-fill" ></i>
-                      <img src="../../../../assets/images/right.svg" style="height:17px;"/>
-                  </button> -->
+                  
                   <img src="../../../../assets/images/Go.svg" class="icon-submit-btn" ngbTooltip="Submit" (click)="submit()" />
                                
                   <img src="../../../../assets/images/refresh.svg" class="icon-submit-btn" ngbTooltip="Reset" (click)="reset()" />
-               
-             
+            
+                <button mat-icon-button type="button" class="submit-btn" style="margin: auto;"  (click)="exportToExcel()" ngbTooltip="Download Excel"
+                style="color:green">
+                  <i class="bi bi-file-earmark-excel-fill" style="font-size: 17px;"></i>
+              </button>
             </form>
     
             <div class="row">
@@ -76,11 +76,11 @@
                           </div>
                        
                       </div> -->
-                      <ng-container >
-                       
+                      <ng-container>
                         <app-month-approve *ngIf="selectedTab === 'Approved'"  [data]="allDetails"
                         [totalCount]="totalCount" (filter)="searchFiter($event)"
-                        (buttonClick)="buttonClick($event)"></app-month-approve>
+                        (buttonClick)="buttonClick($event)">
+                      </app-month-approve>
                       </ng-container>
                     </mat-tab>
         
@@ -94,7 +94,7 @@
                           </div>
                        
                       </div> -->
-                      <ng-container >
+                      <ng-container>
                        
 
                         <app-month-declined *ngIf="selectedTab === 'Declined'" [data]="allDetails"

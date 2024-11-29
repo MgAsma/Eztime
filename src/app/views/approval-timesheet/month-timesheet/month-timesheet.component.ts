@@ -6,8 +6,8 @@ import { TimesheetService } from 'src/app/service/timesheet.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { environment } from 'src/environments/environment';
-import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, take } from 'rxjs';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-month-timesheet',
@@ -97,15 +97,14 @@ export class MonthTimesheetComponent implements OnInit {
   selectedTabId: number;
   refresh: boolean = false;
   page_size: number = 5;
+  allDetailsExport = new Subject<any>();
   constructor(
     private fb: FormBuilder,
     private api: ApiserviceService,
     private location: Location,
     private _timesheet: TimesheetService, 
     private cdref: ChangeDetectorRef,
-    private common_service: CommonServiceService,
-    private datepipe:DatePipe,
-    private modalService:NgbModal) {
+    private common_service: CommonServiceService) {
     this.currentMonth = new Date().getMonth() + 1;
      }
   goBack(event) {
@@ -125,13 +124,15 @@ export class MonthTimesheetComponent implements OnInit {
    
   }
   getMonthApprovals(params) {
-    this.allDetails = [];
    // this.timesheetService.getTodaysApprovalTimesheet(params).subscribe(res => {
       this.api.getData(`${environment.live_url}/${environment.timesheets}/${params}`).subscribe((res:any) =>{
-      if (res) {
+      if (res?.['results']) {
         this.allDetails = res?.['results'];
         this.totalCount = { pageCount: res?.['total_pages'], currentPage: res?.['current_page'],itemsPerPage:5,totalCount:res?.['total_no_of_record'],reset:this.refresh};
-      }
+      }else if(res){
+        const processedRows = this.prepareRows(res);
+        this.allDetailsExport.next(processedRows);
+       }
     })
   }
   get f() {
@@ -171,22 +172,22 @@ export class MonthTimesheetComponent implements OnInit {
       this.getMonthApprovals(query)
     }
   }
-  getByStatus(params) {
-    this.allListDataids = [];
-    this.allDetails = [];
-    this.exebtn = false;
-  //  this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&approved_state=${params.approved_state}&search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&organization_id=${this.orgId}`).subscribe(res => {
-      this.api.getData(`${environment.live_url}/${environment.timesheets}/${params}`).subscribe(res =>{
-      if (res ) {
+  // getByStatus(params) {
+  //   this.allListDataids = [];
+  //   this.allDetails = [];
+  //   this.exebtn = false;
+  // //  this.api.getData(`${environment.live_url}/${environment.time_sheets_monthly}?user_id=${params.user_id}&module=${params.module}&menu=${params.menu}&method=${params.method}&approved_state=${params.approved_state}&search_key=${params.search_key}&page_number=${params.page_number}&data_per_page=${params.data_per_page}&pagination=${params.pagination}&organization_id=${this.orgId}`).subscribe(res => {
+  //     this.api.getData(`${environment.live_url}/${environment.timesheets}/${params}`).subscribe(res =>{
+  //     if (res ) {
         
-          this.allDetails = res?.['timesheets']
-          this.totalCount = { pageCount: res?.['total_pages'], currentPage: res?.['current_page'],itemsPerPage:5,totalCount:res?.['total_no_of_record'],reset:this.refresh};
-      }
-    }, ((error: any) => {
-      this.api.showError(error.error.error.message)
-    })
-    )
-  }
+  //         this.allDetails = res?.['timesheets']
+  //         this.totalCount = { pageCount: res?.['total_pages'], currentPage: res?.['current_page'],itemsPerPage:5,totalCount:res?.['total_no_of_record'],reset:this.refresh};
+  //     }
+  //   }, ((error: any) => {
+  //     this.api.showError(error.error.error.message)
+  //   })
+  //   )
+  // }
   // getAllTimeSheet(params) {
   //   this.allListDataids = []
   //   this.allDetails = [];
@@ -249,7 +250,7 @@ export class MonthTimesheetComponent implements OnInit {
     const selectedTab = this.selectedTabId || 1
     this.refresh = false
     if(event){
-      this.getMonthApprovals(`?status=${selectedTab}&organization=${this.orgId}&month=${this.currentMonth}&page=${event.page}&page_size=${event.page_size}`)
+      this.getMonthApprovals(`?status=${selectedTab}&organization=${this.orgId}&month=${this.monthForm.value.fromMonth}&page=${event.page}&page_size=${event.page_size}`)
     }else{
       this.getMonthApprovals(`?status=${selectedTab}&organization=${this.orgId}&month=${this.currentMonth}&page=${this.page}&page_size=${this.page_size}`)
     }
@@ -257,47 +258,87 @@ export class MonthTimesheetComponent implements OnInit {
   }
 
   searchFiter(event) {
-    this.handleMonthSelection(this.monthForm.value['fromMonth'])
-    if (event) {
-      this.itemPerPageCount = event.tableSize;
-      if (this.changes) {
-        let c_params = {
-          module: "TIMESHEET",
-          menu: "MONTH_APPROVAL_TIMESHEET",
-          method: "VIEW",
-          approved_state: this.selectedTab,
-          user_id: this.user_id,
-          page_number: event.page,
-          data_per_page: this.itemPerPageCount,
-          search_key: event.search_key,
-          timesheets_from_date: this.formattedDate,
-          pagination: 'TRUE'
-        }
-       // this.getAllTimeSheet(c_params)
-      }
-      else {
-        let c_params = {
-          module: "TIMESHEET",
-          menu: "MONTH_APPROVAL_TIMESHEET",
-          method: "VIEW",
-          approved_state: this.selectedTab,
-          user_id: this.user_id,
-          page_number: event.page,
-          search_key: event.search_key,
-          data_per_page: event.tableSize,
-          pagination: 'TRUE'
-        }
-        this.getByStatus(c_params)
-      }
-
-    }
+  //console.log(event)
   }
   exeDropdown() {
     this.openDropdown = !this.openDropdown
   }
 
-  
+  prepareRows(data: any[]): any[] {
+    const selectedTab = this.selectedTabId || 1
+    return data?.map((item: any, index: number) => {
+      const tasks = item.tasks.map((task: any) => task.task__task_name).join(', ') || 'NA';
+      const hours = item.tasks.map((task: any) => task.time_required_to_complete).join(', ') || 'NA';
+       // Common columns
+    const row = [
+      index + 1,
+      item.created_date ? new Date(item.created_date).toLocaleDateString() : 'NA',
+      item.created_by_first_name || 'NA',
+      tasks,
+      hours,
+      item.status_name || 'NA',
+      item.updated_datetime ? new Date(item.updated_datetime).toLocaleDateString() : 'NA',
+    ];
+
+    // Add specific columns based on selectedTab
+    if (selectedTab === 2) { // Approved Tab
+      row.push(
+        item.approved_on ? new Date(item.approved_on).toLocaleDateString() : 'NA',
+        item.approved_by_name || 'NA'
+      );
+    } else if (selectedTab === 3) { // Rejected Tab
+      row.push(
+        item.rejected_on ? new Date(item.rejected_on).toLocaleDateString() : 'NA',
+        item.rejected_by_name || 'NA',
+        item.comment || 'NA'
+      );
+    }
+
+    return row;
+    });
+  }
  
+  exportToExcel() {
+    const selectedTab = this.selectedTabId || 1
+    this.getMonthApprovals(`?status=${selectedTab}&organization=${this.orgId}&month=${this.monthForm.value.fromMonth}`)
+    
+    this.allDetailsExport.pipe(take(1)).subscribe({
+      next: (rows: any[][]) => {
+        if (!rows || rows.length === 0) {
+          console.error('No data available for export.');
+          return;
+        }
+    
+        // Define column headers manually
+        const headers = ['S.No', 'Created Date', 'Employee', 'Task', 'Hours', 'Status', 'Saved On'];
+        if (selectedTab === 2) {
+          headers.push('Approved On', 'Approved By');
+        } else if (selectedTab === 3) {
+          headers.push('Rejected On', 'Rejected By','Comments');
+        }
+        // Merge headers and data
+        const data = [headers, ...rows];
+    
+        // Convert 2D array to worksheet
+        const worksheet = XLSX.utils.aoa_to_sheet(data); // Converts array of arrays into a sheet
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Table Data');
+    
+        // Save the workbook as an Excel file
+        XLSX.writeFile(workbook, 'table-data.xlsx');
+      },
+      error: (err) => {
+        console.error('Error fetching data for export:', err);
+      },
+    });
+    
+    
+   
+  
+    
+  }
+  
+  
   reset(){
     this.monthForm.reset()
     const selectedTab = this.selectedTabId || 1
