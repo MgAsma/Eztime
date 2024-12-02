@@ -89,8 +89,7 @@ const APP_CONTAINERS = [
     ...APP_CONTAINERS,
     VirtualScrollDirective,
     UserGuideModalComponent,
-    UserWelcomeMsgComponent,
-    
+    UserWelcomeMsgComponent
   ],
   imports: [
     // ChartsModule,
