@@ -72,7 +72,7 @@ export class RegisterComponent {
   initStepper() {
     // let passwordRegex = 
     this.firstFormGroup = this.formBuilder.group({
-      organization_name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/), Validators.maxLength(50)]],
+      organization_name: ['', [Validators.required, Validators.maxLength(50)]],
       organization_email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       organization_otp: ['', Validators.required],
       org_email_verified: [''],
@@ -215,7 +215,7 @@ export class RegisterComponent {
   }
 
   emailcheck(event: any) {
-    if (this.firstFormGroup.value.organization_email == this.firstFormGroup.value.admin_email) {
+    if (this.firstFormGroup.value.admin_email && this.firstFormGroup.value.organization_email == this.firstFormGroup.value.admin_email) {
       this.api.showWarning('Admin email must be unique')
     }
   }

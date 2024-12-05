@@ -30,13 +30,13 @@
                                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                                 <mat-label>Organization Name <b class="r-star">*</b></mat-label>
                                                 <input matInput placeholder="Enter organization name" formControlName="organization_name" autocomplete="off"
-                                                pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
+                                                pattern="^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$">
                                             </mat-form-field>
                                             <div class="px-2" *ngIf="firstFormGroup.get('organization_name')?.touched && firstFormGroup.get('organization_name')?.invalid">
                                                 <span class="text-errors" *ngIf="firstFormGroup.get('organization_name').errors?.['required']">Organization name is required
                                                 </span>
                                                 <span class="text-errors" *ngIf="firstFormGroup.get('organization_name').errors?.['pattern']">
-                                                    Invalid name. Only letters are allowed, and the name must start with a letter.
+                                                    Invalid name. Extra space and special charaters are not allowed, 
                                                 </span>
                                                 <span class="text-errors"
                                                     *ngIf="firstFormGroup.get('organization_name').errors?.['maxlength']">
