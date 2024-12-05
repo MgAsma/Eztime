@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
+import { MatStepper } from '@angular/material/stepper';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -12,6 +14,7 @@ import { environment } from 'src/environments/environment';
 
 })
 export class RegisterComponent {
+  @ViewChild('stepper') stepper!: MatStepper;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
@@ -20,143 +23,97 @@ export class RegisterComponent {
   registrationForm: FormGroup;
   submitted = false;
 
-  allTags: any = [];
-
-  reportingManagerId: any = [];
-  departmentId: any = [];
 
   params = {
     pagination: "FALSE"
   }
-  allPrefix: any = [];
-  allCenter: any = [];
-  allRole: any = [];
-  allCostCenter: any = [];
-  uploadFile: any;
-  url: any;
-  fileUrl: string | ArrayBuffer;
-  peopleForm: any;
-  eyeState: boolean = false;
-  eyeIcon = 'bi bi-eye-slash'
-  passwordType = "password"
   orgId: any;
+  country:any = [];
+  state: any = [];
+  city:any = [];
+  apiUrl = 'https://api.postalpincode.in/pincode';
+
+  sendOtpButtonOfOrg: boolean = true;
+  orngEmailVerified: boolean = false;
+
+  sendOtpButtonOfAdmin: boolean = true;
+  adminEmailVerified: boolean = false;
+
+  orgSendCodeButton: boolean = false;
+  adminSendCodeButton:boolean = false;
+  
+  orgResendOtp:boolean = false;
+  disableOrgResendBtn = false;
+
+  adminResendOtp:boolean = false;
+  disableAdminResendBtn:boolean = false;
+
+  countDownOrg: number;
+  countDownAdmin:number;
+  timer: any;
+  showSuccessMessage:boolean = false
   constructor(
     private formBuilder: FormBuilder,
     private location: Location,
     private api: ApiserviceService,
+    private http: HttpClient,
     private router: Router) { }
 
   ngOnInit() {
     this.orgId = JSON.parse(sessionStorage.getItem('org_id'))
-    // this.getPrefix()
-    // this.getTag()
-    this.getCostCenter()
-    this.getReportingManager()
-    this.getDepartment()
-    this.getCenter()
-    this.getUserRole()
-    this.initStepper()
+    this.getCountry();
+    this.initStepper();
   }
 
   get uFirstNameControl(): FormControl {
-    return this.firstFormGroup.get('u_first_name') as FormControl;
+    return this.firstFormGroup.get('organization_name') as FormControl;
   }
 
   initStepper() {
     // let passwordRegex = 
     this.firstFormGroup = this.formBuilder.group({
-      u_first_name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/), Validators.maxLength(20)]],
-      u_last_name: ['', [Validators.required, , Validators.pattern(/^[a-zA-Z]+$/), Validators.minLength(1), Validators.maxLength(20)]],
-      u_gender: ['', Validators.required],
-      u_marital_status: ['', Validators.required],
-      u_phone_no: ['', [Validators.required, Validators.pattern('^\\d{10}$')]],
+      organization_name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/), Validators.maxLength(50)]],
+      organization_email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      organization_otp: ['', Validators.required],
+      org_email_verified: [''],
+      admin_name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/), Validators.maxLength(50)]],
+      admin_email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      admin_otp: ['', [Validators.required]],
+      admin_email_verified: [''],
     });
     this.secondFormGroup = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}$/)]],
-      org_code: ['', [Validators.required]],
-      u_designation: ['', [Validators.pattern(/^\S.*$/), Validators.required]],
-      u_date_of_joining: ['', Validators.required],
-
+      country: ['', Validators.required],
+      postal_code:['', Validators.required],
+      city:['', Validators.required],
+      state: ['', [Validators.required]],
+      address: ['', [Validators.required,Validators.maxLength(50)]],
     });
-    this.thirdFormGroup = this.formBuilder.group({
-      center_id: ['', Validators.required],
-      user_reporting_manager_ref_id: [''],
-      profile_base64: ['', [Validators.required, this.fileFormatValidator]],
-      // prefix_suffix_id: ['', Validators.required],
-      department_id: ['', Validators.required],
-      role_id: [1],
-
-    })
-    this.fourthFormGroup = this.formBuilder.group({
-      user_role_id: ['', Validators.required],
-      cost_center_id: ['', Validators.required],
-      // tags: ['', Validators.required],
-      user_status: ['', Validators.required],
-      // organization_id:['',Validators.required]
-    })
+    this.thirdFormGroup = this.formBuilder.group({})
   }
   // onFocusProfileImg(){
   //   this.thirdFormGroup.get('profile_base64')?.reset();
   // }
-  fileFormatValidator(control: AbstractControl): ValidationErrors | null {
-    const allowedFormats = ['.jpg', '.jpeg', '.png', '.JPG', '.JPEG', '.PNG'];
-    const file = control.value;
-    if (file) {
-      const fileExtension = file.substr(file.lastIndexOf('.')).toLowerCase();
-      if (!allowedFormats.includes(fileExtension)) {
-        return { accept: true };
-      }
-    }
-    return null;
-  }
-  uploadImageFile(event: any) {
-    this.uploadFile = event.target.files[0];
-    if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0])
-      reader.onload = (event: any) => {
-        this.url = event.target.result;
-        this.fileUrl = reader.result
-        this.thirdFormGroup.patchValue({ profile_base64: this.fileUrl })
-      }
-    }
-  }
+ 
+  
   checkValidation(event) {
     if (event == 'step1') {
-      this.firstFormGroup.markAllAsTouched()
+      this.firstFromValidtion();
     }
     else if (event == 'step2') {
-      this.secondFormGroup.markAllAsTouched()
-    }
-    else if (event == 'step3') {
-      this.thirdFormGroup.markAllAsTouched()
-    }
-    else if (event == 'step4') {
-      this.fourthFormGroup.markAllAsTouched()
-    }
-  }
-  showPassword() {
-    this.eyeState = !this.eyeState
-    if (this.eyeState == true) {
-      this.eyeIcon = 'bi bi-eye'
-      this.passwordType = 'text'
-    }
-    else {
-      this.eyeIcon = 'bi bi-eye-slash'
-      this.passwordType = 'password'
+      this.createOrganization();
     }
 
   }
+
 
   onSubmit() {
 
     let data = {
-      u_first_name: this.firstFormGroup.value.u_first_name,
-      u_last_name: this.firstFormGroup.value.u_last_name,
-      u_gender: this.firstFormGroup.value.u_gender,
-      u_marital_status: this.firstFormGroup.value.u_marital_status,
-      u_phone_no: this.firstFormGroup.value.u_phone_no,
+      organization_name: this.firstFormGroup.value.organization_name,
+      organization_email: this.firstFormGroup.value.organization_email,
+      admin_name: this.firstFormGroup.value.admin_name,
+      admin_email: this.firstFormGroup.value.admin_email,
+      admin_otp: this.firstFormGroup.value.admin_otp,
       email: this.secondFormGroup.value.email,
       password: this.secondFormGroup.value.password,
       org_code: this.secondFormGroup.value.org_code,
@@ -209,105 +166,254 @@ export class RegisterComponent {
 
   }
 
-  getUserRole() {
-    this.api.getUserAccess(`page_number=1&data_per_page=2&pagination=FALSE&organization_id=${this.orgId}`).subscribe((data: any) => {
-      if (data.result.data) {
-        const role = data.result.data
-        const filteredRole = role.filter(role => role.role_status !== 'Inactive' && role.user_role_name!='ADMIN')
-        this.allRole = filteredRole;
-        console.log(this.allRole,'allroless')
-      }
+  getCountry() {
+    this.api.getData(`${environment.live_url}/${environment.country}/`).subscribe((res: any) => {
+      this.country = res
+    }, ((error) => {
+      this.api.showError(error.error.error.message)
+    }))
+  }
 
-    }, (error: any) => {
-      this.api.showError(error.error.error.message)
-      //console.log(error,"ERROR")
-    }
-    )
-  }
-  getDepartment() {
-    this.api.getDepartmentDetails(this.params, this.orgId).subscribe((data: any) => {
-      //console.log(data.result.data,"DATA")
-      if (data) {
-        const department = data.result.data
-        const filteredDepartment = department.filter(depart => !depart.od_status.includes('Inactive'))
-        this.departmentId = filteredDepartment;
+  
+  getState(event) {
+    if(event){
+  
+    this.api.getData(`${environment.live_url}/${environment.state}/?country_id=${this.secondFormGroup.value.country}`).subscribe((res: any) => {
+      if(res){
+      this.state = res;
+      // this.getCity(event);
       }
-    }, (error: any) => {
+    }, ((error) => {
       this.api.showError(error.error.error.message)
-      //console.log(error,"ERROR")
-    }
-    )
+    }))
   }
-  getReportingManager() {
-    this.api.getData(`${environment.live_url}/${environment.profile_custom_user}?filter=MANAGER&page_number=1&data_per_page=2&pagination=FALSE&organization_id=${this.orgId}`).subscribe((data: any) => {
-      if (data.result.data) {
-        const reportingManager = data.result.data
-        const filteredRepotingManager = reportingManager.filter(manager => !manager.u_status?.includes('Inactive'))
-        this.reportingManagerId = filteredRepotingManager;
-      }
+  }
+  getCity(event) {
+    this.api.getData(`${environment.live_url}/${environment.city}/?state_id=${this.secondFormGroup.value.state}`).subscribe((res: any) => {
+      this.city = res
+    }, ((error) => {
+      this.api.showError(error.error.error.message)
+    }))
 
-    }, (error: any) => {
-      this.api.showError(error.error.error.message)
-      //console.log(error,"ERROR")
-    }
+  }
 
-    )
-  }
-  getTag() {
-    this.api.getTagDetails(this.params, this.orgId).subscribe((data: any) => {
-      if (data.result.data) {
-        const tags = data.result.data
-        const filteredTags = tags.filter(tags => !tags.tage_status.includes('Inactive'))
-        this.allTags = filteredTags;
-      }
-    }, (error: any) => {
-      this.api.showError(error.error.error.message)
-      //console.log(error,"ERROR")
-    }
-    )
-  }
-  getPrefix() {
-    this.api.getPrefixSuffixDetails(this.params, this.orgId).subscribe((data: any) => {
-      if (data.result.data) {
-        this.allPrefix = data.result.data;
-      }
-    }, (error: any) => {
-      this.api.showError(error.error.error.message)
-      //console.log(error,"ERROR")
-    }
-
-    )
-  }
-  getCostCenter() {
-    this.api.getCostCenterDetails(this.params).subscribe((data: any) => {
-      //console.log(data.result.data,"COST")
-      if (data.result.data) {
-        const costCenter = data.result.data
-        const filterdCostCenter = costCenter.filter(cc => !cc.occ_status?.includes('Inactive'))
-        this.allCostCenter = filterdCostCenter;
-      }
-    }, (error: any) => {
-      this.api.showError(error.error.error.message)
-      //console.log(error,"ERROR")
-    }
-    )
-  }
-  getCenter() {
-    this.api.getCenterDetails(this.params, this.orgId).subscribe((data: any) => {
-      if (data.result.data) {
-        const center = data.result.data;
-        const filteredCenter = center.filter(center => !center.center_status?.includes('Inactive'))
-        this.allCenter = filteredCenter;
-        console.log(this.allCenter, "CENTER ID")
-      }
-    }, (error: any) => {
-      this.api.showError(error.error.error.message)
-      //console.log(error,"ERROR")
-    })
-  }
   goBackPreviousPage() {
-    this.location.back();
+    this.router.navigate(['./login'])
   }
+
+
+  preventSpace(event: KeyboardEvent): void {
+    if (event.key === ' ') {
+      event.preventDefault();
+    }
+  }
+  validateKeyPress(event: KeyboardEvent) {
+    const keyCode = event.which || event.keyCode;
+    if ((keyCode < 48 || keyCode > 57) && keyCode !== 8 && keyCode !== 37 && keyCode !== 39) {
+      event.preventDefault();
+    }
+  }
+
+  emailcheck(event: any) {
+    if (this.firstFormGroup.value.organization_email == this.firstFormGroup.value.admin_email) {
+      this.api.showWarning('Admin email must be unique')
+    }
+  }
+  requestOtp(email: any, data: any) {
+    // console.log(email, data)
+    const emailControl = this.firstFormGroup.get(data);
+    if (emailControl && emailControl.valid) {
+      // console.log('valid');
+      this.requestOtpMail(email, data)
+    } else {
+      // console.log('invalid');
+    }
+  }
+
+  requestOtpMail(email: any, data: any) {
+    let temp = {
+      [data]: email
+    }
+    if (this.firstFormGroup.value.organization_email == this.firstFormGroup.value.admin_email) {
+      this.api.showWarning('Admin email must be unique')
+    } else {
+      if(data==='organization_email'){
+        this.orgSendCodeButton = true;
+      } else{
+        this.adminSendCodeButton = true;
+      }
+      this.api.emailVerificationForSelfRegistration(temp).subscribe(
+        (res: any) => {
+          this.api.showSuccess(res.message);
+          if (data === 'organization_email') {
+            this.sendOtpButtonOfOrg = false;
+            this.orgSendCodeButton = false;
+            this.startCoutner(data);
+          } else {
+            this.sendOtpButtonOfAdmin = false
+            this.adminSendCodeButton = false;
+            this.startCoutner(data);
+          }
+        },
+        (error: any) => {
+          this.api.showError(error.error.message)
+        }
+      )
+    }
+  }
+
+  verifyOtp(otp: any, data: any) {
+    const otpControl = this.firstFormGroup.get(data);
+    if (otpControl && otpControl.valid) {
+      // console.log('valid');
+      this.verifyOtpMail(otp, data)
+    } else {
+      // console.log('invalid');
+    }
+  }
+  verifyOtpMail(email: any, data: any) {
+    let temp = {
+      [data]: email
+    }
+    this.api.otp(temp).subscribe(
+      (res: any) => {
+        this.api.showSuccess(res.message);
+     if(res){
+     this.api.showSuccess(res.message)
+        if (data === 'organization_otp') {
+          this.sendOtpButtonOfOrg = true;
+          this.orngEmailVerified = true;
+          this.firstFormGroup.patchValue({ org_email_verified: 'verified'});
+        } else {
+          this.sendOtpButtonOfAdmin = true;
+          this.adminEmailVerified = true;
+          this.firstFormGroup.patchValue({ admin_email_verified: 'verified'});
+        }
+      }
+      },
+      (error: any) => {
+        this.api.showError(error.error.message)
+      }
+    )
+  }
+
+  firstFromValidtion() {
+    console.log(this.firstFormGroup.value)
+    if (this.firstFormGroup.invalid) {
+      this.firstFormGroup.markAllAsTouched()
+      if (this.firstFormGroup.value.organization_otp == '' || this.firstFormGroup.value.admin_otp == '') {
+        this.api.showWarning('OTP Verification is pending')
+      }
+    } else if (this.firstFormGroup.value.organization_email == this.firstFormGroup.value.admin_email) {
+      this.api.showWarning('Admin email must be unique')
+    } else if (this.firstFormGroup.value.org_email_verified=='') {
+      this.api.showWarning('Organization email verification is pending')
+    } else if(this.firstFormGroup.value.admin_email_verified==''){
+      this.api.showWarning('Admin email verification is pending')
+    }
+     else {
+      console.log(this.firstFormGroup.value)
+      this.stepper.next();
+    }
+  }
+  getCountryStateCity(event:any){
+    // if(event.target.value.length==6){
+    // this.http.get(`${this.apiUrl}/${event.target.value}`).subscribe(
+    //   (res:any)=>{
+    //     console.log(res)
+    //   }
+    // );
+    // }
+  }
+
+  resendOtpButton(email:any,data:any){
+    let temp = {
+      [data]: email
+    }
+    if(data==='organization_email'){
+      this.disableOrgResendBtn = true;
+      this.resendOptAPICall(temp,data);
+    } else{
+      this.disableAdminResendBtn = true;
+      this.resendOptAPICall(temp,data);
+    }
+  }
+
+  resendOptAPICall(data:any,text:any){
+    this.api.emailVerificationForSelfRegistration(data).subscribe(
+      (res:any)=>{
+        this.api.showSuccess(res.message);
+        this.startCoutner(text);
+      },
+      (error:any)=>{
+        this.api.showError(error.error.message)
+      }
+
+    )
+  }
+
+
+
+  startCoutner(data:any){
+    if(data==='organization_email'){
+      this.disableOrgResendBtn = false;
+      this.orgResendOtp = false;
+      this.countDownOrg = 59;
+      this.timer = setInterval(() => {
+        if (this.countDownOrg > 0) {
+          this.countDownOrg--;
+        } else {
+          clearInterval(this.timer);
+          this.orgResendOtp = true;
+        }
+      }, 1000);
+    } else {
+      this.disableAdminResendBtn = false;
+      this.adminResendOtp = false;
+      this.countDownAdmin = 59;
+      this.timer = setInterval(() => {
+        if (this.countDownAdmin > 0) {
+          this.countDownAdmin--;
+        } else {
+          clearInterval(this.timer);
+          this.adminResendOtp = true;
+        }
+      }, 1000);
+    }
+  }
+
+
+  createOrganization(){
+    if(this.secondFormGroup.invalid){
+      this.secondFormGroup.markAllAsTouched();
+    }
+    else{
+      const data = {
+        organization_name: this.firstFormGroup.value['organization_name'],
+        email: this.firstFormGroup.value['organization_email'],
+        admin_details: [{'admin_name':this.firstFormGroup.value['admin_name'],'admin_email_id':this.firstFormGroup.value['admin_email'],'is_active':true}],
+        address: this.secondFormGroup.value['address'],
+        city: this.secondFormGroup.value['city'],
+        state: this.secondFormGroup.value['state'],
+        country: this.secondFormGroup.value['country'],
+        postal_code: this.secondFormGroup.value['postal_code'],
+        // organization_image: null
+      };
+      console.log(data)
+      this.api.postData(`${environment.live_url}/${environment.organization}/`, data).subscribe(
+        res => {
+          if (res) {
+                this.showSuccessMessage = true
+          }
+        },
+        error => {
+          this.api.showError(error.error.message);
+        }
+      )
+    }
+  }
+
+  
 }
 
 

@@ -15,118 +15,169 @@
                             class="app-logo-content" />
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h2 class="login-text"><b>Register</b></h2>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <mat-horizontal-stepper linear #stepper>
+                <div class="row self-organization-register mt-2">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngIf="!showSuccessMessage">
+                        <mat-horizontal-stepper [linear]="true" #stepper>
+                            <ng-template matStepperIcon="edit">
+                                <mat-icon>done</mat-icon>
+                              </ng-template>
                             <mat-step [stepControl]="firstFormGroup">
                                 <form [formGroup]="firstFormGroup">
-                                    <ng-template matStepLabel>Step 1</ng-template>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="u_first_name">First name <b
-                                                        class="required_symbol">*</b></label>
-                                                <input placeholder="Enter first name" type="text" class="form-control"
-                                                    formControlName="u_first_name" />
-                                                <div class="feedback"
-                                                    *ngIf="firstFormGroup.get('u_first_name').invalid && (firstFormGroup.get('u_first_name').touched || firstFormGroup.get('u_first_name').dirty) && firstFormGroup.get('u_first_name').hasError('required')">
-                                                    <p class="feedback">First name is required</p>
-                                                </div>
-                                                <div class="feedback"
-                                                    *ngIf="firstFormGroup.get('u_first_name').hasError('minlength')">
-                                                    First name must be at least 3 characters</div>
-                                                <div class="feedback"
-                                                    *ngIf="firstFormGroup.get('u_first_name').hasError('maxlength') ">
-                                                    First name cannot exceed 20 characters</div>
-
-                                                <div class="feedback"
-                                                    *ngIf="firstFormGroup.get('u_first_name').invalid && firstFormGroup.get('u_first_name').hasError('pattern')">
-                                                    First name cannot contain spaces,numbers and special characters.
-                                                </div>
+                                    <ng-template matStepLabel>Organization Details</ng-template>
+                                    <div class="row mt-4">
+                                        <!-- organization name -->
+                                        <div class="col-md-12  mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Organization Name <b class="r-star">*</b></mat-label>
+                                                <input matInput placeholder="Enter organization name" formControlName="organization_name" autocomplete="off"
+                                                pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="firstFormGroup.get('organization_name')?.touched && firstFormGroup.get('organization_name')?.invalid">
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('organization_name').errors?.['required']">Organization name is required
+                                                </span>
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('organization_name').errors?.['pattern']">
+                                                    Invalid name. Only letters are allowed, and the name must start with a letter.
+                                                </span>
+                                                <span class="text-errors"
+                                                    *ngIf="firstFormGroup.get('organization_name').errors?.['maxlength']">
+                                                    Organization name cannot exceed more than 50 characters.
+                                                </span>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="u_last_name">Last name <b
-                                                        class="required_symbol">*</b></label>
-                                                <input placeholder="Enter last name" type="text" class="form-control"
-                                                    formControlName="u_last_name" />
-                                                <div class="feedback"
-                                                    *ngIf="firstFormGroup.get('u_last_name').invalid && (firstFormGroup.get('u_last_name').touched 
-                                        || firstFormGroup.get('u_last_name').dirty) && firstFormGroup.get('u_last_name').hasError('required')">
-                                                    Last name is required
-                                                </div>
-                                                <!-- <div class="feedback" *ngIf="firstFormGroup.get('u_last_name').hasError('minlength')">Last name must be at least 3 characters</div> -->
-                                                <div class="feedback"
-                                                    *ngIf="firstFormGroup.get('u_last_name').hasError('maxlength')">Last
-                                                    name cannot exceed 20 characters</div>
-                                                <div class="feedback"
-                                                    *ngIf="firstFormGroup.get('u_last_name').invalid && firstFormGroup.get('u_last_name').hasError('pattern')">
-                                                    Last name cannot contain spaces,numbers and special characters.
-                                                </div>
+                                        <!-- org email -->
+                                        <div class="col-md-12 email-input mb-3" *ngIf="sendOtpButtonOfOrg && !orngEmailVerified" >
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Organization Email Address<b class="r-star">*</b></mat-label>
+                                                <input matInput formControlName='organization_email' placeholder="Enter organization email address"
+                                                    (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off"
+                                                    id="emailId">
+                                                    <button *ngIf="!orngEmailVerified && orgSendCodeButton" class="btn btn-sm secondary-buttons" type="button" disabled>
+                                                        <span class="spinner-border spinner-border-sm text-light" aria-hidden="true"></span>
+                                                    </button>
+                                                    <button *ngIf="!orngEmailVerified && !orgSendCodeButton"  type="button" class="btn btn-sm secondary-buttons"
+                                                     (click)="requestOtp(firstFormGroup.get('organization_email').value,'organization_email')">Send OTP</button>
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="firstFormGroup.get('organization_email')?.touched && firstFormGroup.get('organization_email')?.invalid">
+                                                <span class="text-errors"
+                                                    *ngIf="firstFormGroup.get('organization_email').errors && firstFormGroup.get('organization_email').errors?.['required']">Organization email
+                                                    address is required.</span>
+                                                <span class="text-errors"
+                                                    *ngIf="firstFormGroup.get('organization_email').errors && firstFormGroup.get('organization_email').errors?.['pattern']">Organization email
+                                                    address is invalid.</span>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="u_gender">Gender <b class="required_symbol">*</b></label>
-                                                <select class="form-select" formControlName="u_gender">
-                                                    <option value="">Select gender</option>
-                                                    <option value="M">Male</option>
-                                                    <option value="F">Female</option>
-                                                </select>
-
-                                                <div class="feedback" *ngIf="firstFormGroup.get('u_gender').invalid && 
-                                    (firstFormGroup.get('u_gender').touched || firstFormGroup.get('u_gender').dirty)
-                                     && firstFormGroup.get('u_gender').hasError('required')">Gender is required</div>
+                                        <!-- org otp -->
+                                        <div class="col-md-12 email-input mb-3" *ngIf="!sendOtpButtonOfOrg">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>OTP<b class="r-star">*</b></mat-label>
+                                                <input matInput type="number" placeholder="Enter the code shared" formControlName="organization_otp"
+                                                    autocomplete="off" maxlength="10" pattern="\d{6}"
+                                                    onKeyPress="if(this.value.length==6) return false;" (keypress)="validateKeyPress($event)">
+                                                <button type="button" class="btn btn-sm secondary-buttons"
+                                                (click)="verifyOtp(firstFormGroup.get('organization_otp').value,'organization_otp')">Verify</button>
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="firstFormGroup.get('organization_otp')?.touched && firstFormGroup.get('organization_otp')?.invalid">
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('organization_otp').errors?.['pattern']">Please enter 6 digits
+                                                    code.</span>
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('organization_otp').errors?.['required']">code is
+                                                    required.</span>
+                                            </div>
+                                            <div class="px-2" *ngIf="!orngEmailVerified">
+                                                <p class="resend-text" *ngIf="!orgResendOtp">resend otp in {{countDownOrg}} seconds</p>
+                                                <button *ngIf="orgResendOtp" type="button" [disabled]="disableOrgResendBtn" class="btn btn-sm btn-link"  (click)="resendOtpButton(firstFormGroup.get('organization_email').value,'organization_email')">Resend OTP</button>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="u_marital_status">Marital status <b
-                                                        class="required_symbol">*</b></label>
-                                                <select class="form-select" formControlName="u_marital_status">
-                                                    <option value="">Select marital status</option>
-                                                    <option value="single">Single</option>
-                                                    <option value="married">Married</option>
-                                                </select>
-                                                <div class="feedback" *ngIf="firstFormGroup.get('u_marital_status').invalid && 
-                                    (firstFormGroup.get('u_marital_status').touched || firstFormGroup.get('u_marital_status').dirty)
-                                     && firstFormGroup.get('u_marital_status').hasError('required')">
-                                                    Marital status is required
-
-                                                </div>
+                                        <!-- org email verified -->
+                                        <div class="col-md-12 email-input mb-3 disable-o-email" *ngIf="orngEmailVerified">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Organization Email Address<b class="r-star">*</b></mat-label>
+                                                <input matInput formControlName='organization_email' placeholder="Enter organization email ddress"
+                                                    (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off"
+                                                    id="emailId">
+                                                    <button *ngIf="orngEmailVerified" [disabled]="orngEmailVerified" class="btn btn-sm success-button">Email Verified</button>
+                                            </mat-form-field>
+                                        </div>
+                                        <!-- admin name -->
+                                        <div class="col-md-12  mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Admin Name <b class="r-star">*</b></mat-label>
+                                                <input matInput placeholder="Enter admin name" formControlName="admin_name" autocomplete="off"
+                                                pattern="^[a-zA-Z]+( [a-zA-Z]+)*$">
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="firstFormGroup.get('admin_name')?.touched && firstFormGroup.get('admin_name')?.invalid">
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('admin_name').errors?.['required']">Admin name is required
+                                                </span>
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('admin_name').errors?.['pattern']">
+                                                    Invalid name. Only letters are allowed, and the name must start with a letter.
+                                                </span>
+                                                <span class="text-errors"
+                                                    *ngIf="firstFormGroup.get('admin_name').errors?.['maxlength']">
+                                                    Admin name cannot exceed more than 50 characters.
+                                                </span>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="u_phone_no">Phone number <b
-                                                        class="required_symbol">*</b></label>
-                                                <input placeholder="Enter phone number" type="number"
-                                                    onkeydown="return event.keyCode !== 69"
-                                                    onKeyPress="if(this.value.length==10) return false;"
-                                                    class="form-control" formControlName="u_phone_no" />
-                                                <div class="feedback"
-                                                    *ngIf="firstFormGroup.get('u_phone_no').invalid && (firstFormGroup.get('u_phone_no').touched || firstFormGroup.get('u_phone_no').dirty) && firstFormGroup.get('u_phone_no').hasError('required')">
-                                                    Phone number is required
-                                                </div>
-                                                <div class="feedback"
-                                                    *ngIf="firstFormGroup.get('u_phone_no').hasError('pattern')">Invalid
-                                                    phone number </div>
+                                        </div>
+                                        <!-- admin email -->
+                                        <div class="col-md-12 email-input mb-3" *ngIf="sendOtpButtonOfAdmin && !adminEmailVerified" >
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Admin Email Address<b class="r-star">*</b></mat-label>
+                                                <input matInput formControlName='admin_email' placeholder="Enter admin email address"
+                                                    (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off" (input)="emailcheck($event)"
+                                                    id="emailId">
+                                                    <button *ngIf="!adminEmailVerified && adminSendCodeButton" class="btn btn-sm secondary-buttons" type="button" disabled>
+                                                        <span class="spinner-border spinner-border-sm text-light" aria-hidden="true"></span>
+                                                    </button>
+                                                    <button *ngIf="!adminEmailVerified && !adminSendCodeButton" type="button" class="btn btn-sm secondary-buttons"
+                                                    (click)="requestOtp(firstFormGroup.get('admin_email').value,'admin_email')">Send OTP</button>
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="firstFormGroup.get('admin_email')?.touched && firstFormGroup.get('admin_email')?.invalid">
+                                                <span class="text-errors"
+                                                    *ngIf="firstFormGroup.get('admin_email').errors && firstFormGroup.get('admin_email').errors?.['required']">Admin email
+                                                    address is required.</span>
+                                                <span class="text-errors"
+                                                    *ngIf="firstFormGroup.get('admin_email').errors && firstFormGroup.get('admin_email').errors?.['pattern']">Admin email
+                                                    address is invalid.</span>
                                             </div>
+                                        </div>
+                                        <!-- admin otp -->
+                                        <div class="col-md-12 email-input mb-3" *ngIf="!sendOtpButtonOfAdmin">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>OTP<b class="r-star">*</b></mat-label>
+                                                <input matInput type="number" placeholder="Enter the code shared" formControlName="admin_otp"
+                                                    autocomplete="off" maxlength="10" pattern="\d{6}"
+                                                    onKeyPress="if(this.value.length==6) return false;" (keypress)="validateKeyPress($event)">
+                                                <button type="button" class="btn btn-sm secondary-buttons"
+                                                (click)="verifyOtp(firstFormGroup.get('admin_otp').value,'admin_otp')">Verify</button>
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="firstFormGroup.get('admin_otp')?.touched && firstFormGroup.get('admin_otp')?.invalid">
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('admin_otp').errors?.['pattern']">Please enter 6 digits
+                                                    code.</span>
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('admin_otp').errors?.['required']">code is
+                                                    required.</span>
+                                            </div>
+                                            <div class="px-2" *ngIf="!adminEmailVerified">
+                                                <p class="resend-text" *ngIf="!adminResendOtp">resend otp in {{countDownAdmin}} seconds</p>
+                                                <button *ngIf="adminResendOtp" type="button" [disabled]="disableAdminResendBtn" class="btn btn-sm btn-link"  (click)="resendOtpButton(firstFormGroup.get('admin_email').value,'admin_email')">Resend OTP</button>
+                                            </div>
+                                        </div>
+                                        <!-- admin email verified -->
+                                        <div class="col-md-12 email-input mb-3 disable-admin-email" *ngIf="adminEmailVerified">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>Admin Email Address<b class="r-star">*</b></mat-label>
+                                                <input matInput formControlName='admin_email' placeholder="Enter admin email address"
+                                                    (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off"
+                                                    id="emailId">
+                                                    <button *ngIf="adminEmailVerified" [disabled]="adminEmailVerified" class="btn btn-sm success-button">Email Verified</button>
+                                            </mat-form-field>
                                         </div>
                                     </div>
 
                                     <div class="action-btn-link-content">
-                                        <a (click)="goBackPreviousPage()" class="login-links"><i
-                                                class="bi bi-arrow-left"></i>
-                                            Go Back</a>
-                                        <button mat-button matStepperNext class="proceedbtn"
-                                            (click)="checkValidation('step1')">Next</button>
+                                        <p>
+                                            Are you an existing user? 
+                                            <a (click)="goBackPreviousPage()" class="login-links"> Login</a>
+                                        </p>
+                                        <button mat-button class="proceedbtn"
+                                            (click)="checkValidation('step1')">Continue</button>
 
                                     </div>
 
@@ -134,231 +185,121 @@
                             </mat-step>
                             <mat-step [stepControl]="secondFormGroup">
                                 <form [formGroup]="secondFormGroup">
-                                    <ng-template matStepLabel>Step 2</ng-template>
-                                    <div class="form-group">
-                                        <label for="email">Email <b class="required_symbol">*</b></label>
-                                        <input placeholder="Enter email id" type="email" class="form-control"
-                                            formControlName="email" />
-                                        <div class="feedback"
-                                            *ngIf="secondFormGroup.get('email').invalid && (secondFormGroup.get('email').touched || secondFormGroup.get('email').dirty) && secondFormGroup.get('email').hasError('required')">
-                                            Email is required
+                                    <ng-template matStepLabel>Contact Details</ng-template>
+                                    <div class="row mt-4">
+                                        <div class="col-sm-12 col-md-6 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
+                                                <mat-label>Country <b class="r-star">*</b></mat-label>
+                                                <mat-select formControlName="country" placeholder="Select country" (selectionChange)="getState($event.value)" autocomplete="off"
+                                                panelClass="custom-select-panel" [disableOptionCentering]="true">
+                                                <mat-option *ngFor="let country of country" [value]="country.id">
+                                                    {{country.country_name | titlecase}}
+                                                </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="secondFormGroup.get('country')?.touched && secondFormGroup.get('country')?.invalid">
+                                                <span class="text-errors" *ngIf="secondFormGroup.get('country').errors?.['required']">Country is required</span>
+                                            </div>
                                         </div>
-                                        <div class="feedback" *ngIf="secondFormGroup.get('email').hasError('email')">
-                                            Invalid email format</div>
-                                    </div>
-
-                                    <div class="form-group password-column p-relative">
-                                        <label for="password">Password <b class="required_symbol">*</b></label>
-                                        <input placeholder="Enter password" [type]="passwordType" class="form-control"
-                                            formControlName="password" />
-                                        <i [class]="eyeIcon" id="eye-icon" (click)="showPassword()"></i>
-                                        <!-- <div class="feedback" *ngIf="secondFormGroup.get('password').invalid && (secondFormGroup.get('password').touched || secondFormGroup.get('password').dirty) && secondFormGroup.get('password').hasError('required')">
-                                Password is required
-                            </div>
-                            <div *ngIf="secondFormGroup.get('password').hasError('pattern')">Password should contain at least one special character and one number, and be at least 6 characters long</div> -->
-                                        <!-- <div class="feedback" *ngIf="secondFormGroup.get('password').hasError('maxlength')">Password must be at least 6 characters</div>           -->
-                                        <div class="feedback"
-                                            *ngIf="secondFormGroup.get('password').invalid && (secondFormGroup.get('password').touched || secondFormGroup.get('password').dirty)">
-                                            <div *ngIf="secondFormGroup.get('password').hasError('required')">Password
-                                                is required</div>
+                                        <div class="col-sm-12 col-md-6 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
+                                                <mat-label>Postal code <b class="r-star">*</b></mat-label>
+                                                <input matInput type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" formControlName="postal_code" 
+                                                placeholder="Enter postal code" autocomplete="off" (input)="getCountryStateCity($event)">
+                                            </mat-form-field>
+                                            <div class="px-2" *ngIf="secondFormGroup.get('postal_code')?.touched && secondFormGroup.get('postal_code')?.invalid">
+                                                <span class="text-errors" *ngIf="secondFormGroup.get('postal_code').errors?.['pattern']">
+                                                    Postal code must be 6 digits
+                                                </span> 
+                                                <span class="text-errors" *ngIf="secondFormGroup.get('postal_code').errors?.['required']">Postal code is required</span>
+                                            </div>
                                         </div>
-                                        <div class="feedback"
-                                            *ngIf="secondFormGroup.get('password').hasError('pattern')">Password should
-                                            contain at least one special character,one number,one uppercase and one
-                                            lowercase, and be at least 8 characters long</div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="org_code">Organization code <b class="required_symbol">*</b></label>
-                                        <input placeholder="Enter organization code" type="number"
-                                            onkeydown="return event.keyCode !== 69"
-                                            onKeyPress="if(this.value.length==10) return false;" class="form-control"
-                                            formControlName="org_code" />
-
-                                        <div class="feedback"
-                                            *ngIf="secondFormGroup.get('org_code').invalid && (secondFormGroup.get('org_code').touched || secondFormGroup.get('org_code').dirty) && secondFormGroup.get('org_code').hasError('required')">
-                                            Organization code is required
+                                        <div class="col-sm-12 col-md-6 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>State <b class="r-star">*</b></mat-label>
+                                                <mat-select formControlName="state" placeholder="Select state" (selectionChange)="getCity($event.value)" autocomplete="off" 
+                                                panelClass="custom-select-panel" [disableOptionCentering]="true">
+                                                  <mat-option *ngFor="let state of state" [value]="state.id">
+                                                    {{state.state_name | titlecase}}
+                                                  </mat-option>
+                                                </mat-select>
+                                              </mat-form-field>
+                                              <div class="px-2" *ngIf="secondFormGroup.get('state')?.touched && secondFormGroup.get('state')?.invalid">
+                                                <span class="text-errors" *ngIf="secondFormGroup.get('state').errors?.['required']">State is required</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="u_designation">Designation <b class="required_symbol">*</b></label>
-                                        <input placeholder="Enter designation" type="text"
-                                            formControlName="u_designation" class="form-control" id="u_designation" />
-                                        <div class="feedback"
-                                            *ngIf="secondFormGroup.get('u_designation').invalid && (secondFormGroup.get('u_designation').touched || secondFormGroup.get('u_designation').dirty) && secondFormGroup.get('u_designation').hasError('required')">
-                                            Designation is required
+                                        <div class="col-sm-12 col-md-6 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                                                <mat-label>City <b class="r-star">*</b></mat-label>
+                                                <mat-select formControlName="city" autocomplete="off" placeholder="Select city"  
+                                                [attr.disabled]="!secondFormGroup.get('state')?.value" panelClass="custom-select-panel" [disableOptionCentering]="true">
+                                                <mat-option *ngFor="let city of city" [value]="city.id">{{city.city_name | titlecase }}</mat-option>
+                                                </mat-select>
+                                              </mat-form-field>
+                                              <div class="px-2" *ngIf="secondFormGroup.get('city')?.touched && secondFormGroup.get('city')?.invalid">
+                                                <span class="text-errors" *ngIf="secondFormGroup.get('city').errors?.['required']">City is required</span>
+                                            </div>
                                         </div>
-                                        <div class="feedback"
-                                            *ngIf="secondFormGroup.get('u_designation').invalid && secondFormGroup.get('u_designation').hasError('pattern')">
-                                            Cannot start with a space.
+                                        <div class="col-sm-12 col-md-12 mb-3">
+                                            <mat-form-field appearance="outline" class="w-100 ">
+                                                <mat-label>Address <b class="r-star">*</b></mat-label>
+                                                <textarea style="height: auto;" matInput placeholder="Enter address"
+                                                    formControlName="address" pattern="^(?!\s)(.*\S)?$" autocomplete="off"></textarea>
+                
+                                            </mat-form-field>
+                                            <div class="text-end"><small>{{secondFormGroup.get('address').value.length}}/200 characters</small></div>
+                                            <div class="px-2" *ngIf="secondFormGroup.get('address')?.touched && secondFormGroup.get('address')?.invalid">
+                                                <span class="text-errors"
+                                                    *ngIf="secondFormGroup.get('address').invalid && secondFormGroup.get('address').hasError('pattern')">
+                                                    Please remove extra space.</span>
+                                                <span class="text-errors" *ngIf="secondFormGroup.get('address').errors?.['required']">Address is
+                                                    required.</span>
+                                                <span class="text-errors"
+                                                    *ngIf="!secondFormGroup.get('address').errors?.['required'] && secondFormGroup.get('address').errors?.['maxlength']">
+                                                    Address cannot exceed more than 200 characters.
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="u_date_of_joining">Date of Joining <b
-                                                class="required_symbol">*</b></label>
-                                        <input placeholder="Enter date of joining" type="date" class="form-control"
-                                            formControlName="u_date_of_joining" />
 
-                                        <div class="feedback"
-                                            *ngIf="secondFormGroup.get('u_date_of_joining').invalid && (secondFormGroup.get('u_date_of_joining').touched || secondFormGroup.get('u_date_of_joining').dirty) && secondFormGroup.get('u_date_of_joining').hasError('required')">
-                                            Date of joining is required
-                                        </div>
-                                    </div>
-
-
-                                    <div class="action-btn-link-content">
-                                        <button mat-button matStepperPrevious>Back</button>
-                                        <button mat-button matStepperNext class="proceedbtn"
-                                            (click)="checkValidation('step2')">Next</button>
-                                    </div>
-                                </form>
-                            </mat-step>
-                            <mat-step [stepControl]="thirdFormGroup">
-                                <form [formGroup]="thirdFormGroup">
-                                    <ng-template matStepLabel>Step 3</ng-template>
-                                    <div class="form-group">
-                                        <label for="center_id">Center<b class="required_symbol">*</b></label>
-
-                                        <select formControlName="center_id" class="form-select">
-                                            <option value="">Select center</option>
-                                            <option *ngFor="let centerId of allCenter" [value]="centerId.id">
-                                                {{centerId.center_name}}
-                                            </option>
-                                        </select>
-
-                                        <div class="feedback"
-                                            *ngIf="thirdFormGroup.get('center_id').invalid && (thirdFormGroup.get('center_id').touched || thirdFormGroup.get('center_id').dirty) && thirdFormGroup.get('center_id').hasError('required')">
-                                            Center is required
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="user_reporting_manager_ref_id">Reporting manager</label>
-                                        <select formControlName="user_reporting_manager_ref_id" class="form-select">
-                                            <option value="">Select reporting manager</option>
-                                            <option *ngFor="let rmId of reportingManagerId" [value]="rmId.id">
-                                                {{rmId.u_first_name}}
-                                            </option>
-                                        </select>
-
-                                        <div class="feedback"
-                                            *ngIf="thirdFormGroup.get('user_reporting_manager_ref_id').invalid && (thirdFormGroup.get('user_reporting_manager_ref_id').touched || thirdFormGroup.get('user_reporting_manager_ref_id').dirty) && thirdFormGroup.get('user_reporting_manager_ref_id').hasError('required')">
-                                            Reporting manager is required
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="profile_base64">Profile picture <b
-                                                class="required_symbol">*</b></label>
-                                        <input placeholder="Select profile picture" type="file"
-                                            accept="image/*;capture=camera" class="form-control"
-                                            formControlName="profile_base64" (change)="uploadImageFile($event)" />
-
-                                        <div class="feedback"
-                                            *ngIf="thirdFormGroup.get('profile_base64').invalid && (thirdFormGroup.get('profile_base64').touched || thirdFormGroup.get('profile_base64').dirty) && thirdFormGroup.get('profile_base64').hasError('required')">
-                                            Profile picture is required
-                                        </div>
-                                        <span class="feedback"
-                                            *ngIf="thirdFormGroup.get('profile_base64').errors && thirdFormGroup.get('profile_base64').errors['accept']">Invalid
-                                            file format. Only .jpg, .jpeg, .png formats are allowed.</span>
-                                    </div>
-                                    <!-- <div class="form-group">
-                                        <label for="prefix_suffix_id">Prefix/suffix <b
-                                                class="required_symbol">*</b></label>
-                                        <select formControlName="prefix_suffix_id" class="form-select">
-                                            <option value="">Select prefix/suffix</option>
-                                            <option *ngFor="let prefixSuffix of allPrefix" [value]="prefixSuffix.id">
-                                                {{prefixSuffix.prefix}}</option>
-                                        </select>
-
-                                        <div class="feedback"
-                                            *ngIf="thirdFormGroup.get('prefix_suffix_id').invalid && (thirdFormGroup.get('prefix_suffix_id').touched || thirdFormGroup.get('prefix_suffix_id').dirty) && thirdFormGroup.get('prefix_suffix_id').hasError('required')">
-                                            Prefix/suffix is required
-                                        </div>
-                                    </div> -->
-                                    <div class="form-group">
-                                        <label for="department_id">Department <b class="required_symbol">*</b></label>
-
-                                        <select formControlName="department_id" class="form-select">
-                                            <option value="">Select department</option>
-                                            <option *ngFor="let departmentId of departmentId" [value]="departmentId.id">
-                                                {{departmentId.od_name}}</option>
-                                        </select>
-
-                                        <div class="feedback"
-                                            *ngIf="thirdFormGroup.get('department_id').invalid && (thirdFormGroup.get('department_id').touched || thirdFormGroup.get('department_id').dirty) && thirdFormGroup.get('department_id').hasError('required')">
-                                            Department is required
-                                        </div>
-                                    </div>
-                                    <div class="action-btn-link-content">
-                                        <button mat-button matStepperPrevious>Back</button>
-                                        <button mat-button matStepperNext class="proceedbtn"
-                                            (click)="checkValidation('step3')">Next</button>
-                                    </div>
-                                </form>
-                            </mat-step>
-                            <mat-step [stepControl]="fourthFormGroup">
-                                <form [formGroup]="fourthFormGroup">
-                                    <ng-template matStepLabel>Step 4</ng-template>
-                                    <div class="form-group">
-                                        <label for="role_id">Role <b class="required_symbol">*</b></label>
-
-                                        <select formControlName="user_role_id" class="form-select">
-                                            <option value="">Select role </option>
-                                            <option *ngFor="let roleId of allRole" [value]="roleId.id">
-                                                {{roleId.user_role_name}}</option>
-                                        </select>
-
-                                        <div class="feedback"
-                                            *ngIf="fourthFormGroup.get('user_role_id').invalid && (fourthFormGroup.get('user_role_id').touched || fourthFormGroup.get('user_role_id').dirty) && fourthFormGroup.get('user_role_id').hasError('required')">
-                                            Role is required
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="cost_center_id">Cost center<b class="required_symbol">*</b></label>
-
-                                        <select formControlName="cost_center_id" class="form-select">
-                                            <option value="">Select cost center</option>
-                                            <option *ngFor="let centerId of allCostCenter" [value]="centerId.id">
-                                                {{centerId.occ_cost_center_name}}
-                                            </option>
-                                        </select>
-                                        <div class="feedback"
-                                            *ngIf="fourthFormGroup.get('cost_center_id').invalid && (fourthFormGroup.get('cost_center_id').touched || fourthFormGroup.get('cost_center_id').dirty) && fourthFormGroup.get('cost_center_id').hasError('required')">
-                                            Cost center is required
-                                        </div>
-                                    </div>
-                                    <!-- <div class="form-group">
-                                        <label for="tags">Tags <b class="required_symbol">*</b></label>
-                                        <select class="form-select" formControlName="tags">
-                                            <option value="" selected>Select tag</option>
-                                            <option *ngFor="let tag of allTags" [value]="tag.id">{{ tag.tag_name }}
-                                            </option>
-                                        </select>
-
-                                        <div class="feedback"
-                                            *ngIf="fourthFormGroup.get('tags').invalid && (fourthFormGroup.get('tags').touched || fourthFormGroup.get('tags').dirty) && fourthFormGroup.get('tags').hasError('required')">
-                                            Tag is required
-                                        </div>
-                                    </div> -->
-                                    <div class="form-group">
-                                        <label for="user_status">Status <b class="required_symbol">*</b></label>
-                                        <select class="form-select" formControlName="user_status">
-                                            <option value="">Select status</option>
-                                            <option value="Active">Active</option>
-                                            <option value="Inactive">Inactive</option>
-                                        </select>
-
-                                        <div class="feedback"
-                                            *ngIf="fourthFormGroup.get('user_status').invalid && (fourthFormGroup.get('user_status').touched || fourthFormGroup.get('user_status').dirty) && fourthFormGroup.get('user_status').hasError('required')">
-                                            Status is required
-                                        </div>
-                                    </div>
-                                    <div class="action-btn-link-content">
-                                        <button mat-button matStepperPrevious>Back</button>
+                                    <div class="d-flex justify-content-end">
                                         <button mat-button class="proceedbtn"
-                                            (click)="checkValidation('step4');onSubmit()">Submit</button>
+                                            (click)="checkValidation('step2')">Register Organization</button>
                                     </div>
+                                  </div>
                                 </form>
                             </mat-step>
+                            <!-- <mat-step [stepControl]="thirdFormGroup">
+                                <form [formGroup]="thirdFormGroup">
+                                    <ng-template matStepLabel>Success</ng-template>
+                                    <div class="card success-card">
+                                        <div class="card-body">
+                                            <img class="mb-3" src="../../../../assets/images/tick.svg" alt="" height="30" width="30">
+                                            <h5 class="card-title">Success! Your Registration is Complete</h5>
+                                            <p class="card-text">Congratulations,<b>{{this.firstFormGroup.value['admin_name']}}</b> ! Your Admin account has been successfully created.
+                                                You can now log in using the credentials sent to your registered email address.
+                                            </p>
+                                            <p class="card-text">If you encounter any issues, please contact our support team at xxx@gmail.com/9999999999.</p>
+                                            <button mat-button class="proceedbtn" (click)="goBackPreviousPage()" >Login</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </mat-step> -->
                         </mat-horizontal-stepper>
+                    </div>
+                    <div class="col-12" *ngIf="showSuccessMessage">
+                            <div class="success-msg">
+                                <div class="d-flex justify-content-center mb-3">
+                                    <mat-icon>check_circle</mat-icon>
+                                    <h5 class="card-title-success ms-2">Success! </h5>
+                                </div>
+                                <!-- <img class="mb-3" src="../../../../assets/images/Check-mark.png" alt="" height="40" width="40"> -->
+                                <h5 class="card-title">Your Registration is Complete</h5>
+                                <p class="card-text">Congratulations <b>{{this.firstFormGroup.value['admin_name'] | titlecase}}</b>! Your Admin account has been successfully created.
+                                    You can now log in using the credentials sent to your registered email address.
+                                </p>
+                                <p class="card-text">If you encounter any issues, please contact our support team at xxx@gmail.com/9999999999.</p>
+                                <button mat-button class="proceedbtn" (click)="goBackPreviousPage()" >Login</button>
+                            </div>
                     </div>
                 </div>
             </div>

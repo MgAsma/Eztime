@@ -620,4 +620,8 @@ export class ApiserviceService {
   putAccessToDesignation(id:any,data:any){
     return this.http.put(`${this.baseurl}/designation-access/${id}/`,data,{headers: this.headers})
   }
+
+  emailVerificationForSelfRegistration(data){
+    return this.http.post(`${this.baseurl}/send-mail-for-verification/`,data)
+  }
 }

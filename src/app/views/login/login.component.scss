@@ -443,3 +443,21 @@ span {
 ::ng-deep .login-content-bg .mat-form-field-appearance-outline .mat-form-field-suffix {
     top: .25em !important;
 }
+
+.sign-up-button{
+    border-radius: 5px;
+    background: #4E4E4E;
+    color: #FFFFFF;
+
+}
+
+.sign-up-card{
+    background: #CEEAFF;
+    border-radius: 10px;
+    margin: 5px 0px;
+    padding: 13px 0px;
+}
+.content-signup{
+    align-content: center;
+    text-align: center;
+}

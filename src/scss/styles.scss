@@ -525,3 +525,12 @@ input[type='search']::-webkit-search-cancel-button {
   position:absolute ;
   left: 20px;
 }
+.mat-step-icon-state-edit {
+  background-color: white !important;
+  color: rgb(47, 199, 47) !important;
+}
+.mat-step-header[ng-reflect-state="edit"]  {
+  background: #E2FFE5 !important;
+  box-shadow: 4px 4px 0px 0px #1BA104 !important;
+
+}

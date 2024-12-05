@@ -119,6 +119,10 @@ export class LoginComponent implements OnInit {
     if (event.key === ' ') {
       event.preventDefault();
     }
+
+  }
+  signUp(){
+    this.router.navigate(['./register'])
   }
   
 }

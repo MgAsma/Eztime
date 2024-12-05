@@ -15,7 +15,7 @@ import { OtpComponent } from './otp/otp.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { RouterModule } from '@angular/router';
 import { CreateRoleComponent } from './create-role/create-role.component';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 import { ForgotChangeComponent } from './forgot-change/forgot-change.component';
 import { NotificationComponent } from './notification/notification.component';
 @NgModule({

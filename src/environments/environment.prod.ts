@@ -10,7 +10,8 @@ export const environment = {
   // media_url:'https://projectacetest.thestorywallcafe.com',
  
   // live_url: 'https://projectaceuat.thestorywallcafe.com/api',
-  // media_url: 'https://projectaceuat.thestorywallcafe.com/media',
+  // media_url: 'https://projectaceuat.thestorywallcafe.com',
+
   // live_url: 'https://projectaceprod.thestorywallcafe.com/api',
   // media_url: 'https://projectaceprod.thestorywallcafe.com/media',
   leave_application: 'leave-application',
