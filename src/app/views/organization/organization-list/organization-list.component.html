@@ -35,6 +35,8 @@
               <th scope="col" class="text-center">
                 No.Of Admins
               </th>
+              <th scope="col">Subscription status</th>
+              <th scope="col">Organization status </th>
               <th scope="col">Action </th>
             </tr>
           </thead>
@@ -58,6 +60,8 @@
                 <td>{{item.organization_name ? item.organization_name :'NA' | titlecase }}</td>
                 <td>{{item.email ? item.email :'NA' | titlecase}}</td>
                 <td class="text-center">{{item?.admin_details?.length || 'NA' }}</td>
+                <td class="text-center">{{ 'NA' }}</td>
+                <td class="text-center">{{ 'NA' }}</td>
                 <td>
                   <ng-container>
 

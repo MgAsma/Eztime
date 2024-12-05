@@ -31,7 +31,7 @@ import {MatChipsModule} from '@angular/material/chips';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
-
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [
     SortPipe,
@@ -67,7 +67,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MatChipsModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgbTooltipModule
   ],
   exports:[
     SortPipe,
@@ -100,7 +101,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MatChipsModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgbTooltipModule
    ],
   
 })

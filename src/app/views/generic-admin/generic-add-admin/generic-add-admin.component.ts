@@ -15,11 +15,16 @@ export class GenericAddAdminComponent implements OnInit {
   @Output() cancel = new EventEmitter<number>();
   @Output() delete = new EventEmitter<number>();
   @Output() edit = new EventEmitter<number>();
+  adminForm: FormGroup<any>;
 
   onSave() {
     this.save.emit(this.index);
   }
-
+ 
+ 
+  ngOnChanges(){
+    this.adminForm = this.adminFormGroup
+  }
   onCancel() {
     this.cancel.emit(this.index);
   }
@@ -35,5 +40,5 @@ export class GenericAddAdminComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  toggleFormControlState(i,){}
 }

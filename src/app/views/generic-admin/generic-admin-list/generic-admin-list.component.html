@@ -4,16 +4,16 @@
         <th scope="col">S.No</th>
         <!-- <th scope="col">Logo</th> -->
         <th scope="col">
-          Organization
-          <i *ngIf="!arrowState['organization_name']" (click)="onSort('asc', 'organization_name')" class="bi bi-arrow-up"></i>
-          <i (click)="onSort('desc', 'organization_name')" *ngIf="arrowState['organization_name']" class="bi bi-arrow-down"></i>
+          Admin Name
+          <i *ngIf="!arrowState['first_name']" (click)="onSort('asc', 'first_name')" class="bi bi-arrow-up"></i>
+          <i (click)="onSort('desc', 'first_name')" *ngIf="arrowState['first_name']" class="bi bi-arrow-down"></i>
         </th>
         <th scope="col">
           Email
           <i *ngIf="!arrowState['email']" (click)="onSort('asc', 'email')" class="bi bi-arrow-up"></i>
           <i (click)="onSort('desc', 'email')" *ngIf="arrowState['email']" class="bi bi-arrow-down"></i>
         </th>
-        <th scope="col" class="text-center">No. Of Admins</th>
+        <th scope="col" class="text-center">Phone Number</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -30,12 +30,12 @@
             <i class="bi bi-eye-fill" container="body" ngbTooltip="View"></i>
           </a>
         </td> -->
-        <td>{{ item.organization_name || 'NA' | titlecase }}</td>
-        <td>{{ item.email || 'NA' | titlecase }}</td>
-        <td class="text-center">{{ item?.admin_details?.length || 'NA' }}</td>
+        <td>{{ (item.first_name | titlecase) || 'NA'}}</td>
+        <td>{{ (item.email | titlecase) || 'NA' }}</td>
+        <td class="text-center">{{ item?.phone_number || 'NA' }}</td>
         <td>
-          <img src="assets/images/Edit.svg" class="icon-image" (click)="onEdit(item.organization_id)" />
-          <img src="assets/images/Delete.svg" class="icon-image" (click)="onDelete(item.organization_id)" />
+          <img src="assets/images/Edit.svg" class="icon-image" (click)="onEdit(item.id)" />
+          <img src="assets/images/Delete.svg" class="icon-image" (click)="onDelete(item.id)" />
         </td>
       </tr>
       <tr *ngIf="data.length === 0">

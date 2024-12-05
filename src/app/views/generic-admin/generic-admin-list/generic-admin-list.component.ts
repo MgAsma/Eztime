@@ -14,7 +14,7 @@ export class GenericAdminListComponent implements OnInit {
   @Output() sort = new EventEmitter<{ direction: string; column: string }>();
   tableSize = 5;
   tableSizes = [5,10,25,50,100];
-  count = 20
+  count = this.data?.length * this.tableSize
   page = 1;
   
   adminData: any[];
@@ -29,7 +29,12 @@ export class GenericAdminListComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  onEdit(id){}
+  onEdit(id){
+    this.edit.emit(id)
+  }
   onDelete(id){}
+
+
+  
 
 }
