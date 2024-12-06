@@ -21,16 +21,27 @@ authToken:any;
     'https://projectacedevelop.thestorywallcafe.com/api/forgot-password-send-otp',
     'https://projectacedevelop.thestorywallcafe.com/api/otp-verify-forgot-pass',
     'https://projectacedevelop.thestorywallcafe.com/api/password-reset',
+    'https://projectacedevelop.thestorywallcafe.com/api/country/',
+    'https://projectacedevelop.thestorywallcafe.com/api/state/',
+    'https://projectacedevelop.thestorywallcafe.com/api/city/',
+
     'https://projectacetest.thestorywallcafe.com/api/login',
     'https://projectacetest.thestorywallcafe.com/api/register',
     'https://projectacetest.thestorywallcafe.com/api/forgot-password-send-otp',
     'https://projectacetest.thestorywallcafe.com/api/otp-verify-forgot-pass',
     'https://projectacetest.thestorywallcafe.com/api/password-reset',
+    'https://projectacetest.thestorywallcafe.com/api/country/',
+    'https://projectacetest.thestorywallcafe.com/api/state/',
+    'https://projectacetest.thestorywallcafe.com/api/city/',
+
     'https://projectaceuat.thestorywallcafe.com/api/login',
     'https://projectaceuat.thestorywallcafe.com/api/register',
     'https://projectaceuat.thestorywallcafe.com/api/forgot-password-send-otp',
     'https://projectaceuat.thestorywallcafe.com/api/otp-verify-forgot-pass',
     'https://projectaceuat.thestorywallcafe.com/api/password-reset',
+    'https://projectaceuat.thestorywallcafe.com/api/country/',
+    'https://projectaceuat.thestorywallcafe.com/api/state/',
+    'https://projectaceuat.thestorywallcafe.com/api/city/',
     ];
     // if (skipUrl.indexOf(request.url) === -1) {
     //   this.authToken=sessionStorage.getItem('token');

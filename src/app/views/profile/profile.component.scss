@@ -78,3 +78,6 @@ form {
 ::ng-deep .mat-form-field-wrapper{
     padding-bottom: 0em;
 }
+::ng-deep .date-joining .mat-form-field-appearance-outline .mat-form-field-suffix {
+    top: .25em !important;
+}

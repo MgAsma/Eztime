@@ -94,3 +94,7 @@
 .preview .image-container{
     border: none;
 }
+
+::ng-deep .create-employees .mat-form-field-appearance-outline .mat-form-field-suffix {
+    top: .25em !important;
+}

@@ -224,7 +224,12 @@ export class RegisterComponent {
     const emailControl = this.firstFormGroup.get(data);
     if (emailControl && emailControl.valid) {
       // console.log('valid');
-      this.requestOtpMail(email, data)
+      if(data==='organization_email'){
+        this.orgSendCodeButton = true;
+      } else{
+        this.adminSendCodeButton = true;
+      }
+      this.requestOtpMail(email, data);
     } else {
       // console.log('invalid');
     }
@@ -237,28 +242,36 @@ export class RegisterComponent {
     if (this.firstFormGroup.value.organization_email == this.firstFormGroup.value.admin_email) {
       this.api.showWarning('Admin email must be unique')
     } else {
-      if(data==='organization_email'){
-        this.orgSendCodeButton = true;
-      } else{
-        this.adminSendCodeButton = true;
-      }
-      this.api.emailVerificationForSelfRegistration(temp).subscribe(
-        (res: any) => {
-          this.api.showSuccess(res.message);
-          if (data === 'organization_email') {
-            this.sendOtpButtonOfOrg = false;
-            this.orgSendCodeButton = false;
-            this.startCoutner(data);
-          } else {
-            this.sendOtpButtonOfAdmin = false
-            this.adminSendCodeButton = false;
-            this.startCoutner(data);
+      if (data === 'organization_email') {
+        this.api.emailVerificationForSelfRegistration(temp).subscribe(
+          (res: any) => {
+            this.api.showSuccess(res.message);
+              this.sendOtpButtonOfOrg = false;
+              this.orgSendCodeButton = false;
+              this.startCoutner(data);   
+          },
+          (error: any) => {
+            this.api.showError(error.error.message);
+            this.sendOtpButtonOfOrg = true;
+              this.orgSendCodeButton = false;
           }
-        },
-        (error: any) => {
-          this.api.showError(error.error.message)
-        }
-      )
+        )
+      } else{
+        this.api.emailVerificationForSelfRegistration(temp).subscribe(
+          (res: any) => {
+            this.api.showSuccess(res.message);
+              this.sendOtpButtonOfAdmin = false
+              this.adminSendCodeButton = false;
+              this.startCoutner(data);     
+          },
+          (error: any) => {
+            this.api.showError(error.error.message);
+            this.sendOtpButtonOfAdmin = true
+            this.adminSendCodeButton = false;
+          }
+        )
+      }
+      
     }
   }
 

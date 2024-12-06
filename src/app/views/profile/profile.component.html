@@ -126,12 +126,19 @@
                             required.</span>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
+                <div class="col-sm-12 col-md-6 col-lg-3 mb-4 date-joining">
                     <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                        <mat-label>Date of Joining <b class="r-star">*</b></mat-label>
+                        <input matInput [matDatepicker]="picker" placeholder="Enter start date"
+                            formControlName="date_of_birth" autocomplete="off" >
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                             <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <!-- <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
                         <mat-label>Date of Birth <b class="r-star">*</b></mat-label>
                         <input style="padding: 0.3rem 0 0 0;" type="date" matInput placeholder="Enter date of birth"
                             formControlName="date_of_birth" autocomplete="off">
-                    </mat-form-field>
+                    </mat-form-field> -->
                     <div class="px-2" *ngIf="f['date_of_birth']?.touched && f['date_of_birth']?.invalid">
                         <span class="text-errors" *ngIf="f['date_of_birth'].errors?.['required']">Date of birth is
                             required</span>
@@ -341,11 +348,18 @@
                             required.</span>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
-                    <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                <div class="col-sm-12 col-md-6 col-lg-3 mb-4 date-joining">
+                    <!-- <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
                         <mat-label>Date of Birth <b class="r-star">*</b></mat-label>
                         <input class="pt-1" type="date" matInput placeholder="Enter date of birth"
                             formControlName="date_of_birth" autocomplete="off">
+                    </mat-form-field> -->
+                    <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
+                        <mat-label>Date of Joining <b class="r-star">*</b></mat-label>
+                        <input matInput [matDatepicker]="picker" placeholder="Enter start date"
+                            formControlName="date_of_birth" autocomplete="off" >
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                             <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                     <div class="px-2" *ngIf="f['date_of_birth']?.touched && f['date_of_birth']?.invalid">
                         <span class="text-errors" *ngIf="f['date_of_birth'].errors?.['required']">Date of birth is

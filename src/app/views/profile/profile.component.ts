@@ -211,7 +211,7 @@ export class ProfileComponent implements OnInit {
       profileData = this.profileForm.value
       console.log(this.imageUploaded,'this.imageUploaded')
       //  this.profileForm.patchValue({profile_image:this.fileDataUrl});
-      this.date === 'text' ? profileData.date_of_birth : this.datePipe.transform(profileData.date_of_birth, 'dd/MM/yyyy')
+      profileData.date_of_birth  = this.datePipe.transform(profileData.date_of_birth, 'yyyy-MM-dd');
       let data = {
         first_name: profileData.first_name,
         last_name: profileData.last_name,

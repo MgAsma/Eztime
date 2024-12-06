@@ -51,10 +51,10 @@
                                                 <input matInput formControlName='organization_email' placeholder="Enter organization email address"
                                                     (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off"
                                                     id="emailId">
-                                                    <button *ngIf="!orngEmailVerified && orgSendCodeButton" class="btn btn-sm secondary-buttons" type="button" disabled>
+                                                    <button *ngIf="orgSendCodeButton" class="btn btn-sm secondary-buttons" type="button" disabled>
                                                         <span class="spinner-border spinner-border-sm text-light" aria-hidden="true"></span>
                                                     </button>
-                                                    <button *ngIf="!orngEmailVerified && !orgSendCodeButton"  type="button" class="btn btn-sm secondary-buttons"
+                                                    <button *ngIf="!orgSendCodeButton"  type="button" class="btn btn-sm secondary-buttons"
                                                      (click)="requestOtp(firstFormGroup.get('organization_email').value,'organization_email')">Send OTP</button>
                                             </mat-form-field>
                                             <div class="px-2" *ngIf="firstFormGroup.get('organization_email')?.touched && firstFormGroup.get('organization_email')?.invalid">
