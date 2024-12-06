@@ -8,6 +8,9 @@ a{
     color: #3F51B5;
     text-decoration: none;
 }
+.fa-undo{
+  color:#3F51B5;
+}
 li{
     
     list-style: none;
@@ -209,4 +212,16 @@ margin-top:5px;
      position: -webkit-sticky;
    top: -15px;
     z-index: 1; // any positive value, layer order is global
+}
+.icon-image{
+  height: 32px;
+  width: 35px;
+}
+.revoke-btn{
+  background: #F6f6f6;
+  border-radius: 50%;
+  transform: scale(0.9);
+}
+.revoke-icon{
+  color:#126EB4;
 }

@@ -60,8 +60,8 @@ export class AdminListComponent implements OnInit {
     // this.id = sessionStorage.getItem('user_id')
     this.organization_id = JSON.parse(sessionStorage.getItem('organization_id'))
     let query = `?page=1&page_size=5`
-    this.getOrgDetails(query);
-    this.openSubscription()
+    // this.getOrgDetails(query);
+    // this.openSubscription()
   }
 
  

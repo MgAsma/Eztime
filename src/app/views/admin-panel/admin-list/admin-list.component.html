@@ -1,14 +1,7 @@
-
+<!-- 
 <div class="container-wrapper">
   <div class="row pb-3">
-    <!-- <div class="col-sm-4 search-div">
-      <app-search (search)="onSearch($event)"></app-search> 
-    </div> -->
-    <!-- <div class="col-sm"></div>
-    <div class="col-md-3 col-lg-3 p-1 text-end">
-      <button mat-raised-button class="proceedbtn mat-btn-s"  type="submit" (click)="openSubscription()">Add Admins</button>
-    </div>
-  </div> -->
+    
   <div class="bg">
     <div class="row">
       <div class="col px-0">
@@ -154,10 +147,7 @@
                         Invalid email Id.
                       </mat-error>
                      
-                      <!-- <mat-error class="error-text"
-                      *ngIf="f['email'].value && getAdminFormGroup(i)?.get('admin_email_id').touched && getAdminFormGroup(i)?.get('admin_email_id')?.errors?.['emailMatch']">
-                      Admin emails must be unique.
-                  </mat-error> -->
+                      
                   <mat-error class="error-text" *ngIf="getAdminFormGroup(i)?.get('admin_email_id')?.errors?.['duplicateArrEmail'] && getAdminFormGroup(i)?.get('admin_email_id')?.touched && getAdminFormGroup(i)?.get('admin_email_id')?.invalid">
                     Admin with this email already exists.
                   </mat-error>
@@ -191,14 +181,7 @@
                 </div>
               </div>
               
-              <!-- <div class="col-1 d-flex align-items-center p-0"  *ngIf="admin?.isEditing">
-                <i class="bi bi-check-circle me-1 icon-bg" container="body" ngbTooltip="Save" style="color:#50C20D;" (click)="saveAdmin(i)"></i> 
-                <i class="bi bi-x-circle icon-bg" container="body" style="color:#126EB4;margin-right: 5px;" ngbTooltip="Cancel" (click)="toggleFormControlState(i, false)"></i> 
-                <i class="bi bi-trash icon-bg" container="body" style="color:red;"  ngbTooltip="Delete" (click)="open(admin.id,i)"></i>
-              </div>
-              <div class="col-1 d-flex align-items-center p-0" (click)="toggleFormControlState(i, true)"  *ngIf="!admin?.isEditing">
-                <i class="bi bi-pencil-square icon-bg"></i>
-              </div> -->
+             
               <div class="col-1 d-flex align-items-center p-0"  *ngIf="admin?.isEditing">
                 <img src="../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Save" style="color:#50C20D;" (click)="saveAdmin(i)"/>
                 <img src="../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Cancel" (click)="toggleFormControlState(i, false)"/>
@@ -210,9 +193,7 @@
             </form>
           </ng-container> 
         </ng-container>
-          <!-- Submit Button -->
           
-        <!-- </mat-card> -->
       </div>
    
       </div>
@@ -222,11 +203,8 @@
  
  
   <div class="pagination-container p-0 pt-2">
-    <!-- Pagination Controls (Center-Aligned) -->
     <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
     </pagination-controls>
-  
-    <!-- Items Per Page Selector (Right-Aligned) -->
     <div class="items-per-page-container">
       <div>Items per page</div>
       <mat-select [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10" class="page-size">
@@ -235,7 +213,4 @@
     </div>
   </div>
   
-  
-  
-
-</div>
+</div> -->
