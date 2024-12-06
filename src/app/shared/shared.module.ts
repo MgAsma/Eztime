@@ -28,12 +28,16 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatChipsModule} from '@angular/material/chips';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [
     SortPipe,
     GenericNorecardsComponent,
     HypenDirective,
- 
+
   ],
   imports: [
     CommonModule,
@@ -60,7 +64,11 @@ import {MatChipsModule} from '@angular/material/chips';
     MatProgressBarModule,
     MatCheckboxModule,
     MatAutocompleteModule,
-    MatChipsModule
+    MatChipsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxPaginationModule,
+    NgbTooltipModule
   ],
   exports:[
     SortPipe,
@@ -90,7 +98,11 @@ import {MatChipsModule} from '@angular/material/chips';
     MatProgressBarModule,
     MatCheckboxModule,
     MatAutocompleteModule,
-    MatChipsModule
+    MatChipsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxPaginationModule,
+    NgbTooltipModule
    ],
   
 })

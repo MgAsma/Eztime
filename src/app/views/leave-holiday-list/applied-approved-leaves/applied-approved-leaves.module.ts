@@ -15,7 +15,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { PaginationControlsComponent } from './pagination-controls/pagination-controls.component'
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from 'src/app/shared/shared.module';
-
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     NgxPaginationModule,
     Ng2SearchPipeModule,
     NgbTooltipModule,
-    SharedModule
+    SharedModule,
+    MatButtonModule
   ]
 })
 export class AppliedApprovedLeavesModule { }

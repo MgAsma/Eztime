@@ -111,6 +111,11 @@ const routes: Routes = [
         path:'changePasswords',loadChildren:()=>import('./views/change-passwords/change-passwords.module').then(m => m.ChangePasswordsModule)
       },
       {
+        path: 'admin',
+        loadChildren: () =>
+          import('./views/admin-panel/admin-panel.module').then((m) => m.AdminPanelModule),
+      },
+      {
         path: 'pages',
         loadChildren: () =>
           import('./views/pages/pages.module').then((m) => m.PagesModule)

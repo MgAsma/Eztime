@@ -103,6 +103,7 @@
                   <!-- <span *ngIf="f['leave_application_file_attachment'].errors?.['required']">Logo is required</span> -->
                   <span *ngIf="f['leave_application_file_attachment'].errors?.['accept']">Invalid file format. Only .jpg, .jpeg, .png formats are allowed.</span>
               </mat-error>
+              <mat-hint class="file-types" *ngIf="!f['leave_application_file_attachment'].errors?.['accept']">Allowed file types .jpg, .jpeg, .png</mat-hint>
           </div> 
       </div>
 

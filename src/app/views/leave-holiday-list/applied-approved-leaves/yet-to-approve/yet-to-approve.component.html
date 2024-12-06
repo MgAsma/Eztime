@@ -28,9 +28,15 @@
                                 <td class="text-center">{{item.created_datetime | date }}</td>
                              <td class="text-center">
                                 <ng-container >
+                                  <span>  
+                                   
+                                </span>
                                     <span >
-                                        <button   style="border: none;background-color: inherit;" > <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete" (click)="open(item)"></i></button>
-                                    </span>
+                                        <button mat-icon-button class="revoke-btn"><mat-icon class="revoke-icon" ngbTooltip="Revoke">donut_large</mat-icon></button>
+                                        
+                                        <img src="../../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete" (click)="open(item)"/>
+                                     
+                                      </span>
                                    
                                 </ng-container>
                               
