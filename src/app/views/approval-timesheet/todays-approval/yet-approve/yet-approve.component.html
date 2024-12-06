@@ -3,7 +3,7 @@
   <div class="bg">
     <div class="row">
       <div class="col px-0">
-        <table class="table table-hover table-list">
+        <table class="table table-hover table-list" *ngIf="yetToApproveAll?.length">
           <thead>
             <tr>
               <th scope="col">S.No</th>
@@ -59,14 +59,14 @@
                 </td>
               </tr>
 
-          
-              <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="result.length === 0">
-                No records found!
-              </div>
             </ng-container>
           </tbody>
         </table>
 
+          
+        <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="yetToApproveAll.length === 0">
+          No records found!
+        </div>
       </div>
     </div>
 
