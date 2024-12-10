@@ -6,6 +6,7 @@ import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
 import { MatStepper } from '@angular/material/stepper';
 import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -57,6 +58,7 @@ export class RegisterComponent {
     private location: Location,
     private api: ApiserviceService,
     private http: HttpClient,
+    private toastr: ToastrService,
     private router: Router) { }
 
   ngOnInit() {
@@ -74,11 +76,11 @@ export class RegisterComponent {
     this.firstFormGroup = this.formBuilder.group({
       organization_name: ['', [Validators.required, Validators.maxLength(50)]],
       organization_email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-      organization_otp: ['', Validators.required],
+      organization_otp: [''],
       org_email_verified: [''],
       admin_name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/), Validators.maxLength(50)]],
       admin_email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-      admin_otp: ['', [Validators.required]],
+      admin_otp: [''],
       admin_email_verified: [''],
     });
     this.secondFormGroup = this.formBuilder.group({
@@ -224,28 +226,29 @@ export class RegisterComponent {
     const emailControl = this.firstFormGroup.get(data);
     if (emailControl && emailControl.valid) {
       // console.log('valid');
-      if(data==='organization_email'){
-        this.orgSendCodeButton = true;
-      } else{
-        this.adminSendCodeButton = true;
-      }
-      this.requestOtpMail(email, data);
-    } else {
-      // console.log('invalid');
-    }
+        if(data==='organization_email'){
+          this.orgSendCodeButton = true;
+          this.requestOtpMail(email, data); 
+        } else{
+          if (this.firstFormGroup.value.organization_email == this.firstFormGroup.value.admin_email) {
+            this.api.showWarning('Admin email must be unique')
+          }  else{
+          this.requestOtpMail(email, data); 
+          this.adminSendCodeButton = true;
+          }
+        } 
+    } 
   }
 
   requestOtpMail(email: any, data: any) {
     let temp = {
       [data]: email
     }
-    if (this.firstFormGroup.value.organization_email == this.firstFormGroup.value.admin_email) {
-      this.api.showWarning('Admin email must be unique')
-    } else {
       if (data === 'organization_email') {
         this.api.emailVerificationForSelfRegistration(temp).subscribe(
           (res: any) => {
-            this.api.showSuccess(res.message);
+            this.toastr.success(`Otp sent to ${email}`, '', { timeOut: 5000 });
+            this.firstFormGroup.controls['organization_otp'].setValidators( [Validators.required]);
               this.sendOtpButtonOfOrg = false;
               this.orgSendCodeButton = false;
               this.startCoutner(data);   
@@ -259,7 +262,8 @@ export class RegisterComponent {
       } else{
         this.api.emailVerificationForSelfRegistration(temp).subscribe(
           (res: any) => {
-            this.api.showSuccess(res.message);
+            this.toastr.success(`Otp sent to ${email}`, '', { timeOut: 5000 });
+            this.firstFormGroup.controls['admin_otp'].setValidators([Validators.required]);
               this.sendOtpButtonOfAdmin = false
               this.adminSendCodeButton = false;
               this.startCoutner(data);     
@@ -271,8 +275,6 @@ export class RegisterComponent {
           }
         )
       }
-      
-    }
   }
 
   verifyOtp(otp: any, data: any) {
@@ -314,16 +316,20 @@ export class RegisterComponent {
     console.log(this.firstFormGroup.value)
     if (this.firstFormGroup.invalid) {
       this.firstFormGroup.markAllAsTouched()
-      if (this.firstFormGroup.value.organization_otp == '' || this.firstFormGroup.value.admin_otp == '') {
-        this.api.showWarning('OTP Verification is pending')
-      }
+      this.api.showError('Please enter the mandatory fields!')
+      // if (this.firstFormGroup.value.organization_otp == '' || this.firstFormGroup.value.admin_otp == '') {
+      //   this.api.showWarning('OTP Verification is pending')
+      // }
     } else if (this.firstFormGroup.value.organization_email == this.firstFormGroup.value.admin_email) {
-      this.api.showWarning('Admin email must be unique')
-    } else if (this.firstFormGroup.value.org_email_verified=='') {
-      this.api.showWarning('Organization email verification is pending')
-    } else if(this.firstFormGroup.value.admin_email_verified==''){
-      this.api.showWarning('Admin email verification is pending')
+      this.api.showError('Admin email must be unique')
+    } else if (this.firstFormGroup.value.org_email_verified=='' && this.firstFormGroup.value.admin_email_verified=='') {
+      this.api.showError('OTP Verification is pending for organization and admin')
+    } else if(this.firstFormGroup.value.admin_email_verified=='' && this.firstFormGroup.value.org_email_verified!=''){
+      this.api.showError('OTP Verification is pending for admin email')
+    } else if(this.firstFormGroup.value.admin_email_verified!='' && this.firstFormGroup.value.org_email_verified==''){
+      this.api.showError('OTP Verification is pending for  organization')
     }
+    
      else {
       console.log(this.firstFormGroup.value)
       this.stepper.next();
@@ -410,7 +416,6 @@ export class RegisterComponent {
         state: this.secondFormGroup.value['state'],
         country: this.secondFormGroup.value['country'],
         postal_code: this.secondFormGroup.value['postal_code'],
-        // organization_image: null
       };
       console.log(data)
       this.api.postData(`${environment.live_url}/${environment.organization}/`, data).subscribe(

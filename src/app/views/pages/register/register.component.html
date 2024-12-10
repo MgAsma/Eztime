@@ -17,7 +17,7 @@
                 </div>
                 <div class="row self-organization-register mt-2">
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngIf="!showSuccessMessage">
-                        <mat-horizontal-stepper [linear]="true" #stepper>
+                        <mat-horizontal-stepper [linear]="false" #stepper>
                             <ng-template matStepperIcon="edit">
                                 <mat-icon>done</mat-icon>
                               </ng-template>
@@ -71,7 +71,7 @@
                                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                                 <mat-label>OTP<b class="r-star">*</b></mat-label>
                                                 <input matInput type="number" placeholder="Enter the code shared" formControlName="organization_otp"
-                                                    autocomplete="off" maxlength="10" pattern="\d{6}"
+                                                    autocomplete="off" maxlength="6" pattern="\d{6}"
                                                     onKeyPress="if(this.value.length==6) return false;" (keypress)="validateKeyPress($event)">
                                                 <button type="button" class="btn btn-sm secondary-buttons"
                                                 (click)="verifyOtp(firstFormGroup.get('organization_otp').value,'organization_otp')">Verify</button>
@@ -79,7 +79,7 @@
                                             <div class="px-2" *ngIf="firstFormGroup.get('organization_otp')?.touched && firstFormGroup.get('organization_otp')?.invalid">
                                                 <span class="text-errors" *ngIf="firstFormGroup.get('organization_otp').errors?.['pattern']">Please enter 6 digits
                                                     code.</span>
-                                                <span class="text-errors" *ngIf="firstFormGroup.get('organization_otp').errors?.['required']">code is
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('organization_otp').errors?.['required']">Otp is
                                                     required.</span>
                                             </div>
                                             <div class="px-2" *ngIf="!orngEmailVerified">
@@ -143,7 +143,7 @@
                                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                                 <mat-label>OTP<b class="r-star">*</b></mat-label>
                                                 <input matInput type="number" placeholder="Enter the code shared" formControlName="admin_otp"
-                                                    autocomplete="off" maxlength="10" pattern="\d{6}"
+                                                    autocomplete="off" maxlength="6" pattern="\d{6}"
                                                     onKeyPress="if(this.value.length==6) return false;" (keypress)="validateKeyPress($event)">
                                                 <button type="button" class="btn btn-sm secondary-buttons"
                                                 (click)="verifyOtp(firstFormGroup.get('admin_otp').value,'admin_otp')">Verify</button>
@@ -151,7 +151,7 @@
                                             <div class="px-2" *ngIf="firstFormGroup.get('admin_otp')?.touched && firstFormGroup.get('admin_otp')?.invalid">
                                                 <span class="text-errors" *ngIf="firstFormGroup.get('admin_otp').errors?.['pattern']">Please enter 6 digits
                                                     code.</span>
-                                                <span class="text-errors" *ngIf="firstFormGroup.get('admin_otp').errors?.['required']">code is
+                                                <span class="text-errors" *ngIf="firstFormGroup.get('admin_otp').errors?.['required']">Otp is
                                                     required.</span>
                                             </div>
                                             <div class="px-2" *ngIf="!adminEmailVerified">
@@ -204,7 +204,8 @@
                                         <div class="col-sm-12 col-md-6 mb-3">
                                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
                                                 <mat-label>Postal code <b class="r-star">*</b></mat-label>
-                                                <input matInput type="number" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" formControlName="postal_code" 
+                                                <input matInput type="number" maxlength="6" pattern="\d{6}"
+                                                onKeyPress="if(this.value.length==6) return false;" (keypress)="validateKeyPress($event)" formControlName="postal_code" 
                                                 placeholder="Enter postal code" autocomplete="off" (input)="getCountryStateCity($event)">
                                             </mat-form-field>
                                             <div class="px-2" *ngIf="secondFormGroup.get('postal_code')?.touched && secondFormGroup.get('postal_code')?.invalid">
@@ -297,8 +298,8 @@
                                 <p class="card-text">Congratulations <b>{{this.firstFormGroup.value['admin_name'] | titlecase}}</b>! Your Admin account has been successfully created.
                                     You can now log in using the credentials sent to your registered email address.
                                 </p>
-                                <p class="card-text">If you encounter any issues, please contact our support team at xxx@gmail.com/9999999999.</p>
                                 <button mat-button class="proceedbtn" (click)="goBackPreviousPage()" >Login</button>
+                                <p class="card-text">If you encounter any issues, please contact our support team at xxx@gmail.com/9999999999.</p>
                             </div>
                     </div>
                 </div>
