@@ -17,7 +17,7 @@
                 </div>
                 <div class="row self-organization-register mt-2">
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngIf="!showSuccessMessage">
-                        <mat-horizontal-stepper [linear]="true" #stepper>
+                        <mat-horizontal-stepper #stepper  [linear]="true">
                             <ng-template matStepperIcon="edit">
                                 <mat-icon>done</mat-icon>
                               </ng-template>
@@ -70,7 +70,7 @@
                                         <div class="col-md-12 email-input mb-3" *ngIf="!sendOtpButtonOfOrg">
                                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                                 <mat-label>OTP<b class="r-star">*</b></mat-label>
-                                                <input matInput type="number" placeholder="Enter the code shared" formControlName="organization_otp"
+                                                <input matInput type="number" placeholder="Enter the otp" formControlName="organization_otp"
                                                     autocomplete="off" maxlength="6" pattern="\d{6}"
                                                     onKeyPress="if(this.value.length==6) return false;" (keypress)="validateKeyPress($event)">
                                                 <button type="button" class="btn btn-sm secondary-buttons"
@@ -121,7 +121,7 @@
                                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                                 <mat-label>Admin Email Address<b class="r-star">*</b></mat-label>
                                                 <input matInput formControlName='admin_email' placeholder="Enter admin email address"
-                                                    (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off" (input)="emailcheck($event)"
+                                                    (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off" 
                                                     id="emailId">
                                                     <button *ngIf="!adminEmailVerified && adminSendCodeButton" class="btn btn-sm secondary-buttons" type="button" disabled>
                                                         <span class="spinner-border spinner-border-sm text-light" aria-hidden="true"></span>
@@ -136,13 +136,17 @@
                                                 <span class="text-errors"
                                                     *ngIf="firstFormGroup.get('admin_email').errors && firstFormGroup.get('admin_email').errors?.['pattern']">Admin email
                                                     address is invalid.</span>
+                                                <span class="text-errors"
+                                                *ngIf="firstFormGroup.get('admin_email')?.hasError('emailNotUnique')">
+                                                Admin Email must be unique.
+                                                </span>
                                             </div>
                                         </div>
                                         <!-- admin otp -->
                                         <div class="col-md-12 email-input mb-3" *ngIf="!sendOtpButtonOfAdmin">
                                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                                 <mat-label>OTP<b class="r-star">*</b></mat-label>
-                                                <input matInput type="number" placeholder="Enter the code shared" formControlName="admin_otp"
+                                                <input matInput type="number" placeholder="Enter the otp" formControlName="admin_otp"
                                                     autocomplete="off" maxlength="6" pattern="\d{6}"
                                                     onKeyPress="if(this.value.length==6) return false;" (keypress)="validateKeyPress($event)">
                                                 <button type="button" class="btn btn-sm secondary-buttons"
@@ -262,7 +266,8 @@
                                             </div>
                                         </div>
 
-                                    <div class="d-flex justify-content-end">
+                                    <div class="action-btn-link-content">
+                                        <button mat-button matStepperPrevious class="back-button">Back</button>
                                         <button mat-button class="proceedbtn"
                                             (click)="checkValidation('step2')">Register Organization</button>
                                     </div>

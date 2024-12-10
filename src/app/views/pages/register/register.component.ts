@@ -52,7 +52,8 @@ export class RegisterComponent {
   countDownOrg: number;
   countDownAdmin:number;
   timer: any;
-  showSuccessMessage:boolean = false
+  showSuccessMessage:boolean = false;
+  selectedIndex: number = 0; 
   constructor(
     private formBuilder: FormBuilder,
     private location: Location,
@@ -79,7 +80,7 @@ export class RegisterComponent {
       organization_otp: [''],
       org_email_verified: [''],
       admin_name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/), Validators.maxLength(50)]],
-      admin_email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      admin_email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),this.adminEmailUniqueValidator()]],
       admin_otp: [''],
       admin_email_verified: [''],
     });
@@ -91,12 +92,28 @@ export class RegisterComponent {
       address: ['', [Validators.required,Validators.maxLength(50)]],
     });
     this.thirdFormGroup = this.formBuilder.group({})
+    this.firstFormGroup.get('organization_email')?.valueChanges.subscribe(() => {
+      this.firstFormGroup.get('admin_email')?.updateValueAndValidity();
+    });
   }
   // onFocusProfileImg(){
   //   this.thirdFormGroup.get('profile_base64')?.reset();
   // }
  
+  adminEmailUniqueValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const orgEmail = this.firstFormGroup?.get('organization_email')?.value;
+      const adminEmail = control.value;
+      if (orgEmail && adminEmail && orgEmail === adminEmail) {
+        return { emailNotUnique: true }; 
+      }
+      return null; 
+    };
+  }
   
+  disableTabNavigation() {
+    this.selectedIndex = 0; // Prevents going to next tabs manually
+  }
   checkValidation(event) {
     if (event == 'step1') {
       this.firstFromValidtion();
@@ -216,11 +233,11 @@ export class RegisterComponent {
     }
   }
 
-  emailcheck(event: any) {
-    if (this.firstFormGroup.value.admin_email && this.firstFormGroup.value.organization_email == this.firstFormGroup.value.admin_email) {
-      this.api.showWarning('Admin email must be unique')
-    }
-  }
+  // emailcheck(event: any) {
+  //   if (this.firstFormGroup.value.admin_email && this.firstFormGroup.value.organization_email == this.firstFormGroup.value.admin_email) {
+  //     this.api.showError('Admin email must be unique')
+  //   }
+  // }
   requestOtp(email: any, data: any) {
     // console.log(email, data)
     const emailControl = this.firstFormGroup.get(data);
@@ -230,12 +247,13 @@ export class RegisterComponent {
           this.orgSendCodeButton = true;
           this.requestOtpMail(email, data); 
         } else{
-          if (this.firstFormGroup.value.organization_email == this.firstFormGroup.value.admin_email) {
-            this.api.showWarning('Admin email must be unique')
-          }  else{
+          // if (this.firstFormGroup.value.organization_email == this.firstFormGroup.value.admin_email) {
+          //   this.api.showError('Admin email must be unique')
+          // }  
+          // else{
           this.requestOtpMail(email, data); 
           this.adminSendCodeButton = true;
-          }
+          // }
         } 
     } 
   }
@@ -316,25 +334,27 @@ export class RegisterComponent {
     console.log(this.firstFormGroup.value)
     if (this.firstFormGroup.invalid) {
       this.firstFormGroup.markAllAsTouched()
-      this.api.showError('Please enter the mandatory fields!')
+      this.api.showError(' Please enter the mandatory fields!')
       // if (this.firstFormGroup.value.organization_otp == '' || this.firstFormGroup.value.admin_otp == '') {
       //   this.api.showWarning('OTP Verification is pending')
       // }
-    } else if (this.firstFormGroup.value.organization_email == this.firstFormGroup.value.admin_email) {
-      this.api.showError('Admin email must be unique')
-    } else if (this.firstFormGroup.value.org_email_verified=='' && this.firstFormGroup.value.admin_email_verified=='') {
-      this.api.showError('OTP Verification is pending for organization and admin')
+    }  
+    else if (this.firstFormGroup.value.org_email_verified=='' && this.firstFormGroup.value.admin_email_verified=='') {
+      this.api.showError(' OTP verification is pending for organization and admin email id')
     } else if(this.firstFormGroup.value.admin_email_verified=='' && this.firstFormGroup.value.org_email_verified!=''){
-      this.api.showError('OTP Verification is pending for admin email')
+      this.api.showError(' OTP verification is pending for admin email id')
     } else if(this.firstFormGroup.value.admin_email_verified!='' && this.firstFormGroup.value.org_email_verified==''){
-      this.api.showError('OTP Verification is pending for  organization')
+      this.api.showError(' OTP verification is pending for  organization email id')
     }
     
      else {
-      console.log(this.firstFormGroup.value)
+      console.log(this.firstFormGroup.value);
       this.stepper.next();
     }
   }
+
+  
+
   getCountryStateCity(event:any){
     // if(event.target.value.length==6){
     // this.http.get(`${this.apiUrl}/${event.target.value}`).subscribe(
@@ -400,6 +420,7 @@ export class RegisterComponent {
       }, 1000);
     }
   }
+
 
 
   createOrganization(){
