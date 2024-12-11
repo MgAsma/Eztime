@@ -366,23 +366,25 @@ export class RegisterComponent {
   }
 
   resendOtpButton(email:any,data:any){
-    let temp = {
-      [data]: email
-    }
     if(data==='organization_email'){
       this.disableOrgResendBtn = true;
-      this.resendOptAPICall(temp,data);
+      this.resendOptAPICall(email,data);
     } else{
       this.disableAdminResendBtn = true;
-      this.resendOptAPICall(temp,data);
+      this.resendOptAPICall(email,data);
     }
   }
 
-  resendOptAPICall(data:any,text:any){
-    this.api.emailVerificationForSelfRegistration(data).subscribe(
+  resendOptAPICall(email:any,text:any){
+    let temp = {
+      [text]: email
+    }
+    this.api.emailVerificationForSelfRegistration(temp).subscribe(
       (res:any)=>{
-        this.api.showSuccess(res.message);
+        if(res){
+        this.toastr.success(`Otp sent to ${email}`, '', { timeOut: 5000 });
         this.startCoutner(text);
+       }
       },
       (error:any)=>{
         this.api.showError(error.error.message)
