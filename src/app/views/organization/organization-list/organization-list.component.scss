@@ -66,9 +66,10 @@ i{
 .main-col{
     padding: 5px;
 }
+
 #eye-btn{
     position: absolute;
-    right: 28px;
+    right: 7px;
     top: 26px;
     background-color: #615e5e;
     border-radius: 50%;
@@ -151,4 +152,8 @@ i{
     cursor: pointer;
     height: 25px;
     margin: 0 2px;
+}
+.org-status-btn{
+    background-color: #126EB4;
+    color:white;
 }

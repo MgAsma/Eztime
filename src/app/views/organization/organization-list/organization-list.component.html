@@ -60,12 +60,18 @@
                 <td>{{item.organization_name ? item.organization_name :'NA' | titlecase }}</td>
                 <td>{{item.email ? item.email :'NA' | titlecase}}</td>
                 <td class="text-center">{{item?.admin_details?.length || 'NA' }}</td>
-                <td class="text-center">{{ 'NA' }}</td>
-                <td class="text-center">{{ 'NA' }}</td>
+                <td class="text-center">{{ item?.type_of_subscription_name || 'NA' }}</td>
+                <td class="text-center">
+                  <!-- <mat-slide-toggle class="pt-1"  [checked]="organizationStatus || item?.organization_status" (change)="toggleStatus($event)">
+                    {{  getStatusText() }}
+                  </mat-slide-toggle> -->
+                  <div style="display: block;">{{ item?.organization_status === true ? 'Active' : 'Inactive'   || 'NA' }}</div>
+                  <button mat-raised-button class="org-status-btn" (click)="updateStatus(item)">
+                    {{item?.organization_status === true ? 'Deactivate' : 'Activate'}}
+                  </button>
+                </td>
                 <td>
                   <ng-container>
-
- 
                       <img src="../../../../assets/images/Edit.svg" class="icon-image" routerLink="/organization/updateOrg/{{item.organization_id
                         }}" container="body" ngbTooltip="Edit" />
                                               <img src="../../../../assets/images/Delete.svg" class="icon-image"  container="body" ngbTooltip="Delete" (click)="open(item.organization_id

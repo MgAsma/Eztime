@@ -7,6 +7,7 @@ import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { SortPipe } from 'src/app/sort/sort.pipe';
 import { environment } from 'src/environments/environment';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 @Component({
   selector: 'app-organization-list',
   templateUrl: './organization-list.component.html',
@@ -38,6 +39,7 @@ currentIndex: any;
   params:any = {}
   permissions: any = [];
   org_id: any;
+  organizationStatus = false
   constructor(private api:ApiserviceService,private modalService:NgbModal,
     private router:Router,private location:Location,
     private common_service:CommonServiceService) { }
@@ -53,8 +55,29 @@ currentIndex: any;
     this.org_id = sessionStorage.getItem('org_id') 
     this.getOrgDetails(`?page=${1}&page_size=${5}`)
   }
- 
-  
+  getStatusText(): string {
+    const status =  this.organizationData?.organization_status || this.organizationStatus ;
+    return status ? 'Active' : 'Inactive';
+  }
+  toggleStatus(event: MatSlideToggleChange): void {
+    // this.item.organization_status = event.checked;
+    this.organizationStatus = event.checked
+  }
+  updateStatus(event){
+    const data = {
+      organization_status:event.organization_status === true ? false : true
+    }
+    const status = event?.organization_status === true ? 'deactivated' : 'activated'
+    this.api.updateData(`${environment.live_url}/${environment.organization}/${event.organization_id}/`,data).subscribe(
+      res => {
+        if (res) {
+          this.api.showSuccess(`Organization ${status} successfully!`);
+          let query = `?page=${this.page}&page_size=${this.tableSize}`
+          this.getOrgDetails(query)
+        }
+      }
+    )
+  }
   sort(direction: string, column: string) {
     // Reset the state of all columns except the one being sorted
     Object.keys(this.arrowState).forEach(key => {

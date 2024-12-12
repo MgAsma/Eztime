@@ -108,14 +108,18 @@ export class YetToApproveComponent implements OnInit{
     this.buttonClick.emit(tableData);
   }
 
-  delete(item:any){
+  delete(item:any,type?){
    
     this.api.delete(`${environment.live_url}/${environment.employee_leave_details}/${item.id}/`).subscribe((data:any)=>{
-      this.api.showWarning('leave deleted successfully!')
+      if(type){
+        this.api.showWarning('leave revoked successfully!')
+      }else{
+        this.api.showWarning('leave deleted successfully!')
+      }
+      
       let tableData ={
-        // page:this.page,
-        // tableSize:this.tableSize,
-        // search_key:this.term
+        page:this.page,
+        page_size:this.tableSize,
        }
       this.buttonClick.emit(tableData);
     },((error:any)=>{
@@ -130,7 +134,7 @@ export class YetToApproveComponent implements OnInit{
         backdrop: true,
         centered:true
       });
-     
+      
       modelRef.componentInstance.status.subscribe(resp => {
         if(resp == "ok"){
          this.delete(content);
@@ -145,7 +149,28 @@ export class YetToApproveComponent implements OnInit{
  
 
   }
-  
+  openRevokeDialogue(content,type){
+    if(content){
+      const modelRef =   this.modalService.open(GenericDeleteComponent, {
+        size: <any>'sm',
+        backdrop: true,
+        centered:true
+      });
+      
+      modelRef.componentInstance.title = `Are you sure you want to revoke the leave`;
+      modelRef.componentInstance.message = `Revoke`;
+      
+      modelRef.componentInstance.status.subscribe(resp => {
+        if(resp == "ok"){
+         this.delete(content,type);
+         modelRef.close();
+        }
+        else{
+          modelRef.close();
+        }
+    })
+  }
+}
   openDialogue(content,status){
     if(content){
       const statusText = status === 'DECLINED' ? 'decline' : 'approve'

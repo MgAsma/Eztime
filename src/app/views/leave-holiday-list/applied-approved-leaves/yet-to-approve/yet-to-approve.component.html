@@ -32,7 +32,7 @@
                                    
                                 </span>
                                     <span >
-                                        <button mat-icon-button class="revoke-btn"><mat-icon class="revoke-icon" ngbTooltip="Revoke">donut_large</mat-icon></button>
+                                        <button mat-icon-button class="revoke-btn"><mat-icon class="revoke-icon" ngbTooltip="Revoke" (click)="openRevokeDialogue(item,1)">donut_large</mat-icon></button>
                                         
                                         <img src="../../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete" (click)="open(item)"/>
                                      
@@ -94,7 +94,9 @@
               <div class="col-5">
                   <ng-container >
                       <span style="float: right;">
-                          <button  type="button" class="toolbar-btn "   (click)="open(item)"  ><i class="bi bi-trash" style="color: red; font-size: 24px;"></i></button>
+                        <button mat-icon-button class="revoke-btn"> <mat-icon class="revoke-icon" ngbTooltip="Revoke" (click)="openRevokeDialogue(item,1)">donut_large</mat-icon></button>
+                                        
+                          <button  type="button" class="toolbar-btn "   (click)="open(item)"  ><i class="bi bi-trash" style="color: red; font-size: 24px;vertical-align: middle;"></i></button>
                         </span>
                   </ng-container>  
               </div>
