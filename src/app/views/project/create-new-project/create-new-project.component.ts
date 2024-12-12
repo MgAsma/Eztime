@@ -547,7 +547,7 @@ export class CreateNewProjectComponent implements OnInit {
     const EndDate = this.projectForm.value.end_date;
     console.log(this.projectForm.value);
     if (this.projectForm.invalid) {
-      this.api.showError('Invalid');
+      this.api.showError('Please fill mandatory fields');
       console.log(this.projectForm.controls);
       this.projectForm.markAllAsTouched()
     }

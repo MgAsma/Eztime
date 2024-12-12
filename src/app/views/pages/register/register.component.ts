@@ -51,9 +51,10 @@ export class RegisterComponent {
 
   countDownOrg: number;
   countDownAdmin:number;
-  timer: any;
+  orgTimer:any;
+  adminTimer: any;
   showSuccessMessage:boolean = false;
-  selectedIndex: number = 0; 
+  disableRegisterButton:boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private location: Location,
@@ -110,10 +111,7 @@ export class RegisterComponent {
       return null; 
     };
   }
-  
-  disableTabNavigation() {
-    this.selectedIndex = 0; // Prevents going to next tabs manually
-  }
+ 
   checkValidation(event) {
     if (event == 'step1') {
       this.firstFromValidtion();
@@ -400,11 +398,11 @@ export class RegisterComponent {
       this.disableOrgResendBtn = false;
       this.orgResendOtp = false;
       this.countDownOrg = 59;
-      this.timer = setInterval(() => {
+      this.orgTimer = setInterval(() => {
         if (this.countDownOrg > 0) {
           this.countDownOrg--;
         } else {
-          clearInterval(this.timer);
+          clearInterval(this.orgTimer);
           this.orgResendOtp = true;
         }
       }, 1000);
@@ -412,11 +410,11 @@ export class RegisterComponent {
       this.disableAdminResendBtn = false;
       this.adminResendOtp = false;
       this.countDownAdmin = 59;
-      this.timer = setInterval(() => {
+      this.adminTimer = setInterval(() => {
         if (this.countDownAdmin > 0) {
           this.countDownAdmin--;
         } else {
-          clearInterval(this.timer);
+          clearInterval(this.adminTimer);
           this.adminResendOtp = true;
         }
       }, 1000);
@@ -430,6 +428,7 @@ export class RegisterComponent {
       this.secondFormGroup.markAllAsTouched();
     }
     else{
+      this.disableRegisterButton = true;
       const data = {
         organization_name: this.firstFormGroup.value['organization_name'],
         email: this.firstFormGroup.value['organization_email'],
@@ -444,10 +443,13 @@ export class RegisterComponent {
       this.api.postData(`${environment.live_url}/${environment.organization}/`, data).subscribe(
         res => {
           if (res) {
+                this.disableRegisterButton = true;
                 this.showSuccessMessage = true
           }
         },
         error => {
+          this.showSuccessMessage = false;
+          this.disableRegisterButton = false;
           this.api.showError(error.error.message);
         }
       )

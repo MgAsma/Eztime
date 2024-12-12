@@ -590,7 +590,7 @@ export class UpdateProjectComponent implements OnInit {
     const EndDate = this.updateForm.value.end_date;
     console.log(this.updateForm.value);
     if (this.updateForm.invalid) {
-      this.api.showError('Invalid');
+      this.api.showError('Please fill mandatory fields');
       console.log(this.updateForm.controls);
       this.updateForm.markAllAsTouched()
     }

@@ -268,8 +268,15 @@
 
                                     <div class="action-btn-link-content">
                                         <button mat-button matStepperPrevious class="back-button">Back</button>
-                                        <button mat-button class="proceedbtn"
-                                            (click)="checkValidation('step2')">Register Organization</button>
+                                        <div>
+                                            <button mat-button *ngIf="disableRegisterButton" class="proceedbtn" disabled>
+                                                <div class="spinner-border text-light " role="status">
+                                                    <span class="visually-hidden"></span>
+                                                  </div>
+                                               </button>
+                                            <button *ngIf="!disableRegisterButton" mat-button class="proceedbtn" 
+                                                (click)="checkValidation('step2')">Register Organization</button>
+                                        </div>
                                     </div>
                                   </div>
                                 </form>
