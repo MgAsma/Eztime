@@ -157,7 +157,7 @@ export class YetToApproveComponent implements OnInit{
         centered:true
       });
       
-      modelRef.componentInstance.title = `Are you sure you want to revoke the leave?`;
+      modelRef.componentInstance.title = `Are you sure you want to revoke the leave`;
       modelRef.componentInstance.message = `Revoke`;
       
       modelRef.componentInstance.status.subscribe(resp => {
