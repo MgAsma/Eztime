@@ -107,7 +107,7 @@ currentIndex: any;
   }
   filterSearch(event){
     const input = event?.target?.value?.trim() || ''; // Fallback to empty string if undefined
-    if (input && input.length >= 3) {
+    if (input && input.length >= 2) {
       this.term = input;
       const query = `?page=1&page_size=${this.tableSize}&search=${this.term}`;
       this.getOrgDetails(query);
