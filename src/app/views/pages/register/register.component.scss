@@ -64,6 +64,7 @@ i {
 
 .login-links {
     font-weight: 600;
+    text-decoration: underline;
 }
 
 // @keyframes animate {
@@ -414,7 +415,7 @@ span {
     font-size: 42px;
     cursor: auto
 }
-.self-organization-register .spinner-border {
+.self-organization-register .register-button-spinner {
     width: 1.5rem !important;
     height: 1.5rem !important;
 }

@@ -50,9 +50,11 @@
                                                 <mat-label>Organization Email Address<b class="r-star">*</b></mat-label>
                                                 <input matInput formControlName='organization_email' placeholder="Enter organization email address"
                                                     (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off"
-                                                    id="emailId">
+                                                      oninput="this.value = this.value.toLowerCase()">
                                                     <button *ngIf="orgSendCodeButton" class="btn btn-sm secondary-buttons" type="button" disabled>
-                                                        <span class="spinner-border spinner-border-sm text-light" aria-hidden="true"></span>
+                                                        <span class="spinner-border spinner-border-sm text-light">
+                                                            <span class="visually-hidden"></span>
+                                                        </span>
                                                     </button>
                                                     <button *ngIf="!orgSendCodeButton"  type="button" class="btn btn-sm secondary-buttons"
                                                      (click)="requestOtp(firstFormGroup.get('organization_email').value,'organization_email')">Send OTP</button>
@@ -93,7 +95,7 @@
                                                 <mat-label>Organization Email Address<b class="r-star">*</b></mat-label>
                                                 <input matInput formControlName='organization_email' placeholder="Enter organization email ddress"
                                                     (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off"
-                                                    id="emailId">
+                                                    oninput="this.value = this.value.toLowerCase()">
                                                     <button *ngIf="orngEmailVerified" [disabled]="orngEmailVerified" class="btn btn-sm success-button">Email Verified</button>
                                             </mat-form-field>
                                         </div>
@@ -122,9 +124,11 @@
                                                 <mat-label>Admin Email Address<b class="r-star">*</b></mat-label>
                                                 <input matInput formControlName='admin_email' placeholder="Enter admin email address"
                                                     (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off" 
-                                                    id="emailId">
+                                                        oninput="this.value = this.value.toLowerCase()">
                                                     <button *ngIf="!adminEmailVerified && adminSendCodeButton" class="btn btn-sm secondary-buttons" type="button" disabled>
-                                                        <span class="spinner-border spinner-border-sm text-light" aria-hidden="true"></span>
+                                                        <span class="spinner-border spinner-border-sm text-light">
+                                                            <span class="visually-hidden"></span>
+                                                        </span>
                                                     </button>
                                                     <button *ngIf="!adminEmailVerified && !adminSendCodeButton" type="button" class="btn btn-sm secondary-buttons"
                                                     (click)="requestOtp(firstFormGroup.get('admin_email').value,'admin_email')">Send OTP</button>
@@ -169,7 +173,7 @@
                                                 <mat-label>Admin Email Address<b class="r-star">*</b></mat-label>
                                                 <input matInput formControlName='admin_email' placeholder="Enter admin email address"
                                                     (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off"
-                                                    id="emailId">
+                                                     oninput="this.value = this.value.toLowerCase()">
                                                     <button *ngIf="adminEmailVerified" [disabled]="adminEmailVerified" class="btn btn-sm success-button">Email Verified</button>
                                             </mat-form-field>
                                         </div>
@@ -270,7 +274,7 @@
                                         <button mat-button matStepperPrevious class="back-button">Back</button>
                                         <div>
                                             <button mat-button *ngIf="disableRegisterButton" class="proceedbtn" disabled>
-                                                <div class="spinner-border text-light " role="status">
+                                                <div class="spinner-border register-button-spinner text-light " role="status">
                                                     <span class="visually-hidden"></span>
                                                   </div>
                                                </button>

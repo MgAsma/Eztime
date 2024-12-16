@@ -625,4 +625,8 @@ export class ApiserviceService {
   emailVerificationForSelfRegistration(data){
     return this.http.post(`${this.baseurl}/send-mail-for-verification/`,data)
   }
+
+  putdesignationRoleAccess(data:any){
+    return this.http.put(`${this.baseurl}/designation-access/`,data)
+  }
 }
