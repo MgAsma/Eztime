@@ -249,7 +249,15 @@ form {
         margin: var(--bs-modal-margin);
         pointer-events: none;
     }
+    .buystandardplan.modal-dialog {
+        width: 31%;
+    }
+    .custom-dialog .mat-dialog-container {
+        width: 400px;
+        padding: 0;
+      }
 }
+
 
 .btn-close:focus {
     box-shadow: none !important;

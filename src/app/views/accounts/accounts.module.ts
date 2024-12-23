@@ -4,16 +4,30 @@ import { CommonModule } from '@angular/common';
 import { AccountsRoutingModule } from './accounts-routing.module';
 import { AccountsComponent } from './accounts.component';
 import { SubscriptionComponent } from './subscription/subscription.component';
+import { SharedModule } from '../../shared/shared.module';
+import { TrialAlertComponent } from './trial-alert/trial-alert.component';
+import { TrialSuccessComponent } from './trial-success/trial-success.component';
+import { BuyStandardplanComponent } from './buy-standardplan/buy-standardplan.component';
+import { SuccessPlanDetailsComponent } from './success-plan-details/success-plan-details.component';
+import { CancelSubscriptionComponent } from './cancel-subscription/cancel-subscription.component';
+import { ExistStandardPlanComponent } from './exist-standard-plan/exist-standard-plan.component';
 
 
 @NgModule({
   declarations: [
     AccountsComponent,
-    SubscriptionComponent
+    SubscriptionComponent,
+    TrialAlertComponent,
+    TrialSuccessComponent,
+    BuyStandardplanComponent,
+    SuccessPlanDetailsComponent,
+    CancelSubscriptionComponent,
+    ExistStandardPlanComponent
   ],
   imports: [
     CommonModule,
-    AccountsRoutingModule
+    AccountsRoutingModule,
+    SharedModule
   ]
 })
 export class AccountsModule { }

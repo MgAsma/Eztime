@@ -179,6 +179,10 @@
       margin-top: 30px !important;
       transform: scale(0.9) !important;
     }
+    .state-select .mat-select-panel {
+      z-index: 900000 !important; /* Set a higher z-index value */
+    }
+    
     .panel-multiselect{
       position: absolute !important;
       min-width: 80% !important;
@@ -186,6 +190,7 @@
       margin-top: 30px !important;
       transform: scale(0.9) !important;
     }
+    
   .mat-form-field-appearance-outline .mat-form-field-wrapper {
     margin: .10em 0 !important;
 }

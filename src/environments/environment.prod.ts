@@ -41,7 +41,7 @@ export const environment = {
   project_list: `projects`,
   org_department: `organization-department`,
   approval_config: `time-sheets-approval-config`,
-  notification_center: `notification-center`,
+  notification: `get-notification`,
   timesheets: `timesheets`,
   country:`country`,
   state:`state`,

@@ -1,0 +1,192 @@
+<div class="container-fluid bg mt-4 p-20">
+    <!-- Subscription Plans -->
+    <div class="row">
+      <!-- Free Trial Card -->
+      <div class="col-md-6 mb-3">
+        <mat-card class="custom-card border-danger">
+          <mat-card-content>
+            <div class="card-header">
+              <h5 class="card-title">Free Trial  <span class="badge bg-danger">Expired</span></h5>
+             
+            </div>
+            <p class="card-text sub-header">Free Plan</p>
+            <div class="row">
+              <div class="col-4">
+                <p class="card-text">No of active users</p>
+              </div>
+              <div class="col-4">
+                <p class="card-text">Expired on</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4"> 
+                <strong>10</strong>
+              </div>
+              <div class="col-4">
+                <strong>09.01.2025</strong>
+              </div>
+            </div>
+            
+          
+            <div>
+              <div class="row d-flex align-items-center">
+                <div class="col-1"><i class="bi bi-megaphone" style="font-size: 20px;"></i></div>
+                <div class="col">
+                  <p class="card-text">Free Plan</p>
+                  <p class="days-left">0 days left</p>
+                </div>
+              </div>
+              
+            </div>
+            
+          </mat-card-content>
+        </mat-card>
+      </div>
+    
+      <!-- Standard Plan Card -->
+      <div class="col-md-6 mb-3">
+       
+          <mat-card class="custom-card border-primary standard-card">
+          <mat-card-content>
+            <div class="card-header">
+              <h5 class="plan-title standard-title p-r">Standard <img class="spakle-image" src="../../../../assets/images/sparkle-filled.svg"/> <span class="badge standard-plan-staus">Active</span></h5>
+            </div>
+            <p class="card-text sub-header">Monthly Plan</p>
+            <div class="row">
+              <div class="col-4">
+                <div class="row">
+                  <div class="col-12">
+                    <p class="card-text">No of active users</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <strong>10</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="row">
+                  <div class="col-12">
+                    <p class="card-text">No of days left</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <strong>200</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="row">
+                  <div class="col-12">
+                    <p class="card-text">Expiry Date</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <strong>10.01.2025</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+           
+          
+              <div class="row button-group">
+                <div class="col-4">
+                  <button mat-raised-button  class="action-button btn-cancel" (click)="cancelSubscription()">Cancel</button>
+                </div>
+                <div class="col-4">
+                  <button mat-raised-button  class="action-button btn-add-user" (click)="addNewUser()">Add User</button>
+                </div>
+                <div class="col-4">
+                  <button mat-raised-button  class="action-button btn-renew" (click)="renewSubscription()">Renew</button>
+                </div>
+              </div>
+              
+            
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    
+    
+  
+    <!-- Transaction History -->
+     <div class="mb-3">
+      <strong >Transaction History</strong>
+     </div>
+
+    <div class="table-responsive d-none d-md-block ">
+      <table class="table table-list table-bordered">
+        <thead class="table-primary">
+          <tr>
+            <th>Sl No</th>
+            <th>Plan</th>
+            <th>Term</th>
+            <th>Per User</th>
+            <th>Users</th>
+            <th>Total Amount</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2</td>
+            <td>Standard Plan</td>
+            <td>Monthly</td>
+            <td>₹30.00</td>
+            <td>5</td>
+            <td>₹150.00</td>
+            <td>13/12/2024</td>
+            <td>13/12/2025</td>
+            <td><button class="btn btn-outline-primary btn-sm"><i class="bi bi-download"></i></button></td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Free Plan</td>
+            <td>Free Plan</td>
+            <td>₹0.00</td>
+            <td>5</td>
+            <td>₹0.00</td>
+            <td>13/11/2024</td>
+            <td>13/12/2024</td>
+            <td><button class="btn btn-outline-primary btn-sm"><i class="bi bi-download"></i></button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Cards for Mobile View -->
+    <div class="d-block d-md-none">
+      <div class="card mb-3">
+        <div class="card-body">
+          <p><strong>Sl No:</strong> 2</p>
+          <p><strong>Plan:</strong> Standard Plan</p>
+          <p><strong>Term:</strong> Monthly</p>
+          <p><strong>Per User:</strong> ₹30.00</p>
+          <p><strong>Users:</strong> 5</p>
+          <p><strong>Total Amount:</strong> ₹150.00</p>
+          <p><strong>Start Date:</strong> 13/12/2024</p>
+          <p><strong>End Date:</strong> 13/12/2025</p>
+          <button class="btn btn-outline-primary btn-sm"><i class="bi bi-download"></i></button>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-body">
+          <p><strong>Sl No:</strong> 1</p>
+          <p><strong>Plan:</strong> Free Plan</p>
+          <p><strong>Term:</strong> Free Plan</p>
+          <p><strong>Per User:</strong> ₹0.00</p>
+          <p><strong>Users:</strong> 5</p>
+          <p><strong>Total Amount:</strong> ₹0.00</p>
+          <p><strong>Start Date:</strong> 13/11/2024</p>
+          <p><strong>End Date:</strong> 13/12/2024</p>
+          <button class="btn btn-outline-primary btn-sm"><i class="bi bi-download"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

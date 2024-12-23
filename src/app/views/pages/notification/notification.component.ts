@@ -11,25 +11,30 @@ import { environment } from 'src/environments/environment';
 })
 export class NotificationComponent implements OnInit {
   notes:any =[]
-  orgId: string;
+  user_id:number;
+  page_size: number = 5;
   constructor( private modal:NgbModal,private api:ApiserviceService) {
-    this.orgId = sessionStorage.getItem('org_id')
+    this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
    }
   closeBtn(){
    this.modal.dismissAll()
   }
   ngOnInit(){
-    this.getNotification()
+    this.getNotification(0)
   }
-  getNotification(){
-    let params = `${environment.live_url}/${environment.notification_center}?organization_id=${this.orgId}`
+  getNotification(page_size){
+    if(page_size){
+      this.page_size = this.page_size + page_size
+    }
+    
+    let params = `${environment.live_url}/${environment.notification}/?user-id=${this.user_id}&page=1&page_size=${this.page_size}`
    
    this.api.getData(params).subscribe((res:any)=>{
-      if(res.result.data){
-        this.notes = res.result.data
+      if(res.results){
+        this.notes = res.results
       }
     },((error:any)=>{
-      this.api.showError(error.error.error.message)
+      this.api.showError(error?.error?.message)
     }))
   }
 }
