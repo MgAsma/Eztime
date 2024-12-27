@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiserviceService } from 'src/app/service/apiservice.service';
-import { CommonServiceService } from 'src/app/service/common-service.service';
+
 import { TrialAlertComponent } from '../trial-alert/trial-alert.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuyStandardplanComponent } from '../buy-standardplan/buy-standardplan.component';
 import { MatDialog } from '@angular/material/dialog';
+import { environment } from '../../../../environments/environment';
+import { error } from 'console';
+import { ApiserviceService } from '../../../service/apiservice.service';
+import { CommonServiceService } from '../../../service/common-service.service';
 
 @Component({
   selector: 'app-subscription',
@@ -15,13 +18,17 @@ export class SubscriptionComponent implements OnInit {
   subscriptionData: any = [];
   BreadCrumbsTitle:any='Subscription plan';
   monthly: boolean = true; // Default to monthly
-  constructor(private _subscriptionService:ApiserviceService,
+  monthlyAmount: any;
+  yearlyAmount: any;
+  organization_id: string | null;
+  constructor(private api:ApiserviceService,
     private common_service : CommonServiceService,
     private modalService:NgbModal,
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
+    this.organization_id = sessionStorage.getItem('organization_id');
     this.getSubscription()
     //console.log(this.subscriptionData,"FFFF")
   }
@@ -29,14 +36,17 @@ export class SubscriptionComponent implements OnInit {
     this.monthly = option;
   }
   getSubscription(){
-    this._subscriptionService.getSubscription().subscribe((res)=>{
+    this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
       if(res){
         this.subscriptionData = res
-        //console.log(this.subscriptionData)
+        if(res?.['subscription_deatils']['yearly_or_monthly_name'] === 'Monthly' ){
+          this.monthlyAmount =res?.['subscription_deatils']['amount']
+        }else{
+          this.yearlyAmount =res?.['subscription_deatils']['amount']
+        }
+        
       }
-      else{
-        //console.log("ERROR")
-      }
+     
     })
    
   }
@@ -46,10 +56,11 @@ export class SubscriptionComponent implements OnInit {
       backdrop: true,
       centered: true
     });
-    modelRef.componentInstance.title = `Are you sure you want to opt for the free trial plan`;
+    modelRef.componentInstance.title = `Are you sure you want to activate the free trial plan`;
     modelRef.componentInstance.message = `Free Trial Plan`;
     modelRef.componentInstance.status.subscribe(resp => {
       if (resp == "ok") {
+        this.getTrailPlan()
         modelRef.close();
       }
       else {
@@ -57,26 +68,17 @@ export class SubscriptionComponent implements OnInit {
       }
     })
   }
-  // buyStandardPlan(){
-  //   const modelRef = this.modalService.open(BuyStandardplanComponent, {
-  //     size: <any>'md',
-  //     backdrop: true,
-  //     centered: true,
-  //     modalDialogClass: 'buystandardplan'
-  //   });
-  //   // modelRef.componentInstance.title = `Are you sure you want to opt for the free trial plan`;
-  //   // modelRef.componentInstance.message = `Free Trial Plan`;
-  //   modelRef.componentInstance.status.subscribe(resp => {
-  //     if (resp == "ok") {
-  //       modelRef.close();
-  //     }
-  //     else {
-  //       modelRef.close();
-  //     }
-  //   })
-  // }
- 
-
+  getTrailPlan(){
+    const data = {
+        organization: this.organization_id,
+        subscription_type: 4
+    }
+    this.api.postData(`${environment.live_url}/${environment.my_subscription}/`,data).subscribe((res:any)=>{
+      if(res['result']){
+       this.api.showSuccess('You have successfully activated your free trail plan')
+      }
+    })
+  }
   buyStandardPlan() {
     const dialogRef = this.dialog.open(BuyStandardplanComponent, {
       // data: { message: 'Hello from the parent component!' },

@@ -4,6 +4,7 @@ import { ApiserviceService } from '../../../service/apiservice.service';
 import { environment } from '../../../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-buy-standardplan',
@@ -17,8 +18,8 @@ export class BuyStandardplanComponent implements OnInit {
   constructor(
     private api:ApiserviceService,
     private fb:FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogue:MatDialog
+    private dialogue:MatDialog,
+    private router:Router
   ) { }
   
 
@@ -74,6 +75,8 @@ export class BuyStandardplanComponent implements OnInit {
 
   onMakePayment(): void {
     console.log('Proceeding to payment...');
+    this.dialogue.closeAll()
+    this.router.navigate(['/accounts/standardplan-history'])
   }
   setPaymentOption(option: boolean): void {
     this.monthly = option;

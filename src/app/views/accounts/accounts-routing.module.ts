@@ -3,15 +3,19 @@ import { RouterModule, Routes } from '@angular/router';
 import { AccountsComponent } from './accounts.component';
 import { SubscriptionComponent } from './subscription/subscription.component';
 import { SuccessPlanDetailsComponent } from './success-plan-details/success-plan-details.component';
+import { TrailPlanDetailsComponent } from './trail-plan-details/trail-plan-details.component';
 
 const routes: Routes = [
   {
     path:'', component:AccountsComponent,children:[
       {
-        path:'subscription', component:SubscriptionComponent
+        path:'subscription', component:SubscriptionComponent 
       },
       {
-        path:'transaction-history', component:SuccessPlanDetailsComponent
+        path:'standardplan-history', component:SuccessPlanDetailsComponent
+      },
+      {
+        path:'trialplan-history', component:TrailPlanDetailsComponent
       },
     ]
   }

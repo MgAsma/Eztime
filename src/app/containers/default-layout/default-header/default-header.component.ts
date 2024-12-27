@@ -195,8 +195,8 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   getNotification() {
     let params = `${environment.live_url}/${environment.notification}/?user-id=${this.user_id}`
     this.api.getData(params).subscribe((res: any) => {
-      if (res.data) {
-        this.notification_count = res.data.length
+      if (res.results) {
+        this.notification_count = res.results.length
       }
     }, ((error: any) => {
        this.api.showError(error?.error?.message)

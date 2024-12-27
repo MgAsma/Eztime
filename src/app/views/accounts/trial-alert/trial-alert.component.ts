@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TrialSuccessComponent } from '../trial-success/trial-success.component';
 import { Router } from '@angular/router';
+import { ExistStandardPlanComponent } from '../exist-standard-plan/exist-standard-plan.component';
 
 @Component({
   selector: 'app-trial-alert',
@@ -34,7 +35,7 @@ export class TrialAlertComponent implements OnInit {
     modelRef.componentInstance.message = `Successful`;
     modelRef.componentInstance.status.subscribe(resp => {
       if (resp == "ok") {
-        this.router.navigate(['transaction-history'])
+        this.router.navigate(['/accounts/trialplan-history'])
         modelRef.close();
       }
       else {
@@ -42,6 +43,7 @@ export class TrialAlertComponent implements OnInit {
       }
     })
   }
+  
 }
 
 

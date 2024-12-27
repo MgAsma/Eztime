@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { CommonServiceService } from '../../../service/common-service.service';
 import { BuyStandardplanComponent } from '../buy-standardplan/buy-standardplan.component';
-import { MatDialog } from '@angular/material/dialog';
 import { ExistStandardPlanComponent } from '../exist-standard-plan/exist-standard-plan.component';
 
 @Component({
-  selector: 'app-success-plan-details',
-  templateUrl: './success-plan-details.component.html',
-  styleUrls: ['./success-plan-details.component.scss']
+  selector: 'app-trail-plan-details',
+  templateUrl: './trail-plan-details.component.html',
+  styleUrls: ['./trail-plan-details.component.scss']
 })
-export class SuccessPlanDetailsComponent implements OnInit {
-  BreadCrumbsTitle:any='Subscription plan';
+export class TrailPlanDetailsComponent implements OnInit {
+BreadCrumbsTitle:any='Subscription plan';
+  monthly: boolean = true;
   constructor(
     private common_service:CommonServiceService,
     private dialog:MatDialog
@@ -18,6 +19,9 @@ export class SuccessPlanDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
+  }
+  setPaymentOption(option: boolean): void {
+    this.monthly = option;
   }
   cancelSubscription(){}
   addNewUser(){
@@ -35,4 +39,5 @@ export class SuccessPlanDetailsComponent implements OnInit {
     dialogRef.disableClose=true
      
   }
+
 }

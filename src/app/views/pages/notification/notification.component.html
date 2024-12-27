@@ -1,5 +1,7 @@
 
-      <div class="notification-container">
+  
+      
+      <div class="notification-container" *ngIf="user_role_name === 'ADMIN'">
         <div class="notification-modal">
         <div class="n-header">
           <h2 class="title">Notification </h2>
@@ -9,7 +11,81 @@
         <div class="notification-main-content">
        <ng-container *ngIf="notes?.length">
         <div *ngFor="let notification of notes" class="notification-item">
-          <!-- Left Icon with Tree-Line View -->
+          
+          <!-- Notification Content -->
+          <div class="notification-content">
+            <div class="notification-header p-r">
+             
+              <mat-label class="date">{{ notification.created_datetime | date: 'dd/MM/yyyy' }}</mat-label>
+              <div class="row">
+                <div class="col">
+                  <strong>{{ notification.text.name }}</strong>
+                  <span  class="flex-container" *ngIf="notification?.text?.leave_type || notification?.text?.project_status || notification?.text?.timesheet_status">
+                    <div>
+                      <i [class]="notification.text.icon" ></i>
+                    </div>
+                    <span class="h-leave-message">{{notification.text.message}}</span>
+                    
+                    
+                    <mat-chip-list>
+                      <mat-chip [ngClass]="notification?.text?.leave_type ? 'leave-type' : 'project-name'" selected [routerLink]="notification?.text?.redirect_url" (click)="closeBtn()">
+                        <i class="pe-1" [class]="notification.text.icon"></i>
+                        {{ notification?.text?.leave_type || notification?.text?.project_name }}
+                      </mat-chip>
+                    </mat-chip-list>
+                    
+                   
+                  </span>
+                </div>
+                
+              </div>
+              
+
+              
+            </div>
+
+           
+            <div class="row">
+              <div class="col-1 tree-view"></div>
+              <div class="col">
+                <div class="notification-message" *ngIf="notification?.text?.leave_description">
+                  {{ notification?.text?.leave_description}}
+                 </div>
+                 <div class="notification-message" *ngIf="notification?.text?.timesheet_description">
+                   {{ notification?.text?.timesheet_description || 'NA'}}
+                 </div>
+              </div>
+            </div>
+            
+          
+          </div>
+        </div>
+      </ng-container>
+      <div *ngIf="notes?.length === 0">No records found!</div>
+       
+        
+       
+      </div>
+      <!-- View More -->
+      <div class="p-r">
+        <div class="view-more" *ngIf="notes.length > 1" (click)="getNotification(2,'viewmore')">
+          <a>View More</a>
+        </div>
+       </div>
+      </div>
+  
+
+      
+      <div class="notification-container" *ngIf="user_role_name === 'SUPERADMIN' || user_role_name === 'SUPER ADMIN'">
+        <div class="notification-modal">
+        <div class="n-header">
+          <h2 class="title">Notification </h2>
+          <div class="close-btn"><i class="bi bi-x-lg" (click)="closeBtn()"></i> </div>
+        </div>
+      </div>
+        <div class="notification-main-content">
+       <ng-container *ngIf="notes?.length">
+        <div *ngFor="let notification of notes" class="notification-item">
           <div class="tree-line">
             <i [class]="notification.text.icon"></i>
           </div>
@@ -17,24 +93,116 @@
           <!-- Notification Content -->
           <div class="notification-content">
             <div class="notification-header">
-              <strong>{{ notification.text.name }}</strong>
-              <span class="plan-tag">Free Plan</span>
+              <strong [routerLink]="notification?.text?.redirect_url" style="cursor: pointer;" (click)="closeBtn()">{{ notification.text.name }}</strong>
+              <!-- <mat-chip-list>
+                <mat-chip [ngClass]="notification?.text?.leave_type ? 'leave-type' : 'project-name'" selected [routerLink]="notification?.text?.redirect_url" (click)="closeBtn()">
+                  <i class="pe-1" [class]="notification.text.icon"></i>
+                  {{ notification?.text?.leave_type || notification?.text?.project_name }}
+                </mat-chip>
+              </mat-chip-list> -->
               <span class="date">{{ notification.created_datetime | date: 'dd/MM/yyyy' }}</span>
             </div>
-            <div class="notification-message">
-              <i class="px-2" [class]="notification.text.icon"></i> {{ notification.text.message }}
+            <div class="row">
+              
+                <div class="col-1 tree-view p-0" style="right: -18px;">
+                  
+                </div>
+             
+              <div class="col p-0">
+                <div class="notification-message">
+                  <i class="px-2" [class]="notification.text.icon"></i> {{ notification.text.message }}
+                </div> 
+              </div>
             </div>
+            
           </div>
         </div>
       </ng-container>
       <div *ngIf="notes?.length === 0">No records found!</div>
-       
-        <!-- View More -->
-        <div class="view-more" *ngIf="notes.length > 4" (click)="getNotification(5)">
-          <a href="#">View More</a>
+      
+      </div>
+       <!-- View More -->
+       <div class="p-r">
+        <div class="view-more" *ngIf="notes.length > 1" (click)="getNotification(2,'viewmore')">
+          <a>View More</a>
+        </div>
+       </div>
+      </div>
+      
+      <div class="notification-container" *ngIf="user_role_name === 'EMPLOYEE'">
+        <div class="notification-modal">
+        <div class="n-header">
+          <h2 class="title">Notification </h2>
+          <div class="close-btn"><i class="bi bi-x-lg" (click)="closeBtn()"></i> </div>
         </div>
       </div>
+      <div class="notification-main-content">
+        <ng-container *ngIf="results?.length">
+         <div *ngFor="let notification of results" class="notification-item">
+         
+       
+           <!-- Notification Content -->
+           <div class="notification-content">
+             <div class="notification-header p-r">
+               
+               <mat-label class="date">{{ notification.created_datetime | date: 'dd/MM/yyyy' }}</mat-label>
+               <div class="row">
+                 <div class="col">
+                  
+                   <span  class="flex-container" *ngIf="notification?.text?.leave_type || notification?.text?.project_status || notification?.text?.task_status">
+                     <div>
+                       <i [class]="notification.text.icon" ></i>
+                     </div>
+                     <span class="h-leave-message">{{notification?.text?.message}}</span>
+                     
+                     
+                     <mat-chip-list>
+                       <mat-chip [ngClass]="notification?.text?.leave_type ? 'leave-type' : 'project-name'" selected [routerLink]="notification?.text?.redirect_url" (click)="closeBtn()">
+                         <i class="pe-1" [class]="notification.text.icon"></i>
+                         {{ notification?.text?.leave_type || notification?.text?.project_name }}
+                       </mat-chip>
+                     </mat-chip-list>
+                     
+                    
+                   </span>
+                 </div>
+                 
+               </div>
+               
+ 
+              
+             </div>
+ 
+             
+             <div class="row">
+               <div class="col-1 tree-view"></div>
+               <div class="col">
+                 <div class="notification-message" *ngIf="notification?.text?.leave_description">
+                   {{ notification?.text?.leave_description}}
+                  </div>
+                  <div class="notification-message" *ngIf="notification?.text?.project_description">
+                    {{ notification?.text?.project_description}}
+                   </div>
+                 
+               </div>
+             </div>
+             
+           
+           </div>
+         </div>
+       </ng-container>
+       <div *ngIf="notes?.length === 0">No records found!</div>
+        
+         
+        
+       </div>
+       <!-- View More -->
+       <div class="p-r">
+        <div class="view-more" *ngIf="notes.length > 1" (click)="getNotification(2,'viewmore')">
+          <a>View More</a>
+        </div>
+       </div>
       </div>
-  
+ 
   
  

@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { ApiserviceService } from 'src/app/service/apiservice.service';
-import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
+import { ApiserviceService } from '../../../service/apiservice.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-exist-standard-plan',
@@ -16,7 +17,8 @@ export class ExistStandardPlanComponent implements OnInit {
   constructor(
     private api:ApiserviceService,
     private fb:FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    // @Inject(MAT_DIALOG_DATA) public data: any,
+    private router :Router,
     private dialogue:MatDialog
   ) { }
   
@@ -73,6 +75,7 @@ export class ExistStandardPlanComponent implements OnInit {
 
   onMakePayment(): void {
     console.log('Proceeding to payment...');
+    this.dialogue.closeAll()
   }
   setPaymentOption(option: boolean): void {
     this.monthly = option;

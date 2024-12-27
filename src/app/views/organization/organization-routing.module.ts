@@ -5,6 +5,7 @@ import { OrganizationComponent } from './organization.component'
 import { UpdateOrganizationComponent } from './update-organization/update-organization.component';
 import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { AddOrganizationComponent } from './add-organization/add-organization.component';
+import { SubscriptionConfigComponent } from './subscription-config/subscription-config.component';
 
 const routes: Routes = [
     {
@@ -18,6 +19,9 @@ const routes: Routes = [
       },
       {
         path:'orgList',component:OrganizationListComponent
+      },
+      {
+        path:'subscription-config',component:SubscriptionConfigComponent
       },
     ]
     },

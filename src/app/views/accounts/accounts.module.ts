@@ -11,6 +11,7 @@ import { BuyStandardplanComponent } from './buy-standardplan/buy-standardplan.co
 import { SuccessPlanDetailsComponent } from './success-plan-details/success-plan-details.component';
 import { CancelSubscriptionComponent } from './cancel-subscription/cancel-subscription.component';
 import { ExistStandardPlanComponent } from './exist-standard-plan/exist-standard-plan.component';
+import { TrailPlanDetailsComponent } from './trail-plan-details/trail-plan-details.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { ExistStandardPlanComponent } from './exist-standard-plan/exist-standard
     BuyStandardplanComponent,
     SuccessPlanDetailsComponent,
     CancelSubscriptionComponent,
-    ExistStandardPlanComponent
+    ExistStandardPlanComponent,
+    TrailPlanDetailsComponent
   ],
   imports: [
     CommonModule,

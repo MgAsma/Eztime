@@ -65,5 +65,7 @@ export const environment = {
   holiday_calender:`upload-holiday-calender`,
   project_template:`project_category`,
   timesheet_comment:`timesheet-comment`,
-  leave_comment:`leave-comment`
+  leave_comment:`leave-comment`,
+  subscription_list:`subscription-list`,
+  my_subscription:`my-subscription`
 };

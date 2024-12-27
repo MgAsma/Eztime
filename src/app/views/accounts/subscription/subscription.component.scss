@@ -95,7 +95,9 @@
         justify-content: space-between;
         gap: 10px;
         margin: 15px 0;
-  
+        .payment-option{
+          width: 50%;
+        }
         .highlighted-option {
           border:1px solid #FFFFFF;
           background: transparent;
