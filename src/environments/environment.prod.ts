@@ -41,7 +41,7 @@ export const environment = {
   project_list: `projects`,
   org_department: `organization-department`,
   approval_config: `time-sheets-approval-config`,
-  notification_center: `notification-center`,
+  notification: `get-notification`,
   timesheets: `timesheets`,
   country:`country`,
   state:`state`,
@@ -65,5 +65,7 @@ export const environment = {
   holiday_calender:`upload-holiday-calender`,
   project_template:`project_category`,
   timesheet_comment:`timesheet-comment`,
-  leave_comment:`leave-comment`
+  leave_comment:`leave-comment`,
+  subscription_list:`subscription-list`,
+  my_subscription:`my-subscription`
 };

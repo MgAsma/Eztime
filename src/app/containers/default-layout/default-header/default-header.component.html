@@ -29,9 +29,10 @@
    
     <c-header-nav class="p-r">
       <div class="row">
-        <div class="col">
-          <div class="notification-container ">
-            <i class="bi bi-bell"  [matBadge]="notes?.length"  matBadgeColor="warn"  (click)="openNotification()"></i>
+        <div class="col p-0">
+          <div class="notification-container">
+            <i class="bi bi-bell" [matBadge]="notification_count || 0"  matBadgeColor="warn"  (click)="openNotification()"></i>
+            <!-- <mat-icon [matBadge]="0"  matBadgeColor="warn"  (click)="openNotification()">notifications</mat-icon> -->
           </div>
         </div>
         <div class="col">

@@ -118,18 +118,18 @@ h1.breadcrumb-title{
 } 
 }
 .notification-container{
-    height: 35px;
-    width: 37px;
-    background-color: #f4f4f4;
+        /* height: 40px; */
+    /* width: 42px; */
+    border: 1px solid #efeeee;
     text-align: center;
     position: relative;
-    // right: 6rem;
-    top: 0.5rem;
-    padding: 6px 0;
-    border-radius: 50%;
-    font-size: 15px;
+    top: 0.3rem;
+    /* right: 0; */
+    /* padding: 8px 0 0; */
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 19px;
     cursor: pointer;
-    line-height: 1.5;
 }
 .settings-btn{
     padding: 3px 10px;

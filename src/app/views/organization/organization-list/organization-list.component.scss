@@ -124,7 +124,12 @@ i{
     align-items: center;
   }
   
- 
+  .small-btn {
+    padding: 4px 8px; /* Adjust padding for a smaller look */
+    font-size: 12px;  /* Reduce font size */
+    line-height: 1;   /* Adjust line height */
+    min-width: auto;  /* Remove Angular Material's default min-width */
+  }
   
 .page-size{
     border: 1px solid #e7e7e7;
@@ -154,6 +159,11 @@ i{
     margin: 0 2px;
 }
 .org-status-btn{
-    background-color: #126EB4;
-    color:white;
+    background-color: #2eb85c;
+    color: white;
+    width: 80px;
+    margin-top: 5px;
+}
+.deactivate{
+ background: #f9b115;
 }

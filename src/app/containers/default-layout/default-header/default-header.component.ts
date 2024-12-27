@@ -60,6 +60,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   permissionArr:any = [];
   dashboardAccess: any;
   bsModalRef?: BsModalRef;
+  notification_count: number = 0;
   constructor(private classToggler: ClassToggleService, private modalService: NgbModal,
     private router: Router,
     private api: ApiserviceService, private cdref: ChangeDetectorRef,
@@ -72,6 +73,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     this.user_id = sessionStorage.getItem('user_id');
     // this.orgId = sessionStorage.getItem('org_id')
     this.user_role_Name = sessionStorage.getItem('user_role_name');
+    this.getNotification()
     this.permissionArr = JSON.parse(sessionStorage.getItem('permissionArr'));
     this.welcomeMsg();
     this.getProfiledata()
@@ -132,22 +134,22 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   }
   openNotification() {
     // if (this.notes?.length > 0) {
-    //   const modelRef = this.modalService.open(NotificationComponent, {
-    //     size: <any>'md',
-    //     backdrop: true,
-    //     centered: this.screenWidth < 1023 ? true : false,
-    //     modalDialogClass: 'c_class'
-    //   });
+      const modelRef = this.modalService.open(NotificationComponent, {
+        size: <any>'md',
+        backdrop: true,
+        centered: this.screenWidth < 1023 ? true : false,
+        modalDialogClass: 'c_class'
+      });
 
-    //   modelRef.componentInstance.status.subscribe(resp => {
-    //     if (resp == "ok") {
-    //       //  this.delete(content);
-    //       modelRef.close();
-    //     }
-    //     else {
-    //       modelRef.close();
-    //     }
-    //   })
+      modelRef.componentInstance.status.subscribe(resp => {
+        if (resp == "ok") {
+          //  this.delete(content);
+          modelRef.close();
+        }
+        else {
+          modelRef.close();
+        }
+      })
 
     // } else {
     //   this.api.showWarning('No new notifications')
@@ -191,14 +193,13 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   
   }
   getNotification() {
-    let params = `${environment.live_url}/${environment.notification_center}?organization_id=${this.orgId}`
+    let params = `${environment.live_url}/${environment.notification}/?user-id=${this.user_id}`
     this.api.getData(params).subscribe((res: any) => {
-      if (res.result.data) {
-        this.notes = res.result.data
+      if (res.results) {
+        this.notification_count = res.results.length
       }
     }, ((error: any) => {
-      console.log('from default header',error)
-      // this.api.showError(error.error.error.message)
+       this.api.showError(error?.error?.message)
     }))
   }
 

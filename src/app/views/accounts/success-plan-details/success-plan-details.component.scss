@@ -1,0 +1,124 @@
+
+  .table {
+    th, td {
+      text-align: center;
+      vertical-align: middle;
+    }
+  }
+  .bg{
+    height: 70vh !important;
+    overflow-y: auto;
+  }
+  
+  .badge {
+    font-size: 0.85rem;
+  }
+  .custom-card {
+    border: 2px solid;
+    border-radius: 8px;
+    padding: 20px 16px;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+    font-size: small !important;
+    // line-height: 18px;
+    p{
+      margin-bottom: 0px;
+    }
+  }
+  
+  .border-danger {
+    background-color: #FFE9E9; // Light pink background
+    border: 0;
+  }
+  
+  .border-primary {
+    background-color: #cfe2ff; // Light blue background
+    border: 0;
+  }
+  
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .status-badge {
+    font-size: 0.9rem;
+    padding: 4px 8px;
+  }
+  
+  .card-text {
+    font-size: 12px;
+    margin: 0 0 8px;
+  }
+  
+  .days-left {
+    font-size: 15px;
+    font-weight: 600 !important;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    .btn-cancel{
+    background: #FFE9E9;
+    color:red;
+    }
+    .btn-add-user{
+      background:#E3F4FF;
+    }
+    .btn-renew{
+      background:#E3F4FF;
+    }
+  }
+  
+  .action-button {
+    font-size: 13px;
+    text-transform: none;
+    width: 100px;
+    border-radius: 5px;
+    height: 25px;
+    line-height: 1;
+  }
+  /* Standard Plan Card */
+  .standard-card {
+    background: #126EB4;
+    background-image: url('../../../../assets/images/standard-plan-bg.png');
+    background-size: cover;
+    color: white;
+    font-size: 12px;
+    p{
+      color: white !important;
+    }
+    .spakle-image{
+      position: absolute;
+      height: 41px;
+      top: -22px;
+      right: 45px;
+    }
+    .standard-plan-staus{
+      background: #0EFF2E;
+      color: black;
+      margin-left: 12px;
+    }
+
+    .plan-title {
+      font-weight: 700;
+      font-size: 20px;
+    }
+  }
+  .sub-header{
+    margin-bottom: 5px;
+  }
+  .btn-outline-primary{
+    border-radius: 50%;
+    background: #f3f3f3;
+    border: none;
+    color: black;
+  }

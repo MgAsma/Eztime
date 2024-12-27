@@ -11,6 +11,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddOrganizationComponent } from './add-organization/add-organization.component';
+import { SubscriptionConfigComponent } from './subscription-config/subscription-config.component';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,8 @@ import { AddOrganizationComponent } from './add-organization/add-organization.co
         // CreateOrganizationComponent,
         UpdateOrganizationComponent,
         OrganizationListComponent,
-        AddOrganizationComponent
+        AddOrganizationComponent,
+        SubscriptionConfigComponent
     ],
     imports: [
         CommonModule,

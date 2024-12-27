@@ -56,6 +56,7 @@
                   <a *ngIf="item.organization_image" href="{{item.organization_image_url}}" target="_blank">
                     <i class="bi bi-eye-fill" id="eye-btn" container="body" ngbTooltip="View"></i>
                   </a>
+                  <span *ngIf="!item.organization_image" >NA</span>
                 </td>
                 <td>{{item.organization_name ? item.organization_name :'NA' | titlecase }}</td>
                 <td>{{item.email ? item.email :'NA' | titlecase}}</td>
@@ -66,8 +67,11 @@
                     {{  getStatusText() }}
                   </mat-slide-toggle> -->
                   <div style="display: block;">{{ item?.organization_status === true ? 'Active' : 'Inactive'   || 'NA' }}</div>
-                  <button mat-raised-button class="org-status-btn" (click)="updateStatus(item)">
+                  <!-- <button mat-raised-button size="small" class="org-status-btn" (click)="updateStatus(item)">
                     {{item?.organization_status === true ? 'Deactivate' : 'Activate'}}
+                  </button> -->
+                  <button mat-raised-button class="org-status-btn small-btn" (click)="updateStatus(item)" [ngClass]="item?.organization_status === true ? 'deactivate' : ''">
+                    {{ item?.organization_status === true ? 'Deactivate' : 'Activate' }}
                   </button>
                 </td>
                 <td>

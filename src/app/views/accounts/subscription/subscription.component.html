@@ -1,275 +1,79 @@
-<div class="container-fluid">
-    <!-- <div class="row">
-        <div class="col-sm-6">
-            <h1>Subscription plan</h1>
-        </div>
-        <div class="col-sm"></div>
-        <div class="col-sm-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a routerLink="/dashboards">Home</a></li>
-                  <li class="breadcrumb-item">Subscription plan</li>
-                  
-                </ol>
-              </nav>
-        </div>
+<div class="subscription-container">
+  
+    <!-- Free Trial Card -->
+    <mat-card class="free-trial-card">
+      <h2 class="plan-title">Free Trial</h2>
+      <p class="plan-description">
+        Enjoy all features for 30 days, limited to 10 users. Explore everything unrestricted and risk-free.
+      </p>
+      <div class="plan-price">
+        <span>₹0</span>
+        <span class="validity">Valid for 30 days</span>
         
-    </div> -->
-    <div>
-    <div class="col-12 generic-form bg mx-1">
-        <div class="row plan-Subscription-content">
-            <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 px-0">
-                <h6><b><i class="bi bi-shop"></i>User</b></h6>
-                <ul class="dk-ul-style">
-                    <li>Org Id</li>
-                    <li>Email</li>
-                    <li>phone</li>
-                    <li>Fax</li>
-                    <li>Mobile No</li>
-                    <li>Website</li>
-                </ul>
-            </div>
-            <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 px-0">
-                <h6><b><i class="bi bi-map"></i>Address</b></h6>
-                <ul class="mob-ul-style">
-                    <li>Country</li>
-                    <li>State</li>
-                    <li>City</li>
-                    <li>Postal</li>
-                </ul>
-            </div>
-            <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 px-0">
-                <h6><b><i class="bi bi-exclamation-circle"></i>Subscription Plan</b></h6>
-                <ul class="mob-ul-style">
-                    <li>Plan</li>
-                    <li>Type</li>
-                    <li>No. of Users</li>
-                    <li>Reg. User</li>
-                </ul>
-            </div>
-            <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 px-0">
-                <h6><b><i class="bi bi-calendar2-event"></i>Plan Details</b></h6>
-                <ul class="mob-ul-style">
-                    <li>Amount per User</li>
-                    <li>Total amount</li>
-                    <li style="font-weight: 500;">Start Date</li>
-                    <li style="font-weight: 500;">End Date</li>
-                    <li style="font-weight: 500;">Days Left</li>
-                    
-                </ul>
-            </div>
+      </div>
+  
+      <!-- White Background for List -->
+      <div class="white-background">
+        <ul class="plan-features">
+          <li>✓ 30-days trial plan</li>
+          <li>✓ Max 10 users allowed</li>
+          <li>✓ Full access to all modules</li>
+        </ul>
+      </div>
+      <div class="text-center">
+        <button mat-flat-button color="primary" class="cta-button" (click)="openDialogue()">
+          Start your free trial now
+        </button>
+      </div>
+      
+    </mat-card>
+  
+    <!-- Standard Plan Card -->
+    <mat-card class="standard-card">
+      <h2 class="plan-title standard-title p-r">Standard <img class="spakle-image" src="../../../../assets/images/sparkle-filled.svg"/></h2>
+      <p class="plan-description">
+        Choose a flexible payment plan that charges per user. Opt for annual or monthly payments as per your convenience.
+      </p>
+  
+      <!-- Highlighted Background for Monthly and Yearly -->
+      <div class="payment-options">
+        <mat-card class="payment-option"  (click)="setPaymentOption(true)" 
+        [ngClass]="monthly ? 'active' : 'highlighted-option'">
+          <span class="price pe-1">₹30</span>
+          <small>per user / monthly</small>
+          <div class="option-title">Monthly</div>
+        </mat-card>
+        <mat-card class="payment-option yearly-option" 
+        (click)="setPaymentOption(false)" 
+        [ngClass]="!monthly ? 'active' : 'highlighted-option'">
+          <span class="price pe-1">₹25</span>
+          <small>per user / yearly</small>
+          <div class="option-title">Yearly</div>
+          <div class="discount-badge"><i class="bi bi-x-circle"></i> 10% </div>
+        </mat-card>
+      </div>
+  
+      <!-- List inside white background -->
+      <div class="dark-background">
+        <ul class="plan-features">
+          <li>✓ Enterprise plan</li>
+          <li>✓ Full access to all modules</li>
+        </ul>
+      </div>
+  
+      <div class="no-refund-note text-center">
+        <div style="margin: auto;">
+            <span style="margin-right: 5px;">⚠</span> No refund on subscription and cancellation
         </div>
-        <div class="row">
-            <div class="col">
-                <h6 class="subscription-plan-history dk-content-view"><b><i class="bi bi-exclamation-circle"></i>Subscription plan history</b></h6>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <table class="table caption-top dk-content-view">
-                    
-                    <thead>
-                      <tr>
-                        <th scope="col">S.No</th>
-                        <th scope="col">Plan</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">No. of Subscribers</th>
-                        <th scope="col">Amount per User</th>
-                        <th scope="col">Total Amount</th>
-                        <th scope="col">Start Date</th>
-                        <th scope="col">End Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>abc</td>
-                            <td>abc</td>
-                            <td>abc</td>
-                            <td>abc</td>
-                            <td>abc</td>
-                            <td>abc</td>
-                            <td>abc</td>
-                            <td>abc</td>
-                        </tr>
-                    </tbody>
-                  </table>
-                  <div class="card mob-card-content mtb-content-view">
-                    <div class="row">
-                        <div class="col-12">
-                            <h6><b><i class="bi bi-exclamation-circle"></i>Subscription plan history</b></h6>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                        <h6 class="card-subtitle">
-                            <!-- <i class="bi bi-calendar2-week"></i> -->
-                            Plan</h6>
-                        <div class="value-container">ABC</div>
-                        </div>
-                        <div class="col-6">
-                            <h6 class="card-subtitle">
-                                <!-- <i class="bi bi-calendar2-week"></i> -->
-                                Type</h6>
-                                <div class="value-container">ABC</div>
-                        </div>
-                     </div>
-                     <div class="row">
-                        <div class="col-6">
-                        <h6 class="card-subtitle">
-                            <!-- <i class="bi bi-calendar2-week"></i> -->
-                            No. of Subscribers</h6>
-                        <div class="value-container">ABC</div>
-                        </div>
-                     </div>
-                   
-                     <div class="row">
-                        <div class="col-6">
-                            <h6 class="card-subtitle">
-                                <!-- <i class="bi bi-calendar2-week"></i> -->
-                                Amount per User</h6>
-                                <div class="value-container">ABC</div>
-                        </div>
-                        <div class="col-6">
-                            <h6 class="card-subtitle">
-                                <!-- <i class="bi bi-calendar2-week"></i> -->
-                                Total Amount</h6>
-                                <div class="value-container">ABC</div>
-                        </div>
-                     </div>
-                     <div class="row">
-                        <div class="col-6">
-                        <h6 class="card-subtitle">
-                            <!-- <i class="bi bi-calendar2-week"></i> -->
-                            Start Date</h6>
-                        <div class="value-container">ABC</div>
-                        </div>
-                        <div class="col-6">
-                            <h6 class="card-subtitle">
-                                <!-- <i class="bi bi-calendar2-week"></i> -->
-                                End Date</h6>
-                                <div class="value-container">ABC</div>
-                        </div>
-                     </div>
-                  </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <h6 class="transaction-history dk-content-view"><b><i class="bi bi-currency-rupee"></i>Transaction history</b></h6>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <table class="table caption-top dk-content-view" style="border-bottom: solid grey;">
-                    
-                    <thead>
-                      <tr>
-                        <th scope="col">S.No</th>
-                        <th scope="col">Plan</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">No. of Subscribers</th>
-                        <th scope="col">Amount per User</th>
-                        <th scope="col">Total Amount</th>
-                        <th scope="col">Start Date</th>
-                        <th scope="col">End Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>abc</td>
-                            <td>abc</td>
-                            <td>abc</td>
-                            <td>abc</td>
-                            <td>abc</td>
-                            <td>abc</td>
-                            <td>abc</td>
-                            <td>abc</td>
-                        </tr>
-                    </tbody>
-                  </table>
-                  <div class="card mob-card-content mtb-content-view">
-                    <div class="row">
-                        <div class="col-12">
-                            <h6><b><i class="bi bi-currency-rupee"></i>Transaction history</b></h6>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                        <h6 class="card-subtitle">
-                            <!-- <i class="bi bi-calendar2-week"></i> -->
-                            Plan</h6>
-                        <div class="value-container">ABC</div>
-                        </div>
-                        <div class="col-6">
-                            <h6 class="card-subtitle">
-                                <!-- <i class="bi bi-calendar2-week"></i> -->
-                                Type</h6>
-                                <div class="value-container">ABC</div>
-                        </div>
-                     </div>
-                     <div class="row">
-                        <div class="col-6">
-                        <h6 class="card-subtitle">
-                            <!-- <i class="bi bi-calendar2-week"></i> -->
-                            No. of Subscribers</h6>
-                        <div class="value-container">ABC</div>
-                        </div>
-                      
-                     </div>
-                     <div class="row">
-                        <div class="col-6">
-                            <h6 class="card-subtitle">
-                                <!-- <i class="bi bi-calendar2-week"></i> -->
-                                Amount per User</h6>
-                                <div class="value-container">ABC</div>
-                        </div>
-                        <div class="col-6">
-                            <h6 class="card-subtitle">
-                                <!-- <i class="bi bi-calendar2-week"></i> -->
-                                Total Amount</h6>
-                                <div class="value-container">ABC</div>
-                        </div>
-                     </div>
-               
-                     <div class="row">
-                        <div class="col-6">
-                        <h6 class="card-subtitle">
-                            <!-- <i class="bi bi-calendar2-week"></i> -->
-                            Start Date</h6>
-                        <div class="value-container">ABC</div>
-                        </div>
-                        <div class="col-6">
-                            <h6 class="card-subtitle">
-                                <!-- <i class="bi bi-calendar2-week"></i> -->
-                                End Date</h6>
-                                <div class="value-container">ABC</div>
-                        </div>
-                     </div>
-                  </div>
-            </div>
-        </div>
-        <div class="row plan-Subscription-content" style="border-bottom: grey solid;">
-            <div class="col-sm"></div>
-            <div class="col-sm-3">
-                <ul>
-                    <li>Sub- total amount</li>
-                    <li>VAT</li>
-                    <li>Grand Total</li>
-                </ul>
-            </div>
-        </div>
-        <div class="row plan-Subscription-content">
-            <div class="col-sm"></div>
-            <div class="col-sm-3">
-                <button mat-raised-button class="proceedbtn mat-btn-s">PAYMENT</button>
-            </div>
-            <div class="col-sm-2">
-                <button mat-raised-button class="printbtn mat-btn-s">
-                    PRINT
-                </button>
-            </div>
-        </div>
-    </div>
-    
-   
-</div>
+      </div>
+      <div class="text-center">
+        <button mat-flat-button color="primary" class="cta-button" (click)="buyStandardPlan()">
+          Buy Standard Plan
+        </button>
+      </div>
+     
+    </mat-card>
+  
+  </div>
+  
+  

@@ -576,12 +576,18 @@ form{
     textarea {
       height: 17px !important;
       font-family: 'Exo FT' !important;
+      width: 100%;
     }
     input[type="file"] {
       height: 30px !important;
       font-family: 'Exo FT' !important;
     }
   }
+  
+}
+.cdk-overlay-pane {
+ 
+  transform: translateX(-22px) !important;
 }
 form {
 

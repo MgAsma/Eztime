@@ -31,7 +31,7 @@ export class DefaultLayoutComponent {
   config: string;
   access: any = [];
   user_id: any;
-  org_id: string;
+  org_id: any;
   profileImage:any = null;
   headerNav = [
     {
@@ -49,11 +49,11 @@ export class DefaultLayoutComponent {
       page: 'Change Password',
       icons: 'bi bi-key'
     },
-    // {
-    //   link: '/logout',
-    //   page: 'Logout',
-    //   icons: 'bi bi-power'
-    // }
+    {
+      link: '/organization/subscription-config',
+      page: 'Subscription Configuration',
+      icons: 'bi bi-power'
+    }
   ]
 
   constructor(private ngxService: NgxUiLoaderService,
