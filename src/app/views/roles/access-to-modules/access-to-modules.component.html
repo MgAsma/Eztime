@@ -1,0 +1,53 @@
+<div class="page px-2 pb-5 m-2" *ngIf="data && data.access?.length > 0">
+    <div class="page-content">
+        <div class="panel">
+            <div class="panel-body">
+                <div id="accessibilitydetailstable">
+                    <!-- <span class="user-role">ROLE : {{userRole}}</span> -->
+                    <span class="d-flex mb-2" style="float:right">
+                        <input class="selectable-all custom-checkbox" type="checkbox" [checked]="allSelected" (change)="selectAll($event)">
+                        <label>Select All</label>
+                    </span>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Menu</th>
+                                <!-- <th *ngFor="let heading of tableHeadings">{{ heading | titlecase }}</th> -->
+                                <th>View</th>
+                                <th>Create</th>
+                                <th>Update</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           <tr *ngFor="let i of data.access">
+                            <td>{{i.name}}</td>
+                            <td>
+                                <input type="checkbox" class="custom-checkbox" (change)="modifyAccess($event,i.name,'view')" 
+                                [checked]="i.operations[0].view">
+                            </td>
+                            <td>
+                                <input type="checkbox" class="custom-checkbox" (change)="modifyAccess($event,i.name,'create')" 
+                                [checked]="i.operations[0].create">
+                            </td>
+                            <td>
+                                <input type="checkbox" class="custom-checkbox" (change)="modifyAccess($event,i.name,'update')" 
+                                [checked]="i.operations[0].update">
+                            </td>
+                            <td>
+                                <input type="checkbox" class="custom-checkbox" (change)="modifyAccess($event,i.name,'delete')" 
+                                [checked]="i.operations[0].delete">
+                            </td>
+                           </tr>
+                        </tbody>
+                    </table>
+                    <div class="update-btn mt-3">
+                        <button mat-raised-button type="submit" (click)="addOrUpdate(buttonName)"
+                            class="btn proceedbtn text-white waves-effect waves-classic" id="btnSubmit"
+                           >{{buttonName}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

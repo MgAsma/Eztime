@@ -7,7 +7,6 @@ import { SortPipe } from 'src/app/sort/sort.pipe';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { environment } from 'src/environments/environment';
-import { error } from 'console';
 
 @Component({
   selector: 'app-client-list',
@@ -70,7 +69,7 @@ export class ClientListComponent implements OnInit {
 
     filterSearch(event:any) {
       this.term = event.target.value?.trim();
-    if (this.term &&this.term.length >= 2) {
+    if (this.term &&this.term.length >= 3) {
         this.page = 1;
         let query = this.getFilterBaseUrl()
         query += `&search=${this.term}`

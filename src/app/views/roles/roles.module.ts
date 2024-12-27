@@ -28,6 +28,7 @@ import { ProjectTaskConfigComponent } from './project-task-config/project-task-c
 import { ProjectsComponent } from './projects/projects.component';
 import { ReviewConfigComponent } from './review-config/review-config.component';
 import { OrganizationConfigComponent } from './organization-config/organization-config.component';
+import { AccessToModulesComponent } from './access-to-modules/access-to-modules.component';
 
 
 
@@ -51,7 +52,8 @@ import { OrganizationConfigComponent } from './organization-config/organization-
     ProjectTaskConfigComponent,
     ProjectsComponent,
     ReviewConfigComponent,
-    OrganizationConfigComponent
+    OrganizationConfigComponent,
+    AccessToModulesComponent
     ],
   imports: [
     CommonModule,

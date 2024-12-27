@@ -626,7 +626,16 @@ export class ApiserviceService {
     return this.http.post(`${this.baseurl}/send-mail-for-verification/`,data)
   }
 
-  putdesignationRoleAccess(data:any){
-    return this.http.put(`${this.baseurl}/designation-access/`,data)
+  postdesignationRoleAccess(data:any){
+    return this.http.post(`${this.baseurl}/designation-access/`,data)
+  }
+  
+  putdesignationRoleAccess(data:any,id:any){
+    return this.http.put(`${this.baseurl}/designation-access/${id}/`,data)
+  }
+
+  // get order id from razorpay
+  getRazorpayFromData(data:any){
+    return this.http.post(`${this.baseurl}/get-razor-pay-order/`,data)
   }
 }

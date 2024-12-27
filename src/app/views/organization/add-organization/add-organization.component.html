@@ -31,7 +31,7 @@
             <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
               <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                 <mat-label>Email Id <b class="r-star">*</b></mat-label>
-                <input matInput type="email" placeholder="Enter email Id" formControlName="email" autocomplete="off">
+                <input matInput type="email" placeholder="Enter email Id" formControlName="email" autocomplete="off" oninput="this.value = this.value.toLowerCase()">
                 <mat-error *ngIf="f['email']?.touched && f['email']?.invalid">
                   <span *ngIf="f['email'].errors?.['required']">Email Id is required</span>
                   <span *ngIf="f['email'].errors?.['email']">Invalid email Id</span>
@@ -185,7 +185,7 @@
                   <div class="p-ab">
                     <mat-label class="admin-labels">Email </mat-label><b class="r-star">*</b>
                   </div>
-                  <input type="email" matInput class="pt-1" formControlName="admin_email_id" placeholder="Enter email Id"  autocomplete="off"/> 
+                  <input type="email" matInput class="pt-1" formControlName="admin_email_id" placeholder="Enter email Id"  autocomplete="off" oninput="this.value = this.value.toLowerCase()"/> 
                   <div *ngIf="a['admin_email_id']?.touched && a['admin_email_id']?.invalid"
                   class="error-text">
                   <span

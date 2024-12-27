@@ -109,7 +109,7 @@
                                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                                 <mat-label>Email Id <b class="r-star">*</b></mat-label>
                                                 <input matInput type="email" placeholder="Enter email" formControlName="email"
-                                                    autocomplete="off" >
+                                                    autocomplete="off" oninput="this.value = this.value.toLowerCase()">
                                             </mat-form-field>
                                             <div class="px-2" *ngIf="firstFormGroup.get('email')?.touched && firstFormGroup.get('email')?.invalid">
                                                 <span class="text-errors" *ngIf="firstFormGroup.get('email').errors?.['required']">Email is required</span>
@@ -335,7 +335,7 @@
                                         <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
                                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                                 <mat-label>Email Id <b class="r-star">*</b></mat-label>
-                                                <input matInput type="email" placeholder="Enter email" formControlName="email"
+                                                <input matInput type="email" oninput="this.value = this.value.toLowerCase()" placeholder="Enter email" formControlName="email"
                                                     autocomplete="off" readonly>
                                             </mat-form-field>
                                         </div>

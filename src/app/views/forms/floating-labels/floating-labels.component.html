@@ -18,7 +18,7 @@
         </p>
         <app-docs-example href="forms/floating-labels">
           <div [cFormFloating]="true" class="mb-3">
-            <input cFormControl id="floatingInput" placeholder="name@example.com" type="email" />
+            <input cFormControl id="floatingInput" placeholder="name@example.com" type="email" oninput="this.value = this.value.toLowerCase()"/>
             <label cLabel for="floatingInput">Email address</label>
           </div>
           <div cFormFloating>
@@ -131,7 +131,7 @@
                   cFormControl
                   id="floatingInputGrid"
                   placeholder="name@example.com"
-                  type="email"
+                  type="email" oninput="this.value = this.value.toLowerCase()"
                   value="email@example.com"
                 />
                 <label cLabel for="floatingInputGrid">Email address</label>

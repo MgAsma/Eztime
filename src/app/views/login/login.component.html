@@ -29,7 +29,7 @@
                                         <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
                                             <mat-label>Email Address<b class="r-star">*</b></mat-label>
                                             <input matInput formControlName='email' placeholder="Email Address" (keypress)="preventSpace($event)"
-                                            aria-describedby="emailHelp" autocomplete="off" id="emailId">
+                                            aria-describedby="emailHelp" autocomplete="off" id="emailId" oninput="this.value = this.value.toLowerCase()">
                                             <mat-icon matSuffix>mail_outline</mat-icon>
                                             <mat-error *ngIf="f['email'].touched && f['email'].invalid">
                                               <span *ngIf="f['email'].errors && f['email'].errors['required']">Email Id is required.</span>

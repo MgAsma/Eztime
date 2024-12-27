@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { error } from 'console';
+import { PlatformLocation } from '@angular/common';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 @Component({
   selector: 'app-forgot-change',
@@ -17,17 +17,9 @@ export class ForgotChangeComponent implements OnInit {
   eyeIcon2 = 'visibility_off'
   passwordType2 = "password";
   eyeState2: boolean = false;
-  constructor(private builder: FormBuilder, private api: ApiserviceService, private router: Router) { }
+  constructor(private builder: FormBuilder, private platformLocation: PlatformLocation, private api: ApiserviceService, private router: Router) { }
 
   ngOnInit(): void {
-    // this.userId =  JSON.parse(sessionStorage.getItem('user_id'))
-    // this.changePassword = this.builder.group({
-    //   username:['',[Validators.required]],
-    //   password:['',[Validators.required]],
-
-    // },{
-    //   validators: this.passwordMatchValidator
-    // })
     const user_id = sessionStorage.getItem('user_id')
     this.changePassword = this.builder.group({
       user_id: [user_id, [Validators.required]],
@@ -36,6 +28,9 @@ export class ForgotChangeComponent implements OnInit {
     }, {
       validators: this.passwordMatchValidator
     })
+    this.platformLocation.onPopState(() => {
+      this.router.navigate(['/login'], { replaceUrl: true });
+    });
   }
 
   passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {

@@ -49,7 +49,7 @@
           <form cForm class="row g-3">
             <c-col md="6">
               <label cLabel for="inputEmail4">Email</label>
-              <input cFormControl id="inputEmail4" type="email" />
+              <input cFormControl id="inputEmail4" type="email" oninput="this.value = this.value.toLowerCase()"/>
             </c-col>
             <c-col md="6">
               <label cLabel for="inputPassword4">Password</label>
@@ -117,7 +117,7 @@
                 Email
               </label>
               <c-col sm="10">
-                <input cFormControl id="inputEmail3" type="email" />
+                <input cFormControl id="inputEmail3" type="email" oninput="this.value = this.value.toLowerCase()" />
               </c-col>
             </c-row>
             <c-row class="mb-3">

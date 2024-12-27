@@ -74,6 +74,8 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { UserGuideModalComponent } from './views/user-guide-modal/user-guide-modal.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { UserWelcomeMsgComponent } from './views/user-welcome-msg/user-welcome-msg.component';
+import { RazorpayService } from './service/razorpay.service';
+
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -158,6 +160,7 @@ const APP_CONTAINERS = [
     //   useClass: HashLocationStrategy,
     // },
     BsModalService,
+    RazorpayService,
     ActivateChildGuard,
     AuthGuard,
     OrgAuthGuard,

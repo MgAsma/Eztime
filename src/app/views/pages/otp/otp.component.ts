@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { error } from 'console';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 
 @Component({
@@ -21,7 +20,6 @@ export class OtpComponent implements OnInit {
   resendButtonClicked: boolean = false;
   ngOnInit(): void {
     this.initForm();
-
   }
 
   initForm() {
@@ -95,7 +93,7 @@ export class OtpComponent implements OnInit {
         if (res) {
           this.api.showSuccess(res['message'])
           sessionStorage.setItem('user_id', res['user_id'])
-          this.router.navigate(['/forgotChange']);
+          this.router.navigate(['/forgotChange'], { replaceUrl: true });
         }
         else {
           this.api.showError(res['message']);

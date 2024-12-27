@@ -29,29 +29,30 @@
     <div class="col-12">
         <h3><b>{{role}}</b></h3>
     </div>
+    <!-- <button (click)="razorpayTest()">razorpayTest</button> -->
     <div class="col-12 sidebar-container">
         <!-- <div class="list-border"></div> -->
         <div class="row mx-0 gx-0">
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                <ul class="list-group list-border">
-                    <li class="list-group-item main-heading">
-                        <div class="d-flex justify-content-between">
+                <ul class="list-group">
+                    <li class="main-heading">
                             <label>
                                 Menu Items
                             </label>
-                            <span class="main-text">Select All</span>
-                            <input class="custom-checkbox" type="checkbox" [checked]="allSelected" (change)="selectAll($event)">
-                        </div>
+                            <!-- <span class="main-text">Select All</span>
+                            <input class="custom-checkbox" type="checkbox" [checked]="allSelected" (change)="selectAll($event)"> -->
                     </li>
-                    <li class="list-group-item" *ngFor="let items of mainMenu;let i=index">
+                    <li (click)="passingChildrenToTabel(items)" class="list-group-item " *ngFor="let items of mainMenu;let i=index">
                         <div class="d-flex justify-content-between">
+                            <span (click)="passingChildrenToTabel(items)"> {{items.name}}</span>
+                            <span *ngIf="items.access_given" class="access_given">●</span>
+                        </div>
+                        <!-- <div class="d-flex justify-content-between">
                             <label>
                                 {{items.name}}
                             </label>
-                            <input class="custom-checkbox" type="checkbox" [checked]="items.is_checked" (change)="SelectedCheckboxLabels($event,items.name)">
-                            <!-- <input class="checkbox-design" type="checkbox" [checked]="items.checked"
-                                     name="roles"> -->
-                        </div>
+                           <input class="custom-checkbox" routerLink="projects" type="checkbox" [checked]="items.is_checked" (change)="SelectedCheckboxLabels($event,items.name)">
+                        </div> -->
                         <!-- <div [class]="items.containerClass" >
                             <input [class]="items.class" [type]="items.type" [checked]="items.checked"  [routerLink]="items.path" name="roles">
                             <label class="form-check-input">
@@ -62,14 +63,17 @@
                     </li>
                 </ul>
             </div>
+            <div class="col-sm-8 col-md-6 col-lg-8 p-0" *ngIf="allChildrens"> 
+                <app-access-to-modules [data]="allChildrens" (dataEmitter)="receiveDataFromChild($event)"></app-access-to-modules>
+            </div>
         </div>
     </div>
-    <div class="col-12 mt-3">
+    <!-- <div class="col-12 mt-3">
         <div>
             <button mat-raised-button class="proceedbtn mat-btn-s" 
             type="submit" (click)="hasAccessData==false? modifyChanges('add'): modifyChanges('update')">{{buttonName}}</button>
         </div>
-    </div>
+    </div> -->
 </div>
 <!-- <div class="col-sm-8 p-0"> 
         <router-outlet></router-outlet>

@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiserviceService } from 'src/app/service/apiservice.service';
-import { CommonServiceService } from 'src/app/service/common-service.service';
+import { ApiserviceService } from '../../../service/apiservice.service';
+import { CommonServiceService } from '../../../service/common-service.service';
+import { environment } from '../../../../environments/environment';
+import { RazorpayService } from '../../../service/razorpay.service';
 
 @Component({
   selector: 'app-roles-access',
@@ -10,6 +12,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
   styleUrls: ['./roles-access.component.scss']
 })
 export class RolesAccessComponent implements OnInit {
+  // @Output() allChildrens = new EventEmitter<any>();
   BreadCrumbsTitle: any = 'Roles Accessibilty';
   rolesAccessForm: FormGroup
   designation_id: any;
@@ -19,12 +22,12 @@ export class RolesAccessComponent implements OnInit {
   user_id: any;
   organization_id: any;
   hasAccessData: boolean = false;
-  allSelected:boolean = false;
+  allSelected: boolean = false;
   selectedLabelNames: any = [];
   itemId: any;
- buttonName:any;
-  constructor(private _fb: FormBuilder, private router:Router, private routes: ActivatedRoute, private common_service: CommonServiceService,
-    private api: ApiserviceService,
+  buttonName: any;
+  constructor(private _fb: FormBuilder, private router: Router, private routes: ActivatedRoute, private common_service: CommonServiceService,
+    private api: ApiserviceService, private razorpay: RazorpayService
   ) {
     this.user_id = sessionStorage.getItem('user_id')
     this.designation_id = this.routes.snapshot.paramMap.get('id')
@@ -171,18 +174,91 @@ export class RolesAccessComponent implements OnInit {
     this.selectedLabelNames = [];
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.getDesignationNameFromDesignationId();
-    this.rolesAccess();
+    this.allrolesList();
   }
 
-  getDesignationNameFromDesignationId(){
-    this.api.getDesignationListById(this.designation_id).subscribe((res:any)=>{
-     this.role= res.designation_name;
-      })
-   }
-  rolesAccess() {
+  razorpayTest() {
+    let data = {
+      'total_amount': 200
+    }
+    this.api.getRazorpayFromData(data).subscribe(
+      (res: any) => {
+        console.log(res)
+        this.openRazorpay(res);
+      },
+      (error: any) => {
+        console.log('error', error)
+      }
+    )
+  }
+
+  openRazorpay(data: any) {
+    console.log(data, 'data')
+    const options: any = {
+      key: environment.Razorpay_test_key,
+      amount: data.amount,
+      currency: 'INR',
+      name: 'Project Ace',
+      description: '',
+      image: '/assets/images/logo.png',
+      order_id: data.razor_pay_order_id,
+      modal: {
+        escape: false,
+      },
+      theme: {
+        color: '#0e2732',
+      },
+      handler: (response: any, error: any) => {
+        if (response) {
+          //console.log('response',response)
+          const reqData: any = {
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_signature: response.razorpay_signature,
+          };
+
+          // this.trainingService.slotPlaceOrderConfirmation(reqData).subscribe(
+          //   (res:any)=>{
+          //    //console.log('slot booked',res)
+          //     this.toasterService.showSuccess(res?.message);
+          //     this.pilotSlotSelectorFrom.reset();
+          //     // this.ngOnInit();
+          //     setTimeout(() => {
+          //       this.ngZone.run(() => {
+          //         this.router.navigate(['/inner/partner/pilot-management/add-batch-students']);
+          //       });
+          //     }, 1000);
+          //   },
+          //   (error:any)=>{
+          //    //console.log('error',error)
+          //   }
+          // )
+          //  Api Call
+        }
+        if (error) {
+          console.log('Error', error);
+          // this.toasterService.showError('Transaction Failed.');
+        }
+      },
+    };
+    options.modal.ondismiss = () => {
+      this.api.showError('Transaction cancelled.');
+    };
+    this.razorpay.initiatePayment(options);
+  }
+
+
+  getDesignationNameFromDesignationId() {
+    this.api.getDesignationListById(this.designation_id).subscribe((res: any) => {
+      this.role = res.designation_name;
+    })
+  }
+
+  // side bar module list
+  allrolesList() {
     this.api.userAccess(this.user_id).subscribe(
       (data: any) => {
-        // console.log('user access', data,)
+        console.log('all list', data,)
         this.mainMenu = data.access_list;
         this.getAccessbilitiesByDesignationId();
       },
@@ -191,126 +267,42 @@ export class RolesAccessComponent implements OnInit {
       }
     )
   }
-
+  // get access given data
   getAccessbilitiesByDesignationId() {
-    this.api.getAccessByDesignationId(`?${'designation'}=${this.designation_id}&${'organization'}=${this.organization_id}`).subscribe(
+    this.api.getAccessByDesignationId(`?designation=${this.designation_id}&organization=${this.organization_id}`).subscribe(
       (res: any) => {
-        console.log(res);
-        if (res.length == 0) {
-          this.hasAccessData = false;
-          this.buttonName = 'Submit';
-        } else {
-          this.itemId = res[0].id;
-          this.buttonName = 'Update Changes'
-          this.hasAccessData = true;
-          this.mainMenu.forEach((element1: any) => {
-            element1['is_checked'] = false;
-            res[0].access_list.forEach((element2: any) => {
-              if (element1.name == element2) {
-                element1['is_checked'] = true;
-                this.selectedLabelNames.push(element1.name)
-              }
-            })
-          },
-          )
-          this.matchingLength();
-          // console.log(this.selectedLabelNames)
-        }
-      },
-      (error: any) => {
-        console.log('error', error)
+        // console.log(res, 'sub modules')
+        this.receiveDataFromChild(res[0])
+      }, 
+      (error)=>{
+        console.log(error)
       }
     )
+
   }
 
-  matchingLength(){
-    if(this.mainMenu.length==this.selectedLabelNames.length){
-      this.allSelected = true;
-    } else{
-      this.allSelected = false;
-    }
-  }
-
-  // select single or muitiple checkboxes
-  SelectedCheckboxLabels(event: any, label: any) {
-    // console.log(label);
-    if (event.target.checked == true) {
-      if (!this.selectedLabelNames.includes(label)) {
-        this.selectedLabelNames.push(label);
+// getting data from child
+  receiveDataFromChild(data: any) {
+    // console.log('from child', data)
+    this.mainMenu.forEach((access: any) => {
+      const moduleMatch = data.access_list.find((module_name: any) => module_name.name === access.name);
+      if (moduleMatch) {
+        access['access_given'] = true;
       }
-    } else {
-      this.selectedLabelNames = this.selectedLabelNames.filter(item => item != label)
-    }
-    this.matchingLength();
-    // console.log('selectedLabelNames', this.selectedLabelNames)
-    
-  }
-
-  // select all checkboxes
-  selectAll(event: any) {
-    this.selectedLabelNames = []
-    this.mainMenu.forEach((element1: any) => {
-      if (event.target.checked == true) {
-        element1['is_checked'] = true;
-        this.selectedLabelNames.push(element1.name);
-      } else{
-        element1['is_checked'] = false;
-        this.selectedLabelNames = []
+      if (!moduleMatch) {
+        access['access_given'] = false;
       }
-    })
-    console.log( this.selectedLabelNames)
+    });
+    // console.log(this.mainMenu, 'this.mainMenu')
   }
 
-  modifyChanges(text: any) {
-    // console.log(text);
-    if(this.selectedLabelNames.length==0){
-      this.api.showError('Please give access to the designation')
+  allChildrens: any = []
+  passingChildrenToTabel(data: any) {
+    console.log(data)
+    let access_data = {
+      'name': data.name,
+      'access': data.access,
     }
-    else{
-    let data = {
-      designation: this.designation_id,
-      organization: this.organization_id,
-      access_list: this.selectedLabelNames
-    }
-    // console.log(data)
-    if (text === 'add') {
-      this.addAccesstoDesignation(data);
-    }
-    else {
-      this.updateAccesstoDesignation(data);
-    }
+    this.allChildrens = access_data;
   }
-  }
-
-
-
-  addAccesstoDesignation(data: any) {
-    this.api.postAccessToDesignation(data).subscribe(
-      (res: any) => {
-        console.log(res);
-        this.api.showSuccess(res.message)
-        setTimeout(() => {
-          this.router.navigate(['/designation/list'])
-        }, 2000);
-      },
-      (error: any) => {
-        console.log(error);
-        this.api.showError(error);
-      }
-    )
-  }
-  updateAccesstoDesignation(data: any) {
-    this.api.putAccessToDesignation(this.itemId, data).subscribe(
-      (res: any) => {
-        console.log(res);
-        this.api.showSuccess(res.message);
-        this.ngOnInit();
-      },
-      (error: any) => {
-        console.log(error);
-        this.api.showError(error);
-      }
-    )
-  }
-
 }
