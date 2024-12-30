@@ -34,13 +34,14 @@ BreadCrumbsTitle:any='Subscription plan';
       this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
         if(res){
           this.subscriptionData = res;
-          this.subscriptionData?.forEach((item: any,i) => {
+          this.subscriptionData?.forEach((item: any) => {
             if(item.name == 'Standard'){
-              item['subscription_deatils'].forEach((item: any,i) => {
+              item['subscription_deatils'].forEach((item: any) => {
                 if(item.yearly_or_monthly_name === 'Monthly'){
                   this.monthlyAmount = item.amount
                 }else if(item.yearly_or_monthly_name === 'Yearly'){
                   this.yearlyAmount = item.amount
+                  this.discount = item.discount
                 }
               })
               
