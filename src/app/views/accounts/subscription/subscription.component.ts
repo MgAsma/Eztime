@@ -39,7 +39,6 @@ export class SubscriptionComponent implements OnInit {
     this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
       if(res){
         this.subscriptionData = res;
-        this.common_service.setSubscriptionDetails(res)
       }
     })
    

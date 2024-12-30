@@ -4,6 +4,8 @@ import { CommonServiceService } from '../../../service/common-service.service';
 import { BuyStandardplanComponent } from '../buy-standardplan/buy-standardplan.component';
 import { ExistStandardPlanComponent } from '../exist-standard-plan/exist-standard-plan.component';
 import { StandardSubscriptionComponent } from '../standard-subscription/standard-subscription.component';
+import { environment } from 'src/environments/environment';
+import { ApiserviceService } from 'src/app/service/apiservice.service';
 
 @Component({
   selector: 'app-trail-plan-details',
@@ -17,34 +19,37 @@ BreadCrumbsTitle:any='Subscription plan';
   monthlyAmount: any;
   yearlyAmount: any;
   discount: any;
+  subscriptionData: any;
   constructor(
     private common_service:CommonServiceService,
-    private dialog:MatDialog
+    private dialog:MatDialog,
+    private api:ApiserviceService
   ) { }
 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.common_service.subscription_details.subscribe((res)=>{
-      this.planDetails = res;
-      console.log(res,"DETAILS")
-      res?.forEach((item: any,i) => {
-        console.log(item,"item")
-        if(item.name == 'Standard'){
-          item['subscription_deatils'].forEach((item: any,i) => {
-            if(item.yearly_or_monthly_name === 'Monthly'){
-              this.monthlyAmount = item.amount
-            }if(item.yearly_or_monthly_name === 'Yearly'){
-              this.yearlyAmount = item.amount
-              this.discount = item.discount
-            }
-          })
-          
-      }
-      })
-    
-    })
-  
+    this.getSubscription();
   }
+  getSubscription(){
+      this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
+        if(res){
+          this.subscriptionData = res;
+          this.subscriptionData?.forEach((item: any,i) => {
+            if(item.name == 'Standard'){
+              item['subscription_deatils'].forEach((item: any,i) => {
+                if(item.yearly_or_monthly_name === 'Monthly'){
+                  this.monthlyAmount = item.amount
+                }else if(item.yearly_or_monthly_name === 'Yearly'){
+                  this.yearlyAmount = item.amount
+                }
+              })
+              
+          }
+          })
+        }
+      })
+     
+    }
   setPaymentOption(option: boolean): void {
     this.monthly = option;
   }
