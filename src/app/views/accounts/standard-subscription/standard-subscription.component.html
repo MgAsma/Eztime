@@ -1,0 +1,44 @@
+
+<ng-container *ngFor="let subscription of subscriptionData">
+<mat-card class="standard-card" *ngIf="subscription.name === 'Standard'">
+    <h2 class="plan-title standard-title p-r">Standard <img class="spakle-image" src="../../../../assets/images/sparkle-filled.svg"/></h2>
+    <p class="plan-description">
+      Choose a flexible payment plan that charges per user. Opt for annual or monthly payments as per your convenience.
+    </p>
+
+    <!-- Highlighted Background for Monthly and Yearly -->
+    <div class="payment-options">
+      <mat-card class="payment-option" *ngIf="subscription.subscription_deatils[0]?.yearly_or_monthly_name === 'Monthly'"  (click)="setPaymentOption(true)" 
+         [ngClass]="monthly ? 'active' : 'highlighted-option'" >
+        <span class="price pe-1">₹{{subscription?.subscription_deatils[0]?.amount}}</span>
+        <small>per user / monthly</small>
+      </mat-card>
+      <mat-card class="payment-option yearly-option" 
+      (click)="setPaymentOption(false)" 
+      [ngClass]="!monthly ? 'active' : 'highlighted-option'">
+        <span class="price pe-1">₹{{subscription?.subscription_deatils[1]?.amount}}</span>
+        <small>per user / yearly</small>
+        <div class="discount-badge"><i class="bi bi-x-circle"></i> {{subscription?.subscription_deatils[1]?.discount}}% </div>
+      </mat-card>
+    </div>
+
+    <!-- List inside white background -->
+    <div class="dark-background">
+      <ul class="plan-features">
+        <li>✓ Enterprise plan</li>
+        <li>✓ Full access to all modules</li>
+      </ul>
+    </div>
+
+    <div class="no-refund-note text-center">
+      <div style="margin: auto;">
+          <span style="margin-right: 5px;">⚠</span> No refund on subscription and cancellation
+      </div>
+    </div>
+    <div class="text-center">
+      <button mat-flat-button color="primary" class="cta-button" (click)="buyStandardPlan()">
+        Buy Standard Plan
+      </button>
+    </div>
+</mat-card>
+</ng-container>
