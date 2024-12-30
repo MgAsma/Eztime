@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
           (data:any)=>{
            // console.log('user access',data)
             sessionStorage.setItem('user_role_name', data.user_role);
-            sessionStorage.setItem('permissionArr', JSON.stringify(data.access_list));
+            // sessionStorage.setItem('permissionArr', JSON.stringify(data.access_list));
             sessionStorage.setItem('organization_id', data.organization_id);
             sessionStorage.setItem('designation', data.designation);
               let permissionArr: any = []

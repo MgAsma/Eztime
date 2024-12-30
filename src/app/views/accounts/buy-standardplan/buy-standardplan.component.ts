@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import {RazorpayService} from '../../../service/razorpay.service'
 
 @Component({
   selector: 'app-buy-standardplan',
@@ -27,7 +28,7 @@ export class BuyStandardplanComponent implements OnInit {
     private fb: FormBuilder,
     private dialogue: MatDialog,
     private router: Router,
-   
+    private razorpay:RazorpayService
     
   ) { 
   
@@ -132,5 +133,59 @@ export class BuyStandardplanComponent implements OnInit {
         this.api.showError(error?.error.message)
       }))
     
+    }
+
+    razorpayTest() {
+      let data = {
+        'total_amount': this.totalPayable
+      }
+      this.api.getRazorpayFromData(data).subscribe(
+        (res: any) => {
+          // console.log(res)
+          this.openRazorpay(res);
+        },
+        (error: any) => {
+          console.log('error', error)
+        }
+      )
+    }
+  
+    openRazorpay(data: any) {
+      console.log(data, 'data')
+      const options: any = {
+        key: environment.Razorpay_test_key,
+        amount: data.amount,
+        currency: 'INR',
+        name: 'Project Ace',
+        description: '',
+        image: '/assets/images/logo.png',
+        order_id: data.razor_pay_order_id,
+        modal: {
+          escape: false,
+        },
+        theme: {
+          color: '#0e2732',
+        },
+        browser_redirect: true,
+        handler: (response: any, error: any) => {
+          if (response) {
+            //console.log('response',response)
+            const reqData: any = {
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature,
+            };
+            // api call
+           }
+          if (error) {
+            console.log('Error', error);
+            // this.toasterService.showError('Transaction Failed.');
+          }
+        },
+      };
+      options.modal.ondismiss = () => {
+        this.api.showError('Transaction cancelled.');
+      };
+      this.razorpay.initiatePayment(options);
     }
 }

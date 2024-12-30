@@ -3,8 +3,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { CommonServiceService } from '../../../service/common-service.service';
-import { environment } from '../../../../environments/environment';
-import { RazorpayService } from '../../../service/razorpay.service';
 
 @Component({
   selector: 'app-roles-access',
@@ -27,7 +25,7 @@ export class RolesAccessComponent implements OnInit {
   itemId: any;
   buttonName: any;
   constructor(private _fb: FormBuilder, private router: Router, private routes: ActivatedRoute, private common_service: CommonServiceService,
-    private api: ApiserviceService, private razorpay: RazorpayService
+    private api: ApiserviceService, 
   ) {
     this.user_id = sessionStorage.getItem('user_id')
     this.designation_id = this.routes.snapshot.paramMap.get('id')
@@ -177,75 +175,7 @@ export class RolesAccessComponent implements OnInit {
     this.allrolesList();
   }
 
-  razorpayTest() {
-    let data = {
-      'total_amount': 200
-    }
-    this.api.getRazorpayFromData(data).subscribe(
-      (res: any) => {
-        console.log(res)
-        this.openRazorpay(res);
-      },
-      (error: any) => {
-        console.log('error', error)
-      }
-    )
-  }
-
-  openRazorpay(data: any) {
-    console.log(data, 'data')
-    const options: any = {
-      key: environment.Razorpay_test_key,
-      amount: data.amount,
-      currency: 'INR',
-      name: 'Project Ace',
-      description: '',
-      image: '/assets/images/logo.png',
-      order_id: data.razor_pay_order_id,
-      modal: {
-        escape: false,
-      },
-      theme: {
-        color: '#0e2732',
-      },
-      handler: (response: any, error: any) => {
-        if (response) {
-          //console.log('response',response)
-          const reqData: any = {
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_signature: response.razorpay_signature,
-          };
-
-          // this.trainingService.slotPlaceOrderConfirmation(reqData).subscribe(
-          //   (res:any)=>{
-          //    //console.log('slot booked',res)
-          //     this.toasterService.showSuccess(res?.message);
-          //     this.pilotSlotSelectorFrom.reset();
-          //     // this.ngOnInit();
-          //     setTimeout(() => {
-          //       this.ngZone.run(() => {
-          //         this.router.navigate(['/inner/partner/pilot-management/add-batch-students']);
-          //       });
-          //     }, 1000);
-          //   },
-          //   (error:any)=>{
-          //    //console.log('error',error)
-          //   }
-          // )
-          //  Api Call
-        }
-        if (error) {
-          console.log('Error', error);
-          // this.toasterService.showError('Transaction Failed.');
-        }
-      },
-    };
-    options.modal.ondismiss = () => {
-      this.api.showError('Transaction cancelled.');
-    };
-    this.razorpay.initiatePayment(options);
-  }
+  
 
 
   getDesignationNameFromDesignationId() {

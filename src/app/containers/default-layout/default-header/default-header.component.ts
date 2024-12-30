@@ -119,6 +119,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
       if (resp == "ok") {
         this.api.showSuccess('You have been logged out!')
         this.router.navigate(['/login'])
+        localStorage.clear();
         sessionStorage.clear();
         location.reload();
         modelRef.close();
