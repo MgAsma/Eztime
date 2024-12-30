@@ -13,11 +13,11 @@
       <div class="payment-options">
           <div class="row">
               <div class="col-6 my-2">
-                  <mat-card class="payment-option highlighted-option"  (click)="setPaymentOption(true)" 
+                  <mat-card class="payment-option highlighted-option"  (click)="setPaymentOption(true,monthlyAmount,'1')" 
                   >
                   <p class="card-text sub-header">Monthly Plan <span class="badge standard-plan-staus">Active</span>
                     </p> 
-                    <p><span class="price">₹30</span><small>per user / monthly</small></p>
+                    <p><span class="price pe-1">₹{{monthlyAmount}}</span><small>per user / monthly</small></p>
                    
               </mat-card>
               </div>
@@ -80,7 +80,7 @@
                   <mat-form-field appearance="fill" class="custom-mat-form-field w-100">
                       <mat-select formControlName="state" placeholder="Select state"  
                       
-                      panelClass="custom-select-panel" [disableOptionCentering]="true">
+                      panelClass="custom-select-panel" [disableOptionCentering]="true" (selectionChange)="calculateTotal()">
                         <mat-option *ngFor="let state of state" [value]="state.id">
                           {{state.state_name | titlecase}}
                         </mat-option>
@@ -100,13 +100,17 @@
           <span>Subtotal</span>
           <span>₹{{ subtotal || 0 }}</span>
         </div>
-        <div class="summary-row">
+        <div class="summary-row" *ngIf="userForm.get('state')?.value === 4026">
           <span>CGST 9%</span>
           <span>₹{{ cgst || 0 }}</span>
         </div>
-        <div class="summary-row">
+        <div class="summary-row" *ngIf="userForm.get('state')?.value === 4026">
           <span>SGST 9%</span>
           <span>₹{{ sgst || 0 }}</span>
+        </div>
+        <div class="summary-row" *ngIf="userForm.get('state')?.value !== 4026">
+          <span>IGST 18%</span>
+          <span>₹{{ igst || 0 }}</span>
         </div>
         <div class="summary-row total">
           <span>Total Payable Amount</span>

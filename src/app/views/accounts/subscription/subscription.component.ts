@@ -38,17 +38,18 @@ export class SubscriptionComponent implements OnInit {
   getSubscription(){
     this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
       if(res){
-        this.subscriptionData = res
-        if(res?.['subscription_deatils']['yearly_or_monthly_name'] === 'Monthly' ){
-          this.monthlyAmount =res?.['subscription_deatils']['amount']
-        }else{
-          this.yearlyAmount =res?.['subscription_deatils']['amount']
-        }
-        
+        this.subscriptionData = res;
+        this.common_service.setSubscriptionDetails(res)
       }
-     
     })
    
+  }
+  buyStandardPlan() {
+    const dialogRef = this.dialog.open(BuyStandardplanComponent, {
+      data: { planDetails: this.subscriptionData },
+      panelClass: 'custom-dialog'
+    });
+    dialogRef.disableClose=true
   }
  openDialogue() {
     const modelRef = this.modalService.open(TrialAlertComponent, {
@@ -79,11 +80,6 @@ export class SubscriptionComponent implements OnInit {
       }
     })
   }
-  buyStandardPlan() {
-    const dialogRef = this.dialog.open(BuyStandardplanComponent, {
-      // data: { message: 'Hello from the parent component!' },
-      panelClass: 'custom-dialog'
-    });
-    dialogRef.disableClose=true
-  }
+
+  
 }

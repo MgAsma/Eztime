@@ -12,19 +12,19 @@
     <form [formGroup]="userForm" >
     <div class="payment-options">
         <div class="row">
-            <div class="col-6 my-2">
-                <mat-card class="payment-option"  (click)="setPaymentOption(true)" 
+            <div class="col-6 my-2" style="padding-right: 0;">
+                <mat-card class="payment-option"  (click)="setPaymentOption(true,monthlyAmount,'1')" 
                 [ngClass]="monthly ? 'active' : 'highlighted-option'">
-                  <span class="price">₹30</span>
+                  <span class="price">₹{{monthlyAmount}}</span>
                   <small>per user / monthly</small>
                   <div class="option-title">Monthly</div>
                 </mat-card>
             </div>
             <div class="col-6 my-2">
                 <mat-card class="payment-option yearly-option" 
-                (click)="setPaymentOption(false)" 
+                (click)="setPaymentOption(false,yearlyAmount,'2')" 
                 [ngClass]="!monthly ? 'active' : 'highlighted-option'">
-                  <span class="price">₹25</span>
+                  <span class="price">₹{{yearlyAmount}}</span>
                   <small>per user / yearly</small>
                   <div class="option-title">Yearly</div>
                   <div class="discount-badge"><i class="bi bi-x-circle"></i> 10% </div>
@@ -88,7 +88,7 @@
                 <mat-form-field appearance="fill" class="custom-mat-form-field w-100">
                     <mat-select formControlName="state" placeholder="Select state"  
                     
-                    panelClass="custom-select-panel" [disableOptionCentering]="true">
+                    panelClass="custom-select-panel" [disableOptionCentering]="true" (selectionChange)="calculateTotal()">
                       <mat-option *ngFor="let state of state" [value]="state.id">
                         {{state.state_name | titlecase}}
                       </mat-option>
@@ -108,13 +108,17 @@
         <span>Subtotal</span>
         <span>₹{{ subtotal || 0 }}</span>
       </div>
-      <div class="summary-row">
+      <div class="summary-row" *ngIf="userForm.get('state')?.value === 4026">
         <span>CGST 9%</span>
         <span>₹{{ cgst || 0 }}</span>
       </div>
-      <div class="summary-row">
+      <div class="summary-row" *ngIf="userForm.get('state')?.value === 4026">
         <span>SGST 9%</span>
         <span>₹{{ sgst || 0 }}</span>
+      </div>
+      <div class="summary-row" *ngIf="userForm.get('state')?.value !== 4026">
+        <span>IGST 18%</span>
+        <span>₹{{ igst || 0 }}</span>
       </div>
       <div class="summary-row total">
         <span>Total Payable Amount</span>
