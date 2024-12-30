@@ -68,7 +68,7 @@
       </div>
       <!-- View More -->
       <div class="p-r">
-        <div class="view-more" *ngIf="notes.length > 1" (click)="getNotification(2,'viewmore')">
+        <div class="view-more" *ngIf="notes.length > 1" (click)="getNotification(5,'viewmore')">
           <a>View More</a>
         </div>
        </div>
@@ -92,7 +92,7 @@
       
           <!-- Notification Content -->
           <div class="notification-content">
-            <div class="notification-header">
+            <div class="notification-header p-r">
               <strong [routerLink]="notification?.text?.redirect_url" style="cursor: pointer;" (click)="closeBtn()">{{ notification.text.name }}</strong>
               <!-- <mat-chip-list>
                 <mat-chip [ngClass]="notification?.text?.leave_type ? 'leave-type' : 'project-name'" selected [routerLink]="notification?.text?.redirect_url" (click)="closeBtn()">
@@ -123,7 +123,7 @@
       </div>
        <!-- View More -->
        <div class="p-r">
-        <div class="view-more" *ngIf="notes.length > 1" (click)="getNotification(2,'viewmore')">
+        <div class="view-more" *ngIf="notes.length > 1" (click)="getNotification(5,'viewmore')">
           <a>View More</a>
         </div>
        </div>
@@ -149,7 +149,8 @@
                <div class="row">
                  <div class="col">
                   
-                   <span  class="flex-container" *ngIf="notification?.text?.leave_type || notification?.text?.project_status || notification?.text?.task_status">
+                   <span  class="flex-container" *ngIf="notification?.text?.leave_type || notification?.text?.project_status || notification?.text?.task_status
+                    || notification?.text?.project_name">
                      <div>
                        <i [class]="notification.text.icon" ></i>
                      </div>
@@ -183,7 +184,14 @@
                   <div class="notification-message" *ngIf="notification?.text?.project_description">
                     {{ notification?.text?.project_description}}
                    </div>
-                 
+                   <div class="notification-message" *ngIf="notification?.text?.timesheet_description || notification?.text?.timesheet_status">
+                    {{ notification?.text?.timesheet_description}}
+                    <span [ngClass]="notification?.text?.timesheet_status  === 'Approved' ? 'approved' : notification?.text?.timesheet_status  === 'Pending' ? 'pending' : 'declined'">{{notification?.text?.timesheet_status}}</span>
+                    
+                    
+                   </div>
+                  
+
                </div>
              </div>
              
@@ -198,7 +206,7 @@
        </div>
        <!-- View More -->
        <div class="p-r">
-        <div class="view-more" *ngIf="notes.length > 1" (click)="getNotification(2,'viewmore')">
+        <div class="view-more" *ngIf="notes.length > 1" (click)="getNotification(5,'viewmore')">
           <a>View More</a>
         </div>
        </div>

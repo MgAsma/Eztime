@@ -11,7 +11,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class NotificationComponent implements OnInit {
   notes:any =[]
-  page_size: number = 2;
+  page_size: number = 5;
   user_id: any;
   user_role_name: any;
   totalCount: any;
@@ -88,9 +88,9 @@ export class NotificationComponent implements OnInit {
   }
   getNotification(page_size,type){
     if(type == 'viewmore'){
-      this.page_size = this.page_size + page_size
+      this.page_size = this.page_size + page_size; // Ensure page_size does not exceed totalCount
     }
-    if(this.totalCount < this.page_size){
+    if(this.page_size > this.totalCount + 5){
       this.api.showWarning('You have reached the end of the notifications')
     }else{
       let params = `${environment.live_url}/${environment.notification}/?user-id=${this.user_id}&page=1&page_size=${this.page_size}`
