@@ -41,7 +41,7 @@
           <mat-card-content>
             <div class="card-header">
               <h5 class="plan-title standard-title p-r">Standard <img class="spakle-image" src="../../../../assets/images/sparkle-filled.svg"/></h5>
-             <a style="font-style: italic;color:white;font-size: 11px;border-bottom: 1px solid white;cursor: pointer;">View More</a>
+             <a style="font-style: italic;color:white;font-size: 11px;border-bottom: 1px solid white;cursor: pointer;" (click)="openStandardPlan()">View More</a>
             </div>
            
            
@@ -49,17 +49,17 @@
                 <div class="payment-options">
                   <mat-card class="payment-option"  (click)="setPaymentOption(true)" 
                   [ngClass]="monthly ? 'active' : 'highlighted-option'">
-                    <span class="price pe-1">₹30</span>
+                    <span class="price pe-1">₹{{monthlyAmount}}</span>
                     <small>per user / monthly</small>
                     <div class="option-title">Monthly</div>
                   </mat-card>
                   <mat-card class="payment-option yearly-option" 
                   (click)="setPaymentOption(false)" 
                   [ngClass]="!monthly ? 'active' : 'highlighted-option'">
-                    <span class="price pe-1">₹25</span>
+                    <span class="price pe-1">₹{{yearlyAmount}}</span>
                     <small>per user / yearly</small>
                     <div class="option-title">Yearly</div>
-                    <div class="discount-badge"><i class="bi bi-x-circle"></i> 10% </div>
+                    <div class="discount-badge"><i class="bi bi-x-circle"></i> {{discount}}% </div>
                   </mat-card>
                 </div>
 
