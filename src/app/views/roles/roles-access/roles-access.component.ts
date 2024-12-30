@@ -27,7 +27,8 @@ export class RolesAccessComponent implements OnInit {
   itemId: any;
   buttonName: any;
   constructor(private _fb: FormBuilder, private router: Router, private routes: ActivatedRoute, private common_service: CommonServiceService,
-    private api: ApiserviceService, private razorpay: RazorpayService
+    private api: ApiserviceService,
+     private razorpay: RazorpayService
   ) {
     this.user_id = sessionStorage.getItem('user_id')
     this.designation_id = this.routes.snapshot.paramMap.get('id')
