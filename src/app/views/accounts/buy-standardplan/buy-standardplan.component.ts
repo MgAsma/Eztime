@@ -7,6 +7,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import {RazorpayService} from '../../../service/razorpay.service'
 
+declare var Razorpay:any;
 @Component({
   selector: 'app-buy-standardplan',
   templateUrl: './buy-standardplan.component.html',
@@ -23,6 +24,7 @@ export class BuyStandardplanComponent implements OnInit {
   subscriptionData: any = [];
   selectedAmount: number = 30;
   selectedType: string = '1';
+  orderId: any;
   constructor(
     private api: ApiserviceService,
     private fb: FormBuilder,
@@ -34,7 +36,93 @@ export class BuyStandardplanComponent implements OnInit {
   
   
   }
+  // payment(){
+    
+     
+  //     const RazorpayOptions:any = {
+  //       description:'Sample Rozarpay demo',
+  //       currency:'INR',
+  //       amount: 1000,
+  //       name:'Asma',
+  //       key:'rzp_test_SGLqA6ORuQPThF',
+  //       //key:'rzp_test_Z6PoT6HRL71TiC',
+  //       image:'../assets/images/logo.png',
+  //       order_id:this.orderId,
+  //       prefill:{
+  //         name:'Asma M',
+  //         email:'asma@ekfrazo.in',
+  //         phone:'6230752181'
+  //       },
+  //       handler: function(response: any):any {
+  //          if(response){
+           
+  //            //console.log(response)
+  //            successCallback(response)
+  //          }
+  //       },
+        
+  //       theme:{
+  //         color:'#f37254'
+  //       },
+  //       modal:{
+  //         ondismiss:()=>{
+  //           //console.log('dismissed')
+  //         }
+  //       }
+  
+  //     }
+  //     const successCallback = (response:any)=>{
+  //       console.log("SUCCESS CALLBACK", response)
+  //       // this.postPaymentDetails(response)
+        
+  //     }
+  //     const failureCallback =(e:any)=>{
+  //       // //console.log(e)
+  //       if(e){
+  //         // this.btnEnable = false
+  //       }
+  //       }
+        
+  //     Razorpay.open(RazorpayOptions,successCallback)
+      
+  
+  // }
+payment() {
+  const RazorpayOptions: any = {
+    description: 'Sample Razorpay demo',
+    currency: 'INR',
+    amount: 1000, // Amount in paisa (e.g., 1000 = ₹10)
+    name: 'Asma',
+    key: 'rzp_test_SGLqA6ORuQPThF',
+    image: '../assets/images/logo.png',
+    order_id: this.orderId, // Ensure orderId is set correctly
+    prefill: {
+      name: 'Asma M',
+      email: 'asma@ekfrazo.in',
+      phone: '6230752181',
+    },
+    handler: (response: any) => {
+      console.log('SUCCESS CALLBACK:', response);
+      // Implement your success logic
+    },
+    theme: {
+      color: '#f37254',
+    },
+    modal: {
+      ondismiss: () => {
+        console.log('Payment modal closed by the user.');
+      },
+    },
+  };
 
+  if (typeof Razorpay === 'undefined') {
+    console.error('Razorpay script is not loaded.');
+    return;
+  }
+
+  const razorpay = new Razorpay(RazorpayOptions);
+  razorpay.open();
+}
 
   ngOnInit(): void {
     this.initForm()
@@ -113,9 +201,10 @@ export class BuyStandardplanComponent implements OnInit {
   }
 
   onMakePayment(): void {
-    console.log('Proceeding to payment...');
-    this.dialogue.closeAll()
-    this.router.navigate(['/accounts/standardplan-history'])
+    // console.log('Proceeding to payment...');
+    // this.dialogue.closeAll()
+    this.payment()
+    //this.router.navigate(['/accounts/standardplan-history'])
   }
   setPaymentOption(option: boolean,amount:number,type:string): void {
     this.monthly = option;
