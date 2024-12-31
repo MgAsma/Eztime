@@ -7,6 +7,8 @@ import { StandardSubscriptionComponent } from '../standard-subscription/standard
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { environment } from '../../../../environments/environment';
 import { DatePipe } from '@angular/common';
+import { TrialAlertComponent } from '../trial-alert/trial-alert.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -27,7 +29,8 @@ BreadCrumbsTitle:any='Subscription plan';
     private common_service:CommonServiceService,
     private dialog:MatDialog,
     private api:ApiserviceService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private modalService:NgbModal,
   ) { }
 
   ngOnInit(): void {
@@ -82,6 +85,27 @@ BreadCrumbsTitle:any='Subscription plan';
     });
     dialogRef.disableClose=true
   }
+  
+   openDialogue() {
+      const modelRef = this.modalService.open(TrialAlertComponent, {
+        size: <any>'sm',
+        backdrop: true,
+        centered: true
+      });
+      modelRef.componentInstance.title = `By subscribing to the Standard Plan, your Free Plan will be cancelled.`;
+      modelRef.componentInstance.message = `Are you sure want to subscribe to the Standard Plan?`;
+      modelRef.componentInstance.buttonName = `Proceed`;
+      modelRef.componentInstance.status.subscribe(resp => {
+        if (resp == "ok") {
+          this.renewSubscription()
+          modelRef.close();
+        }
+        else {
+          modelRef.close();
+        }
+      })
+    }
+
   renewSubscription(){
     const dialogRef = this.dialog.open(BuyStandardplanComponent, {
       data: {planDetails:this.planDetails},

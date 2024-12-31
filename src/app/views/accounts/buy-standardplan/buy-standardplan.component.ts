@@ -5,9 +5,10 @@ import { environment } from '../../../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import {RazorpayService} from '../../../service/razorpay.service'
+import { RazorpayService } from '../../../service/razorpay.service'
+import { TrialSuccessComponent } from '../trial-success/trial-success.component';
 
-declare var Razorpay:any;
+declare var Razorpay: any;
 @Component({
   selector: 'app-buy-standardplan',
   templateUrl: './buy-standardplan.component.html',
@@ -15,9 +16,9 @@ declare var Razorpay:any;
 })
 export class BuyStandardplanComponent implements OnInit {
   monthly: boolean = true;
-  
-  state:any = [];
-  userForm!:FormGroup
+
+  state: any = [];
+  userForm!: FormGroup
   monthlyAmount: any;
   yearlyAmount: any;
   igst: number;
@@ -30,15 +31,15 @@ export class BuyStandardplanComponent implements OnInit {
     private fb: FormBuilder,
     private dialogue: MatDialog,
     private router: Router,
-    private razorpay:RazorpayService
-    
-  ) { 
-  
-  
+    private razorpay: RazorpayService,
+    private modalService: NgbModal,
+  ) {
+
+
   }
   // payment(){
-    
-     
+
+
   //     const RazorpayOptions:any = {
   //       description:'Sample Rozarpay demo',
   //       currency:'INR',
@@ -55,12 +56,12 @@ export class BuyStandardplanComponent implements OnInit {
   //       },
   //       handler: function(response: any):any {
   //          if(response){
-           
+
   //            //console.log(response)
   //            successCallback(response)
   //          }
   //       },
-        
+
   //       theme:{
   //         color:'#f37254'
   //       },
@@ -69,12 +70,12 @@ export class BuyStandardplanComponent implements OnInit {
   //           //console.log('dismissed')
   //         }
   //       }
-  
+
   //     }
   //     const successCallback = (response:any)=>{
   //       console.log("SUCCESS CALLBACK", response)
   //       // this.postPaymentDetails(response)
-        
+
   //     }
   //     const failureCallback =(e:any)=>{
   //       // //console.log(e)
@@ -82,77 +83,77 @@ export class BuyStandardplanComponent implements OnInit {
   //         // this.btnEnable = false
   //       }
   //       }
-        
+
   //     Razorpay.open(RazorpayOptions,successCallback)
-      
-  
+
+
   // }
-payment() {
-  const RazorpayOptions: any = {
-    description: 'Sample Razorpay demo',
-    currency: 'INR',
-    amount: 1000, // Amount in paisa (e.g., 1000 = ₹10)
-    name: 'Asma',
-    key: 'rzp_test_SGLqA6ORuQPThF',
-    image: '../assets/images/logo.png',
-    order_id: this.orderId, // Ensure orderId is set correctly
-    prefill: {
-      name: 'Asma M',
-      email: 'asma@ekfrazo.in',
-      phone: '6230752181',
-    },
-    handler: (response: any) => {
-      console.log('SUCCESS CALLBACK:', response);
-      // Implement your success logic
-    },
-    theme: {
-      color: '#f37254',
-    },
-    modal: {
-      ondismiss: () => {
-        console.log('Payment modal closed by the user.');
+  payment() {
+    const RazorpayOptions: any = {
+      description: 'Sample Razorpay demo',
+      currency: 'INR',
+      amount: 1000, // Amount in paisa (e.g., 1000 = ₹10)
+      name: 'Asma',
+      key: 'rzp_test_SGLqA6ORuQPThF',
+      image: '../assets/images/logo.png',
+      order_id: this.orderId, // Ensure orderId is set correctly
+      prefill: {
+        name: 'Asma M',
+        email: 'asma@ekfrazo.in',
+        phone: '6230752181',
       },
-    },
-  };
+      handler: (response: any) => {
+        console.log('SUCCESS CALLBACK:', response);
+        // Implement your success logic
+      },
+      theme: {
+        color: '#f37254',
+      },
+      modal: {
+        ondismiss: () => {
+          console.log('Payment modal closed by the user.');
+        },
+      },
+    };
 
-  if (typeof Razorpay === 'undefined') {
-    console.error('Razorpay script is not loaded.');
-    return;
+    if (typeof Razorpay === 'undefined') {
+      console.error('Razorpay script is not loaded.');
+      return;
+    }
+
+    const razorpay = new Razorpay(RazorpayOptions);
+    razorpay.open();
   }
-
-  const razorpay = new Razorpay(RazorpayOptions);
-  razorpay.open();
-}
 
   ngOnInit(): void {
     this.initForm()
-    this.getState() 
+    this.getState()
     this.getSubscription()
   }
-  getSubscription(){
-    this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
-      if(res){
+  getSubscription() {
+    this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res) => {
+      if (res) {
         this.subscriptionData = res;
-        this.subscriptionData?.forEach((item: any,i) => {
-          if(item.name == 'Standard'){
-            item['subscription_deatils'].forEach((item: any,i) => {
-              if(item.yearly_or_monthly_name === 'Monthly'){
+        this.subscriptionData?.forEach((item: any, i) => {
+          if (item.name == 'Standard') {
+            item['subscription_deatils'].forEach((item: any, i) => {
+              if (item.yearly_or_monthly_name === 'Monthly') {
                 this.monthlyAmount = item.amount
-              }else if(item.yearly_or_monthly_name === 'Yearly'){
+              } else if (item.yearly_or_monthly_name === 'Yearly') {
                 this.yearlyAmount = item.amount
               }
             })
-            
-        }
+
+          }
         })
       }
     })
-   
+
   }
-  initForm(){
+  initForm() {
     this.userForm = this.fb.group({
       noOfUsers: [
-        '', 
+        '',
         [
           Validators.required,
           Validators.min(1),
@@ -160,7 +161,7 @@ payment() {
           Validators.pattern(/^[1-9][0-9]*$/) // Regex for no spaces, no leading zeros, and only digits
         ]
       ],
-      state:['',Validators.required]
+      state: ['', Validators.required]
     })
   }
   noOfUsers: number = 0;
@@ -180,24 +181,24 @@ payment() {
     } else {
       const amount = this.selectedAmount || this.monthlyAmount; // Monthly/Yearly price per user
       const noOfUsers = this.userForm.value.noOfUsers;
-  
-        // Calculate values when noOfUsers is valid
-        this.subtotal = noOfUsers * amount;
-        if(this.userForm.get('state')?.value === 4026){
+
+      // Calculate values when noOfUsers is valid
+      this.subtotal = noOfUsers * amount;
+      if (this.userForm.get('state')?.value === 4026) {
         this.cgst = parseFloat((this.subtotal * 0.09).toFixed(2)); // CGST with 2 decimal places
         this.sgst = parseFloat((this.subtotal * 0.09).toFixed(2)); // SGST with 2 decimal places
         this.totalPayable = parseFloat((this.subtotal + this.cgst + this.sgst).toFixed(2)); // Total payable with 2 decimal places
-        }else{
-          this.igst = parseFloat((this.subtotal * 0.18).toFixed(2)); // IGST with 2 decimal places
-          this.totalPayable = parseFloat((this.subtotal + this.igst).toFixed(2)); // Total payable with 2 decimal places
-        }
+      } else {
+        this.igst = parseFloat((this.subtotal * 0.18).toFixed(2)); // IGST with 2 decimal places
+        this.totalPayable = parseFloat((this.subtotal + this.igst).toFixed(2)); // Total payable with 2 decimal places
       }
-    
+    }
+
   }
-  
+
 
   onCancel(): void {
-   this.dialogue.closeAll()
+    this.dialogue.closeAll()
   }
 
   onMakePayment(): void {
@@ -206,75 +207,109 @@ payment() {
     this.payment()
     //this.router.navigate(['/accounts/standardplan-history'])
   }
-  setPaymentOption(option: boolean,amount:number,type:string): void {
+  setPaymentOption(option: boolean, amount: number, type: string): void {
     this.monthly = option;
     this.selectedAmount = amount
     this.selectedType = type
     this.calculateTotal()
   }
-   getState() {
-      
-      this.api.getData(`${environment.live_url}/${environment.state}/?country_id=${101}`).subscribe((res: any) => {
-        if(res){
-        this.state = res
-        }
-      }, ((error) => {
-        this.api.showError(error?.error.message)
-      }))
-    
-    }
+  getState() {
 
-    razorpayTest() {
+    this.api.getData(`${environment.live_url}/${environment.state}/?country_id=${101}`).subscribe((res: any) => {
+      if (res) {
+        this.state = res
+      }
+    }, ((error) => {
+      this.api.showError(error?.error.message)
+    }))
+
+  }
+
+  razorpayTest() {
+    if (this.userForm.invalid) {
+      this.userForm.markAsTouched();
+    } else {
       let data = {
-        'total_amount': this.totalPayable
+        // 'total_amount': this.totalPayable
+        'total_amount': 200 // static
       }
       this.api.getRazorpayFromData(data).subscribe(
         (res: any) => {
-          // console.log(res)
-          this.openRazorpay(res);
+          console.log(res)
+          if(res){
+            setTimeout(() => {
+              this.openRazorpay(res);
+            }, 5000);
+          }
         },
         (error: any) => {
           console.log('error', error)
         }
       )
     }
-  
-    openRazorpay(data: any) {
-      console.log(data, 'data')
-      const options: any = {
-        key: environment.Razorpay_test_key,
-        amount: data.amount,
-        currency: 'INR',
-        name: 'Project Ace',
-        description: '',
-        image: '/assets/images/logo.png',
-        order_id: data.razor_pay_order_id,
-        modal: {
-          escape: false,
-        },
-        theme: {
-          color: '#0e2732',
-        },
-        browser_redirect: true,
-        handler: (response: any, error: any) => {
-          if (response) {
-            //console.log('response',response)
-            const reqData: any = {
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_signature: response.razorpay_signature,
-            };
-            // api call
-           }
-          if (error) {
-            console.log('Error', error);
-            // this.toasterService.showError('Transaction Failed.');
-          }
-        },
-      };
-      options.modal.ondismiss = () => {
-        this.api.showError('Transaction cancelled.');
-      };
+  }
+
+  openRazorpay(data: any) {
+    console.log(data, 'data')
+    const options: any = {
+      key: environment.Razorpay_test_key,
+      amount: data.amount,
+      currency: 'INR',
+      name: 'Project Ace',
+      description: '',
+      image: '/assets/images/logo.png',
+      order_id: data.razor_pay_order_id,
+      modal: {
+        escape: false,
+      },
+      theme: {
+        color: '#0e2732',
+      },
+      // browser_redirect: true,
+      handler: (response: any, error: any) => {
+        if (response) {
+          //console.log('response',response)
+          const reqData: any = {
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_signature: response.razorpay_signature,
+          };
+          // api call
+        }
+        if (error) {
+          console.log('Error', error);
+          // this.toasterService.showError('Transaction Failed.');
+        }
+      },
+    };
+    options.modal.ondismiss = () => {
+      this.api.showError('Transaction cancelled.');
+    };
+    
+    if (this.razorpay) {
       this.razorpay.initiatePayment(options);
+    } else {
+      console.error('Razorpay is not initialized.');
     }
+  }
+
+
+  openDialogue() {
+    const modelRef = this.modalService.open(TrialSuccessComponent, {
+      size: <any>'sm',
+      backdrop: true,
+      centered: true
+    });
+    modelRef.componentInstance.title = `Your Standard Plan has been activated successfully!`;
+    modelRef.componentInstance.message = `Transaction Successful!`;
+    modelRef.componentInstance.status.subscribe(resp => {
+      if (resp == "ok") {
+        this.router.navigate(['/accounts/trialplan-history'])
+        modelRef.close();
+      }
+      else {
+        modelRef.close();
+      }
+    })
+  }
 }
