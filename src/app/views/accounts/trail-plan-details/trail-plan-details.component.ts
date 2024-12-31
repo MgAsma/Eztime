@@ -4,8 +4,10 @@ import { CommonServiceService } from '../../../service/common-service.service';
 import { BuyStandardplanComponent } from '../buy-standardplan/buy-standardplan.component';
 import { ExistStandardPlanComponent } from '../exist-standard-plan/exist-standard-plan.component';
 import { StandardSubscriptionComponent } from '../standard-subscription/standard-subscription.component';
-import { environment } from 'src/environments/environment';
-import { ApiserviceService } from 'src/app/service/apiservice.service';
+import { ApiserviceService } from '../../../service/apiservice.service';
+import { environment } from '../../../../environments/environment';
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-trail-plan-details',
@@ -20,15 +22,19 @@ BreadCrumbsTitle:any='Subscription plan';
   yearlyAmount: any;
   discount: any;
   subscriptionData: any;
+  organizationId: string | null;
   constructor(
     private common_service:CommonServiceService,
     private dialog:MatDialog,
-    private api:ApiserviceService
+    private api:ApiserviceService,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
+    this.organizationId = sessionStorage.getItem('organization_id');
     this.getSubscription();
+    this.getTrialPlanDetails();
   }
   getSubscription(){
       this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
@@ -51,6 +57,20 @@ BreadCrumbsTitle:any='Subscription plan';
       })
      
     }
+  getTrialPlanDetails(){
+    this.api.getData(`${environment.live_url}/${environment.trial_plan_details}/?organization=${this.organizationId}&page=1&page_size=10`).subscribe((res)=>{
+      if (res && res?.['results']) {
+        this.planDetails = res?.['results'].map((item: any, index: number) => ({
+          slNo: index + 1,
+          plan: item.subscribed_organization__subscription_type__name,
+          users: item.subscribed_organization__added_users,
+          totalAmount: item.total_amount,
+          startDate: this.datePipe.transform(item.subscribed_organization__start_date, 'dd/MM/yyyy'),
+          endDate: this.datePipe.transform(item.subscribed_organization__expiry_date, 'dd/MM/yyyy')
+        }));
+      }
+    })
+  }
   setPaymentOption(option: boolean): void {
     this.monthly = option;
   }
