@@ -5,8 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import {RazorpayService} from '../../../service/razorpay.service'
-
+//import {RazorpayService} from '../../../service/razorpay.service';
 declare var Razorpay:any;
 @Component({
   selector: 'app-buy-standardplan',
@@ -30,99 +29,64 @@ export class BuyStandardplanComponent implements OnInit {
     private fb: FormBuilder,
     private dialogue: MatDialog,
     private router: Router,
-    private razorpay:RazorpayService
+    // private razorpay:RazorpayService
     
   ) { 
   
   
   }
-  // payment(){
+  payment(){
     
      
-  //     const RazorpayOptions:any = {
-  //       description:'Sample Rozarpay demo',
-  //       currency:'INR',
-  //       amount: 1000,
-  //       name:'Asma',
-  //       key:'rzp_test_SGLqA6ORuQPThF',
-  //       //key:'rzp_test_Z6PoT6HRL71TiC',
-  //       image:'../assets/images/logo.png',
-  //       order_id:this.orderId,
-  //       prefill:{
-  //         name:'Asma M',
-  //         email:'asma@ekfrazo.in',
-  //         phone:'6230752181'
-  //       },
-  //       handler: function(response: any):any {
-  //          if(response){
+      const RazorpayOptions:any = {
+        description:'Sample Rozarpay demo',
+        currency:'INR',
+        amount: 1000,
+        name:'Asma',
+        key:'rzp_test_GxaJhvoS78ZpIz',
+        //key:'rzp_test_Z6PoT6HRL71TiC',
+        image:'../assets/images/logo.png',
+        order_id:this.orderId,
+        prefill:{
+          name:'Asma M',
+          email:'asma@ekfrazo.in',
+          phone:'6230752181'
+        },
+        handler: function(response: any):any {
+           if(response){
            
-  //            //console.log(response)
-  //            successCallback(response)
-  //          }
-  //       },
+             //console.log(response)
+             successCallback(response)
+           }
+        },
         
-  //       theme:{
-  //         color:'#f37254'
-  //       },
-  //       modal:{
-  //         ondismiss:()=>{
-  //           //console.log('dismissed')
-  //         }
-  //       }
+        theme:{
+          color:'#f37254'
+        },
+        modal:{
+          ondismiss:()=>{
+            //console.log('dismissed')
+          }
+        }
   
-  //     }
-  //     const successCallback = (response:any)=>{
-  //       console.log("SUCCESS CALLBACK", response)
-  //       // this.postPaymentDetails(response)
+      }
+      const successCallback = (response:any)=>{
+        console.log("SUCCESS CALLBACK", response)
+        // this.postPaymentDetails(response)
         
-  //     }
-  //     const failureCallback =(e:any)=>{
-  //       // //console.log(e)
-  //       if(e){
-  //         // this.btnEnable = false
-  //       }
-  //       }
+      }
+      const failureCallback =(e:any)=>{
+        // //console.log(e)
+        if(e){
+          // this.btnEnable = false
+        }
+        }
         
-  //     Razorpay.open(RazorpayOptions,successCallback)
+      Razorpay.open(RazorpayOptions,successCallback)
       
   
-  // }
-payment() {
-  const RazorpayOptions: any = {
-    description: 'Sample Razorpay demo',
-    currency: 'INR',
-    amount: 1000, // Amount in paisa (e.g., 1000 = ₹10)
-    name: 'Asma',
-    key: 'rzp_test_SGLqA6ORuQPThF',
-    image: '../assets/images/logo.png',
-    order_id: this.orderId, // Ensure orderId is set correctly
-    prefill: {
-      name: 'Asma M',
-      email: 'asma@ekfrazo.in',
-      phone: '6230752181',
-    },
-    handler: (response: any) => {
-      console.log('SUCCESS CALLBACK:', response);
-      // Implement your success logic
-    },
-    theme: {
-      color: '#f37254',
-    },
-    modal: {
-      ondismiss: () => {
-        console.log('Payment modal closed by the user.');
-      },
-    },
-  };
-
-  if (typeof Razorpay === 'undefined') {
-    console.error('Razorpay script is not loaded.');
-    return;
   }
 
-  const razorpay = new Razorpay(RazorpayOptions);
-  razorpay.open();
-}
 
   ngOnInit(): void {
     this.initForm()
@@ -225,30 +189,35 @@ payment() {
     }
 
     razorpayTest() {
-      let data = {
-        'total_amount': this.totalPayable
-      }
-      this.api.getRazorpayFromData(data).subscribe(
-        (res: any) => {
-          // console.log(res)
-          this.openRazorpay(res);
-        },
-        (error: any) => {
-          console.log('error', error)
-        }
-      )
+      this.openRazorpay("res");
+      // let data = {
+      //   'total_amount': 1000
+      // }
+
+      // this.api.getRazorpayFromData(data).subscribe(
+      //   (res: any) => {
+      //     // console.log(res)
+      //     this.openRazorpay(res);
+      //   },
+      //   (error: any) => {
+      //     console.log('error', error)
+      //   }
+      // )
     }
   
     openRazorpay(data: any) {
       console.log(data, 'data')
       const options: any = {
-        key: environment.Razorpay_test_key,
-        amount: data.amount,
+        // key: environment.Razorpay_test_key,
+        key: 'rzp_test_GxaJhvoS78ZpIz',
+        // amount: data.amount,
+        amount:1000,
         currency: 'INR',
         name: 'Project Ace',
         description: '',
         image: '/assets/images/logo.png',
-        order_id: data.razor_pay_order_id,
+        // order_id: data.razor_pay_order_id,
+        order_id:'order_Pe5F4oMUKT17S2',
         modal: {
           escape: false,
         },
@@ -260,9 +229,9 @@ payment() {
           if (response) {
             //console.log('response',response)
             const reqData: any = {
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_signature: response.razorpay_signature,
+              // razorpay_payment_id: response.razorpay_payment_id,
+              // razorpay_order_id: response.razorpay_order_id,
+              // razorpay_signature: response.razorpay_signature,
             };
             // api call
            }
@@ -275,6 +244,6 @@ payment() {
       options.modal.ondismiss = () => {
         this.api.showError('Transaction cancelled.');
       };
-      this.razorpay.initiatePayment(options);
+      //this.razorpay.initiatePayment(options);
     }
 }

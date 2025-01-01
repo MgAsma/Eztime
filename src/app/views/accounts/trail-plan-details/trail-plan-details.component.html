@@ -2,11 +2,11 @@
     <!-- Subscription Plans -->
     <div class="row">
       <!-- Free Trial Card -->
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-3" *ngFor="let plan of mySubscriptionData">
         <mat-card class="custom-card border-danger">
           <mat-card-content>
             <div class="card-header">
-              <h5 class="card-title">Free Trial  <span class="badge trial-plan-staus">Active</span></h5>
+              <h5 class="card-title">Free Trial  <span class="badge trial-plan-staus">{{plan.is_active? 'Active' : 'Inactive' }}</span></h5>
              
             </div>
             <p class="card-text sub-header mb-2">Free Plan</p>
@@ -15,7 +15,7 @@
                 <p class="card-text">No of users</p>
               </div>
               <div class="col-12">
-                <strong>10</strong>
+                <strong>{{plan.added_users}}</strong>
               </div>
             </div>
             <div>
@@ -23,7 +23,7 @@
                 <div class="col-1"><i class="bi bi-megaphone" style="font-size: 20px;"></i></div>
                 <div class="col">
                   <p class="card-text">Free Plan</p>
-                  <p class="days-left">0 days left</p>
+                  <p class="days-left">{{plan.remaining_number_of_days}} days left</p>
                 </div>
               </div>
              

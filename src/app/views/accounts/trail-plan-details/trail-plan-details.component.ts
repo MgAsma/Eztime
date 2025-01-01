@@ -23,6 +23,7 @@ BreadCrumbsTitle:any='Subscription plan';
   discount: any;
   subscriptionData: any;
   organizationId: string | null;
+  mySubscriptionData: any;
   constructor(
     private common_service:CommonServiceService,
     private dialog:MatDialog,
@@ -35,6 +36,7 @@ BreadCrumbsTitle:any='Subscription plan';
     this.organizationId = sessionStorage.getItem('organization_id');
     this.getSubscription();
     this.getTrialPlanDetails();
+    this.mySubscription()
   }
   getSubscription(){
       this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
@@ -68,6 +70,13 @@ BreadCrumbsTitle:any='Subscription plan';
           startDate: this.datePipe.transform(item.subscribed_organization__start_date, 'dd/MM/yyyy'),
           endDate: this.datePipe.transform(item.subscribed_organization__expiry_date, 'dd/MM/yyyy')
         }));
+      }
+    })
+  }
+  mySubscription(){
+    this.api.getData(`${environment.live_url}/${environment.my_subscription}/?organization=${this.organizationId}`).subscribe((res)=>{
+      if(res){
+        this.mySubscriptionData = res?.['data']
       }
     })
   }

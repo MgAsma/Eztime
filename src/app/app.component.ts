@@ -7,9 +7,8 @@ import { Title } from '@angular/platform-browser';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'body',
-  template: '<router-outlet></router-outlet>',
-
+  selector: '<app-root>',
+  templateUrl: 'app.component.html',
 })
 export class AppComponent implements OnInit {
   title = 'Projectace';
@@ -33,6 +32,7 @@ export class AppComponent implements OnInit {
     let vh = window.innerHeight * 0.01;
   // Then we set the value in the --vh custom property to the root of the document
   document.documentElement.style.setProperty('--vh', `${vh}px`);
+  
   }
  
 }
