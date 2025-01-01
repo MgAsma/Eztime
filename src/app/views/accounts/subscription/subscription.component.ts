@@ -56,8 +56,9 @@ export class SubscriptionComponent implements OnInit {
       backdrop: true,
       centered: true
     });
-    modelRef.componentInstance.title = `Are you sure you want to activate the free trial plan`;
+    modelRef.componentInstance.title = `Are you sure you want to activate the free trial plan?`;
     modelRef.componentInstance.message = `Free Trial Plan`;
+    modelRef.componentInstance.buttonName = `Activate Free Trial`;
     modelRef.componentInstance.status.subscribe(resp => {
       if (resp == "ok") {
         this.getTrailPlan()

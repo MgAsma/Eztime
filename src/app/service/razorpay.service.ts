@@ -22,6 +22,7 @@ export class RazorpayService {
 
     // Initialize Razorpay and open the payment window
     const rzp = new Razorpay(options);
+    // console.log('checking razorpay',rzp.open())
     rzp.open();
   }
 }
