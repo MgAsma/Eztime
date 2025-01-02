@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  Razorpay_test_key:'rzp_test_Z6PoT6HRL71TiC',
+  Razorpay_test_key:'rzp_test_GxaJhvoS78ZpIz',
   Razorpay_live_key:'rzp_test_Z6PoT6HRL71TiC',
    //live_url: 'https://projectacedev.thestorywallcafe.com/api',
   //media_url: 'https://projectacedev.thestorywallcafe.com/media',

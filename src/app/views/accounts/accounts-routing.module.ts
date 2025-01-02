@@ -4,6 +4,7 @@ import { AccountsComponent } from './accounts.component';
 import { SubscriptionComponent } from './subscription/subscription.component';
 import { SuccessPlanDetailsComponent } from './success-plan-details/success-plan-details.component';
 import { TrailPlanDetailsComponent } from './trail-plan-details/trail-plan-details.component';
+import { SubscriptionInvoiceDetailsComponent } from './subscription-invoice-details/subscription-invoice-details.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,9 @@ const routes: Routes = [
       },
       {
         path:'trialplan-history', component:TrailPlanDetailsComponent
+      },
+      {
+        path:'invoice-data', component: SubscriptionInvoiceDetailsComponent
       },
     ]
   }

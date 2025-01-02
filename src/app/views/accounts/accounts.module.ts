@@ -13,6 +13,7 @@ import { CancelSubscriptionComponent } from './cancel-subscription/cancel-subscr
 import { ExistStandardPlanComponent } from './exist-standard-plan/exist-standard-plan.component';
 import { TrailPlanDetailsComponent } from './trail-plan-details/trail-plan-details.component';
 import { StandardSubscriptionComponent } from './standard-subscription/standard-subscription.component';
+import { SubscriptionInvoiceDetailsComponent } from './subscription-invoice-details/subscription-invoice-details.component';
 @NgModule({
   declarations: [
     AccountsComponent,
@@ -25,6 +26,7 @@ import { StandardSubscriptionComponent } from './standard-subscription/standard-
     ExistStandardPlanComponent,
     TrailPlanDetailsComponent,
     StandardSubscriptionComponent,
+    SubscriptionInvoiceDetailsComponent,
   ],
   imports: [
     CommonModule,

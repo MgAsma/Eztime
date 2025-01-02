@@ -13,7 +13,7 @@
     <div class="payment-options">
         <div class="row">
             <div class="col-6 my-2" style="padding-right: 0;">
-                <mat-card class="payment-option"  (click)="setPaymentOption(true,monthlyAmount,'1')" 
+                <mat-card class="payment-option"  (click)="setPaymentOption(true,monthlyAmount,'1',monthlyName)" 
                 [ngClass]="monthly ? 'active' : 'highlighted-option'">
                   <span class="price">₹{{monthlyAmount}}</span>
                   <small>per user / monthly</small>
@@ -22,7 +22,7 @@
             </div>
             <div class="col-6 my-2">
                 <mat-card class="payment-option yearly-option" 
-                (click)="setPaymentOption(false,yearlyAmount,'2')" 
+                (click)="setPaymentOption(false,yearlyAmount,'2',yearlyName)" 
                 [ngClass]="!monthly ? 'active' : 'highlighted-option'">
                   <span class="price">₹{{yearlyAmount}}</span>
                   <small>per user / yearly</small>
@@ -94,7 +94,7 @@
                       </mat-option>
                     
                     </mat-select>
-                    <mat-error *ngIf="userForm.get('state')?.invalid && userForm.get('state')?.touched" class="error">
+                    <mat-error *ngIf="userForm.get('state')?.touched && userForm.get('state')?.invalid" class="error">
                       <div *ngIf="userForm.get('state')?.errors?.['required']">State is required.</div>
                     </mat-error>
                 </mat-form-field>
@@ -131,8 +131,8 @@
       <div class="no-refund text-center"><span style="margin-right: 5px;">⚠</span> No Refund on cancellation</div>
       <div class="buttons" style="margin: auto;">
         <button mat-button  style="background: #f2f2f2;
-         padding: 0 45px;" class="mx-2"  (click)="onCancel()">Cancel</button>
-        <button mat-button class="make-payment" (click)="payment()">Make Payment</button>
+         padding: 0 45px;" class="mx-2" type="button"  (click)="onCancel()">Cancel</button>
+        <button mat-button class="make-payment" type="button" (click)="razorpayTest()">Make Payment</button>
       </div>
     </div>
     </form>
