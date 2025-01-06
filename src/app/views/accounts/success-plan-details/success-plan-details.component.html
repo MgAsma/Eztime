@@ -2,14 +2,15 @@
     <!-- Subscription Plans -->
     <div class="row">
       <!-- Free Trial Card -->
-      <div class="col-md-6 mb-3">
-        <mat-card class="custom-card border-danger">
-          <mat-card-content>
+      <div class="col-md-6 mb-3" >
+        <mat-card class="custom-card border-danger" >
+          <mat-card-content *ngFor="let plan of mySubscriptionData">
+            <ng-container *ngIf="plan.subscription_type_name === 'Free Trial' && !plan.is_active">
             <div class="card-header">
-              <h5 class="card-title">Free Trial  <span class="badge bg-danger">Expired</span></h5>
+              <h5 class="card-title">{{plan?.subscribed_for}}  <span class="badge bg-danger">Expired</span></h5>
              
             </div>
-            <p class="card-text sub-header">Free Plan</p>
+            <p class="card-text sub-header">{{plan?.subscribed_for}}</p>
             <div class="row">
               <div class="col-4">
                 <p class="card-text">No of active users</p>
@@ -20,10 +21,10 @@
             </div>
             <div class="row">
               <div class="col-4"> 
-                <strong>10</strong>
+                <strong>{{plan?.added_users}}</strong>
               </div>
               <div class="col-4">
-                <strong>09.01.2025</strong>
+                <strong>{{plan?.expiry_date | date}}</strong>
               </div>
             </div>
             
@@ -33,12 +34,12 @@
                 <div class="col-1"><i class="bi bi-megaphone" style="font-size: 20px;"></i></div>
                 <div class="col">
                   <p class="card-text">Free Plan</p>
-                  <p class="days-left">0 days left</p>
+                  <p class="days-left">{{plan?.remaining_number_of_days}} days left</p>
                 </div>
               </div>
               
             </div>
-            
+            </ng-container>
           </mat-card-content>
         </mat-card>
       </div>
@@ -46,12 +47,13 @@
       <!-- Standard Plan Card -->
       <div class="col-md-6 mb-3">
        
-          <mat-card class="custom-card border-primary standard-card">
-          <mat-card-content>
+          <mat-card class="custom-card border-primary standard-card" >
+          <mat-card-content *ngFor="let plan of mySubscriptionData">
+            <ng-container *ngIf="plan.subscription_type_name === 'Standard' && plan.is_active">
             <div class="card-header">
-              <h5 class="plan-title standard-title p-r">Standard <img class="spakle-image" src="../../../../assets/images/sparkle-filled.svg"/> <span class="badge standard-plan-staus">Active</span></h5>
+              <h5 class="plan-title standard-title p-r">{{plan?.subscription_type_name}} <img class="spakle-image" src="../../../../assets/images/sparkle-filled.svg"/> <span class="badge standard-plan-staus">Active</span></h5>
             </div>
-            <p class="card-text sub-header">Monthly Plan</p>
+            <p class="card-text sub-header">{{plan?.subscribed_for}}</p>
             <div class="row">
               <div class="col-4">
                 <div class="row">
@@ -61,7 +63,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12">
-                    <strong>10</strong>
+                    <strong>{{plan?.added_users}}</strong>
                   </div>
                 </div>
               </div>
@@ -73,7 +75,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12">
-                    <strong>200</strong>
+                    <strong>{{plan?.remaining_number_of_days}} </strong>
                   </div>
                 </div>
               </div>
@@ -85,7 +87,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12">
-                    <strong>10.01.2025</strong>
+                    <strong>{{plan?.expiry_date | date}}</strong>
                   </div>
                 </div>
               </div>
@@ -103,90 +105,126 @@
                   <button mat-raised-button  class="action-button btn-renew" (click)="renewSubscription()">Renew</button>
                 </div>
               </div>
-              
+            </ng-container>
             
           </mat-card-content>
         </mat-card>
+      
       </div>
     </div>
     
     
   
-    <!-- Transaction History -->
-     <div class="mb-3">
-      <strong >Transaction History</strong>
-     </div>
+   <!-- Transaction History -->
+<div class="mb-3">
+  <strong>Transaction History</strong>
+</div>
 
-    <div class="table-responsive d-none d-md-block ">
-      <table class="table table-list table-bordered">
-        <thead class="table-primary">
-          <tr>
-            <th>Sl No</th>
-            <th>Plan</th>
-            <th>Term</th>
-            <th>Per User</th>
-            <th>Users</th>
-            <th>Total Amount</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>2</td>
-            <td>Standard Plan</td>
-            <td>Monthly</td>
-            <td>₹30.00</td>
-            <td>5</td>
-            <td>₹150.00</td>
-            <td>13/12/2024</td>
-            <td>13/12/2025</td>
-            <td><button class="btn btn-outline-primary btn-sm"><i class="bi bi-download"></i></button></td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Free Plan</td>
-            <td>Free Plan</td>
-            <td>₹0.00</td>
-            <td>5</td>
-            <td>₹0.00</td>
-            <td>13/11/2024</td>
-            <td>13/12/2024</td>
-            <td><button class="btn btn-outline-primary btn-sm"><i class="bi bi-download"></i></button></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+<!-- Loader -->
+<div *ngIf="isLoading" class="text-center">
+  <p>Loading transaction history...</p>
+</div>
+
+<!-- Table View -->
+<div class="d-none  d-md-block" *ngIf="!isLoading && transactionData.length > 0">
+  <table class="table table-list table-bordered">
+    <thead class="table-primary">
+      <tr>
+        <th>Sl No</th>
+        <th>Plan</th>
+        <th>Term</th>
+        <th>Per User</th>
+        <th>Users</th>
+        <th>Total Amount</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let transaction of transactionData |paginate : {
+        itemsPerPage: tableSize,
+        currentPage: page,
+        totalItems: count
+       }; ">
+        <td>{{ transaction.slNo }}</td>
+        <td>{{ transaction.plan }}</td>
+        <td>{{ transaction.term }}</td>
+        <td>₹{{ transaction.perUser}}</td>
+        <td>{{ transaction.users }}</td>
+        <td>₹{{ transaction.totalAmount}}</td>
+        <td>{{ transaction.startDate }}</td>
+        <td>{{ transaction.endDate }}</td>
+        <td>
+          <button class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-download"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="pagination-container p-0 pt-2">
+    <!-- Pagination Controls (Center-Aligned) -->
+    <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+    </pagination-controls>
   
-    <!-- Cards for Mobile View -->
-    <div class="d-block d-md-none">
-      <div class="card mb-3">
-        <div class="card-body">
-          <p><strong>Sl No:</strong> 2</p>
-          <p><strong>Plan:</strong> Standard Plan</p>
-          <p><strong>Term:</strong> Monthly</p>
-          <p><strong>Per User:</strong> ₹30.00</p>
-          <p><strong>Users:</strong> 5</p>
-          <p><strong>Total Amount:</strong> ₹150.00</p>
-          <p><strong>Start Date:</strong> 13/12/2024</p>
-          <p><strong>End Date:</strong> 13/12/2025</p>
-          <button class="btn btn-outline-primary btn-sm"><i class="bi bi-download"></i></button>
-        </div>
+    <!-- Items Per Page Selector (Right-Aligned) -->
+    <div class="items-per-page-container">
+      <div>Items per page</div>
+      <mat-select [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10" class="page-size">
+        <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+      </mat-select>
+    </div>
+  </div>
+</div>
+
+<!-- Cards for Mobile View -->
+<div class="d-block d-md-none pb-5" *ngIf="!isLoading && transactionData.length > 0">
+  <div class="card mb-3" *ngFor="let transaction of transactionData |paginate : {
+    itemsPerPage: tableSize,
+    currentPage: page,
+    totalItems: count
+   }; ">
+    <div class="card-body">
+      <p><strong>Sl No:</strong> {{ transaction.slNo }}</p>
+      <p><strong>Plan:</strong> {{ transaction.plan }}</p>
+      <p><strong>Term:</strong> {{ transaction.term }}</p>
+      <p><strong>Per User:</strong> ₹{{ transaction.perUser  }}</p>
+      <p><strong>Users:</strong> {{ transaction.users }}</p>
+      <p><strong>Total Amount:</strong> ₹{{ transaction.totalAmount  }}</p>
+      <p><strong>Start Date:</strong> {{ transaction.startDate }}</p>
+      <p><strong>End Date:</strong> {{ transaction.endDate }}</p>
+      <button class="btn btn-outline-primary btn-sm">
+        <i class="bi bi-download"></i>
+      </button>
+    </div>
+   
+  </div>
+  <div class="pagination-container p-0 pt-2">
+    <div class="row">
+      <div class="col-12">
+        <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+        </pagination-controls>
       </div>
-      <div class="card mb-3">
-        <div class="card-body">
-          <p><strong>Sl No:</strong> 1</p>
-          <p><strong>Plan:</strong> Free Plan</p>
-          <p><strong>Term:</strong> Free Plan</p>
-          <p><strong>Per User:</strong> ₹0.00</p>
-          <p><strong>Users:</strong> 5</p>
-          <p><strong>Total Amount:</strong> ₹0.00</p>
-          <p><strong>Start Date:</strong> 13/11/2024</p>
-          <p><strong>End Date:</strong> 13/12/2024</p>
-          <button class="btn btn-outline-primary btn-sm"><i class="bi bi-download"></i></button>
+      <div class="col-12">
+        <div class="items-per-page-container">
+          <div>Items per page</div>
+          <mat-select [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10" class="page-size">
+            <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+          </mat-select>
         </div>
       </div>
     </div>
+    
+ 
+    
+  </div>
+</div>
+
+<!-- No Records Found -->
+<div class="text-center" *ngIf="!isLoading && transactionData.length === 0">
+  <p>No transaction history found.</p>
+</div>
+
   </div>
   

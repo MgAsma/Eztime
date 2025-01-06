@@ -70,5 +70,7 @@ export const environment = {
   leave_comment:`leave-comment`,
   subscription_list:`subscription-list`,
   my_subscription:`my-subscription`,
-  trial_plan_details:`transaction-history`
+  transaction_history:`transaction-history`,
+  configure_subscription:`configure-subscription`,
+  buy_subscription:`buy-subscription`
 };

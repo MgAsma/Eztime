@@ -1,0 +1,83 @@
+<div class="subscription-container">
+    <ng-container *ngFor="let subscription of subscriptionData">
+    <!-- Free Trial Card -->
+     
+    <mat-card class="free-trial-card" *ngIf="subscription.name === 'Free Trial'">
+      <ng-container *ngFor="let details of subscription.plan_details">
+      <h2 class="plan-title">Free Trial</h2>
+      <p class="plan-description">
+        Enjoy all features for {{details?.no_of_days }} days, limited to {{details?.users}} users. Explore everything unrestricted and risk-free.
+      </p>
+      <div class="plan-price">
+        <span>₹{{details?.amount}}</span>
+        <span class="validity">Valid for {{details?.no_of_days}} days</span>
+        
+      </div>
+  
+      <!-- White Background for List -->
+      <div class="white-background">
+        <ul class="plan-features">
+          <li>✓ {{details?.no_of_days}}-days trial plan</li>
+          <li>✓ Max {{details?.users}} users allowed</li>
+          <li>✓ Full access to all modules</li>
+        </ul>
+      </div>
+      <div class="text-center">
+        <button mat-flat-button color="primary" class="cta-button" (click)="openDialogue(subscription.id,details.id)">
+          Start your free trial now
+        </button>
+      </div>
+    </ng-container>
+    </mat-card>
+  
+    <!-- Standard Plan Card -->
+    <mat-card class="standard-card" *ngIf="subscription.name === 'Standard'">
+      
+      <h2 class="plan-title standard-title p-r">Standard <img class="spakle-image" src="../../../../assets/images/sparkle-filled.svg"/></h2>
+      <p class="plan-description">
+        Choose a flexible payment plan that charges per user. Opt for annual or monthly payments as per your convenience.
+      </p>
+  
+      <!-- Highlighted Background for Monthly and Yearly -->
+      <div class="payment-options">
+        <mat-card class="payment-option" *ngIf="subscription.plan_details[0]?.yearly_or_monthly_name === 'Monthly'"  (click)="setPaymentOption(true)" 
+           [ngClass]="monthly ? 'active' : 'highlighted-option'" >
+          <span class="price pe-1">₹{{subscription?.plan_details[0]?.amount}}</span>
+          <small>per user / monthly</small>
+          <div class="option-title">Monthly</div>
+        </mat-card>
+        <mat-card class="payment-option yearly-option" 
+        (click)="setPaymentOption(false)" 
+        [ngClass]="!monthly ? 'active' : 'highlighted-option'">
+          <span class="price pe-1">₹{{subscription?.plan_details[1]?.amount}}</span>
+          <small>per user / yearly</small>
+          <div class="option-title">Yearly</div>
+          <div class="discount-badge"><i class="bi bi-x-circle"></i> {{subscription?.plan_details[1]?.discount}}% </div>
+        </mat-card>
+      </div>
+  
+      <!-- List inside white background -->
+      <div class="dark-background">
+        <ul class="plan-features">
+          <li>✓ Enterprise plan</li>
+          <li>✓ Full access to all modules</li>
+        </ul>
+      </div>
+  
+      <div class="no-refund-note text-center">
+        <div style="margin: auto;">
+            <span style="margin-right: 5px;">⚠</span> No refund on subscription and cancellation
+        </div>
+      </div>
+      <div class="text-center">
+        <button mat-flat-button color="primary" class="cta-button" (click)="buyStandardPlan()">
+          Buy Standard Plan
+        </button>
+      </div>
+      
+    </mat-card>
+    
+  </ng-container>
+  </div>
+  
+  

@@ -1,24 +1,30 @@
 
-<ng-container *ngFor="let subscription of subscriptionData">
-<mat-card class="standard-card" *ngIf="subscription.name === 'Standard'">
-    <h2 class="plan-title standard-title p-r">Standard <img class="spakle-image" src="../../../../assets/images/sparkle-filled.svg"/></h2>
+<ng-container >
+<mat-card class="standard-card">
+  <div class="row">
+    <div class="col"> <h2 class="plan-title standard-title p-r">Standard <img class="spakle-image" src="../../../../assets/images/sparkle-filled.svg"/></h2></div>
+    <div class="col-2">
+      <mat-icon (click)="close()">close</mat-icon>
+    </div>
+  </div>
+   
     <p class="plan-description">
       Choose a flexible payment plan that charges per user. Opt for annual or monthly payments as per your convenience.
     </p>
 
     <!-- Highlighted Background for Monthly and Yearly -->
     <div class="payment-options">
-      <mat-card class="payment-option" *ngIf="subscription.subscription_deatils[0]?.yearly_or_monthly_name === 'Monthly'"  (click)="setPaymentOption(true)" 
+      <mat-card class="payment-option"  (click)="setPaymentOption(true)" 
          [ngClass]="monthly ? 'active' : 'highlighted-option'" >
-        <span class="price pe-1">₹{{subscription?.subscription_deatils[0]?.amount}}</span>
+        <span class="price pe-1">₹{{monthlyAmount}}</span>
         <small>per user / monthly</small>
       </mat-card>
       <mat-card class="payment-option yearly-option" 
       (click)="setPaymentOption(false)" 
       [ngClass]="!monthly ? 'active' : 'highlighted-option'">
-        <span class="price pe-1">₹{{subscription?.subscription_deatils[1]?.amount}}</span>
+        <span class="price pe-1">₹{{yearlyAmount}}</span>
         <small>per user / yearly</small>
-        <div class="discount-badge"><i class="bi bi-x-circle"></i> {{subscription?.subscription_deatils[1]?.discount}}% </div>
+        <div class="discount-badge"><i class="bi bi-x-circle"></i> {{discount}}% </div>
       </mat-card>
     </div>
 

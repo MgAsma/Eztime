@@ -8,7 +8,7 @@
           <mat-label>No Of Users</mat-label>
           <input matInput formControlName="freeTrialUsers" placeholder="Enter no of users" autocomplete="off" />
           <mat-error *ngIf="f['freeTrialUsers']?.touched && f['freeTrialUsers']?.invalid">
-            <span *ngIf="f['freeTrialUsers'].errors?.['required']">This field is required.</span>
+            <span *ngIf="f['freeTrialUsers'].errors?.['required']">No of users is required.</span>
             <span *ngIf="f['freeTrialUsers'].errors?.['pattern']">Cannot start with a space; only numbers allowed.</span>
             <span *ngIf="f['freeTrialUsers'].errors?.['maxlength']">Maximum 3 digits allowed.</span>
           </mat-error>
@@ -20,7 +20,7 @@
           <mat-label>Duration (Days)</mat-label>
           <input matInput formControlName="freeTrialDuration" placeholder="Enter duration in days" autocomplete="off" />
           <mat-error *ngIf="f['freeTrialDuration']?.touched && f['freeTrialDuration']?.invalid">
-            <span *ngIf="f['freeTrialDuration'].errors?.['required']">This field is required.</span>
+            <span *ngIf="f['freeTrialDuration'].errors?.['required']">Duration is required.</span>
             <span *ngIf="f['freeTrialDuration'].errors?.['pattern']">Only numbers are allowed.</span>
             <span *ngIf="f['freeTrialDuration'].errors?.['maxlength']">Maximum 3 digits allowed.</span>
           </mat-error>
@@ -39,9 +39,9 @@
           <mat-label>No Of Users (Monthly Plan)</mat-label>
           <input matInput formControlName="monthlyUsers" placeholder="Enter no of users" autocomplete="off" />
           <mat-error *ngIf="f['monthlyUsers']?.touched && f['monthlyUsers']?.invalid">
-            <span *ngIf="f['monthlyUsers'].errors?.['required']">This field is required.</span>
+            <span *ngIf="f['monthlyUsers'].errors?.['required']">No of users is required.</span>
             <span *ngIf="f['monthlyUsers'].errors?.['pattern']">Only numbers are allowed.</span>
-            <span *ngIf="f['monthlyUsers'].errors?.['maxlength']">Maximum 3 digits allowed.</span>
+            <span *ngIf="f['monthlyUsers'].errors?.['maxlength']">Maximum 10 digits allowed.</span>
           </mat-error>
         </mat-form-field>
       </div>
@@ -51,7 +51,7 @@
           <mat-label>Duration (Days)</mat-label>
           <input matInput formControlName="monthlyDuration" placeholder="Enter duration in days" autocomplete="off" />
           <mat-error *ngIf="f['monthlyDuration']?.touched && f['monthlyDuration']?.invalid">
-            <span *ngIf="f['monthlyDuration'].errors?.['required']">This field is required.</span>
+            <span *ngIf="f['monthlyDuration'].errors?.['required']">Duration is required.</span>
             <span *ngIf="f['monthlyDuration'].errors?.['pattern']">Only numbers are allowed.</span>
             <span *ngIf="f['monthlyDuration'].errors?.['maxlength']">Maximum 3 digits allowed.</span>
           </mat-error>
@@ -68,9 +68,9 @@
           <mat-label>No Of Users (Yearly Plan)</mat-label>
           <input matInput formControlName="yearlyUsers" placeholder="Enter no of users" autocomplete="off" />
           <mat-error *ngIf="f['yearlyUsers']?.touched && f['yearlyUsers']?.invalid">
-            <span *ngIf="f['yearlyUsers'].errors?.['required']">This field is required.</span>
+            <span *ngIf="f['yearlyUsers'].errors?.['required']">No of users is required.</span>
             <span *ngIf="f['yearlyUsers'].errors?.['pattern']">Only numbers are allowed.</span>
-            <span *ngIf="f['yearlyUsers'].errors?.['maxlength']">Maximum 3 digits allowed.</span>
+            <span *ngIf="f['yearlyUsers'].errors?.['maxlength']">Maximum 10 digits allowed.</span>
           </mat-error>
         </mat-form-field>
       </div>
@@ -80,7 +80,7 @@
           <mat-label>Duration (Days)</mat-label>
           <input matInput formControlName="yearlyDuration" placeholder="Enter duration in days" autocomplete="off" />
           <mat-error *ngIf="f['yearlyDuration']?.touched && f['yearlyDuration']?.invalid">
-            <span *ngIf="f['yearlyDuration'].errors?.['required']">This field is required.</span>
+            <span *ngIf="f['yearlyDuration'].errors?.['required']">Duration is required.</span>
             <span *ngIf="f['yearlyDuration'].errors?.['pattern']">Only numbers are allowed.</span>
             <span *ngIf="f['yearlyDuration'].errors?.['maxlength']">Maximum 3 digits allowed.</span>
           </mat-error>
@@ -92,7 +92,7 @@
           <mat-label>Discount (%)</mat-label>
           <input matInput formControlName="yearlyDiscount" placeholder="Enter discount percentage" autocomplete="off" />
           <mat-error *ngIf="f['yearlyDiscount']?.touched && f['yearlyDiscount']?.invalid">
-            <span *ngIf="f['yearlyDiscount'].errors?.['required']">This field is required.</span>
+            <span *ngIf="f['yearlyDiscount'].errors?.['required']">Discount is required.</span>
             <span *ngIf="f['yearlyDiscount'].errors?.['pattern']">Only numbers are allowed.</span>
             <span *ngIf="f['yearlyDiscount'].errors?.['maxlength']">Maximum 3 digits allowed.</span>
           </mat-error>
@@ -111,7 +111,7 @@
           <mat-label>CGST (%) (Karnataka)</mat-label>
           <input matInput formControlName="cgstKarnataka" placeholder="Enter CGST percentage" autocomplete="off" />
           <mat-error *ngIf="f['cgstKarnataka']?.touched && f['cgstKarnataka']?.invalid">
-            <span *ngIf="f['cgstKarnataka'].errors?.['required']">This field is required.</span>
+            <span *ngIf="f['cgstKarnataka'].errors?.['required']">CGST is required.</span>
             <span *ngIf="f['cgstKarnataka'].errors?.['pattern']">Only numbers are allowed.</span>
             <span *ngIf="f['cgstKarnataka'].errors?.['maxlength']">Maximum 3 digits allowed.</span>
           </mat-error>
@@ -123,7 +123,7 @@
           <mat-label>SGST (%) (Karnataka)</mat-label>
           <input matInput formControlName="sgstKarnataka" placeholder="Enter SGST percentage" autocomplete="off" />
           <mat-error *ngIf="f['sgstKarnataka']?.touched && f['sgstKarnataka']?.invalid">
-            <span *ngIf="f['sgstKarnataka'].errors?.['required']">This field is required.</span>
+            <span *ngIf="f['sgstKarnataka'].errors?.['required']">SGST is required.</span>
             <span *ngIf="f['sgstKarnataka'].errors?.['pattern']">Only numbers are allowed.</span>
             <span *ngIf="f['sgstKarnataka'].errors?.['maxlength']">Maximum 3 digits allowed.</span>
           </mat-error>
@@ -140,7 +140,7 @@
           <mat-label>IGST (%) (Other States)</mat-label>
           <input matInput formControlName="igstOtherStates" placeholder="Enter IGST percentage" autocomplete="off" />
           <mat-error *ngIf="f['igstOtherStates']?.touched && f['igstOtherStates']?.invalid">
-            <span *ngIf="f['igstOtherStates'].errors?.['required']">This field is required.</span>
+            <span *ngIf="f['igstOtherStates'].errors?.['required']">IGST is required.</span>
             <span *ngIf="f['igstOtherStates'].errors?.['pattern']">Only numbers are allowed.</span>
             <span *ngIf="f['igstOtherStates'].errors?.['maxlength']">Maximum 3 digits allowed.</span>
           </mat-error>

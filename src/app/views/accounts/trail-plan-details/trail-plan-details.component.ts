@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonServiceService } from '../../../service/common-service.service';
 import { BuyStandardplanComponent } from '../buy-standardplan/buy-standardplan.component';
@@ -18,6 +18,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class TrailPlanDetailsComponent implements OnInit {
 BreadCrumbsTitle:any='Subscription plan';
+@Input()data:any;
+@Input()my_subscription:any;
   monthly: boolean = true;
   planDetails: any;
   monthlyAmount: any;
@@ -26,6 +28,10 @@ BreadCrumbsTitle:any='Subscription plan';
   subscriptionData: any;
   organizationId: string | null;
   mySubscriptionData: any;
+  tableSize = 5;
+  tableSizes = [5,10,25,50,100];
+  page: any;
+  count: any;
   constructor(
     private common_service:CommonServiceService,
     private dialog:MatDialog,
@@ -33,37 +39,42 @@ BreadCrumbsTitle:any='Subscription plan';
     private datePipe: DatePipe,
     private modalService:NgbModal,
   ) { }
-
+  ngOnChanges(){
+    this.subscriptionData = this.data;
+    this.mySubscriptionData = this.my_subscription
+    this.getSubscription(this.subscriptionData);
+    let query = `page=${1}&page_size=${5}`
+    this.getTrialPlanDetails(query);
+  }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.organizationId = sessionStorage.getItem('organization_id');
-    this.getSubscription();
-    this.getTrialPlanDetails();
-    this.mySubscription()
+    this.subscriptionData = this.data;
+    this.mySubscriptionData = this.my_subscription
+    this.getSubscription(this.subscriptionData);
+    let query = `page=${1}&page_size=${5}`
+    this.getTrialPlanDetails(query);
   }
-  getSubscription(){
-      this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
-        if(res){
-          this.subscriptionData = res;
-          this.subscriptionData?.forEach((item: any) => {
-            if(item.name == 'Standard'){
-              item['subscription_deatils'].forEach((item: any) => {
-                if(item.yearly_or_monthly_name === 'Monthly'){
-                  this.monthlyAmount = item.amount
-                }else if(item.yearly_or_monthly_name === 'Yearly'){
-                  this.yearlyAmount = item.amount
-                  this.discount = item.discount
-                }
-              })
-              
+  getSubscription(event) {
+        // Iterate through subscription data
+        event?.forEach((subscription) => {
+          if (subscription.name === 'Standard' && subscription.plan_details) {
+            subscription.plan_details.forEach((item) => {
+              // Check for Monthly or Yearly plans and assign amounts accordingly
+              if (item.yearly_or_monthly_name === 'Monthly') {
+                this.monthlyAmount = item.amount;
+              } else if (item.yearly_or_monthly_name === 'Yearly') {
+                this.yearlyAmount = item.amount;
+                this.discount = item.discount;
+              }
+            });
           }
-          })
-        }
-      })
-     
-    }
-  getTrialPlanDetails(){
-    this.api.getData(`${environment.live_url}/${environment.trial_plan_details}/?organization=${this.organizationId}&page=1&page_size=10`).subscribe((res)=>{
+        });
+    
+  }
+  getTrialPlanDetails(query){
+    if(this.organizationId){
+    this.api.getData(`${environment.live_url}/${environment.transaction_history}/?organization=${this.organizationId}&${query}`).subscribe((res)=>{
       if (res && res?.['results']) {
         this.planDetails = res?.['results'].map((item: any, index: number) => ({
           slNo: index + 1,
@@ -73,19 +84,30 @@ BreadCrumbsTitle:any='Subscription plan';
           startDate: this.datePipe.transform(item.subscribed_organization__start_date, 'dd/MM/yyyy'),
           endDate: this.datePipe.transform(item.subscribed_organization__expiry_date, 'dd/MM/yyyy')
         }));
+        this.count = res?.['total_no_of_record']
       }
     })
   }
-  mySubscription(){
-    this.api.getData(`${environment.live_url}/${environment.my_subscription}/?organization=${this.organizationId}`).subscribe((res)=>{
-      if(res){
-        this.mySubscriptionData = res?.['data']
-      }
-    })
   }
+ 
   setPaymentOption(option: boolean): void {
     this.monthly = option;
   }
+  onTableDataChange(event:any){
+    this.page = event;
+    let query = `page=${this.page}&page_size=${this.tableSize}`
+   
+    this.getTrialPlanDetails(query)
+  }  
+  onTableSizeChange(event:any): void {
+    if(event){
+     
+    this.tableSize = Number(event.value);
+    let query = `page=${1}&page_size=${this.tableSize}`
+    
+    this.getTrialPlanDetails(query)
+    }
+  } 
   cancelSubscription(){}
   addNewUser(){
     const dialogRef = this.dialog.open(ExistStandardPlanComponent, {
@@ -113,6 +135,9 @@ BreadCrumbsTitle:any='Subscription plan';
           modelRef.close();
         }
       })
+    }
+    cancelTrialPlan(){
+
     }
 
   renewSubscription(){

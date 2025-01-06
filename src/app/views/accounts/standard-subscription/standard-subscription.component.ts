@@ -18,6 +18,7 @@ export class StandardSubscriptionComponent implements OnInit {
   monthlyAmount: any;
   yearlyAmount: any;
   organization_id: string | null;
+  discount: any;
   constructor(
     private api:ApiserviceService,
     private common_service : CommonServiceService,
@@ -32,13 +33,30 @@ export class StandardSubscriptionComponent implements OnInit {
     setPaymentOption(option: boolean): void {
       this.monthly = option;
     }
-    getSubscription(){
-      this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
-        if(res){
+    close(){
+      this.dialog.closeAll()
+    }
+    getSubscription() {
+      this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res: any) => {
+        if (res) {
           this.subscriptionData = res;
+    
+          // Iterate through subscription data
+          this.subscriptionData.forEach((subscription) => {
+            if (subscription.name === 'Standard' && subscription.plan_details) {
+              subscription.plan_details.forEach((item) => {
+                // Check for Monthly or Yearly plans and assign amounts accordingly
+                if (item.yearly_or_monthly_name === 'Monthly') {
+                  this.monthlyAmount = item.amount;
+                } else if (item.yearly_or_monthly_name === 'Yearly') {
+                  this.yearlyAmount = item.amount;
+                  this.discount = item.discount;
+                }
+              });
+            }
+          });
         }
-      })
-     
+      });
     }
     buyStandardPlan() {
       const dialogRef = this.dialog.open(BuyStandardplanComponent, {

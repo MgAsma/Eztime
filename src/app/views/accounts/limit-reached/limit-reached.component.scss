@@ -4,6 +4,10 @@ $secondary-color:#FFFFFF4D;
     width: 65px;
     padding: 5px;
 }
+.remaing-days{
+    color:$primay-color;
+    font-size: 15px !important;
+}
 .title-tag{
    text-transform: capitalize !important;
 }
@@ -11,9 +15,9 @@ $secondary-color:#FFFFFF4D;
     border-bottom: 0 !important;
 }
 .modal-footer{
-    padding-bottom: 25px !important;
-        border-top: 0 !important;
-        justify-content: center !important;
+    //padding-bottom: 0px !important;
+    border-top: 0 !important;
+    justify-content: center !important;
 }
 i{
     margin-right: 6px;
@@ -21,13 +25,12 @@ i{
     
 }
 p{
-    font-size: 15px !important;
+    font-size: 14px !important;
     color: #262525 !important;
 }
-p{
-    font-size: 14px !important;
-    padding: 0 32px;
-    color: #262525 !important;
+button{
+    padding: 0px 20px;
+    // width: 100px;
 }
 button.btn-cancel {  
     background-color:  #d3d3d34f !important;
@@ -40,6 +43,7 @@ button.btn-yes {
     // border: 1px;
     color: #fff;
     margin: 0;
+    width: fit-content;
 }
 
 .act-btn{
@@ -51,15 +55,19 @@ button.btn-yes {
 }
 .modal-title{
     font-size: 18px;
+    color:red;
 }
-
+img{
+    vertical-align: sub;
+    margin-right: 10px;
+}
 .custom-modal {
    
     // text-align: center;
     padding: 30px 18px 0px !important;
 
     .modal-title {
-        padding: 5px 0px 10px 5px;
+        padding-bottom: 15px;
         font-weight: 600;
         font-size: 14px;
         i{

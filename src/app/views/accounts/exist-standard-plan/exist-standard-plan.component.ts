@@ -35,25 +35,27 @@ export class ExistStandardPlanComponent implements OnInit {
     this.getState() 
     this.getSubscription()
   }
-  getSubscription(){
-    this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
-      if(res){
+  getSubscription() {
+    this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res: any) => {
+      if (res) {
         this.subscriptionData = res;
-        this.subscriptionData?.forEach((item: any,i) => {
-          if(item.name == 'Standard'){
-            item['subscription_deatils'].forEach((item: any,i) => {
-              if(item.yearly_or_monthly_name === 'Monthly'){
-                this.monthlyAmount = item.amount
-              }else if(item.yearly_or_monthly_name === 'Yearly'){
-                this.yearlyAmount = item.amount
+  
+        // Iterate through subscription data
+        this.subscriptionData.forEach((subscription) => {
+          if (subscription.name === 'Standard' && subscription.plan_details) {
+            subscription.plan_details.forEach((item) => {
+              // Check for Monthly or Yearly plans and assign amounts accordingly
+              if (item.yearly_or_monthly_name === 'Monthly') {
+                this.monthlyAmount = item.amount;
+              } else if (item.yearly_or_monthly_name === 'Yearly') {
+                this.yearlyAmount = item.amount;
+                // this.discount = item.discount;
               }
-            })
-            
-        }
-        })
+            });
+          }
+        });
       }
-    })
-   
+    });
   }
   initForm(){
     this.userForm = this.fb.group({

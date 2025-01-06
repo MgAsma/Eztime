@@ -72,8 +72,10 @@ export const environment = {
   timesheet_comment:`timesheet-comment`,
   leave_comment:`leave-comment`,
   subscription_list:`subscription-list`,
-  my_subscription:`my-subscription`,
-  trial_plan_details:`transaction-history`
+  buy_subscription:`buy-subscription`,
+  transaction_history:`transaction-history`,
+  configure_subscription:`configure-subscription`,
+  my_subscription:`my-subscription`
 };
 
 /*

@@ -20,9 +20,7 @@ const routes: Routes = [
       {
         path:'orgList',component:OrganizationListComponent
       },
-      {
-        path:'subscription-config',component:SubscriptionConfigComponent
-      },
+      
     ]
     },
     

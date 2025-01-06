@@ -15,6 +15,7 @@ import { ActivateChildGuard } from './activate-child.guard'
 import { AuthGuard } from './auth.guard'
 import { OrgAuthGuard } from './org-auth.guard';
 import { NotificationComponent } from './views/pages/notification/notification.component';
+import { SubscriptionConfigComponent } from './views/organization/subscription-config/subscription-config.component';
 
 
 
@@ -114,6 +115,9 @@ const routes: Routes = [
         path: 'admin',
         loadChildren: () =>
           import('./views/admin-panel/admin-panel.module').then((m) => m.AdminPanelModule),
+      },
+      {
+        path:'subscription_configuration',component:SubscriptionConfigComponent
       },
       {
         path: 'pages',

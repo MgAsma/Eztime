@@ -5,9 +5,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuyStandardplanComponent } from '../buy-standardplan/buy-standardplan.component';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from '../../../../environments/environment';
-import { error } from 'console';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { CommonServiceService } from '../../../service/common-service.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-subscription',
@@ -21,65 +21,45 @@ export class SubscriptionComponent implements OnInit {
   monthlyAmount: any;
   yearlyAmount: any;
   organization_id: string | null;
+  mySubscriptionData: any = [];
+  planDetails: any;
   constructor(private api:ApiserviceService,
-    private common_service : CommonServiceService,
-    private modalService:NgbModal,
-    private dialog: MatDialog) { }
+    private common_service : CommonServiceService) { }
 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.organization_id = sessionStorage.getItem('organization_id');
     this.getSubscription()
-    //console.log(this.subscriptionData,"FFFF")
+    this.mySubscription()
+   
+    
   }
-  setPaymentOption(option: boolean): void {
-    this.monthly = option;
-  }
+  
   getSubscription(){
     this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
       if(res){
         this.subscriptionData = res;
+        console.log(this.subscriptionData,"Parent")
       }
     })
    
   }
-  buyStandardPlan() {
-    const dialogRef = this.dialog.open(BuyStandardplanComponent, {
-      data: { planDetails: this.subscriptionData },
-      panelClass: 'custom-dialog'
-    });
-    dialogRef.disableClose=true
-  }
- openDialogue() {
-    const modelRef = this.modalService.open(TrialAlertComponent, {
-      size: <any>'sm',
-      backdrop: true,
-      centered: true
-    });
-    modelRef.componentInstance.title = `Are you sure you want to activate the free trial plan?`;
-    modelRef.componentInstance.message = `Free Trial Plan`;
-    modelRef.componentInstance.buttonName = `Activate Free Trial`;
-    modelRef.componentInstance.status.subscribe(resp => {
-      if (resp == "ok") {
-        this.getTrailPlan()
-        modelRef.close();
-      }
-      else {
-        modelRef.close();
+ 
+  mySubscription(){
+    if (this.organization_id) {
+    this.api.getData(`${environment.live_url}/${environment.my_subscription}/?organization=${this.organization_id}`).subscribe((res)=>{
+      if(res){
+        this.mySubscriptionData = res?.['data']
       }
     })
   }
-  getTrailPlan(){
-    const data = {
-        organization: this.organization_id,
-        subscription_type: 4
+  }
+  onTrailPlanStatus(event){
+    if(event){
+    this.getSubscription()
+    this.mySubscription()
     }
-    this.api.postData(`${environment.live_url}/${environment.my_subscription}/`,data).subscribe((res:any)=>{
-      if(res['result']){
-       this.api.showSuccess('You have successfully activated your free trail plan')
-      }
-    })
   }
-
+  
   
 }

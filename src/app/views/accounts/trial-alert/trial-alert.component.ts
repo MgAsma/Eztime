@@ -16,9 +16,16 @@ export class TrialAlertComponent implements OnInit {
   @Input() title: any;
   @Input() message: any;
   @Input() buttonName: any;
+  @Input()trailPlanStaus:any;
+  
   modalStatus(data) {
     if (data === 'ok') {
-      this.openDialogue()
+      if(this.trailPlanStaus){
+        this.openDialogue()
+      }
+     
+    }else{
+      this.dialog.closeAll()
     }
     this.status.emit(data)
   }
@@ -40,7 +47,7 @@ export class TrialAlertComponent implements OnInit {
       modelRef.componentInstance.message = `Successful`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {
-          this.router.navigate(['/accounts/trialplan-history'])
+          this.router.navigate(['/accounts/subscription']);
           modelRef.close();
         }
         else {

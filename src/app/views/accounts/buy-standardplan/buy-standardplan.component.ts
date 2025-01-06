@@ -16,7 +16,7 @@ declare var Razorpay: any;
 })
 export class BuyStandardplanComponent implements OnInit {
   monthly: boolean = true;
-
+  @Inject(MAT_DIALOG_DATA) data: any;
   state: any = [];
   userForm!: FormGroup
   monthlyAmount: any;
@@ -26,7 +26,7 @@ export class BuyStandardplanComponent implements OnInit {
   selectedAmount: number = 30;
   selectedType: string = '1';
   orderId: any;
-
+  discount: any;
   constructor(
     private api: ApiserviceService,
     private fb: FormBuilder,
@@ -34,10 +34,7 @@ export class BuyStandardplanComponent implements OnInit {
     private router: Router,
     private razorpay:RazorpayService,
     private modalService:NgbModal
-  ) { 
-  
-  
-  }
+  ) { }
   payment(){
     
      
@@ -89,33 +86,34 @@ export class BuyStandardplanComponent implements OnInit {
       
   
   }
-
-
   ngOnInit(): void {
     this.initForm()
     this.getState()
     this.getSubscription()
   }
   getSubscription() {
-    this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res) => {
+    this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res: any) => {
       if (res) {
         this.subscriptionData = res;
-        this.subscriptionData?.forEach((item: any, i) => {
-          if (item.name == 'Standard') {
-            item['subscription_deatils'].forEach((item: any, i) => {
+  
+        // Iterate through subscription data
+        this.subscriptionData.forEach((subscription) => {
+          if (subscription.name === 'Standard' && subscription.plan_details) {
+            subscription.plan_details.forEach((item) => {
+              // Check for Monthly or Yearly plans and assign amounts accordingly
               if (item.yearly_or_monthly_name === 'Monthly') {
-                this.monthlyAmount = item.amount
+                this.monthlyAmount = item.amount;
               } else if (item.yearly_or_monthly_name === 'Yearly') {
-                this.yearlyAmount = item.amount
+                this.yearlyAmount = item.amount;
+                this.discount = item.discount;
               }
-            })
-
+            });
           }
-        })
+        });
       }
-    })
-
+    });
   }
+  
   initForm() {
     this.userForm = this.fb.group({
       noOfUsers: [

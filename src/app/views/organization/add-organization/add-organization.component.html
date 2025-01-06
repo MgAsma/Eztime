@@ -17,7 +17,7 @@
                 <mat-error *ngIf="f['organization_name']?.touched && f['organization_name']?.invalid">
                   <span *ngIf="f['organization_name'].errors?.['required']">Organization name is required</span>
                   <span *ngIf="!f['organization_name'].errors?.['required'] && f['organization_name'].errors?.['pattern'] && !f['organization_name'].errors?.['maxlength']">
-                    Invalid name. Only characters are allowed.
+                    Invalid name. Extra space and special charaters are not allowed
                   </span>
                   <span *ngIf="!f['organization_name'].errors?.['required'] && f['organization_name'].errors?.['maxlength']">
                     Organization name cannot exceed more than 50 characters.
@@ -44,7 +44,7 @@
             <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
               <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
                 <mat-label>Country <b class="r-star">*</b></mat-label>
-                <mat-select formControlName="country" placeholder="Select country" (selectionChange)="getState($event.value)" autocomplete="off"
+                <mat-select formControlName="country" placeholder="Select country" (selectionChange)="onFocusCountry();getState($event.value)" autocomplete="off"
                 panelClass="custom-select-panel" [disableOptionCentering]="true">
                   <mat-option *ngFor="let country of country" [value]="country.id">
                     {{country.country_name | titlecase}}

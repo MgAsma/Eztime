@@ -39,6 +39,7 @@ export class UpdateOrganizationComponent implements OnInit {
   adminFormArray: FormArray;
   isAdminForm = false;
   logoImage: boolean = false;
+  submitted:boolean = false;
   constructor(private _fb: FormBuilder,
     private api: ApiserviceService, private route: ActivatedRoute,
     private router: Router, private location: Location, private common_service: CommonServiceService,
@@ -100,7 +101,7 @@ export class UpdateOrganizationComponent implements OnInit {
   }
   initform() {
     this.organizationForm = this._fb.group({
-      organization_name: ['', [ Validators.required,Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/),Validators.maxLength(50)]],
+      organization_name: ['', [ Validators.required,Validators.pattern(/^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$/),Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],
       address: ['', [Validators.pattern(/^\S.*$/),Validators.maxLength(300)]],
       city: ['', Validators.required],
@@ -328,7 +329,7 @@ export class UpdateOrganizationComponent implements OnInit {
           isEditing:false
         }));
         this.adminList = transformedAdminDetails 
-        // console.log(this.adminList)
+        console.log(currentOrg['organization_image'],"organization_image")
         this.initializeAdminFormArray();
         this.organizationForm.patchValue({
           
@@ -426,7 +427,6 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
   
   getState(event) {
     let country = event
-
     this.api.getData(`${environment.live_url}/${environment.state}/?country_id=${event}`).subscribe((res: any) => {
       if(res){
       this.state = res
@@ -482,10 +482,11 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
       //const isAdminFormValid = this.adminList.length > 0 && this.adminFormArray.valid;
     // Check if the organization form is valid
     this.getOrgDetails();
-    if (this.organizationForm.invalid ) {
+    if (this.organizationForm.invalid || this.f['logo'].value === '') {
       console.log(this.organizationForm.value)
       this.organizationForm.markAllAsTouched();
-      this.api.showError("Please enter the mandatory fields!");
+      this.submitted = true;
+     // this.api.showError("Please enter the mandatory fields!");
     }else{
       const data = {
         organization_name: this.f['organization_name'].value,
@@ -497,6 +498,7 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
         postal_code: this.f['postal_code'].value,
         organization_image: this.fileDataUrl || this.f['logo'].value,
       };
+      this.submitted = true;
       this.api.updateData(`${environment.live_url}/${environment.organization}/${this.id}/`, data).subscribe(
         res => {
           if (res) {
@@ -510,7 +512,7 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
           }
         },
         error => {
-          this.api.showError(error.error.message);
+          this.api.showError(error?.error?.message);
         }
       );
     }

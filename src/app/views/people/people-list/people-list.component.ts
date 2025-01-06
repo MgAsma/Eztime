@@ -6,6 +6,7 @@ import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { environment } from 'src/environments/environment';
+import { LimitReachedComponent } from 'src/app/views/accounts/limit-reached/limit-reached.component';
 @Component({
   selector: 'app-people-list',
   templateUrl: './people-list.component.html',
@@ -69,7 +70,23 @@ export class PeopleListComponent implements OnInit {
     this.enabled = true;
     //  this.getUserControls()
   }
-
+  async getSubscriptionDetails(){
+    const modelRef = await this.modalService.open(LimitReachedComponent, {
+      size: <any>'sm',
+      backdrop: true,
+      centered: true
+    })
+    modelRef.componentInstance.status.subscribe(resp => {
+      if (resp == "ok") {
+        this.router.navigate(['/accounts/subscription'])
+        modelRef.close();
+      }
+      else {
+        modelRef.close();
+      }
+    })
+    //this.router.navigate(['/people/create-people'])
+  }
   changeYearStartDate(event: any) {
     //console.log(event.target.value)
     this.startDate = event.target.value

@@ -238,7 +238,7 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
   initform() {
     this.organizationForm = this._fb.group({
       org_qr_uniq_id: ['22121'],
-      organization_name: ['', [Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/),Validators.required,Validators.maxLength(50)]],
+      organization_name: ['', [Validators.pattern(/^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$/),Validators.required,Validators.maxLength(50)]],
       address: ['', [Validators.pattern(/^\S.*$/),Validators.maxLength(300)]],
       email: ['', [Validators.required, Validators.email]],
       org_phone: [''],
