@@ -20,7 +20,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
   @Input()data:any;
   @Input()my_subscription:any;
   @Input()selectedPlanDetails:any;
-  @Output()trailPlanStaus = new EventEmitter<any>();
+  @Output()successEmit = new EventEmitter<any>();
   monthlyAmount: any;
   yearlyAmount: any;
   discount: any;
@@ -78,8 +78,9 @@ cancelExistPlan(subscription){
   }
   this.api.postData(`${environment.live_url}/${environment.cancel_my_subscription}/`,data).subscribe((res)=>{
   if(res){
+    this.successEmit.emit(true)
     this.api.showSuccess(`Subscription cancelled successfully`)
-    this.trailPlanStaus.emit(true)
+ 
   }
   },(err)=>{
     this.api.showError(err?.error?.message)

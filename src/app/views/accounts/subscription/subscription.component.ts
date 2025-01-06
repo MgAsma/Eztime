@@ -31,15 +31,27 @@ export class SubscriptionComponent implements OnInit {
     this.organization_id = sessionStorage.getItem('organization_id');
     this.getSubscription()
     this.mySubscription()
-   
     
   }
-  hasEligibleSubscription(): boolean {
-    return this.subscriptionData.some(subscription =>
-      !subscription.is_active &&
-      (subscription.subscription_type_name === 'Free Trial' || subscription.subscription_type_name === 'Standard')
-    );
+  shouldShowPlanSelection(): boolean {
+    if (!this.mySubscriptionData || this.mySubscriptionData.length === 0) {
+      // No subscription data: show Plan Selection
+      return true;
+    }
+  
+    // Check for active plans
+    const hasActivePlan = this.mySubscriptionData.some(sub => sub.is_active);
+  
+    if (!hasActivePlan) {
+      // If no active plan exists, show Plan Selection
+      return true;
+    }
+  
+    // If there’s an active plan (either Free Trial or Standard), do not show Plan Selection
+    return false;
   }
+  
+  
   
   getSubscription(){
     this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
@@ -56,6 +68,7 @@ export class SubscriptionComponent implements OnInit {
     this.api.getData(`${environment.live_url}/${environment.my_subscription}/?organization=${this.organization_id}`).subscribe((res)=>{
       if(res){
         this.mySubscriptionData = res?.['data']
+        this.shouldShowPlanSelection()
       }
     })
   }

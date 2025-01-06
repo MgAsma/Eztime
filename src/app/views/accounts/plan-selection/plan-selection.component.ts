@@ -16,12 +16,14 @@ import { CommonServiceService } from '../../../service/common-service.service';
 export class PlanSelectionComponent implements OnInit {
   @Input()data:any;
   @Output()trailPlanStaus = new EventEmitter<any>();
+  @Input()disabled:boolean;
   subscriptionData: any = [];
    BreadCrumbsTitle:any='Subscription plan';
    monthly: boolean = true; // Default to monthly
    monthlyAmount: any;
    yearlyAmount: any;
    organization_id: string | null;
+  freeTrailDisable: boolean;
    constructor(private api:ApiserviceService,
      private common_service : CommonServiceService,
      private modalService:NgbModal,
@@ -29,10 +31,12 @@ export class PlanSelectionComponent implements OnInit {
  
      ngOnChanges(){
       this.subscriptionData = this.data;
+      this.freeTrailDisable = this.disabled
      }
    ngOnInit(): void {
      this.common_service.setTitle(this.BreadCrumbsTitle);
      this.organization_id = sessionStorage.getItem('organization_id');
+     this.freeTrailDisable = this.disabled
      //this.getSubscription()
 
      //console.log(this.subscriptionData,"FFFF")

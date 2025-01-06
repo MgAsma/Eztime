@@ -17,9 +17,9 @@
       padding: 20px;
       zoom:95%
     }
-  
+    
     /* Free Trial Card */
-    .free-trial-card {
+    .free-trial-card,.disable-freeTrail {
       background: #e9f4ff;
   
       .plan-title {
@@ -65,15 +65,20 @@
         }
       }
   
-      .cta-button {
+      .cta-button,.cta-disabled {
         background: #126EB4;
         color: white;
         font-weight: 600;
         margin-top: 4.6rem;
         width: 100%;
       }
+      .cta-disabled{
+        background: #b42212;
+      }
     }
-  
+    .disable-freeTrail{
+      background: #ffeae9;
+    }
     /* Standard Plan Card */
     .standard-card {
       background: #126EB4;
