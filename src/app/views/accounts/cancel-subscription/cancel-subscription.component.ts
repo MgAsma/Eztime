@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-cancel-subscription',
@@ -6,10 +6,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./cancel-subscription.component.scss']
 })
 export class CancelSubscriptionComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+@Output() status: EventEmitter<any> = new EventEmitter<any>();
+  @Input()title:any;
+  @Input()subtitle:any;
+  @Input()message:any;
+    
+  modalStatus(data){
+    this.status.emit(data)
+    }
+  
+    ngOnInit(): void {
+     
+    }
 }

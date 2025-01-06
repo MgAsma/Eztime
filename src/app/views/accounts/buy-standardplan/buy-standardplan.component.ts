@@ -268,7 +268,7 @@ export class BuyStandardplanComponent implements OnInit {
     modelRef.componentInstance.message = `Transaction Successful!`;
     modelRef.componentInstance.status.subscribe(resp => {
       if (resp == "ok") {
-        this.router.navigate(['/accounts/trialplan-history'])
+        this.router.navigate(['/accounts/subscription'])
         modelRef.close();
       }
       else {

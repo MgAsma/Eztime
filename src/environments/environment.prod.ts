@@ -72,5 +72,6 @@ export const environment = {
   my_subscription:`my-subscription`,
   transaction_history:`transaction-history`,
   configure_subscription:`configure-subscription`,
-  buy_subscription:`buy-subscription`
+  buy_subscription:`buy-subscription`,
+  cancel_my_subscription:`cancel-my-subscription`
 };

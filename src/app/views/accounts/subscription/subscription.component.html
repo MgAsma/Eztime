@@ -10,9 +10,7 @@
   <div *ngIf="subscription.subscription_type_name === 'Standard' && subscription.is_active">
     <app-success-plan-details [data]="subscriptionData" [my_subscription]="mySubscriptionData" [selectedPlanDetails]="planDetails"></app-success-plan-details>
   </div>
-  <!-- <div *ngIf="subscription.subscription_type_name === 'Standard' && !subscription.is_active || subscription.subscription_type_name === 'Free Trial' && !subscription.is_active">
-    <app-plan-selection [data]="subscriptionData"></app-plan-selection>
-  </div>  -->
+ 
 </div>
 </div>
 

@@ -1,10 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonServiceService } from '../../../service/common-service.service';
 import { BuyStandardplanComponent } from '../buy-standardplan/buy-standardplan.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ExistStandardPlanComponent } from '../exist-standard-plan/exist-standard-plan.component';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { environment } from '../../../../environments/environment';
+import { Router } from '@angular/router';
+import { CancelSubscriptionComponent } from '../cancel-subscription/cancel-subscription.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-success-plan-details',
@@ -17,6 +20,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
   @Input()data:any;
   @Input()my_subscription:any;
   @Input()selectedPlanDetails:any;
+  @Output()trailPlanStaus = new EventEmitter<any>();
   monthlyAmount: any;
   yearlyAmount: any;
   discount: any;
@@ -31,7 +35,9 @@ export class SuccessPlanDetailsComponent implements OnInit {
   constructor(
     private common_service:CommonServiceService,
     private dialog:MatDialog,
-    private api:ApiserviceService
+    private api:ApiserviceService,
+    private router:Router,
+    private modalService:NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -45,7 +51,41 @@ export class SuccessPlanDetailsComponent implements OnInit {
   ngOnChanges(){
     this.mySubscriptionData = this.my_subscription
   }
-  cancelSubscription(){}
+  cancelSubscription(event){
+       const modelRef = this.modalService.open(CancelSubscriptionComponent, {
+          size: <any>'sm',
+          backdrop: true,
+          centered: true
+        });
+        modelRef.componentInstance.title = `Are you sure about cancelling your subscription?`;
+        modelRef.componentInstance.subtitle = `Suspending this account will also deactivate all associated user accounts.`;
+        modelRef.componentInstance.message = `Subscription Cancellation`;
+        modelRef.componentInstance.status.subscribe(resp => {
+          if (resp == "ok") {
+            this.cancelExistPlan(event)
+            
+            modelRef.close();
+          }
+          else {
+            modelRef.close();
+          }
+        })
+  }
+cancelExistPlan(subscription){
+  const data = {
+    organization: this.organizationId,
+    subscription_id: subscription.id
+  }
+  this.api.postData(`${environment.live_url}/${environment.cancel_my_subscription}/`,data).subscribe((res)=>{
+  if(res){
+    this.api.showSuccess(`Subscription cancelled successfully`)
+    this.trailPlanStaus.emit(true)
+  }
+  },(err)=>{
+    this.api.showError(err?.error?.message)
+  })
+}
+
   addNewUser(){
     const dialogRef = this.dialog.open(ExistStandardPlanComponent, {
       data: { message: 'Hello from the parent component!' },

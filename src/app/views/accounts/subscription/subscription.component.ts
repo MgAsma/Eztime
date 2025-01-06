@@ -34,6 +34,12 @@ export class SubscriptionComponent implements OnInit {
    
     
   }
+  hasEligibleSubscription(): boolean {
+    return this.subscriptionData.some(subscription =>
+      !subscription.is_active &&
+      (subscription.subscription_type_name === 'Free Trial' || subscription.subscription_type_name === 'Standard')
+    );
+  }
   
   getSubscription(){
     this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
