@@ -132,7 +132,7 @@
             <td>{{ plan.startDate }}</td>
             <td>{{ plan.endDate }}</td>
             <td>
-              <button class="btn btn-outline-primary btn-sm">
+              <button (click)="download(plan)" class="btn btn-outline-primary btn-sm">
                 <i class="bi bi-download"></i>
               </button>
             </td>
@@ -164,7 +164,7 @@
           <p><strong>Total Amount:</strong> ₹{{ plan.totalAmount }}</p>
           <p><strong>Start Date:</strong> {{ plan.startDate }}</p>
           <p><strong>End Date:</strong> {{ plan.endDate }}</p>
-          <button class="btn btn-outline-primary btn-sm">
+          <button  class="btn btn-outline-primary btn-sm">
             <i class="bi bi-download"></i>
           </button>
         </div>

@@ -9,6 +9,7 @@ import { environment } from '../../../../environments/environment';
 import { DatePipe } from '@angular/common';
 import { TrialAlertComponent } from '../trial-alert/trial-alert.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -38,6 +39,7 @@ BreadCrumbsTitle:any='Subscription plan';
     private api:ApiserviceService,
     private datePipe: DatePipe,
     private modalService:NgbModal,
+    private router:Router
   ) { }
   ngOnChanges(){
     this.subscriptionData = this.data;
@@ -155,5 +157,9 @@ BreadCrumbsTitle:any='Subscription plan';
     });
     dialogRef.disableClose=true
      
+  }
+
+  download(data:any){
+    this.router.navigate(['/accounts/invoice-data'])
   }
 }

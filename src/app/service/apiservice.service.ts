@@ -638,4 +638,7 @@ export class ApiserviceService {
   getRazorpayFromData(data:any){
     return this.http.post(`${this.baseurl}/get-razor-pay-order/`,data)
   }
+  postStandardPlan(data){
+    return this.http.post(`${this.baseurl}/buy-subscription/`,data)
+  }
 }
