@@ -64,9 +64,8 @@ export class ExistStandardPlanComponent implements OnInit {
        this.sgst_per = res.data[0].sgst;
        this.igst_per = res.data[0].igst;
        if(res.data[0].subscribed_for==='Yearly'){
-        let temp_year_amt = res.data[0].amount - res.data[0].discount/100 * res.data[0].amount;
-        this.planAmount = Math.round(temp_year_amt);
-        this.discount = Math.round(res.data[0].discount);
+         this.discount = Math.round(res.data[0].discount);
+        this.planAmount = Math.round(res.data[0].discount);
        } else{
         this.planAmount = Math.round(res.data[0].amount);
         this.discount = 0;

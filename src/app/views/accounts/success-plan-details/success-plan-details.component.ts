@@ -8,6 +8,7 @@ import { environment } from '../../../../environments/environment';
 import { Router } from '@angular/router';
 import { CancelSubscriptionComponent } from '../cancel-subscription/cancel-subscription.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-success-plan-details',
@@ -37,7 +38,8 @@ export class SuccessPlanDetailsComponent implements OnInit {
     private dialog:MatDialog,
     private api:ApiserviceService,
     private router:Router,
-    private modalService:NgbModal
+    private modalService:NgbModal,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit(): void {
@@ -50,6 +52,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
   }
   ngOnChanges(){
     this.mySubscriptionData = this.my_subscription
+    console.log('freeeee',this.mySubscriptionData)
   }
   cancelSubscription(event){
        const modelRef = this.modalService.open(CancelSubscriptionComponent, {
@@ -95,9 +98,9 @@ cancelExistPlan(subscription){
     });
     dialogRef.disableClose=true
   }
-  renewSubscription(){
+  renewSubscription(plan:any){
     const dialogRef = this.dialog.open(BuyStandardplanComponent, {
-      // data: { message: 'Hello from the parent component!' },
+      data: { plan_data:  plan},
       panelClass: 'custom-dialog'
     });
     dialogRef.disableClose=true
@@ -144,11 +147,11 @@ onTableSizeChange(event:any): void {
               slNo: index + 1,
               plan: item.subscribed_organization__subscription_type__name,
               term: item.terms,
-              perUser: 'NA',
-              users: item.subscribed_organization__added_users || 'NA',
+              perUser: 0,
+              users: item.number_of_users || 'NA',
               totalAmount: item.total_amount,
-              startDate: new Date(item.subscribed_organization__start_date).toLocaleDateString(),
-              endDate: new Date(item.subscribed_organization__expiry_date).toLocaleDateString(),
+              startDate: this.datePipe.transform(item.subscribed_organization__start_date,'dd-MM-yyyy'),
+              endDate:  this.datePipe.transform(item.subscribed_organization__expiry_date,'dd-MM-yyyy'),
             }));
           
           this.isLoading = false; // Stop loading state

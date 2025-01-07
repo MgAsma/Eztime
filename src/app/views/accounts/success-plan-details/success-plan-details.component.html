@@ -3,7 +3,7 @@
     <div class="row">
       {{data.plan}}
       <!-- Free Trial Card -->
-      <div class="col-md-6 mb-3" >
+      <div class="col-md-6 mb-3" *ngIf="mySubscriptionData.length>1">
         <mat-card class="custom-card border-danger" >
           <mat-card-content *ngFor="let plan of mySubscriptionData">
             <ng-container *ngIf="plan.subscription_type_name === 'Free Trial' && !plan.is_active">
@@ -103,7 +103,7 @@
                   <button mat-raised-button  class="action-button btn-add-user" (click)="addNewUser(plan)">Add User</button>
                 </div>
                 <div class="col-4">
-                  <button mat-raised-button  class="action-button btn-renew" (click)="renewSubscription()">Renew</button>
+                  <button mat-raised-button  class="action-button btn-renew" (click)="renewSubscription(plan)">Renew</button>
                 </div>
               </div>
             </ng-container>
@@ -193,8 +193,8 @@
       <p><strong>Per User:</strong> ₹{{ transaction.perUser  }}</p>
       <p><strong>Users:</strong> {{ transaction.users }}</p>
       <p><strong>Total Amount:</strong> ₹{{ transaction.totalAmount  }}</p>
-      <p><strong>Start Date:</strong> {{ transaction.startDate }}</p>
-      <p><strong>End Date:</strong> {{ transaction.endDate }}</p>
+      <p><strong>Start Date:</strong> {{ transaction.startDate}}</p>
+      <p><strong>End Date:</strong> {{ transaction.endDate}}</p>
       <button class="btn btn-outline-primary btn-sm">
         <i class="bi bi-download"></i>
       </button>

@@ -16,7 +16,7 @@ declare var Razorpay: any;
 })
 export class BuyStandardplanComponent implements OnInit {
   monthly: boolean = true;
-  @Inject(MAT_DIALOG_DATA) data: any;
+  // @Inject(MAT_DIALOG_DATA) data: any;
   state: any = [];
   userForm!: FormGroup
   monthlyAmount: any;
@@ -35,6 +35,7 @@ export class BuyStandardplanComponent implements OnInit {
   cgst_per:number;
   sgst_per:number;
   igst_per:number;
+  minUsers:number  = 1;
   constructor(
     private api: ApiserviceService,
     private fb: FormBuilder,
@@ -42,10 +43,15 @@ export class BuyStandardplanComponent implements OnInit {
     private router: Router,
     private razorpay:RazorpayService,
     private modalService:NgbModal,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
   ngOnInit(): void {
     this.orgId = sessionStorage.getItem('organization_id');
+    if(this.data?.plan_data?.added_users){
+      // console.log('dataaaaa',this.data)
+      this.minUsers = this.data?.plan_data?.added_users;
+    }
     this.initForm()
     this.getState()
     this.getSubscription()
@@ -85,10 +91,10 @@ export class BuyStandardplanComponent implements OnInit {
   initForm() {
     this.userForm = this.fb.group({
       noOfUsers: [
-        '',
+        this.minUsers,
         [
           Validators.required,
-          Validators.min(1),
+          Validators.min(this.minUsers),
           Validators.max(10000),
           Validators.pattern(/^[1-9][0-9]*$/) // Regex for no spaces, no leading zeros, and only digits
         ]
@@ -151,7 +157,7 @@ export class BuyStandardplanComponent implements OnInit {
     this.selectedType = type;
     this.selectedTypeName = typeName;
     if(this.selectedTypeName==='Yearly'){
-      this.selectedDiscount = this.discount;
+      this.selectedDiscount = this.yearlyAmount;
     } else{
       this.selectedDiscount = 0;
     }
@@ -278,7 +284,7 @@ export class BuyStandardplanComponent implements OnInit {
       }, 
       (error:any)=>{
         console.log(error);
-        this.api.showError(error);
+        this.api.showError(error.error.message);
       }
     )
   }

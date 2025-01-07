@@ -55,6 +55,7 @@ export class PlanSelectionComponent implements OnInit {
    buyStandardPlan() {
      const dialogRef = this.dialog.open(BuyStandardplanComponent, {
        data: { planDetails: this.subscriptionData },
+        // data: {  },
        panelClass: 'custom-dialog'
      });
      dialogRef.disableClose=true
@@ -101,7 +102,9 @@ export class PlanSelectionComponent implements OnInit {
     );
   }
   
- 
+  roundAmount(amount: number): number {
+    return Math.round(amount);
+  }
    
 
 }
