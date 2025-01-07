@@ -22,6 +22,11 @@ export class ApiserviceService {
     // this.headers = {'Authorization':this.token} 
   }
 
+  private isComponentLoadedSubject = new BehaviorSubject<boolean>(false);
+  isComponentLoaded$ = this.isComponentLoadedSubject.asObservable();
+  setComponentLoadedStatus(status: boolean) {
+    this.isComponentLoadedSubject.next(status);
+  }
 
   // Success Message
   showSuccess(message: any) {
@@ -640,5 +645,8 @@ export class ApiserviceService {
   }
   postStandardPlan(data){
     return this.http.post(`${this.baseurl}/buy-subscription/`,data)
+  }
+  addUsersForExistingPlan(data){
+    return this.http.post(`${this.baseurl}/add-users-to-existing-subscription/`,data)
   }
 }

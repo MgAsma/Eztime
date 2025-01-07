@@ -87,9 +87,10 @@ cancelExistPlan(subscription){
   })
 }
 
-  addNewUser(){
+  addNewUser(plan_data:any){
+    console.log(plan_data)
     const dialogRef = this.dialog.open(ExistStandardPlanComponent, {
-      data: { message: 'Hello from the parent component!' },
+      data: { plan: plan_data },
       panelClass: 'custom-dialog'
     });
     dialogRef.disableClose=true

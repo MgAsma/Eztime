@@ -25,7 +25,7 @@
                 (click)="setPaymentOption(false,yearlyAmount,'2',yearlyName)" 
                 [ngClass]="!monthly ? 'active' : 'highlighted-option'">
                   <span class="price">₹{{yearlyAmount}}</span>
-                  <small>per user / yearly</small>
+                  <small>per user / monthly</small>
                   <div class="option-title">Yearly</div>
                   <div class="discount-badge"><i class="bi bi-x-circle"></i> {{discount}}% </div>
                 </mat-card>
@@ -109,15 +109,15 @@
         <span>₹{{ subtotal || 0 }}</span>
       </div>
       <div class="summary-row" *ngIf="userForm.get('state')?.value === 4026">
-        <span>CGST 9%</span>
+        <span>CGST {{cgst_per}}%</span>
         <span>₹{{ cgst || 0 }}</span>
       </div>
       <div class="summary-row" *ngIf="userForm.get('state')?.value === 4026">
-        <span>SGST 9%</span>
+        <span>SGST {{sgst_per}}%</span>
         <span>₹{{ sgst || 0 }}</span>
       </div>
       <div class="summary-row" *ngIf="userForm.get('state')?.value !== 4026">
-        <span>IGST 18%</span>
+        <span>IGST {{igst_per}}%</span>
         <span>₹{{ igst || 0 }}</span>
       </div>
       <div class="summary-row total">

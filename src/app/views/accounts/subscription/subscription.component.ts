@@ -29,6 +29,13 @@ export class SubscriptionComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.organization_id = sessionStorage.getItem('organization_id');
+    this.api.isComponentLoaded$.subscribe(status => {
+      console.log('Is Component Loaded:',status);
+      if (status) {
+        this.getSubscription()
+        this.mySubscription()
+      }
+    });
     this.getSubscription()
     this.mySubscription()
     
