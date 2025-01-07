@@ -24,6 +24,7 @@ export class BuyStandardplanComponent implements OnInit {
   yearlyAmount: any;
   yearlyName: any;
   selectedTypeName: any;
+  selectedDiscount:number = 0;
   igst: number;
   subscriptionData: any = [];
   selectedAmount: number
@@ -31,66 +32,18 @@ export class BuyStandardplanComponent implements OnInit {
   orderId: any;
   discount: any;
   orgId: string;
+  cgst_per:number;
+  sgst_per:number;
+  igst_per:number;
   constructor(
     private api: ApiserviceService,
     private fb: FormBuilder,
     private dialogue: MatDialog,
     private router: Router,
     private razorpay:RazorpayService,
-    private modalService:NgbModal
+    private modalService:NgbModal,
+    private ngZone: NgZone
   ) { }
-  // payment(){
-    
-     
-  //     const RazorpayOptions:any = {
-  //       description:'Sample Rozarpay demo',
-  //       currency:'INR',
-  //       amount: 1000,
-  //       name:'Asma',
-  //       key:'rzp_test_GxaJhvoS78ZpIz',
-  //       //key:'rzp_test_Z6PoT6HRL71TiC',
-  //       image:'../assets/images/logo.png',
-  //       order_id:this.orderId,
-  //       prefill:{
-  //         name:'Asma M',
-  //         email:'asma@ekfrazo.in',
-  //         phone:'6230752181'
-  //       },
-  //       handler: function(response: any):any {
-  //          if(response){
-           
-  //            //console.log(response)
-  //            successCallback(response)
-  //          }
-  //       },
-        
-  //       theme:{
-  //         color:'#f37254'
-  //       },
-  //       modal:{
-  //         ondismiss:()=>{
-  //           //console.log('dismissed')
-  //         }
-  //       }
-  //     }
-
-  //   }
-  //   const successCallback = (response: any) => {
-  //     console.log("SUCCESS CALLBACK", response)
-  //     // this.postPaymentDetails(response)
-
-  //   }
-  //   const failureCallback = (e: any) => {
-  //     // //console.log(e)
-  //     if (e) {
-  //       // this.btnEnable = false
-  //     }
-  //   }
-
-  //   Razorpay.open(RazorpayOptions, successCallback)
-
-
-  // }
   ngOnInit(): void {
     this.orgId = sessionStorage.getItem('organization_id');
     this.initForm()
@@ -107,13 +60,20 @@ export class BuyStandardplanComponent implements OnInit {
         // Iterate through subscription data
         this.subscriptionData.forEach((subscription) => {
           if (subscription.name === 'Standard' && subscription.plan_details) {
+            this.cgst_per = subscription.cgst;
+            this.sgst_per = subscription.sgst;
+            this.igst_per = subscription.igst;
             subscription.plan_details.forEach((item) => {
               // Check for Monthly or Yearly plans and assign amounts accordingly
               if (item.yearly_or_monthly_name === 'Monthly') {
-                this.monthlyAmount = item.amount;
+                this.monthlyAmount = Math.round(item.amount);
+                this.selectedTypeName = item.yearly_or_monthly_name;
+                this.monthlyName = item.yearly_or_monthly_name;
               } else if (item.yearly_or_monthly_name === 'Yearly') {
-                this.yearlyAmount = item.amount;
-                this.discount = item.discount;
+                this.yearlyName = item.yearly_or_monthly_name
+                let temp_year_amt = item.amount-item.discount/100*item.amount;
+                this.yearlyAmount = Math.round(temp_year_amt)
+                this.discount = Math.round(item.discount);
               }
             });
           }
@@ -144,25 +104,31 @@ export class BuyStandardplanComponent implements OnInit {
   selectedState: string = 'Karnataka';
 
   calculateTotal(): void {
+    const amount = this.selectedAmount || this.monthlyAmount; // Monthly/Yearly price per user
+    const noOfUsers = this.userForm.value.noOfUsers;
+    this.subtotal = noOfUsers * amount;
+    if(this.selectedTypeName==='Yearly'){
+      this.subtotal = noOfUsers * amount*12;
+    } else{
+      this.subtotal = noOfUsers * amount;
+    }
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
-      this.subtotal = 0;
+      // this.subtotal = 0;
       this.cgst = 0;
       this.sgst = 0;
       this.totalPayable = 0;
     } else {
-      const amount = this.selectedAmount || this.monthlyAmount; // Monthly/Yearly price per user
-      const noOfUsers = this.userForm.value.noOfUsers;
-
-      // Calculate values when noOfUsers is valid
-      this.subtotal = noOfUsers * amount;
+      
       if (this.userForm.get('state')?.value === 4026) {
-        this.cgst = parseFloat((this.subtotal * 0.09).toFixed(2)); // CGST with 2 decimal places
-        this.sgst = parseFloat((this.subtotal * 0.09).toFixed(2)); // SGST with 2 decimal places
-        this.totalPayable = parseFloat((this.subtotal + this.cgst + this.sgst).toFixed(2)); // Total payable with 2 decimal places
+        this.cgst = parseFloat((this.subtotal * (this.cgst_per/100)).toFixed(2)); // CGST with 2 decimal places
+        this.sgst = parseFloat((this.subtotal * (this.sgst_per/100)).toFixed(2)); // SGST with 2 decimal places
+        let temp_totalPayable = parseFloat((this.subtotal + this.cgst + this.sgst).toFixed(2));
+        this.totalPayable = Math.round(temp_totalPayable) // Total payable with 2 decimal places
       } else {
-        this.igst = parseFloat((this.subtotal * 0.18).toFixed(2)); // IGST with 2 decimal places
-        this.totalPayable = parseFloat((this.subtotal + this.igst).toFixed(2)); // Total payable with 2 decimal places
+        this.igst = parseFloat((this.subtotal * (this.igst_per/100)).toFixed(2)); // IGST with 2 decimal places
+        let temp_totalPayable  = parseFloat((this.subtotal + this.igst).toFixed(2)); 
+        this.totalPayable = Math.round(temp_totalPayable)// Total payable with 2 decimal places
       }
     }
 
@@ -184,6 +150,11 @@ export class BuyStandardplanComponent implements OnInit {
     this.selectedAmount = amount
     this.selectedType = type;
     this.selectedTypeName = typeName;
+    if(this.selectedTypeName==='Yearly'){
+      this.selectedDiscount = this.discount;
+    } else{
+      this.selectedDiscount = 0;
+    }
     this.calculateTotal()
   }
   getState() {
@@ -197,7 +168,6 @@ export class BuyStandardplanComponent implements OnInit {
     }))
 
   }
-
   razorpayTest() {
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
@@ -205,6 +175,7 @@ export class BuyStandardplanComponent implements OnInit {
       let data = {
         'total_amount': this.totalPayable
       }
+      // console.log(data.total_amount)
       this.api.getRazorpayFromData(data).subscribe(
         (res: any) => {
           console.log(res)
@@ -220,30 +191,20 @@ export class BuyStandardplanComponent implements OnInit {
   }
 
   openRazorpay(data: any) {
-    console.log(data, 'data')
     const RazorpayOptions: any = {
       description: 'Sample Rozarpay demo',
       currency: 'INR',
-      amount: data.amount * 100,
+      amount: data.amount,
       name: 'Project Ace',
       key: environment.Razorpay_test_key,
       //key:'rzp_test_Z6PoT6HRL71TiC',
       image: '../assets/images/logo.png',
       order_id: data.razor_pay_order_id,
-      prefill: {
-        name: 'Asma M',
-        email: 'asma@ekfrazo.in',
-        phone: '6230752181'
-      },
       handler: function (response: any): any {
         if (response) {
           //console.log(response)
           successCallback(response)
         }
-      },
-
-      theme: {
-        color: '#f37254'
       },
       modal: {
         ondismiss: () => {
@@ -275,10 +236,10 @@ export class BuyStandardplanComponent implements OnInit {
   buySubscription(datas: any) {
     let subscription_type: number;
     let plan_type: number;
-    this.subscriptionData?.forEach((item1: any, i) => {
-      if (item1.name == 'Standard') {
+    this.subscriptionData?.forEach((item1: any) => {
+      if (item1.name === 'Standard' && item1.plan_details) {
         subscription_type = item1.id;
-        item1['plan_details'].forEach((item2: any, i) => {
+        item1['plan_details'].forEach((item2: any) => {
           if (item2.yearly_or_monthly_name === this.selectedTypeName) {
             console.log(item2)
             plan_type = item2.id;
@@ -299,17 +260,19 @@ export class BuyStandardplanComponent implements OnInit {
       "cgst": this.cgst != 0 ? this.cgst : null,
       "igst": this.igst != 0 ? this.igst : null,
       "sgst": this.sgst != 0 ? this.sgst : null,
-      "added_users": this.userForm.value.noOfUsers
+      "discounted_amount": this.selectedDiscount!= 0 ? this.selectedDiscount : null,
+      "added_users": this.userForm.value.noOfUsers,
+      "state": this.userForm.value.state
     }
     console.log(data)
     this.api.postStandardPlan(data).subscribe(
       (res: any) => {
         if (res) {
           setTimeout(() => {
-            this.dialogue.closeAll()
-            // this.ngZone.run(() => {
-            //   this.openDialogue()
-            // });
+            this.ngZone.run(() => {
+              this.dialogue.closeAll()
+              this.openDialogue()
+            });
           }, 1000);
         }
       }, 
@@ -330,8 +293,8 @@ export class BuyStandardplanComponent implements OnInit {
     modelRef.componentInstance.message = `Transaction Successful!`;
     modelRef.componentInstance.status.subscribe(resp => {
       if (resp == "ok") {
-        this.router.navigate(['/accounts/subscription'])
         modelRef.close();
+        this.api.setComponentLoadedStatus(true);
       }
       else {
         modelRef.close();

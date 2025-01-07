@@ -1,6 +1,7 @@
 <div class="container-fluid bg mt-4 p-20">
     <!-- Subscription Plans -->
     <div class="row">
+      {{data.plan}}
       <!-- Free Trial Card -->
       <div class="col-md-6 mb-3" >
         <mat-card class="custom-card border-danger" >
@@ -99,7 +100,7 @@
                   <button mat-raised-button  class="action-button btn-cancel" (click)="cancelSubscription(plan)">Cancel</button>
                 </div>
                 <div class="col-4">
-                  <button mat-raised-button  class="action-button btn-add-user" (click)="addNewUser()">Add User</button>
+                  <button mat-raised-button  class="action-button btn-add-user" (click)="addNewUser(plan)">Add User</button>
                 </div>
                 <div class="col-4">
                   <button mat-raised-button  class="action-button btn-renew" (click)="renewSubscription()">Renew</button>

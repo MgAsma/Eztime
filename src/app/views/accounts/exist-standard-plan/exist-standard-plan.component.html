@@ -1,7 +1,7 @@
 
     <!-- Header Section -->
     <div class="header">
-        <h2 class="plan-title">Standard</h2>
+        <h2 class="plan-title">Standard Plan</h2>
         <span class="discount-tag">
           <mat-icon (click)="onCancel()">close</mat-icon>
         </span>
@@ -15,9 +15,9 @@
               <div class="col-12 my-2">
                   <mat-card class="payment-option highlighted-option"  (click)="setPaymentOption(true,monthlyAmount,'1')" 
                   >
-                  <p class="card-text sub-header">Monthly Plan <span class="badge standard-plan-staus">Active</span>
+                  <p class="card-text sub-header">{{planName}} Plan <span class="badge standard-plan-staus">Active</span>
                     </p> 
-                    <p><span class="price pe-1">₹{{monthlyAmount}}</span><small>per user / monthly</small></p>
+                    <p><span class="price pe-1">₹{{planAmount}}</span><small>per user / monthly</small></p>
                    
               </mat-card>
               </div>
@@ -101,15 +101,15 @@
           <span>₹{{ subtotal || 0 }}</span>
         </div>
         <div class="summary-row" *ngIf="userForm.get('state')?.value === 4026">
-          <span>CGST 9%</span>
+          <span>CGST {{cgst_per}}%</span>
           <span>₹{{ cgst || 0 }}</span>
         </div>
         <div class="summary-row" *ngIf="userForm.get('state')?.value === 4026">
-          <span>SGST 9%</span>
+          <span>SGST {{sgst_per}}%</span>
           <span>₹{{ sgst || 0 }}</span>
         </div>
         <div class="summary-row" *ngIf="userForm.get('state')?.value !== 4026">
-          <span>IGST 18%</span>
+          <span>IGST {{igst_per}}%</span>
           <span>₹{{ igst || 0 }}</span>
         </div>
         <div class="summary-row total">
