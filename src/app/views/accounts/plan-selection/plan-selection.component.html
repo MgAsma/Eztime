@@ -10,7 +10,8 @@
       </p>
       <div class="plan-price">
         <span>₹{{details?.amount}}</span>
-        <span class="validity"> {{ freeTrailDisable ? 'Expired' : 'Valid for {{details?.no_of_days}} days'}}</span>
+        <span class="validity">   {{ freeTrailDisable ? 'Expired' : 'Valid for ' + details?.no_of_days + ' days' }}</span>
+        
       </div>
   
       <!-- White Background for List -->
