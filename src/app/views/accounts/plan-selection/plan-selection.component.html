@@ -10,8 +10,7 @@
       </p>
       <div class="plan-price">
         <span>₹{{details?.amount}}</span>
-        <span class="validity">Valid for {{details?.no_of_days}} days</span>
-        
+        <span class="validity"> {{ freeTrailDisable ? 'Expired' : 'Valid for {{details?.no_of_days}} days'}}</span>
       </div>
   
       <!-- White Background for List -->
@@ -24,7 +23,7 @@
       </div>
       <div class="text-center">
         <button mat-flat-button color="primary" [disabled]="freeTrailDisable" [title]="freeTrailDisable ? 'You have already used the free trial. Please upgrade to the Standard Plan.':''"  [ngClass]="freeTrailDisable ? 'cta-disabled' : 'cta-button'" (click)="openDialogue(subscription.id,details.id)">
-          {{freeTrailDisable ? 'Expired' : 'Start your free trial now'}}
+          {{freeTrailDisable ? 'Plan Expired' : 'Start your free trial now'}}
         </button>
       </div>
     </ng-container>

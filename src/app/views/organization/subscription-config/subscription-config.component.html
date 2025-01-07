@@ -114,7 +114,7 @@
           <mat-error *ngIf="f['yearlyDiscount']?.touched && f['yearlyDiscount']?.invalid">
             <span *ngIf="f['yearlyDiscount'].errors?.['required']">Discount is required.</span>
             <span *ngIf="f['yearlyDiscount'].errors?.['pattern']">Discount percentage must be a valid number with up to 2 decimal places..</span>
-            <span *ngIf="f['yearlyDiscount'].errors?.['maxlength']">Maximum 3 digits allowed.</span>
+            <span *ngIf="f['yearlyDiscount'].errors?.['maxlength']">Maximum 6 digits allowed.</span>
           </mat-error>
         </mat-form-field>
       </div>

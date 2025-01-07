@@ -57,7 +57,7 @@ export class SubscriptionConfigComponent implements OnInit {
       ],
       yearlyDiscount: [
         '',
-        [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$'), Validators.maxLength(5)],
+        [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$'), Validators.maxLength(6)],
       ],
 
       // GST Details
