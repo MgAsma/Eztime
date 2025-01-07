@@ -66,26 +66,42 @@ export class PeopleListComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.org_id = sessionStorage.getItem('organization_id')
     localStorage.removeItem('employee_id');
-    this.getPeople(`?organization_id=${this.org_id}&page=${1}&page_size=${5}`);
+    this.getPeople(`?organization_id=${this.org_id}&page=${1}&page_size=${10}`);
     this.enabled = true;
     //  this.getUserControls()
   }
   async getSubscriptionDetails(){
-    const modelRef = await this.modalService.open(LimitReachedComponent, {
-      size: <any>'sm',
-      backdrop: true,
-      centered: true
-    })
-    modelRef.componentInstance.status.subscribe(resp => {
-      if (resp == "ok") {
-        this.router.navigate(['/accounts/subscription'])
-        modelRef.close();
+    this.getPeople(`?organization_id=${this.org_id}`);
+    this.api.getData(`${environment.live_url}/${environment.my_subscription}/?organization=${this.org_id}`).subscribe((res: any) => {
+      if(res.data){
+      
+        res.data.forEach(async (element:any) => {
+          if(element.is_active && element.max_users < this.allPeople?.length){
+           
+            const modelRef = await this.modalService.open(LimitReachedComponent, {
+              size: <any>'sm',
+              backdrop: true,
+              centered: true
+            })
+            modelRef.componentInstance.status.subscribe(resp => {
+              if (resp == "ok") {
+                this.router.navigate(['/accounts/subscription'])
+                modelRef.close();
+              }
+              else {
+                modelRef.close();
+              }
+            })
+            }else{
+              this.router.navigate(['/people/create-people'])
+            }
+          
+        })
       }
-      else {
-        modelRef.close();
-      }
     })
-    //this.router.navigate(['/people/create-people'])
+   
+    
+    
   }
   changeYearStartDate(event: any) {
     //console.log(event.target.value)

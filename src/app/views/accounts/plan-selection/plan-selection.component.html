@@ -40,19 +40,28 @@
   
       <!-- Highlighted Background for Monthly and Yearly -->
       <div class="payment-options">
-        <mat-card class="payment-option" *ngIf="subscription.plan_details[0]?.yearly_or_monthly_name === 'Monthly'"  (click)="setPaymentOption(true)" 
+        <mat-card class="payment-option" (click)="setPaymentOption(true)" 
            [ngClass]="monthly ? 'active' : 'highlighted-option'" >
-          <span class="price pe-1">₹{{subscription?.plan_details[0]?.amount}}</span>
+           <ng-container *ngFor="let details of subscription.plan_details">
+            <ng-container *ngIf="details?.yearly_or_monthly_name === 'Monthly'">
+          <span class="price pe-1" >₹{{details?.amount}} </span>
           <small>per user / monthly</small>
           <div class="option-title">Monthly</div>
+        </ng-container>
+        </ng-container>
         </mat-card>
         <mat-card class="payment-option yearly-option" 
         (click)="setPaymentOption(false)" 
         [ngClass]="!monthly ? 'active' : 'highlighted-option'">
-          <span class="price pe-1">₹{{subscription?.plan_details[1]?.amount}}</span>
+        <ng-container *ngFor="let details of subscription.plan_details">
+          <ng-container *ngIf="details?.yearly_or_monthly_name === 'Yearly'">
+          <span class="price pe-1" >₹{{details?.amount}}</span>
+          
           <small>per user / yearly</small>
           <div class="option-title">Yearly</div>
-          <div class="discount-badge"><i class="bi bi-x-circle"></i> {{subscription?.plan_details[1]?.discount}}% </div>
+          <div class="discount-badge"><i class="bi bi-x-circle"></i> {{details?.discount}}% </div>
+        </ng-container>
+        </ng-container>
         </mat-card>
       </div>
   

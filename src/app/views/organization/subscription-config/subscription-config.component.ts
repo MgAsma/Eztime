@@ -13,6 +13,8 @@ import { environment } from '../../../../environments/environment';
 export class SubscriptionConfigComponent implements OnInit {
   BreadCrumbsTitle:any='Subscription Configuration';
   pricingForm: FormGroup;
+  subscriptionDetails: boolean = false;
+  planType: any;
 
   constructor(
     private fb: FormBuilder,
@@ -37,6 +39,7 @@ export class SubscriptionConfigComponent implements OnInit {
         '',
         [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(10)],
       ],
+      monthlyAmount:['',[Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$'), Validators.maxLength(10)]],
       monthlyDuration: [
         '',
         [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(3)],
@@ -47,13 +50,14 @@ export class SubscriptionConfigComponent implements OnInit {
         '',
         [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(10)],
       ],
+      yearlyAmount:['',[Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$'), Validators.maxLength(10)]],
       yearlyDuration: [
         '',
         [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(3)],
       ],
       yearlyDiscount: [
         '',
-        [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(3)],
+        [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$'), Validators.maxLength(5)],
       ],
 
       // GST Details
@@ -74,6 +78,7 @@ export class SubscriptionConfigComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.initializeForm()
+    this.getSubscriptionDetails()
   }
 get f (){
   return this.pricingForm.controls;
@@ -83,29 +88,95 @@ get f (){
     if (this.pricingForm.invalid) {
       return;
     }
+    this.api.getData(`${environment.live_url}/${environment.plan_types}/`).subscribe((res: any) => {
+      if (res?.data) {
+        this.planType = this.swapKeysAndValues(res.data);
+        const payload = this.preparePayload(this.planType);
 
-    const payload = this.preparePayload();
+  
     this.api.postData(`${environment.live_url}/${environment.configure_subscription}/`,payload).subscribe(
       (response) => {
         this.api.showSuccess('Subscription details saved successfully');
+        this.getSubscriptionDetails();
       },
       (error) => {
         this.api.showError(error?.error?.message);
       }
     );
+    }
+  });
   }
+  
+  
+getSubscriptionDetails() {
+  this.api.getData(`${environment.live_url}/${environment.configure_subscription}/`).subscribe(
+    (response) => {
+      if (response?.['subscription_details']) {
+        const subscriptionDetails = response['subscription_details'];
+
+        // Find Free Trial details
+        const freeTrial = subscriptionDetails.find(sub => sub.name === 'Free Trial');
+        const freeTrialPlan = freeTrial?.plan_details?.find(plan => plan.yearly_or_monthly_name === 'Free Plan');
+
+        // Find Standard Plan details
+        const standardPlan = subscriptionDetails.find(sub => sub.name === 'Standard');
+        const monthlyPlan = standardPlan?.plan_details?.find(plan => plan.yearly_or_monthly_name === 'Monthly');
+        const yearlyPlan = standardPlan?.plan_details?.find(plan => plan.yearly_or_monthly_name === 'Yearly');
+
+        // Patch the form values
+        this.pricingForm.patchValue({
+          // Free Trial
+          freeTrialUsers: freeTrialPlan?.users ,
+          freeTrialDuration: freeTrialPlan?.no_of_days,
+
+          // Standard Plan - Monthly
+          monthlyUsers: monthlyPlan?.users,
+          monthlyAmount: monthlyPlan?.amount,
+          monthlyDuration: monthlyPlan?.no_of_days,
+
+          // Standard Plan - Yearly
+          yearlyUsers: yearlyPlan?.users,
+          yearlyAmount: yearlyPlan?.amount,
+          yearlyDuration: yearlyPlan?.no_of_days,
+          yearlyDiscount: yearlyPlan?.discount,
+
+          // GST Details
+          cgstKarnataka: standardPlan?.cgst,
+          sgstKarnataka: standardPlan?.sgst,
+          igstOtherStates: standardPlan?.igst
+        });
+      }
+    },
+    (error) => {
+      this.api.showError(error?.error?.message);
+    }
+  );
+}
+getPlanDetails() {
+ 
+  return this.planType;
+}
+
+swapKeysAndValues(obj: { [key: string]: any }): { [key: string]: any } {
+  const swapped: { [key: string]: any } = {};
+  Object.entries(obj).forEach(([key, value]) => {
+    swapped[value as string] = key;
+  });
+  return swapped;
+}
 
   // Map the form data to the payload structure
-  preparePayload() {
+  preparePayload(event) {
+    console.log(event)
     const formValues = this.pricingForm.value;
-
+   
     return {
       subscription_details: [
         {
-          name: 'Free Trials',
+          name: 'Free Trial',
           plan_details: [
             {
-              plan_type: 3,
+              plan_type: event['Free Plan'],
               max_users: formValues.freeTrialUsers,
               no_of_days: formValues.freeTrialDuration,
               amount: 0
@@ -113,25 +184,26 @@ get f (){
           ]
         },
         {
-          name: 'Standard Plans',
+          name: 'Standard',
           plan_details: [
             {
-              plan_type: 1,
+              plan_type: event['Monthly'],
               max_users: formValues.monthlyUsers,
               no_of_days: formValues.monthlyDuration,
-              amount: 30  // Assuming amount is 30 for monthly
+              amount: formValues.monthlyAmount  // Assuming amount is 30 for monthly
             },
             {
-              plan_type: 2,
+              plan_type: event['Yearly'],
               max_users: formValues.yearlyUsers,
               no_of_days: formValues.yearlyDuration,
-              amount: 25  // Assuming amount is 25 for yearly
+              amount: formValues.yearlyAmount,  // Assuming amount is 25 for yearly
+              discount: formValues.yearlyDiscount
             }
           ]
         }
       ],
-      csgst: formValues.cgstKarnataka,
-      igst: null,  // Assuming IGST is null based on your structure
+      cgst: formValues.cgstKarnataka,
+      igst: formValues.igstOtherStates,  // Assuming IGST is null based on your structure
       sgst: formValues.sgstKarnataka
     };
   }
