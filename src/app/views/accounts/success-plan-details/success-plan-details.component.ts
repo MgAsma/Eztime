@@ -44,7 +44,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.organizationId = sessionStorage.getItem('organization_id');
+    this.organizationId = sessionStorage.getItem('organization_id')!;
     this.getSubscription(this.data);
      let query = `page=${1}&page_size=${this.tableSize}`
     this.getTransactionHistory(query)
@@ -147,7 +147,7 @@ onTableSizeChange(event:any): void {
               slNo: index + 1,
               plan: item.subscribed_organization__subscription_type__name,
               term: item.terms,
-              perUser: 0,
+              perUser: item.per_user_amount,
               users: item.number_of_users || 'NA',
               totalAmount: item.total_amount,
               startDate: this.datePipe.transform(item.subscribed_organization__start_date,'dd-MM-yyyy'),

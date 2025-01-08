@@ -108,9 +108,10 @@ marquee{
    
   .notification-main-content{
     padding: 16px;
-    zoom:97%;
-    min-height: 50vh;
-    max-height: 70vh;
+    //zoom:97%;
+    // min-height: 50vh;
+    // max-height: 70vh;
+    height: auto;
     overflow-y: auto;
   }
     // .title {

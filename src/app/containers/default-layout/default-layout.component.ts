@@ -39,21 +39,12 @@ export class DefaultLayoutComponent {
       page: 'Profile',
       icons: 'bi bi-person'
     },
-    // {
-    //   link:'../register',
-    //   page:'Register',
-    //   icons:'bi bi-person-add'
-    // },
     {
       link: '/changePasswords',
       page: 'Change Password',
       icons: 'bi bi-key'
-    },
-    {
-      link: '/organization/subscription-config',
-      page: 'Subscription Configuration',
-      icons: 'bi bi-power'
     }
+   
   ]
 
   constructor(private ngxService: NgxUiLoaderService,
