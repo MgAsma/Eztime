@@ -97,13 +97,18 @@
           
               <div class="row button-group">
                 <div class="col-4">
-                  <button mat-raised-button  class="action-button btn-cancel" (click)="cancelSubscription(plan)">Cancel</button>
+                  <button mat-raised-button [ngbTooltip]="disableCancelButton? 'please renew': 'cancel subscription'" 
+                   [disabled]="disableCancelButton" class="action-button btn-cancel" (click)="cancelSubscription(plan)"
+                   [ngStyle]="{'cursor': disableCancelButton ? 'not-allowed' : 'pointer'}">Cancel</button>
                 </div>
                 <div class="col-4">
-                  <button mat-raised-button  class="action-button btn-add-user" (click)="addNewUser(plan)">Add User</button>
+                  <button mat-raised-button [ngbTooltip]="disableAddButton? 'please renew': 'add users'" 
+                   [disabled]="disableAddButton"  class="action-button btn-add-user" (click)="addNewUser(plan)"
+                   [ngStyle]="{'cursor': disableAddButton ? 'not-allowed' : 'pointer'}">Add User</button>
                 </div>
                 <div class="col-4">
-                  <button mat-raised-button  class="action-button btn-renew" (click)="renewSubscription(plan)">Renew</button>
+                  <button [disabled]="showRenewalButton"  mat-raised-button  class="action-button btn-renew" 
+                  (click)="renewSubscription(plan)" [ngStyle]="{'cursor': showRenewalButton ? 'not-allowed' : 'pointer'}">Renew</button>
                 </div>
               </div>
             </ng-container>
