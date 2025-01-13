@@ -179,21 +179,21 @@ cancelExistPlan(subscription){
     }
   }
 
-      getTransactionHistory(query){
-        if(this.organizationId){
-        this.api.getData(`${environment.live_url}/${environment.transaction_history}/?organization=${this.organizationId}&${query}`).subscribe((res)=>{
-          if (res && res?.['results']) {
-            this.transactionData = res?.['results']?.map((item, index) => ({
-              slNo: index + 1,
-              plan: item.subscribed_organization__subscription_type__name,
-              term: item.terms,
-              perUser: 0,
-              users: item.number_of_users || 'NA',
-              totalAmount: item.total_amount,
-              startDate: this.datePipe.transform(item.subscribed_organization__start_date,'dd-MM-yyyy'),
-              endDate:  this.datePipe.transform(item.subscribed_organization__expiry_date,'dd-MM-yyyy'),
-            }));
-          
+  getTransactionHistory(query) {
+    if (this.organizationId) {
+      this.api.getData(`${environment.live_url}/${environment.transaction_history}/?organization=${this.organizationId}&${query}`).subscribe((res) => {
+        if (res && res?.['results']) {
+          this.transactionData = res?.['results']?.map((item, index) => ({
+            slNo: index + 1,
+            plan: item.subscribed_organization__subscription_type__name,
+            term: item.terms,
+            perUser: 0,
+            users: item.number_of_users || 'NA',
+            totalAmount: item.total_amount,
+            startDate: this.datePipe.transform(item.subscribed_organization__start_date, 'dd-MM-yyyy'),
+            endDate: this.datePipe.transform(item.subscribed_organization__expiry_date, 'dd-MM-yyyy'),
+          }));
+
           this.isLoading = false; // Stop loading state
           this.count = res?.['total_no_of_record']
         }
