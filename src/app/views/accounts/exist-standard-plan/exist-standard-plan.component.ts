@@ -65,15 +65,44 @@ export class ExistStandardPlanComponent implements OnInit {
        this.igst_per = res.data[0].igst;
        if(res.data[0].subscribed_for==='Yearly'){
          this.discount = Math.round(res.data[0].discount);
-        this.planAmount = Math.round(res.data[0].discount);
-       } else{
-        this.planAmount = Math.round(res.data[0].amount);
-        this.discount = 0;
-       }
+         this.planAmount = Math.round(res.data[0].discount);
+        } else{
+          this.planAmount = Math.round(res.data[0].amount);
+          this.discount = 0;
+        }
+        this.expiryBtnValidation(res.data[0].expiry_date)
+      //  const amount = this.planAmount; // Monthly/Yearly price per user
+      //  const noOfUsers = this.userForm.value.noOfUsers;
+      //  this.subtotal = noOfUsers * amount;
       },(error)=>{
         console.log(error)
       }
     )
+  }
+
+  expiryBtnValidation(expiry_date) {
+    // console.log(expiry_date)
+    const endDate = new Date(expiry_date)
+    const currentDate = new Date();
+    const diffInTime = endDate.getTime() - currentDate.getTime();
+    const remainingDays = Math.ceil(diffInTime / (1000 * 60 * 60 * 24));
+    // console.log( remainingDays)
+    let aaa = (this.planAmount/30)*remainingDays*this.userForm.value.noOfUsers
+    this.subtotal = Math.round(aaa);
+    // console.log(endDate, currentDate)
+    // if (endDate < currentDate) {
+    //   console.log('date expired')
+    // } else if (endDate == currentDate) {
+    //   console.log('date is equal')
+    // } else {
+     
+      // console.log(this.subtotal)
+      // if (remainingDays <= 5) {
+      //   console.log('less or equal to 5', remainingDays)
+      // } else {
+      //   console.log('more than 5', remainingDays)
+      // }
+    // }
   }
   getSubscription() {
     this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res: any) => {
@@ -100,7 +129,7 @@ export class ExistStandardPlanComponent implements OnInit {
   initForm(){
     this.userForm = this.fb.group({
       noOfUsers: [
-        '', 
+        1, 
         [
           Validators.required,
           Validators.min(1),

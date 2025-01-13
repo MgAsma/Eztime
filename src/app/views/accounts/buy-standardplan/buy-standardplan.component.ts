@@ -56,7 +56,7 @@ export class BuyStandardplanComponent implements OnInit {
     }
     this.initForm()
     this.getState()
-    this.getSubscription()
+    this.getSubscription();
   }
 
   getSubscription() {
@@ -75,7 +75,11 @@ export class BuyStandardplanComponent implements OnInit {
               // Check for Monthly or Yearly plans and assign amounts accordingly
               if (item.yearly_or_monthly_name === 'Monthly') {
                 this.monthlyAmount = Math.round(item.amount);
+                this.selectedAmount = this.monthlyAmount;
                 this.selectedTypeName = item.yearly_or_monthly_name;
+                const amount = this.selectedAmount || this.monthlyAmount; // Monthly/Yearly price per user
+                const noOfUsers = this.userForm.value.noOfUsers;
+                this.subtotal = noOfUsers * amount;
                 this.monthlyName = item.yearly_or_monthly_name;
               } else if (item.yearly_or_monthly_name === 'Yearly') {
                 this.yearlyName = item.yearly_or_monthly_name
@@ -116,7 +120,7 @@ export class BuyStandardplanComponent implements OnInit {
     const noOfUsers = this.userForm.value.noOfUsers;
     this.subtotal = noOfUsers * amount;
     if(this.selectedTypeName==='Yearly'){
-      this.subtotal = noOfUsers * amount*12;
+      this.subtotal = (amount/30)*365*noOfUsers
     } else{
       this.subtotal = noOfUsers * amount;
     }
