@@ -14,7 +14,7 @@ export class Page404Component {
     private location:Location,
     private router:Router) { }
   goBack(){
-    this.user_id = sessionStorage.getItem('user_id')
+    this.user_id = sessionStorage.getItem('user_id') || ''
     if(this.user_id){
       this.location.back()
     }else{

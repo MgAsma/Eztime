@@ -30,7 +30,11 @@ export class PlanSelectionComponent implements OnInit {
      private dialog: MatDialog) { }
  
      ngOnChanges(){
-      this.subscriptionData = this.data;
+      this.subscriptionData = this.data.sort((a, b) => {
+        if (a.name === 'Free Trial') return -1; // 'Free Trial' should come first
+        if (b.name === 'Free Trial') return 1;
+        return 0; // No change in order if neither is 'Free Trial'
+      });
       this.freeTrailDisable = this.disabled
      }
    ngOnInit(): void {

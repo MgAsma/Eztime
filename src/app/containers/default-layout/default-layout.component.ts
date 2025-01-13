@@ -21,6 +21,7 @@ interface NavItem {
 @Component({
   selector: 'app-default-layout',
   templateUrl: './default-layout.component.html',
+  styleUrls:['./default-layout.component.scss']
 })
 export class DefaultLayoutComponent {
   iconSize = false;
@@ -85,7 +86,7 @@ export class DefaultLayoutComponent {
 //   // Toggle the clicked item
 //   item.isExpanded = !item.isExpanded;
 // }
-  ngOnInit() {
+  async ngOnInit() {
     this.user_role_Name = sessionStorage.getItem('user_role_name');
     this.orgId = sessionStorage.getItem('organization_id');
     
@@ -114,7 +115,7 @@ export class DefaultLayoutComponent {
         this.getMySubscription();
       }
     });
-
+    
     //this.setInitialExpandedState();
   }
   getMySubscription() {

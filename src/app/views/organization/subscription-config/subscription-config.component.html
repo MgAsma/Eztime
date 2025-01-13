@@ -3,7 +3,7 @@
     <!-- Free Trial -->
     <h3>Free Trial</h3>
     <div class="row">
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+      <div class="col-sm-12 col-md-12 col-lg-3 mb-3">
         <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
           <mat-label>No Of Users <b class="r-star">*</b></mat-label>
           <input matInput formControlName="freeTrialUsers" placeholder="Enter no of users" autocomplete="off" />
@@ -15,7 +15,7 @@
         </mat-form-field>
       </div>
 
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+      <div class="col-sm-12 col-md-12 col-lg-3 mb-3">
         <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
           <mat-label>Duration (Days) <b class="r-star">*</b></mat-label>
           <input matInput formControlName="freeTrialDuration" placeholder="Enter duration in days" autocomplete="off" />
@@ -34,7 +34,7 @@
       <div class="col-sm-3 col-md-3 col-lg-1" style="padding: 17px 10px;">
         <strong>Monthly</strong>
       </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+      <!-- <div class="col-sm-12 col-md-12 col-lg-3 mb-3">
         <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
           <mat-label>No Of Users (Monthly Plan) <b class="r-star">*</b></mat-label>
           <input matInput formControlName="monthlyUsers" placeholder="Enter no of users" autocomplete="off" />
@@ -44,8 +44,8 @@
             <span *ngIf="f['monthlyUsers'].errors?.['maxlength']">Maximum 10 digits allowed.</span>
           </mat-error>
         </mat-form-field>
-      </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+      </div> -->
+      <div class="col-sm-12 col-md-12 col-lg-3 mb-3">
         <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
           <mat-label>Amount Per User (Monthly Plan) <b class="r-star">*</b></mat-label>
           <input matInput formControlName="monthlyAmount" placeholder="Enter amount" autocomplete="off" />
@@ -56,7 +56,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+      <div class="col-sm-12 col-md-12 col-lg-3 mb-3">
         <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
           <mat-label>Duration (Days) <b class="r-star">*</b></mat-label>
           <input matInput formControlName="monthlyDuration" placeholder="Enter duration in days" autocomplete="off" />
@@ -73,7 +73,7 @@
       <div class="col-sm-3 col-md-3 col-lg-1" style="padding: 17px 10px;">
         <strong>Yearly</strong>
       </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+      <!-- <div class="col-sm-12 col-md-12 col-lg-3 mb-3">
         <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
           <mat-label>No Of Users (Yearly Plan) <b class="r-star">*</b></mat-label>
           <input matInput formControlName="yearlyUsers" placeholder="Enter no of users" autocomplete="off" />
@@ -83,8 +83,9 @@
             <span *ngIf="f['yearlyUsers'].errors?.['maxlength']">Maximum 10 digits allowed.</span>
           </mat-error>
         </mat-form-field>
-      </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+      </div> -->
+  
+      <div class="col-sm-12 col-md-12 col-lg-3 mb-3">
         <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
           <mat-label>Amount Per User (Yearly Plan) <b class="r-star">*</b></mat-label>
           <input matInput formControlName="yearlyAmount" placeholder="Enter amount" autocomplete="off" />
@@ -95,7 +96,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+      <div class="col-sm-12 col-md-12 col-lg-3 mb-3">
         <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
           <mat-label>Duration (Days) <b class="r-star">*</b></mat-label>
           <input matInput formControlName="yearlyDuration" placeholder="Enter duration in days" autocomplete="off" />
@@ -107,7 +108,7 @@
         </mat-form-field>
       </div>
 
-      <div class="col-sm-12 col-md-6 col-lg-2 mb-3">
+      <div class="col-sm-12 col-md-12 col-lg-2 mb-3">
         <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
           <mat-label>Discount (%) <b class="r-star">*</b></mat-label>
           <input matInput formControlName="yearlyDiscount" placeholder="Enter discount percentage" autocomplete="off" />
@@ -126,7 +127,7 @@
       <div class="col-sm-3 col-md-3 col-lg-1" style="padding:10px;">
         <strong>Karnataka State</strong>
       </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+      <div class="col-sm-12 col-md-12 col-lg-3 mb-3">
         <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
           <mat-label>CGST (%) (Karnataka) <b class="r-star">*</b></mat-label>
           <input matInput formControlName="cgstKarnataka" placeholder="Enter CGST percentage" autocomplete="off" />
@@ -138,7 +139,7 @@
         </mat-form-field>
       </div>
 
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+      <div class="col-sm-12 col-md-12 col-lg-3 mb-3">
         <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
           <mat-label>SGST (%) (Karnataka) <b class="r-star">*</b></mat-label>
           <input matInput formControlName="sgstKarnataka" placeholder="Enter SGST percentage" autocomplete="off" />
@@ -155,7 +156,7 @@
       <div class="col-sm-3 col-md-3 col-lg-1" style="padding:10px;">
         <strong>Other State</strong>
       </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+      <div class="col-sm-12 col-md-12 col-lg-3 mb-3">
         <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
           <mat-label>IGST (%) (Other States) <b class="r-star">*</b></mat-label>
           <input matInput formControlName="igstOtherStates" placeholder="Enter IGST percentage" autocomplete="off" />

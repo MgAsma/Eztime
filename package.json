@@ -47,6 +47,7 @@
     "chart.js": "^3.9.1",
     "dayjs": "^1.11.10",
     "font-awesome": "^4.7.0",
+    "is-online": "^11.0.0",
     "jwt-decode": "^4.0.0",
     "mat-timepicker": "^5.1.4",
     "ng-multiselect-dropdown": "^0.3.9",
@@ -61,6 +62,7 @@
     "rxjs": "~7.5.0",
     "tslib": "^2.7.0",
     "util": "^0.12.5",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.11.8"
   },
   "devDependencies": {

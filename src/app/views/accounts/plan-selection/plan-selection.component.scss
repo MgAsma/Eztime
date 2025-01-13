@@ -15,7 +15,9 @@
       border-radius: 10px;
       // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       padding: 20px;
-      zoom:95%
+      zoom:95%;
+      font-size:14px;
+      font-weight: 500;
     }
     
     /* Free Trial Card */
@@ -31,6 +33,7 @@
         font-size: 14px;
         color: #5f6368;
         line-height: 1.6;
+        font-weight: 500;
       }
   
       .plan-price {
@@ -40,9 +43,10 @@
         color: #0066cc;
   
         .validity { 
-          font-size: 12px;
+          font-size: 14px;
           float: right;
           color: black;
+          font-weight: 600;
         }
       
       }
@@ -123,7 +127,7 @@
           }
          
           .option-title {
-            margin-top: 5px;
+            margin-bottom: 5px;
             font-size: 14px;
           }
         }
@@ -185,6 +189,8 @@
     .active{
         background: #075691;
         color:#FFFFFF;
+        padding: 10px;
+        line-height: 23px;
         .price {
             font-size: 20px;
             font-weight: bold;
