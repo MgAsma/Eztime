@@ -114,21 +114,21 @@ export class SuccessPlanDetailsComponent implements OnInit {
       }
     })
   }
-cancelExistPlan(subscription){
-  const data = {
-    organization: this.organizationId,
-    subscription_id: subscription.id
+  cancelExistPlan(subscription) {
+    const data = {
+      organization: this.organizationId,
+      subscription_id: subscription.id
+    }
+    this.api.postData(`${environment.live_url}/${environment.cancel_my_subscription}/`, data).subscribe((res) => {
+      if (res) {
+        this.successEmit.emit(true)
+        this.api.showSuccess(`Subscription cancelled successfully`)
+
+      }
+    }, (err) => {
+      this.api.showError(err?.error?.message)
+    })
   }
-  this.api.postData(`${environment.live_url}/${environment.cancel_my_subscription}/`,data).subscribe((res)=>{
-  if(res){
-    this.successEmit.emit(true)
-    this.api.showSuccess(`Subscription cancelled successfully`)
- 
-  }
-  },(err)=>{
-    this.api.showError(err?.error?.message)
-  })
-}
 
   addNewUser(plan_data: any) {
     console.log(plan_data)
