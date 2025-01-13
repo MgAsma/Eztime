@@ -16,29 +16,32 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./success-plan-details.component.scss']
 })
 export class SuccessPlanDetailsComponent implements OnInit {
-  BreadCrumbsTitle:any='Subscription plan';
+  BreadCrumbsTitle: any = 'Subscription plan';
   subscriptionData: Object;
-  @Input()data:any;
-  @Input()my_subscription:any;
-  @Input()selectedPlanDetails:any;
-  @Output()successEmit = new EventEmitter<any>();
+  @Input() data: any;
+  @Input() my_subscription: any;
+  @Input() selectedPlanDetails: any;
+  @Output() successEmit = new EventEmitter<any>();
   monthlyAmount: any;
   yearlyAmount: any;
   discount: any;
   isLoading: boolean = true;
   transactionData: any;
   tableSize = 5;
-  tableSizes = [5,10,25,50,100];
+  tableSizes = [5, 10, 25, 50, 100];
   page: any;
   count: any;
   organizationId: string;
   mySubscriptionData: any;
+  showRenewalButton: boolean = false;
+  disableCancelButton: boolean = false;
+  disableAddButton: boolean = false;
   constructor(
-    private common_service:CommonServiceService,
-    private dialog:MatDialog,
-    private api:ApiserviceService,
-    private router:Router,
-    private modalService:NgbModal,
+    private common_service: CommonServiceService,
+    private dialog: MatDialog,
+    private api: ApiserviceService,
+    private router: Router,
+    private modalService: NgbModal,
     private datePipe: DatePipe
   ) { }
 
@@ -46,33 +49,70 @@ export class SuccessPlanDetailsComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.organizationId = sessionStorage.getItem('organization_id')!;
     this.getSubscription(this.data);
-     let query = `page=${1}&page_size=${this.tableSize}`
+    let query = `page=${1}&page_size=${this.tableSize}`
     this.getTransactionHistory(query)
     this.mySubscriptionData = this.my_subscription
+    this.mySubscriptionData.forEach((element1) => {
+      if (element1.subscription_type_name === 'Standard') {
+        this.expiryBtnValidation(element1.expiry_date);
+      }
+    });
   }
-  ngOnChanges(){
+  ngOnChanges() {
     this.mySubscriptionData = this.my_subscription
-    console.log('freeeee',this.mySubscriptionData)
+    console.log('freeeee', this.mySubscriptionData)
+
   }
-  cancelSubscription(event){
-       const modelRef = this.modalService.open(CancelSubscriptionComponent, {
-          size: <any>'sm',
-          backdrop: true,
-          centered: true
-        });
-        modelRef.componentInstance.title = `Are you sure about cancelling your subscription?`;
-        modelRef.componentInstance.subtitle = `Suspending this account will also deactivate all associated user accounts.`;
-        modelRef.componentInstance.message = `Subscription Cancellation`;
-        modelRef.componentInstance.status.subscribe(resp => {
-          if (resp == "ok") {
-            this.cancelExistPlan(event)
-            
-            modelRef.close();
-          }
-          else {
-            modelRef.close();
-          }
-        })
+  expiryBtnValidation(expiry_date) {
+    const endDate = new Date(expiry_date)
+    const currentDate = new Date();
+    // console.log(endDate, currentDate)
+    if (endDate < currentDate) {
+      console.log('date expired')
+      this.disableCancelButton = true;
+      this.disableAddButton = true;
+      this.showRenewalButton = false; 
+    } else if (endDate.getTime() === currentDate.getTime()) {
+      this.disableCancelButton = false;
+      this.disableAddButton = true;
+      this.showRenewalButton = false;
+      console.log('date is equal')
+    } else {
+      const diffInTime = endDate.getTime() - currentDate.getTime();
+      const remainingDays = Math.ceil(diffInTime / (1000 * 60 * 60 * 24));
+
+      if (remainingDays <= 5) {
+        console.log('less or equal to 5', remainingDays)
+        this.disableCancelButton = false;
+        this.disableAddButton = false;
+        this.showRenewalButton = false;
+      } else {
+        console.log('more than 5', remainingDays)
+        this.disableCancelButton = false;
+        this.disableAddButton = false;
+        this.showRenewalButton = true;
+      }
+    }
+  }
+  cancelSubscription(event) {
+    const modelRef = this.modalService.open(CancelSubscriptionComponent, {
+      size: <any>'sm',
+      backdrop: true,
+      centered: true
+    });
+    modelRef.componentInstance.title = `Are you sure about cancelling your subscription?`;
+    modelRef.componentInstance.subtitle = `Suspending this account will also deactivate all associated user accounts.`;
+    modelRef.componentInstance.message = `Subscription Cancellation`;
+    modelRef.componentInstance.status.subscribe(resp => {
+      if (resp == "ok") {
+        this.cancelExistPlan(event)
+
+        modelRef.close();
+      }
+      else {
+        modelRef.close();
+      }
+    })
   }
 cancelExistPlan(subscription){
   const data = {
@@ -82,29 +122,29 @@ cancelExistPlan(subscription){
   this.api.postData(`${environment.live_url}/${environment.cancel_my_subscription}/`,data).subscribe((res)=>{
   if(res){
     this.successEmit.emit(true)
-    this.common_service.setSubscriptionStatus(true)
     this.api.showSuccess(`Subscription cancelled successfully`)
+ 
   }
   },(err)=>{
     this.api.showError(err?.error?.message)
   })
 }
 
-  addNewUser(plan_data:any){
+  addNewUser(plan_data: any) {
     console.log(plan_data)
     const dialogRef = this.dialog.open(ExistStandardPlanComponent, {
       data: { plan: plan_data },
       panelClass: 'custom-dialog'
     });
-    dialogRef.disableClose=true
+    dialogRef.disableClose = true
   }
-  renewSubscription(plan:any){
+  renewSubscription(plan: any) {
     const dialogRef = this.dialog.open(BuyStandardplanComponent, {
-      data: { plan_data:  plan},
+      data: { plan_data: plan },
       panelClass: 'custom-dialog'
     });
-    dialogRef.disableClose=true
-     
+    dialogRef.disableClose = true
+
   }
   getSubscription(event) {
     // Iterate through subscription data
@@ -122,22 +162,22 @@ cancelExistPlan(subscription){
       }
     });
 
-}
-onTableDataChange(event:any){
-  this.page = event;
-  let query = `page=${this.page}&page_size=${this.tableSize}`
- 
-  this.getTransactionHistory(query)
-}  
-onTableSizeChange(event:any): void {
-  if(event){
-   
-  this.tableSize = Number(event.value);
-  let query = `page=${1}&page_size=${this.tableSize}`
-  
-  this.getTransactionHistory(query)
   }
-} 
+  onTableDataChange(event: any) {
+    this.page = event;
+    let query = `page=${this.page}&page_size=${this.tableSize}`
+
+    this.getTransactionHistory(query)
+  }
+  onTableSizeChange(event: any): void {
+    if (event) {
+
+      this.tableSize = Number(event.value);
+      let query = `page=${1}&page_size=${this.tableSize}`
+
+      this.getTransactionHistory(query)
+    }
+  }
 
       getTransactionHistory(query){
         if(this.organizationId){
@@ -147,7 +187,7 @@ onTableSizeChange(event:any): void {
               slNo: index + 1,
               plan: item.subscribed_organization__subscription_type__name,
               term: item.terms,
-              perUser: item.per_user_amount,
+              perUser: 0,
               users: item.number_of_users || 'NA',
               totalAmount: item.total_amount,
               startDate: this.datePipe.transform(item.subscribed_organization__start_date,'dd-MM-yyyy'),
@@ -155,9 +195,9 @@ onTableSizeChange(event:any): void {
             }));
           
           this.isLoading = false; // Stop loading state
-            this.count = res?.['total_no_of_record']
-          }
-        })
-      }
-      }
+          this.count = res?.['total_no_of_record']
+        }
+      })
+    }
+  }
 }
