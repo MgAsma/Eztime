@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './icons/icon-subset';
 import { Title } from '@angular/platform-browser';
+import isOnline from 'is-online';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -12,6 +13,10 @@ import { Title } from '@angular/platform-browser';
 })
 export class AppComponent implements OnInit {
   title = 'Projectace';
+ 
+
+  connectionStatusMessage!: string;
+  connectionStatus!: string;
 
   constructor(
     private router: Router,
@@ -21,18 +26,23 @@ export class AppComponent implements OnInit {
     titleService.setTitle(this.title);
     // iconSet singleton
     iconSetService.icons = { ...iconSubset };
+    
   }
  
-  ngOnInit(): void {
+  async ngOnInit() {
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;
       }
     });
-    let vh = window.innerHeight * 0.01;
-  // Then we set the value in the --vh custom property to the root of the document
+   let vh = window.innerHeight * 0.01;
+  //Then we set the value in the --vh custom property to the root of the document
   document.documentElement.style.setProperty('--vh', `${vh}px`);
-  
+   if(await isOnline() === false){
+    this.router.navigate(['/no-internet'])
+   }
   }
  
+  
+  
 }

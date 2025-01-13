@@ -18,6 +18,9 @@ import { CreateRoleComponent } from './create-role/create-role.component';
 import { SharedModule } from '../../shared/shared.module';
 import { ForgotChangeComponent } from './forgot-change/forgot-change.component';
 import { NotificationComponent } from './notification/notification.component';
+import { NoInternetComponent } from './no-internet/no-internet.component';
+import { Page504Component } from './page504/page504.component';
+import { Page503Component } from './page503/page503.component';
 @NgModule({
   declarations: [
     LoginComponent,
@@ -29,7 +32,10 @@ import { NotificationComponent } from './notification/notification.component';
     ChangePasswordComponent,
     CreateRoleComponent,
     ForgotChangeComponent,
-    NotificationComponent
+    NotificationComponent,
+    NoInternetComponent,
+    Page504Component,
+    Page503Component
   ],
   imports: [
     CommonModule,

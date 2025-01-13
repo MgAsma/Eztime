@@ -82,8 +82,8 @@ cancelExistPlan(subscription){
   this.api.postData(`${environment.live_url}/${environment.cancel_my_subscription}/`,data).subscribe((res)=>{
   if(res){
     this.successEmit.emit(true)
+    this.common_service.setSubscriptionStatus(true)
     this.api.showSuccess(`Subscription cancelled successfully`)
- 
   }
   },(err)=>{
     this.api.showError(err?.error?.message)

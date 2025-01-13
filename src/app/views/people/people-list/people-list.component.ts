@@ -76,7 +76,7 @@ export class PeopleListComponent implements OnInit {
       if(res.data){
       
         res.data.forEach(async (element:any) => {
-          if(element.is_active && element.max_users < this.allPeople?.length){
+          if(element.is_active && element.added_users < this.allPeople?.length){
            
             const modelRef = await this.modalService.open(LimitReachedComponent, {
               size: <any>'sm',

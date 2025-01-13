@@ -57,6 +57,7 @@ import { RouterModule } from '@angular/router';
 
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BasicAuthInterceptor } from './service/basic-auth.interceptor';
+import { HttpErrorInterceptor } from './service/http-error.interceptor';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -75,7 +76,6 @@ import { UserGuideModalComponent } from './views/user-guide-modal/user-guide-mod
 import {MatDialogModule} from '@angular/material/dialog';
 import { UserWelcomeMsgComponent } from './views/user-welcome-msg/user-welcome-msg.component';
 import { RazorpayService } from './service/razorpay.service';
-
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -152,7 +152,7 @@ const APP_CONTAINERS = [
   ],
   exports: [
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     // {
@@ -169,6 +169,13 @@ const APP_CONTAINERS = [
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
     },
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
+    
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: HttpErrorInterceptor,
+        multi: true,
+      },
+    
     IconSetService,
     Title,
     DatePipe,

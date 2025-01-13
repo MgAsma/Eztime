@@ -16,6 +16,8 @@ import { AuthGuard } from './auth.guard'
 import { OrgAuthGuard } from './org-auth.guard';
 import { NotificationComponent } from './views/pages/notification/notification.component';
 import { SubscriptionConfigComponent } from './views/organization/subscription-config/subscription-config.component';
+import { NoInternetComponent } from './views/pages/no-internet/no-internet.component';
+import { Page504Component } from './views/pages/page504/page504.component';
 
 
 
@@ -137,6 +139,17 @@ const routes: Routes = [
     }
   },
   {
+    path: 'no-internet',
+    component: NoInternetComponent
+  },
+  {
+      path: '504',
+      component: Page504Component,
+      data: {
+        title: 'Page 504'
+      }
+  },
+  {
     path: '500',
     component: Page500Component,
     data: {
@@ -195,7 +208,7 @@ const routes: Routes = [
   //   },
     
   // }
-    // { path: '**', redirectTo: 'login' }
+    { path: '**', redirectTo: '404' }
 ];
 
 @NgModule({

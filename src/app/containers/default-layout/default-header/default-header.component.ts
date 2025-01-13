@@ -14,6 +14,7 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { UserGuideModalComponent } from 'src/app/views/user-guide-modal/user-guide-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UserWelcomeMsgComponent } from 'src/app/views/user-welcome-msg/user-welcome-msg.component';
+import { subscribe } from 'diagnostics_channel';
 
 @Component({
   selector: 'app-default-header',
@@ -61,6 +62,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   dashboardAccess: any;
   bsModalRef?: BsModalRef;
   notification_count: number = 0;
+  mySubscription: any;
   constructor(private classToggler: ClassToggleService, private modalService: NgbModal,
     private router: Router,
     private api: ApiserviceService, private cdref: ChangeDetectorRef,
@@ -71,7 +73,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   }
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id');
-    // this.orgId = sessionStorage.getItem('org_id')
+    this.orgId = sessionStorage.getItem('organization_id')
     this.user_role_Name = sessionStorage.getItem('user_role_name');
     this.getNotification()
     this.permissionArr = JSON.parse(sessionStorage.getItem('permissionArr'));
@@ -85,8 +87,19 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
       this.previousPage = subtitle
     })
     this.getaccessDetails()
+    if(this.user_role_Name !== 'SuperAdmin'){
+      this.getMySubscription()
+    }
+
   }
-  
+  getMySubscription(){
+    this.api.getData(`${environment.live_url}/${environment.my_subscription}/?organization=${this.orgId}`).subscribe((res:any)=>{
+      if(res){
+        this.mySubscription = res.data || res
+        console.log(this.mySubscription,'this.mySubscription')
+      }
+    })
+  }
   getaccessDetails(){
     this.dashboardAccess = this.permissionArr?.find((element,i) =>element?.name === 'Dashboard')
     console.log(this.dashboardAccess,"DASHBOARD")

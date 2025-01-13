@@ -14,7 +14,7 @@ export class CommonServiceService {
    }
    private titleSubject = new BehaviorSubject<string>('Dashboard');
    title$ = this.titleSubject.asObservable();
-  
+   subsctiptionState$ = new BehaviorSubject(false);
    profileSubject = new BehaviorSubject<any>(null);
    profilePhoto$ = this.profileSubject.asObservable()
    private previousPage = new BehaviorSubject<string>('')
@@ -27,7 +27,9 @@ export class CommonServiceService {
    setSubTitle(subtitle:string){
     this.previousPage.next(subtitle)
    }
-
+   setSubscriptionStatus(status){
+    this.subsctiptionState$.next(status)
+   }
    setProfilePhoto(data:string){
     this.profileSubject.next(data);
    }

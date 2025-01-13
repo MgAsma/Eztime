@@ -6,9 +6,47 @@
     <img src="../../../assets/images/logo.svg" width="170px" height="65px" class="sidebar-logo-sidebar" />
   </c-sidebar-brand>
   <perfect-scrollbar [config]="perfectScrollbarConfig">
-    <c-sidebar-nav [navItems]="sidebarNavItems" dropdownMode="close">
+    <!-- <c-sidebar-nav [navItems]="sidebarNavItems" dropdownMode="close">
 
-    </c-sidebar-nav>
+    </c-sidebar-nav> -->
+     
+    
+
+    <mat-nav-list class="nav-list-custom" style="padding-right: 2px;" [class.disabled-item]="mySubscription">
+      <ng-container *ngFor="let item of sidebarNavItems">
+        <!-- Parent item -->
+        <mat-list-item 
+          [routerLink]="shouldDisableItem(item) ? null : (item.children?.length ? null : item.url)"
+          routerLinkActive="active-link"
+          (click)="shouldDisableItem(item) ? null : (item.children?.length && toggleSubmenu(item))"
+          [class.parent-item]="item.children?.length"
+          [class.disabled-item]="shouldDisableItem(item)"
+          [style.opacity]="shouldDisableItem(item) ? '0.7' : '1'"
+          [style.pointer-events]="shouldDisableItem(item) ? 'none' : 'auto'">
+          
+          <i [class]="item.icon" style="padding-right: 15px;"></i>
+          <span matListItemTitle>{{item.name}}</span>
+          
+          <mat-icon class="expand-icon" *ngIf="item.children?.length">
+            {{item.isExpanded ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </mat-list-item>
+    
+        <!-- Child items -->
+        <mat-list-item *ngFor="let child of item.children"
+          [routerLink]="shouldDisableItem(child) ? null : child.url"
+          routerLinkActive="active-link"
+          class="child-item"
+          [style.display]="item.isExpanded ? 'flex' : 'none'"
+          [class.disabled-item]="shouldDisableItem(child)"
+          [style.opacity]="shouldDisableItem(child) ? '0.7' : '1'"
+          [style.pointer-events]="shouldDisableItem(child) ? 'none' : 'auto'">
+          
+          <i [class]="child.icon" style="padding-right: 15px;"></i>
+          <span matListItemTitle>{{child.name}}</span>
+        </mat-list-item>
+      </ng-container>
+    </mat-nav-list>
   </perfect-scrollbar>
   <mat-card class="profile-settings-card">
     <div class="d-flex">

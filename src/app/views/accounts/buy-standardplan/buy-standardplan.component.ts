@@ -7,6 +7,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { RazorpayService } from '../../../service/razorpay.service'
 import { TrialSuccessComponent } from '../trial-success/trial-success.component';
+import { CommonServiceService } from '../../../service/common-service.service';
 
 declare var Razorpay: any;
 @Component({
@@ -44,7 +45,8 @@ export class BuyStandardplanComponent implements OnInit {
     private razorpay:RazorpayService,
     private modalService:NgbModal,
     private ngZone: NgZone,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private common_service:CommonServiceService
   ) { }
   ngOnInit(): void {
     this.orgId = sessionStorage.getItem('organization_id');
@@ -299,8 +301,9 @@ export class BuyStandardplanComponent implements OnInit {
     modelRef.componentInstance.message = `Transaction Successful!`;
     modelRef.componentInstance.status.subscribe(resp => {
       if (resp == "ok") {
-        modelRef.close();
+        this.common_service.setSubscriptionStatus(true)
         this.api.setComponentLoadedStatus(true);
+        modelRef.close();
       }
       else {
         modelRef.close();

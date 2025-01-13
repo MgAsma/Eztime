@@ -4,6 +4,8 @@ import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { NoInternetComponent } from './no-internet/no-internet.component';
+import { Page504Component } from './page504/page504.component';
 
 const routes: Routes = [
   {
@@ -19,6 +21,17 @@ const routes: Routes = [
     data: {
       title: 'Page 500'
     }
+  },
+  {
+    path: '504',
+    component: Page504Component,
+    data: {
+      title: 'Page 504'
+    }
+  },
+  {
+    path: 'no-internet',
+    component: NoInternetComponent
   },
   {
     path: '',

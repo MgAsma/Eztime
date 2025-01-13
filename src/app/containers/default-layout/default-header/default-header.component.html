@@ -29,31 +29,35 @@
    
     <c-header-nav class="p-r">
       <div class="row" style="transform: scale(0.9);">
-        <div class="col">
-          <button mat-button type="button">
-            <div class="row">
-              <div class="col">
-                <img src="../../../../assets/images/megaphone.png"/>
-              </div>
-              <div class="col">
-                <p>Free Trail</p>
-                <strong>20 days left</strong>
-              </div>
-            </div>
+        <div class="col" *ngIf="user_role_Name !='SuperAdmin'" >
+          <div *ngFor="let items of mySubscription">
+          <button mat-button type="button" class="btn-4" *ngIf="items?.subscription_type_name === 'Free Trial' && items?.is_active">
+            
+              
+                <div><img src="../../../../assets/images/megaphone_white.svg" style="position: absolute;
+                  left: 10px;
+                  top: 10px;"/><small>{{items?.subscription_type_name}}</small></div>
+                <strong>{{items?.remaining_number_of_days  || 'NA'}} {{items?.remaining_number_of_days > 1 ? 'days left' : 'day left'}}</strong>
+              
             
           </button>
         </div>
+          
+        </div>
         <div class="col p-0">
-          <button *ngIf="user_role_Name!='SuperAdmin'" title="Get started" type="click" class="user-guide-btn"  (click)="openWelcomeDialog()">
+          <button *ngIf="user_role_Name!='SuperAdmin'"  container="body"
+          ngbTooltip="Get started" placement="top" type="click" class="user-guide-btn"  (click)="openWelcomeDialog()">
             <img src="../../../assets/images/bulb.svg" width="25" height="25">
           </button>
         </div>
         <div class="col" >
           <div class="d-flex justify-content-between">
             <div class="notification-container">
-              <i class="bi bi-bell" [matBadge]="notification_count || 0"  matBadgeColor="warn" title="notification" (click)="openNotification()"></i>
+              <i class="bi bi-bell" [matBadge]="notification_count || 0"  matBadgeColor="warn"   container="body"
+              ngbTooltip="notification" placement="top" (click)="openNotification()"></i>
             </div>
-            <i class="bi bi-power power-icon" (click)="openDialogue()" title="logout"></i>
+            <i class="bi bi-power power-icon" (click)="openDialogue()" container="body"
+            ngbTooltip="logout" placement="top"></i>
             
           </div>
         </div>

@@ -9,6 +9,15 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { filter } from 'rxjs';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { environment } from 'src/environments/environment';
+
+interface NavItem {
+  name: string;
+  url?: string;
+  icon?: string;
+  children?: NavItem[];
+  isExpanded?: boolean;
+}
 @Component({
   selector: 'app-default-layout',
   templateUrl: './default-layout.component.html',
@@ -46,9 +55,12 @@ export class DefaultLayoutComponent {
     }
    
   ]
+  mySubscription: boolean = false;
+  orgId: any;
 
   constructor(private ngxService: NgxUiLoaderService,
-    private api: ApiserviceService, private modalService: NgbModal,private cdref: ChangeDetectorRef,private common_service: CommonServiceService,
+    private api: ApiserviceService, private modalService: NgbModal,private cdref: ChangeDetectorRef,
+    private common_service: CommonServiceService,
     private router: Router) {
       // this.config = sessionStorage.getItem('user_role_name');
       this.common_service.profilePhoto$.subscribe(
@@ -63,12 +75,21 @@ export class DefaultLayoutComponent {
       )
     
 }
+// toggleSubmenu(item: any) {
+//   // First set all other items to not expanded
+//   this.sidebarNavItems.forEach(navItem => {
+//     if (navItem !== item) {
+//       navItem.isExpanded = false;
+//     }
+//   });
+//   // Toggle the clicked item
+//   item.isExpanded = !item.isExpanded;
+// }
   ngOnInit() {
     this.user_role_Name = sessionStorage.getItem('user_role_name');
-    let role_id = sessionStorage.getItem('designation_id');
-    // this.user_name = sessionStorage.getItem('user_name');
+    this.orgId = sessionStorage.getItem('organization_id');
+    
     this.testingFunction();
-    // this.getUserControls(role_id)
     this.ngxService.start();
     setTimeout(() => {
       this.ngxService.stop();
@@ -83,25 +104,124 @@ export class DefaultLayoutComponent {
     // //console.log(this.access,"ACCESS")
 
     //console.log(this.navItems,"ADMIN NAVITEMS-------")
-    
+    if (this.user_role_Name && this.user_role_Name != 'SuperAdmin') {
+      this.getMySubscription();
+    }
 
-  }
-  
-  testingFunction(){
-    this.api.userAccess(sessionStorage.getItem('user_id')).subscribe(
-      (res:any)=>{
-        console.log('default layout', res.access_list)
-        // const sidebarOptions = filteredNavItems.map((item) => item.name);
-        if(res.user_role=='Employee'){
-          this.user_role_Name = res.designation;
-        } else{
-          this.user_role_Name = res.user_role;
-        }
-          this.sidebarNavItems = res.access_list;
+    // Listen to subscription state changes
+    this.common_service.subsctiptionState$.subscribe((res) => {
+      if (res && this.user_role_Name !== 'SuperAdmin') {
+        this.getMySubscription();
       }
-    )
+    });
+
+    //this.setInitialExpandedState();
+  }
+  getMySubscription() {
+    this.api.getData(`${environment.live_url}/${environment.my_subscription}/?organization=${this.orgId}`).subscribe((res: any) => {
+      if (res) {
+        if (res?.data?.length ===0 || res?.length ===0) {
+          this.mySubscription = true;
+          this.router.navigate(['/accounts/subscription']);
+        } else if (res?.data) {
+          let hasActiveSubscription = false;
+          res?.data?.forEach(element => {
+            if (element.is_active) {
+              hasActiveSubscription = false;
+            }else{
+              hasActiveSubscription = true;
+            }
+          });
+          
+          this.mySubscription = hasActiveSubscription;
+          if (!hasActiveSubscription) {
+            this.router.navigate(['/dashboards']);
+          }else{
+            this.router.navigate(['/accounts/subscription']);
+          }
+        } else {
+          this.mySubscription = false;
+          this.router.navigate(['/dashboards']);
+        }
+      }
+    });
   }
 
+  shouldDisableItem(item: any): boolean {
+    // Don't disable anything for SuperAdmin
+    if (this.user_role_Name === 'SuperAdmin') return false;
+    
+    // If subscription is required and item is not subscription page
+    return this.mySubscription && item.url !== '/accounts/subscription';
+  }
+
+  toggleSubmenu(item: any) {
+    this.sidebarNavItems.forEach(navItem => {
+      if (navItem !== item) {
+        navItem.isExpanded = false;
+      }
+    });
+    item.isExpanded = !item.isExpanded;
+  }
+
+  setInitialExpandedState() {
+    const currentUrl = this.router.url;
+    this.sidebarNavItems.forEach(item => {
+      if (item.children?.length) {
+        item.isExpanded = item.children.some(child => 
+          currentUrl.includes(child.url)
+        );
+      }
+    });
+  }
+  // testingFunction(){
+  //   this.api.userAccess(sessionStorage.getItem('user_id')).subscribe(
+  //     (res:any)=>{
+  //       console.log('default layout', res.access_list)
+  //       // const sidebarOptions = filteredNavItems.map((item) => item.name);
+  //       if(res.user_role=='Employee'){
+  //         this.user_role_Name = res.designation;
+  //       } else{
+  //         this.user_role_Name = res.user_role;
+  //       }
+  //         this.sidebarNavItems = res.access_list;
+  //     }
+  //   )
+  // }
+// Helper function to move subscription to top
+private moveSubscriptionToTop(navigationData: any[]): any[] {
+  if (!Array.isArray(navigationData)) {
+    return navigationData;
+  }
+
+  const subscriptionIndex = navigationData.findIndex(
+    (item) => item.name === "Subscription"
+  );
+
+  if (subscriptionIndex !== -1) {
+    const [subscriptionItem] = navigationData.splice(subscriptionIndex, 1);
+    navigationData.unshift(subscriptionItem);
+  }
+
+  return navigationData;
+}
+
+testingFunction() {
+  this.api.userAccess(sessionStorage.getItem('user_id')).subscribe(
+    (res: any) => {
+    //  console.log('default layout', res.access_list);
+      
+      if (res.user_role == 'Employee') {
+        this.user_role_Name = res.designation;
+      } else {
+        this.user_role_Name = res.user_role;
+      }
+      
+      // Move subscription to top before assigning to sidebarNavItems
+      this.sidebarNavItems = this.moveSubscriptionToTop(res.access_list);
+    }
+  );
+}
   getUserControls(role_id) {
     this.org_id = sessionStorage.getItem('org_id')
     this.api.getUserRoleById(`id=${role_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe(res => {

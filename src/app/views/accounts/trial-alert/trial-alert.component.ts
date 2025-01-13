@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ExistStandardPlanComponent } from '../exist-standard-plan/exist-standard-plan.component';
 import { MatDialog } from '@angular/material/dialog';
 import { BuyStandardplanComponent } from '../buy-standardplan/buy-standardplan.component';
+import { CommonServiceService } from '../../../service/common-service.service';
 
 @Component({
   selector: 'app-trial-alert',
@@ -31,7 +32,8 @@ export class TrialAlertComponent implements OnInit {
   }
   constructor(private modalService: NgbModal,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private common_service:CommonServiceService
   ) { }
 
   ngOnInit(): void {
@@ -47,6 +49,7 @@ export class TrialAlertComponent implements OnInit {
       modelRef.componentInstance.message = `Successful`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {
+          this.common_service.subsctiptionState$.next(true)
           this.router.navigate(['/accounts/subscription']);
           modelRef.close();
         }
