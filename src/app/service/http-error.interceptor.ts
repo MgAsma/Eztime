@@ -3,7 +3,7 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
-
+import isOnline from 'is-online';
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
   constructor(private router: Router) {}
@@ -11,13 +11,18 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 404) {
-          this.router.navigate(['/404']);
-        } else if (error.status === 500) {
-          this.router.navigate(['/500']);
-        } else if (error.status === 504) {
-          this.router.navigate(['/504']);
-        }
+        isOnline().then(online => {
+          if (!online) {
+            this.router.navigate(['/no-internet']);
+          } else if (error.status === 404) {
+            this.router.navigate(['/404']);
+          } else if (error.status === 500) {
+            this.router.navigate(['/500']);
+          } else if (error.status === 504) {
+            this.router.navigate(['/504']);
+          }
+        });
+       
         return throwError(() => error);
       })
     );
