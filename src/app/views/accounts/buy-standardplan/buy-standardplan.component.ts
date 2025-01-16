@@ -305,7 +305,7 @@ export class BuyStandardplanComponent implements OnInit {
     modelRef.componentInstance.message = `Transaction Successful!`;
     modelRef.componentInstance.status.subscribe(resp => {
       if (resp == "ok") {
-        this.common_service.setSubscriptionStatus(true)
+        this.common_service.subsctiptionState$.next(true)
         this.api.setComponentLoadedStatus(true);
         modelRef.close();
       }

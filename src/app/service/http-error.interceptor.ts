@@ -20,6 +20,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             this.router.navigate(['/500']);
           } else if (error.status === 504) {
             this.router.navigate(['/504']);
+          } else if (error.status === 503) {
+            this.router.navigate(['/503']);
           }
         });
        

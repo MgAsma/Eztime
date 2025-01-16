@@ -59,7 +59,7 @@ export class SubscriptionConfigComponent implements OnInit {
         '',
         [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$'), Validators.maxLength(6)],
       ],
-
+      discounted_amount:[''],
       // GST Details
       cgstKarnataka: [
         '',
@@ -74,7 +74,30 @@ export class SubscriptionConfigComponent implements OnInit {
         [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(3)],
       ],
     });
+    this.subscribeToYearlyCalculations();
   }
+
+  subscribeToYearlyCalculations() {
+    const yearlyAmountControl = this.pricingForm.get('yearlyAmount');
+    const yearlyDiscountControl = this.pricingForm.get('yearlyDiscount');
+  
+    if (yearlyAmountControl && yearlyDiscountControl) {
+      yearlyAmountControl.valueChanges.subscribe(() => this.calculateDiscountedAmount());
+      yearlyDiscountControl.valueChanges.subscribe(() => this.calculateDiscountedAmount());
+    }
+  }
+  
+  calculateDiscountedAmount() {
+    const yearlyAmount = +this.pricingForm.get('yearlyAmount')?.value || 0; // Get the yearly amount, default to 0
+    const yearlyDiscount = +this.pricingForm.get('yearlyDiscount')?.value || 0; // Get the discount as a percentage, default to 0
+  
+    // Calculate the discounted amount
+    const discountedAmount = yearlyAmount - (yearlyAmount * (yearlyDiscount / 100));
+  
+    // Patch the calculated value into the form control
+    this.pricingForm.patchValue({ discounted_amount: discountedAmount.toFixed(2) }); // Round to 2 decimal places
+  }
+  
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.initializeForm()
@@ -197,7 +220,8 @@ swapKeysAndValues(obj: { [key: string]: any }): { [key: string]: any } {
               max_users: formValues.yearlyUsers,
               no_of_days: formValues.yearlyDuration,
               amount: formValues.yearlyAmount,  // Assuming amount is 25 for yearly
-              discount: formValues.yearlyDiscount
+              discount: formValues.yearlyDiscount,
+              discounted_amount:formValues.discounted_amount
             }
           ]
         }

@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { environment } from '../../../../environments/environment';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { CommonServiceService } from '../../../service/common-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-plan-selection',
@@ -27,7 +28,8 @@ export class PlanSelectionComponent implements OnInit {
    constructor(private api:ApiserviceService,
      private common_service : CommonServiceService,
      private modalService:NgbModal,
-     private dialog: MatDialog) { }
+     private dialog: MatDialog,
+     private router:Router) { }
  
      ngOnChanges(){
       this.subscriptionData = this.data.sort((a, b) => {
@@ -95,6 +97,8 @@ export class PlanSelectionComponent implements OnInit {
       (res: any) => {
         if (res) {
           modelRef.componentInstance.trailPlanStaus = true;
+          this.common_service.subsctiptionState$.next(true)
+          this.router.navigate(['/accounts/subscription']);
           this.trailPlanStaus.emit(true);
           this.api.showSuccess('You have successfully activated your free trial plan');
         }

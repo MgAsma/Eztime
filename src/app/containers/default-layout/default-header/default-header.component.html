@@ -29,7 +29,7 @@
    
     <c-header-nav class="p-r">
       <div class="row" style="transform: scale(0.9);">
-        <div class="col" *ngIf="user_role_Name !='SuperAdmin'" >
+        <div class="col" *ngIf="user_role_Name ==='Admin'" >
           <div *ngFor="let items of mySubscription">
           <button mat-button type="button" class="btn-4" *ngIf="items?.subscription_type_name === 'Free Trial' && items?.is_active">
             

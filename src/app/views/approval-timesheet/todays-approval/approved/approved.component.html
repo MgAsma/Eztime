@@ -8,6 +8,7 @@
               <th scope="col">S.No</th>
               <th scope="col" class="text-center">Date </th>
               <th scope="col" class="text-center">Employee</th>
+              <th scope="col" class="text-center">Project</th>
               <th scope="col" class="text-center">Task</th>
               <th scope="col" class="text-center">Hours</th>
               <!-- <th scope="col">Saved On</th> -->
@@ -22,6 +23,7 @@
                 <td>{{getContinuousIndex(i)}}</td>
                 <td class="text-center">{{items['created_date'] | date : 'mediumDate'}}</td>
                 <td class="text-center">{{items['created_by_name']|titlecase }}</td>
+                <td class="text-center">{{items['project_name'] || 'NA'}}</td>
                 <td class="text-center" *ngIf="items.tasks.length">
                   <div *ngFor="let task of items.tasks; let j = index">
                     <div>
@@ -152,48 +154,6 @@
                   </div>
                 </div>
               </div>
-
-              <div class="row">
-                <div class="col-6">
-                  <div class="row">
-                    <div class="col-12">
-                      <h6 class="card-subtitle">Hourssheet Id</h6>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12 val-r" *ngIf="item.tasks.length">
-                      <div *ngFor="let task of item.tasks; let j = index">
-                        <div>
-                          {{ task?.time_required_to_complete || 'NA' }}
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-12 val-r" *ngIf="item.tasks.length === 0">
-                      {{'NA'}}
-                    </div>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="row">
-                    <div class="col-12">
-                      <h6 class="card-subtitle">Hours</h6>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12 val-r" *ngIf="item.tasks.length">
-                      <div *ngFor="let task of item.tasks; let j = index">
-                        <div>
-                          {{ task?.time_required_to_complete || 'NA' }}
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-12 val-r" *ngIf="item.tasks.length === 0">
-                      {{'NA'}}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
               <div class="row">
                 <div class="col-6">
                   <div class="row">
@@ -203,7 +163,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{ item['approved_on'] | date : 'mediumDate' }}
+                      {{ (item['approved_on'] | date : 'mediumDate') || 'NA' }}
                     </div>
                   </div>
                 </div>
@@ -215,11 +175,78 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{ item.approved_by_name?item.approved_by_name:'NA'|titlecase }}
+                      {{ (item?.approved_by_name|titlecase) || 'NA'}}
                     </div>
                   </div>
                 </div>
               </div>
+              <div class="row">
+             
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-12">
+                      <h6 class="card-subtitle">Project</h6>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 val-r">
+                      <div >
+                        <div>
+                          {{ item?.project_name || 'NA' }}
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-12">
+                      <h6 class="card-subtitle">Task name</h6>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 val-r" *ngIf="item?.tasks?.length">
+                      <div *ngFor="let task of item?.tasks; let j = index">
+                        <div>
+                          {{ task?.task__task_name || 'NA' }} <br/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 val-r" *ngIf="item.tasks.length === 0">
+                      {{'NA'}}
+                    </div>
+                  </div>
+                </div>
+             
+             
+              </div>
+         
+              <div class="row">
+               
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-12">
+                      <h6 class="card-subtitle">Hours</h6>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 val-r" *ngIf="item?.tasks?.length">
+                      <div *ngFor="let task of item?.tasks; let j = index">
+                        <div>
+                          {{ task?.time_required_to_complete || 'NA' }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 val-r" *ngIf="item?.tasks?.length === 0">
+                      {{'NA'}}
+                    </div>
+                  </div>
+                </div>
+              
+              </div>
+
+             
             </div>
           </div>
         </div>

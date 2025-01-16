@@ -16,14 +16,16 @@
     <div class="payment-options">
       <mat-card class="payment-option"  (click)="setPaymentOption(true)" 
          [ngClass]="monthly ? 'active' : 'highlighted-option'" >
+         <div class="option-title">Monthly</div>
         <span class="price pe-1">₹{{monthlyAmount}}</span>
         <small>per user / monthly</small>
       </mat-card>
       <mat-card class="payment-option yearly-option" 
       (click)="setPaymentOption(false)" 
       [ngClass]="!monthly ? 'active' : 'highlighted-option'">
+      <div class="option-title">Yearly</div>
         <span class="price pe-1">₹{{yearlyAmount}}</span>
-        <small>per user / yearly</small>
+        <small>per user / monthly</small>
         <div class="discount-badge"><i class="bi bi-x-circle"></i> {{discount}}% </div>
       </mat-card>
     </div>
@@ -37,8 +39,10 @@
     </div>
 
     <div class="no-refund-note text-center">
-      <div style="margin: auto;">
-          <span style="margin-right: 5px;">⚠</span> No refund on subscription and cancellation
+      <div style="margin:3px auto;">
+         <div style="background: #62606054;
+         padding: 5px 20px;
+         border-radius: 3px;"> <span  style="margin-right: 5px;">⚠</span> No refund on subscription cancellation </div> 
       </div>
     </div>
     <div class="text-center">

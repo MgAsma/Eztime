@@ -72,16 +72,18 @@
                 <div class="payment-options">
                   <mat-card class="payment-option"  (click)="setPaymentOption(true)" 
                   [ngClass]="monthly ? 'active' : 'highlighted-option'">
+                  <div class="option-title">Monthly</div>
                     <span class="price pe-1">₹{{monthlyAmount}}</span>
                     <small>per user / monthly</small>
-                    <div class="option-title">Monthly</div>
+                    
                   </mat-card>
                   <mat-card class="payment-option yearly-option" 
                   (click)="setPaymentOption(false)" 
                   [ngClass]="!monthly ? 'active' : 'highlighted-option'">
+                  <div class="option-title">Yearly</div>
                     <span class="price pe-1">₹{{yearlyAmount}}</span>
-                    <small>per user / yearly</small>
-                    <div class="option-title">Yearly</div>
+                    <small>per user / monthly</small>
+                    
                     <div class="discount-badge"><i class="bi bi-x-circle"></i> {{discount}}% </div>
                   </mat-card>
                 </div>

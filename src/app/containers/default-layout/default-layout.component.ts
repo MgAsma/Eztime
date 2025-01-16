@@ -105,13 +105,13 @@ export class DefaultLayoutComponent {
     // //console.log(this.access,"ACCESS")
 
     //console.log(this.navItems,"ADMIN NAVITEMS-------")
-    if (this.user_role_Name && this.user_role_Name != 'SuperAdmin') {
+    if (this.user_role_Name && this.user_role_Name === 'Admin') {
       this.getMySubscription();
     }
 
     // Listen to subscription state changes
     this.common_service.subsctiptionState$.subscribe((res) => {
-      if (res && this.user_role_Name !== 'SuperAdmin') {
+      if (res && this.user_role_Name === 'Admin') {
         this.getMySubscription();
       }
     });
@@ -136,7 +136,8 @@ export class DefaultLayoutComponent {
           
           this.mySubscription = hasActiveSubscription;
           if (!hasActiveSubscription) {
-            this.router.navigate(['/dashboards']);
+            this.router.onSameUrlNavigation
+            // this.router.navigate(['/dashboards']);
           }else{
             this.router.navigate(['/accounts/subscription']);
           }
@@ -150,7 +151,7 @@ export class DefaultLayoutComponent {
 
   shouldDisableItem(item: any): boolean {
     // Don't disable anything for SuperAdmin
-    if (this.user_role_Name === 'SuperAdmin') return false;
+    if (this.user_role_Name !== 'Admin') return false;
     
     // If subscription is required and item is not subscription page
     return this.mySubscription && item.url !== '/accounts/subscription';
@@ -175,20 +176,7 @@ export class DefaultLayoutComponent {
       }
     });
   }
-  // testingFunction(){
-  //   this.api.userAccess(sessionStorage.getItem('user_id')).subscribe(
-  //     (res:any)=>{
-  //       console.log('default layout', res.access_list)
-  //       // const sidebarOptions = filteredNavItems.map((item) => item.name);
-  //       if(res.user_role=='Employee'){
-  //         this.user_role_Name = res.designation;
-  //       } else{
-  //         this.user_role_Name = res.user_role;
-  //       }
-  //         this.sidebarNavItems = res.access_list;
-  //     }
-  //   )
-  // }
+ 
 // Helper function to move subscription to top
 private moveSubscriptionToTop(navigationData: any[]): any[] {
   if (!Array.isArray(navigationData)) {

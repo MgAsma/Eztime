@@ -121,6 +121,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
     }
     this.api.postData(`${environment.live_url}/${environment.cancel_my_subscription}/`, data).subscribe((res) => {
       if (res) {
+        this.common_service.setSubscriptionStatus(true)
         this.successEmit.emit(true)
         this.api.showSuccess(`Subscription cancelled successfully`)
 
@@ -187,7 +188,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
             slNo: index + 1,
             plan: item.subscribed_organization__subscription_type__name,
             term: item.terms,
-            perUser: 0,
+            perUser:item.per_user_amount,
             users: item.number_of_users || 'NA',
             totalAmount: item.total_amount,
             startDate: this.datePipe.transform(item.subscribed_organization__start_date, 'dd-MM-yyyy'),

@@ -10,6 +10,7 @@
                     <th scope="col">S.No</th>
                     <th scope="col" class="text-center">Created Date</th>
                     <th scope="col" class="text-center">Employee</th>
+                    <th scope="col" class="text-center">Project</th>
                     <th scope="col" class="text-center">Task</th>
                     <th scope="col" class="text-center">Hours</th>
                     <th scope="col" class="text-center">Saved On</th>
@@ -23,6 +24,7 @@
                      
                       <td class="text-center">{{(item.created_date | date :'dd/MM/YYYY') || 'NA'}}</td>
                       <td class="text-center">{{(item.created_by_first_name |titlecase) || 'NA'}}</td>
+                      <td class="text-center">{{item.project_name || 'NA'}}</td>
                       <td class="text-center" *ngIf="item?.tasks?.length">
                         <div *ngFor="let task of item?.tasks; let j = index">
                           <div>
@@ -151,25 +153,25 @@
               </div>
             </div>
 
+          
+          
             <div class="row">
              
               <div class="col-6">
                 <div class="row">
                   <div class="col-12">
-                    <h6 class="card-subtitle">Hours</h6>
+                    <h6 class="card-subtitle">Project</h6>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-12 val-r" *ngIf="item?.tasks?.length">
-                    <div *ngFor="let task of item?.tasks; let j = index">
+                  <div class="col-12 val-r">
+                    <div >
                       <div>
-                        {{ task?.time_required_to_complete || 'NA' }}
+                        {{ item?.project_name || 'NA' }}
                       </div>
                     </div>
                   </div>
-                  <div class="col-12 val-r" *ngIf="item?.tasks?.length === 0">
-                    {{'NA'}}
-                  </div>
+                  
                 </div>
               </div>
               <div class="col-6">
@@ -192,11 +194,32 @@
                 </div>
               </div>
            
-            </div>
-          
-
-       
            
+            </div>
+       
+            <div class="row">
+             
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-12">
+                    <h6 class="card-subtitle">Hours</h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 val-r" *ngIf="item?.tasks?.length">
+                    <div *ngFor="let task of item?.tasks; let j = index">
+                      <div>
+                        {{ task?.time_required_to_complete || 'NA' }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 val-r" *ngIf="item?.tasks?.length === 0">
+                    {{'NA'}}
+                  </div>
+                </div>
+              </div>
+            
+            </div>
           </div>
         </div>
       </div>

@@ -87,7 +87,13 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
       this.previousPage = subtitle
     })
     this.getaccessDetails()
-    if(this.user_role_Name !== 'SuperAdmin'){
+    this.common_service.subsctiptionState$.subscribe(status =>{
+      if(status){
+        debugger;
+        this.getMySubscription()
+      }
+    })
+    if(this.user_role_Name === 'Admin'){
       this.getMySubscription()
     }
 

@@ -18,6 +18,7 @@ import { NotificationComponent } from './views/pages/notification/notification.c
 import { SubscriptionConfigComponent } from './views/organization/subscription-config/subscription-config.component';
 import { NoInternetComponent } from './views/pages/no-internet/no-internet.component';
 import { Page504Component } from './views/pages/page504/page504.component';
+import { Page503Component } from './views/pages/page503/page503.component';
 
 
 
@@ -148,6 +149,13 @@ const routes: Routes = [
       data: {
         title: 'Page 504'
       }
+  },
+  {
+    path: '503',
+    component: Page503Component,
+    data: {
+      title: 'Page 503'
+    }
   },
   {
     path: '500',

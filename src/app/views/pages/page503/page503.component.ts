@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-page503',
   templateUrl: './page503.component.html',
@@ -7,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class Page503Component implements OnInit {
 
-  constructor() { }
+  user_id: string;
 
-  ngOnInit(): void {
+  constructor(
+    private location:Location,
+    private router:Router) { }
+  goBack(){
+    this.user_id = sessionStorage.getItem('user_id') || ''
+    if(this.user_id){
+      this.location.back()
+    }else{
+      this.router.navigate(['/login'])
+    }
   }
-
+ ngOnInit(): void {
+   
+ }
 }
