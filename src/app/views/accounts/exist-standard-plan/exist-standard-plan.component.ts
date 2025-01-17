@@ -32,6 +32,7 @@ export class ExistStandardPlanComponent implements OnInit {
   sgst: number = 0;
   cgst_per:number;
   sgst_per:number;
+  remainingDays = 0
   igst_per:number;
   discount:number;
   subtotal: number = 0;
@@ -55,6 +56,7 @@ export class ExistStandardPlanComponent implements OnInit {
     this.getExistingPlanDetails()
   }
   getExistingPlanDetails(){
+    console.log(this.data)
     this.api.getData(`${environment.live_url}/${environment.my_subscription}/?id=${this.data.plan.id}`).subscribe(
       (res:any)=>{
         console.log('existing plan details',res);
@@ -63,14 +65,15 @@ export class ExistStandardPlanComponent implements OnInit {
        this.cgst_per = res.data[0].cgst;
        this.sgst_per = res.data[0].sgst;
        this.igst_per = res.data[0].igst;
+       this.remainingDays = res.data[0].remaining_number_of_days
        if(res.data[0].subscribed_for==='Yearly'){
          this.discount = Math.round(res.data[0].discount);
-         this.planAmount = Math.round(res.data[0].discount);
+         this.planAmount = Math.round(res.data[0].amount);
         } else{
           this.planAmount = Math.round(res.data[0].amount);
           this.discount = 0;
         }
-        this.expiryBtnValidation(res.data[0].expiry_date)
+        this.calculateTotal()
       //  const amount = this.planAmount; // Monthly/Yearly price per user
       //  const noOfUsers = this.userForm.value.noOfUsers;
       //  this.subtotal = noOfUsers * amount;
@@ -80,29 +83,9 @@ export class ExistStandardPlanComponent implements OnInit {
     )
   }
 
-  expiryBtnValidation(expiry_date) {
-    // console.log(expiry_date)
-    const endDate = new Date(expiry_date)
-    const currentDate = new Date();
-    const diffInTime = endDate.getTime() - currentDate.getTime();
-    const remainingDays = Math.ceil(diffInTime / (1000 * 60 * 60 * 24));
-    // console.log( remainingDays)
-    let aaa = (this.planAmount/30)*remainingDays*this.userForm.value.noOfUsers
-    this.subtotal = Math.round(aaa);
-    // console.log(endDate, currentDate)
-    // if (endDate < currentDate) {
-    //   console.log('date expired')
-    // } else if (endDate == currentDate) {
-    //   console.log('date is equal')
-    // } else {
-     
-      // console.log(this.subtotal)
-      // if (remainingDays <= 5) {
-      //   console.log('less or equal to 5', remainingDays)
-      // } else {
-      //   console.log('more than 5', remainingDays)
-      // }
-    // }
+  subtotalCalculation() {
+    let aaa = (this.planAmount/30)*this.remainingDays*this.userForm.value.noOfUsers
+    this.subtotal =Number(aaa.toFixed(2));
   }
   getSubscription() {
     this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res: any) => {
@@ -145,12 +128,15 @@ export class ExistStandardPlanComponent implements OnInit {
   calculateTotal(): void {
     const amount = this.planAmount; // Monthly/Yearly price per user
     const noOfUsers = this.userForm.value.noOfUsers;
-    this.subtotal = noOfUsers * amount;
-    if(this.planName==='Yearly'){
-      this.subtotal = noOfUsers * amount*12;
-    } else{
-      this.subtotal = noOfUsers * amount;
-    }
+    let aaa = (amount/30)*this.remainingDays*noOfUsers
+    this.subtotal = Math.round(aaa);
+    // if(this.planName==='Yearly'){
+    //   let aaa = (amount/30)*this.remainingDays*noOfUsers
+    // this.subtotal = Math.round(aaa);
+    // } else{
+    //   let aaa = (amount/30)*this.remainingDays*noOfUsers
+    // this.subtotal = Math.round(aaa);
+    // }
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
       this.cgst = 0;
@@ -214,6 +200,7 @@ export class ExistStandardPlanComponent implements OnInit {
     
   }
   openRazorpay(data: any) {
+    this.dialogue.closeAll()
       const RazorpayOptions: any = {
         description: 'Sample Rozarpay demo',
         currency: 'INR',
@@ -231,7 +218,9 @@ export class ExistStandardPlanComponent implements OnInit {
         },
         modal: {
           ondismiss: () => {
-            //console.log('dismissed')
+            this.ngZone.run(() => {
+              this.api.showError('Transaction failed')
+            });
           }
         }
   
@@ -275,12 +264,9 @@ export class ExistStandardPlanComponent implements OnInit {
     this.api.addUsersForExistingPlan(data).subscribe(
       (res: any) => {
         if (res) {
-          setTimeout(() => {
             this.ngZone.run(() => {
-              this.dialogue.closeAll()
               this.openDialogue()
             });
-          }, 1000);
         }
       }, 
       (error:any)=>{
@@ -299,7 +285,7 @@ export class ExistStandardPlanComponent implements OnInit {
       modelRef.componentInstance.title = `New users added!`;
       modelRef.componentInstance.message = `Transaction Successful!`;
       modelRef.componentInstance.status.subscribe(resp => {
-        if (resp == "ok") {
+        if (resp === "ok") {
           modelRef.close();
           this.api.setComponentLoadedStatus(true);
         }

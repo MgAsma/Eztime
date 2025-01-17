@@ -50,6 +50,9 @@ export class BuyStandardplanComponent implements OnInit {
   ) { }
   ngOnInit(): void {
     this.orgId = sessionStorage.getItem('organization_id');
+    console.log(this.data)
+    console.log(this.data?.selectedValue)
+    this.monthly = this.data?.selectedValue
     if(this.data?.plan_data?.added_users){
       // console.log('dataaaaa',this.data)
       this.minUsers = this.data?.plan_data?.added_users;
@@ -75,18 +78,25 @@ export class BuyStandardplanComponent implements OnInit {
               // Check for Monthly or Yearly plans and assign amounts accordingly
               if (item.yearly_or_monthly_name === 'Monthly') {
                 this.monthlyAmount = Math.round(item.amount);
-                this.selectedAmount = this.monthlyAmount;
-                this.selectedTypeName = item.yearly_or_monthly_name;
-                const amount = this.selectedAmount || this.monthlyAmount; // Monthly/Yearly price per user
-                const noOfUsers = this.userForm.value.noOfUsers;
-                this.subtotal = noOfUsers * amount;
+                if(this.monthly===true){
+                  this.selectedAmount = this.monthlyAmount;
+                  this.selectedTypeName = item.yearly_or_monthly_name;
+                }
+                // const amount = this.selectedAmount || this.monthlyAmount; // Monthly/Yearly price per user
+                // const noOfUsers = this.userForm.value.noOfUsers;
+                // this.subtotal = noOfUsers * amount;
                 this.monthlyName = item.yearly_or_monthly_name;
               } else if (item.yearly_or_monthly_name === 'Yearly') {
                 this.yearlyName = item.yearly_or_monthly_name
                 let temp_year_amt = item.amount-item.discount/100*item.amount;
                 this.yearlyAmount = Math.round(temp_year_amt)
                 this.discount = Math.round(item.discount);
+                if(this.monthly===false){
+                  this.selectedAmount = this.yearlyAmount;
+                  this.selectedTypeName = item.yearly_or_monthly_name;
+                }
               }
+              this.calculateSubTotal();
             });
           }
         });
@@ -115,15 +125,28 @@ export class BuyStandardplanComponent implements OnInit {
   totalPayable: number = 0;
   selectedState: string = 'Karnataka';
 
-  calculateTotal(): void {
+  calculateSubTotal(){
     const amount = this.selectedAmount || this.monthlyAmount; // Monthly/Yearly price per user
     const noOfUsers = this.userForm.value.noOfUsers;
-    this.subtotal = noOfUsers * amount;
     if(this.selectedTypeName==='Yearly'){
-      this.subtotal = (amount/30)*365*noOfUsers
+      let temp_subTotal = (amount/30)*365*noOfUsers;
+      this.subtotal = Number(temp_subTotal.toFixed(2))
     } else{
-      this.subtotal = noOfUsers * amount;
+      let temp_subTotal = noOfUsers * amount;
+      this.subtotal = Number(temp_subTotal.toFixed(2))
     }
+  }
+
+  calculateTotal(): void {
+    this.calculateSubTotal();
+    // const amount = this.selectedAmount || this.monthlyAmount; // Monthly/Yearly price per user
+    // const noOfUsers = this.userForm.value.noOfUsers;
+    // this.subtotal = noOfUsers * amount;
+    // if(this.selectedTypeName==='Yearly'){
+    //   this.subtotal = (amount/30)*365*noOfUsers
+    // } else{
+    //   this.subtotal = noOfUsers * amount;
+    // }
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
       // this.subtotal = 0;
@@ -203,6 +226,7 @@ export class BuyStandardplanComponent implements OnInit {
   }
 
   openRazorpay(data: any) {
+    this.dialogue.closeAll()
     const RazorpayOptions: any = {
       description: 'Sample Rozarpay demo',
       currency: 'INR',
@@ -220,7 +244,10 @@ export class BuyStandardplanComponent implements OnInit {
       },
       modal: {
         ondismiss: () => {
-          //console.log('dismissed')
+          // console.log('dismissed')
+          this.ngZone.run(() => {
+            this.api.showError('Transaction failed')
+          });
         }
       }
 
@@ -280,12 +307,9 @@ export class BuyStandardplanComponent implements OnInit {
     this.api.postStandardPlan(data).subscribe(
       (res: any) => {
         if (res) {
-          setTimeout(() => {
             this.ngZone.run(() => {
-              this.dialogue.closeAll()
               this.openDialogue()
             });
-          }, 1000);
         }
       }, 
       (error:any)=>{
@@ -304,7 +328,7 @@ export class BuyStandardplanComponent implements OnInit {
     modelRef.componentInstance.title = `Your Standard Plan has been activated successfully!`;
     modelRef.componentInstance.message = `Transaction Successful!`;
     modelRef.componentInstance.status.subscribe(resp => {
-      if (resp == "ok") {
+      if (resp === "ok") {
         this.common_service.subsctiptionState$.next(true)
         this.api.setComponentLoadedStatus(true);
         modelRef.close();

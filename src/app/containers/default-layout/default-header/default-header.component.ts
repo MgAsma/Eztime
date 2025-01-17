@@ -89,7 +89,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     this.getaccessDetails()
     this.common_service.subsctiptionState$.subscribe(status =>{
       if(status){
-        debugger;
+        // debugger;
         this.getMySubscription()
       }
     })

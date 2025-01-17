@@ -144,7 +144,7 @@ BreadCrumbsTitle:any='Subscription plan';
 
   renewSubscription(){
     const dialogRef = this.dialog.open(BuyStandardplanComponent, {
-      data: {planDetails:this.planDetails},
+      data: {planDetails:this.planDetails,selectedValue: this.monthly},
       panelClass: 'custom-dialog'
     });
     dialogRef.disableClose=true
@@ -161,5 +161,9 @@ BreadCrumbsTitle:any='Subscription plan';
 
   download(data:any){
     this.router.navigate(['/accounts/invoice-data'])
+  }
+
+  roundAmount(amount: number): number {
+    return Math.round(amount);
   }
 }

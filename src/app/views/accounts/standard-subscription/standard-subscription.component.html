@@ -24,9 +24,9 @@
       (click)="setPaymentOption(false)" 
       [ngClass]="!monthly ? 'active' : 'highlighted-option'">
       <div class="option-title">Yearly</div>
-        <span class="price pe-1">₹{{yearlyAmount}}</span>
+        <span class="price pe-1">₹{{roundAmount(yearlyAmount - roundAmount(discount)/100 * yearlyAmount ) }}</span>
         <small>per user / monthly</small>
-        <div class="discount-badge"><i class="bi bi-x-circle"></i> {{discount}}% </div>
+        <div class="discount-badge"><i class="bi bi-x-circle"></i> {{roundAmount(discount)}}% </div>
       </mat-card>
     </div>
 
