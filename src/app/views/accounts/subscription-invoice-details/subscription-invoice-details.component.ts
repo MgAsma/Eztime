@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 // import jsPDF from 'jspdf';
 // import html2canvas from 'html2canvas';
 
@@ -8,7 +8,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./subscription-invoice-details.component.scss']
 })
 export class SubscriptionInvoiceDetailsComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit(): void {

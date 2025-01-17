@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonServiceService } from '../../../service/common-service.service';
 import { BuyStandardplanComponent } from '../buy-standardplan/buy-standardplan.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { CancelSubscriptionComponent } from '../cancel-subscription/cancel-subscription.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
+// import jsPDF from 'jspdf';
+// import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-success-plan-details',
@@ -16,6 +18,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./success-plan-details.component.scss']
 })
 export class SuccessPlanDetailsComponent implements OnInit {
+  @ViewChild('invoiceTemplate', { static: false }) invoiceTemplate!: ElementRef;
   BreadCrumbsTitle: any = 'Subscription plan';
   subscriptionData: Object;
   @Input() data: any;
@@ -71,7 +74,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
       console.log('date expired')
       this.disableCancelButton = true;
       this.disableAddButton = true;
-      this.showRenewalButton = false; 
+      this.showRenewalButton = false;
     } else if (endDate.getTime() === currentDate.getTime()) {
       this.disableCancelButton = false;
       this.disableAddButton = true;
@@ -189,6 +192,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
             plan: item.subscribed_organization__subscription_type__name,
             term: item.terms,
             perUser:item.per_user_amount,
+            id: item.id,
             users: item.number_of_users || 'NA',
             totalAmount: item.total_amount,
             startDate: this.datePipe.transform(item.subscribed_organization__start_date, 'dd-MM-yyyy'),
@@ -201,4 +205,48 @@ export class SuccessPlanDetailsComponent implements OnInit {
       })
     }
   }
+
+  // selectedInvoiceData:any
+  // downloadInvorice(data:any): void {
+  //   const invoiceElement = document.getElementById('invoiceTemplate');
+  //   console.log(data)
+  //   this.selectedInvoiceData
+  //   setTimeout(() => {
+  //     if (invoiceElement) {
+  //       invoiceElement.style.display = 'block';
+
+  //       html2canvas(invoiceElement, {
+  //         scale: 2,
+  //         useCORS: true,
+  //         logging: false,
+  //       }).then((canvas) => {
+  //         const imgData = canvas.toDataURL('image/png');
+  //         const pdf = new jsPDF('p', 'mm', 'a4');
+  //         const imgWidth = 210;
+  //         const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+  //         pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+  //         pdf.save('invoice.pdf');
+  //         invoiceElement.style.display = 'none';
+  //       }).catch((error) => {
+  //         console.error('Error generating PDF:', error);
+  //       });
+  //     } else {
+  //       console.error('Invoice template not found!');
+  //     }
+  //   }, 1000);
+  // }
+
+  downloadInvoice(id:any){
+    const url = `${environment.live_url}/invoice/${id}/`;
+    this.openNewTab(url);
+  }
+
+  openNewTab(url: string): void {
+    window.open(url, '_blank');
+  }
 }
+
+
+
+
