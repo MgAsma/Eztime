@@ -139,3 +139,39 @@
   .pb-5{
     padding-bottom: 7rem;
   }
+
+
+
+  .invoice-data{
+    background-color: #fbfbfb;
+}
+.invoice-data .logo-bg{
+    background-color: #def1ff;
+    padding: 8px 0px;
+}
+.invoice-data .card{
+    background-color: #ffffff;
+    border: 12px;
+}
+.invoice-data tr th{
+    background: #F1F1F1;
+}
+.invoice-data th:first-child{
+    border-radius: 10px 0px 0px 0px;
+    width: auto !important;
+}
+.invoice-data th:last-child {
+    border-radius: 0px 10px 0px 0px;
+}
+.invoice-data td:first-child {
+    border-radius: 0px 0px 0px 10px !important;
+    width: auto !important;
+}
+.invoice-data  td:last-child {
+    border-radius: 0px 0px 10px 0px;
+}
+.invoice-data .border-right{
+    border-right: 1px solid #d9d9d9;
+    text-align: center;
+    padding: 13px 0px;
+}

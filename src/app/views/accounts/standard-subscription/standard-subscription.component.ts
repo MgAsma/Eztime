@@ -60,10 +60,13 @@ export class StandardSubscriptionComponent implements OnInit {
     }
     buyStandardPlan() {
       const dialogRef = this.dialog.open(BuyStandardplanComponent, {
-        data: { planDetails: this.subscriptionData },
+        data: { planDetails: this.subscriptionData ,selectedValue: this.monthly},
         panelClass: 'custom-dialog'
       });
       dialogRef.disableClose=true
     }
 
+    roundAmount(amount: number): number {
+      return Math.round(amount);
+    }
 }

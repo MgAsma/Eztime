@@ -60,7 +60,7 @@ export class PlanSelectionComponent implements OnInit {
   //  }
    buyStandardPlan() {
      const dialogRef = this.dialog.open(BuyStandardplanComponent, {
-       data: { planDetails: this.subscriptionData },
+       data: { planDetails: this.subscriptionData ,selectedValue: this.monthly},
         // data: {  },
        panelClass: 'custom-dialog'
      });
