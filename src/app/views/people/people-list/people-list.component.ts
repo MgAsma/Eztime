@@ -49,6 +49,7 @@ export class PeopleListComponent implements OnInit {
     is_active: false,
   };
   arrow: boolean = false
+  activeEmployees: any = [];
   constructor(
     private api: ApiserviceService,
     private router: Router,
@@ -68,41 +69,40 @@ export class PeopleListComponent implements OnInit {
     localStorage.removeItem('employee_id');
     this.getPeople(`?organization_id=${this.org_id}&page=${1}&page_size=${10}`);
     this.enabled = true;
-    //  this.getUserControls()
+    this.getActiveEmployeeCount()
   }
+ 
   async getSubscriptionDetails(){
-    this.getPeople(`?organization_id=${this.org_id}`);
-    this.api.getData(`${environment.live_url}/${environment.my_subscription}/?organization=${this.org_id}`).subscribe((res: any) => {
-      if(res.data){
-      
-        res.data.forEach(async (element:any) => {
-          if(element.is_active && element.added_users < this.allPeople?.length){
-           
-            const modelRef = await this.modalService.open(LimitReachedComponent, {
-              size: <any>'sm',
-              backdrop: true,
-              centered: true
-            })
-            modelRef.componentInstance.status.subscribe(resp => {
-              if (resp == "ok") {
-                this.router.navigate(['/accounts/subscription'])
-                modelRef.close();
-              }
-              else {
-                modelRef.close();
-              }
-            })
-            }else{
-              this.router.navigate(['/people/create-people'])
+    
+ 
+  this.api.getData(`${environment.live_url}/${environment.my_subscription}/?organization=${this.org_id}`).subscribe((res: any) => {
+    if(res.data){
+      res.data.forEach(async (element:any) => {
+        if(element.is_active && Number(this.activeEmployees.length) >= Number(element.added_users) ){
+          const modelRef = await this.modalService.open(LimitReachedComponent, {
+            size: <any>'sm',
+            backdrop: true,
+            centered: true
+          })
+          modelRef.componentInstance.status.subscribe(resp => {
+            if (resp == "ok") {
+              this.router.navigate(['/accounts/subscription'])
+              modelRef.close();
             }
-          
-        })
-      }
-    })
-   
-    
-    
+            else {
+              modelRef.close();
+            }
+          })
+          }else{
+            this.router.navigate(['/people/create-people'])
+          }
+        
+      })
+    }
+})
   }
+  
+  
   changeYearStartDate(event: any) {
     //console.log(event.target.value)
     this.startDate = event.target.value
@@ -136,7 +136,21 @@ export class PeopleListComponent implements OnInit {
     })
     )
   }
-
+  getActiveEmployeeCount(): void {
+    this.api.getData(`${environment.live_url}/${environment.allEmployee}/?organization_id=${this.org_id}`)
+      .subscribe(
+        (data: any) => {
+          // Use filter instead of map for filtering active employees
+          this.activeEmployees = data?.filter((employee: any) => employee.is_active === true);
+        },
+        (error) => {
+          // Handle the error appropriately
+          this.api.showError(error?.error?.message);
+        }
+      );
+  }
+  
+  
   flattenUserData(data: any): any {
     return {
       ...data, // Main object properties

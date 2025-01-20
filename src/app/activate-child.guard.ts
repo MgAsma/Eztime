@@ -17,7 +17,7 @@ export class ActivateChildGuard implements CanActivateChild {
       this._router.navigate(['/login']);
       return false;
     }
-
+    
     return true;
   }
 }

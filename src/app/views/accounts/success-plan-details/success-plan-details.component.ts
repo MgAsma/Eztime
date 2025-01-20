@@ -36,6 +36,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
   showRenewalButton: boolean = false;
   disableCancelButton: boolean = false;
   disableAddButton: boolean = false;
+  discounted_amount: any;
   constructor(
     private common_service: CommonServiceService,
     private dialog: MatDialog,
@@ -158,6 +159,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
           } else if (item.yearly_or_monthly_name === 'Yearly') {
             this.yearlyAmount = item.amount;
             this.discount = item.discount;
+            this.discounted_amount = item.discounted_amount;
           }
         });
       }

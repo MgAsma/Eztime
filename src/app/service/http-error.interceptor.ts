@@ -14,11 +14,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         isOnline().then(online => {
           if (!online) {
             this.router.navigate(['/no-internet']);
-          } else if (error.status === 404) {
-            this.router.navigate(['/404']);
-          } else if (error.status === 500) {
-            this.router.navigate(['/500']);
-          } else if (error.status === 504) {
+          } 
+          else if (error.status === 504) {
             this.router.navigate(['/504']);
           } else if (error.status === 503) {
             this.router.navigate(['/503']);
