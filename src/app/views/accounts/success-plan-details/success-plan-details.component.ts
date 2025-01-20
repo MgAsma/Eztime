@@ -61,10 +61,11 @@ export class SuccessPlanDetailsComponent implements OnInit {
         this.expiryBtnValidation(element1.expiry_date);
       }
     });
+    this.getPeopleCount(`?organization_id=${this.organizationId}&page=${1}&page_size=${10}`)
   }
   ngOnChanges() {
     this.mySubscriptionData = this.my_subscription
-    console.log('freeeee', this.mySubscriptionData)
+    // console.log('freeeee', this.mySubscriptionData)
 
   }
   expiryBtnValidation(expiry_date) {
@@ -145,7 +146,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
   }
   renewSubscription(plan: any) {
     const dialogRef = this.dialog.open(BuyStandardplanComponent, {
-      data: { plan_data: plan },
+      data: {selectedValue: true,'totalPeopleCount':this.totalPeopleCount},
       panelClass: 'custom-dialog'
     });
     dialogRef.disableClose = true
@@ -246,6 +247,20 @@ export class SuccessPlanDetailsComponent implements OnInit {
 
   openNewTab(url: string): void {
     window.open(url, '_blank');
+  }
+  totalPeopleCount:number
+  getPeopleCount(params:any) {
+    this.api.getData(`${environment.live_url}/${environment.allEmployee}/${params}`).subscribe((data: any) => {
+      console.log(data)
+      if( data?.['total_no_of_record']===0){
+        this.totalPeopleCount = 1;
+      } else{
+        this.totalPeopleCount = data?.['total_no_of_record'];
+      }
+    }, ((error) => {
+      this.api.showError(error.error.error.message)
+    })
+    )
   }
 }
 

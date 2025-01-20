@@ -43,7 +43,7 @@ export class PlanSelectionComponent implements OnInit {
      this.common_service.setTitle(this.BreadCrumbsTitle);
      this.organization_id = sessionStorage.getItem('organization_id');
      this.freeTrailDisable = this.disabled
-     //this.getSubscription()
+     this.getPeopleCount(`?organization_id=${this.organization_id}&page=${1}&page_size=${10}`)
 
      //console.log(this.subscriptionData,"FFFF")
    }
@@ -60,7 +60,7 @@ export class PlanSelectionComponent implements OnInit {
   //  }
    buyStandardPlan() {
      const dialogRef = this.dialog.open(BuyStandardplanComponent, {
-       data: { planDetails: this.subscriptionData ,selectedValue: this.monthly},
+       data: {selectedValue: this.monthly,'totalPeopleCount':this.totalPeopleCount},
         // data: {  },
        panelClass: 'custom-dialog'
      });
@@ -114,5 +114,19 @@ export class PlanSelectionComponent implements OnInit {
     return Math.round(amount);
   }
    
+  totalPeopleCount:number
+  getPeopleCount(params:any) {
+    this.api.getData(`${environment.live_url}/${environment.allEmployee}/${params}`).subscribe((data: any) => {
+      console.log(data)
+      if( data?.['total_no_of_record']===0){
+        this.totalPeopleCount = 1;
+      } else{
+        this.totalPeopleCount = data?.['total_no_of_record'];
+      }
+    }, ((error) => {
+      this.api.showError(error.error.error.message)
+    })
+    )
+  }
 
 }

@@ -56,6 +56,7 @@ BreadCrumbsTitle:any='Subscription plan';
     this.getSubscription(this.subscriptionData);
     let query = `page=${1}&page_size=${5}`
     this.getTrialPlanDetails(query);
+    this.getPeopleCount(`?organization_id=${this.organizationId}&page=${1}&page_size=${10}`)
   }
   getSubscription(event) {
         // Iterate through subscription data
@@ -144,7 +145,7 @@ BreadCrumbsTitle:any='Subscription plan';
 
   renewSubscription(){
     const dialogRef = this.dialog.open(BuyStandardplanComponent, {
-      data: {planDetails:this.planDetails,selectedValue: this.monthly},
+      data: {selectedValue: this.monthly,'totalPeopleCount':this.totalPeopleCount},
       panelClass: 'custom-dialog'
     });
     dialogRef.disableClose=true
@@ -165,5 +166,19 @@ BreadCrumbsTitle:any='Subscription plan';
 
   roundAmount(amount: number): number {
     return Math.round(amount);
+  }
+  totalPeopleCount:number
+  getPeopleCount(params:any) {
+    this.api.getData(`${environment.live_url}/${environment.allEmployee}/${params}`).subscribe((data: any) => {
+      console.log(data)
+      if( data?.['total_no_of_record']===0){
+        this.totalPeopleCount = 1;
+      } else{
+        this.totalPeopleCount = data?.['total_no_of_record'];
+      }
+    }, ((error) => {
+      this.api.showError(error.error.error.message)
+    })
+    )
   }
 }

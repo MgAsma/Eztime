@@ -27,7 +27,8 @@ export class StandardSubscriptionComponent implements OnInit {
 
    ngOnInit(): void {
       this.organization_id = sessionStorage.getItem('organization_id');
-      this.getSubscription()
+      this.getSubscription();
+      this.getPeopleCount(`?organization_id=${this.organization_id}&page=${1}&page_size=${10}`)
       //console.log(this.subscriptionData,"FFFF")
     }
     setPaymentOption(option: boolean): void {
@@ -60,7 +61,7 @@ export class StandardSubscriptionComponent implements OnInit {
     }
     buyStandardPlan() {
       const dialogRef = this.dialog.open(BuyStandardplanComponent, {
-        data: { planDetails: this.subscriptionData ,selectedValue: this.monthly},
+        data: { 'totalPeopleCount':this.totalPeopleCount,selectedValue: this.monthly},
         panelClass: 'custom-dialog'
       });
       dialogRef.disableClose=true
@@ -69,4 +70,19 @@ export class StandardSubscriptionComponent implements OnInit {
     roundAmount(amount: number): number {
       return Math.round(amount);
     }
+
+    totalPeopleCount:number
+  getPeopleCount(params:any) {
+    this.api.getData(`${environment.live_url}/${environment.allEmployee}/${params}`).subscribe((data: any) => {
+      console.log(data)
+      if( data?.['total_no_of_record']===0){
+        this.totalPeopleCount = 1;
+      } else{
+        this.totalPeopleCount = data?.['total_no_of_record'];
+      }
+    }, ((error) => {
+      this.api.showError(error.error.error.message)
+    })
+    )
+  }
 }

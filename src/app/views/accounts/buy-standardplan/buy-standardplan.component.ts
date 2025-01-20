@@ -51,12 +51,12 @@ export class BuyStandardplanComponent implements OnInit {
   ngOnInit(): void {
     this.orgId = sessionStorage.getItem('organization_id');
     console.log(this.data)
-    console.log(this.data?.selectedValue)
-    this.monthly = this.data?.selectedValue
-    if(this.data?.plan_data?.added_users){
-      // console.log('dataaaaa',this.data)
-      this.minUsers = this.data?.plan_data?.added_users;
-    }
+    this.monthly = this.data?.selectedValue;
+    this.minUsers = this.data.totalPeopleCount;
+    // if(this.data?.plan_data?.added_users){
+    //   // console.log('dataaaaa',this.data)
+    //   this.minUsers = this.data?.plan_data?.added_users;
+    // }
     this.initForm()
     this.getState()
     this.getSubscription();
