@@ -72,36 +72,67 @@ export class PeopleListComponent implements OnInit {
     this.getActiveEmployeeCount()
   }
  
-  async getSubscriptionDetails(){
+//   async getSubscriptionDetails(){
     
  
-  this.api.getData(`${environment.live_url}/${environment.my_subscription}/?organization=${this.org_id}`).subscribe((res: any) => {
-    if(res.data){
-      res.data.forEach(async (element:any) => {
-        if(element.is_active && Number(this.activeEmployees.length) >= Number(element.added_users) ){
-          const modelRef = await this.modalService.open(LimitReachedComponent, {
-            size: <any>'sm',
-            backdrop: true,
-            centered: true
-          })
-          modelRef.componentInstance.status.subscribe(resp => {
-            if (resp == "ok") {
-              this.router.navigate(['/accounts/subscription'])
-              modelRef.close();
-            }
-            else {
-              modelRef.close();
-            }
-          })
-          }else{
-            this.router.navigate(['/people/create-people'])
-          }
+//   this.api.getData(`${environment.live_url}/${environment.my_subscription}/?organization=${this.org_id}`).subscribe((res: any) => {
+//     if(res.data){
+//       res.data.forEach(async (element:any) => {
+//         if(element.is_active && Number(this.activeEmployees.length) >= Number(element.added_users) ){
+//           const modelRef = await this.modalService.open(LimitReachedComponent, {
+//             size: <any>'sm',
+//             backdrop: true,
+//             centered: true
+//           })
+//           modelRef.componentInstance.status.subscribe(resp => {
+//             if (resp == "ok") {
+//               this.router.navigate(['/accounts/subscription'])
+//               modelRef.close();
+//             }
+//             else {
+//               modelRef.close();
+//             }
+//           })
+//           }else{
+//             this.router.navigate(['/people/create-people'])
+//           }
         
-      })
-    }
-})
-  }
+//       })
+//     }
+// })
+//   }
   
+  async getSubscriptionDetails() {
+    try {
+      const res: any = await this.api
+        .getData(`${environment.live_url}/${environment.my_subscription}/?organization=${this.org_id}`)
+        .toPromise();
+  
+      if (res.data && res.data.length) {
+        for (const element of res.data) {
+          if (element.is_active && Number(this.activeEmployees.length) >= Number(element.added_users)) {
+            const modalRef = await this.modalService.open(LimitReachedComponent, {
+              size: <any>'sm',
+              backdrop: true,
+              centered: true,
+            });
+  
+            modalRef.componentInstance.status.subscribe((resp: any) => {
+              if (resp === "ok") {
+                this.router.navigate(['/accounts/subscription']);
+              }
+              modalRef.close();
+            });
+            return; // Exit loop after showing modal
+          }
+        }
+        // If no condition was met for showing the modal, navigate to create people
+        this.router.navigate(['/people/create-people']);
+      }
+    } catch (error) {
+      console.error('Error fetching subscription details:', error);
+    }
+  }
   
   changeYearStartDate(event: any) {
     //console.log(event.target.value)

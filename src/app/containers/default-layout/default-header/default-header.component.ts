@@ -102,7 +102,6 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     this.api.getData(`${environment.live_url}/${environment.my_subscription}/?organization=${this.orgId}`).subscribe((res:any)=>{
       if(res){
         this.mySubscription = res.data || res
-        console.log(this.mySubscription,'this.mySubscription')
       }
     })
   }
@@ -219,7 +218,10 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
         this.notification_count = res.results.length
       }
     }, ((error: any) => {
-       this.api.showError(error?.error?.message)
+      if(error){
+        this.api.showError(error?.error?.message)
+      }
+      
     }))
   }
 
