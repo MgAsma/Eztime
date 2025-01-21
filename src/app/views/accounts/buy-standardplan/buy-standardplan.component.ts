@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { RazorpayService } from '../../../service/razorpay.service'
 import { TrialSuccessComponent } from '../trial-success/trial-success.component';
 import { CommonServiceService } from '../../../service/common-service.service';
+import { TransactionFailedComponent } from '../transaction-failed/transaction-failed.component';
 
 declare var Razorpay: any;
 @Component({
@@ -246,7 +247,7 @@ export class BuyStandardplanComponent implements OnInit {
         ondismiss: () => {
           // console.log('dismissed')
           this.ngZone.run(() => {
-            this.api.showError('Transaction failed')
+            this.transactionFailed();
           });
         }
       }
@@ -337,6 +338,21 @@ export class BuyStandardplanComponent implements OnInit {
         modelRef.close();
       }
     })
+  }
+
+  async transactionFailed(){
+    const modalRef = await this.modalService.open(TransactionFailedComponent, {
+      size: <any>'sm',
+      backdrop: true,
+      centered: true,
+    });
+
+    modalRef.componentInstance.status.subscribe((resp: any) => {
+      if (resp === "ok") {
+        this.router.navigate(['/accounts/subscription']);
+      }
+      modalRef.close();
+    });
   }
 
 

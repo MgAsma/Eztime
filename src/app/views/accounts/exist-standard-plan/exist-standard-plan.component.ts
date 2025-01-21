@@ -6,6 +6,7 @@ import { ApiserviceService } from '../../../service/apiservice.service';
 import { environment } from '../../../../environments/environment';
 import { TrialSuccessComponent } from '../trial-success/trial-success.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TransactionFailedComponent } from '../transaction-failed/transaction-failed.component';
 
 
 declare var Razorpay: any;
@@ -219,7 +220,7 @@ export class ExistStandardPlanComponent implements OnInit {
         modal: {
           ondismiss: () => {
             this.ngZone.run(() => {
-              this.api.showError('Transaction failed')
+              this.transactionFailed();
             });
           }
         }
@@ -295,4 +296,18 @@ export class ExistStandardPlanComponent implements OnInit {
       })
     }
 
+    async transactionFailed(){
+        const modalRef = await this.modalService.open(TransactionFailedComponent, {
+          size: <any>'sm',
+          backdrop: true,
+          centered: true,
+        });
+    
+        modalRef.componentInstance.status.subscribe((resp: any) => {
+          if (resp === "ok") {
+            this.router.navigate(['/accounts/subscription']);
+          }
+          modalRef.close();
+        });
+      }
 }

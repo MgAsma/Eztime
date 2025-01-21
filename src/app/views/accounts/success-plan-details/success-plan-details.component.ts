@@ -26,6 +26,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
   @Input() selectedPlanDetails: any;
   @Output() successEmit = new EventEmitter<any>();
   monthlyAmount: any;
+  totalPeopleCount:number
   yearlyAmount: any;
   discount: any;
   isLoading: boolean = true;
@@ -58,10 +59,10 @@ export class SuccessPlanDetailsComponent implements OnInit {
     this.mySubscriptionData = this.my_subscription
     this.mySubscriptionData.forEach((element1) => {
       if (element1.subscription_type_name === 'Standard') {
+        this.totalPeopleCount = element1.added_users
         this.expiryBtnValidation(element1.expiry_date);
       }
     });
-    this.getPeopleCount(`?organization_id=${this.organizationId}&page=${1}&page_size=${10}`)
   }
   ngOnChanges() {
     this.mySubscriptionData = this.my_subscription
@@ -69,22 +70,22 @@ export class SuccessPlanDetailsComponent implements OnInit {
 
   }
   expiryBtnValidation(expiry_date) {
-    const endDate = new Date(expiry_date)
-    const currentDate = new Date();
+    const endDate = this.datePipe.transform(expiry_date,'dd-MM-yyyy')
+    const currentDate = this.datePipe.transform(new Date(),'dd-MM-yyyy')
     // console.log(endDate, currentDate)
     if (endDate < currentDate) {
       console.log('date expired')
       this.disableCancelButton = true;
       this.disableAddButton = true;
       this.showRenewalButton = false;
-    } else if (endDate.getTime() === currentDate.getTime()) {
-      this.disableCancelButton = false;
+    } else if (endDate === currentDate) {
+      this.disableCancelButton = true;
       this.disableAddButton = true;
       this.showRenewalButton = false;
       console.log('date is equal')
     } else {
-      const diffInTime = endDate.getTime() - currentDate.getTime();
-      const remainingDays = Math.ceil(diffInTime / (1000 * 60 * 60 * 24));
+      const remainingDays = Math.ceil((new Date(expiry_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+      // const remainingDays = Math.ceil(diffInTime / (1000 * 60 * 60 * 24));
 
       if (remainingDays <= 5) {
         console.log('less or equal to 5', remainingDays)
@@ -247,20 +248,6 @@ export class SuccessPlanDetailsComponent implements OnInit {
 
   openNewTab(url: string): void {
     window.open(url, '_blank');
-  }
-  totalPeopleCount:number
-  getPeopleCount(params:any) {
-    this.api.getData(`${environment.live_url}/${environment.allEmployee}/${params}`).subscribe((data: any) => {
-      console.log(data)
-      if( data?.['total_no_of_record']===0){
-        this.totalPeopleCount = 1;
-      } else{
-        this.totalPeopleCount = data?.['total_no_of_record'];
-      }
-    }, ((error) => {
-      this.api.showError(error.error.error.message)
-    })
-    )
   }
 }
 
