@@ -1,9 +1,93 @@
 <div class="container-fluid bg mt-4 p-20">
     <!-- Subscription Plans -->
     <div class="row">
-      {{data.plan}}
+       <!-- Standard Plan Card -->
+       <div class="col-md-7 mb-3">
+       
+        <mat-card class="custom-card border-primary standard-card" >
+        <mat-card-content *ngFor="let plan of mySubscriptionData">
+          <ng-container *ngIf="plan.subscription_type_name === 'Standard' && plan.is_active">
+          <div class="card-header">
+            <h5 class="plan-title standard-title p-r">{{plan?.subscription_type_name}} <img class="spakle-image" src="../../../../assets/images/sparkle-filled.svg"/> <span class="badge standard-plan-staus">Active</span></h5>
+          </div>
+          <p class="card-text mb-3 sub-header">{{plan?.subscribed_for}}</p>
+          <div class="row">
+            <div class="col-3">
+              <div class="row">
+                <div class="col-12">
+                  <p class="card-text">No of active users</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <strong>{{plan?.added_users}}</strong>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <div class="col-12">
+                  <p class="card-text">Total no of users</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <strong>{{plan?.max_user}}</strong>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <div class="col-12">
+                  <p class="card-text">No of days left</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <strong>{{plan?.remaining_number_of_days}} </strong>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <div class="col-12">
+                  <p class="card-text">Expiry Date</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <strong>{{plan?.expiry_date | date}}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+        
+            <div class="row button-group">
+              <div class="col-3">
+                <button mat-raised-button [ngbTooltip]="disableCancelButton? 'please renew': 'cancel subscription'" 
+                 [disabled]="disableCancelButton" class="action-button btn-cancel" (click)="cancelSubscription(plan)"
+                 [ngStyle]="{'cursor': disableCancelButton ? 'not-allowed' : 'pointer'}">Cancel</button>
+              </div>
+              <div class="col-3">
+                <button mat-raised-button [ngbTooltip]="disableAddButton? 'please renew': 'add users'" 
+                 [disabled]="disableAddButton"  class="action-button btn-add-user" (click)="addNewUser(plan)"
+                 [ngStyle]="{'cursor': disableAddButton ? 'not-allowed' : 'pointer'}">Add User</button>
+              </div>
+              <div class="col-3">
+                <button [disabled]="showRenewalButton"  mat-raised-button  class="action-button btn-renew" 
+                (click)="renewSubscription(plan)" [ngStyle]="{'cursor': showRenewalButton ? 'not-allowed' : 'pointer'}">Renew</button>
+              </div>
+              <div class="col-3"></div>
+            </div>
+          </ng-container>
+          
+        </mat-card-content>
+      </mat-card>
+    
+    </div>
       <!-- Free Trial Card -->
-      <div class="col-md-6 mb-3" *ngIf="mySubscriptionData.length>1">
+      <div class="col-md-5 mb-3" *ngIf="mySubscriptionData.length>1">
         <mat-card class="custom-card border-danger" >
           <mat-card-content *ngFor="let plan of mySubscriptionData">
             <ng-container *ngIf="plan.subscription_type_name === 'Free Trial' && !plan.is_active">
@@ -11,7 +95,7 @@
               <h5 class="card-title">{{plan?.subscribed_for}}  <span class="badge bg-danger">Expired</span></h5>
              
             </div>
-            <p class="card-text sub-header">{{plan?.subscribed_for}}</p>
+            <p class="card-text mb-1 sub-header">{{plan?.subscribed_for}}</p>
             <div class="row">
               <div class="col-4">
                 <p class="card-text">No of active users</p>
@@ -45,78 +129,7 @@
         </mat-card>
       </div>
     
-      <!-- Standard Plan Card -->
-      <div class="col-md-6 mb-3">
-       
-          <mat-card class="custom-card border-primary standard-card" >
-          <mat-card-content *ngFor="let plan of mySubscriptionData">
-            <ng-container *ngIf="plan.subscription_type_name === 'Standard' && plan.is_active">
-            <div class="card-header">
-              <h5 class="plan-title standard-title p-r">{{plan?.subscription_type_name}} <img class="spakle-image" src="../../../../assets/images/sparkle-filled.svg"/> <span class="badge standard-plan-staus">Active</span></h5>
-            </div>
-            <p class="card-text sub-header">{{plan?.subscribed_for}}</p>
-            <div class="row">
-              <div class="col-4">
-                <div class="row">
-                  <div class="col-12">
-                    <p class="card-text">No of active users</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12">
-                    <strong>{{plan?.added_users}}</strong>
-                  </div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="row">
-                  <div class="col-12">
-                    <p class="card-text">No of days left</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12">
-                    <strong>{{plan?.remaining_number_of_days}} </strong>
-                  </div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="row">
-                  <div class="col-12">
-                    <p class="card-text">Expiry Date</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12">
-                    <strong>{{plan?.expiry_date | date}}</strong>
-                  </div>
-                </div>
-              </div>
-            </div>
-           
-          
-              <div class="row button-group">
-                <div class="col-4">
-                  <button mat-raised-button [ngbTooltip]="disableCancelButton? 'please renew': 'cancel subscription'" 
-                   [disabled]="disableCancelButton" class="action-button btn-cancel" (click)="cancelSubscription(plan)"
-                   [ngStyle]="{'cursor': disableCancelButton ? 'not-allowed' : 'pointer'}">Cancel</button>
-                </div>
-                <div class="col-4">
-                  <button mat-raised-button [ngbTooltip]="disableAddButton? 'please renew': 'add users'" 
-                   [disabled]="disableAddButton"  class="action-button btn-add-user" (click)="addNewUser(plan)"
-                   [ngStyle]="{'cursor': disableAddButton ? 'not-allowed' : 'pointer'}">Add User</button>
-                </div>
-                <div class="col-4">
-                  <button [disabled]="showRenewalButton"  mat-raised-button  class="action-button btn-renew" 
-                  (click)="renewSubscription(plan)" [ngStyle]="{'cursor': showRenewalButton ? 'not-allowed' : 'pointer'}">Renew</button>
-                </div>
-              </div>
-            </ng-container>
-            
-          </mat-card-content>
-        </mat-card>
-      
-      </div>
+     
     </div>
     
     

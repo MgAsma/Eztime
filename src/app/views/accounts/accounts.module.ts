@@ -16,6 +16,7 @@ import { StandardSubscriptionComponent } from './standard-subscription/standard-
 import { LimitReachedComponent } from './limit-reached/limit-reached.component';
 import { PlanSelectionComponent } from './plan-selection/plan-selection.component';
 import { SubscriptionInvoiceDetailsComponent } from './subscription-invoice-details/subscription-invoice-details.component';
+import { TransactionFailedComponent } from './transaction-failed/transaction-failed.component';
 @NgModule({
   declarations: [
     AccountsComponent,
@@ -31,6 +32,7 @@ import { SubscriptionInvoiceDetailsComponent } from './subscription-invoice-deta
     LimitReachedComponent,
     PlanSelectionComponent,
     SubscriptionInvoiceDetailsComponent,
+    TransactionFailedComponent,
   ],
   imports: [
     CommonModule,

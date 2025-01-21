@@ -26,7 +26,7 @@
   }
   
   .border-danger {
-    background-color: #FFE9E9; // Light pink background
+    background-color: #e9e9e9; 
     border: 0;
   }
   
@@ -89,6 +89,7 @@
   /* Standard Plan Card */
   .standard-card {
     background: #126EB4;
+    padding: 3px 16px 20px 16px;
     background-image: url('../../../../assets/images/standard-plan-bg.png');
     background-size: cover;
     color: white;
@@ -113,9 +114,7 @@
       font-size: 20px;
     }
   }
-  .sub-header{
-    margin-bottom: 5px;
-  }
+  
   .btn-outline-primary{
     border-radius: 50%;
     background: #f3f3f3;

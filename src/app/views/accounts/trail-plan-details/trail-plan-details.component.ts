@@ -33,6 +33,7 @@ BreadCrumbsTitle:any='Subscription plan';
   tableSizes = [5,10,25,50,100];
   page: any;
   count: any;
+  totalPeopleCount:number
   constructor(
     private common_service:CommonServiceService,
     private dialog:MatDialog,
@@ -53,10 +54,12 @@ BreadCrumbsTitle:any='Subscription plan';
     this.organizationId = sessionStorage.getItem('organization_id');
     this.subscriptionData = this.data;
     this.mySubscriptionData = this.my_subscription
+    console.log('this.mySubscriptionData',this.mySubscriptionData)
     this.getSubscription(this.subscriptionData);
     let query = `page=${1}&page_size=${5}`
     this.getTrialPlanDetails(query);
-    this.getPeopleCount(`?organization_id=${this.organizationId}&page=${1}&page_size=${10}`)
+    this.totalPeopleCount = this.mySubscriptionData[0].added_users
+    // this.getPeopleCount(`?organization_id=${this.organizationId}&page=${1}&page_size=${10}`)
   }
   getSubscription(event) {
         // Iterate through subscription data
@@ -167,18 +170,6 @@ BreadCrumbsTitle:any='Subscription plan';
   roundAmount(amount: number): number {
     return Math.round(amount);
   }
-  totalPeopleCount:number
-  getPeopleCount(params:any) {
-    this.api.getData(`${environment.live_url}/${environment.allEmployee}/${params}`).subscribe((data: any) => {
-      console.log(data)
-      if( data?.['total_no_of_record']===0){
-        this.totalPeopleCount = 1;
-      } else{
-        this.totalPeopleCount = data?.['total_no_of_record'];
-      }
-    }, ((error) => {
-      this.api.showError(error.error.error.message)
-    })
-    )
-  }
+  
+  
 }

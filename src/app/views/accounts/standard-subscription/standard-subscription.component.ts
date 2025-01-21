@@ -74,11 +74,11 @@ export class StandardSubscriptionComponent implements OnInit {
     totalPeopleCount:number
   getPeopleCount(params:any) {
     this.api.getData(`${environment.live_url}/${environment.allEmployee}/${params}`).subscribe((data: any) => {
-      console.log(data)
+      // console.log(data)
       if( data?.['total_no_of_record']===0){
         this.totalPeopleCount = 1;
       } else{
-        this.totalPeopleCount = data?.['total_no_of_record'];
+        this.totalPeopleCount = data?.['total_no_of_record']+1;
       }
     }, ((error) => {
       this.api.showError(error.error.error.message)
