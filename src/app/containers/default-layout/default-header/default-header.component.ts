@@ -218,7 +218,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
         this.notification_count = res.results.length
       }
     }, ((error: any) => {
-       // this.api.showError(error?.error?.message)
+       this.api.showError(error?.error?.message)
     }))
   }
 

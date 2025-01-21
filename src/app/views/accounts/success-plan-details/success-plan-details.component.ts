@@ -194,7 +194,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
             slNo: index + 1,
             plan: item.subscribed_organization__subscription_type__name,
             term: item.terms,
-            perUser:item.per_user_amount,
+            perUser:item.per_user_amount || 0,
             id: item.id,
             users: item.number_of_users || 'NA',
             totalAmount: item.total_amount,
