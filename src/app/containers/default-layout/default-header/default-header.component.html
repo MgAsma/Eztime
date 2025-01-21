@@ -16,14 +16,14 @@
       <div class="col-sm-12">
          
           <h1 class="breadcrumb-title" *ngIf="pageName" [ngStyle]="{'padding-top': pageName === 'Dashboard' ? '10px' : '0px'}">{{pageName |titlecase}}</h1>
-         <div class="mobile-hide-content" *ngIf="pageName!=''">
+         <!-- <div class="mobile-hide-content" *ngIf="pageName!=''">
           <nav aria-label="breadcrumb ">
             <ol class="breadcrumb mb-2">
               <li class="breadcrumb-item" *ngIf="pageName !== 'Dashboard' && dashboardAccess?.['name'] === 'Dashboard' "><a routerLink="/dashboards">Dashboard</a> </li>
               <li class="breadcrumb-item sub-title" *ngIf="pageName !== 'Dashboard'"><a [ngStyle]="dashboardAccess?.['name'] !== 'Dashboard' ? {'text-decoration':'none'}:{'':''}">{{pageName |titlecase}}</a></li>
             </ol>
           </nav>
-         </div>
+         </div> -->
       </div>
   </div>
    
