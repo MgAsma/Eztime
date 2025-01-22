@@ -25,6 +25,7 @@ export class PlanSelectionComponent implements OnInit {
    yearlyAmount: any;
    organization_id: string | null;
   freeTrailDisable: boolean;
+  firstPlanStandard: boolean = false;
    constructor(private api:ApiserviceService,
      private common_service : CommonServiceService,
      private modalService:NgbModal,
@@ -44,24 +45,34 @@ export class PlanSelectionComponent implements OnInit {
      this.organization_id = sessionStorage.getItem('organization_id');
      this.freeTrailDisable = this.disabled
      this.getPeopleCount(`?organization_id=${this.organization_id}&page=${1}&page_size=${10}`)
-
-     //console.log(this.subscriptionData,"FFFF")
+     this.getTransactionHistory()
    }
    setPaymentOption(option: boolean): void {
      this.monthly = option;
    }
-  //  getSubscription(){
-  //    this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
-  //      if(res){
-  //        this.subscriptionData = res;
-  //      }
-  //    })
-    
-  //  }
+   getTransactionHistory() {
+    if (this.organization_id) {
+      this.api.getData(`${environment.live_url}/${environment.transaction_history}/?organization=${this.organization_id}`).subscribe((res:any) => {
+        if (res) {
+          if (res && res?.length > 0) {
+            const lastIndex = res[res?.length - 1]; // Get the last element
+            const subscriptionName = lastIndex.subscribed_organization__subscription_type__name;
+        
+            if (subscriptionName) {
+              if (subscriptionName === "Standard") {
+                this.firstPlanStandard = true
+              }
+            }
+          }
+        }
+      })
+    }
+  }
+ 
+  
    buyStandardPlan() {
      const dialogRef = this.dialog.open(BuyStandardplanComponent, {
        data: {selectedValue: this.monthly,'totalPeopleCount':this.totalPeopleCount},
-        // data: {  },
        panelClass: 'custom-dialog'
      });
      dialogRef.disableClose=true
@@ -86,7 +97,7 @@ export class PlanSelectionComponent implements OnInit {
     });
   }
   
-  getTrailPlan(subscription_id,event,modelRef: any) {
+  async getTrailPlan(subscription_id,event,modelRef: any) {
     const data = {
       organization: this.organization_id,
       subscription_type: subscription_id,
@@ -94,13 +105,13 @@ export class PlanSelectionComponent implements OnInit {
     };
     
     this.api.postData(`${environment.live_url}/${environment.buy_subscription}/`, data).subscribe(
-      (res: any) => {
+      async (res: any) => {
         if (res) {
-          modelRef.componentInstance.trailPlanStaus = true;
-          this.common_service.subsctiptionState$.next(true)
-          this.router.navigate(['/accounts/subscription']);
-          this.trailPlanStaus.emit(true);
-          this.api.showSuccess('You have successfully activated your free trial plan');
+           modelRef.componentInstance.trailPlanStaus = true;
+          await this.common_service.subsctiptionState$.next(true)
+          await this.trailPlanStaus.emit(true);
+         await this.router.navigate(['/accounts/subscription']);
+         this.api.showSuccess('You have successfully activated your free trial plan');
         }
       },
       (error) => {

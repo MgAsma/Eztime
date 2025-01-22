@@ -2,7 +2,12 @@
     <ng-container *ngFor="let subscription of subscriptionData">
     <!-- Free Trial Card -->
      
-    <mat-card class="" [ngClass]="freeTrailDisable ? 'disable-freeTrail':'free-trial-card'" *ngIf="subscription.name === 'Free Trial'">
+    <mat-card [ngClass]="{
+      'disable-freeTrail': freeTrailDisable,
+      'grayed': firstPlanStandard,
+      'free-trial-card': !freeTrailDisable && !firstPlanStandard
+       }" 
+    *ngIf="subscription.name === 'Free Trial'" [attr.disabled]="firstPlanStandard" [title]="firstPlanStandard ? 'You are not eligible for free trial':''">
       <ng-container *ngFor="let details of subscription.plan_details">
       <h2 class="plan-title">Free Trial</h2>
       <p class="plan-description">
@@ -22,7 +27,14 @@
         </ul>
       </div>
       <div class="text-center">
-        <button mat-flat-button color="primary" [disabled]="freeTrailDisable" [title]="freeTrailDisable ? 'You have already used the free trial. Please upgrade to the Standard Plan.':''"  [ngClass]="freeTrailDisable ? 'cta-disabled' : 'cta-button'" (click)="openDialogue(subscription.id,details.id)">
+        <button mat-flat-button color="primary" [disabled]="freeTrailDisable || firstPlanStandard" [title]="freeTrailDisable ? 'You have already used the free trial. Please upgrade to the Standard Plan.':firstPlanStandard ? 'You are not eligible for free trial' : ''"  
+        [ngClass]="freeTrailDisable ? 'cta-disabled' : 'cta-button'" 
+        [ngClass]="{
+          'cta-disabled': freeTrailDisable,
+          'grayed-disabled': firstPlanStandard,
+          'cta-button': !freeTrailDisable && !firstPlanStandard
+           }" 
+            (click)="openDialogue(subscription.id,details.id)">
           {{freeTrailDisable ? 'Plan Expired' : 'Start your free trial now'}}
         </button>
       </div>

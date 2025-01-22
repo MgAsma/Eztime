@@ -21,7 +21,7 @@
     }
     
     /* Free Trial Card */
-    .free-trial-card,.disable-freeTrail {
+    .free-trial-card,.disable-freeTrail,.grayed {
       background: #e9f4ff;
   
       .plan-title {
@@ -69,7 +69,7 @@
         }
       }
   
-      .cta-button,.cta-disabled {
+      .cta-button,.cta-disabled,.grayed-disabled {
         background: #126EB4;
         color: white;
         font-weight: 600;
@@ -78,6 +78,10 @@
       }
       .cta-disabled{
         background: #b42212;
+      }
+      .grayed-disabled{
+        background-color: #d4d4d4;
+        color:black;
       }
     }
     .disable-freeTrail{
@@ -209,3 +213,8 @@
     }
     
   }
+  .grayed{
+    background-color: #e9e9e9 !important; 
+    // pointer-events: none;
+  }
+  
