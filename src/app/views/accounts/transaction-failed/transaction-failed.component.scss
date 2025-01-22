@@ -57,7 +57,8 @@ button.btn-yes {
 .modal-title{
     font-size: 18px;
     color:black;
-    text-align: center;
+    display: flex;
+    align-items: center;
 }
 img{
     vertical-align: sub;

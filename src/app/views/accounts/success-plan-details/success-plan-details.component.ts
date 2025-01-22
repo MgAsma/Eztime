@@ -60,7 +60,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
     this.mySubscriptionData.forEach((element1) => {
       if (element1.subscription_type_name === 'Standard') {
         this.totalPeopleCount = element1.added_users
-        this.expiryBtnValidation(element1.expiry_date);
+        this.expiryBtnValidation(element1.expiry_date,element1.remaining_number_of_days);
       }
     });
   }
@@ -69,31 +69,35 @@ export class SuccessPlanDetailsComponent implements OnInit {
     // console.log('freeeee', this.mySubscriptionData)
 
   }
-  expiryBtnValidation(expiry_date) {
-    const endDate = this.datePipe.transform(expiry_date,'dd-MM-yyyy')
-    const currentDate = this.datePipe.transform(new Date(),'dd-MM-yyyy')
-    // console.log(endDate, currentDate)
+  expiryBtnValidation(expiry_date, remaining_number_of_days) {
+    // const endDate = this.datePipe.transform(expiry_date,'dd-MM-yyyy')
+    // const currentDate = this.datePipe.transform(new Date(),'dd-MM-yyyy')
+    const endDate = new Date(expiry_date);
+  const currentDate = new Date();
+  endDate.setHours(0, 0, 0, 0);
+  currentDate.setHours(0, 0, 0, 0);
+    console.log(endDate, currentDate)
     if (endDate < currentDate) {
       console.log('date expired')
       this.disableCancelButton = true;
       this.disableAddButton = true;
       this.showRenewalButton = false;
-    } else if (endDate === currentDate) {
+    } else if (endDate.getTime() === currentDate.getTime()) {
       this.disableCancelButton = true;
       this.disableAddButton = true;
       this.showRenewalButton = false;
       console.log('date is equal')
     } else {
-      const remainingDays = Math.ceil((new Date(expiry_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+      // const remainingDays = Math.ceil((new Date(expiry_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
       // const remainingDays = Math.ceil(diffInTime / (1000 * 60 * 60 * 24));
 
-      if (remainingDays <= 5) {
-        console.log('less or equal to 5', remainingDays)
+      if (remaining_number_of_days <= 5) {
+        console.log('less or equal to 5', remaining_number_of_days)
         this.disableCancelButton = false;
         this.disableAddButton = false;
         this.showRenewalButton = false;
       } else {
-        console.log('more than 5', remainingDays)
+        console.log('more than 5', remaining_number_of_days)
         this.disableCancelButton = false;
         this.disableAddButton = false;
         this.showRenewalButton = true;

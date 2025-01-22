@@ -12,7 +12,7 @@
           </div>
           <p class="card-text mb-3 sub-header">{{plan?.subscribed_for}}</p>
           <div class="row">
-            <div class="col-3">
+            <div class="col-sm-12 col-md-3">
               <div class="row">
                 <div class="col-12">
                   <p class="card-text">No of active users</p>
@@ -24,7 +24,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-sm-12 col-md-3">
               <div class="row">
                 <div class="col-12">
                   <p class="card-text">Total no of users</p>
@@ -36,7 +36,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-sm-12 col-md-3">
               <div class="row">
                 <div class="col-12">
                   <p class="card-text">No of days left</p>
@@ -48,7 +48,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-sm-12 col-md-3">
               <div class="row">
                 <div class="col-12">
                   <p class="card-text">Expiry Date</p>
@@ -64,21 +64,21 @@
          
         
             <div class="row button-group">
-              <div class="col-3">
+              <div class="col-sm-12 col-md-3">
                 <button mat-raised-button [ngbTooltip]="disableCancelButton? 'please renew': 'cancel subscription'" 
                  [disabled]="disableCancelButton" class="action-button btn-cancel" (click)="cancelSubscription(plan)"
                  [ngStyle]="{'cursor': disableCancelButton ? 'not-allowed' : 'pointer'}">Cancel</button>
               </div>
-              <div class="col-3">
+              <div class="col-sm-12 col-md-3">
                 <button mat-raised-button [ngbTooltip]="disableAddButton? 'please renew': 'add users'" 
                  [disabled]="disableAddButton"  class="action-button btn-add-user" (click)="addNewUser(plan)"
                  [ngStyle]="{'cursor': disableAddButton ? 'not-allowed' : 'pointer'}">Add User</button>
               </div>
-              <div class="col-3">
+              <div class="col-sm-12 col-md-3">
                 <button [disabled]="showRenewalButton"  mat-raised-button  class="action-button btn-renew" 
                 (click)="renewSubscription(plan)" [ngStyle]="{'cursor': showRenewalButton ? 'not-allowed' : 'pointer'}">Renew</button>
               </div>
-              <div class="col-3"></div>
+              <div class="col-sm-12 col-md-3"></div>
             </div>
           </ng-container>
           
@@ -95,8 +95,8 @@
               <h5 class="card-title">{{plan?.subscribed_for}}  <span class="badge bg-danger">Expired</span></h5>
              
             </div>
-            <p class="card-text mb-1 sub-header">{{plan?.subscribed_for}}</p>
-            <div class="row">
+            <p class="card-text mb-1 sub-header"></p>
+            <div class="row mt-3">
               <div class="col-4">
                 <p class="card-text">No of active users</p>
               </div>

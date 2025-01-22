@@ -160,11 +160,11 @@ export class BuyStandardplanComponent implements OnInit {
         this.cgst = parseFloat((this.subtotal * (this.cgst_per/100)).toFixed(2)); // CGST with 2 decimal places
         this.sgst = parseFloat((this.subtotal * (this.sgst_per/100)).toFixed(2)); // SGST with 2 decimal places
         let temp_totalPayable = parseFloat((this.subtotal + this.cgst + this.sgst).toFixed(2));
-        this.totalPayable = Math.round(temp_totalPayable) // Total payable with 2 decimal places
+        this.totalPayable = temp_totalPayable // Math.round(temp_totalPayable) // Total payable with 2 decimal places
       } else {
         this.igst = parseFloat((this.subtotal * (this.igst_per/100)).toFixed(2)); // IGST with 2 decimal places
         let temp_totalPayable  = parseFloat((this.subtotal + this.igst).toFixed(2)); 
-        this.totalPayable = Math.round(temp_totalPayable)// Total payable with 2 decimal places
+        this.totalPayable = temp_totalPayable //Math.round(temp_totalPayable)// Total payable with 2 decimal places
       }
     }
 
