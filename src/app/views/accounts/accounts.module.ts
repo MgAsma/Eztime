@@ -17,6 +17,7 @@ import { LimitReachedComponent } from './limit-reached/limit-reached.component';
 import { PlanSelectionComponent } from './plan-selection/plan-selection.component';
 import { SubscriptionInvoiceDetailsComponent } from './subscription-invoice-details/subscription-invoice-details.component';
 import { TransactionFailedComponent } from './transaction-failed/transaction-failed.component';
+import { HelpTextComponent } from './help-text/help-text.component';
 @NgModule({
   declarations: [
     AccountsComponent,
@@ -33,6 +34,7 @@ import { TransactionFailedComponent } from './transaction-failed/transaction-fai
     PlanSelectionComponent,
     SubscriptionInvoiceDetailsComponent,
     TransactionFailedComponent,
+    HelpTextComponent,
   ],
   imports: [
     CommonModule,

@@ -13,12 +13,10 @@
       <div class="payment-options">
           <div class="row">
               <div class="col-12 my-2">
-                  <mat-card class="payment-option highlighted-option"  (click)="setPaymentOption(true,monthlyAmount,'1')" 
-                  >
-                  <p class="card-text sub-header">{{planName}} Plan <span class="badge standard-plan-staus">Active</span>
-                    </p> 
-                    <p><span class="price pe-1">₹{{planAmount}}</span><small>per user / monthly</small></p>
-                   
+                  <mat-card class="payment-option highlighted-option" >
+                    <p class="card-text sub-header">{{planName}} Plan <span class="badge standard-plan-staus">Active</span>
+                      </p> 
+                      <p><span class="price pe-1">₹{{planAmount}}</span><small>per user / monthly</small></p>
               </mat-card>
               </div>
           
@@ -56,11 +54,13 @@
               
             </div>
             <div>
-              <label for="noOfUsers">Total Amount</label>
+              <label for="noOfUsers">Total Amount <i class="bi bi-info-circle fs-5" [ngbTooltip]="is_renewed ? 
+                'Adding users will include charges for both your current and upcoming plans' : 
+                'The amount will be calculated based on the remaining days of your current plan'" container="body"></i></label>
               <div class="total-amount">
-             
                   <div class="sub-total">₹{{ subtotal || 0 }}</div>
                 </div>
+                
               </div>
             </div>
             

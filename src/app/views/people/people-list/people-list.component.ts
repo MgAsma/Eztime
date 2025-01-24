@@ -69,6 +69,14 @@ export class PeopleListComponent implements OnInit {
     localStorage.removeItem('employee_id');
     this.getPeople(`?organization_id=${this.org_id}&page=${1}&page_size=${10}`);
     this.enabled = true;
+    navigator.storage.estimate().then(({ usage, quota }) => {
+      console.log(`Storage usage: ${usage} bytes`);
+      console.log(`Storage quota: ${quota} bytes`);
+      console.log(`Remaining: ${quota! - usage!} bytes`);
+    });
+  Object.keys(localStorage).forEach((key) => {
+    console.log(`${key}: ${localStorage.getItem(key)?.length} bytes`);
+  });
   }
  
 

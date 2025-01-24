@@ -175,9 +175,10 @@
         <td>{{ transaction.startDate }}</td>
         <td>{{ transaction.endDate }}</td>
         <td>
-          <button class="btn btn-outline-primary btn-sm"  (click)="downloadInvoice(transaction.id)">
+          <button *ngIf="transaction.plan!='Free Trial'" class="btn btn-outline-primary btn-sm"  (click)="downloadInvoice(transaction.id)">
             <i class="bi bi-download"></i>
           </button>
+          <span *ngIf="transaction.plan==='Free Trial'">-</span>
         </td>
       </tr>
     </tbody>
@@ -213,7 +214,7 @@
       <p><strong>Total Amount:</strong> ₹{{ transaction.totalAmount  }}</p>
       <p><strong>Start Date:</strong> {{ transaction.startDate}}</p>
       <p><strong>End Date:</strong> {{ transaction.endDate}}</p>
-      <button class="btn btn-outline-primary btn-sm" (click)="downloadInvoice(transaction.id)">
+      <button *ngIf="transaction.plan!='Free Trial'" class="btn btn-outline-primary btn-sm" (click)="downloadInvoice(transaction.id)">
         <i class="bi bi-download"></i>
       </button>
     </div>

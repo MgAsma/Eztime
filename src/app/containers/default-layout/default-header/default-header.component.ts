@@ -139,6 +139,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
         this.router.navigate(['/login'])
         localStorage.clear();
         sessionStorage.clear();
+        this.clearCookies();
         location.reload();
         modelRef.close();
       }
@@ -146,6 +147,15 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
         modelRef.close();
       }
     })
+  }
+
+  clearCookies(): void {
+    const cookies = document.cookie.split(';');
+    for (const cookie of cookies) {
+      const eqPos = cookie.indexOf('=');
+      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
+    }
   }
   @HostListener('window:resize', ['$event'])
   getScreenSize(_event?: Event) {

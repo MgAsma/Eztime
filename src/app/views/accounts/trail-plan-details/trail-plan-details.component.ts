@@ -164,7 +164,7 @@ BreadCrumbsTitle:any='Subscription plan';
   }
 
   download(data:any){
-    this.router.navigate(['/accounts/invoice-data'])
+    // this.router.navigate(['/accounts/invoice-data'])
   }
 
   roundAmount(amount: number): number {

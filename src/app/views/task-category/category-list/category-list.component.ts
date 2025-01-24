@@ -4,7 +4,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
-import { error } from 'console';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { environment } from 'src/environments/environment';
 @Component({

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { CancelSubscriptionComponent } from '../cancel-subscription/cancel-subscription.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
+import { HelpTextComponent } from '../help-text/help-text.component';
 // import jsPDF from 'jspdf';
 // import html2canvas from 'html2canvas';
 
@@ -60,7 +61,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
     this.mySubscriptionData.forEach((element1) => {
       if (element1.subscription_type_name === 'Standard') {
         this.totalPeopleCount = element1.added_users
-        this.expiryBtnValidation(element1.expiry_date,element1.remaining_number_of_days);
+        this.expiryBtnValidation(element1.expiry_date,element1.remaining_number_of_days,element1.is_renewed);
       }
     });
   }
@@ -69,40 +70,43 @@ export class SuccessPlanDetailsComponent implements OnInit {
     // console.log('freeeee', this.mySubscriptionData)
 
   }
-  expiryBtnValidation(expiry_date, remaining_number_of_days) {
+  expiryBtnValidation(expiry_date, remaining_number_of_days,is_renewed) {
     // const endDate = this.datePipe.transform(expiry_date,'dd-MM-yyyy')
     // const currentDate = this.datePipe.transform(new Date(),'dd-MM-yyyy')
+    console.log(is_renewed)
     const endDate = new Date(expiry_date);
-  const currentDate = new Date();
-  endDate.setHours(0, 0, 0, 0);
-  currentDate.setHours(0, 0, 0, 0);
-    console.log(endDate, currentDate)
-    if (endDate < currentDate) {
-      console.log('date expired')
-      this.disableCancelButton = true;
-      this.disableAddButton = true;
-      this.showRenewalButton = false;
-    } else if (endDate.getTime() === currentDate.getTime()) {
-      this.disableCancelButton = true;
-      this.disableAddButton = true;
-      this.showRenewalButton = false;
-      console.log('date is equal')
-    } else {
-      // const remainingDays = Math.ceil((new Date(expiry_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
-      // const remainingDays = Math.ceil(diffInTime / (1000 * 60 * 60 * 24));
+    const currentDate = new Date();
+    endDate.setHours(0, 0, 0, 0);
+    currentDate.setHours(0, 0, 0, 0);
+    // console.log(endDate, currentDate)
+    if(is_renewed==true){
+      this.disableCancelButton = false;
+      this.disableAddButton = false;
+      this.showRenewalButton = true;
+    } else{
+        if (endDate < currentDate) {
+          console.log('date expired')
+          this.disableCancelButton = true;
+          this.disableAddButton = true;
+          this.showRenewalButton = false;
+        } 
+        else if (endDate.getTime() >= currentDate.getTime()){
+          // const remainingDays = Math.ceil((new Date(expiry_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+          // const remainingDays = Math.ceil(diffInTime / (1000 * 60 * 60 * 24));
 
-      if (remaining_number_of_days <= 5) {
-        console.log('less or equal to 5', remaining_number_of_days)
-        this.disableCancelButton = false;
-        this.disableAddButton = false;
-        this.showRenewalButton = false;
-      } else {
-        console.log('more than 5', remaining_number_of_days)
-        this.disableCancelButton = false;
-        this.disableAddButton = false;
-        this.showRenewalButton = true;
+          if (remaining_number_of_days <= 5) {
+            console.log('less or equal to 5', remaining_number_of_days)
+            this.disableCancelButton = false;
+            this.disableAddButton = false;
+            this.showRenewalButton = false;
+          } else {
+            console.log('more than 5', remaining_number_of_days)
+            this.disableCancelButton = false;
+            this.disableAddButton = false;
+            this.showRenewalButton = true;
+          }
+       }
       }
-    }
   }
   cancelSubscription(event) {
     const modelRef = this.modalService.open(CancelSubscriptionComponent, {
@@ -149,12 +153,23 @@ export class SuccessPlanDetailsComponent implements OnInit {
     });
     dialogRef.disableClose = true
   }
-  renewSubscription(plan: any) {
-    const dialogRef = this.dialog.open(BuyStandardplanComponent, {
-      data: {selectedValue: true,'totalPeopleCount':this.totalPeopleCount},
-      panelClass: 'custom-dialog'
-    });
-    dialogRef.disableClose = true
+  async renewSubscription(plan: any) {
+    const modalRef = await this.modalService.open(HelpTextComponent, {
+              size: <any>'sm',
+              backdrop: true,
+              centered: true,
+            });
+        
+            modalRef.componentInstance.status.subscribe((resp: any) => {
+              if (resp === "ok") {
+                const dialogRef = this.dialog.open(BuyStandardplanComponent, {
+                data: {selectedValue: true,'totalPeopleCount':this.totalPeopleCount},
+                panelClass: 'custom-dialog'
+              });
+              dialogRef.disableClose = true
+              }
+              modalRef.close();
+            });
 
   }
   getSubscription(event) {
