@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { CommonServiceService } from '../../../service/common-service.service';
 import { BuyStandardplanComponent } from '../buy-standardplan/buy-standardplan.component';
+import { TrialAlertComponent } from '../trial-alert/trial-alert.component';
 
 @Component({
   selector: 'app-standard-subscription',
@@ -22,7 +23,8 @@ export class StandardSubscriptionComponent implements OnInit {
   constructor(
     private api:ApiserviceService,
     private common_service : CommonServiceService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private modalService:NgbModal
   ) { }
 
    ngOnInit(): void {
@@ -58,6 +60,25 @@ export class StandardSubscriptionComponent implements OnInit {
           });
         }
       });
+    }
+    openDialogue() {
+      const modelRef = this.modalService.open(TrialAlertComponent, {
+        size: <any>'sm',
+        backdrop: true,
+        centered: true
+      });
+      modelRef.componentInstance.title = `By subscribing to the Standard Plan, your Free Plan will be cancelled.`;
+      modelRef.componentInstance.message = `Are you sure want to subscribe to the Standard Plan?`;
+      modelRef.componentInstance.buttonName = `Proceed`;
+      modelRef.componentInstance.status.subscribe(resp => {
+        if (resp === "ok") {
+          this.buyStandardPlan()
+          modelRef.close();
+        }
+        else {
+          modelRef.close();
+        }
+      })
     }
     buyStandardPlan() {
       const dialogRef = this.dialog.open(BuyStandardplanComponent, {

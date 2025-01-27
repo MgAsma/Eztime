@@ -148,6 +148,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
       panelClass: 'custom-dialog'
     });
     dialogRef.disableClose = true
+    
   }
   renewSubscription(plan: any) {
     const dialogRef = this.dialog.open(BuyStandardplanComponent, {

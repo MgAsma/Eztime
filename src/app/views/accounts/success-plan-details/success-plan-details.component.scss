@@ -91,7 +91,7 @@
   /* Standard Plan Card */
   .standard-card {
     background: #126EB4;
-    padding: 3px 16px 20px 16px;
+    padding: 20px 16px;
     background-image: url('../../../../assets/images/standard-plan-bg.png');
     background-size: cover;
     color: white;
@@ -102,13 +102,11 @@
     .spakle-image{
       position: absolute;
       height: 41px;
-      top: -22px;
-      right: 45px;
+      top: -10px;
     }
     .standard-plan-staus{
       background: #0EFF2E;
       color: black;
-      margin-left: 12px;
     }
 
     .plan-title {

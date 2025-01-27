@@ -285,10 +285,10 @@ export class ExistStandardPlanComponent implements OnInit {
       });
       modelRef.componentInstance.title = `New users added!`;
       modelRef.componentInstance.message = `Transaction Successful!`;
-      modelRef.componentInstance.status.subscribe(resp => {
+      modelRef.componentInstance.status.subscribe(async resp => {
         if (resp === "ok") {
+         await this.api.setComponentLoadedStatus(true);
           modelRef.close();
-          this.api.setComponentLoadedStatus(true);
         }
         else {
           modelRef.close();

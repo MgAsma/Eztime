@@ -107,11 +107,12 @@ export class PlanSelectionComponent implements OnInit {
     this.api.postData(`${environment.live_url}/${environment.buy_subscription}/`, data).subscribe(
       async (res: any) => {
         if (res) {
-           modelRef.componentInstance.trailPlanStaus = true;
+          
           await this.common_service.subsctiptionState$.next(true)
           await this.trailPlanStaus.emit(true);
          await this.router.navigate(['/accounts/subscription']);
          this.api.showSuccess('You have successfully activated your free trial plan');
+         modelRef.componentInstance.trailPlanStaus = true;
         }
       },
       (error) => {

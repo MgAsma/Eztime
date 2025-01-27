@@ -8,9 +8,9 @@
         <mat-card-content *ngFor="let plan of mySubscriptionData">
           <ng-container *ngIf="plan.subscription_type_name === 'Standard' && plan.is_active">
           <div class="card-header">
-            <h5 class="plan-title standard-title p-r">{{plan?.subscription_type_name}} <img class="spakle-image" src="../../../../assets/images/sparkle-filled.svg"/> <span class="badge standard-plan-staus">Active</span></h5>
+            <h5 class="plan-title standard-title p-r">{{plan?.subscription_type_name}} <span class="badge standard-plan-staus">Active</span><img class="spakle-image" src="../../../../assets/images/sparkle-filled.svg"/></h5>
           </div>
-          <p class="card-text mb-3 sub-header">{{plan?.subscribed_for}}</p>
+          <p class="card-text mb-3 sub-header">{{plan?.subscribed_for}}</p> 
           <div class="row">
             <div class="col-sm-12 col-md-3">
               <div class="row">

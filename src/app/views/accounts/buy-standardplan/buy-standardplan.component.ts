@@ -119,6 +119,8 @@ export class BuyStandardplanComponent implements OnInit {
       state: ['', Validators.required]
     })
   }
+
+ 
   noOfUsers: number = 0;
   subtotal: number = 0;
   cgst: number = 0;

@@ -94,8 +94,11 @@ export class SubscriptionConfigComponent implements OnInit {
     // Calculate the discounted amount
     const discountedAmount = yearlyAmount - (yearlyAmount * (yearlyDiscount / 100));
   
+    // Always round up to the next whole number
+    const roundedAmount = Math.ceil(discountedAmount);
+  
     // Patch the calculated value into the form control
-    this.pricingForm.patchValue({ discounted_amount: discountedAmount.toFixed(2) }); // Round to 2 decimal places
+    this.pricingForm.patchValue({ discounted_amount: roundedAmount });
   }
   
   ngOnInit(): void {

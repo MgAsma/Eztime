@@ -46,7 +46,9 @@
                   formControlName="noOfUsers"
                   (keyup)="calculateTotal()"
                   (keydown)="calculateTotal()"
-                  type="text"
+                  type="number"
+                  oninput="if(this.value > 10000) this.value = 10000;"
+                  onkeypress="if(event.key < '0' || event.key > '9') event.preventDefault();"
                   autocomplete="off"
                   placeholder="Enter No of Users"
                 />
