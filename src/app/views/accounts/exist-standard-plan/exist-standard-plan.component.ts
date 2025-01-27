@@ -70,7 +70,7 @@ export class ExistStandardPlanComponent implements OnInit {
        this.cgst_per = res.data[0].cgst;
        this.sgst_per = res.data[0].sgst;
        this.igst_per = res.data[0].igst;
-       this.remainingDays = res.data[0].remaining_number_of_days
+       this.remainingDays = res.data[0].remaining_number_of_days + 1
        if(res.data[0].subscribed_for==='Yearly'){
          this.discount = Math.round(res.data[0].discount);
          this.planAmount = Math.round(res.data[0].discount);
