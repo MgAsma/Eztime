@@ -38,6 +38,10 @@ export class ExistStandardPlanComponent implements OnInit {
   discount:number;
   subtotal: number = 0;
   totalPayable: number = 0;
+  renewalAndAddedUserAmount:number = 0
+  is_renewed:boolean = false;
+  renewalPlanData:any;
+  position='left'
   constructor( @Inject(MAT_DIALOG_DATA) public data: any,
   private cdr: ChangeDetectorRef,
     private api:ApiserviceService,
@@ -69,24 +73,22 @@ export class ExistStandardPlanComponent implements OnInit {
        this.remainingDays = res.data[0].remaining_number_of_days
        if(res.data[0].subscribed_for==='Yearly'){
          this.discount = Math.round(res.data[0].discount);
-         this.planAmount = Math.round(res.data[0].amount);
+         this.planAmount = Math.round(res.data[0].discount);
         } else{
           this.planAmount = Math.round(res.data[0].amount);
           this.discount = 0;
         }
-        this.calculateTotal()
-      //  const amount = this.planAmount; // Monthly/Yearly price per user
-      //  const noOfUsers = this.userForm.value.noOfUsers;
-      //  this.subtotal = noOfUsers * amount;
+        if(res.data[0].is_renewed==true && res.data[0].renewed_details.length!=0){
+          this.is_renewed = res.data[0].is_renewed;
+          this.renewalPlanData = res.data[0].renewed_details[0];
+        } else{
+          this.is_renewed = res.data[0].is_renewed;
+        }
+        this.calculateTotal();
       },(error)=>{
         console.log(error)
       }
     )
-  }
-
-  subtotalCalculation() {
-    let aaa = (this.planAmount/30)*this.remainingDays*this.userForm.value.noOfUsers
-    this.subtotal =Number(aaa.toFixed(2));
   }
   getSubscription() {
     this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res: any) => {
@@ -129,15 +131,16 @@ export class ExistStandardPlanComponent implements OnInit {
   calculateTotal(): void {
     const amount = this.planAmount; // Monthly/Yearly price per user
     const noOfUsers = this.userForm.value.noOfUsers;
-    let aaa = (amount/30)*this.remainingDays*noOfUsers
-    this.subtotal = Math.round(aaa);
-    // if(this.planName==='Yearly'){
-    //   let aaa = (amount/30)*this.remainingDays*noOfUsers
-    // this.subtotal = Math.round(aaa);
-    // } else{
-    //   let aaa = (amount/30)*this.remainingDays*noOfUsers
-    // this.subtotal = Math.round(aaa);
-    // }
+    const tempValue = (amount/30)*this.remainingDays*noOfUsers
+    if( this.is_renewed===true){
+      const renewedTotal = this.calculateRenewedTotal(this.renewalPlanData);
+      const calculatedValue = Number(tempValue.toFixed(2)) + renewedTotal
+      this.subtotal = Number(calculatedValue.toFixed(2))
+      console.log('add users + renewal',this.subtotal)
+    } else{
+      this.subtotal = Number(tempValue.toFixed(2))
+      console.log('add user',this.subtotal)
+    }
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
       this.cgst = 0;
@@ -155,9 +158,22 @@ export class ExistStandardPlanComponent implements OnInit {
         this.totalPayable = temp_totalPayable //Math.round(temp_totalPayable)// Total payable with 2 decimal places
       }
       }
-    
   }
  
+  renewalSubTotal:number;
+  calculateRenewedTotal(data) {
+    // const amount = this.selectedAmount || this.monthlyAmount; // Monthly/Yearly price per user
+    const noOfUsers = this.userForm.value.noOfUsers;
+    this.renewalSubTotal = 0
+    if(data.subscribed_for==='Yearly'){
+      let temp_subTotal = (data.discount/30)*365*noOfUsers;
+     this.renewalSubTotal = Number(temp_subTotal.toFixed(2))
+    } else{
+      let temp_subTotal = noOfUsers * data.amount;
+     this.renewalSubTotal = Number(temp_subTotal.toFixed(2))
+    }
+    return this.renewalSubTotal
+  }
 
   onCancel(): void {
    this.dialogue.closeAll()

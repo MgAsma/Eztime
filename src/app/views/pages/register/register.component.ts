@@ -90,7 +90,7 @@ export class RegisterComponent {
       postal_code:['', Validators.required],
       city:['', Validators.required],
       state: ['', [Validators.required]],
-      address: ['', [Validators.required,Validators.maxLength(50)]],
+      address: ['', [Validators.required,Validators.maxLength(200)]],
     });
     this.thirdFormGroup = this.formBuilder.group({})
     this.firstFormGroup.get('organization_email')?.valueChanges.subscribe(() => {

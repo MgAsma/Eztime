@@ -94,6 +94,7 @@ export class BuyStandardplanComponent implements OnInit {
                 this.discount = Math.round(item.discount);
                 if(this.monthly===false){
                   this.selectedAmount = this.yearlyAmount;
+                  this.selectedDiscount = this.yearlyAmount;
                   this.selectedTypeName = item.yearly_or_monthly_name;
                 }
               }
@@ -142,14 +143,6 @@ export class BuyStandardplanComponent implements OnInit {
 
   calculateTotal(): void {
     this.calculateSubTotal();
-    // const amount = this.selectedAmount || this.monthlyAmount; // Monthly/Yearly price per user
-    // const noOfUsers = this.userForm.value.noOfUsers;
-    // this.subtotal = noOfUsers * amount;
-    // if(this.selectedTypeName==='Yearly'){
-    //   this.subtotal = (amount/30)*365*noOfUsers
-    // } else{
-    //   this.subtotal = noOfUsers * amount;
-    // }
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
       // this.subtotal = 0;
@@ -256,7 +249,7 @@ export class BuyStandardplanComponent implements OnInit {
 
     }
     const successCallback = (response: any) => {
-      console.log("SUCCESS CALLBACK", response)
+      // console.log("SUCCESS CALLBACK", response)
       const reqData: any = {
         razorpay_payment_id: response.razorpay_payment_id,
         razorpay_order_id: response.razorpay_order_id,
@@ -311,7 +304,7 @@ export class BuyStandardplanComponent implements OnInit {
       (res: any) => {
         if (res) {
             this.ngZone.run(() => {
-              this.openDialogue()
+              this.openDialogue(res.message)
             });
         }
       }, 
@@ -322,13 +315,13 @@ export class BuyStandardplanComponent implements OnInit {
     )
   }
 
-  openDialogue() {
+  openDialogue(msg) {
     const modelRef = this.modalService.open(TrialSuccessComponent, {
       size: <any>'sm',
       backdrop: true,
       centered: true
     });
-    modelRef.componentInstance.title = `Your Standard Plan has been activated successfully!`;
+    modelRef.componentInstance.title = `${msg}!`;
     modelRef.componentInstance.message = `Transaction Successful!`;
     modelRef.componentInstance.status.subscribe(resp => {
       if (resp === "ok") {
