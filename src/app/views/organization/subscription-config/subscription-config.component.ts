@@ -37,7 +37,7 @@ export class SubscriptionConfigComponent implements OnInit {
       // Standard Plan - Monthly
       monthlyUsers: [
         '',
-        [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(10)],
+        [Validators.pattern('^[0-9]*$'), Validators.maxLength(10)],
       ],
       monthlyAmount:['',[Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$'), Validators.maxLength(10)]],
       monthlyDuration: [
@@ -48,7 +48,7 @@ export class SubscriptionConfigComponent implements OnInit {
       // Standard Plan - Yearly
       yearlyUsers: [
         '',
-        [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(10)],
+        [Validators.pattern('^[0-9]*$'), Validators.maxLength(10)],
       ],
       yearlyAmount:['',[Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$'), Validators.maxLength(10)]],
       yearlyDuration: [
@@ -88,9 +88,11 @@ export class SubscriptionConfigComponent implements OnInit {
   }
   
   calculateDiscountedAmount() {
-    const yearlyAmount = +this.pricingForm.get('yearlyAmount')?.value || 0; // Get the yearly amount, default to 0
-    const yearlyDiscount = +this.pricingForm.get('yearlyDiscount')?.value || 0; // Get the discount as a percentage, default to 0
-  
+   
+    const yearlyAmount = +this.pricingForm.get('yearlyAmount')?.value ; // Get the yearly amount, default to 0
+    const yearlyDiscount = +this.pricingForm.get('yearlyDiscount')?.value; // Get the discount as a percentage, default to 0
+    if(yearlyAmount && yearlyDiscount){
+      
     // Calculate the discounted amount
     const discountedAmount = yearlyAmount - (yearlyAmount * (yearlyDiscount / 100));
   
@@ -99,6 +101,7 @@ export class SubscriptionConfigComponent implements OnInit {
   
     // Patch the calculated value into the form control
     this.pricingForm.patchValue({ discounted_amount: roundedAmount });
+    }
   }
   
   ngOnInit(): void {
@@ -214,13 +217,13 @@ swapKeysAndValues(obj: { [key: string]: any }): { [key: string]: any } {
           plan_details: [
             {
               plan_type: event['Monthly'],
-              max_users: formValues.monthlyUsers,
+              max_users: formValues.monthlyUsers || 0,
               no_of_days: formValues.monthlyDuration,
               amount: formValues.monthlyAmount  // Assuming amount is 30 for monthly
             },
             {
               plan_type: event['Yearly'],
-              max_users: formValues.yearlyUsers,
+              max_users: formValues.yearlyUsers || 0,
               no_of_days: formValues.yearlyDuration,
               amount: formValues.yearlyAmount,  // Assuming amount is 25 for yearly
               discount: formValues.yearlyDiscount,
