@@ -1,16 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { navItems } from '../../views/_nav';
 import { navItems1 } from '../../views/_nav1';
-import { ApiserviceService } from 'src/app/service/apiservice.service';
-import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
-import { NavigationEnd, Router } from '@angular/router';
+import { ApiserviceService } from '../../service/apiservice.service';
+import { GenericDeleteComponent } from '../../generic-delete/generic-delete.component';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { filter } from 'rxjs';
-import { CommonServiceService } from 'src/app/service/common-service.service';
+import { CommonServiceService } from '../../service/common-service.service';
 import { ChangeDetectorRef } from '@angular/core';
-import { environment } from 'src/environments/environment';
-
+import { environment } from '../../../environments/environment';
 interface NavItem {
   name: string;
   url?: string;
@@ -59,15 +57,13 @@ export class DefaultLayoutComponent {
   mySubscription: boolean = false;
   orgId: any;
   subscriptionData = [];
-
+  
   constructor(private ngxService: NgxUiLoaderService,
     private api: ApiserviceService, private modalService: NgbModal,private cdref: ChangeDetectorRef,
     private common_service: CommonServiceService,
     private router: Router) {
-      // this.config = sessionStorage.getItem('user_role_name');
       this.common_service.profilePhoto$.subscribe(
         (data:any)=>{
-          // console.log(data,'profile picccc');
           if(data){
             this.profileImage = data.profile_pic;
             this.user_name  = data.name;
@@ -77,21 +73,13 @@ export class DefaultLayoutComponent {
       )
     
 }
-// toggleSubmenu(item: any) {
-//   // First set all other items to not expanded
-//   this.sidebarNavItems.forEach(navItem => {
-//     if (navItem !== item) {
-//       navItem.isExpanded = false;
-//     }
-//   });
-//   // Toggle the clicked item
-//   item.isExpanded = !item.isExpanded;
-// }
+
   async ngOnInit() {
     this.user_role_Name = sessionStorage.getItem('user_role_name');
     this.orgId = sessionStorage.getItem('organization_id');
     
     this.testingFunction();
+   
     this.ngxService.start();
     setTimeout(() => {
       this.ngxService.stop();
@@ -102,10 +90,7 @@ export class DefaultLayoutComponent {
     setTimeout(() => {
       this.ngxService.stopLoader("loader-01");
     }, 1000);
-    // this.access = JSON.parse(sessionStorage.getItem('user_accessibilty'))
-    // //console.log(this.access,"ACCESS")
-
-    //console.log(this.navItems,"ADMIN NAVITEMS-------")
+    
     if (this.user_role_Name && this.user_role_Name === 'Admin') {
       this.getMySubscription();
     }
@@ -116,9 +101,10 @@ export class DefaultLayoutComponent {
         this.getMySubscription();
       }
     });
-    
-    //this.setInitialExpandedState();
   }
+  
+  
+  
   getMySubscription() {
     this.api.getData(`${environment.live_url}/${environment.my_subscription}/?organization=${this.orgId}`).subscribe((res: any) => {
       if (res) {

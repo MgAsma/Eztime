@@ -5,7 +5,7 @@
    
     <img src="../../../assets/images/logo.svg" width="170px" height="65px" class="sidebar-logo-sidebar" />
   </c-sidebar-brand>
-  <div *ngFor="let items of subscriptionData" class="mb-3 d-block d-md-none text-center">
+  <div *ngFor="let items of subscriptionData" class="mb-3 d-block d-lg-none text-center">
     <button mat-button type="button" class="btn-4" *ngIf="items?.subscription_type_name === 'Free Trial' && items?.is_active">
           <div><img src="../../../../assets/images/megaphone_white.svg" style="position: absolute;
             left: 10px;
@@ -20,18 +20,65 @@
      
    
 
-    <mat-nav-list class="nav-list-custom" style="padding-right: 2px;" [class.disabled-item]="mySubscription">
+    <mat-nav-list class="d-block d-lg-none  nav-list-custom" style="padding-right: 2px;" [class.disabled-item]="mySubscription">
       <ng-container *ngFor="let item of sidebarNavItems">
         <!-- Parent item -->
         <mat-list-item 
-       
           [routerLink]="shouldDisableItem(item) ? null : (item.children?.length ? null : item.url)"
           routerLinkActive="active-link"
-          (click)="shouldDisableItem(item) ? null : (item.children?.length && toggleSubmenu(item))"
+          (click)="shouldDisableItem(item) ? null : (toggleSubmenu(item));"
           [class.parent-item]="item.children?.length"
           [class.disabled-item]="shouldDisableItem(item)"
           [style.opacity]="shouldDisableItem(item) ? '0.7' : '1'"
-          [style.pointer-events]="shouldDisableItem(item) ? 'none' : 'auto'">
+          [style.pointer-events]="shouldDisableItem(item) ? 'none' : 'auto'"
+          [cSidebarToggle]="!item.children?.length ? 'sidebar' : null" 
+          [ngClass]="item.children?.length && item.isExpanded ? 'set-bg':''">
+         
+            <i [class]="item.icon" style="padding-right: 15px;"></i>
+            <span matListItemTitle>{{item.name}}</span>
+            <mat-icon class="expand-icon" *ngIf="item.children?.length" >
+              {{item.isExpanded ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+         
+         
+        </mat-list-item>
+    
+        <!-- Child items -->
+        <mat-list-item *ngFor="let child of item.children"
+        cSidebarToggle="sidebar"
+          [routerLink]="shouldDisableItem(child) ? null : child.url"
+          routerLinkActive="active-link"
+          class="child-item"
+          [style.display]="item.isExpanded ? 'flex' : 'none'"
+          [class.disabled-item]="shouldDisableItem(child)"
+          [style.opacity]="shouldDisableItem(child) ? '0.7' : '1'"
+          [style.pointer-events]="shouldDisableItem(child) ? 'none' : 'auto'">
+          
+          <i [class]="child.icon" style="padding-right: 15px;"></i>
+          <span matListItemTitle>{{child.name}}</span>
+        </mat-list-item>
+     
+      </ng-container>
+      <mat-list-item class="d-block d-lg-none" routerLinkActive="active-link" routerLink='/login'
+        cSidebarToggle="sidebar">
+        <i class="bi bi-power" style="padding-right: 15px;"></i>
+        <span matListItemTitle>{{'Logout'}}</span>
+      </mat-list-item>
+    </mat-nav-list>
+  
+  
+    <mat-nav-list class="d-none d-lg-block  nav-list-custom" style="padding-right: 2px;" [class.disabled-item]="mySubscription">
+      <ng-container *ngFor="let item of sidebarNavItems">
+        <!-- Parent item -->
+        <mat-list-item 
+          [routerLink]="shouldDisableItem(item) ? null : (item.children?.length ? null : item.url)"
+          routerLinkActive="active-link"
+          (click)="shouldDisableItem(item) ? null : (toggleSubmenu(item));"
+          [class.parent-item]="item.children?.length"
+          [class.disabled-item]="shouldDisableItem(item)"
+          [style.opacity]="shouldDisableItem(item) ? '0.7' : '1'"
+          [style.pointer-events]="shouldDisableItem(item) ? 'none' : 'auto'"
+          [ngClass]="item.children?.length && item.isExpanded ? 'set-bg':''">
           
           <i [class]="item.icon" style="padding-right: 15px;"></i>
           <span matListItemTitle>{{item.name}}</span>
@@ -54,7 +101,12 @@
           <i [class]="child.icon" style="padding-right: 15px;"></i>
           <span matListItemTitle>{{child.name}}</span>
         </mat-list-item>
+     
       </ng-container>
+      <mat-list-item class="d-block d-lg-none" routerLinkActive="active-link" routerLink='/login'>
+        <i class="bi bi-power" style="padding-right: 15px;"></i>
+        <span matListItemTitle>{{'Logout'}}</span>
+      </mat-list-item>
     </mat-nav-list>
   </perfect-scrollbar>
   <mat-card class="profile-settings-card">
