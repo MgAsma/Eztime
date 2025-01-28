@@ -45,6 +45,7 @@ h1.breadcrumb-title{
     font-weight: 700;
     font-size: 24px !important;
     padding: 0px;
+    color: black !important;
 }
 .breadcrumb-item a{
     text-decoration: none;
@@ -145,7 +146,6 @@ h1.breadcrumb-title{
 }
 
 .user-guide-btn{
-    padding: 5px 6px;
     background: #fff1aa;
     white-space: nowrap;
     border-radius: 5px;
@@ -153,7 +153,8 @@ h1.breadcrumb-title{
     font-weight: 500;
     position: relative;
     border: 1px solid #000000;
-    box-shadow: 0px 4px 0px 0px #0000004D;
+    box-shadow: 0px 3px 0px 0px #0000004D;
+    transform: scale(0.94);
 
 }
 .user-guide-btn.active {
@@ -171,23 +172,75 @@ h1.breadcrumb-title{
   }
  
 
-// .modal-title {
-//     padding-bottom: 15px;
-//     font-weight: 600;
-//     font-size: 14px;
-// }
-// button.btn-cancel {  
-//     background-color:  #d3d3d34f !important;
-//     margin-right: 10px;
-// }
 
-// button.btn-yes {
-//     background-color: $primay-color !important;
-//     width: auto;
-//     color: #fff !important;;
-//     margin: 0;
-//     border-radius: 4px;
-// }
-// .header-content .cdk-overlay-backdrop {
-//     background-color: rgb(225, 222, 222);
-// }
+
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    // padding: 0.5rem 1rem;
+    // background-color: #fff;
+    // border-bottom: 1px solid #ddd;
+    // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --cui-header-border: none !important;
+    .menu-icon {
+      
+  
+      button {
+        background: transparent;
+        border: none;
+      }
+    }
+  
+    .title {
+      flex-grow: 1;
+    //   text-align: center;
+  
+      h1 {
+        font-size: 1.25rem;
+        margin: 0;
+      }
+    }
+  
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      .icon-button{
+        border: 1px solid#f0f0f0;
+        border-radius: 10px;
+      }
+      button {
+        // background: transparent;
+        border: none;
+        cursor: pointer;
+  
+        mat-icon {
+          font-size: 1.5rem;
+          color: #555;
+        }
+  
+        &:hover {
+          mat-icon {
+            color: #000;
+          }
+        }
+      }
+    }
+  }
+  
+  // Media queries for responsiveness
+  @media (max-width: 768px) {
+    .title {
+      text-align: center;
+      flex-grow: 0;
+    }
+  
+    .actions {
+      gap: 0.25rem;
+      
+    }
+  }
+  

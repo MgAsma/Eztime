@@ -5,17 +5,26 @@
    
     <img src="../../../assets/images/logo.svg" width="170px" height="65px" class="sidebar-logo-sidebar" />
   </c-sidebar-brand>
+  <div *ngFor="let items of subscriptionData" class="mb-3 d-block d-md-none text-center">
+    <button mat-button type="button" class="btn-4" *ngIf="items?.subscription_type_name === 'Free Trial' && items?.is_active">
+          <div><img src="../../../../assets/images/megaphone_white.svg" style="position: absolute;
+            left: 10px;
+            top: 10px;"/><small>{{items?.subscription_type_name}}</small></div>
+          <strong>{{items?.remaining_number_of_days  || 0 }} {{items?.remaining_number_of_days > 1 ? 'days left' : 'day left'}}</strong>
+    </button>
+  </div>
   <perfect-scrollbar [config]="perfectScrollbarConfig">
     <!-- <c-sidebar-nav [navItems]="sidebarNavItems" dropdownMode="close">
 
     </c-sidebar-nav> -->
      
-    
+   
 
     <mat-nav-list class="nav-list-custom" style="padding-right: 2px;" [class.disabled-item]="mySubscription">
       <ng-container *ngFor="let item of sidebarNavItems">
         <!-- Parent item -->
         <mat-list-item 
+       
           [routerLink]="shouldDisableItem(item) ? null : (item.children?.length ? null : item.url)"
           routerLinkActive="active-link"
           (click)="shouldDisableItem(item) ? null : (item.children?.length && toggleSubmenu(item))"
@@ -70,7 +79,7 @@
   <!--app-body-->
   <div class="body scroll-fix">
     <mat-card class="p-0 default-header-card">
-      <mat-card class="py-2 mb-1 header-card"> 
+      <mat-card class="p-0 mb-1 header-card"> 
         <app-default-header class="d-print-none header header-sticky" position="sticky"
         sidebarId="sidebar"></app-default-header>
        </mat-card>

@@ -1,5 +1,5 @@
 <!--<c-header class="mb-4 d-print-none" position="sticky">-->
-<ng-container>
+<!-- <ng-container>
   <c-container [fluid]="true" class="header-content">
     <button 
       toggle="visible"
@@ -23,7 +23,7 @@
               <li class="breadcrumb-item sub-title" *ngIf="pageName !== 'Dashboard'"><a [ngStyle]="dashboardAccess?.['name'] !== 'Dashboard' ? {'text-decoration':'none'}:{'':''}">{{pageName |titlecase}}</a></li>
             </ol>
           </nav>
-         </div> -->
+         </div> --
       </div>
   </div>
    
@@ -70,8 +70,52 @@
    
   </c-container>
   
-</ng-container>
+</ng-container> -->
 <!--</c-header>-->
 
+<header class="header">
+  <div class="menu-icon desktop-hide-content">
+    <button mat-icon-button toggle="visible"
+    cHeaderToggler
+    [cSidebarToggle]="sidebarId">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+
+  <div class="title">
+    <h1 class="breadcrumb-title" *ngIf="pageName">{{pageName |titlecase}}</h1>
+  </div>
+
+  <div class="actions">
+    <div *ngFor="let items of mySubscription" class="mobile-hide-content">
+          <button mat-button type="button" class="btn-4" *ngIf="items?.subscription_type_name === 'Free Trial' && items?.is_active">
+            
+              
+                <div><img src="../../../../assets/images/megaphone_white.svg" style="position: absolute;
+                  left: 10px;
+                  top: 10px;"/><small>{{items?.subscription_type_name}}</small></div>
+                <strong>{{items?.remaining_number_of_days  || 0 }} {{items?.remaining_number_of_days > 1 ? 'days left' : 'day left'}}</strong>
+              
+            
+          </button>
+        </div>
+      <button mat-icon-button aria-label="Get Started" class="icon-button user-guide-btn"
+      container="body"
+            ngbTooltip="Get started" placement="top" (click)="openWelcomeDialog()">
+            <img src="../../../assets/images/bulb.svg" width="25" height="25">
+      </button>
+    <button mat-icon-button aria-label="Notifications"  class="icon-button"
+    container="body"
+    ngbTooltip="notification" placement="top"  (click)="openNotification()">
+      <mat-icon [matBadge]="notification_count || 0"  matBadgeColor="warn">notifications</mat-icon>
+    </button>
+   
+    <button mat-icon-button aria-label="Logout" class="icon-button mobile-hide-content"
+    (click)="openDialogue()" container="body"
+            ngbTooltip="logout" placement="top">
+      <mat-icon>power_settings_new</mat-icon>
+    </button>
+  </div>
+</header>
 
 

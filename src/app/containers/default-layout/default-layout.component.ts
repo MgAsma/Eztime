@@ -58,6 +58,7 @@ export class DefaultLayoutComponent {
   ]
   mySubscription: boolean = false;
   orgId: any;
+  subscriptionData = [];
 
   constructor(private ngxService: NgxUiLoaderService,
     private api: ApiserviceService, private modalService: NgbModal,private cdref: ChangeDetectorRef,
@@ -126,6 +127,7 @@ export class DefaultLayoutComponent {
           this.router.navigate(['/accounts/subscription']);
         } else if (res?.data) {
           let hasActiveSubscription = false;
+          this.subscriptionData = res?.data
           res?.data?.forEach(element => {
             if (element.is_active) {
               hasActiveSubscription = false;
@@ -156,7 +158,7 @@ export class DefaultLayoutComponent {
     // If subscription is required and item is not subscription page
     return this.mySubscription && item.url !== '/accounts/subscription';
   }
-
+ 
   toggleSubmenu(item: any) {
     this.sidebarNavItems.forEach(navItem => {
       if (navItem !== item) {
