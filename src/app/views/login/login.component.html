@@ -56,24 +56,27 @@
                                     <a routerLink="../forgotPassword" class="m-0">Forgot Password?</a>
                                     <button mat-raised-button class="proceedbtn" type="submit">Login</button>
                                 </div>
-                                <div class="d-none d-md-block row  sign-up-card">
-                                    <div class="col-sm-2 col-md-2 content-signup">
-                                        <img  src="../../../assets/images/octicon_organization-24.svg" alt="" width="45" height="45">
-                                    </div>
-                                    <div class="col-sm-10 col-md-7 mx-0 content-signup">
-                                        <p class="fs-6">Create an account for your organization by clicking here.</p>
-                                    </div>
-                                    <div class="col-sm-12 col-md-3 content-signup">
-                                        <button mat-raised-button class="sign-up-button" (click)="signUp()" type="button">Register</button>
+                                <div class="webView">
+                                    <div class="row sign-up-card">
+                                        <div class="col-sm-2 col-md-2 content-signup">
+                                            <img  src="../../../assets/images/octicon_organization-24.svg" alt="" width="45" height="45">
+                                        </div>
+                                        <div class="col-sm-10 col-md-7 mx-0 content-signup">
+                                            <p class="fs-6">Create an account for your organization by clicking here.</p>
+                                        </div>
+                                        <div class="col-sm-2 col-md-3 content-signup">
+                                            <button mat-raised-button class="sign-up-button" (click)="signUp()" type="button">Register</button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="d-block d-md-none row  sign-up-card">
+                                
+                                <div class="mobileView row sign-up-card">
                                     
-                                    <div class="col-sm-10 col-md-7 mx-0 content-signup">
-                                        <p class="fs-6"> <img  src="../../../assets/images/octicon_organization-24.svg" alt="" width="45" height="45">Create an account for your organization by clicking here.</p>
+                                    <div class="col-12 mx-0 content-signup">
+                                        <p class="pf-s text-center"><img  src="../../../assets/images/octicon_organization-24.svg" alt="" width="35" height="35"/>Create an account for your organization by clicking here.</p>
                                     </div>
-                                    <div class="col-sm-12 col-md-3 content-signup">
-                                        <button mat-raised-button class="sign-up-button" (click)="signUp()" type="button">Register</button>
+                                    <div class="col-12 content-signup">
+                                        <button mat-raised-button class="sign-up-button pf-s" (click)="signUp()" type="button">Register</button>
                                     </div>
                                 </div>
                             </form>
@@ -93,7 +96,9 @@
                     <div class="d-none d-md-block col-sm-12 col-md-6 col-lg-4 text-center">
                         <p><span><i class="bi bi-c-circle fs-6 p-0"></i></span>  Project Ace. All rights reserved</p>
                     </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 text-center text-md-end">
+
+                   
+                     <div class="d-none d-md-block col-sm-12 col-md-6 col-lg-4 text-center text-md-end ">
                         <div class="d-flex justify-content-center justify-content-md-end align-items-center social-media">
                             <div>
                                 <a href="https://www.linkedin.com/company/ekfrazo-technologies/" target="_blank"><i
@@ -109,10 +114,25 @@
                         </div>
                     </div>
                     <div class="d-block d-md-none col-sm-12 col-md-6 col-lg-4 text-center text-md-start">
-                        <p class="">Customer@projectace.com</p>
+                        <p class="pf-s">Customer@projectace.com</p>
                     </div>
                     <div class="d-block d-md-none col-sm-12 col-md-6 col-lg-4 text-center">
-                        <p><span><i class="bi bi-c-circle fs-6 p-0"></i></span>  Project Ace. All rights reserved</p>
+                        <p class="pf-s"><span><i class="bi bi-c-circle pf-s p-0"></i></span>  Project Ace. All rights reserved</p>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 text-center text-md-end mobileView my-2">
+                        <div class="d-flex justify-content-center justify-content-md-end align-items-center social-media">
+                            <div>
+                                <a href="https://www.linkedin.com/company/ekfrazo-technologies/" target="_blank"><i
+                                    class="bi bi-linkedin"></i></a>
+                            </div>
+                            <div>
+                                <a href="https://www.facebook.com/ekfrazotechnologies/" target="_blank"><i
+                                    class="bi bi-facebook"></i></a>
+                            </div>
+                            <div>
+                                <a href="https://twitter.com/ekfrazo" target="_blank"><i class="bi bi-twitter-x"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
