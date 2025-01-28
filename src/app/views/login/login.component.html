@@ -3,7 +3,7 @@
     <div>
         <div class="row login-content-bg">
             <div
-                class="col-12 col-md-12 col-lg-6 col-xl-6 login-left-content order-2 order-sm-2 order-md-2 order-lg-1 order-xl-1 ">
+                class="d-none d-md-block col-12 col-md-12 col-lg-6 col-xl-6 login-left-content order-2 order-sm-2 order-md-2 order-lg-1 order-xl-1 ">
                 <img src="./../../../assets/images/login-left-content.png" class="left-content-img"
                     alt="left-content-img" />
             </div>
@@ -56,12 +56,21 @@
                                     <a routerLink="../forgotPassword" class="m-0">Forgot Password?</a>
                                     <button mat-raised-button class="proceedbtn" type="submit">Login</button>
                                 </div>
-                                <div class="row  sign-up-card">
+                                <div class="d-none d-md-block row  sign-up-card">
                                     <div class="col-sm-2 col-md-2 content-signup">
                                         <img  src="../../../assets/images/octicon_organization-24.svg" alt="" width="45" height="45">
                                     </div>
                                     <div class="col-sm-10 col-md-7 mx-0 content-signup">
                                         <p class="fs-6">Create an account for your organization by clicking here.</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-3 content-signup">
+                                        <button mat-raised-button class="sign-up-button" (click)="signUp()" type="button">Register</button>
+                                    </div>
+                                </div>
+                                <div class="d-block d-md-none row  sign-up-card">
+                                    
+                                    <div class="col-sm-10 col-md-7 mx-0 content-signup">
+                                        <p class="fs-6"> <img  src="../../../assets/images/octicon_organization-24.svg" alt="" width="45" height="45">Create an account for your organization by clicking here.</p>
                                     </div>
                                     <div class="col-sm-12 col-md-3 content-signup">
                                         <button mat-raised-button class="sign-up-button" (click)="signUp()" type="button">Register</button>
@@ -78,14 +87,14 @@
         <div class="row login-footer">
             <div class="col-12">
                 <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-4 text-center text-md-start">
+                    <div class="d-none d-md-block col-sm-12 col-md-6 col-lg-4 text-center text-md-start">
                         <p class="">Customer@projectace.com</p>
                     </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 text-center">
+                    <div class="d-none d-md-block col-sm-12 col-md-6 col-lg-4 text-center">
                         <p><span><i class="bi bi-c-circle fs-6 p-0"></i></span>  Project Ace. All rights reserved</p>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-4 text-center text-md-end">
-                        <div class="d-flex  justify-content-evenly justify-content-md-end align-items-center social-media">
+                        <div class="d-flex justify-content-center justify-content-md-end align-items-center social-media">
                             <div>
                                 <a href="https://www.linkedin.com/company/ekfrazo-technologies/" target="_blank"><i
                                     class="bi bi-linkedin"></i></a>
@@ -98,6 +107,12 @@
                                 <a href="https://twitter.com/ekfrazo" target="_blank"><i class="bi bi-twitter-x"></i></a>
                             </div>
                         </div>
+                    </div>
+                    <div class="d-block d-md-none col-sm-12 col-md-6 col-lg-4 text-center text-md-start">
+                        <p class="">Customer@projectace.com</p>
+                    </div>
+                    <div class="d-block d-md-none col-sm-12 col-md-6 col-lg-4 text-center">
+                        <p><span><i class="bi bi-c-circle fs-6 p-0"></i></span>  Project Ace. All rights reserved</p>
                     </div>
                 </div>
             </div>
