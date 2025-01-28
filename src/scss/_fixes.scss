@@ -275,9 +275,9 @@ body {
 
   .createbtn-new {
     background-color: #3F51B5 !important;
-    z-index: 99;
-    height: 70px !important;
-    width: 70px !important;
+    // z-index: 99;
+    // height: 70px !important;
+    // width: 70px !important;
     /* position: relative !important; */
     bottom: 130px !important;
     position: fixed !important;
@@ -286,7 +286,7 @@ body {
   }
 
   .createbtn-new span i {
-    font-size: 24px !important;
+   // font-size: 24px !important;
     font-style: normal !important;
     font-family: 'Exo FT' !important;
 

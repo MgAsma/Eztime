@@ -1,6 +1,6 @@
 <div class="container-wrapper webView">
   <div class="row pb-3">
-    <div class="col-sm-4 search-div">
+    <div class="col-sm-3 search-div">
       <input type="search" (input)="filterSearch($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
         placeholder="Search by project/client" aria-describedby="emailHelp" autocomplete="off">
       <i class="bi bi-search" id="search-icon-tab"></i>
@@ -82,14 +82,16 @@
                   </ng-container>
                 </td>
               </tr>
-              <div *ngIf="result.length === 0" class="nodata">
-                <p style="width: 100%;"> No records found! </p>
-              </div>
+              
 
             </ng-container>
+            
           </tbody>
         </table>
-
+        <div *ngIf="allProjectList.length === 0" >
+          <!-- <p style="width: 100%;"> No records found! </p> -->
+          <app-generic-norecards></app-generic-norecards>
+        </div>
       </div>
     </div>
 
@@ -131,13 +133,10 @@
 
 <div class="mobileView">
   <div class="row mx-1 my-2">
-    <div class="col-sm-12 col-md-6">
-      <!-- <h1 class="mx-3">Project list</h1> -->
-    </div>
-    <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
-      <input type="text" class="form-control py-3 px-4" (input)="filterSearch($event)" [(ngModel)]="term" placeholder="Search by project/client"
-        aria-describedby="emailHelp" autocomplete="off">
-      <i class="bi bi-search" id="search-icon"></i>
+    <div class="col-sm-3 search-div">
+      <input type="search" (input)="filterSearch($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+        placeholder="Search by project/client" aria-describedby="emailHelp" autocomplete="off">
+      <i class="bi bi-search" id="search-icon-tab"></i>
     </div>
   </div>
   <div class="bg row mx-0 my-1">
@@ -147,7 +146,8 @@
             currentPage: page,
             totalItems: count
           }'>
-        <div class="card outer-card">
+          <mat-card class="outer-card">
+        <div>
           <div class="row py-1">
             <div class="col-6">
               <h6 class="card-subtitle">
@@ -164,7 +164,8 @@
   )" />
             </div>
           </div>
-
+          
+          <mat-card class="inner-card">
           <div class="row py-1">
             <div class="col-6">
               <h6 class="card-subtitle">
@@ -204,29 +205,33 @@
               <div class="value-container">{{item.status_name?item.status_name:"NA"|titlecase}}</div>
             </div>
           </div>
+        </mat-card>
         </div>
+      </mat-card>
       </div>
       <div *ngIf="result.length === 0">
         <app-generic-norecards></app-generic-norecards>
       </div>
 
     </ng-container>
-  </div>
-  <div class="pagination-container p-0 pt-2">
-    <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
-    </pagination-controls>
-    <div class="items-per-page-container">
-      <div>Items per page</div>
-      <mat-select [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10"
-        class="page-size">
-        <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
-      </mat-select>
+
+    <div class="pagination-container p-0 pt-2">
+      <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+      </pagination-controls>
+      <div class="items-per-page-container">
+        <div>Items per page</div>
+        <mat-select [(ngModel)]="tableSize" (selectionChange)="onTableSizeChange($event)" placeholder="10"
+          class="page-size">
+          <mat-option *ngFor="let size of tableSizes" [value]="size">{{size}}</mat-option>
+        </mat-select>
+      </div>
     </div>
   </div>
+ 
   <div class="s-position">
     <ng-container>
       <button mat-fab routerLink="/project/create" class="createbtn-new" placement="top" container="body"
-        ngbTooltip="Add"><i class="fa fa-plus"></i>
+        ngbTooltip="Add"><mat-icon class="plus-icon" aria-label="Add new">add</mat-icon>
       </button>
     </ng-container>
 

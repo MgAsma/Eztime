@@ -47,11 +47,10 @@
 .search-div{
     .sizeinput{
         font-size: 15px;
-        width: 81%; 
     }
   #search-icon-tab {
         position: absolute;
-        right: 5rem;
+        right: 10px;
         top: 9px;
         font-size: 15px !important;
         color: grey;
@@ -59,12 +58,11 @@
 }
 .inner-card{
     margin: 15px 0px;
-    background: #FFFFFFB2;
+    background: #ebedef;
     border-radius: 10px;
-    padding: 15px 0px;
-    text-align: center;
-    border: 1px solid #126EB4;
-    // background: linear-gradient(5deg, #39f, transparent);
+    padding: 15px 10px;
+    box-shadow: none;
+    line-height: 7px !important;
 }
 *.row {
     --bs-gutter-x: 0rem;
@@ -91,13 +89,7 @@
 button:hover .btnicon{
     display: block;
 }
-// ::ng-deep .mat-form-field {
-//     height: 55px;
-//     width: 95%!important;
-//     background-color: #ffff;
-//     border-radius: 50px;
-//     border: solid gray;
-// }
+
 
 .outer-card{
     border: none;
@@ -106,16 +98,21 @@ button:hover .btnicon{
     border-radius: 10px;
     zoom: 90%;
     background: rgba(255, 255, 255, .6) !important;
-    padding: 5px 16px;
+    // padding: 5px 16px;
+    line-height: 8px;
 }
 .card-subtitle{
     font-weight: bold;
+    font-size: 14px !important;
+}
+.value-container{
+    font-size: 14px !important;
 }
 .main-col{
     padding: 5px;
 }
 .icon-image{
     cursor: pointer;
-    height: 25px;
-    margin: 0 2px;
+    height: 30px;
+    margin: 0 5px;
 }

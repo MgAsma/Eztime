@@ -173,13 +173,13 @@ form {
     }
 }
 
-.mat-fab:not([class*=mat-elevation-z]),
-.mat-mini-fab:not([class*=mat-elevation-z]) {
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
-    stroke: #D7D7D7;
-    height: 50px !important;
-    width: 50px !important;
-}
+// .mat-fab:not([class*=mat-elevation-z]),
+// .mat-mini-fab:not([class*=mat-elevation-z]) {
+//     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+//     stroke: #D7D7D7;
+//     height: 50px !important;
+//     width: 50px !important;
+// }
 
 .mat-btn-s:hover {
     box-shadow: 0px 3px 50px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
