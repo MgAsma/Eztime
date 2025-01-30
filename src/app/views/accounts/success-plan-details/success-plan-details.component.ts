@@ -164,7 +164,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
             modalRef.componentInstance.status.subscribe((resp: any) => {
               if (resp === "ok") {
                 const dialogRef = this.dialog.open(BuyStandardplanComponent, {
-                data: {selectedValue: true,'totalPeopleCount':this.totalPeopleCount},
+                data: {selectedValue: true,'totalPeopleCount':this.totalPeopleCount,'purchasedUsers':plan.max_user},
                 panelClass: 'custom-dialog'
               });
               dialogRef.disableClose = true
