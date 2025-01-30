@@ -391,8 +391,6 @@ export class ManagerReviewComponent implements OnInit {
       leave_type:content.leave_type,
       approved_by: status === 'Approve' ? this.user_id :null,
       approved_on: status === 'Approve' ? formattedDate :null,
-      rejected_by: status === 'Decline' ? this.user_id :null,
-      rejected_on: status === 'Decline' ? formattedDate :null
   }
    if(status === 'Approve'){
     this.api.updateData(`${environment.live_url}/${environment.update_leave_details}/`,data).subscribe(res => {
@@ -409,7 +407,9 @@ export class ManagerReviewComponent implements OnInit {
    const data ={
     comment: comments,
     leave_id: content.id,
-    status:3
+    status:3,
+    rejected_by:this.user_id || null,
+    rejected_on:formattedDate || null
     }
     this.api.postData(`${environment.live_url}/${environment.leave_comment}/`,data).subscribe(res => {
       if (res) {

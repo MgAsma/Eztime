@@ -124,7 +124,12 @@
       &:last-child {
         border-right: 0;
       }
-      
+       // Media query for smaller devices
+        @media (max-width: 768px) { // Adjust this breakpoint based on your needs
+          flex: 0 0 100%; // Columns take up full width
+          width: 100%; // Ensure the width is explicitly set
+          border-right: none; // Optional: Remove the border-right for better appearance
+        }
       
       .error-text{
         position: absolute;
