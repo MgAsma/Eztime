@@ -63,13 +63,7 @@
                 <td class="text-center">{{item?.admin_details?.length || 'NA' }}</td>
                 <td class="text-center">{{ item?.type_of_subscription_name || 'NA' }}</td>
                 <td class="text-center">
-                  <!-- <mat-slide-toggle class="pt-1"  [checked]="organizationStatus || item?.organization_status" (change)="toggleStatus($event)">
-                    {{  getStatusText() }}
-                  </mat-slide-toggle> -->
                   <div style="display: block;">{{ item?.organization_status === true ? 'Active' : 'Inactive'   || 'NA' }}</div>
-                  <!-- <button mat-raised-button size="small" class="org-status-btn" (click)="updateStatus(item)">
-                    {{item?.organization_status === true ? 'Deactivate' : 'Activate'}}
-                  </button> -->
                   <button mat-raised-button class="org-status-btn small-btn" (click)="updateStatus(item)" [ngClass]="item?.organization_status === true ? 'deactivate' : ''">
                     {{ item?.organization_status === true ? 'Deactivate' : 'Activate' }}
                   </button>
@@ -86,13 +80,13 @@
                 </td>
 
               </tr>
-              <div *ngIf="result.length === 0" class="nodata">
-                <p style="width: 100%;"> No records found! </p>
-              </div>
+              
             </ng-container>
           </tbody>
         </table>
-
+        <div *ngIf="organizationData.length === 0" >
+          <app-generic-norecards></app-generic-norecards>
+        </div>
       </div>
     </div>
 
@@ -120,13 +114,16 @@
 
 <div class="mobileView">
   <div class="row mx-1 my-2">
-    <div class="col-sm-6">
-      <!-- <h1>Organization List</h1> -->
-    </div>
-    <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
+    
+    <!-- <div class="col-sm-6 col-md-6 mb-1 search-div px-0">
       <input type="text" (input)="filterSearch($event)" class="form-control py-3 px-4" [(ngModel)]="term" placeholder="Search by organization name"
         aria-describedby="emailHelp" autocomplete="off">
       <i class="bi bi-search" id="search-icon" ></i>
+    </div> -->
+    <div class="col-sm-12 search-div">
+      <input type="search" (input)="filterSearch($event)" class="form-control p-2 sizeinput" [(ngModel)]="term"
+        placeholder="Search by organization name" aria-describedby="emailHelp" autocomplete="off">
+      <i class="bi bi-search" id="search-icon-tab" ></i>
     </div>
   </div>
 
@@ -235,7 +232,7 @@
   <div class="s-position">
     <ng-container>
       <button mat-fab routerLink="/organization/createOrg" class="createbtn-new" placement="top" container="body"
-        ngbTooltip="Add"><i class="fa fa-plus"></i>
+        ngbTooltip="Add"><mat-icon class="plus-icon" aria-label="Add new">add</mat-icon>
       </button>
     </ng-container>
 

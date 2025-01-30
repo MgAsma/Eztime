@@ -32,7 +32,7 @@ i{
     border: none;
     // border-left: 5px solid #39f;
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 4%);
-    margin: 20px 5px;
+    margin:5px;
     border-radius: 10px;
     zoom: 90%;
     background: #FFFFFF99 !important;
@@ -40,20 +40,23 @@ i{
 }
 .card-subtitle{
     font-weight: bold;
+    font-size: 14px;
+}
+.value-container{
+    font-size: 14px;
 }
 .inner-card{
     margin: 15px 0px;
-    background: #FFFFFFB2;
+    background: #ebedef;
     border-radius: 10px;
     padding: 15px 0px;
     text-align: center;
-    border: 1px solid #126EB4;
-    // background: linear-gradient(5deg, #39f, transparent);
+    border: none;
 }
 .search-div{
     .sizeinput{
         font-size: 14px;
-        width: 81%; 
+        width: 100%; 
     }
   #search-icon-tab {
         position: absolute;
@@ -155,7 +158,7 @@ i{
 }
 .icon-image{
     cursor: pointer;
-    height: 25px;
+    height: 35px;
     margin: 0 2px;
 }
 .org-status-btn{
