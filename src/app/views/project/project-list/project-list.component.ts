@@ -59,9 +59,28 @@ export class ProjectListComponent implements OnInit {
     if(this.userRole==='Employee'){
       this.baseUrl = `?${'organization'}=${this.orgId}&${'employee_id'}=${this.user_id}&page=${1}&page_size=${5}`
     } else{
-      this.baseUrl = `?${'organization'}=${this.orgId}&${'created_by'}=${this.user_id}&page=${1}&page_size=${5}`
+      this.baseUrl = `?${'organization'}=${this.orgId}&page=${1}&page_size=${5}`
     }
+    // &${'created_by'}=${this.user_id}
     this.getProject(this.baseUrl);
+    this.allrolesList();
+  }
+
+  allrolesList() {
+    this.api.userAccess(this.user_id).subscribe(
+      (data: any) => {
+        console.log('all list', data,)
+        const module = data?.access_list?.find(item => item.name === 'Projects');
+        const subModules = module?.access?.find(item => item.name === 'All Projects');
+  
+        // this.permissions = subModules?.operations || [];
+        
+        console.log(this.permissions);
+      },
+      (error: any) => {
+        console.log('error', error)
+      }
+    )
   }
   
   getProject(params:any) {

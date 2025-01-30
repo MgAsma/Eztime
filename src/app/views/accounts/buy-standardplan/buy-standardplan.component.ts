@@ -38,6 +38,7 @@ export class BuyStandardplanComponent implements OnInit {
   sgst_per:number;
   igst_per:number;
   minUsers:number  = 1;
+  UserCount:number = 1
   constructor(
     private api: ApiserviceService,
     private fb: FormBuilder,
@@ -54,10 +55,12 @@ export class BuyStandardplanComponent implements OnInit {
     console.log(this.data)
     this.monthly = this.data?.selectedValue;
     this.minUsers = this.data.totalPeopleCount;
-    // if(this.data?.plan_data?.added_users){
-    //   // console.log('dataaaaa',this.data)
-    //   this.minUsers = this.data?.plan_data?.added_users;
-    // }
+    if(this.data?.purchasedUsers){
+      // console.log('dataaaaa',this.data?.purchasedUsers)
+      this.UserCount = this.data?.purchasedUsers
+    } else{
+      this.UserCount = this.data.totalPeopleCount;
+    }
     this.initForm()
     this.getState()
     this.getSubscription();
@@ -109,7 +112,7 @@ export class BuyStandardplanComponent implements OnInit {
   initForm() {
     this.userForm = this.fb.group({
       noOfUsers: [
-        this.minUsers,
+        this.UserCount,
         [
           Validators.required,
           Validators.min(this.minUsers),
