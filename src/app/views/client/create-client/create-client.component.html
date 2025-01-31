@@ -56,7 +56,7 @@
                         <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                 <mat-label>Email Address<b class="r-star">*</b></mat-label>
-                                <input matInput formControlName='email' placeholder="Email Address"
+                                <input matInput formControlName='email' placeholder="Email Address" oninput="this.value = this.value.toLowerCase()"
                                     (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off"
                                     id="emailId">
                             </mat-form-field>
@@ -188,7 +188,7 @@
                         <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                             <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                                 <mat-label>Email Address<b class="r-star">*</b></mat-label>
-                                <input matInput formControlName='email' placeholder="Email Address"
+                                <input matInput formControlName='email' placeholder="Email Address" oninput="this.value = this.value.toLowerCase()"
                                     (keypress)="preventSpace($event)" aria-describedby="emailHelp" autocomplete="off"
                                     id="emailId">
                             </mat-form-field>

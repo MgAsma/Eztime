@@ -62,7 +62,7 @@ export class BuyStandardplanComponent implements OnInit {
       this.UserCount = this.data.totalPeopleCount;
     }
     this.initForm()
-    this.getState()
+    this.getCountry();
     this.getSubscription();
   }
 
@@ -191,9 +191,17 @@ export class BuyStandardplanComponent implements OnInit {
     }
     this.calculateTotal()
   }
-  getState() {
-
-    this.api.getData(`${environment.live_url}/${environment.state}/?country_id=${101}`).subscribe((res: any) => {
+  getCountry() {
+      this.api.getData(`${environment.live_url}/${environment.country}/`).subscribe((res: any) => {
+        console.log(res,'country')
+        let temp_country = res.find((country: any) => country.country_name === 'India');
+        this.getState(temp_country.id)
+      }, ((error) => {
+        this.api.showError(error.error.error.message)
+      }))
+    }
+  getState(id:number) {
+    this.api.getData(`${environment.live_url}/${environment.state}/?country_id=${id}`).subscribe((res: any) => {
       if (res) {
         this.state = res
       }

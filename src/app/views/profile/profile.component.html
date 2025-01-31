@@ -87,11 +87,11 @@
                         </span>
                     </div>
                 </div>
-                <div *ngIf="user_role!='SuperAdmin' && user_role!='Admin'" class="col-sm-12 col-md-6 col-lg-3 mb-4">
-                    <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
+                <div *ngIf="user_role=='Employee'" class="col-sm-12 col-md-6 col-lg-3 mb-4">
+                    <mat-form-field appearance="outline" class="w-100 custom-mat-form-field" >
                         <mat-label>Designation <b class="r-star">*</b></mat-label>
                         <input matInput placeholder="Enter designation" formControlName="designation" autocomplete="off"
-                            readonly title="readonly field">
+                            readonly title="readonly field" [disabled]="user_role === 'Employee'">
                     </mat-form-field>
                     <div class="px-2" *ngIf="f['designation']?.touched && f['designation']?.invalid">
                         <span class="text-errors" *ngIf="f['designation'].errors?.['required']">Designation is
@@ -105,7 +105,7 @@
                     <mat-form-field appearance="outline" class="w-100 custom-mat-form-field">
                         <mat-label>Email Id <b class="r-star">*</b></mat-label>
                         <input matInput type="email" placeholder="Enter email Id" formControlName="email"
-                            autocomplete="off" readonly title="readonly field" oninput="this.value = this.value.toLowerCase()">
+                            autocomplete="off" [readonly]="user_role=='Employee' || user_role=='Admin'" title="readonly field" oninput="this.value = this.value.toLowerCase()">
                     </mat-form-field>
                     <div class="px-2" *ngIf="f['email']?.touched && f['email']?.invalid">
                         <span class="text-errors" *ngIf="f['email'].errors?.['required']">Email Id is required</span>
@@ -130,7 +130,7 @@
                     <mat-form-field appearance="outline" class="w-100 p-0 custom-mat-form-field">
                         <mat-label>Date of Joining <b class="r-star">*</b></mat-label>
                         <input matInput [matDatepicker]="picker" placeholder="Enter start date"
-                            formControlName="date_of_birth" autocomplete="off" >
+                            formControlName="date_of_birth" autocomplete="off"  [disabled]="user_role=='Employee'">
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                              <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
@@ -140,7 +140,7 @@
                             formControlName="date_of_birth" autocomplete="off">
                     </mat-form-field> -->
                     <div class="px-2" *ngIf="f['date_of_birth']?.touched && f['date_of_birth']?.invalid">
-                        <span class="text-errors" *ngIf="f['date_of_birth'].errors?.['required']">Date of birth is
+                        <span class="text-errors" *ngIf="f['date_of_birth'].errors?.['required']">Date of joining is
                             required</span>
                     </div>
                 </div>
@@ -362,7 +362,7 @@
                              <mat-datepicker #picker1></mat-datepicker>
                     </mat-form-field>
                     <div class="px-2" *ngIf="f['date_of_birth']?.touched && f['date_of_birth']?.invalid">
-                        <span class="text-errors" *ngIf="f['date_of_birth'].errors?.['required']">Date of birth is
+                        <span class="text-errors" *ngIf="f['date_of_birth'].errors?.['required']">Date of joining is
                             required</span>
                     </div>
                 </div>

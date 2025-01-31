@@ -567,12 +567,8 @@ export class CreateNewProjectComponent implements OnInit {
         }
       })
 
-
       if (allTasksValid == true && this.invalidDate == false) {
-        let tempTeamIds: any = [];
-        this.selectedTeamId.forEach((element: any) => {
-          tempTeamIds.push({ 'employee': element })
-        })
+        let tempTeamIds = this.selectedTeamId?.length? this.selectedTeamId.map((element: any) => ({ employee: element }))  : [];
         let tempList: any;
         tempList = this.projectForm.value['project_task'].map(({ task_name, status, assignee }) => ({
           task_name,

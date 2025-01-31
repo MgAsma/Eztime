@@ -76,14 +76,18 @@ export class LoginComponent implements OnInit {
         sessionStorage.setItem('user_id',decoded.user_id )
         this.api.userAccess(decoded.user_id).subscribe(
           (data:any)=>{
-           // console.log('user access',data)
+           console.log('user access',data)
             sessionStorage.setItem('user_role_name', data.user_role);
             // sessionStorage.setItem('permissionArr', JSON.stringify(data.access_list));
             sessionStorage.setItem('organization_id', data.organization_id);
             sessionStorage.setItem('designation', data.designation);
               let permissionArr: any = []
               permissionArr = JSON.parse(sessionStorage.getItem('permissionArr'));
-              this.router.navigate([data.access_list[0].url || data.access_list[0].children[0].url]);
+              if(data.access_list.length!=0){
+                this.router.navigate([data.access_list[0].url || data.access_list[0].children[0].url]);
+              } else{
+                this.router.navigate(['profile'])
+              }
               this.api.showSuccess('Login successful!');
           },
           (error:any)=>{

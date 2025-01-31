@@ -175,7 +175,7 @@ export class ProfileComponent implements OnInit {
             email: data.email,
             designation:data.designation,
             phone_number: data.phone_number,
-            date_of_birth: data.date_of_birth,
+            date_of_birth: data.date_joined,
             country: data.country,
             state: data.state,
             city: data.city,
