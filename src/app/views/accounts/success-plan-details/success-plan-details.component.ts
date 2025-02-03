@@ -67,7 +67,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
   }
   ngOnChanges() {
     this.mySubscriptionData = this.my_subscription
-    // console.log('freeeee', this.mySubscriptionData)
+    console.log('freeeee', this.mySubscriptionData)
 
   }
   expiryBtnValidation(expiry_date, remaining_number_of_days,is_renewed) {

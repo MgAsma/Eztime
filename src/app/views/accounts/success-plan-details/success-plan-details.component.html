@@ -2,7 +2,7 @@
     <!-- Subscription Plans -->
     <div class="row">
        <!-- Standard Plan Card -->
-       <div class="col-md-7 mb-3">
+       <div  [ngClass]="my_subscription.length !== 1 ? 'col-md-7 mb-3' : 'col-md-6 offset-md-3'">
        
         <mat-card class="custom-card border-primary standard-card" >
         <mat-card-content *ngFor="let plan of mySubscriptionData">

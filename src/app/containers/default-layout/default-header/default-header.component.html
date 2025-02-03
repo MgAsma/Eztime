@@ -95,13 +95,13 @@
                 <strong>{{items?.remaining_number_of_days  || 0 }} {{items?.remaining_number_of_days > 1 ? 'days left' : 'day left'}}</strong>
           </button>
         </div>
-      <button mat-icon-button aria-label="Get Started" class="icon-button user-guide-btn"
+      <button *ngIf="hideHeaderButton" mat-icon-button aria-label="Get Started" class="icon-button user-guide-btn"
       container="body"
             ngbTooltip="Get started" placement="top" (click)="openWelcomeDialog()">
             <img src="../../../assets/images/bulb.svg" width="25" height="25">
       </button>
    
-        <button mat-icon-button aria-label="Notifications" class="icon-button"
+        <button *ngIf="hideHeaderButton" mat-icon-button aria-label="Notifications" class="icon-button"
         container="body" ngbTooltip="Notifications" placement="top" 
         (click)="openNotification()" style="position: relative;">
       

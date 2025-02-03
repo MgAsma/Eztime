@@ -23,6 +23,7 @@ import { subscribe } from 'diagnostics_channel';
 })
 export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   user_role_Name: any;
+  hideHeaderButton:boolean = false
 
   @Input() sidebarId: string = "sidebar";
   @Input() pageName: any;
@@ -106,8 +107,19 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     })
   }
   getaccessDetails(){
-    this.dashboardAccess = this.permissionArr?.find((element,i) =>element?.name === 'Dashboard')
-    console.log(this.dashboardAccess,"DASHBOARD")
+    this.api.userAccess(this.user_id).subscribe(
+      (data: any) => {
+        // console.log('all list', data,)
+        if(data?.access_list.length!=0){
+          this.hideHeaderButton = true;
+        } else{
+          this.hideHeaderButton = false
+        }
+      },
+      (error: any) => {
+        console.log('error', error)
+      }
+    )
   }
   getBack(){
     this.location.back()

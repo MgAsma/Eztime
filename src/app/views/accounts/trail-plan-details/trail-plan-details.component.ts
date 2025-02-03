@@ -130,7 +130,7 @@ BreadCrumbsTitle:any='Subscription plan';
         centered: true
       });
       modelRef.componentInstance.title = `By subscribing to the Standard Plan, your Free Plan will be cancelled.`;
-      modelRef.componentInstance.message = `Are you sure want to subscribe to the Standard Plan?`;
+      modelRef.componentInstance.message = `Cancel Free Trail`;
       modelRef.componentInstance.buttonName = `Proceed`;
       modelRef.componentInstance.status.subscribe(resp => {
         if (resp == "ok") {
