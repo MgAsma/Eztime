@@ -10,6 +10,7 @@ import { concat } from 'rxjs';
 })
 export class AccessToModulesComponent implements OnInit {
   @Output() dataEmitter: EventEmitter<string> = new EventEmitter<string>();
+  @Output() SaveData: EventEmitter<object> = new EventEmitter<object>();
   @Input() data: any;
   designation_id: any;
   organization_id: any;
@@ -26,7 +27,7 @@ export class AccessToModulesComponent implements OnInit {
 
   ngOnChanges(): void {
     if (this.data?.access?.length > 0) {
-      console.log('this.data',this.data)
+      // console.log('this.data',this.data)
       this.getAccessForDesignation(this.designation_id);
     }
   }
@@ -44,7 +45,7 @@ export class AccessToModulesComponent implements OnInit {
     this.api.getAccessByDesignationId(`?designation=${this.designation_id}&organization=${this.organization_id}`).subscribe(
       (res: any) => {
         console.log(res, 'designation id');
-        if (res.length > 0) {
+         if (res.length > 0) {
           this.itemId = res[0].id;
           this.buttonName = 'Update';
           this.dataEmitter.emit(res[0]);
@@ -68,7 +69,7 @@ export class AccessToModulesComponent implements OnInit {
             // console.log(this.data, 'Updated accessibility');
             // console.log(this.accessibility, 'Not matching');
           }
-        } else {
+        } else{
           this.buttonName = 'Add';
         }
       }
@@ -112,7 +113,19 @@ export class AccessToModulesComponent implements OnInit {
   modifyAccess(event: any, sub_module_name, access_name) {
     this.data.access.forEach((element_sub_module: any) => {
       if (sub_module_name === element_sub_module.name) {
-        element_sub_module['operations'][0][access_name] = event.target.checked
+        if(access_name==='create' || access_name==='update' || access_name==='delete'){
+          element_sub_module['operations'][0]['view'] = event.target.checked 
+          element_sub_module['operations'][0][access_name] = event.target.checked 
+        } else{
+          if(event.target.checked==false && access_name=='view'){
+            element_sub_module['operations'][0]['create'] = event.target.checked 
+            element_sub_module['operations'][0]['update'] = event.target.checked 
+            element_sub_module['operations'][0]['delete'] = event.target.checked 
+            element_sub_module['operations'][0][access_name] = event.target.checked
+          }
+          element_sub_module['operations'][0][access_name] = event.target.checked 
+        }
+        // element_sub_module['operations'][0][access_name] = event.target.checked
       }
     });
   }
@@ -147,6 +160,7 @@ export class AccessToModulesComponent implements OnInit {
       'access_list': this.filterAccessList(combinedData)
     }
     // console.log('updated code', updated_access);
+    this.SaveData.emit({'text':text,'data':updated_access})
     if (text === 'Add') {
       this.addSubModuleAccess(updated_access);
     } else {

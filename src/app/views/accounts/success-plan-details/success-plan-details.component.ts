@@ -262,13 +262,16 @@ export class SuccessPlanDetailsComponent implements OnInit {
   // }
 
   downloadInvoice(id:any){
-    const url = `${environment.live_url}/invoice/${id}/`;
-    this.openNewTab(url);
+    fetch(`${environment.live_url}/invoice/${id}/`)
+    .then(res => res.blob())
+    .then(blob => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `invoice_${id}.pdf`;
+      a.click();
+    });
   }
 
-  openNewTab(url: string): void {
-    window.open(url, '_blank');
-  }
 }
 
 

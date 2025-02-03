@@ -57,7 +57,7 @@ export class ExistStandardPlanComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm()
-    this.getState() 
+    this.getCountry() 
     this.getExistingPlanDetails()
   }
   getExistingPlanDetails(){
@@ -206,16 +206,25 @@ export class ExistStandardPlanComponent implements OnInit {
     this.selectedType = type
     this.calculateTotal()
   }
-   getState() {
-      this.api.getData(`${environment.live_url}/${environment.state}/?country_id=${101}`).subscribe((res: any) => {
-        if(res){
-        this.state = res
-        }
-      }, ((error) => {
-        this.api.showError(error?.error.message)
-      }))
-    
+  getCountry() {
+    this.api.getData(`${environment.live_url}/${environment.country}/`).subscribe((res: any) => {
+      console.log(res,'country')
+      let temp_country = res.find((country: any) => country.country_name === 'India');
+      this.getState(temp_country.id)
+    }, ((error) => {
+      this.api.showError(error.error.error.message)
+    }))
   }
+getState(id:number) {
+  this.api.getData(`${environment.live_url}/${environment.state}/?country_id=${id}`).subscribe((res: any) => {
+    if (res) {
+      this.state = res
+    }
+  }, ((error) => {
+    this.api.showError(error?.error.message)
+  }))
+
+}
   openRazorpay(data: any) {
     this.dialogue.closeAll()
       const RazorpayOptions: any = {
