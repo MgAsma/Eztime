@@ -505,11 +505,13 @@
    cursor: pointer !important;
  }
  .mat-badge-medium .mat-badge-content {
-  width: 12px;
+  width: 16px;
   height: 12px;
   line-height: 13px;
   right:0;
   top:0;
+  border-radius: 10px;
+  text-overflow: initial;
 }
 .mat-badge-medium.mat-badge-overlap.mat-badge-after .mat-badge-content {
   right: -2px;

@@ -16,6 +16,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
+import { SharedModule } from '../../../shared/shared.module';
 @NgModule({
   declarations: [
     AddOnLeaveRequestComponent,
@@ -36,7 +37,8 @@ import { MatIconModule } from '@angular/material/icon';
     Ng2SearchPipeModule,
     MatTableModule,
     MatPaginatorModule,
-    MatIconModule
+    MatIconModule,
+    SharedModule
   ],
   exports:[NgxPaginationModule]
 })

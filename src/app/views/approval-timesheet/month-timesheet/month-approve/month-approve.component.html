@@ -28,7 +28,7 @@
                 <td class="text-center" *ngIf="items.tasks.length">
                   <div *ngFor="let task of items.tasks; let j = index">
                     <div>
-                      {{ task?.task__task_name || 'NA' }} <br/>
+                    {{ task?.task__task_name || 'NA' }} <br/>
                     </div>
                   </div>
                 </td>
@@ -53,8 +53,8 @@
             </ng-container>
           </tbody>
         </table>
-        <div *ngIf="approvedAll.length === 0" class="text-center">
-          No records found!
+        <div class="col-12" *ngIf="approvedAll.length === 0">
+          <app-generic-norecards></app-generic-norecards>
         </div>
       </div>
     </div>
@@ -201,17 +201,13 @@
           </div>
         </div>
       </div>
-      <div *ngIf="result.length === 0" class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <p>No records found
-              !</p>
-          </div>
-        </div>
-      </div>
+     
     </ng-container>
+    <div class="col-12" *ngIf="approvedAll.length === 0">
+      <app-generic-norecards></app-generic-norecards>
+    </div>
   </div>
-  <div class="pagination-container p-0 pt-2" *ngIf="approvedAll.length !== 0">
+  <div class="pagination-container p-0 pt-2" >
     <!-- Pagination Controls (Center-Aligned) -->
     <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
     </pagination-controls> 

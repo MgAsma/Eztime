@@ -63,8 +63,8 @@
                     </ng-container>
                   </tbody>
               </table>
-              <div style="position: absolute;left: 45%;padding: 10px;"  *ngIf="list.length === 0">
-                No records found!
+              <div class="col-12" *ngIf="list.length === 0">
+                <app-generic-norecards></app-generic-norecards>
               </div>
         </div>
     </div>
@@ -242,12 +242,9 @@
             </div>
           </div>
         </div>
-        <div *ngIf="result.length === 0" class="col-12">
-          <div class="card">
-            <div class="card-body">
-              <p>No records found !</p>
-            </div>
-          </div>
+      
+        <div class="col-12" *ngIf="result.length === 0">
+          <app-generic-norecards></app-generic-norecards>
         </div>
       </ng-container>
     </div>

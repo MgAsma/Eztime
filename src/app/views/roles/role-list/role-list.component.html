@@ -76,12 +76,13 @@
                     </td> -->
                 </tr>
                 <tr style="width: 100%;" *cdkDragPlaceholder class="example-custom-placeholder">Drop here!</tr>
-                <div *ngIf="result.length === 0" class="nodata">
-                  <p style="width: 100%;"> No records found! </p>
-                </div>
+                
               </ng-container>
             </tbody>
           </table>
+          <div class="col-12" *ngIf="allRoleList.length === 0">
+            <app-generic-norecards></app-generic-norecards>
+          </div>
         </div>
 
       </div>

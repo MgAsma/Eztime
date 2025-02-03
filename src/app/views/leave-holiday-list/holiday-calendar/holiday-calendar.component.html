@@ -46,7 +46,8 @@
           </mat-list>
         </mat-card-content>
       </mat-card>
-      <div class="no-records px-2" *ngIf="holidays.length === 0">
-        No records found !
-        </div>
+    
+        <div class="col-12" *ngIf="holidays.length === 0">
+          <app-generic-norecards></app-generic-norecards>
+         </div>
 </div>

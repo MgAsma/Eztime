@@ -71,13 +71,13 @@
                          </td> -->
 
               </tr>
-              <tr *ngIf="result.length === 0" class="nodata">
-                <td> No records found !</td>
-              </tr>
+             
             </ng-container>
           </tbody>
         </table>
-
+        <div class="col-12" *ngIf="allDepartmentList.length === 0">
+          <app-generic-norecards></app-generic-norecards>
+        </div>
       </div>
     </div>
 
@@ -175,10 +175,11 @@
         </div>
 
       </div>
-      <div *ngIf="result.length === 0">
-        <app-generic-norecards></app-generic-norecards>
-      </div>
+      
     </ng-container>
+    <div class="col-12" *ngIf="allDepartmentList.length === 0">
+      <app-generic-norecards></app-generic-norecards>
+    </div>
     <div class="pagination-container p-0 pt-2">
       <!-- Pagination Controls (Center-Aligned) -->
       <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">

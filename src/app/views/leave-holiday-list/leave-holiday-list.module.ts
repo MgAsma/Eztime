@@ -18,10 +18,11 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { HolidayCalendarComponent } from './holiday-calendar/holiday-calendar.component';
+
 
 @NgModule({
   declarations: [
@@ -33,8 +34,7 @@ import { HolidayCalendarComponent } from './holiday-calendar/holiday-calendar.co
     RequestAddLeaveComponent,
     LeaveDetailsComponent,
     UpdateLeaveDetailsComponent,
-    HolidayCalendarComponent,
-    
+    HolidayCalendarComponent
   ],
   imports: [ 
     CommonModule,

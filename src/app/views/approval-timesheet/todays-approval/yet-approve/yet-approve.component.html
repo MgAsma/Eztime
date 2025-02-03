@@ -64,9 +64,8 @@
           </tbody>
         </table>
 
-          
-        <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="yetToApproveAll.length === 0">
-          No records found!
+        <div *ngIf="yetToApproveAll?.length === 0">
+          <app-generic-norecards></app-generic-norecards>
         </div>
       </div>
     </div>
@@ -223,19 +222,15 @@
           </div>
         </div>
       </div>
-      <div *ngIf="result.length === 0" class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <p>No records found
-              !</p>
-          </div>
-        </div>
-      </div>
+      
     </ng-container>
+    <div *ngIf="yetToApproveAll?.length === 0">
+      <app-generic-norecards></app-generic-norecards>
+    </div>
   </div>
 
 
-  <div class="pagination-container p-0 pt-2" *ngIf="yetToApproveAll.length !== 0">
+  <div class="pagination-container p-0 pt-2" >
     <!-- Pagination Controls (Center-Aligned) -->
     <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
     </pagination-controls> 

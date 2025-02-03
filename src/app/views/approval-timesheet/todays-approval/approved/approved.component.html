@@ -11,10 +11,8 @@
               <th scope="col" class="text-center">Project</th>
               <th scope="col" class="text-center">Task</th>
               <th scope="col" class="text-center">Hours</th>
-              <!-- <th scope="col">Saved On</th> -->
               <th scope="col" class="text-center">Approved On</th>
               <th scope="col" class="text-center">Approved By</th>
-              <!-- <th scope="col">Action</th> -->
             </tr>
           </thead>
           <tbody>
@@ -49,30 +47,16 @@
                 <td class="text-center">{{items['approved_by_name']?items['approved_by_name']:'NA'|titlecase
                   }}</td>
                
-                <!-- <td>
-                    <ng-container *ngFor="let approval of accessConfig">
-                                <span *ngIf="approval == 'DELETE'">
-                                    <button  style="border: none;background-color: inherit;" (click)="open(items)"> <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>
-                                </span>
-                               
-                               <span *ngIf="approval == 'ACCEPT'">
-                                    <button style="border: none;background-color: inherit;" (click)="openDialogue(items.id,'APPROVED')"><i class="bi bi-check-circle" container="body" ngbTooltip="Approve" style="color:green"></i></button>
-                                </span>
-                                <span *ngIf="approval == 'REJECT'">
-                                    <button style="border: none;background-color: inherit;" (click)="openDialogue(items.id,'DECLINED')"><i class="bi bi-x-circle" container="body" ngbTooltip="Reject" style="color:red"></i></button>
-                                </span> 
-                            </ng-container>
-                </td> -->
+               
               </tr>
              
             </ng-container>
 
           </tbody>
         </table>
-        <div style="position: absolute;left: 45%;padding: 10px 0;"  *ngIf="list.length === 0">
-          No records found!
-        </div>
-
+      </div>
+      <div *ngIf="list.length === 0">
+        <app-generic-norecards></app-generic-norecards>
       </div>
     </div>
     <div class="pagination-container p-0 py-4">
@@ -251,19 +235,14 @@
           </div>
         </div>
       </div>
-      <div *ngIf="result.length === 0" class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <p>No records found
-              !</p>
-          </div>
-        </div>
-      </div>
+     
     </ng-container>
-
+    <div *ngIf="list?.length === 0">
+      <app-generic-norecards></app-generic-norecards>
+    </div>
   </div>
  
-  <div class="pagination-container p-0 pt-2" *ngIf="list.length !== 0">
+  <div class="pagination-container p-0 pt-2" >
     <!-- Pagination Controls (Center-Aligned) -->
     <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
     </pagination-controls> 

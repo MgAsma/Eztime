@@ -70,7 +70,7 @@
         </tbody>
       </table>
       <div class="no-records" *ngIf="empInfoList?.length === 0">
-        No records found!
+        <app-generic-norecards></app-generic-norecards>
       </div>
     </div>
     <div class="pagination-container p-0 py-4" *ngIf="empInfoList?.length > 0">
@@ -135,7 +135,7 @@
             </tbody>
           </table>
           <div class="no-records" *ngIf="leaveList?.length === 0">
-            No records found!
+            <app-generic-norecards></app-generic-norecards>
           </div>
         </div>
         <div class="pagination-container p-0 py-4" *ngIf="leaveList?.length > 0">
@@ -187,7 +187,7 @@
             </tbody>
           </table>
           <div class="no-records" *ngIf="leaveList?.length === 0">
-            No records found!
+            <app-generic-norecards></app-generic-norecards>
           </div>
         </div>
         <div class="pagination-container p-0 py-4" *ngIf="leaveList?.length > 0">
@@ -241,7 +241,7 @@
             </tbody>
           </table>
           <div class="no-records" *ngIf="leaveList?.length === 0">
-            No records found!
+            <app-generic-norecards></app-generic-norecards>
           </div>
         </div>
         <div class="pagination-container p-0 py-4" *ngIf="leaveList?.length > 0">
@@ -335,7 +335,7 @@
             </tbody>
           </table>
           <div class="no-records" *ngIf="timesheetList?.length === 0">
-            No records found!
+            <app-generic-norecards></app-generic-norecards>
           </div>
           <div class="pagination-container p-0 py-4" *ngIf="timesheetList?.length > 0">
             <!-- Pagination Controls (Center-Aligned) -->
@@ -413,7 +413,7 @@
                 
               </tr>
               <!-- <div class="no-records"  *ngIf="result?.length === 0">
-                <div>No records found!</div>
+                <div><app-generic-norecards></app-generic-norecards></div>
               </div> -->
               <tr>
                 
@@ -422,7 +422,7 @@
             </tbody>
           </table>
           <div class="no-records" *ngIf="timesheetList?.length === 0">
-            No records found!
+            <app-generic-norecards></app-generic-norecards>
           </div>
           <div class="pagination-container p-0 py-4" *ngIf="timesheetList?.length > 0">
             <!-- Pagination Controls (Center-Aligned) -->
@@ -508,7 +508,7 @@
             </tbody>
           </table>
           <div class="no-records" *ngIf="timesheetList?.length === 0">
-            No records found!
+            <app-generic-norecards></app-generic-norecards>
           </div>
           <div class="pagination-container p-0 py-4" *ngIf="timesheetList?.length > 0">
             <!-- Pagination Controls (Center-Aligned) -->
