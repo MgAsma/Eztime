@@ -100,15 +100,23 @@
             ngbTooltip="Get started" placement="top" (click)="openWelcomeDialog()">
             <img src="../../../assets/images/bulb.svg" width="25" height="25">
       </button>
-    <button mat-icon-button aria-label="Notifications"  class="icon-button"
-    container="body"
-    ngbTooltip="notification" placement="top"  (click)="openNotification()">
-      <mat-icon [matBadge]="notification_count || 0"  matBadgeColor="warn">notifications</mat-icon>
-    </button>
    
+        <button mat-icon-button aria-label="Notifications" class="icon-button"
+        container="body" ngbTooltip="Notifications" placement="top" 
+        (click)="openNotification()" style="position: relative;">
+      
+      <img src="../../../../assets/images/Notification.svg" class="notification-icon" />
+      
+      <!-- Custom Badge -->
+      <span class="custom-badge" *ngIf="notification_count > 0" [ngClass]="notification_count > 98 ? 'cs-notification-pad' : ''">
+        {{ notification_count > 98 ? '99+' : notification_count }}
+      </span>
+
+    </button>
+
     <button mat-icon-button aria-label="Logout" class="icon-button mobile-hide-content"
     (click)="openDialogue()" container="body"
-            ngbTooltip="logout" placement="top">
+            ngbTooltip="Logout" placement="top">
       <mat-icon>power_settings_new</mat-icon>
     </button>
   </div>

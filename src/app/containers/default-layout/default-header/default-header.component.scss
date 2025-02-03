@@ -243,4 +243,28 @@ h1.breadcrumb-title{
       
     }
   }
+  .icon-button {
+    position: relative;
+    display: inline-block;
+  }
+ 
+  
+  .custom-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #ec2236;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 5px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cs-notification-pad{
+    padding: 0 12px 0 14px;
+  }
   
