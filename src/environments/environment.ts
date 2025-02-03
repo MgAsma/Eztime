@@ -8,11 +8,11 @@ export const environment = {
   Razorpay_live_key:'rzp_test_Z6PoT6HRL71TiC',
    //live_url: 'https://projectacedev.thestorywallcafe.com/api',
   //media_url: 'https://projectacedev.thestorywallcafe.com/media',
-  //  media_url: 'https://projectacedevelop.thestorywallcafe.com',
-  //  live_url:'https://projectacedevelop.thestorywallcafe.com/api',
+   media_url: 'https://projectacedevelop.thestorywallcafe.com',
+   live_url:'https://projectacedevelop.thestorywallcafe.com/api',
   
-  live_url: 'https://projectacetest.thestorywallcafe.com/api',
-  media_url:'https://projectacetest.thestorywallcafe.com',
+  // live_url: 'https://projectacetest.thestorywallcafe.com/api',
+  // media_url:'https://projectacetest.thestorywallcafe.com',
   
   // live_url: 'https://projectaceuat.thestorywallcafe.com/api',
   // media_url: 'https://projectaceuat.thestorywallcafe.com',
