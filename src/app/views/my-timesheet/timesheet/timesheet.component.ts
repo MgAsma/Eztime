@@ -129,7 +129,8 @@ reset(){
     this.refresh = false
 
     if(event){
-      this.cdref.detectChanges();
+      this.getStatusCount(`?user=${this.userId}&get-count=true&organization=${this.orgId}`)
+      //this.cdref.detectChanges();
       let query = `?organization=${this.orgId}&status=${selectedTab}&user=${this.userId}&page=${event.page}&page_size=${event.page_size}`
       let c_params = {
         status: this.selectedTab ? this.selectedTab : 'Pending',
