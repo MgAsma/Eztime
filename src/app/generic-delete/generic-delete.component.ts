@@ -35,7 +35,7 @@ constructor(private fb:FormBuilder){}
   }
  initForm(){
   this.declineForm = this.fb.group({
-    comments:['',Validators.required]
+    comments:['',[Validators.required,Validators.pattern(/^\S.*/)]]
   })
  }
 }

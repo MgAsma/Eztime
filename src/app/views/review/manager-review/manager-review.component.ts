@@ -177,7 +177,7 @@ export class ManagerReviewComponent implements OnInit {
       modelRef.componentInstance.message = `${status}`;
       modelRef.componentInstance.status.subscribe(resp => {
         modelRef.componentInstance.comments?.subscribe(comments => {
-          if (resp == "ok") {
+          if (resp === "ok") {
             this.updateTimesheetStatus(content, status,comments)
             modelRef.close();
           }
@@ -185,13 +185,6 @@ export class ManagerReviewComponent implements OnInit {
             modelRef.close();
           }
         })
-        if (resp == "ok") {
-          this.updateTimesheetStatus(content, status)
-          modelRef.close();
-        }
-        else {
-          modelRef.close();
-        }
         modelRef.close();
       })
      
@@ -253,13 +246,7 @@ export class ManagerReviewComponent implements OnInit {
             modelRef.close();
           }
         })
-        if (resp == "ok") {
-          this.updateStatus(content, status)
-          modelRef.close();
-        }
-        else {
-          modelRef.close();
-        }
+        
         modelRef.close();
       })
     }
@@ -403,7 +390,7 @@ export class ManagerReviewComponent implements OnInit {
     }, ((error: any) => {
       this.api.showError(error?.error?.message)
     }))
-   }if(status === 'Decline'){
+   }else if(status === 'Decline'){
    const data ={
     comment: comments,
     leave_id: content.id,

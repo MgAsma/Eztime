@@ -19,10 +19,13 @@
         <mat-form-field appearance="outline" class="w-100">
         <mat-label>Comment <b class="r-star">*</b></mat-label>
         <textarea matInput placeholder="Enter comments"  class="w-100"
-        formControlName="comments" pattern="^(?!\s)(.*\S)?$" autocomplete="off">
+        formControlName="comments" autocomplete="off">
        </textarea>
-      <mat-error *ngIf="f['comments'].touched && f['comments'].invalid">
+      <mat-error *ngIf="f['comments'].touched && f['comments'].hasError('required')">
         Comment is required.
+      </mat-error>
+      <mat-error *ngIf="f['comments'].hasError('pattern')">
+        Comment cannot start with a space.
       </mat-error>
       </mat-form-field>
     </form>
