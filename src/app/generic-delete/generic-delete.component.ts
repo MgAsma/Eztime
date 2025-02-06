@@ -18,7 +18,9 @@ constructor(private fb:FormBuilder){}
     if(data === 'ok' && this.message === 'Decline' && this.declineForm.invalid){
       this.declineForm.markAllAsTouched()
     }else{
-      this.status.emit(data)
+      if(data === 'ok'){
+        this.status.emit(data)
+      }
       if(data === 'ok' && this.message === 'Decline'){
         this.comments.emit(this.declineForm.value.comments)
       }
