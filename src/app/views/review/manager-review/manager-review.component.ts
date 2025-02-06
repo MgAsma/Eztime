@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
+import { GenericDeleteComponent } from '../../../../app/generic-delete/generic-delete.component';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { TimesheetService } from 'src/app/service/timesheet.service';
 import { environment } from 'src/environments/environment';
@@ -143,9 +143,6 @@ export class ManagerReviewComponent implements OnInit {
     let query:string = `?organization=${this.orgId}&status=${this.selectedTimesheetTabId}&page=${1}&page_size=${this.tableSize}`;
    
     this.getAllTimesheets(query)
-
- 
-  
   }
   tabLeaveSection(data){
     if(data.tab.textLabel === 'Pending' ){
@@ -165,32 +162,7 @@ export class ManagerReviewComponent implements OnInit {
     let query = `?organization=${this.orgId}&status=${this.selectedLeaveTabId}&page=${1}&page_size=${this.tableSize}`;
     this.getAllLeaves(query)
   }
-  openDialogue(content, status) {
-    const title = status.toLowerCase()
-    if (content) {
-      const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: status === 'Decline' ? <any>'md' : 'sm',
-        backdrop: true,
-        centered: true
-      });
-      modelRef.componentInstance.title = `Are you sure you want to ${title}`;
-      modelRef.componentInstance.message = `${status}`;
-      modelRef.componentInstance.status.subscribe(resp => {
-        modelRef.componentInstance.comments?.subscribe(comments => {
-          if (resp === "ok") {
-            this.updateTimesheetStatus(content, status,comments)
-            modelRef.close();
-          }
-          else {
-            modelRef.close();
-          }
-        })
-        modelRef.close();
-      })
-     
-    }
-
-  }
+  
   onTableDataChange(event:any){
     this.page = event;
     let leaveStatusId = this.selectedLeaveTabId || 1
@@ -218,7 +190,6 @@ export class ManagerReviewComponent implements OnInit {
       this.getEmployeeData(`page=${1}&page_size=${this.tableSize}`)
     }else if(this.selectedSection === 'leaves'){
       this.count = 0;
-      alert(leaveStatusId)
       this.getAllLeaves(`?status=${leaveStatusId}&organization=${this.orgId}&page=${1}&page_size=${this.tableSize}`)
     }else if(this.selectedSection === 'timesheets'){
       this.count = 0;
@@ -236,20 +207,47 @@ export class ManagerReviewComponent implements OnInit {
       });
       modelRef.componentInstance.title = `Are you sure you want to ${title}`;
       modelRef.componentInstance.message = `${status}`;
-      modelRef.componentInstance.status.subscribe(resp => {
-        modelRef.componentInstance.comments.subscribe(comments => {
-          if (resp == "ok") {
-            this.updateStatus(content, status,comments)
-            modelRef.close();
-          }
-          else {
+      modelRef.componentInstance.status.subscribe(async resp => {
+        modelRef.componentInstance.comments.subscribe(async comments => {
+          if (resp === "ok" && comments) {
+           await this.updateStatus(content, status,comments)
             modelRef.close();
           }
         })
-        
+        if (resp === "ok") {
+          await this.updateStatus(content, status)
+           modelRef.close();
+         }
         modelRef.close();
       })
     }
+  }
+  openDialogue(content, status) {
+    const title = status.toLowerCase()
+    if (content) {
+      const modelRef = this.modalService.open(GenericDeleteComponent, {
+        size: status === 'Decline' ? <any>'md' : 'sm',
+        backdrop: true,
+        centered: true
+      });
+      modelRef.componentInstance.title = `Are you sure you want to ${title}`;
+      modelRef.componentInstance.message = `${status}`;
+      modelRef.componentInstance.status.subscribe(async resp => {
+        modelRef.componentInstance.comments?.subscribe(async comments => {
+          if (resp === "ok" && comments) {
+            await this.updateTimesheetStatus(content, status,comments)
+          //  modelRef.close();
+          }
+        })
+        if(resp === 'ok'){
+        await this.updateTimesheetStatus(content, status)
+         modelRef.close();
+        }
+        modelRef.close();
+      })
+     
+    }
+
   }
   updateTimesheetStatus(content, status,comments?) {
     const confirmText = status === 'Approve' ? 'approved' : 'declined'
@@ -274,7 +272,7 @@ export class ManagerReviewComponent implements OnInit {
     }, (error => {
       this.api.showError(error?.error?.message)
     }))
-  }if(status === 'Decline'){
+  }else if(status === 'Decline'){
     const data = {
       timesheet_id: content.id,
       comment: comments,
