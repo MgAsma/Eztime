@@ -41,8 +41,8 @@
                         <!-- <span class="main-text">Select All</span>
                             <input class="custom-checkbox" type="checkbox" [checked]="allSelected" (change)="selectAll($event)"> -->
                     </li>
-                    <li (click)="passingChildrenToTabel(items)" class="list-group-item "
-                        *ngFor="let items of mainMenu;let i=index">
+                    <li (click)="passingChildrenToTabel(items)" class="list-group-item" *ngFor="let items of mainMenu;let i=index"
+                         [ngClass]="{'selected-tab': selectedTab === items.name}" >
                         <div class="d-flex justify-content-between">
                             <span (click)="passingChildrenToTabel(items)"> {{items.name}}</span>
                             <span *ngIf="items.access_given" class="access_given">●</span>

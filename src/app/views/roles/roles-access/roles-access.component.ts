@@ -24,6 +24,7 @@ export class RolesAccessComponent implements OnInit {
   selectedLabelNames: any = [];
   itemId: any;
   buttonName: any;
+  selectedTab: any = null;
   constructor(private _fb: FormBuilder, private router: Router, private routes: ActivatedRoute, private common_service: CommonServiceService,
     private api: ApiserviceService,
   ) {
@@ -189,7 +190,7 @@ export class RolesAccessComponent implements OnInit {
     this.api.userAccess(this.user_id).subscribe(
       (data: any) => {
         // console.log('all list', data,)
-        this.mainMenu = data.access_list;
+        this.mainMenu = data.access_list.filter((module_name)=> module_name.name!='Subscription');
         this.getAccessbilitiesByDesignationId();
       },
       (error: any) => {
@@ -201,19 +202,24 @@ export class RolesAccessComponent implements OnInit {
   getAccessbilitiesByDesignationId() {
     this.api.getAccessByDesignationId(`?designation=${this.designation_id}&organization=${this.organization_id}`).subscribe(
       (res: any) => {
-        // console.log(res, 'sub modules')
+        console.log(res, 'sub modules')
         if (res.length == 0 || res[0].access_list.length == 0) {
           let temp = this.mainMenu.find((module_name: any) => module_name.name === 'Dashboard');
           temp.access[0].operations[0].view = true;
-          let access_data = {
-            'name': temp.name,
-            'access': temp.access,
-          }
-          // console.log(temp)
-          // this.allChildrens = access_data;
           this.passingChildrenToTabel(temp)
+        } else if (res.length != 0 && res[0].access_list.length != 0){
+          this.mainMenu.forEach((element1: any) => {
+            const matchingAccess = res[0].access_list.find((accessItem: any) => accessItem.name === element1.name);
+            if (matchingAccess) {
+              element1.access.forEach((element1_1: any) => {
+                if (!matchingAccess.access.some((item: any) => item.name === element1_1.name)) {
+                  matchingAccess.access.push(element1_1);
+                }
+              });
+            }
+          });
+          this.passingChildrenToTabel(res[0].access_list[0])
         }
-        this.receiveDataFromChild(res[0])
       },
       (error) => {
         console.log(error)
@@ -225,21 +231,24 @@ export class RolesAccessComponent implements OnInit {
   // getting data from child
   receiveDataFromChild(data: any) {
     // console.log('from child', data)
-    this.mainMenu.forEach((access: any) => {
-      const moduleMatch = data.access_list.find((module_name: any) => module_name.name === access.name);
-      if (moduleMatch) {
-        access['access_given'] = true;
-      }
-      if (!moduleMatch) {
-        access['access_given'] = false;
-      }
-    });
-    // console.log(this.mainMenu, 'this.mainMenu')
+    if(data){
+      this.mainMenu.forEach((access: any) => {
+        const moduleMatch = data.access_list.find((module_name: any) => module_name.name === access.name);
+        if (moduleMatch) {
+          access['access_given'] = true;
+        }
+        if (!moduleMatch) {
+          access['access_given'] = false;
+        }
+      });
+      // console.log(this.mainMenu, 'this.mainMenu')
+    }
   }
 
   allChildrens: any = []
   passingChildrenToTabel(data: any) {
-    // console.log(data)
+    // console.log('dataaaaaa',data)
+    this.selectedTab = data.name;
     let access_data = {
       'name': data.name,
       'access': data.access,
