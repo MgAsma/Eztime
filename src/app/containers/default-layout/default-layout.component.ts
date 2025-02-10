@@ -91,13 +91,13 @@ export class DefaultLayoutComponent {
       this.ngxService.stopLoader("loader-01");
     }, 1000);
     
-    if (this.user_role_Name && this.user_role_Name === 'Admin') {
+    if (this.user_role_Name && this.user_role_Name !== 'SuperAdmin') {
       this.getMySubscription();
     }
 
     // Listen to subscription state changes
     this.common_service.subsctiptionState$.subscribe((res) => {
-      if (res && this.user_role_Name === 'Admin') {
+      if (res && this.user_role_Name !== 'SuperAdmin'  ) {
         this.getMySubscription();
       }
     });
@@ -139,7 +139,7 @@ export class DefaultLayoutComponent {
 
   shouldDisableItem(item: any): boolean {
     // Don't disable anything for SuperAdmin
-    if (this.user_role_Name !== 'Admin') return false;
+    if (this.user_role_Name === 'SuperAdmin') return false;
     
     // If subscription is required and item is not subscription page
     return this.mySubscription && item.url !== '/accounts/subscription';
@@ -202,7 +202,7 @@ testingFunction() {
   getUserControls(role_id) {
     this.org_id = sessionStorage.getItem('org_id')
     this.api.getUserRoleById(`id=${role_id}&page_number=1&data_per_page=10&pagination=TRUE&organization_id=${this.org_id}`).subscribe(res => {
-     console.log(res,'oooooooooooooooooo')
+    // console.log(res,'oooooooooooooooooo')
       if (res) {
         this.permission = res['data'][0]?.permissions;
         if (this.permission?.length > 0) {

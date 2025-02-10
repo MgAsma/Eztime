@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { ClassToggleService, HeaderComponent } from '@coreui/angular';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
+import { GenericDeleteComponent } from '../../../generic-delete/generic-delete.component';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { NotificationComponent } from 'src/app/views/pages/notification/notification.component';
@@ -146,7 +146,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     modelRef.componentInstance.title = `Are you sure you want to logout`;
     modelRef.componentInstance.message = `Logout`;
     modelRef.componentInstance.status.subscribe(resp => {
-      if (resp == "ok") {
+      if (resp === "ok") {
         this.api.showSuccess('You have been logged out!')
         this.router.navigate(['/login'])
         localStorage.clear();
@@ -158,6 +158,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
       else {
         modelRef.close();
       }
+      modelRef.close();
     })
   }
 
