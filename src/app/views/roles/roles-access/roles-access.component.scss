@@ -78,34 +78,9 @@
   color: green;
   font-size: large;
 }
-
-// .checkbox-design {
-//   width: 20px;
-//   border-radius: 3px;
-//   border: 2px solid #413f3f !important;
-//   appearance: none; 
-//   -webkit-appearance: none;
-// }
-
-// .custom-checkbox {
-//   width: 20px; 
-//   height: 20px;
-//   appearance: none; 
-//   -webkit-appearance: none;
-//   border: 2px solid #413f3f ; 
-//   border-radius: 3px; 
-//   cursor: pointer;
-//   position: relative;
-// }
-
-// .custom-checkbox:checked::before {
-//   content: "✓"; 
-//   color: #126EB4;
-//   font-size: 20px; 
-//   position: absolute;
-//   top: 50%;
-//   left: 50%;
-//   transform: translate(-50%, -60%); 
-//   font-weight: bold;
-// }
+.list-group-item.selected-tab {
+  // background-color: #126EB4 !important;
+  color: black !important;
+  font-weight: 600 !important;
+}
 

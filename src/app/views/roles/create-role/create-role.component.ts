@@ -70,7 +70,7 @@ export class CreateRoleComponent implements OnInit {
             this.ngOnInit();
             setTimeout(() => {
               this.router.navigate([`/designation/roles-access/${res.result.id}`])
-            }, 2000);
+            }, 1000);
             // window.location.reload();
           }
       },((error:any) =>{
