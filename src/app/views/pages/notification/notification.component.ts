@@ -11,7 +11,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class NotificationComponent implements OnInit {
   notes:any =[]
-  page_size: number = 5;
+  page_size: number = 6;
   user_id: any;
   user_role_name: any;
   totalCount: any;

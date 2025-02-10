@@ -38,4 +38,9 @@
     </div>
   </div>
 </div>
-<div *ngIf="!leaveData.length" style="text-align: center;height: 20vh;display: flex;align-items: center;justify-content: center;">No Records Found!</div>
+<div class="row mt-5">
+  <div class="col-12" *ngIf="!leaveData.length">
+    <app-generic-norecards></app-generic-norecards>
+  </div>
+</div>
+
