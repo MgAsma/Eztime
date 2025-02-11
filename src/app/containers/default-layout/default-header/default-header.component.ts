@@ -78,7 +78,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     this.user_role_Name = sessionStorage.getItem('user_role_name');
     this.getNotification()
     this.permissionArr = JSON.parse(sessionStorage.getItem('permissionArr'));
-    this.welcomeMsg();
+    // this.welcomeMsg();
     this.getProfiledata()
     this.common_service.title$.subscribe(title => {
       this.pageName = title;
@@ -217,6 +217,9 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
         this.profileDataForSidebar.name = res.user_info[0].first_name; 
         this.profileDataForSidebar.last_name = res.user_info[0].last_name;
         this.common_service.setProfilePhoto(this.profileDataForSidebar)
+        if(res?.access_list?.length!=0){
+          this.welcomeMsg();
+        }
       },
       (error => {
           console.log('from default header',error);
@@ -237,7 +240,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   getNotification() {
     let params = `${environment.live_url}/${environment.notification}/?user-id=${this.user_id}`
     this.api.getData(params).subscribe((res: any) => {
-      if (res.results) {
+      if (res?.results) {
         this.notification_count = res.results.length
       }
     }, ((error: any) => {

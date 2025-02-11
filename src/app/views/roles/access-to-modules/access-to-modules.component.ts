@@ -40,8 +40,6 @@ export class AccessToModulesComponent implements OnInit {
   }
   ngOnInit(): void {
     this.organization_id = sessionStorage.getItem('organization_id')
-    this.ngxService.stop();
-    this.ngxService.stopLoader("loader-01");
   }
 
 
@@ -334,6 +332,7 @@ export class AccessToModulesComponent implements OnInit {
 
 
   addSubModuleAccess(updated_access: any) {
+    this.ngxService.stop();
     this.api.postdesignationRoleAccess(updated_access).subscribe(
       (res) => {
         this.api.showSuccess(res['message']);
@@ -347,6 +346,7 @@ export class AccessToModulesComponent implements OnInit {
     )
   }
   updateSubModuleAccess(updated_access: any) {
+    this.ngxService.stop();
     this.api.putdesignationRoleAccess(updated_access, this.itemId).subscribe(
       (res) => {
         this.api.showSuccess(res['message']);
