@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from '../../../service/apiservice.service';
-import { CommonServiceService } from 'src/app/service/common-service.service';
-import { environment } from 'src/environments/environment';
+import { GenericDeleteComponent } from '../../../generic-delete/generic-delete.component';
+import { environment } from '../../../../environments/environment';
+import { SubModuleService } from '../../../service/sub-module.service';
+import { CommonServiceService } from '../../../service/common-service.service';
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
@@ -21,8 +22,7 @@ export class ProjectListComponent implements OnInit {
   currentIndex: any;
   term: any = '';
   enabled: boolean = true;
-  permissions: any = [];
-  user_id: string;
+  user_id: any;
   orgId: any;
   sortValue: string = '';
   directionValue: string = '';
@@ -37,12 +37,13 @@ export class ProjectListComponent implements OnInit {
   };
   userRole:String;
   baseUrl:String;
+  accessPermissions = []
   constructor(
     private modalService: NgbModal,
     private api: ApiserviceService,
     private router: Router,
     private location: Location,
-    private common_service: CommonServiceService
+    private common_service: CommonServiceService,private accessControlService:SubModuleService
   ) {
     this.orgId = sessionStorage.getItem('organization_id')
     this.user_id = sessionStorage.getItem('user_id');
@@ -53,6 +54,7 @@ export class ProjectListComponent implements OnInit {
     this.location.back();
 
   }
+  
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.enabled = true;
@@ -63,24 +65,18 @@ export class ProjectListComponent implements OnInit {
     }
     // &${'created_by'}=${this.user_id}
     this.getProject(this.baseUrl);
-    this.allrolesList();
+    this.getModuleAccess();
   }
 
-  allrolesList() {
-    this.api.userAccess(this.user_id).subscribe(
-      (data: any) => {
-        console.log('all list', data,)
-        const module = data?.access_list?.find(item => item.name === 'Projects');
-        const subModules = module?.access?.find(item => item.name === 'All Projects');
-  
-        // this.permissions = subModules?.operations || [];
-        
-        console.log(this.permissions);
-      },
-      (error: any) => {
-        console.log('error', error)
+  getModuleAccess(){
+    this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+      if (access) {
+        this.accessPermissions = access;
+        console.log('Access Permissions:', this.accessPermissions);
+      } else {
+        console.log('No matching access found.');
       }
-    )
+    });
   }
   
   getProject(params:any) {
