@@ -279,10 +279,10 @@ export class ManagerReviewComponent implements OnInit {
       status: 2 ,
       organization: this.orgId,
       employee: content.created_by,
-      approved_by:  this.user_id || null,
-      approved_on:  formattedDate || null,
-      rejected_by:  this.user_id  || null,
-      rejected_on:  formattedDate  || null 
+      approved_by: this.user_id || null,
+      approved_on: formattedDate || null,
+      rejected_by: null,
+      rejected_on: null 
   }
     this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
       if (res) {
@@ -389,16 +389,17 @@ export class ManagerReviewComponent implements OnInit {
     let date = new Date()
     let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
     const confirmText = status === 'Approve' ? 'approved' : 'declined'
+   
+   if(status === 'Approve'){
     let data = {
       id: content.id,
-      status: status === 'Approve' ? 2 : 3,
+      status:  2 ,
       organization: this.orgId,
       employee: content.employee,
       leave_type:content.leave_type,
-      approved_by: status === 'Approve' ? this.user_id :null,
-      approved_on: status === 'Approve' ? formattedDate :null,
+      approved_by: null,
+      approved_on: null,
   }
-   if(status === 'Approve'){
     this.api.updateData(`${environment.live_url}/${environment.update_leave_details}/`,data).subscribe(res => {
 
       if (res) {

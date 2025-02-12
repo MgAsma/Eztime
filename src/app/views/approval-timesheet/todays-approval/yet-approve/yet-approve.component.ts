@@ -194,7 +194,7 @@ export class YetApproveComponent implements OnInit {
       centered: true
     });
   
-    modelRef.componentInstance.title = `Are you sure you want to ${statusText}?`;
+    modelRef.componentInstance.title = `Are you sure you want to ${statusText}`;
     modelRef.componentInstance.message = `${status}`;
   
     // If status is "Decline", handle comments first before closing
@@ -225,10 +225,10 @@ export class YetApproveComponent implements OnInit {
       status: status === 'Approve' ? 2 : 3,
       organization: this.orgId,
       employee: content.created_by,
-      approved_by: status === 'Approve' ? this.user_id :null,
-      approved_on: status === 'Approve' ? formattedDate :null,
-      rejected_by: status === 'Decline' ? this.user_id :null,
-      rejected_on: status === 'Decline' ? formattedDate :null
+      approved_by: this.user_id || null,
+      approved_on: formattedDate || null,
+      rejected_by: null,
+      rejected_on: null
     }
     if(status === 'Approve'){
       this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
