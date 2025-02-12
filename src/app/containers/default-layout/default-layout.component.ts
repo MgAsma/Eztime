@@ -110,7 +110,13 @@ export class DefaultLayoutComponent {
       if (res) {
         if (res?.data?.length ===0 || res?.length ===0) {
           this.mySubscription = true;
-          this.router.navigate(['/accounts/subscription']);
+          if (this.user_role_Name === 'Admin'){
+            this.router.navigate(['/accounts/subscription']);
+          }else if (this.user_role_Name === 'Employee'){
+            this.router.navigate(['/login']);
+            this.api.showWarning('Please contact your admin')
+          }
+          // this.router.navigate(['/accounts/subscription']);
         } else if (res?.data) {
           let hasActiveSubscription = false;
           this.subscriptionData = res?.data
