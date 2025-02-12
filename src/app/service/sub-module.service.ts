@@ -16,29 +16,26 @@ export class SubModuleService {
   }
 
   getAccessForActiveUrl(id: number): Observable<any> {
-    const activeUrl = this.router.url; // Get the current active route
+    const activeUrl = this.router.url;
 
     return this.getAccessList(id).pipe(
       map((response: any) => {
         const accessList = response?.access_list || [];
 
         for (const module of accessList) {
-          // ✅ Case 1: Direct URL match
           if (module.url && module.url === activeUrl) {
-            return module.access; // Return access array
+            return module.access; 
           }
-
-          // ✅ Case 2: URL inside `children`
           if (module.children && module.children.length > 0) {
             const matchedChild = module.children.find((child: any) => child.url === activeUrl);
             if (matchedChild) {
               const matchedAccess = module.access.find((subAccess: any) => subAccess.name === matchedChild.name);
-              return matchedAccess ? [matchedAccess] : null; // Return only the matched submodule access
+              return matchedAccess ? [matchedAccess] : null; 
             }
           }
         }
 
-        return null; // Return null if no match found
+        return null;
       })
     );
   }
