@@ -42,7 +42,7 @@ export class ProfileComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.user_id = sessionStorage.getItem('user_id')
     this.user_role = sessionStorage.getItem('user_role_name');
-    console.log('this.user_role',this.user_role)
+    // console.log('this.user_role',this.user_role)
     this.getCountry();
     this.initform()
     this.getProfiledata()
@@ -56,11 +56,11 @@ export class ProfileComponent implements OnInit {
     this.profileForm = this._fb.group({
       first_name: ['', [Validators.required,Validators.maxLength(50)]],
       last_name: ['', [Validators.required,Validators.maxLength(50)]],
-      address: [null, Validators.maxLength(300)],
+      address: ['', Validators.maxLength(300)],
       designation: ['', [Validators.pattern(/^\S.*$/)]],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required]],
-      date_of_birth: ['', [Validators.required]],
+      date_joined: ['', [Validators.required]],
       country: ['', Validators.required],
       state: ['', Validators.required],
       city: ['', Validators.required],
@@ -152,7 +152,7 @@ export class ProfileComponent implements OnInit {
   getProfiledata() {
     this.api.getProfileDetails(`${this.user_id}/`).subscribe(
       async (res:any)=>{
-        console.log('new profile data',res)
+        // console.log('new profile data',res)
         if (res) {
           let data = res
           if(data.country){
@@ -175,7 +175,7 @@ export class ProfileComponent implements OnInit {
             email: data.email,
             designation:data.designation,
             phone_number: data.phone_number,
-            date_of_birth: data.date_joined,
+            date_joined: data.date_joined,
             country: data.country,
             state: data.state,
             city: data.city,
@@ -183,7 +183,16 @@ export class ProfileComponent implements OnInit {
             postal_code: data.postal_code,
             role:data.role
           })
-          console.log(this.profileForm.controls)
+          this.profileForm.controls['date_joined'][
+            this.user_role === 'Employee' ? 'disable' : 'enable'
+          ]();
+          this.profileForm.controls['designation'][
+            this.user_role === 'Employee' ? 'disable' : 'enable'
+          ]();
+          this.profileForm.controls['email'][
+            ['Employee', 'Admin'].includes(this.user_role) ? 'disable' : 'enable'
+          ]();
+          // console.log(this.profileForm.controls)
         }
       }
     )
@@ -211,14 +220,14 @@ export class ProfileComponent implements OnInit {
       profileData = this.profileForm.value
       console.log(this.imageUploaded,'this.imageUploaded')
       //  this.profileForm.patchValue({profile_image:this.fileDataUrl});
-      profileData.date_of_birth  = this.datePipe.transform(profileData.date_of_birth, 'yyyy-MM-dd');
+      profileData.date_joined  = this.datePipe.transform(profileData.date_joined, 'yyyy-MM-dd');
       let data = {
         first_name: profileData.first_name,
         last_name: profileData.last_name,
         designation: profileData.designation,
         email: profileData.email,
         phone_number: profileData.phone_number,
-        date_of_birth: profileData.date_of_birth,
+        date_joined: profileData.date_joined,
         country: profileData.country,
         state: profileData.state,
         city: profileData.city,

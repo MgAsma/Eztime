@@ -91,13 +91,13 @@ export class DefaultLayoutComponent {
       this.ngxService.stopLoader("loader-01");
     }, 1000);
     
-    if (this.user_role_Name && this.user_role_Name !== 'SuperAdmin') {
+    if (this.user_role_Name && this.user_role_Name === 'Admin') {
       this.getMySubscription();
     }
 
     // Listen to subscription state changes
     this.common_service.subsctiptionState$.subscribe((res) => {
-      if (res && this.user_role_Name !== 'SuperAdmin'  ) {
+      if (res && this.user_role_Name === 'Admin'  ) {
         this.getMySubscription();
       }
     });
@@ -150,8 +150,11 @@ export class DefaultLayoutComponent {
     // If subscription is required and item is not subscription page
     return this.mySubscription && item.url !== '/accounts/subscription';
   }
- 
+ subModulesAccess:any = []
   toggleSubmenu(item: any) {
+    this.subModulesAccess = item.access;
+    // this.api.setSubModules(this.subModulesAccess)
+    // console.log('subModulesAccess',this.subModulesAccess)
     this.sidebarNavItems.forEach(navItem => {
       if (navItem !== item) {
         navItem.isExpanded = false;

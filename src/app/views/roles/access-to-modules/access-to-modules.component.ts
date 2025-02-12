@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { concat } from 'rxjs';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-access-to-modules',
@@ -25,7 +26,8 @@ export class AccessToModulesComponent implements OnInit {
   constructor(
     private activeRoute: ActivatedRoute,
     private api: ApiserviceService,
-    private router: Router
+    private router: Router,
+    private ngxService: NgxUiLoaderService,
   ) {
     this.designation_id = this.activeRoute.snapshot.paramMap.get('id')
   }
@@ -38,7 +40,6 @@ export class AccessToModulesComponent implements OnInit {
   }
   ngOnInit(): void {
     this.organization_id = sessionStorage.getItem('organization_id')
-
   }
 
 
@@ -202,7 +203,7 @@ export class AccessToModulesComponent implements OnInit {
         );
 
         if (allOperationsFalse && api_data?.length === 1) {
-          // console.log("All operations are false.");
+          console.log("All operations are false.");
           this.errorMsg = true;
           this.disableAddOrUpdateBtn = true;
         } else {
@@ -261,9 +262,12 @@ export class AccessToModulesComponent implements OnInit {
             element_sub_module['operations'][0][access_name] = event.target.checked;
             // console.log('false not view')
           }
+        } else{
+          element_sub_module['operations'][0][access_name] = event.target.checked
         }
       }
     });
+    console.log(this.data, this.storeAssessGivenData)
     this.checkSubModuleAccess(this.data, this.storeAssessGivenData);
   }
 
@@ -328,6 +332,7 @@ export class AccessToModulesComponent implements OnInit {
 
 
   addSubModuleAccess(updated_access: any) {
+    this.ngxService.stop();
     this.api.postdesignationRoleAccess(updated_access).subscribe(
       (res) => {
         this.api.showSuccess(res['message']);
@@ -341,6 +346,7 @@ export class AccessToModulesComponent implements OnInit {
     )
   }
   updateSubModuleAccess(updated_access: any) {
+    this.ngxService.stop();
     this.api.putdesignationRoleAccess(updated_access, this.itemId).subscribe(
       (res) => {
         this.api.showSuccess(res['message']);
