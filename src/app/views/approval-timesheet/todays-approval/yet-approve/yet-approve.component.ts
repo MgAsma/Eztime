@@ -150,38 +150,72 @@ export class YetApproveComponent implements OnInit {
 
 
   }
-  openDialogue(content, status) {
-    if (content) {
-      const statusText = status === 'Decline' ? 'decline' : 'approve'
+  // openDialogue(content, status) {
+  //   if (content) {
+  //     const statusText = status === 'Decline' ? 'decline' : 'approve'
       
-      const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: status === 'Decline' ? <any>'md' : <any>'sm' ,
-        backdrop: true,
-        centered: true
-      });
-      modelRef.componentInstance.title = `Are you sure you want to ${statusText}`;
-      modelRef.componentInstance.message = `${status}`;
-      modelRef.componentInstance.status.subscribe(resp => {
-        modelRef.componentInstance.comments?.subscribe(comment => {
+  //     const modelRef = this.modalService.open(GenericDeleteComponent, {
+  //       size: status === 'Decline' ? <any>'md' : <any>'sm' ,
+  //       backdrop: true,
+  //       centered: true
+  //     });
+  //     modelRef.componentInstance.title = `Are you sure you want to ${statusText}`;
+  //     modelRef.componentInstance.message = `${status}`;
+  //     modelRef.componentInstance.status.subscribe(async resp => {
+  //       modelRef.componentInstance.comments?.subscribe(async comment => {
 
-          if (resp == "ok") {
-            this.updateTimesheetStatus(content,status,comment)
-            modelRef.close();
-          }
-          else {
-            modelRef.close();
-          }
-        })
-        if (resp == "ok") {
-          this.updateTimesheetStatus(content,status)
-          modelRef.close();
+  //          if (resp == "ok") {
+  //           await this.updateTimesheetStatus(content,status,comment)
+  //           modelRef.close();
+  //         }
+  //         else {
+  //           modelRef.close();
+  //         }
+  //       })
+  //       if (resp == "ok") {
+  //         await this.updateTimesheetStatus(content,status)
+  //         modelRef.close();
+  //       }
+  //       modelRef.close();
+  //     })
+
+  //   }
+
+  // }
+
+  openDialogue(content, status) {
+    if (!content) return;
+  
+    const statusText = status === 'Decline' ? 'decline' : 'approve';
+  
+    const modelRef = this.modalService.open(GenericDeleteComponent, {
+      size: status === 'Decline' ? 'md' : 'sm',
+      backdrop: true,
+      centered: true
+    });
+  
+    modelRef.componentInstance.title = `Are you sure you want to ${statusText}?`;
+    modelRef.componentInstance.message = `${status}`;
+  
+    // If status is "Decline", handle comments first before closing
+    if (status === 'Decline') {
+      modelRef.componentInstance.comments?.subscribe(async comment => {
+        if (comment) {
+          await this.updateTimesheetStatus(content, status, comment);
         }
-        modelRef.close();
-      })
-
+        modelRef.close(); // Close only after handling comments
+      });
     }
-
+  
+    // Handle status changes separately
+    modelRef.componentInstance.status.subscribe(async resp => {
+      if (resp === "ok" && status !== 'Decline') {
+        await this.updateTimesheetStatus(content, status);
+      }
+      modelRef.close(); // Close the modal only once
+    });
   }
+  
   updateTimesheetStatus(content,status,comments?) {
     const confirmText = status === 'Approve' ? 'approved' : 'declined'
     let date = new Date()
@@ -209,7 +243,9 @@ export class YetApproveComponent implements OnInit {
       const data = {
         timesheet_id: content.id,
         comment: comments,
-        status:3
+        status:3,
+        rejected_by: this.user_id,
+        rejected_on: formattedDate || null
       }
     this.api.postData(`${environment.live_url}/${environment.timesheet_comment}/`,data).subscribe(res => {
       if (res) {

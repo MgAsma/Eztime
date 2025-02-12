@@ -303,11 +303,11 @@ sessions = [
   endDateValidator(): any {
     const yearStartDate =
       new Date(
-        this.leaveForm.get('leaveApplication_from_date').value
+        this.leaveForm.get('leaveApplication_from_date')?.value
       ).getTime() /
       (1000 * 60);
     const yearEndDate =
-      new Date(this.leaveForm.get('leaveApplication_to_date').value).getTime() /
+      new Date(this.leaveForm.get('leaveApplication_to_date')?.value).getTime() /
       (1000 * 60);
     if (yearStartDate > yearEndDate) {
       this.invalidDate = true;
@@ -367,9 +367,11 @@ sessions = [
 
       // If the fromDate and toDate are the same day
       if (from.getTime() === to.getTime()) {
-        if (fromSession === toSession) {
-          // If sessions are the same on the same day, it counts as 0.5 days
+        if (fromSession === '' && toSession === '') {
+          this.applyingDays = 1;
+        }else if (fromSession === toSession) {
           this.applyingDays = 0.5;
+          // If sessions are the same on the same day, it counts as 0.5 days
         } else {
           // If sessions are different on the same day, it counts as 1 full day
           this.applyingDays = 1;
@@ -385,7 +387,7 @@ sessions = [
           // If ending with the morning session, subtract 0.5 day
           diffInDays -= 0.5;
         }
-
+        
         // Set the number of applying days (add 1 to include the first day)
         this.applyingDays = diffInDays + 1;
       }

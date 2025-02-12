@@ -197,73 +197,93 @@ export class ManagerReviewComponent implements OnInit {
     }
     }
   } 
-  open(content, status:string) {
+  
+  open(content, status: string) {
     const title = status.toLowerCase();
     if (content) {
       const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: status === 'Decline' ? <any>'md' : 'sm',
+        size: status === 'Decline' ? 'md' : 'sm',
         backdrop: true,
         centered: true
       });
+  
       modelRef.componentInstance.title = `Are you sure you want to ${title}`;
       modelRef.componentInstance.message = `${status}`;
-      modelRef.componentInstance.status.subscribe(async resp => {
-        modelRef.componentInstance.comments.subscribe(async comments => {
-          if (resp === "ok" && comments) {
-           await this.updateStatus(content, status,comments)
-            modelRef.close();
+  
+      // Subscribe to comments first
+      if (status === 'Decline') {
+        modelRef.componentInstance.comments?.subscribe(async comments => {
+          if (comments) {
+            await this.updateStatus(content, status, comments);
           }
-        })
-        if (resp === "ok") {
-          await this.updateStatus(content, status)
-           modelRef.close();
-         }
-        modelRef.close();
-      })
+          modelRef.close(); // Close only after handling comments
+        });
+      }
+  
+      // Subscribe to status separately
+      modelRef.componentInstance.status.subscribe(async resp => {
+        if (resp === "ok" && status !== 'Decline') {
+          await this.updateStatus(content, status);
+          modelRef.close(); // Close only for non-Decline actions
+        } else if (resp !== "ok") {
+          modelRef.close(); // Close modal if action is cancelled
+        }
+      });
     }
   }
+  
+
   openDialogue(content, status) {
-    const title = status.toLowerCase()
+    const title = status.toLowerCase();
     if (content) {
       const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: status === 'Decline' ? <any>'md' : 'sm',
+        size: status === 'Decline' ? 'md' : 'sm',
         backdrop: true,
         centered: true
       });
+  
       modelRef.componentInstance.title = `Are you sure you want to ${title}`;
       modelRef.componentInstance.message = `${status}`;
-      modelRef.componentInstance.status.subscribe(async resp => {
+  
+      if (status === 'Decline') {
+        // Subscribe to comments before handling status
         modelRef.componentInstance.comments?.subscribe(async comments => {
-          if (resp === "ok" && comments) {
-            await this.updateTimesheetStatus(content, status,comments)
-          //  modelRef.close();
+          if (comments) {
+            await this.updateTimesheetStatus(content, status, comments);
           }
-        })
-        if(resp === 'ok'){
-        await this.updateTimesheetStatus(content, status)
-         modelRef.close();
+          modelRef.close(); // Close only after processing comments
+        });
+      }
+  
+      // Now handle status change
+      modelRef.componentInstance.status.subscribe(async resp => {
+        if (resp === "ok" && status !== 'Decline') {
+          await this.updateTimesheetStatus(content, status);
+          modelRef.close(); // Close immediately if not Decline
+        } else if (resp !== "ok") {
+          modelRef.close(); // Close if status is not 'ok'
         }
-        modelRef.close();
-      })
-     
+      });
     }
-
   }
+  
+  
   updateTimesheetStatus(content, status,comments?) {
     const confirmText = status === 'Approve' ? 'approved' : 'declined'
     let date = new Date()
     let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
+    
+  if(status === 'Approve'){
     let data =   {
       id: content.id,
-      status: status === 'Approve' ? 2 : 3,
+      status: 2 ,
       organization: this.orgId,
       employee: content.created_by,
-      approved_by: status === 'Approve' ? this.user_id :null,
-      approved_on: status === 'Approve' ? formattedDate :null,
-      rejected_by: status === 'Decline' ? this.user_id :null,
-      rejected_on: status === 'Decline' ? formattedDate :null 
+      approved_by:  this.user_id || null,
+      approved_on:  formattedDate || null,
+      rejected_by:  this.user_id  || null,
+      rejected_on:  formattedDate  || null 
   }
-  if(status === 'Approve'){
     this.api.postData(`${environment.live_url}/${environment.update_timesheet_status}/`,data).subscribe(res => {
       if (res) {
         this.api.showSuccess(`Timesheet ${confirmText} successfully`)
@@ -272,13 +292,14 @@ export class ManagerReviewComponent implements OnInit {
     }, (error => {
       this.api.showError(error?.error?.message)
     }))
-  }else if(status === 'Decline'){
-    const data = {
+  }if(status === 'Decline'){
+    const declined = {
       timesheet_id: content.id,
       comment: comments,
-      status:3
+      status:3,
+     rejected_by: this.user_id || null
     }
-  this.api.postData(`${environment.live_url}/${environment.timesheet_comment}/`,data).subscribe(res => {
+  this.api.postData(`${environment.live_url}/${environment.timesheet_comment}/`,declined).subscribe(res => {
     if (res) {
       this.api.showSuccess(`Timesheet ${confirmText} successfully`)
       this.getAllTimesheets(`?organization=${this.orgId}&status=1&page=${1}&page_size=${10}`)
@@ -364,7 +385,7 @@ export class ManagerReviewComponent implements OnInit {
   }
   
   updateStatus(content, status,comments?) {
-    this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
+    this.user_id = JSON.parse(sessionStorage.getItem('user_id') || '')
     let date = new Date()
     let formattedDate = this.datepipe.transform(date,'yyyy-MM-dd')
     const confirmText = status === 'Approve' ? 'approved' : 'declined'

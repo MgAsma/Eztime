@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChange } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
+import { GenericDeleteComponent } from '../../../../generic-delete/generic-delete.component';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { TimesheetService } from 'src/app/service/timesheet.service';
@@ -127,38 +127,83 @@ export class MonthYetApproveComponent implements OnInit {
  
 
   
-  openDialogue(content?, status?,bulk?) {
-    const statusText = status === 'Decline' ? 'decline' : 'approve' 
-    const action = bulk
-      const modelRef = this.modalService.open(GenericDeleteComponent, {
-        size: status === 'Decline' ? <any>'md' : <any>'sm',
-        backdrop: true,
-        centered: true
-      });
-      modelRef.componentInstance.title = `Are you sure you want to ${statusText}`;
-      modelRef.componentInstance.message = `${status}`;
-      modelRef.componentInstance.bulkAction = action
-      modelRef.componentInstance.status.subscribe(resp => {
-        modelRef.componentInstance.comments.subscribe(comment => {
-          if (resp == "ok") {
-            this.updateTimesheetStatus(content, status,comment)
-            modelRef.close();
-          }else {
-            modelRef.close();
-          }
-        })
-        if (resp == "ok") {
-          this.updateTimesheetStatus(content, status)
-          modelRef.close();
-        }else {
-          modelRef.close();
-        }
-        modelRef.close();
-      })
+  // openDialogue(content?, status?,bulk?) {
+  //   const statusText = status === 'Decline' ? 'decline' : 'approve' 
+  //   const action = bulk
+  //     const modelRef = this.modalService.open(GenericDeleteComponent, {
+  //       size: status === 'Decline' ? <any>'md' : <any>'sm',
+  //       backdrop: true,
+  //       centered: true
+  //     });
+  //     modelRef.componentInstance.title = `Are you sure you want to ${statusText}`;
+  //     modelRef.componentInstance.message = `${status}`;
+  //     modelRef.componentInstance.bulkAction = action
+  //     modelRef.componentInstance.status.subscribe(async resp => {
+  //       modelRef.componentInstance.comments.subscribe(async comment => {
+  //         if (resp === "ok") {
+  //           await this.updateTimesheetStatus(content, status,comment)
+  //           modelRef.close();
+  //         }else {
+  //           modelRef.close();
+  //         }
+  //       })
+  //       if (resp === "ok") {
+  //         await this.updateTimesheetStatus(content, status)
+  //         modelRef.close();
+  //       }else {
+  //         modelRef.close();
+  //       }
+  //       modelRef.close();
+  //     })
 
     
 
+  // }
+
+  openDialogue(content?, status?, bulk?) {
+    const statusText = status === 'Decline' ? 'decline' : 'approve';
+    const action = bulk;
+  
+    const modelRef = this.modalService.open(GenericDeleteComponent, {
+      size: status === 'Decline' &&  bulk !== 'bulk' ? 'md' : 'sm',
+      backdrop: true,
+      centered: true
+    });
+  
+    modelRef.componentInstance.title = `Are you sure you want to ${statusText}`;
+    modelRef.componentInstance.message = `${status}`;
+    modelRef.componentInstance.bulkAction = action;
+  
+    // Handle comments first (Only for "Decline")
+    if (status === 'Decline') {
+      debugger;
+      modelRef.componentInstance.comments?.subscribe(async comment => {
+        if (comment) {
+          await this.updateTimesheetStatus(content, status, comment);
+        }
+        modelRef.close(); // Close modal after handling comments
+      });
+    }
+    if(bulk){
+      modelRef.componentInstance.status.subscribe(async resp => {
+        if (resp === "ok" && status === 'Decline') {
+          this.updateTimesheetStatus(content, status); 
+        }
+        modelRef.close();
+      });
+    }
+  
+    // Handle status change separately
+    modelRef.componentInstance.status.subscribe(async resp => {
+      if (resp === "ok" && status !== 'Decline') {
+        await this.updateTimesheetStatus(content, status);
+        modelRef.close(); // Close only for non-Decline actions
+      } else if (resp !== "ok") {
+        modelRef.close(); // Close modal if action is cancelled
+      }
+    });
   }
+  
   updateTimesheetStatus(content, status,comment?) {
     const confirmText = status === 'Approve' ? 'approved' : 'declined'
     let date = new Date()
@@ -188,7 +233,8 @@ export class MonthYetApproveComponent implements OnInit {
         const data = {
           timesheet_id: content.id,
           comment: comment,
-          status:3
+          status:3,
+         rejected_by: this.user_id || null
         }
       this.api.postData(`${environment.live_url}/${environment.timesheet_comment}/`,data).subscribe(res => {
         if (res) {
