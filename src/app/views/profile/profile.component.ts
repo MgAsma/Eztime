@@ -183,6 +183,9 @@ export class ProfileComponent implements OnInit {
             postal_code: data.postal_code,
             role:data.role
           })
+          this.profileForm.controls['date_joined'][
+            this.user_role === 'Employee' ? 'disable' : 'enable'
+          ]();
           this.profileForm.controls['designation'][
             this.user_role === 'Employee' ? 'disable' : 'enable'
           ]();

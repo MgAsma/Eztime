@@ -28,6 +28,11 @@ export class ApiserviceService {
     this.isComponentLoadedSubject.next(status);
   }
 
+  private subModulesSubject = new BehaviorSubject<any[]>([]);
+  subModules$ = this.subModulesSubject.asObservable();
+  setSubModules(array){
+    this.subModulesSubject.next(array)
+  }
   // Success Message
   showSuccess(message: any) {
     this.toastr.success(message);
