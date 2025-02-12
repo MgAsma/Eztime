@@ -15,6 +15,7 @@ import { UserGuideModalComponent } from 'src/app/views/user-guide-modal/user-gui
 import { MatDialog } from '@angular/material/dialog';
 import { UserWelcomeMsgComponent } from 'src/app/views/user-welcome-msg/user-welcome-msg.component';
 import { subscribe } from 'diagnostics_channel';
+import { NotificationService } from '../../../views/pages/notification/notification.service';
 
 @Component({
   selector: 'app-default-header',
@@ -64,11 +65,13 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   bsModalRef?: BsModalRef;
   notification_count: number = 0;
   mySubscription: any;
+  storedNotification:any = [];
   constructor(private classToggler: ClassToggleService, private modalService: NgbModal,
     private router: Router,
     private api: ApiserviceService, private cdref: ChangeDetectorRef,
     private common_service: CommonServiceService, private userGuideModel: BsModalService,
-   private location:Location, public dialog: MatDialog,) {
+   private location:Location, public dialog: MatDialog,
+   private notificationServive:NotificationService) {
     super();
     this.getScreenSize()
   }
@@ -235,14 +238,23 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   
   }
   getNotification() {
-    let params = `${environment.live_url}/${environment.notification}/?user-id=${this.user_id}`
-    this.api.getData(params).subscribe((res: any) => {
-      if (res.results) {
-        this.notification_count = res.results.length
+    
+    this.notificationServive.notificationCount.subscribe((data) => {
+      if(data){
+        this.notification_count = data;
+      }else{
+        let params = `${environment.live_url}/${environment.notification}/?user-id=${this.user_id}`
+        this.api.getData(params).subscribe((res: any) => {
+          if (res.results) {
+            
+            this.storedNotification = JSON.parse(localStorage.getItem('seenNotifications') || '0');
+            this.notification_count = this.storedNotification?.length ? res.results.length - this.storedNotification?.length : res.results.length
+          }
+        }, ((error: any) => {
+          this.api.showError(error?.error?.message)
+        }))
       }
-    }, ((error: any) => {
-       this.api.showError(error?.error?.message)
-    }))
+    })
   }
 
   welcomeMsg() {
