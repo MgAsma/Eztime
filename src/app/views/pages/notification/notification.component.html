@@ -7,8 +7,9 @@
         </div>
       </div>
         <div class="notification-main-content">
-       <ng-container *ngIf="notes?.length">
-        <div *ngFor="let notification of notes" class="notification-item">
+       <ng-container *ngIf="displayedNotifications$ ?.length">
+        <div *ngFor="let notification of displayedNotifications$" class="notification-item" 
+        [ngClass]="{'new-notification': !notification.isSeen, 'seen-notification': notification.isSeen}">
           
           <!-- Notification Content -->
           <div class="notification-content">
@@ -64,14 +65,12 @@
           </div>
         </div>
       </ng-container>
-      <div *ngIf="notes?.length === 0">No records found!</div>
-       
-        
-       
+      <div *ngIf="displayedNotifications$?.length === 0">No records found!</div>
       </div>
       <!-- View More -->
       <div class="p-r">
-        <div class="view-more" *ngIf="notes.length > 4" (click)="getNotification(5,'viewmore')">
+        <div class="view-more" *ngIf="displayedNotifications$.length > 4" (click)="loadMore()"
+          [attr.disabled]= "disabledView">
           <a>View More</a>
         </div>
        </div>
@@ -85,8 +84,9 @@
         </div>
       </div>
         <div class="notification-main-content">
-       <ng-container *ngIf="notes?.length">
-        <div *ngFor="let notification of notes" class="notification-item">
+       <ng-container *ngIf="displayedNotifications$?.length">
+        <div *ngFor="let notification of displayedNotifications$" class="notification-item" 
+        [ngClass]="{'new-notification': !notification.isSeen, 'seen-notification': notification.isSeen}">
           <div class="tree-line" *ngIf="notification.text.name || notification.text.subscription_type">
             <i [class]="notification.text.icon"></i>
           </div>
@@ -113,12 +113,12 @@
           </div>
         </div>
       </ng-container>
-      <div *ngIf="notes?.length === 0">No records found!</div>
+      <div *ngIf="displayedNotifications$?.length === 0">No records found!</div>
       
       </div>
        <!-- View More -->
        <div class="p-r">
-        <div class="view-more" *ngIf="notes.length > 4" (click)="getNotification(5,'viewmore')">
+        <div class="view-more" *ngIf="displayedNotifications$.length > 4" (click)="loadMore()">
           <a>View More</a>
         </div>
        </div>
@@ -132,8 +132,10 @@
         </div>
       </div>
       <div class="notification-main-content">
-        <ng-container *ngIf="notes?.length">
-         <div *ngFor="let notification of notes" class="notification-item" style="padding: 20px 0 10px;">
+        <ng-container *ngIf="displayedNotifications$?.length">
+         <div *ngFor="let notification of displayedNotifications$" class="notification-item"
+         [ngClass]="{'new-notification': !notification.isSeen, 'seen-notification': notification.isSeen}"
+          style="padding: 20px 0 10px;">
          
        
            <!-- Notification Content -->
@@ -194,14 +196,14 @@
            </div>
          </div>
        </ng-container>
-       <div *ngIf="notes?.length === 0">No records found!</div>
+       <div *ngIf="displayedNotifications$?.length === 0">No records found!</div>
         
          
         
        </div>
        <!-- View More -->
        <div class="p-r">
-        <div class="view-more" *ngIf="notes.length > 4" (click)="getNotification(5,'viewmore')">
+        <div class="view-more" *ngIf="displayedNotifications$.length > 4" (click)="loadMore()">
           <a>View More</a>
         </div>
        </div>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { error } from 'console';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { environment } from '../../../../environments/environment';
+import { NotificationService } from './notification.service';
 
 @Component({
   selector: 'app-notification',
@@ -16,76 +16,27 @@ export class NotificationComponent implements OnInit {
   user_role_name: any;
   totalCount: any;
   
-  results = [
-    {
-      id: 60,
-      created_by_id: 176,
-      created_to_id: 368,
-      text: {
-        icon: "bi bi-file-text",
-        message: "Your Leave is Approved By nadeem",
-        leave_type: "Sick leave",
-        leave_status: "Approved",
-        redirect_url: "/review",
-        leave_description: "Im on Sick"
-      },
-      created_datetime: "2024-12-24T10:12:07.536318Z"
-    },
-    {
-      id: 59,
-      created_by_id: 176,
-      created_to_id: 368,
-      text: {
-        icon: "bi bi-stack",
-        message: "#297 is assigned to you",
-        task_status: 2,
-        project_name: "wetw",
-        redirect_url: "/project/list",
-        project_description: "First page"
-      },
-      created_datetime: "2024-12-24T10:10:55.632016Z"
-    },
-    {
-      id: 54,
-      created_by_id: 176,
-      created_to_id: 368,
-      text: {
-        icon: "bi bi-stack",
-        message: "Project is Created By nadeem",
-        project_name: "wetw",
-        redirect_url: "/project/list",
-        project_status: "To-Do",
-        project_description: "First page"
-      },
-      created_datetime: "2024-12-24T10:10:55.568573Z"
-    },
-    {
-      id: 54,
-      created_by_id: 176,
-      created_to_id: 368,
-      text: {
-        icon: "bi bi-stack",
-        message: "Project is Created By nadeem",
-        project_name: "wetw",
-        redirect_url: "/project/list",
-        project_status: "To-Do",
-        project_description: "First page"
-      },
-      created_datetime: "2024-12-24T10:10:55.568573Z"
-    }
-  ];
+ 
   
-
-  constructor( private modal:NgbModal,private api:ApiserviceService) {
+  seenNotifications$: any;
+  displayedNotifications$: any;
+  disabledView: boolean;
+  constructor( 
+    private modal:NgbModal,
+    private api:ApiserviceService,
+    private notificationService: NotificationService) {
     this.user_id = (sessionStorage.getItem('user_id'))
     this.user_role_name = (sessionStorage.getItem('user_role_name'))?.toUpperCase()
+    this.notificationService.fetchAllNotifications();
+    this.displayedNotifications$ = this.notificationService.displayedNotifications$;
    }
   closeBtn(){
+    this.loadMore()
    this.modal.dismissAll()
   }
-  ngOnInit(){
-    this.getNotification(this.page_size,'init')
-  }
+  // ngOnInit(){
+  //   this.getNotification(this.page_size,'init')
+  // }
   getNotification(page_size,type){
     if(type == 'viewmore'){
       this.page_size = this.page_size + page_size; // Ensure page_size does not exceed totalCount
@@ -97,7 +48,7 @@ export class NotificationComponent implements OnInit {
    
       this.api.getData(params).subscribe((res:any)=>{
          if(res.results){
-           this.notes = res.results
+          // this.notes = res.results
            this.totalCount = res.total_no_of_record
          }
        },((error:any)=>{
@@ -106,4 +57,23 @@ export class NotificationComponent implements OnInit {
     }
    
   }
+ 
+
+  ngOnInit(): void {
+    this.notificationService.fetchAllNotifications();
+    this.notificationService.displayedNotifications$.subscribe((data) => {
+      this.displayedNotifications$ = data;
+    });
+  }
+  
+  loadMore(): void {
+    setTimeout(() => {
+      this.notificationService.markNewlyLoadedAsSeen()
+      this.notificationService.loadMoreNotifications();
+      this.notificationService.disabledView.subscribe((data) => {
+        this.disabledView = data;
+      })
+    }, 500);
+  }
+  
 }
