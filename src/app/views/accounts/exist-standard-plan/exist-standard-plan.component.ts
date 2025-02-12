@@ -61,10 +61,10 @@ export class ExistStandardPlanComponent implements OnInit {
     this.getExistingPlanDetails()
   }
   getExistingPlanDetails(){
-    console.log(this.data)
+   // console.log(this.data)
     this.api.getData(`${environment.live_url}/${environment.my_subscription}/?id=${this.data.plan.id}`).subscribe(
       (res:any)=>{
-        console.log('existing plan details',res);
+     //   console.log('existing plan details',res);
        this.userForm.patchValue({state:res.data[0].state});
        this.planName = res.data[0].subscribed_for;
        this.cgst_per = res.data[0].cgst;
@@ -86,7 +86,7 @@ export class ExistStandardPlanComponent implements OnInit {
         }
         this.calculateTotal();
       },(error)=>{
-        console.log(error)
+        //console.log(error)
       }
     )
   }
@@ -136,10 +136,10 @@ export class ExistStandardPlanComponent implements OnInit {
       const renewedTotal = this.calculateRenewedTotal(this.renewalPlanData);
       const calculatedValue = Number(tempValue.toFixed(2)) + renewedTotal
       this.subtotal = Number(calculatedValue.toFixed(2))
-      console.log('add users + renewal',this.subtotal)
+     // console.log('add users + renewal',this.subtotal)
     } else{
       this.subtotal = Number(tempValue.toFixed(2))
-      console.log('add user',this.subtotal)
+     // console.log('add user',this.subtotal)
     }
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
@@ -189,13 +189,13 @@ export class ExistStandardPlanComponent implements OnInit {
       // console.log(data.total_amount)
       this.api.getRazorpayFromData(data).subscribe(
         (res: any) => {
-          console.log(res)
+         // console.log(res)
           if (res) {
             this.openRazorpay(res);
           }
         },
         (error: any) => {
-          console.log('error', error)
+         // console.log('error', error)
         }
       )
     }
@@ -208,7 +208,7 @@ export class ExistStandardPlanComponent implements OnInit {
   }
   getCountry() {
     this.api.getData(`${environment.live_url}/${environment.country}/`).subscribe((res: any) => {
-      console.log(res,'country')
+     // console.log(res,'country')
       let temp_country = res.find((country: any) => country.country_name === 'India');
       this.getState(temp_country.id)
     }, ((error) => {
@@ -252,7 +252,7 @@ getState(id:number) {
   
       }
       const successCallback = (response: any) => {
-        console.log("SUCCESS CALLBACK", response)
+       // console.log("SUCCESS CALLBACK", response)
         const reqData: any = {
           razorpay_payment_id: response.razorpay_payment_id,
           razorpay_order_id: response.razorpay_order_id,
@@ -296,7 +296,7 @@ getState(id:number) {
         }
       }, 
       (error:any)=>{
-        console.log(error);
+       // console.log(error);
         this.api.showError(error);
       }
     )

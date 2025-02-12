@@ -67,13 +67,13 @@ export class SuccessPlanDetailsComponent implements OnInit {
   }
   ngOnChanges() {
     this.mySubscriptionData = this.my_subscription
-    console.log('freeeee', this.mySubscriptionData)
+    //console.log('freeeee', this.mySubscriptionData)
 
   }
   expiryBtnValidation(expiry_date, remaining_number_of_days,is_renewed) {
     // const endDate = this.datePipe.transform(expiry_date,'dd-MM-yyyy')
     // const currentDate = this.datePipe.transform(new Date(),'dd-MM-yyyy')
-    console.log(is_renewed)
+    //console.log(is_renewed)
     const endDate = new Date(expiry_date);
     const currentDate = new Date();
     endDate.setHours(0, 0, 0, 0);
@@ -85,7 +85,7 @@ export class SuccessPlanDetailsComponent implements OnInit {
       this.showRenewalButton = true;
     } else{
         if (endDate < currentDate) {
-          console.log('date expired')
+         // console.log('date expired')
           this.disableCancelButton = true;
           this.disableAddButton = true;
           this.showRenewalButton = false;
@@ -95,12 +95,12 @@ export class SuccessPlanDetailsComponent implements OnInit {
           // const remainingDays = Math.ceil(diffInTime / (1000 * 60 * 60 * 24));
 
           if (remaining_number_of_days <= 5) {
-            console.log('less or equal to 5', remaining_number_of_days)
+           // console.log('less or equal to 5', remaining_number_of_days)
             this.disableCancelButton = false;
             this.disableAddButton = false;
             this.showRenewalButton = false;
           } else {
-            console.log('more than 5', remaining_number_of_days)
+           // console.log('more than 5', remaining_number_of_days)
             this.disableCancelButton = false;
             this.disableAddButton = false;
             this.showRenewalButton = true;

@@ -64,7 +64,7 @@ export class SubscriptionComponent implements OnInit {
     this.api.getData(`${environment.live_url}/${environment.subscription_list}/`).subscribe((res)=>{
       if(res){
         this.subscriptionData = res;
-        console.log(this.subscriptionData,"Parent")
+        //console.log(this.subscriptionData,"Parent")
       }
     })
    

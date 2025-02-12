@@ -52,7 +52,7 @@ export class BuyStandardplanComponent implements OnInit {
   ) { }
   ngOnInit(): void {
     this.orgId = sessionStorage.getItem('organization_id');
-    console.log(this.data)
+   // console.log(this.data)
     this.monthly = this.data?.selectedValue;
     this.minUsers = this.data.totalPeopleCount;
     if(this.data?.purchasedUsers){
@@ -220,13 +220,13 @@ export class BuyStandardplanComponent implements OnInit {
       // console.log(data.total_amount)
       this.api.getRazorpayFromData(data).subscribe(
         (res: any) => {
-          console.log(res)
+        //  console.log(res)
           if (res) {
             this.openRazorpay(res);
           }
         },
         (error: any) => {
-          console.log('error', error)
+        //  console.log('error', error)
         }
       )
     }
@@ -287,7 +287,7 @@ export class BuyStandardplanComponent implements OnInit {
         subscription_type = item1.id;
         item1['plan_details'].forEach((item2: any) => {
           if (item2.yearly_or_monthly_name === this.selectedTypeName) {
-            console.log(item2)
+         //   console.log(item2)
             plan_type = item2.id;
           }
         })
@@ -310,7 +310,7 @@ export class BuyStandardplanComponent implements OnInit {
       "added_users": this.userForm.value.noOfUsers,
       "state": this.userForm.value.state
     }
-    console.log(data)
+   // console.log(data)
     this.api.postStandardPlan(data).subscribe(
       (res: any) => {
         if (res) {
@@ -320,7 +320,7 @@ export class BuyStandardplanComponent implements OnInit {
         }
       }, 
       (error:any)=>{
-        console.log(error);
+       // console.log(error);
         this.api.showError(error.error.message);
       }
     )
