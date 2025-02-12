@@ -7,6 +7,7 @@ import { CommonServiceService } from 'src/app/service/common-service.service';
 import { environment } from 'src/environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { SubModuleService } from '../../service/sub-module.service';
 
 @Component({
   // selector: 'app-admin-dashboard',
@@ -43,17 +44,21 @@ export class DashboardComponent implements OnInit {
   organizationuserslist: any = [];
   organizationuserCount: any;
   bsModalRef?: BsModalRef;
+  accessPermissions:any = []
   constructor(private builder: FormBuilder, private api: ApiserviceService,
     private location: Location,
     private route: ActivatedRoute,
-    private common_service: CommonServiceService, ) {
+    private common_service: CommonServiceService, private accessControlService:SubModuleService) {
 
   }
-
+ 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.org_id = sessionStorage.getItem('organization_id')
+    this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
     this.user_role_name = sessionStorage.getItem('user_role_name').toUpperCase()
+    this.getModuleAccess()
+
     if (this.user_role_name !== 'SUPERADMIN') {
       this.getRecentAddedRolesListData()
       this.getRecentAddedDepartmentListData()
@@ -64,8 +69,19 @@ export class DashboardComponent implements OnInit {
       this.getRecentAddeduserslistData()
     }
   }
+
+  getModuleAccess(){
+    this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+      if (access) {
+        this.accessPermissions = access;
+        console.log('Access Permissions:', this.accessPermissions);
+      } else {
+        console.log('No matching access found.');
+      }
+    });
+  }
   getCountDetails(isloggedIn) {
-    this.user_id = JSON.parse(sessionStorage.getItem('user_id'))
+   
     let id = {
       user_id: this.user_id,
       organization_id: this.org_id

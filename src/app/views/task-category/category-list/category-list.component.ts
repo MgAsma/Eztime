@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
+import { GenericDeleteComponent } from '../../../generic-delete/generic-delete.component';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
-import { CommonServiceService } from 'src/app/service/common-service.service';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment';
+import { CommonServiceService } from '../../../service/common-service.service';
+import { SubModuleService } from '../../../service/sub-module.service';
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
@@ -27,8 +28,8 @@ export class CategoryListComponent implements OnInit {
   status:any;
   selectedId: any;
   enabled: boolean;
-  permissions: any = [];
-  user_id: string;
+  user_id: any;
+  userRole:string
   orgId: string;
   sortValue: string = '';
   directionValue: string = '';
@@ -36,13 +37,14 @@ export class CategoryListComponent implements OnInit {
     tpc_name: false,
     tpc_c_date: false,
   };
-
+  accessPermissions = []
   constructor(
     private modalService:NgbModal, 
     private api:ApiserviceService,
     private router:Router,
     private location:Location,
-    private common_service:CommonServiceService
+    private common_service:CommonServiceService,
+    private accessControlService:SubModuleService
     ) { }
   goBack(event)
   {
@@ -53,10 +55,24 @@ export class CategoryListComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('organization_id')
+    this.user_id = sessionStorage.getItem('user_id');
+    this.userRole =  sessionStorage.getItem('user_role_name');
     this.getCategory(`?organization_id=${this.orgId}&page=${1}&page_size=${5}`);
+    this.getModuleAccess();
   }
   getFilterBaseUrl(): string {
     return `?organization_id=${this.orgId}&page=${this.page}&page_size=${this.tableSize}`;
+  }
+
+  getModuleAccess(){
+    this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+      if (access) {
+        this.accessPermissions = access;
+        console.log('Access Permissions:', this.accessPermissions);
+      } else {
+        console.log('No matching access found.');
+      }
+    });
   }
  
   getCategory(params:any){

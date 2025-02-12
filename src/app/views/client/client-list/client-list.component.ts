@@ -7,6 +7,7 @@ import { SortPipe } from 'src/app/sort/sort.pipe';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { environment } from 'src/environments/environment';
+import { SubModuleService } from '../../../service/sub-module.service';
 
 @Component({
   selector: 'app-client-list',
@@ -47,12 +48,15 @@ export class ClientListComponent implements OnInit {
   
   sortValue: string = '';
   directionValue: string = '';
+  userRole:string
+  accessPermissions = []
   constructor(
     private modalService:NgbModal, 
     private api:ApiserviceService,
     private router:Router,
     private location:Location,
-    private common_service:CommonServiceService
+    private common_service:CommonServiceService,
+     private accessControlService:SubModuleService
     ) { }
   goBack(event)
   {
@@ -63,8 +67,22 @@ export class ClientListComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('organization_id')
+    this.userRole =  sessionStorage.getItem('user_role_name');
+    this.user_id = sessionStorage.getItem('user_id');
     this.getNewClients(`?organization_id=${this.orgId}&page=${1}&page_size=${5}`);
-    this.enabled = true
+    this.enabled = true;
+    this.getModuleAccess()
+  }
+
+  getModuleAccess(){
+    this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+      if (access) {
+        this.accessPermissions = access;
+        console.log('Access Permissions:', this.accessPermissions);
+      } else {
+        console.log('No matching access found.');
+      }
+    });
   }
 
     filterSearch(event:any) {

@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
-import { CommonServiceService } from 'src/app/service/common-service.service';
-import { environment } from 'src/environments/environment';
-import { LimitReachedComponent } from 'src/app/views/accounts/limit-reached/limit-reached.component';
+import { GenericDeleteComponent } from '../../../generic-delete/generic-delete.component';
+import { environment } from '../../../../environments/environment';
+import { SubModuleService } from '../../../service/sub-module.service';
+import { CommonServiceService } from '../../../service/common-service.service';
+import { LimitReachedComponent } from '../../../views/accounts/limit-reached/limit-reached.component';
+
 @Component({
   selector: 'app-people-list',
   templateUrl: './people-list.component.html',
@@ -35,9 +37,6 @@ export class PeopleListComponent implements OnInit {
   startDate: any
   selectedId: any;
   enabled: boolean = true;
-  permissions: any = [];
-  allRoleList: any = [];
-  organizationList: any = [];
   user_id: any;
   params: any = {};
   org_id: any;
@@ -50,12 +49,15 @@ export class PeopleListComponent implements OnInit {
   };
   arrow: boolean = false
   activeEmployees: any = [];
+  userRole: String;
+  accessPermissions = []
   constructor(
     private api: ApiserviceService,
     private router: Router,
     private modalService: NgbModal,
     private location: Location,
-    private common_service: CommonServiceService
+    private common_service: CommonServiceService,
+    private accessControlService: SubModuleService
   ) { }
 
   goBack(event) {
@@ -66,26 +68,31 @@ export class PeopleListComponent implements OnInit {
     this.term = '';
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.org_id = sessionStorage.getItem('organization_id')
+    this.user_id = sessionStorage.getItem('user_id');
+    this.userRole = sessionStorage.getItem('user_role_name');
     localStorage.removeItem('employee_id');
     this.getPeople(`?organization_id=${this.org_id}&page=${1}&page_size=${10}`);
     this.enabled = true;
-    navigator.storage.estimate().then(({ usage, quota }) => {
-      console.log(`Storage usage: ${usage} bytes`);
-      console.log(`Storage quota: ${quota} bytes`);
-      console.log(`Remaining: ${quota! - usage!} bytes`);
-    });
-  Object.keys(localStorage).forEach((key) => {
-    console.log(`${key}: ${localStorage.getItem(key)?.length} bytes`);
-  });
+    this.getModuleAccess();
   }
- 
+
+  getModuleAccess(){
+    this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+      if (access) {
+        this.accessPermissions = access;
+        console.log('Access Permissions:', this.accessPermissions);
+      } else {
+        console.log('No matching access found.');
+      }
+    });
+  }
 
   async getSubscriptionDetails() {
     try {
       const res: any = await this.api
         .getData(`${environment.live_url}/${environment.my_subscription}/?organization=${this.org_id}`)
         .toPromise();
-  
+
       if (res.data && res.data.length) {
         for (const element of res.data) {
           if (element.is_active && element.added_users >= element.max_user) {
@@ -94,7 +101,7 @@ export class PeopleListComponent implements OnInit {
               backdrop: true,
               centered: true,
             });
-  
+
             modalRef.componentInstance.status.subscribe((resp: any) => {
               if (resp === "ok") {
                 this.router.navigate(['/accounts/subscription']);
@@ -111,7 +118,7 @@ export class PeopleListComponent implements OnInit {
       console.error('Error fetching subscription details:', error);
     }
   }
-  
+
   changeYearStartDate(event: any) {
     //console.log(event.target.value)
     this.startDate = event.target.value
@@ -127,7 +134,7 @@ export class PeopleListComponent implements OnInit {
     return `?organization_id=${this.org_id}&page=${this.page}&page_size=${this.tableSize}`;
   }
 
-  getPeople(params:any) {
+  getPeople(params: any) {
     this.api.getData(`${environment.live_url}/${environment.allEmployee}/${params}`).subscribe((data: any) => {
       const transformedData = data.results.map(item => {
         return Object.assign({}, item, item.user, { user: '' });
@@ -145,25 +152,25 @@ export class PeopleListComponent implements OnInit {
     })
     )
   }
- 
-  
-  
+
+
+
   flattenUserData(data: any): any {
     return {
       ...data, // Main object properties
       ...data.user // Spread the user properties
     };
   }
-  filterSearch(event:any) {
+  filterSearch(event: any) {
     this.term = event.target.value?.trim();
-    if (this.term &&this.term.length >= 2) {
-        this.page = 1;
-        let query = this.getFilterBaseUrl()
-        query += `&search=${this.term}`
-        this.getPeople(query);
-      }
-       else if(!this.term) {
-        this.getPeople(this.getFilterBaseUrl());
+    if (this.term && this.term.length >= 2) {
+      this.page = 1;
+      let query = this.getFilterBaseUrl()
+      query += `&search=${this.term}`
+      this.getPeople(query);
+    }
+    else if (!this.term) {
+      this.getPeople(this.getFilterBaseUrl());
     }
   }
   delete(id: any) {
@@ -203,7 +210,7 @@ export class PeopleListComponent implements OnInit {
 
   onTableSizeChange(event: any): void {
     if (event) {
-      this.page =1;
+      this.page = 1;
       this.tableSize = Number(event.value);
       if (this.term) {
         let query = this.getFilterBaseUrl()
