@@ -176,7 +176,6 @@ export class MonthYetApproveComponent implements OnInit {
   
     // Handle comments first (Only for "Decline")
     if (status === 'Decline') {
-      debugger;
       modelRef.componentInstance.comments?.subscribe(async comment => {
         if (comment) {
           await this.updateTimesheetStatus(content, status, comment);

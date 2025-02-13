@@ -397,8 +397,8 @@ export class ManagerReviewComponent implements OnInit {
       organization: this.orgId,
       employee: content.employee,
       leave_type:content.leave_type,
-      approved_by: null,
-      approved_on: null,
+      approved_by: this.user_id || null,
+      approved_on: formattedDate || null
   }
     this.api.updateData(`${environment.live_url}/${environment.update_leave_details}/`,data).subscribe(res => {
 
