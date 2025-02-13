@@ -10,15 +10,12 @@ import {
 } from '@angular/forms';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { Location } from '@angular/common';
-
-import { environment } from 'src/environments/environment';
-import { LocaleConfig } from 'ngx-daterangepicker-material';
-
-import { CommonServiceService } from 'src/app/service/common-service.service';
+import { environment } from '../../../../environments/environment';
+import { CommonServiceService } from '../../../service/common-service.service';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { map, Observable, startWith } from 'rxjs';
+import { Observable } from 'rxjs';
 import { MatSelectionListChange } from '@angular/material/list';
 
 @Component({
@@ -91,16 +88,13 @@ sessions = [
     private location: Location,
     private common_service: CommonServiceService
   ) { 
-    // this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
-    //   startWith(null),
-    //   map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
    
   }
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
    
-    // Add our fruit
+    // Add 
     if ((value || '').trim()) {
       if (!this.ccToList.includes(value)) {  // Assuming selectedEmployees is your list
         this.ccToList.push(value.trim());
@@ -181,7 +175,7 @@ sessions = [
   fruitCtrl = new FormControl();
   filteredFruits: Observable<string[]>;
   ccToList:any = [];
- // allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+
 
   @ViewChild('ccInput') ccInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
@@ -195,7 +189,7 @@ sessions = [
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.user_id = JSON.parse(sessionStorage.getItem('user_id'));
+    this.user_id = JSON.parse(sessionStorage.getItem('user_id') || '');
     this.today = new Date()
     this.orgId = sessionStorage.getItem('organization_id')
     //this.getPeopleGroup();
@@ -367,7 +361,7 @@ sessions = [
 
       // If the fromDate and toDate are the same day
       if (from.getTime() === to.getTime()) {
-        if (fromSession === '' && toSession === '') {
+        if (fromSession === '' && toSession === '' || fromSession === null && toSession === null) {
           this.applyingDays = 1;
         }else if (fromSession === toSession) {
           this.applyingDays = 0.5;
@@ -466,7 +460,9 @@ sessions = [
       reader.readAsDataURL(event.target.files[0]);
       reader.onload = (event: any) => {
         this.url = event.target.result;
-        this.fileUrl = reader.result;
+        if (reader.result) {
+          this.fileUrl = reader.result;
+        }
         this.fileDataUrl = reader.result
         // this.leaveForm.patchValue({
         //   leave_application_file_attachment: this.fileUrl,
@@ -523,9 +519,4 @@ sessions = [
       this.api.showError(error?.error?.message)
     })
   }
-
- 
- 
-  
-
 }
