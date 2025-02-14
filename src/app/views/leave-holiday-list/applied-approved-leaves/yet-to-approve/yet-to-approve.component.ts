@@ -7,6 +7,7 @@ import { ApiserviceService } from '../../../../service/apiservice.service';
 import { CommonServiceService } from '../../../../service/common-service.service';
 import { error } from 'console';
 import { environment } from 'src/environments/environment';
+import { SubModuleService } from 'src/app/service/sub-module.service';
 @Component({
   selector: 'app-yet-to-approve',
   templateUrl: './yet-to-approve.component.html',
@@ -32,7 +33,9 @@ export class YetToApproveComponent implements OnInit{
   tableSizes = [5,10,25,50,100];
   count:any = 0
   entryPoint: any;
-  user_id: string;
+  user_id: any;
+  userRole:any;
+  accessPermissions = []
   accessConfig: any;
   permissions: any = [];
   orgId: any;
@@ -50,14 +53,18 @@ export class YetToApproveComponent implements OnInit{
     private modalService:NgbModal,
     private cdr: ChangeDetectorRef,
     public common_service:CommonServiceService,
-    private cdref: ChangeDetectorRef
-    ) { }
+    private cdref: ChangeDetectorRef,
+    private accessControlService:SubModuleService
+    ) { 
+      this.userRole = sessionStorage.getItem('user_role_name');
+    }
 
     
   ngOnInit(){
     
     this.user_id = sessionStorage.getItem('user_id')
     this.orgId = sessionStorage.getItem('org_id')
+    this.getModuleAccess();
   }
 
   
@@ -74,6 +81,17 @@ export class YetToApproveComponent implements OnInit{
     this.tableSize = changes['totalCount'].currentValue.reset ? changes['totalCount'].currentValue.itemsPerPage : this.tableSize
     }
     this.cdref.detectChanges();
+      }
+
+      getModuleAccess(){
+        this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+          if (access) {
+            this.accessPermissions = access[0].operations;
+            console.log('Access Permissions:', access);
+          } else {
+            console.log('No matching access found.');
+          }
+        });
       }
  
     filterSearch(){

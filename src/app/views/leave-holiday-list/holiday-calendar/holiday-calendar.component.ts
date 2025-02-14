@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators }
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { environment } from 'src/environments/environment';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { SubModuleService } from 'src/app/service/sub-module.service';
 @Component({
   selector: 'app-holiday-calendar',
   templateUrl: './holiday-calendar.component.html',
@@ -16,6 +17,9 @@ export class HolidayCalendarComponent implements OnInit {
   organization_id: string;
   holidays: any = [];
   holidayListForm:FormGroup
+  accessPermissions = [];
+  userRole:string;
+  user_id: any;
   reference = `${environment.live_url}/${environment.holiday_calender}/?export_sample_file=true`
   @ViewChild('fileInput') fileInput: ElementRef;
   fileDataUrl: any;
@@ -23,15 +27,31 @@ export class HolidayCalendarComponent implements OnInit {
   constructor(
     private api:ApiserviceService,
     private fb:FormBuilder,
-    private common_service:CommonServiceService
+    private common_service:CommonServiceService,
+    private accessControlService:SubModuleService
   ) { }
 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.organization_id = sessionStorage.getItem('organization_id')
+    this.organization_id = sessionStorage.getItem('organization_id');
+    this.user_id = sessionStorage.getItem('user_id');
+    this.userRole = sessionStorage.getItem('user_role_name');
     this.getHolidayList()
-    this.initForm()
+    this.initForm();
+    this.getModuleAccess();
   }
+
+  getModuleAccess(){
+    this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+      if (access) {
+        this.accessPermissions = access[0].operations;
+        console.log('Access Permissions:', access);
+      } else {
+        console.log('No matching access found.');
+      }
+    });
+  }
+ 
   initForm(){
     this.holidayListForm = this.fb.group({
       file_attachment:['',[Validators.required,this.fileFormatValidator]]

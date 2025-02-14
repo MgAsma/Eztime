@@ -224,7 +224,8 @@
       <!-- Buttons -->
       <div class="row">
           <div class="col-md-6 text-right">
-              <button mat-raised-button class="submit-button" type="button" (click)="submit()">Apply</button>
+              <button mat-raised-button class="submit-button" type="button" (click)="submit()"
+                [disabled]="userRole === 'Admin' ? false : (userRole === 'Employee' && !accessPermissions[0]?.create)">Apply</button>
           </div>
       </div>
   </form>

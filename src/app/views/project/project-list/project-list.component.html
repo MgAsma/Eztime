@@ -8,7 +8,7 @@
     <div class="col-sm"></div>
     <div class="col-md-3 col-lg-3 p-1 text-end create-buttons">
       <button mat-raised-button class="proceedbtn mat-btn-s"  routerLink="/project/create" type="submit" 
-        *ngIf="userRole ==='Employee' && accessPermissions[0]?.operations[0]?.create || userRole === 'Admin'">
+        *ngIf="userRole ==='Employee' && accessPermissions[0]?.create || userRole === 'Admin'">
         <mat-icon>add</mat-icon> Create Project</button>
 
     <!-- </div>*ngIf="permissions[0]?.create" -->
@@ -19,7 +19,7 @@
                 </div>
                         </div> -->
   </div>
-  <div class="bg" *ngIf="userRole ==='Employee' && accessPermissions[0]?.operations[0]?.view || userRole === 'Admin'">
+  <div class="bg" *ngIf="userRole ==='Employee' && accessPermissions[0]?.view || userRole === 'Admin'">
     <div class="row">
       <div class="col px-0">
         <table class="table table-hover table-list">
@@ -77,12 +77,12 @@
                 <td>
                   <ng-container>
                     <img src="../../../../assets/images/Edit.svg" class="icon-image"
-                     *ngIf="userRole ==='Employee' && accessPermissions[0]?.operations[0]?.update || userRole === 'Admin'"
+                     *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'"
                       routerLink="/project/update/{{item.id}}" container="body" ngbTooltip="Edit" />
                     <img src="../../../../assets/images/Delete.svg" class="icon-image" container="body"
-                    *ngIf="userRole ==='Employee' && accessPermissions[0]?.operations[0]?.delete || userRole === 'Admin'"
+                    *ngIf="userRole ==='Employee' && accessPermissions[0]?.delete || userRole === 'Admin'"
                       ngbTooltip="Delete" (click)="open(item.id)" />
-                      <span  *ngIf="userRole ==='Employee' && !accessPermissions[0]?.operations[0]?.update && !accessPermissions[0]?.operations[0]?.delete">-</span>
+                      <span  *ngIf="userRole ==='Employee' && !accessPermissions[0]?.update && !accessPermissions[0]?.delete">-</span>
                   </ng-container>
                 </td>
               </tr>

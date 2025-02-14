@@ -79,7 +79,7 @@ export class PeopleListComponent implements OnInit {
   getModuleAccess(){
     this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
       if (access) {
-        this.accessPermissions = access;
+        this.accessPermissions = access[0].operations;
         console.log('Access Permissions:', this.accessPermissions);
       } else {
         console.log('No matching access found.');

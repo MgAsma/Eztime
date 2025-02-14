@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from '../../../service/apiservice.service';
-import { CommonServiceService } from 'src/app/service/common-service.service';
-import { environment } from 'src/environments/environment';
-import { error } from 'console';
+import { GenericDeleteComponent } from '../../../generic-delete/generic-delete.component';
+import { environment } from '../../../../environments/environment';
+import { SubModuleService } from '../../../service/sub-module.service';
+import { CommonServiceService } from '../../../service/common-service.service';
 @Component({
   selector: 'app-leave-master',
   templateUrl: './leave-master.component.html',
@@ -33,19 +33,21 @@ export class LeaveMasterComponent implements OnInit {
   action:any;
   selectedId: any;
   enabled: boolean = true;
-  permissions: any = [];
-  user_id: string;
+  user_id: any;
   orgId: any;
   params:any;
   sortValue: string = '';
   directionValue: string = '';
   organization_id: any;
+  accessPermissions = []
+  userRole:any;
   constructor(
     private modalService:NgbModal, 
     private api:ApiserviceService,
     private router:Router,
     private location:Location,
-    private common_service:CommonServiceService
+    private common_service:CommonServiceService,
+    private accessControlService:SubModuleService
     ) { }
     
     arrowState: { [key: string]: boolean } = {
@@ -62,8 +64,21 @@ export class LeaveMasterComponent implements OnInit {
   }
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
+    this.user_id = sessionStorage.getItem('user_id');
+    this.userRole = sessionStorage.getItem('user_role_name');
     this.organization_id = JSON.parse(sessionStorage.getItem('organization_id'))
     this.getLeaveType(`?organization=${this.organization_id}&page=${this.page}&page_size=${this.tableSize}`);
+    this.getModuleAccess();
+  }
+  getModuleAccess(){
+    this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+      if (access) {
+        this.accessPermissions = access[0].operations;
+        console.log('Access Permissions:', this.accessPermissions);
+      } else {
+        console.log('No matching access found.');
+      }
+    });
   }
   filterSearch(event){
     const input = event?.target?.value?.trim() || ''; // Fallback to empty string if undefined

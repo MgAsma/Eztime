@@ -5,6 +5,7 @@ import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.co
 import { ApiserviceService } from '../../../../service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { environment } from 'src/environments/environment';
+import { SubModuleService } from 'src/app/service/sub-module.service';
 @Component({
   selector: 'app-approved',
   templateUrl: './approved.component.html',
@@ -46,7 +47,8 @@ export class ApprovedComponent implements OnInit {
     totalItems: 0}
 
   constructor(private builder:FormBuilder, private api:ApiserviceService,private modalService:NgbModal,
-   private common_service:CommonServiceService,private cdref: ChangeDetectorRef) { }
+   private common_service:CommonServiceService,private cdref: ChangeDetectorRef,
+  private accessControlService:SubModuleService) { }
 
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id')

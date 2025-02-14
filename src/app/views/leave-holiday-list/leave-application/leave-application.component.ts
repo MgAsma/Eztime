@@ -17,7 +17,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Observable } from 'rxjs';
 import { MatSelectionListChange } from '@angular/material/list';
-
+import { SubModuleService } from '../../../service/sub-module.service';
 @Component({
   selector: 'app-leave-application',
   templateUrl: './leave-application.component.html',
@@ -32,6 +32,8 @@ export class LeaveApplicationComponent implements OnInit {
   url: any;
   fileUrl: string | ArrayBuffer;
   user_id;
+  userRole:string;
+  accessPermissions = []
   balanceLeave: any;
   workingDays: number;
   min = new Date().toISOString().split('T')[0];
@@ -86,7 +88,8 @@ sessions = [
     private api: ApiserviceService,
     private datepipe: DatePipe,
     private location: Location,
-    private common_service: CommonServiceService
+    private common_service: CommonServiceService,
+    private accessControlService:SubModuleService
   ) { 
    
   }
@@ -190,6 +193,7 @@ sessions = [
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.user_id = JSON.parse(sessionStorage.getItem('user_id') || '');
+    this.userRole = sessionStorage.getItem('user_role_name');
     this.today = new Date()
     this.orgId = sessionStorage.getItem('organization_id')
     //this.getPeopleGroup();
@@ -197,7 +201,7 @@ sessions = [
     this.getAllEmployee();
     this.initForm();
    // this.enableDatepicker();
-
+   this.getModuleAccess();
    this.getRecentAddedAdminlistData()
   }
   // Close dropdown and clear filter when clicking outside
@@ -330,6 +334,18 @@ sessions = [
     });
    
   }
+
+  getModuleAccess(){
+    this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+      if (access) {
+        this.accessPermissions = access[0].operations;
+        console.log('Access Permissions:', this.accessPermissions);
+      } else {
+        console.log('No matching access found.');
+      }
+    });
+  }
+
   // Filtering method
   filterEmployees(): void {
     if(this.leaveForm.value.cc_to_input){

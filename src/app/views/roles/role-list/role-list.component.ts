@@ -1,13 +1,14 @@
 import { Component, Inject, OnInit ,ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiserviceService } from '../../../service/apiservice.service';
-import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 // import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
-import { CommonServiceService } from 'src/app/service/common-service.service';
+import { GenericDeleteComponent } from '../../../generic-delete/generic-delete.component';
+import { environment } from '../../../../environments/environment';
+import { SubModuleService } from '../../../service/sub-module.service';
+import { CommonServiceService } from '../../../service/common-service.service';
 @Component({
   selector: 'app-role-list',
   templateUrl: './role-list.component.html',
@@ -33,17 +34,19 @@ export class RoleListComponent implements OnInit {
   totalCount: number;
   permission: any = [];
   admin: boolean = false;
-  role: any;
+  userRole: any;
+  accessPermissions = []
   permissions: any =[];
-  user_id: string;
   org_id: string;
+  user_id: any;
 
   
   constructor(private api:ApiserviceService,
     private router:Router,
     private modalService:NgbModal,
     private location:Location,
-    private common_service : CommonServiceService
+    private common_service : CommonServiceService,
+private accessControlService:SubModuleService
     ) { }
     goBack(event){
       event.preventDefault(); // Prevent default back button behavior
@@ -54,13 +57,24 @@ export class RoleListComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.org_id = sessionStorage.getItem('organization_id')
     this.enabled = true
-    this.role = sessionStorage.getItem('user_role_name');
+    this.userRole = sessionStorage.getItem('user_role_name');
     this.user_id = sessionStorage.getItem('user_id');
     this.getAllDesignations(`?organization_id=${this.org_id}&page=${1}&page_size=${5}`);
-    
+    this.getModuleAccess();
     
     // this.getUserControls()
   
+  }
+
+  getModuleAccess(){
+    this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+      if (access) {
+        this.accessPermissions = access[0].operations;
+        console.log('Access Permissions:', this.accessPermissions);
+      } else {
+        console.log('No matching access found.');
+      }
+    });
   }
   getAllDesignations(params:any){
     this.api.getData(`${environment.live_url}/${environment.designation}/${params}`).subscribe(
