@@ -14,7 +14,6 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { UserGuideModalComponent } from 'src/app/views/user-guide-modal/user-guide-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UserWelcomeMsgComponent } from 'src/app/views/user-welcome-msg/user-welcome-msg.component';
-import { subscribe } from 'diagnostics_channel';
 import { NotificationService } from '../../../views/pages/notification/notification.service';
 
 @Component({
@@ -76,11 +75,11 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     this.getScreenSize()
   }
   ngOnInit(): void {
-    this.user_id = sessionStorage.getItem('user_id');
+    this.user_id = sessionStorage.getItem('user_id') || '';
     this.orgId = sessionStorage.getItem('organization_id')
     this.user_role_Name = sessionStorage.getItem('user_role_name');
     this.getNotification()
-    this.permissionArr = JSON.parse(sessionStorage.getItem('permissionArr'));
+    this.permissionArr = JSON.parse(sessionStorage.getItem('permissionArr')|| '[]');
     // this.welcomeMsg();
     this.getProfiledata()
     this.common_service.title$.subscribe(title => {
@@ -245,12 +244,12 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
       if(data){
         this.notification_count = data;
       }else{
-        let params = `${environment.live_url}/${environment.notification}/?user-id=${this.user_id}`
+        let params = `${environment.live_url}/${environment.notification}/?user-id=${this.user_id}&page=1&page_size=6`
         this.api.getData(params).subscribe((res: any) => {
-          if (res.results) {
-            
-            this.storedNotification = JSON.parse(localStorage.getItem('seenNotifications') || '0');
-            this.notification_count = this.storedNotification?.length ? res.results.length - this.storedNotification?.length : res.results.length
+          if (res) {
+            this.notification_count = res?.total_is_not_seen
+            // this.storedNotification = JSON.parse(localStorage.getItem('seenNotifications') || '0');
+            // this.notification_count = this.storedNotification?.length ? res.results.length - this.storedNotification?.length : res.results.length
           }
         }, ((error: any) => {
           this.api.showError(error?.error?.message)

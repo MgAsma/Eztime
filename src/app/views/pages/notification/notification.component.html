@@ -9,7 +9,8 @@
         <div class="notification-main-content">
        <ng-container *ngIf="displayedNotifications$ ?.length">
         <div *ngFor="let notification of displayedNotifications$" class="notification-item" 
-        [ngClass]="{'new-notification': !notification.isSeen, 'seen-notification': notification.isSeen}">
+        [ngClass]="{'new-notification': !notification.is_seen, 'seen-notification': notification.is_seen}"
+        (click)="handleNotificationClick(notification)" style="cursor: pointer;">
           
           <!-- Notification Content -->
           <div class="notification-content">
@@ -29,7 +30,7 @@
                     <span class="h-leave-message" *ngIf="notification.text.subscription_type">{{'Subscription'}}</span>
                     
                     <mat-chip-list>
-                      <mat-chip [ngClass]="notification?.text?.leave_type ? 'leave-type' : 'project-name'" selected [routerLink]="notification?.text?.redirect_url || null" (click)="closeBtn()">
+                      <mat-chip [ngClass]="notification?.text?.leave_type ? 'leave-type' : 'project-name'" selected [routerLink]="notification?.text?.redirect_url || null" (click)="checkUrlAvailabilty(notification?.text?.redirect_url)">
                         <i class="pe-1" [class]="notification.text.icon"></i>
                         {{ notification?.text?.leave_type || notification?.text?.project_name || notification.text.subscription_type}}
                       </mat-chip>
@@ -65,13 +66,12 @@
           </div>
         </div>
       </ng-container>
-      <div *ngIf="displayedNotifications$?.length === 0">No records found!</div>
+      <div *ngIf="displayedNotifications$?.length === 0">No notification found!</div>
       </div>
       <!-- View More -->
       <div class="p-r">
-        <div class="view-more" *ngIf="displayedNotifications$.length > 4" (click)="loadMore()"
-          [attr.disabled]= "disabledView">
-          <a>View More</a>
+        <div class="view-more" *ngIf="displayedNotifications$.length > 4" (click)="getNotification(10,'viewmore')">
+          <button mat-button class="btn-more" [disabled]="disabledView">View More</button>
         </div>
        </div>
       </div>
@@ -86,7 +86,8 @@
         <div class="notification-main-content">
        <ng-container *ngIf="displayedNotifications$?.length">
         <div *ngFor="let notification of displayedNotifications$" class="notification-item" 
-        [ngClass]="{'new-notification': !notification.isSeen, 'seen-notification': notification.isSeen}">
+        [ngClass]="{'new-notification': !notification.is_seen, 'seen-notification': notification.is_seen}"
+        (click)="handleNotificationClick(notification)" style="cursor: pointer;">
           <div class="tree-line" *ngIf="notification.text.name || notification.text.subscription_type">
             <i [class]="notification.text.icon"></i>
           </div>
@@ -105,7 +106,11 @@
              
               <div class="col p-0">
                 <div class="notification-message" style="margin-right: 15px;">
-                  <i class="px-2" [class]="notification.text.icon"></i> {{ notification.text.message }}
+                  <!-- <div class="row">
+                    <div class="col-1 d-flex align-items-center" ><i class="px-2" [class]="notification.text.icon"></i></div> <div class="col-11">{{ notification.text.message }}</div>
+                  </div> -->
+                  <i class="px-2" [class]="notification.text.icon"></i>{{ notification.text.message }}
+                 
                 </div> 
               </div>
             </div>
@@ -113,13 +118,13 @@
           </div>
         </div>
       </ng-container>
-      <div *ngIf="displayedNotifications$?.length === 0">No records found!</div>
+      <div *ngIf="displayedNotifications$?.length === 0">No notification found!</div>
       
       </div>
        <!-- View More -->
        <div class="p-r">
-        <div class="view-more" *ngIf="displayedNotifications$.length > 4" (click)="loadMore()">
-          <a>View More</a>
+        <div class="view-more" *ngIf="displayedNotifications$.length > 4" (click)="getNotification(10,'viewmore')">
+          <button mat-button class="btn-more" [disabled]="disabledView">View More</button>
         </div>
        </div>
       </div>
@@ -133,9 +138,9 @@
       </div>
       <div class="notification-main-content">
         <ng-container *ngIf="displayedNotifications$?.length">
-         <div *ngFor="let notification of displayedNotifications$" class="notification-item"
-         [ngClass]="{'new-notification': !notification.isSeen, 'seen-notification': notification.isSeen}"
-          style="padding: 20px 0 10px;">
+         <div *ngFor="let notification of displayedNotifications$" class="notification-item py-4"
+         [ngClass]="{'new-notification': !notification.is_seen, 'seen-notification': notification.is_seen}"
+         (click)="handleNotificationClick(notification)" style="cursor: pointer;">
          
        
            <!-- Notification Content -->
@@ -151,12 +156,14 @@
                      <div>
                        <i [class]="notification.text.icon" ></i>
                      </div>
-                     <span class="h-leave-message" *ngIf="!notification?.text?.leave_type && !notification?.text?.project_status">{{notification?.text?.message}}</span>
+                     <span class="h-leave-message" *ngIf="!notification?.text?.leave_type && !notification?.text?.project_status && !notification?.text?.timesheet_status">{{notification?.text?.message}}</span>
                      <span class="h-leave-message" *ngIf="notification?.text?.leave_type">{{'Leave'}}</span>
                      <span class="h-leave-message" *ngIf="notification?.text?.project_status">{{'Project'}}</span>
-                    
+                     <span *ngIf="notification?.text?.timesheet_status" [ngClass]="notification?.text?.timesheet_status  === 'Approved' ? 'approved' : notification?.text?.timesheet_status  === 'Pending' ? 'pending' : 'declined'">{{notification?.text?.timesheet_status}}</span>
+                     <span *ngIf="notification?.text?.leave_status" [ngClass]="notification?.text?.leave_status  === 'Approved' ? 'approved' : notification?.text?.leave_status  === 'Pending' ? 'pending' : 'declined'">{{notification?.text?.leave_status}}</span>
                      <mat-chip-list>
-                      <mat-chip [ngClass]="notification?.text?.leave_type ? 'leave-type' : 'project-name'" selected  (click)="closeBtn()">
+                      <mat-chip [ngClass]="notification?.text?.leave_type ? 'leave-type' : 'project-name'" selected  
+                      [routerLink]="notification?.text?.redirect_url">
                         <i class="pe-1" [class]="notification.text.icon"></i>
                         {{ notification?.text?.leave_type || notification?.text?.project_name }}
                       </mat-chip>
@@ -172,21 +179,21 @@
              </div>
  
              
-             <div class="row">
+             <div class="row" [routerLink]="notification?.text?.redirect_url"  style="cursor: pointer;">
                <!-- <div class="col-1 tree-view"></div> -->
                <div class="col">
-                 <div class="notification-message" *ngIf="notification?.text?.leave_description">
+                 <div class="notification-message" *ngIf="notification?.text?.leave_description || notification?.text?.timesheet_status ">
                    {{ notification?.text?.message}}
                   </div>
-                  <div class="notification-message" *ngIf="notification?.text?.project_description">
+                  <!-- <div class="notification-message" *ngIf="notification?.text?.project_description">
                     {{ notification?.text?.project_description}}
                    </div>
-                   <div class="notification-message" *ngIf="notification?.text?.timesheet_description || notification?.text?.timesheet_status">
+                   <div class="notification-message" *ngIf="notification?.text?.timesheet_description || !notification?.text?.timesheet_status">
                     {{ notification?.text?.timesheet_description}}
-                    <span [ngClass]="notification?.text?.timesheet_status  === 'Approved' ? 'approved' : notification?.text?.timesheet_status  === 'Pending' ? 'pending' : 'declined'">{{notification?.text?.timesheet_status}}</span>
+                    <!-- <span [ngClass]="notification?.text?.timesheet_status  === 'Approved' ? 'approved' : notification?.text?.timesheet_status  === 'Pending' ? 'pending' : 'declined'">{{notification?.text?.timesheet_status}}</span>
+                     --
                     
-                    
-                   </div>
+                   </div> -->
                   
 
                </div>
@@ -196,15 +203,15 @@
            </div>
          </div>
        </ng-container>
-       <div *ngIf="displayedNotifications$?.length === 0">No records found!</div>
+       <div *ngIf="displayedNotifications$?.length === 0">No notification found!</div>
         
          
         
        </div>
        <!-- View More -->
        <div class="p-r">
-        <div class="view-more" *ngIf="displayedNotifications$.length > 4" (click)="loadMore()">
-          <a>View More</a>
+        <div class="view-more" *ngIf="displayedNotifications$.length > 4" (click)="getNotification(10,'viewmore')">
+          <button mat-button class="btn-more" [disabled]="disabledView">View More</button>
         </div>
        </div>
       </div>

@@ -15,9 +15,9 @@ export class SubModuleService {
     return this.http.get(`${this.baseurl}/user-access/${user_id}/`);
   }
 
-  getAccessForActiveUrl(id: number): Observable<any> {
-    const activeUrl = this.router.url;
-
+  getAccessForActiveUrl(id: number,url?:string): Observable<any> {
+    //const activeUrl =  url || this.router.url;
+    const activeUrl =  url;
     return this.getAccessList(id).pipe(
       map((response: any) => {
         const accessList = response?.access_list || [];
