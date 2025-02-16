@@ -6,6 +6,7 @@ import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { TimesheetService } from 'src/app/service/timesheet.service';
 import { environment } from 'src/environments/environment';
+import { SubModuleService } from 'src/app/service/sub-module.service';
 
 @Component({
   selector: 'app-month-yet-approve',
@@ -45,6 +46,8 @@ export class MonthYetApproveComponent implements OnInit {
   }
   selectedId: any = [];
   timesheetId: any;
+  userRole: String;
+  accessPermissions = []
   onCheckboxChange(id) {
     // If any checkbox is unchecked, uncheck the "Select All" checkbox
     const allSelected = this.yetToApproveAll.every(item => item.selected);
@@ -71,6 +74,7 @@ export class MonthYetApproveComponent implements OnInit {
     private modalService: NgbModal, 
     private cdref: ChangeDetectorRef,
     private api: ApiserviceService,
+     private accessControlService: SubModuleService,
     private datepipe:DatePipe) {
 
   }
@@ -78,6 +82,8 @@ export class MonthYetApproveComponent implements OnInit {
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id')
     this.org_id = sessionStorage.getItem('organization_id')
+    this.userRole = sessionStorage.getItem('user_role_name');
+    this.getModuleAccess();
   }
   ngOnChanges(changes: SimpleChange): void {
     if (changes['data'].currentValue) {
@@ -94,6 +100,16 @@ export class MonthYetApproveComponent implements OnInit {
     this.cdref.detectChanges();
   }
 
+  getModuleAccess(){
+    this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+      if (access) {
+        this.accessPermissions = access[0].operations;
+        console.log('Access Permissions:', this.accessPermissions);
+      } else {
+        console.log('No matching access found.');
+      }
+    });
+  }
   
   filterSearch() {
     let tableData = {

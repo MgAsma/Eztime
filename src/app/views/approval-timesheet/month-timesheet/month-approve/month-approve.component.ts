@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { SubModuleService } from 'src/app/service/sub-module.service';
 import { TimesheetService } from 'src/app/service/timesheet.service';
 
 @Component({
@@ -36,6 +37,8 @@ export class MonthApproveComponent implements OnInit {
   user_id: any;
   noOfPages: any;
   org_id: any;
+  userRole: String;
+  accessPermissions = []
 
   @Input() data: any
   @Input() totalCount: { 'pageCount': any, 'currentPage': any };
@@ -44,10 +47,12 @@ export class MonthApproveComponent implements OnInit {
     currentPage: 1,
     totalItems: 0
   }
-  constructor( private cdref: ChangeDetectorRef) {}
+  constructor( private cdref: ChangeDetectorRef, private accessControlService: SubModuleService) {}
   ngOnInit() {
     this.user_id = sessionStorage.getItem('user_id')
     this.org_id = sessionStorage.getItem('organization_id')
+    this.userRole = sessionStorage.getItem('user_role_name');
+    this.getModuleAccess();
   }
 
 
@@ -66,6 +71,17 @@ export class MonthApproveComponent implements OnInit {
     this.cdref.detectChanges();
   }
   
+  getModuleAccess(){
+    this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+      if (access) {
+        this.accessPermissions = access[0].operations;
+        console.log('Access Permissions:', this.accessPermissions);
+      } else {
+        console.log('No matching access found.');
+      }
+    });
+  }
+
   filterSearch() {
     let tableData = {
       search_key: this.term,

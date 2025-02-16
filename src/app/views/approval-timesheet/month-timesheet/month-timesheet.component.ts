@@ -8,6 +8,7 @@ import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { environment } from 'src/environments/environment';
 import { Subject, take } from 'rxjs';
 import * as XLSX from 'xlsx';
+import { SubModuleService } from 'src/app/service/sub-module.service';
 
 @Component({
   selector: 'app-month-timesheet',
@@ -26,13 +27,15 @@ export class MonthTimesheetComponent implements OnInit {
   openDropdown: boolean = false;
   allListDataids: any = [];
   totalCount: any;
-  user_id: string;
+  user_id: any;
   accessConfig: any = [];
   exebtn: boolean = false;
   acceptOption: boolean = false;
   rejectOption: boolean = false;
   c_params: {};
   itemPerPageCount: any = 10;
+  userRole: String;
+  accessPermissions = []
   @ViewChild('tabset') tabset: TabsetComponent;
   @ViewChild('tabsets') tabsets: TabsetComponent;
 
@@ -104,7 +107,8 @@ export class MonthTimesheetComponent implements OnInit {
     private location: Location,
     private _timesheet: TimesheetService, 
     private cdref: ChangeDetectorRef,
-    private common_service: CommonServiceService) {
+    private common_service: CommonServiceService,
+    private accessControlService: SubModuleService,) {
     this.currentMonth = new Date().getMonth() + 1;
      }
   goBack(event) {
@@ -117,11 +121,21 @@ export class MonthTimesheetComponent implements OnInit {
     this.initForm()
     this.user_id = sessionStorage.getItem('user_id')
     this.orgId = sessionStorage.getItem('organization_id')
- 
-    
-    
-   this.getMonthApprovals(`?status=1&organization=${this.orgId}&month=${this.currentMonth}&page=${this.page}&page_size=${this.page_size}`)
+    this.userRole = sessionStorage.getItem('user_role_name');
+    this.getModuleAccess();
+    this.getMonthApprovals(`?status=1&organization=${this.orgId}&month=${this.currentMonth}&page=${this.page}&page_size=${this.page_size}`)
    
+  }
+
+  getModuleAccess(){
+    this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+      if (access) {
+        this.accessPermissions = access[0].operations;
+        console.log('Access Permissions:', this.accessPermissions);
+      } else {
+        console.log('No matching access found.');
+      }
+    });
   }
   getMonthApprovals(params) {
    // this.timesheetService.getTodaysApprovalTimesheet(params).subscribe(res => {

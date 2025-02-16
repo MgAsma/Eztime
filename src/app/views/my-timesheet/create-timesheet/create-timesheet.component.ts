@@ -7,6 +7,7 @@ import { MatAccordion, MatExpansionPanel } from '@angular/material/expansion';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SubModuleService } from 'src/app/service/sub-module.service';
 
 @Component({
   selector: 'app-create-timesheet',
@@ -58,6 +59,7 @@ export class CreateTimesheetComponent implements OnInit {
   selectedProjectId: any;
   createdTaskList = [];
   updatedTasks: any[];
+  accessPermissions: any=[];
   totalHoursWorked: any;
 
   constructor(
@@ -66,6 +68,7 @@ export class CreateTimesheetComponent implements OnInit {
     private datepipe: DatePipe,
     private common_service: CommonServiceService,
     private modalService:NgbModal,
+    private accessControlService:SubModuleService
   ) {}
   panelOpenState = false
  
@@ -80,6 +83,7 @@ export class CreateTimesheetComponent implements OnInit {
     this.taskInitForm()
     this.addProjectDetails(); 
     this.getClient(this.currentIndex);
+    this.getModuleAccess();
   }
   // Initialize panel state tracking
   panelStates = new Array<boolean>();
@@ -436,11 +440,29 @@ deleteProject(projectIndex: number): void {
     this.isTaskSubmitted = true
     // Optional: Reset or update any form states as needed
     this.taskForm.reset();
+    
   }
 }
 
-
-
+getModuleAccess(){
+  this.accessControlService.getAccessForActiveUrl(this.userId).subscribe((access) => {
+    if (access) {
+      this.accessPermissions = access[0].operations;
+      console.log('Access Permissions:',this.accessPermissions);
+    } else {
+      console.log('No matching access found.');
+    }
+  });
+}
+isPointerDisabled(): boolean {
+  if (this.userRole === 'admin') {
+    return true; // Enable for Admin (pointer-events: all)
+  }
+  if (this.userRole === 'employee' && this.accessPermissions[0]?.create==true) {
+    return true; // Enable for Employee with create access (pointer-events: all)
+  }
+  return false; // Disable otherwise (pointer-events: none)
+}
   
   saveTimesheet(i: number): void {
     const projectGroup = this.getProjectControl(i);

@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { SubModuleService } from 'src/app/service/sub-module.service';
 import { TimesheetService } from 'src/app/service/timesheet.service';
 import { environment } from 'src/environments/environment';
 
@@ -30,9 +31,11 @@ export class YetApproveComponent implements OnInit {
   tableSize = 5;
   tableSizes = [5,10, 25, 50, 100];
   entryPoint: any;
-  user_id: string;
+  user_id: any;
   accessConfig: any = [];
   orgId: any;
+  userRole: String;
+  accessPermissions = []
   @Input() data: any;
   @Input() totalCount: { 'pageCount': any, 'currentPage': any };
 
@@ -47,14 +50,17 @@ export class YetApproveComponent implements OnInit {
     private _timeSheetService: TimesheetService,
      private modalService: NgbModal,
      private cdref: ChangeDetectorRef, 
-     private datepipe: DatePipe) { }
+     private datepipe: DatePipe,
+    private accessControlService: SubModuleService,
+     ) { }
 
 
   ngOnInit(): void {
     // this.entryPoint = JSON.parse(sessionStorage.getItem('entryPoint'))
     this.user_id = JSON.parse(sessionStorage.getItem('user_id'));
     this.orgId = sessionStorage.getItem('organization_id')
-    
+    this.userRole = sessionStorage.getItem('user_role_name');
+    this.getModuleAccess();
   }
 
 
@@ -72,6 +78,16 @@ export class YetApproveComponent implements OnInit {
     this.cdref.detectChanges();
   }
   
+  getModuleAccess(){
+    this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+      if (access) {
+        this.accessPermissions = access[0].operations;
+        console.log('Access Permissions:', this.accessPermissions);
+      } else {
+        console.log('No matching access found.');
+      }
+    });
+  }
   delete(item){
     
     this.api.delete(`${environment.live_url}/${environment.time_sheets}/${item.id}/`,).subscribe((data:any)=>{
