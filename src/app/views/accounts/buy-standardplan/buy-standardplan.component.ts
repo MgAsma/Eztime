@@ -260,14 +260,14 @@ export class BuyStandardplanComponent implements OnInit {
 
     }
     const successCallback = (response: any) => {
-      // console.log("SUCCESS CALLBACK", response)
-      const reqData: any = {
-        razorpay_payment_id: response.razorpay_payment_id,
-        razorpay_order_id: response.razorpay_order_id,
-        razorpay_signature: response.razorpay_signature,
-      };
-      // this.postPaymentDetails(response)
-      this.buySubscription(reqData)
+      this.ngZone.run(() => {
+        const reqData: any = {
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_signature: response.razorpay_signature,
+        };
+        this.buySubscription(reqData);
+      });
 
     }
     const failureCallback = (e: any) => {
