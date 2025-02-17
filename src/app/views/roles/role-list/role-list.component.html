@@ -7,12 +7,13 @@
     </div>
     <div class="col-sm"></div>
     <div class="col-md-3 col-lg-3 p-1 text-end create-buttons">
-      <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/designation/create" type="submit">
+      <button mat-raised-button class="proceedbtn mat-btn-s" routerLink="/designation/create" type="submit"
+         *ngIf="userRole ==='Employee' && accessPermissions[0]?.create || userRole === 'Admin'">
         <mat-icon>add</mat-icon>Create Designation</button>
 
     </div>
   </div>
-  <div class="bg">
+  <div class="bg" *ngIf="userRole ==='Employee' && accessPermissions[0]?.view || userRole === 'Admin'">
     <div class="row">
       <div class="col px-0">
         <div cdkDropList>
@@ -34,7 +35,8 @@
                     class="bi bi-arrow-down"></i>
                 </th>
                 <!-- <th scope="col"> Status <i  *ngIf="!arrow" (click)="sort('asc','role_status')" class="bi bi-arrow-up"></i><i (click)="sort('desc','role_status')" *ngIf="arrow" class="bi bi-arrow-down"></i></th> -->
-                <th scope="col" class="text-center">Accessibilty</th>
+                <th scope="col" class="text-center"
+                  *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'">Accessibilty</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -52,16 +54,20 @@
                   <!-- <td>{{item.description | titlecase}}</td> -->
                   <td>{{item.created_datetime | date : 'dd/MM/yyyy'}}</td>
                   <!-- <td>{{item.role_status | titlecase}}</td> -->
-                  <td class="text-center"><a routerLink="/designation/roles-access/{{item.id}}">
+                  <td class="text-center" *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'">
+                    <a routerLink="/designation/roles-access/{{item.id}}">
                     <img src="../../../../assets/images/Group.svg" alt="">
                       </a></td>
 
                   <td>
                     <ng-container>
                       <img src="../../../../assets/images/Edit.svg" class="icon-image"
+                        *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'"
                         routerLink="/designation/update/{{item.id}}" container="body" ngbTooltip="Edit" />
                       <img src="../../../../assets/images/Delete.svg" class="icon-image" container="body"
+                        *ngIf="userRole ==='Employee' && accessPermissions[0]?.delete || userRole === 'Admin'"
                         ngbTooltip="Delete" (click)="open(item.id)" />
+                        <span  *ngIf="userRole ==='Employee' && !accessPermissions[0]?.update && !accessPermissions[0]?.delete">-</span>
                     </ng-container>
                   </td>
                   <!-- <td  *ngIf="role == 'ADMIN'">
@@ -135,12 +141,12 @@
                 </div>
               </div>
             </div>
-            <div class="col-5 p-0 text-end" *ngIf="role == 'ADMIN'">
-              <ng-container *ngFor="let access of permissions">
-                <button *ngIf="access === 'UPDATE'" routerLink="/role/update/{{item.id}}" type="button"
+            <div class="col-5 p-0 text-end" >
+              <ng-container>
+                <button  routerLink="/role/update/{{item.id}}" type="button"
                   class="toolbar-btn" placement="top" container="body" ngbTooltip="Edit"><i class="bi bi-pencil-square"
                     container="body" ngbTooltip="Edit" style="color: #000; font-size: 24px;"></i></button>
-                <button *ngIf="access === 'DELETE'" (click)="open(item.id)" type="button" class="toolbar-btn"
+                <button  (click)="open(item.id)" type="button" class="toolbar-btn"
                   placement="top" container="body" ngbTooltip="Delete"><i class="bi bi-trash"
                     style="color: red; font-size: 24px;"></i></button>
               </ng-container>
@@ -197,12 +203,12 @@
                 </div>
                 <div class="col-6">
                   <div class="row">
-                    <div class="col-12" *ngIf="role == 'ADMIN'">
+                    <div class="col-12">
                       <h6 class="card-subtitle">Accessibilty</h6>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-12 value-container" *ngIf="role == 'ADMIN'">
+                    <div class="col-12 value-container">
                       <a routerLink="/role/roles-access/{{item.id}}/{{item.designation_name}}"><i class="fa fa-cogs"
                           aria-hidden="true" style="color:#126EB4 !important"></i></a>
                     </div>

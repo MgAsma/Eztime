@@ -8,6 +8,7 @@ import { DatePipe, Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { Subject, take } from 'rxjs';
 import * as XLSX from 'xlsx';
+import { SubModuleService } from 'src/app/service/sub-module.service';
 @Component({
   selector: 'app-manager-review',
   templateUrl: './manager-review.component.html',
@@ -45,7 +46,8 @@ export class ManagerReviewComponent implements OnInit {
   selectedLeaveTab: string;
   selectedLeaveTabId: number;
   allDetailsExport = new Subject<any>();
-  
+  userRole: String;
+  accessPermissions = []
   
   constructor(
     private api: ApiserviceService,
@@ -53,7 +55,8 @@ export class ManagerReviewComponent implements OnInit {
     private _timesheet: TimesheetService,
     private location: Location,
     private common_service: CommonServiceService,
-    private datepipe:DatePipe
+    private datepipe:DatePipe,
+    private accessControlService: SubModuleService
   ) { }
   data = []
 
@@ -65,8 +68,20 @@ export class ManagerReviewComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('organization_id')
     this.user_id = sessionStorage.getItem('user_id')
-    
+    this.userRole = sessionStorage.getItem('user_role_name');
+    this.getModuleAccess();
     this.getEmployeeData(`page=${this.page}&page_size=${this.tableSize}`)
+  }
+
+  getModuleAccess(){
+    this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+      if (access) {
+        this.accessPermissions = access[0].operations;
+        console.log('Access Permissions:', this.accessPermissions);
+      } else {
+        console.log('No matching access found.');
+      }
+    });
   }
  
   getEmployeeData(params) {
@@ -82,6 +97,7 @@ export class ManagerReviewComponent implements OnInit {
     }))
   }
   selectedTab(event){
+    this.getModuleAccess();
     if(event){
       this.selectedSection = event
     }

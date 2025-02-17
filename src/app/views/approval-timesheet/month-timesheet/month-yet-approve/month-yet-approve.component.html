@@ -4,7 +4,7 @@
   <div class="bg px-0">
     <div class="row my-2" >
      
-      <div class="col text-end" *ngIf="yetToApproveAll?.length">
+      <div class="col text-end" *ngIf="yetToApproveAll?.length && userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'">
         <button mat-raised-button type="button" class="bulk-action-btn" style="background: #3CA300;margin-right: 5px;" (click)="openDialogue('','Approve','bulk')"><i class="bi bi-check-circle"></i>APPROVE</button>
         <button mat-raised-button type="button" class="bulk-action-btn" style="background: #B41212;" (click)="openDialogue('','Decline','bulk')"><i class="bi bi-x-circle"></i>DECLINE</button>
       </div>
@@ -15,7 +15,7 @@
         <table class="table table-hover table-list" *ngIf="yetToApproveAll?.length">
           <thead>
             <tr>
-              <th scope="col"><input type="checkbox" [(ngModel)]="isAllSelected" (change)="selectAll($event)" /></th>
+              <th scope="col"  *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'"><input type="checkbox" [(ngModel)]="isAllSelected" (change)="selectAll($event)" /></th>
               <th scope="col">S.No</th>
               <th scope="col" class="text-center">Created Date</th>
               <th scope="col" class="text-center">Employee</th>
@@ -28,7 +28,7 @@
           <tbody>
             <ng-container *ngIf="(yetToApproveAll) as result">
               <tr *ngFor="let item of result | paginate: paginationConfig; let i = index">
-                <td><input type="checkbox" [(ngModel)]="item.selected" (change)="onCheckboxChange(item.id)"/></td>
+                <td *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'"><input type="checkbox" [(ngModel)]="item.selected" (change)="onCheckboxChange(item.id)"/></td>
                 <td>{{getContinuousIndex(i)}}</td>
                
                 <td class="text-center">{{(item?.created_date | date) || 'NA' }}</td>
@@ -57,12 +57,13 @@
                
                 <td class="text-center">
                   <ng-container>
-                    <span>
+                    <span *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'">
                       <img src="../../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Approve" (click)="openDialogue(item, 'Approve')" />
                     </span>
-                    <span>
+                    <span *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'">
                       <img src="../../../../../assets/images/Close.svg" class="icon-image" container="body" ngbTooltip="Decline" (click)="openDialogue(item, 'Decline')" />
                     </span>
+                    <span *ngIf="userRole ==='Employee' && !accessPermissions[0]?.update">-</span>
                   </ng-container>
                 </td>
               </tr>

@@ -27,8 +27,9 @@
       </div>
      
     </div>
-    <div class="col-sm-2 col-md-1 col-lg-1 mx-3 d-flex justify-content-start mb-3" *ngIf="selectedSection === 'timesheets'">
-      <button type="button" mat-icon-button (click)="exportToExcel()" ngbTooltip="Download Excel" style="transform: scale(0.98);background-color:#126EB4;color:white;">
+    <div class="col-sm-2 col-md-1 col-lg-1 mx-3 d-flex justify-content-start mb-3" 
+      *ngIf="selectedSection === 'timesheets'">
+      <button *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'" type="button" mat-icon-button (click)="exportToExcel()" ngbTooltip="Download Excel" style="transform: scale(0.98);background-color:#126EB4;color:white;">
           <i class="bi bi-download" style="font-size: 17px;"></i>
       </button>
   </div>
@@ -124,12 +125,13 @@
                 <td>{{ leave.to_date }}</td>
                 <td>{{ leave.message }}</td>
                 <td>
-                  <span>
+                  <span *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'">
                     <img src="../../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Approve" (click)="open(leave,'Approve')"/>
                   </span>
-                  <span>
+                  <span *ngIf="userRole ==='Employee' && accessPermissions[0]?.delete || userRole === 'Admin'">
                     <img src="../../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Decline"  (click)="open(leave,'Decline')"/>
                   </span>
+                  <span  *ngIf="userRole ==='Employee' && !accessPermissions[0]?.update && !accessPermissions[0]?.delete">-</span>
                 </td>
               </tr>
             </tbody>
@@ -320,12 +322,13 @@
                   {{(timesheet.updated_datetime | date :'mediumDate') || 'NA'}}
                 </td>
                 <td>
-                  <span>
+                  <span *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'">
                     <img src="../../../../../assets/images/tick.svg" class="icon-image"  ngbTooltip="Approve" (click)="openDialogue(timesheet,'Approve')"/>
                   </span>
-                  <span>
+                  <span *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'">
                     <img src="../../../../../assets/images/Close.svg" class="icon-image"   ngbTooltip="Decline"  (click)="openDialogue(timesheet,'Decline')"/>
                   </span>
+                  <span  *ngIf="userRole ==='Employee' && !accessPermissions[0]?.update">-</span>
                 </td>
                 
               </tr>

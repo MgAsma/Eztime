@@ -4,8 +4,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from 'src/app/service/apiservice.service';
 import { CommonServiceService } from 'src/app/service/common-service.service';
+import { SubModuleService } from 'src/app/service/sub-module.service';
 import { TimesheetService } from 'src/app/service/timesheet.service';
 import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-yet-to-approve',
@@ -30,9 +32,11 @@ export class YetToApproveComponent implements OnInit {
   tableSizes = [5,10,25,50,100];
   count:any = 0
   entryPoint: any;
-  user_id: string;
+  user_id: any;
   accessConfig: any = [];
   orgId: any;
+  userRole: string;
+  accessPermissions: any=[];
   @Input() data:any = [];
   @Input() totalCount:{ 'pageCount': any, 'currentPage': any };
   paginationConfig:any={
@@ -42,11 +46,13 @@ export class YetToApproveComponent implements OnInit {
    
   constructor(private builder:FormBuilder, private api:ApiserviceService,
     private modalService:NgbModal,private _timesheet:TimesheetService,private cdref: ChangeDetectorRef,
-    private common_service:CommonServiceService) { }
+    private common_service:CommonServiceService, private accessControlService:SubModuleService) { }
 
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id')
     this.orgId = sessionStorage.getItem('org_id')
+    this.userRole = sessionStorage.getItem('user_role_name');
+    this.getModuleAccess();
     
   }
 
@@ -102,6 +108,18 @@ export class YetToApproveComponent implements OnInit {
      }
     this.filter.emit(tableData);
   }
+
+  getModuleAccess(){
+    this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+      if (access) {
+        this.accessPermissions = access[0].operations;
+        console.log('Access Permissions:',this.accessPermissions);
+      } else {
+        console.log('No matching access found.');
+      }
+    });
+  }
+
   delete(item:any){
   if(this.list === 1){
     this.deleteContent(item)

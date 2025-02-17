@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="generic-form bg mx-1">
-    <form [formGroup]="timeSheetForm">
+    <form [formGroup]="timeSheetForm" [ngStyle]="{'pointer-events': isPointerDisabled() ? 'all' : 'none'}">
       <mat-accordion>
         <div formArrayName="response">
           <mat-expansion-panel class="mt-2 mb-4" #panels *ngFor="let project of createdProject.controls; let i = index ;"
@@ -25,10 +25,10 @@
                      
                       <!-- <img src="../../../../assets/images/Option.svg" class="me-1 toolbar-btn" style="top:-2px" *ngIf="project.get('showSave').value" (click)="$event.stopPropagation();enableAction(i)"/>
                       -->
-                      <button  mat-button type="button" style="width: fit-content !important;"  class="save-btn toolbar-btn webView"  (click)="$event.stopPropagation();saveTimesheet(i)">
+                      <button mat-button type="button" style="width: fit-content !important;"  class="save-btn toolbar-btn webView"  (click)="$event.stopPropagation();saveTimesheet(i)">
                         Save
                       </button>
-                      <button  mat-button type="button" class="mobileView save-btn toolbar-btn"  style="right: 9%;
+                      <button mat-button type="button" class="mobileView save-btn toolbar-btn"  style="right: 9%;
                        top:5px;width: fit-content !important;" (click)="$event.stopPropagation();saveTimesheet(i)">
                         Save
                       </button>
@@ -58,7 +58,8 @@
                   <div class="time-save-wrapper">
                     <span><mat-label style="font-size: 13px;"><i class="bi bi-clock"></i> 8 Hours</mat-label></span>
                     <button mat-button class="save-btn" *ngIf="project.get('showSave').value && createdProject.length >1" (click)="$event.stopPropagation(); open(i)">Delete</button>
-                    <button mat-button class="save-btn" (click)="$event.stopPropagation();saveTimesheet(i)">Save</button>
+                    <button *ngIf="!isPointerDisabled()" disabled mat-button>Save</button>
+                    <button *ngIf="isPointerDisabled()" mat-button class="save-btn" (click)="$event.stopPropagation();saveTimesheet(i)">Save</button>
                     <mat-icon>keyboard_arrow_up</mat-icon>
                   </div>
                 </div>

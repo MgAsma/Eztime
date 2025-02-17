@@ -33,9 +33,11 @@
                                 </span>
                                     <span>
                                        
-                                        <img src="../../../../../assets/images/revoke.svg" class="icon-image" container="body"  ngbTooltip="Revoke" (click)="openRevokeDialogue(item,1)"/>
-                                        <img src="../../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete" (click)="open(item)"/>
-                                     
+                                        <img src="../../../../../assets/images/revoke.svg" class="icon-image" container="body"  ngbTooltip="Revoke" (click)="openRevokeDialogue(item,1)"
+                                        *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'"/>
+                                        <img src="../../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete" (click)="open(item)"
+                                        *ngIf="userRole ==='Employee' && accessPermissions[0]?.delete || userRole === 'Admin'"/>
+                                        <span  *ngIf="userRole ==='Employee' && !accessPermissions[0]?.update && !accessPermissions[0]?.delete">-</span>
                                       </span>
                                    
                                 </ng-container>

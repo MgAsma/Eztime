@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { SortPipe } from 'src/app/sort/sort.pipe';
 import { Location } from '@angular/common';
-import { CommonServiceService } from 'src/app/service/common-service.service';
-import { environment } from 'src/environments/environment';
+import { GenericDeleteComponent } from '../../../generic-delete/generic-delete.component';
+import { environment } from '../../../../environments/environment';
+import { SubModuleService } from '../../../service/sub-module.service';
+import { CommonServiceService } from '../../../service/common-service.service';
 
 @Component({
   selector: 'app-department-list',
@@ -38,13 +39,16 @@ export class DepartmentListComponent implements OnInit {
   };
   params: { page_number: number; data_per_page: number; };
   permissions: any = [];
-  user_id: string;
+  user_id: any;
   org_id: string;
   filterBaseUrl: any;
+  userRole:string;
+  accessPermissions = []
   constructor(private api: ApiserviceService, private router: Router,
     private modalService: NgbModal,
     private location: Location,
     private common_service: CommonServiceService,
+    private accessControlService:SubModuleService
   ) { }
 
 
@@ -56,11 +60,25 @@ export class DepartmentListComponent implements OnInit {
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.org_id = sessionStorage.getItem('organization_id');
+    this.user_id = sessionStorage.getItem('user_id');
+    this.userRole = sessionStorage.getItem('user_role_name');
     this.getAllDepartmentList(`?organization_id=${this.org_id}&page=${1}&page_size=${5}`);
     // this.filterBaseUrl = `${environment.live_url}/department/?organization_id=${this.org_id}&page=${this.page}&page_size=${this.tableSize}`
     // this.getDepartment(`search_key=${this.term}&page_number=${this.page}&data_per_page=${this.tableSize}&pagination=TRUE&org_ref_id=${this.org_id}`); 
     this.enabled = true;
+    this.getModuleAccess();
   }
+    getModuleAccess(){
+        this.accessControlService.getAccessForActiveUrl(this.user_id).subscribe((access) => {
+          if (access) {
+            this.accessPermissions = access[0].operations;
+            console.log('Access Permissions:', this.accessPermissions);
+          } else {
+            console.log('No matching access found.');
+          }
+        });
+      }
+
   getFilterBaseUrl(): string {
     return `?organization_id=${this.org_id}&page=${this.page}&page_size=${this.tableSize}`;
   }

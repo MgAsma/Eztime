@@ -1,5 +1,5 @@
 <div class="card-container" *ngIf="leaveData.length">
-  <div class="row">
+  <div class="row" *ngIf="userRole ==='Employee' && accessPermissions[0]?.view || userRole === 'Admin'">
     <div class="col-sm-12 col-md-4" *ngFor="let leave of leaveData">
      
       <mat-card >

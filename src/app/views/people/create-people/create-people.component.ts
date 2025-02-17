@@ -496,6 +496,8 @@ export class CreatePeopleComponent implements OnInit {
         // role: this.thirdFormGroup.value.role,
         date_of_joining: this.datePipe.transform(this.thirdFormGroup.value.date_of_joining, 'yyyy-MM-dd'),
         status: this.thirdFormGroup.value.status,
+        created_by: this.userId,
+        updated_by: this.userId
       }
       this.api.putOrganizationDataOfEmployee(data, this.employeeId).subscribe(
         (res: any) => {
