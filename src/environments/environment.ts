@@ -9,11 +9,11 @@ export const environment = {
    //live_url: 'https://projectacedev.thestorywallcafe.com/api',
   //media_url: 'https://projectacedev.thestorywallcafe.com/media',
   
-  // media_url: 'https://projectacedevelop.thestorywallcafe.com',
-  // live_url:'https://projectacedevelop.thestorywallcafe.com/api',
+  media_url: 'https://projectacedevelop.thestorywallcafe.com',
+  live_url:'https://projectacedevelop.thestorywallcafe.com/api',
   
-  live_url: 'https://projectacetest.thestorywallcafe.com/api',
-  media_url:'https://projectacetest.thestorywallcafe.com',
+  // live_url: 'https://projectacetest.thestorywallcafe.com/api',
+  // media_url:'https://projectacetest.thestorywallcafe.com',
   
   // live_url: 'https://app.projectace.in/api',
   // media_url: 'https://app.projectace.in',
@@ -52,7 +52,7 @@ export const environment = {
   org_department: `organization-department`,
   approval_config: `time-sheets-approval-config`,
   notification: `get-notification`,
-  
+  update_notification: `update-seen-notification`,
   timesheets:`timesheets`,
   country:`country`,
   state:`state`,
