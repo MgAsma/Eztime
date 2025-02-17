@@ -128,10 +128,10 @@
                   <span *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'">
                     <img src="../../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Approve" (click)="open(leave,'Approve')"/>
                   </span>
-                  <span *ngIf="userRole ==='Employee' && accessPermissions[0]?.delete || userRole === 'Admin'">
+                  <span *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'">
                     <img src="../../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Decline"  (click)="open(leave,'Decline')"/>
                   </span>
-                  <span  *ngIf="userRole ==='Employee' && !accessPermissions[0]?.update && !accessPermissions[0]?.delete">-</span>
+                  <span  *ngIf="userRole ==='Employee' && !accessPermissions[0]?.update">-</span>
                 </td>
               </tr>
             </tbody>
