@@ -16,8 +16,7 @@ export class SubModuleService {
   }
 
   getAccessForActiveUrl(id: number,url?:string): Observable<any> {
-    //const activeUrl =  url || this.router.url;
-    const activeUrl =  url;
+    const activeUrl =  url || this.router.url;
     return this.getAccessList(id).pipe(
       map((response: any) => {
         const accessList = response?.access_list || [];
