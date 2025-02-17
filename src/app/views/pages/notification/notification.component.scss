@@ -266,7 +266,6 @@ padding: 20px;
   .notification-item {
     padding: 10px;
     margin: 5px 0;
-    border-radius: 5px;
     transition: background-color 0.3s ease;
   }
   .new-notification {
@@ -288,4 +287,13 @@ padding: 20px;
       color: black;
       cursor: not-allowed;
     }
+  }
+  a{
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    // &:hover{
+    //   text-decoration: underline;
+    //   color: #0867b0;
+    // }
   }

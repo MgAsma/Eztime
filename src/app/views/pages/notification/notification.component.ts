@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiserviceService } from '../../../service/apiservice.service';
 import { environment } from '../../../../environments/environment';
 import { NotificationService } from './notification.service';
-import { SubModuleService } from 'src/app/service/sub-module.service';
+import { SubModuleService } from '../../../service/sub-module.service';
 import { forkJoin, map, of } from 'rxjs';
 
 @Component({
@@ -22,6 +22,7 @@ export class NotificationComponent implements OnInit {
   displayedNotifications$: any[] = [];
   disabledView: boolean = false;
   private timeoutId: any;
+  isFetching: boolean ;
  // seenNotification: any = [];
 
   constructor(
@@ -50,7 +51,7 @@ export class NotificationComponent implements OnInit {
     }, 5000);
   }
   checkUrlAvailabilty(url: string) {
-  if (url !== null) {
+  if (url) {
     this.closeBtn();
   }
   }
@@ -89,52 +90,117 @@ export class NotificationComponent implements OnInit {
   //   );
   // }
 
+  // getNotification(page_size: number, type: string) {
+  //   if (type === 'viewmore') {
+  //     this.page_size += page_size;
+  //   }
+  
+  //   if (this.page_size > this.totalCount + 5) {
+  //     this.disabledView = true;
+  //     return;
+  //   }
+  
+  //   let params = `${environment.live_url}/${environment.notification}/?user-id=${this.user_id}&page=1&page_size=${this.page_size}`;
+  //   this.disabledView = false;
+  
+  //   this.api.getData(params).subscribe(
+  //     (res: any) => {
+  //       if (res.results) {
+  //          this.totalCount =res.total_no_of_record;
+  //         if(this.user_role_name === 'EMPLOYEE'){
+
+          
+  //         let notifications = res.results;
+ 
+  //         // Create an array of observables to check access for each notification's URL
+  //         let accessChecks = notifications.map((notification: any) => {
+  //           let redirectUrl = notification?.text?.redirect_url;
+  //           if (redirectUrl) {
+  //             return this.subModuleService.getAccessForActiveUrl(this.user_id, redirectUrl).pipe(
+  //               map((access: any) => {
+  //                 const hasViewAccess = access?.operations?.some((op: any) => op.view === true);
+  //                 notification.text.redirect_url = hasViewAccess ? redirectUrl : null;
+  //                 return notification;
+  //               })
+  //             );
+  //           } else {
+  //             return of(notification); // If no redirect_url, return as is
+  //           }
+  //         });
+  
+  //         // Execute all access checks and update notifications
+  //         forkJoin(accessChecks).subscribe((updatedNotifications: any) => {
+  //           this.displayedNotifications$ = updatedNotifications;
+  //         });
+  //       }else{
+  //         this.displayedNotifications$ = res.results;
+  //       }
+  //     }
+  //     },
+  //     (error: any) => {
+  //       this.api.showError(error?.error?.message);
+  //     }
+  //   );
+  // }
   getNotification(page_size: number, type: string) {
     if (type === 'viewmore') {
       this.page_size += page_size;
     }
   
-    if (this.page_size > this.totalCount + 5) {
+    if (this.page_size > this.totalCount + 1) {
       this.disabledView = true;
       return;
     }
   
     let params = `${environment.live_url}/${environment.notification}/?user-id=${this.user_id}&page=1&page_size=${this.page_size}`;
-    this.disabledView = false;
-  
+    
     this.api.getData(params).subscribe(
       (res: any) => {
         if (res.results) {
-           this.totalCount =res.total_no_of_record;
-          if(this.user_role_name === 'EMPLOYEE'){
-
-          
-          let notifications = res.results;
- 
-          // Create an array of observables to check access for each notification's URL
-          let accessChecks = notifications.map((notification: any) => {
-            let redirectUrl = notification?.text?.redirect_url;
-            if (redirectUrl) {
-              return this.subModuleService.getAccessForActiveUrl(this.user_id, redirectUrl).pipe(
-                map((access: any) => {
-                  const hasViewAccess = access?.operations?.some((op: any) => op.view === true);
-                  notification.text.redirect_url = hasViewAccess ? redirectUrl : null;
-                  return notification;
-                })
-              );
-            } else {
-              return of(notification); // If no redirect_url, return as is
-            }
-          });
+          this.totalCount = res.total_no_of_record;
   
-          // Execute all access checks and update notifications
-          forkJoin(accessChecks).subscribe((updatedNotifications: any) => {
-            this.displayedNotifications$ = updatedNotifications;
-          });
-        }else{
-          this.displayedNotifications$ = res.results;
+          if (this.user_role_name === 'EMPLOYEE') {
+            let notifications = res.results;
+  
+            // Extract unique redirect URLs (remove duplicates)
+            let uniqueUrls:any = [...new Set(notifications.map(n => n?.text?.redirect_url).filter(url => !!url))];
+  
+            if (uniqueUrls.length > 0) {
+              // Call access API for each unique URL and store results
+              let accessRequests = uniqueUrls.map(url =>
+                this.subModuleService.getAccessForActiveUrl(this.user_id, url).pipe(
+                  map((access: any) => ({
+                    url,
+                    hasAccess: access?.operations?.some((op: any) => op.view === true)
+                  }))
+                )
+              );
+  
+              // Execute all requests in parallel
+              forkJoin(accessRequests).subscribe((accessResults: any) => {
+                let accessMap = new Map<string, boolean>();
+                accessResults.forEach(result => accessMap.set(result.url, result.hasAccess));
+  
+                // Update notifications with access check
+                notifications.forEach(notification => {
+                  let redirectUrl = notification?.text?.redirect_url;
+                  if (redirectUrl) {
+                    notification.text.redirect_url = accessMap.get(redirectUrl) ? redirectUrl : null;
+                  }
+                });
+  
+                this.displayedNotifications$ = notifications;
+              });
+            } else {
+              // If no URLs exist, update notifications directly
+              this.displayedNotifications$ = notifications;
+              this.disabledView = false;
+            }
+          } else {
+            this.displayedNotifications$ = res.results;
+            this.disabledView = false;
+          }
         }
-      }
       },
       (error: any) => {
         this.api.showError(error?.error?.message);
@@ -142,6 +208,7 @@ export class NotificationComponent implements OnInit {
     );
   }
   
+ 
    //* Mark a single notification as read
    
   markAsRead(notification: any) {
@@ -166,8 +233,9 @@ export class NotificationComponent implements OnInit {
  
  // * Handle notification click (mark as read if required)
   
-  handleNotificationClick(notification: any) {
-    this.markAsRead(notification); // Call only if not already seen
+  async handleNotificationClick(notification: any) {
+    await this.markAsRead(notification); // Call only if not already seen
+    await this.checkUrlAvailabilty(notification?.text?.redirect_url)
   }
 
  

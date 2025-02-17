@@ -8,10 +8,12 @@
       </div>
         <div class="notification-main-content">
        <ng-container *ngIf="displayedNotifications$ ?.length">
+        
         <div *ngFor="let notification of displayedNotifications$" class="notification-item" 
         [ngClass]="{'new-notification': !notification.is_seen, 'seen-notification': notification.is_seen}"
-        (click)="handleNotificationClick(notification)" style="cursor: pointer;">
-          
+        
+        >
+        <a [routerLink]="notification?.text?.redirect_url || null" class="w-100" (click)="handleNotificationClick(notification);"  >
           <!-- Notification Content -->
           <div class="notification-content">
             <div class="notification-header p-r">
@@ -30,7 +32,7 @@
                     <span class="h-leave-message" *ngIf="notification.text.subscription_type">{{'Subscription'}}</span>
                     
                     <mat-chip-list>
-                      <mat-chip [ngClass]="notification?.text?.leave_type ? 'leave-type' : 'project-name'" selected [routerLink]="notification?.text?.redirect_url || null" (click)="checkUrlAvailabilty(notification?.text?.redirect_url)">
+                      <mat-chip [ngClass]="notification?.text?.leave_type ? 'leave-type' : 'project-name'" selected >
                         <i class="pe-1" [class]="notification.text.icon"></i>
                         {{ notification?.text?.leave_type || notification?.text?.project_name || notification.text.subscription_type}}
                       </mat-chip>
@@ -64,9 +66,12 @@
             
           
           </div>
+        </a>
+
         </div>
+     
       </ng-container>
-      <div *ngIf="displayedNotifications$?.length === 0">No notification found!</div>
+      <div *ngIf="displayedNotifications$?.length === 0" class="text-center">No notification found!</div>
       </div>
       <!-- View More -->
       <div class="p-r">
@@ -87,7 +92,10 @@
        <ng-container *ngIf="displayedNotifications$?.length">
         <div *ngFor="let notification of displayedNotifications$" class="notification-item" 
         [ngClass]="{'new-notification': !notification.is_seen, 'seen-notification': notification.is_seen}"
-        (click)="handleNotificationClick(notification)" style="cursor: pointer;">
+        (click)="handleNotificationClick(notification)" style="cursor: pointer;" 
+        [routerLink]="notification?.text?.redirect_url">
+        <a [routerLink]="notification?.text?.redirect_url || null" class="w-100" (click)="handleNotificationClick(notification);"  >
+       
           <div class="tree-line" *ngIf="notification.text.name || notification.text.subscription_type">
             <i [class]="notification.text.icon"></i>
           </div>
@@ -95,7 +103,7 @@
           <!-- Notification Content -->
           <div class="notification-content">
             <div class="notification-header p-r">
-              <strong [routerLink]="notification?.text?.redirect_url" style="cursor: pointer;" (click)="closeBtn()">{{ notification.text.name || notification.text.subscription_type}}</strong>
+              <strong style="cursor: pointer;">{{ notification.text.name || notification.text.subscription_type}}</strong>
               <span class="date">{{ notification.created_datetime | date: 'dd/MM/yyyy' }}</span>
             </div>
             <div class="row">
@@ -116,9 +124,10 @@
             </div>
             
           </div>
+        </a>
         </div>
       </ng-container>
-      <div *ngIf="displayedNotifications$?.length === 0">No notification found!</div>
+      <div *ngIf="displayedNotifications$?.length === 0" class="text-center">No notification found!</div>
       
       </div>
        <!-- View More -->
@@ -138,10 +147,10 @@
       </div>
       <div class="notification-main-content">
         <ng-container *ngIf="displayedNotifications$?.length">
-         <div *ngFor="let notification of displayedNotifications$" class="notification-item py-4"
+         <div *ngFor="let notification of displayedNotifications$" class="notification-item py-3"
          [ngClass]="{'new-notification': !notification.is_seen, 'seen-notification': notification.is_seen}"
-         (click)="handleNotificationClick(notification)" style="cursor: pointer;">
-         
+         >
+         <a [routerLink]="notification?.text?.redirect_url || null" class="w-100" (click)="handleNotificationClick(notification);"  >
        
            <!-- Notification Content -->
            <div class="notification-content">
@@ -157,13 +166,14 @@
                        <i [class]="notification.text.icon" ></i>
                      </div>
                      <span class="h-leave-message" *ngIf="!notification?.text?.leave_type && !notification?.text?.project_status && !notification?.text?.timesheet_status">{{notification?.text?.message}}</span>
-                     <span class="h-leave-message" *ngIf="notification?.text?.leave_type">{{'Leave'}}</span>
+                     <span class="h-leave-message" *ngIf="notification?.text?.leave_type || notification?.text?.leave_status">{{'Leave'}}</span>
+                     <span class="h-leave-message" *ngIf="notification?.text?.timesheet_status">{{'Timesheet'}}</span>
                      <span class="h-leave-message" *ngIf="notification?.text?.project_status">{{'Project'}}</span>
                      <span *ngIf="notification?.text?.timesheet_status" [ngClass]="notification?.text?.timesheet_status  === 'Approved' ? 'approved' : notification?.text?.timesheet_status  === 'Pending' ? 'pending' : 'declined'">{{notification?.text?.timesheet_status}}</span>
                      <span *ngIf="notification?.text?.leave_status" [ngClass]="notification?.text?.leave_status  === 'Approved' ? 'approved' : notification?.text?.leave_status  === 'Pending' ? 'pending' : 'declined'">{{notification?.text?.leave_status}}</span>
                      <mat-chip-list>
                       <mat-chip [ngClass]="notification?.text?.leave_type ? 'leave-type' : 'project-name'" selected  
-                      [routerLink]="notification?.text?.redirect_url">
+                      >
                         <i class="pe-1" [class]="notification.text.icon"></i>
                         {{ notification?.text?.leave_type || notification?.text?.project_name }}
                       </mat-chip>
@@ -201,13 +211,13 @@
              
            
            </div>
+          </a>
          </div>
+        
        </ng-container>
-       <div *ngIf="displayedNotifications$?.length === 0">No notification found!</div>
-        
-         
-        
-       </div>
+       <div *ngIf="displayedNotifications$?.length === 0" class="text-center">No notification found!</div>
+       
+      </div>
        <!-- View More -->
        <div class="p-r">
         <div class="view-more" *ngIf="displayedNotifications$.length > 4" (click)="getNotification(10,'viewmore')">
