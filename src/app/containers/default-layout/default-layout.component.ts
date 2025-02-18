@@ -91,13 +91,13 @@ export class DefaultLayoutComponent {
       this.ngxService.stopLoader("loader-01");
     }, 1000);
     
-    if (this.user_role_Name && this.user_role_Name === 'Admin') {
-      this.getMySubscription();
+    if (this.user_role_Name && this.user_role_Name !== 'SuperAdmin') {
+      this.getMySubscription()
     }
 
     // Listen to subscription state changes
     this.common_service.subsctiptionState$.subscribe((res) => {
-      if (res && this.user_role_Name === 'Admin'  ) {
+      if (res && this.user_role_Name !== 'SuperAdmin'  ) {
         this.getMySubscription();
       }
     });
@@ -131,7 +131,6 @@ export class DefaultLayoutComponent {
           this.mySubscription = hasActiveSubscription;
           if (!hasActiveSubscription) {
             this.router.onSameUrlNavigation
-            // this.router.navigate(['/dashboards']);
           }else{
             this.router.navigate(['/accounts/subscription']);
           }

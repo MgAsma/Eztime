@@ -97,7 +97,7 @@ export class LoginComponent implements OnInit {
 
       }, (error: any) => {
         console.log('error',error)
-        this.api.showError(error.error.message);
+        this.api.showError(error.error.message || 'Something went wrong please again later');
       }
 
       )
