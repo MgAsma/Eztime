@@ -100,7 +100,13 @@ padding: 20px;
     cursor: pointer;
   }
   /*SUPER ADMIN*/
-
+  .h-70{
+    min-height: 50vh;
+    max-height: 70vh;
+  }
+  .h-30{
+    min-height: 10vh;
+  }
   .notification-container {
     
     background-color: #f9f9f9;
@@ -109,8 +115,8 @@ padding: 20px;
   .notification-main-content{
     padding: 16px;
     zoom:97%;
-    min-height: 50vh;
-    max-height: 70vh;
+    // min-height: 50vh;
+    // max-height: 70vh;
     overflow-y: auto;
   }
     // .title {
@@ -292,6 +298,8 @@ padding: 20px;
     color: black;
     text-decoration: none;
     cursor: pointer;
+    padding: 0;
+    display: inline-block;
     // &:hover{
     //   text-decoration: underline;
     //   color: #0867b0;

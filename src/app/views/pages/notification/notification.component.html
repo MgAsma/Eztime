@@ -2,11 +2,11 @@
       <div class="notification-container" *ngIf="user_role_name === 'ADMIN'">
         <div class="notification-modal">
         <div class="n-header">
-          <h2 class="title">Notification </h2>
+          <h2 class="title">Notifications </h2>
           <div class="close-btn"><i class="bi bi-x-lg" (click)="closeBtn()"></i> </div>
         </div>
       </div>
-        <div class="notification-main-content">
+        <div class="notification-main-content" [ngClass]="displayedNotifications$ ?.length ? 'h-70':'h-30'">
        <ng-container *ngIf="displayedNotifications$ ?.length">
         
         <div *ngFor="let notification of displayedNotifications$" class="notification-item" 
@@ -71,7 +71,7 @@
         </div>
      
       </ng-container>
-      <div *ngIf="displayedNotifications$?.length === 0" class="text-center">No notification found!</div>
+      <div *ngIf="displayedNotifications$?.length === 0" class="text-center">No notifications found!</div>
       </div>
       <!-- View More -->
       <div class="p-r">
@@ -88,18 +88,15 @@
           <div class="close-btn"><i class="bi bi-x-lg" (click)="closeBtn()"></i> </div>
         </div>
       </div>
-        <div class="notification-main-content">
+        <div class="notification-main-content" [ngClass]="displayedNotifications$ ?.length ? 'h-70':'h-30'">
        <ng-container *ngIf="displayedNotifications$?.length">
         <div *ngFor="let notification of displayedNotifications$" class="notification-item" 
         [ngClass]="{'new-notification': !notification.is_seen, 'seen-notification': notification.is_seen}"
         (click)="handleNotificationClick(notification)" style="cursor: pointer;" 
-        [routerLink]="notification?.text?.redirect_url">
-        <a [routerLink]="notification?.text?.redirect_url || null" class="w-100" (click)="handleNotificationClick(notification);"  >
-       
+        [routerLink]="notification?.text?.redirect_url || null">
           <div class="tree-line" *ngIf="notification.text.name || notification.text.subscription_type">
             <i [class]="notification.text.icon"></i>
           </div>
-      
           <!-- Notification Content -->
           <div class="notification-content">
             <div class="notification-header p-r">
@@ -123,11 +120,10 @@
               </div>
             </div>
             
-          </div>
-        </a>
+          </div> 
         </div>
       </ng-container>
-      <div *ngIf="displayedNotifications$?.length === 0" class="text-center">No notification found!</div>
+      <div *ngIf="displayedNotifications$?.length === 0" class="text-center">No notifications found!</div>
       
       </div>
        <!-- View More -->
@@ -145,7 +141,7 @@
           <div class="close-btn"><i class="bi bi-x-lg" (click)="closeBtn()"></i> </div>
         </div>
       </div>
-      <div class="notification-main-content">
+      <div class="notification-main-content" [ngClass]="displayedNotifications$ ?.length ? 'h-70':'h-30'">
         <ng-container *ngIf="displayedNotifications$?.length">
          <div *ngFor="let notification of displayedNotifications$" class="notification-item py-3"
          [ngClass]="{'new-notification': !notification.is_seen, 'seen-notification': notification.is_seen}"
@@ -215,7 +211,7 @@
          </div>
         
        </ng-container>
-       <div *ngIf="displayedNotifications$?.length === 0" class="text-center">No notification found!</div>
+       <div *ngIf="displayedNotifications$?.length === 0" class="text-center">No notifications found!</div>
        
       </div>
        <!-- View More -->
