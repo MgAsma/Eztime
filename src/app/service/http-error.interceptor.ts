@@ -11,16 +11,17 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        isOnline().then(online => {
-          if (!online) {
-            this.router.navigate(['/no-internet']);
-          } 
-          else if (error.status === 504) {
+        //isOnline().then(online => {
+          // if (!online) {
+          //   this.router.navigate(['/no-internet']);
+          // } 
+          // else
+           if (error.status === 504) {
             this.router.navigate(['/504']);
           } else if (error.status === 503) {
             this.router.navigate(['/503']);
           }
-        });
+        //});
        
         return throwError(() => error);
       })

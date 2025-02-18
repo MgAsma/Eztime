@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateChild, Router, RouterStateSnapshot } from '@angular/router';
+import isOnline from 'is-online';
 
 @Injectable({
   providedIn: 'root'
@@ -7,12 +8,19 @@ import { ActivatedRouteSnapshot, CanActivateChild, Router, RouterStateSnapshot }
 export class ActivateChildGuard implements CanActivateChild {
   constructor(private _router: Router) {}
 
-  canActivateChild(
+  async canActivateChild(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): boolean {
-    const isLoggedIn: boolean = sessionStorage.getItem('user_id') !== null;
+  ): Promise<boolean> {
+    // Check internet connection first using is-online
+    const online = await isOnline();
+    if (!online) {
+      this._router.navigate(['/no-internet']);
+      return false;
+    }
 
+    // Then check authentication
+    const isLoggedIn: boolean = sessionStorage.getItem('user_id') !== null;
     if (!isLoggedIn) {
       this._router.navigate(['/login']);
       return false;
