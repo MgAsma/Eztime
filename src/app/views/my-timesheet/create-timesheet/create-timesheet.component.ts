@@ -76,7 +76,7 @@ export class CreateTimesheetComponent implements OnInit {
     this.common_service.setTitle(this.BreadCrumbsTitle);
     this.orgId = sessionStorage.getItem('organization_id')
     this.userId = sessionStorage.getItem('user_id')
-    this.userRole = sessionStorage.getItem('user_role_name').toLowerCase()
+    this.userRole = sessionStorage.getItem('user_role_name')?.toLowerCase() 
   
     this.currentDate = new Date()
     this.initializeForm();
@@ -107,7 +107,7 @@ export class CreateTimesheetComponent implements OnInit {
     const totalHours = 8;
     const taskArray = this.getTaskArray(i);
     const spentHours = taskArray.controls.reduce((sum, task) => {
-      const timeSpent = task.get('hours_to_complete').value;
+      const timeSpent = task.get('hours_to_complete')?.value;
       return sum + (timeSpent ? parseFloat(timeSpent) : 0);
     }, 0);
     const remainingHours = totalHours - spentHours;
@@ -222,8 +222,8 @@ getValue(i,j,value,type?){
 
   taskInitForm(){
     this.taskForm = this.builder.group({
-      task_id: ['', Validators.required],
-      hours_to_complete: ['', Validators.required],
+      task_id: ['', [Validators.required]],
+      hours_to_complete: ['', [Validators.required]],
       hours_left:[''],
       isEditing: [false],
       created_date:['']
@@ -232,11 +232,11 @@ getValue(i,j,value,type?){
   
   enableAction(i){
     const projectGroup = this.getProjectControl(i);
-    projectGroup.get('showSave').setValue(false);
+    projectGroup.get('showSave')?.setValue(false);
   }
   openTaskForm(i) {
     const projectGroup = this.getProjectControl(i);
-    projectGroup.get('isTaskForm').setValue(true);
+    projectGroup.get('isTaskForm')?.setValue(true);
    
   }
 
@@ -245,7 +245,7 @@ getValue(i,j,value,type?){
     const projectGroup = this.createProjectDetails();
     this.createdProject.push(projectGroup)
     this.isSaved = false;
-    projectGroup.get('isSaved').setValue(false);
+    projectGroup.get('isSaved')?.setValue(false);
     
   }
   
@@ -261,7 +261,7 @@ getValue(i,j,value,type?){
   }
   getProjectNameById(projectId: number,projectIndex:number): string {
     const projectGroup = this.getProjectControl(projectIndex);
-    const project = projectGroup.get('projectList').getRawValue()?.find(p => p.id === projectId);
+    const project = projectGroup.get('projectList')?.getRawValue()?.find(p => p.id === projectId);
     return project ? project.project_name : 'NA';
   }
   
@@ -344,12 +344,12 @@ saveTask(projectIndex: number): void {
     
     return; // Exit early if there are validation errors
   }
-  const selectedDate = projectGroup.get('created_date').value
+  const selectedDate = projectGroup.get('created_date')?.value
 
   // Calculate values
   // const remainingHours = this.getRemainingHours(projectIndex);
   const remainingHours = this.calculateTotalHoursForDate(selectedDate);
-  const enteredTime = this.taskForm.get('hours_to_complete').value;
+  const enteredTime = this.taskForm.get('hours_to_complete')?.value;
   const totalHoursForDate = this.totalHoursForDate || 0; // Default to 0 if undefined
 
   
@@ -358,7 +358,7 @@ saveTask(projectIndex: number): void {
   
   if (enteredTaskId) {
     const isDuplicateTask = taskArray.controls.some((task: FormGroup) => 
-      task.get('task_id').value === enteredTaskId
+      task.get('task_id')?.value === enteredTaskId
     );
     if (isDuplicateTask ) {
       this.api.showWarning(`Duplicate task names are not allowed.`);
@@ -367,7 +367,7 @@ saveTask(projectIndex: number): void {
   }
   if (enteredTime  > remainingHours ) {
     this.api.showWarning(`You have only ${remainingHours } hours left for this date.`);
-    projectGroup.get('isTaskForm').setValue(true);
+    projectGroup.get('isTaskForm')?.setValue(true);
   } 
 // If everything is okay, save the task
   else {
@@ -383,7 +383,7 @@ saveTask(projectIndex: number): void {
   task?.get('task_id')?.disable();
   task?.get('hours_to_complete')?.disable();
   // this.disableTaskDetailsBasedOnEditing(projectIndex,taskIndex,false)
-    projectGroup.get('isTaskForm').setValue(false);
+    projectGroup.get('isTaskForm')?.setValue(false);
     this.taskForm.reset();
   }
 }
@@ -433,7 +433,7 @@ deleteProject(projectIndex: number): void {
   if (projectsArray) {
     // Remove the project at the specified index
     projectsArray.removeAt(projectIndex);
-    projectGroup.get('isSaved').setValue(false);
+    projectGroup.get('isSaved')?.setValue(false);
     // Optional: If you need to update any other state or UI after deletion, do it here
     this.api.showWarning('Timesheet deleted successfully!'); // Example of showing a success message
     this.isSaved = true;
@@ -469,7 +469,7 @@ isPointerDisabled(): boolean {
     
    // Check if the specific project's form controls and task form are valid
    const isProjectGroupInvalid = projectGroup.invalid;
-   const isTaskFormInvalid = projectGroup.get('isTaskForm').value ? this.taskForm.invalid : false;
+   const isTaskFormInvalid = projectGroup.get('isTaskForm')?.value ? this.taskForm.invalid : false;
   
    const tasksArray = projectGroup.get('task_list') as FormArray;
    let isEditing = false;
@@ -507,25 +507,25 @@ isPointerDisabled(): boolean {
    if (isProjectGroupInvalid || isTaskFormInvalid) {
      // Mark all controls as touched for the specific index
      projectGroup.markAllAsTouched();
-     if (projectGroup.get('isTaskForm').value) {
+     if (projectGroup.get('isTaskForm')?.value) {
        this.taskForm.markAllAsTouched();
      }
      
      this.api.showWarning('Please select the mandatory fields');
-     projectGroup.get('isSaved').setValue(false);
+     projectGroup.get('isSaved')?.setValue(false);
      this.isSaved = false;
      this.isTaskSubmitted = true;
       }else if(hasDuplicate){
         this.api.showWarning(`Timesheet already present for this project`);
       }
       else {
-     if (isEditing || (projectGroup.get('isTaskForm').value && this.taskForm.invalid) || (projectGroup.get('isTaskForm').value && this.taskForm.valid )) {
+     if (isEditing || (projectGroup.get('isTaskForm')?.value && this.taskForm.invalid) || (projectGroup.get('isTaskForm')?.value && this.taskForm.valid )) {
        this.api.showWarning('Please add task details before save');
        this.isTaskSubmitted = true;
      } else {
        this.isTaskSubmitted = false;
-       projectGroup.get('showSave').setValue(true);
-       projectGroup.get('isSaved').setValue(true);
+       projectGroup.get('showSave')?.setValue(true);
+       projectGroup.get('isSaved')?.setValue(true);
        this.panels.toArray()[i].close();
        this.isSaved = true;
      }
@@ -578,18 +578,35 @@ isPointerDisabled(): boolean {
   }
   
   
-  clearTaskList(projectIndex: number): void {
-    const taskArray = this.getTaskArray(projectIndex);
-    taskArray.clear(); // Removes all tasks in the `task_list` without deleting the project
-    const projectGroup = this.getProjectControl(projectIndex);
-    projectGroup.get('isTaskForm').setValue(true);
-    this.taskForm.reset()
-  }
+  // clearTaskList(projectIndex: number): void {
+  //   const taskArray = this.getTaskArray(projectIndex);
+  //   taskArray.clear(); // Removes all tasks in the `task_list` without deleting the project
+  //   const projectGroup = this.getProjectControl(projectIndex);
+  //   projectGroup.get('isTaskForm')?.setValue(true);
+  //   this.taskForm.reset()
+  // }
+      // Update clearTaskList to properly handle validation
+clearTaskList(projectIndex: number): void {
+  const taskArray = this.getTaskArray(projectIndex);
+  taskArray.clear();
+  const projectGroup = this.getProjectControl(projectIndex);
+  projectGroup.get('isTaskForm')?.setValue(true);
+  
+  // Reset task form with validation
+  this.taskForm.reset();
+  this.taskForm.get('task_id')?.setValidators([Validators.required]);
+  this.taskForm.get('hours_to_complete')?.setValidators([Validators.required]);
+  this.taskForm.updateValueAndValidity();
+  
+  // Mark as touched to show validation messages
+  this.taskForm.get('task_id')?.markAsTouched();
+  this.taskForm.get('hours_to_complete')?.markAsTouched();
+}
 
   resetTaskForm(i): void {
     this.taskForm.reset();
     const projectGroup = this.getProjectControl(i);
-    projectGroup.get('isTaskForm').setValue(false);
+    projectGroup.get('isTaskForm')?.setValue(false);
   }
 
   createProjectDetails(): FormGroup {
@@ -598,10 +615,10 @@ isPointerDisabled(): boolean {
       project_id: ['',Validators.required],
       description: [''],
       created_date: ['',Validators.required],
-      clientList:[],
-      projectList: [],
-      taskList: [],
-      time: [],
+      clientList: [[]],
+      projectList: [[]],
+      taskList: [[]],
+      time: [[]],
       task_list: this.builder.array([]),
       showSave: [true],  // Add variable to control save button visibility
       isTaskForm: [true], // Add variable to control task form visibility
@@ -681,8 +698,69 @@ isPointerDisabled(): boolean {
     this.client_id = event
     let query:any;
     query = this.userRole === 'admin' ? `?organization=${this.orgId}&client=${event}`:`?organization=${this.orgId}&client=${event}&employee_id=${this.userId}`
-    this.createdProject?.at(index)?.patchValue({projectList: []})
-    this.createdProject.at(index)?.patchValue({taskList: []})
+     // Get the specific FormGroup from FormArray
+  // Get the specific FormGroup from FormArray
+  const projectForm = this.createdProject.at(index);
+    
+  // Reset fields while keeping the client_id
+  projectForm.patchValue({
+    project_id: '',  // This is the actual form control that needs validation
+    description: '',
+    created_date: '',
+    taskList: [],
+    projectList: []
+  });
+
+   // Reset and mark the task form if it exists
+   if (this.taskForm) {
+    this.taskForm.reset();
+    this.taskForm.get('task_id')?.markAsTouched();
+    this.taskForm.get('hours_to_complete')?.markAsTouched();
+  }
+
+  // Mark the required fields as touched to trigger validation
+  // projectForm.get('project_id')?.markAsTouched();
+  // projectForm.get('created_date')?.markAsTouched();
+
+  // // The validators should already be set in createProjectDetails()
+  // // but if you need to ensure they're set, you can do it here:
+  // if (!projectForm.get('project_id')?.hasValidator(Validators.required)) {
+  //   projectForm.get('project_id')?.setValidators([Validators.required]);
+  //   projectForm.get('project_id')?.updateValueAndValidity();
+  // }
+
+  // if (!projectForm.get('created_date')?.hasValidator(Validators.required)) {
+  //   projectForm.get('created_date')?.setValidators([Validators.required]);
+  //   projectForm.get('created_date')?.updateValueAndValidity();
+  // }
+ 
+  // if (!projectForm.get('taskList')?.hasValidator(Validators.required)) {
+  //   projectForm.get('taskList')?.setValidators([Validators.required]);
+  //   projectForm.get('taskList')?.updateValueAndValidity();
+  // }
+
+  // // Ensure the controls are set to required and marked as touched
+  // projectForm.get('projectList')?.setValidators([Validators.required]);
+  // projectForm.get('projectList')?.updateValueAndValidity();
+  // projectForm.get('projectList')?.markAsTouched();
+
+  // projectForm.get('created_date')?.setValidators([Validators.required]);
+  // projectForm.get('created_date')?.updateValueAndValidity();
+  // projectForm.get('created_date')?.markAsTouched();
+
+  // projectForm.get('taskList')?.setValidators([Validators.required]);
+  // projectForm.get('taskList')?.updateValueAndValidity();
+  // projectForm.get('taskList')?.markAsTouched();
+
+  
+
+  // Only mark fields as touched if client has been changed
+  
+    projectForm.get('project_id')?.markAsTouched();
+    projectForm.get('created_date')?.markAsTouched();
+    projectForm.get('taskList')?.markAsTouched();
+    projectForm.get('projectList')?.markAsTouched();
+
     this.api.getData(`${environment.live_url}/${environment.project}/${query}`).subscribe((res:any)=>{
       if(res){
         this.allProject = res
@@ -690,7 +768,14 @@ isPointerDisabled(): boolean {
         this.createdProject?.at(index)?.patchValue({projectList: this.projectList})
 
         this.clearTaskList(index)
-
+        if (this.taskForm) {
+          Object.keys(this.taskForm.controls).forEach(key => {
+            const control = this.taskForm.get(key);
+            if (control) {
+              control.updateValueAndValidity();
+            }
+          });
+        }
         // ----------------
       }
      
@@ -702,14 +787,37 @@ isPointerDisabled(): boolean {
     this.project_id = event
     let query:any;
     query = this.userRole === 'admin' ? `?project=${event}`:`?project=${event}&employee_id=${this.userId}`
+    const projectForm = this.createdProject.at(index);
     
+    // Reset fields while keeping the client_id
+    projectForm.patchValue({
+      description: '',
+      created_date: '',
+      taskList: [],
+    });
+  
+     // Reset and mark the task form if it exists
+     if (this.taskForm) {
+      this.taskForm.reset();
+      this.taskForm.get('task_id')?.markAsTouched();
+      this.taskForm.get('hours_to_complete')?.markAsTouched();
+    }
     this.api.getData(`${environment.live_url}/${environment.project_task}/${query}`).subscribe((res:any)=>{
       if(res){
        this.allTask = res 
        this.taskList = [...this.allTask]
         // console.log(res.data[0].project_related_task_list,"RESPONSETASK n/----------------")
         this.createdProject.at(index)?.patchValue({taskList: this.taskList})
+       
         this.clearTaskList(index)
+        if (this.taskForm) {
+          Object.keys(this.taskForm.controls).forEach(key => {
+            const control = this.taskForm.get(key);
+            if (control) {
+              control.updateValueAndValidity();
+            }
+          });
+        }
       }
       
     },(error =>{
