@@ -455,6 +455,7 @@ getModuleAccess(){
   });
 }
 isPointerDisabled(): boolean {
+  // note while setting the user role asma is user lowercase
   if (this.userRole === 'admin') {
     return true; // Enable for Admin (pointer-events: all)
   }

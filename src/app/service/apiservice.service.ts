@@ -272,6 +272,13 @@ export class ApiserviceService {
   updateProject(id: any, data: any) {
     return this.http.put(`${this.baseurl}/project/${id}/`, data)
   }
+
+  postProjectTask(data){
+    return this.http.post(`${this.baseurl}/project-task/`,data)
+  }
+  putProjectTask(id,data){
+    return this.http.put(`${this.baseurl}/project-task/${id}/`,data)
+  }
   // Project
 
   //reporting/Aprrover manager

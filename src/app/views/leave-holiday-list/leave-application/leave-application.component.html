@@ -1,5 +1,5 @@
 <div class="generic-form bg">
-  <form [formGroup]="leaveForm">
+  <form [formGroup]="leaveForm" [ngStyle]="{'pointer-events': isPointerDisabled() ? 'all' : 'none'}">
       <!-- Leave Type Section -->
       <h5 class="px-2 c-header">Leave Type</h5>
       <div class="row mb-2">
@@ -224,8 +224,8 @@
       <!-- Buttons -->
       <div class="row">
           <div class="col-md-6 text-right">
-              <button mat-raised-button class="submit-button" type="button" (click)="submit()"
-                [disabled]="userRole === 'Admin' ? false : (userRole === 'Employee' && !accessPermissions[0]?.create)">Apply</button>
+              <button *ngIf="isPointerDisabled()" mat-raised-button class="submit-button" type="button" (click)="submit()">Apply</button>
+              <button *ngIf="!isPointerDisabled()" disabled mat-raised-button>Apply</button>
           </div>
       </div>
   </form>

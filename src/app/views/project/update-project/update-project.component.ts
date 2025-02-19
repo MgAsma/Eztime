@@ -475,15 +475,66 @@ export class UpdateProjectComponent implements OnInit {
       taskList.markAllAsTouched();
     }
     else {
-      taskList.patchValue({
-        is_saved: true,
-        edit_icon: true,
-        is_cancelled: false
-      });
-      this.api.showSuccess('Task saved.');
+      // taskList.patchValue({
+      //   is_saved: true,
+      //   edit_icon: true,
+      //   is_cancelled: false
+      // });
+      console.log(taskList.value,'taskList')
+      let data = {
+        "project_id":this.id,
+        "task_name": taskList.value.task_name,
+        "assignee": taskList.value.assignee,
+        "status": taskList.value.status,
+      }
+      if (taskList.value.id) {
+        data['updated_by'] = this.user_id; 
+        this.updateProjectTask(data,taskList.value.id,index1)
+      } else {
+        data['created_by'] = this.user_id; 
+        this.addProjectTask(data,index1);
+      }
     }
     // console.log(this.updateForm.value, 'clicked on save button')
   }
+  addProjectTask(data:any,index1){
+    // console.log(data);
+    const taskList = this.subTasks.at(index1) as FormGroup;
+    this.api.postProjectTask(data).subscribe(
+      (res:any)=>{
+        // console.log(res)
+        this.api.showSuccess(res.message);
+        taskList.patchValue({
+          is_saved: true,
+          edit_icon: true,
+          is_cancelled: false
+        });
+      },
+      (error:any)=>{
+        // console.log(error)
+        this.api.showError(error.error.error);
+      }
+    )
+  }
+   updateProjectTask(data:any,id,index1){
+    // console.log(data)
+    const taskList = this.subTasks.at(index1) as FormGroup;
+    this.api.putProjectTask(id,data).subscribe(
+      (res:any)=>{
+        // console.log(res)
+        this.api.showSuccess(res.message);
+        taskList.patchValue({
+          is_saved: true,
+          edit_icon: true,
+          is_cancelled: false
+        });
+      },
+      (error:any)=>{
+        // console.log(error);
+        this.api.showError(error.error.error);
+      }
+    )
+   }
 
   editTask(index1: any) {
     const taskList = this.subTasks.at(index1) as FormGroup;
@@ -498,7 +549,7 @@ export class UpdateProjectComponent implements OnInit {
     taskList.addControl('original_task_name', new FormControl(currentTaskName));
     taskList.addControl('original_task_status', new FormControl(currentTaskStatus));
     taskList.addControl('original_task_assignee', new FormControl(currentTaskAssignee));
-    // console.log(this.updateForm.value, 'clicked on edit button')
+    console.log(this.updateForm.value, 'clicked on edit button')
   }
   cancelEdit(index1: any) {
     const taskList = this.subTasks.at(index1) as FormGroup;
@@ -631,7 +682,7 @@ export class UpdateProjectComponent implements OnInit {
           // estimated_hour: this.updateForm.value.estimated_hour,
           // estimated_billing: this.updateForm.value.estimated_billing,
           status: this.updateForm.value.status_id,
-          project_task: tempList,
+          // project_task: tempList,
           project_category: this.updateForm.value.project_category,
 
         }

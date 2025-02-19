@@ -351,6 +351,7 @@ export class CreateNewProjectComponent implements OnInit {
     return this.builder.group({
       task_name: ['', [Validators.required, Validators.maxLength(150)]],
       status: ['', Validators.required],
+      created_by:this.user_id,
       assignee: null,
       is_saved: false,
       is_cancelled: false,
@@ -510,6 +511,7 @@ export class CreateNewProjectComponent implements OnInit {
           this.subTasks.push(this.builder.group({
             task_name: [task.task_name, [Validators.required, Validators.maxLength(150)]],
             status: ['', Validators.required],
+            created_by:this.user_id,
             assignee: null,
             is_saved: false,
             is_cancelled: false,
@@ -570,10 +572,11 @@ export class CreateNewProjectComponent implements OnInit {
       if (allTasksValid == true && this.invalidDate == false) {
         let tempTeamIds = this.selectedTeamId?.length? this.selectedTeamId.map((element: any) => ({ employee: element }))  : [];
         let tempList: any;
-        tempList = this.projectForm.value['project_task'].map(({ task_name, status, assignee }) => ({
+        tempList = this.projectForm.value['project_task'].map(({ task_name, status, assignee ,created_by}) => ({
           task_name,
           status,
-          assignee
+          assignee,
+          created_by
         }));
         let data = {
           organization: this.projectForm.value.organization,

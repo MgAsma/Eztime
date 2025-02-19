@@ -33,7 +33,7 @@ export class LeaveApplicationComponent implements OnInit {
   fileUrl: string | ArrayBuffer;
   user_id;
   userRole:string;
-  accessPermissions = []
+  accessPermissions:any = []
   balanceLeave: any;
   workingDays: number;
   min = new Date().toISOString().split('T')[0];
@@ -344,6 +344,15 @@ sessions = [
         console.log('No matching access found.');
       }
     });
+  }
+  isPointerDisabled(): boolean {
+    if (this.userRole === 'Admin') {
+      return true;
+    }
+    if (this.userRole === 'Employee' && this.accessPermissions[0]?.create==true) {
+      return true;
+    }
+    return false;
   }
 
   // Filtering method
