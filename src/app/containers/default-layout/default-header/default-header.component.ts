@@ -96,7 +96,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
         this.getMySubscription()
       }
     })
-    if(this.user_role_Name === 'Admin'){
+    if(this.user_role_Name !== 'SuperAdmin'){
       this.getMySubscription()
     }
 
