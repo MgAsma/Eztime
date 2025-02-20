@@ -84,7 +84,7 @@
       <div class="notification-container" *ngIf="user_role_name === 'SUPERADMIN' || user_role_name === 'SUPER ADMIN'">
         <div class="notification-modal">
         <div class="n-header">
-          <h2 class="title">Notification </h2>
+          <h2 class="title">Notifications </h2>
           <div class="close-btn"><i class="bi bi-x-lg" (click)="closeBtn()"></i> </div>
         </div>
       </div>
@@ -93,7 +93,7 @@
         <div *ngFor="let notification of displayedNotifications$" class="notification-item" 
         [ngClass]="{'new-notification': !notification.is_seen, 'seen-notification': notification.is_seen}"
         (click)="handleNotificationClick(notification)" style="cursor: pointer;" 
-        [routerLink]="notification?.text?.redirect_url || null">
+        [routerLink]="notification?.text?.redirect_url || null ">
           <div class="tree-line" *ngIf="notification.text.name || notification.text.subscription_type">
             <i [class]="notification.text.icon"></i>
           </div>
@@ -137,7 +137,7 @@
       <div class="notification-container" *ngIf="user_role_name === 'EMPLOYEE'">
         <div class="notification-modal">
         <div class="n-header">
-          <h2 class="title">Notification </h2>
+          <h2 class="title">Notifications </h2>
           <div class="close-btn"><i class="bi bi-x-lg" (click)="closeBtn()"></i> </div>
         </div>
       </div>
