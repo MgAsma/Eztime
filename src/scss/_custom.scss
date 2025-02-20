@@ -244,9 +244,9 @@ form {
     .c_class.modal-dialog {
         position: absolute !important;
         right: 15px !important;
-        top: 28px !important;
+        top: 67px !important;
         width: 30%;
-        margin: var(--bs-modal-margin);
+        // margin: var(--bs-modal-margin);
         pointer-events: none;
     }
     .buystandardplan.modal-dialog {
