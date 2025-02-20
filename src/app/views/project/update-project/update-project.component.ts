@@ -509,6 +509,8 @@ export class UpdateProjectComponent implements OnInit {
           edit_icon: true,
           is_cancelled: false
         });
+        this.subTasks.clear();
+        this.edit();
       },
       (error:any)=>{
         // console.log(error)
