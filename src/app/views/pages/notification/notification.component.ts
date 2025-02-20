@@ -158,10 +158,10 @@ export class NotificationComponent implements OnInit {
       (res: any) => {
         if (res.results) {
           this.totalCount = res.total_no_of_record;
-  
+          this.notificationService.notificationCount.next(res?.seen_and_unseen_data?.total_is_not_seen)
           if (this.user_role_name === 'EMPLOYEE') {
             let notifications = res.results;
-  
+            
             // Extract unique redirect URLs (remove duplicates)
             let uniqueUrls:any = [...new Set(notifications.map(n => n?.text?.redirect_url).filter(url => !!url))];
   
@@ -190,6 +190,7 @@ export class NotificationComponent implements OnInit {
                 });
   
                 this.displayedNotifications$ = notifications;
+              
               });
             } else {
               // If no URLs exist, update notifications directly
