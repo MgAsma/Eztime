@@ -95,13 +95,32 @@
                 <strong>{{items?.remaining_number_of_days  || 0 }} {{items?.remaining_number_of_days > 1 ? 'days left' : 'day left'}}</strong>
           </button>
         </div>
-      <button *ngIf="hideHeaderButton" mat-icon-button aria-label="Get Started" class="icon-button user-guide-btn"
-      container="body"
-            ngbTooltip="Get started" placement="top" (click)="openWelcomeDialog()">
-            <img src="../../../assets/images/bulb.svg" width="25" height="25">
-      </button>
-   
-        <button *ngIf="hideHeaderButton" mat-icon-button aria-label="Notifications" class="icon-button"
+        <div *ngIf="hideHeaderButton && user_role_Name !== 'SuperAdmin'">
+          <div *ngFor="let items of mySubscription">
+            <button *ngIf="items?.is_active" mat-icon-button aria-label="Get Started" class="icon-button user-guide-btn"
+            container="body"
+                  ngbTooltip="Get started" placement="top" (click)="openWelcomeDialog()">
+                  <img src="../../../assets/images/bulb.svg" width="25" height="25">
+            </button>
+          </div>
+        </div>
+      
+      <div *ngIf="user_role_Name === 'SuperAdmin'">
+        <button  mat-icon-button aria-label="Notifications" class="icon-button"
+        container="body" ngbTooltip="Notifications" placement="top" 
+        (click)="openNotification()" style="position: relative;">
+      <img src="../../../../assets/images/Notification.svg" class="notification-icon" />
+      
+      <!-- Custom Badge -->
+      <span class="custom-badge" *ngIf="notification_count > 0" [ngClass]="notification_count > 98 ? 'cs-notification-pad' : ''">
+        {{ notification_count > 98 ? '99+' : notification_count }}
+      </span>
+
+    </button>
+       
+      </div>
+      <div *ngFor="let items of mySubscription">
+        <button *ngIf="items?.is_active" mat-icon-button aria-label="Notifications" class="icon-button"
         container="body" ngbTooltip="Notifications" placement="top" 
         (click)="openNotification()" style="position: relative;">
       
@@ -113,7 +132,7 @@
       </span>
 
     </button>
-
+      </div>
     <button mat-icon-button aria-label="Logout" class="icon-button mobile-hide-content"
     (click)="openDialogue()" container="body"
             ngbTooltip="Logout" placement="top">
