@@ -25,12 +25,14 @@ export class RolesAccessComponent implements OnInit {
   itemId: any;
   buttonName: any;
   selectedTab: any = null;
+  user_role: any
   constructor(private _fb: FormBuilder, private router: Router, private routes: ActivatedRoute, private common_service: CommonServiceService,
     private api: ApiserviceService,
   ) {
     this.user_id = sessionStorage.getItem('user_id')
     this.designation_id = this.routes.snapshot.paramMap.get('id')
-    this.organization_id = sessionStorage.getItem('organization_id')
+    this.organization_id = sessionStorage.getItem('organization_id');
+    this.user_role = sessionStorage.getItem('user_role_name')
     // this.mainMenu = [
     //   {
     //     label: 'Accounts',
@@ -189,8 +191,8 @@ export class RolesAccessComponent implements OnInit {
   allrolesList() {
     this.api.userAccess(this.user_id).subscribe(
       (data: any) => {
-        // console.log('all list', data,)
-        this.mainMenu = data.access_list.filter((module_name)=> module_name.name!='Subscription');
+        console.log('all list', data,)
+        this.mainMenu = data.access_list.filter((module_name) => module_name.name != 'Subscription');
         this.getAccessbilitiesByDesignationId();
       },
       (error: any) => {
@@ -198,27 +200,59 @@ export class RolesAccessComponent implements OnInit {
       }
     )
   }
+
   // get access given data
   getAccessbilitiesByDesignationId() {
     this.api.getAccessByDesignationId(`?designation=${this.designation_id}&organization=${this.organization_id}`).subscribe(
       (res: any) => {
         console.log(res, 'sub modules')
         if (res.length == 0 || res[0].access_list.length == 0) {
-          let temp = this.mainMenu.find((module_name: any) => module_name.name === 'Dashboard');
-          temp.access[0].operations[0].view = true;
-          this.passingChildrenToTabel(temp)
-        } else if (res.length != 0 && res[0].access_list.length != 0){
-          this.mainMenu.forEach((element1: any) => {
-            const matchingAccess = res[0].access_list.find((accessItem: any) => accessItem.name === element1.name);
-            if (matchingAccess) {
-              element1.access.forEach((element1_1: any) => {
-                if (!matchingAccess.access.some((item: any) => item.name === element1_1.name)) {
-                  matchingAccess.access.push(element1_1);
+          if (this.user_role === 'Admin') {
+            let temp = this.mainMenu.find((module_name: any) => module_name.name === 'Dashboard');
+            temp.access[0].operations[0].view = true;
+            console.log(temp)
+            this.passingChildrenToTabel(temp)
+          } else {
+            this.manualFuction();
+          }
+        } else if (res.length != 0 && res[0].access_list.length != 0) {
+          let temp_dataa: any = [];
+          let menuMap = new Map(this.mainMenu.map((item: any) => [item.name, item]));
+          res[0].access_list.forEach((res_data: any) => {
+            let matchedItem:any = menuMap.get(res_data.name);
+
+            if (matchedItem) {
+              temp_dataa.push(res_data);
+
+              let existingAccessNames = new Set(res_data.access.map((access: any) => access.name));
+
+              matchedItem.access.forEach((list_access: any) => {
+                if (!existingAccessNames.has(list_access.name)) {
+                  res_data.access.push(list_access);
                 }
               });
             }
           });
-          this.passingChildrenToTabel(res[0].access_list[0])
+
+          // this.mainMenu.forEach((element1: any) => {  
+            // let matchingAccess = res[0].access_list.find((accessItem: any) => accessItem.name === element1.name);
+            // console.log('match',matchingAccess)
+            // if (matchingAccess) {
+            //   console.log('matched',matchingAccess)
+            //   element1.access.forEach((element1_1: any) => {
+            //     // push the remaining access to the array
+            //     if (!matchingAccess.access.some((item: any) => item.name === element1_1.name)) {
+            //       matchingAccess.access.push(element1_1);
+            //       // console.log('not match',matchingAccess)
+            //     }
+            //   });
+            // } 
+          // });
+          if(temp_dataa.length>0){
+            this.passingChildrenToTabel(res[0].access_list[0])
+          } else{
+            this.passingChildrenToTabel(this.mainMenu[0])
+          }
         }
       },
       (error) => {
@@ -228,10 +262,30 @@ export class RolesAccessComponent implements OnInit {
 
   }
 
+  manualFuction() {
+    let temp = JSON.parse(JSON.stringify(this.mainMenu[0]));
+    temp?.access?.forEach(item => {
+      if (item?.operations?.length) {
+        Object.keys(item.operations[0]).forEach(key => {
+          if (item.operations[0][key] === true) {
+            item.operations[0][key] = false;
+          }
+        });
+      }
+    });
+    temp.access[0].operations[0].view = true;
+    this.selectedTab = temp.name;
+    let access_temp = {
+      'name': temp.name,
+      'access': temp.access,
+    }
+    this.allChildrens = access_temp;
+  }
+
   // getting data from child
   receiveDataFromChild(data: any) {
     // console.log('from child', data)
-    if(data){
+    if (data) {
       this.mainMenu.forEach((access: any) => {
         const moduleMatch = data.access_list.find((module_name: any) => module_name.name === access.name);
         if (moduleMatch) {
@@ -269,47 +323,6 @@ export class RolesAccessComponent implements OnInit {
         }
       });
     }
-  }
-
-  // Tesing
-
-  accessData: any;
-  updateAccess(event: any) {
-    // console.log(event)
-    this.accessData = event;
-  }
-  saveAccess() {
-    if (this.accessData.text === 'Add') {
-      this.addSubModuleAccess(this.accessData.data);
-    } else {
-      this.updateSubModuleAccess(this.accessData.data);
-    }
-  }
-  addSubModuleAccess(updated_access: any) {
-    this.api.postdesignationRoleAccess(updated_access).subscribe(
-      (res) => {
-        this.api.showSuccess(res['message']);
-        setTimeout(() => {
-          this.ngOnInit();
-        }, 1000);
-      },
-      (error: any) => {
-        this.api.showError(error.error.message);
-      }
-    )
-  }
-  updateSubModuleAccess(updated_access: any) {
-    this.api.putdesignationRoleAccess(updated_access, this.itemId).subscribe(
-      (res) => {
-        this.api.showSuccess(res['message']);
-        setTimeout(() => {
-          this.ngOnInit();
-        }, 1000);
-      },
-      (error: any) => {
-        this.api.showError(error.error.message);
-      }
-    )
   }
 
   backToAllDesignations() {

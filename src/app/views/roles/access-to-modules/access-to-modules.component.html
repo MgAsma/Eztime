@@ -61,3 +61,31 @@
         </div>
     </div>
 </div>
+
+<!-- <div *ngFor="let i of data.access">
+    <div class="card">
+        <div>{{i.name}}</div>
+        <div class="d-flex">
+            <div class="row">
+                <input type="checkbox" class="custom-checkbox" (change)="modifyAccess($event,i.name,'view')" 
+                                    [checked]="i.operations[0].view">
+                                    <label for="">view</label>
+            </div>
+            <div>
+                <input type="checkbox" class="custom-checkbox" (change)="modifyAccess($event,i.name,'create')" 
+                                    [checked]="i.operations[0].create">
+                                    <label for="">create</label>
+            </div>
+            <div>
+                <input type="checkbox" class="custom-checkbox" (change)="modifyAccess($event,i.name,'update')" 
+                                    [checked]="i.operations[0].update">
+                                    <label for="">update</label>
+            </div>
+            <div>
+                <input type="checkbox" class="custom-checkbox" (change)="modifyAccess($event,i.name,'delete')" 
+                                    [checked]="i.operations[0].delete">
+                                    <label for="delete"></label>
+            </div>
+        </div>
+    </div>
+</div> -->

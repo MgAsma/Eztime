@@ -34,7 +34,7 @@ export class AccessToModulesComponent implements OnInit {
 
   ngOnChanges(): void {
     if (this.data?.access?.length > 0) {
-      // console.log('this.data', this.data)
+      console.log('this.data', this.data)
       this.getAccessForDesignation(this.designation_id);
     }
   }

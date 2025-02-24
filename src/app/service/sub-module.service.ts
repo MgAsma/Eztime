@@ -16,26 +16,39 @@ export class SubModuleService {
   }
 
   getAccessForActiveUrl(id: number,url?:string): Observable<any> {
-    const activeUrl =  url || this.router.url;
+    let activeUrl =  url || this.router.url;
     return this.getAccessList(id).pipe(
       map((response: any) => {
         const accessList = response?.access_list || [];
-
+        let matchedAccess = null;
         for (const module of accessList) {
           if (module.url && module.url === activeUrl) {
             return module.access; 
+          } else{
+            console.log(activeUrl)
           }
+
           if (module.children && module.children.length > 0) {
             const matchedChild = module.children.find((child: any) => child.url === activeUrl);
             if (matchedChild) {
-              const matchedAccess = module.access.find((subAccess: any) => subAccess.name === matchedChild.name);
+               matchedAccess = module.access.find((subAccess: any) => subAccess.name === matchedChild.name);
               return matchedAccess ? [matchedAccess] : null; 
             }
           }
         }
-
+        let firstIndexData = response?.access_list[0]
+        if(!matchedAccess){
+          if(firstIndexData.url){
+            activeUrl = firstIndexData.url
+          } else if (firstIndexData.children && firstIndexData.children.length > 0){
+            activeUrl = firstIndexData.children[0].url
+          }
+          this.router.navigateByUrl(activeUrl);
+        }
         return null;
       })
     );
   }
+
+
 }
