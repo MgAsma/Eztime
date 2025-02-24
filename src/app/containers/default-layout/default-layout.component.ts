@@ -23,6 +23,7 @@ interface NavItem {
 })
 export class DefaultLayoutComponent {
   iconSize = false;
+  fgSize:number = 30;
   user_role_Name: any;
   user_name: string;
   last_name:any;
