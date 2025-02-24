@@ -74,8 +74,8 @@
       </div>
       <!-- View More -->
       <div class="p-r">
-        <div class="view-more" *ngIf="displayedNotifications$.length > 4" (click)="getNotification(10,'viewmore')">
-          <button mat-button class="btn-more" [disabled]="displayedNotifications$.length === totalCount">View More</button>
+        <div class="view-more" *ngIf="displayedNotifications$.length > 4">
+          <button mat-button class="btn-more" [disabled]="displayedNotifications$.length === totalCount" (click)="getNotification(10,'viewmore')">View More</button>
         </div>
        </div>
       </div>
@@ -127,8 +127,8 @@
       </div>
        <!-- View More -->
        <div class="p-r">
-        <div class="view-more" *ngIf="displayedNotifications$.length > 4" (click)="getNotification(10,'viewmore')">
-          <button mat-button class="btn-more" [disabled]="displayedNotifications$.length === totalCount">View More</button>
+        <div class="view-more" *ngIf="displayedNotifications$.length > 4">
+          <button mat-button class="btn-more" [disabled]="displayedNotifications$.length === totalCount" (click)="getNotification(10,'viewmore')">View More</button>
         </div>
        </div>
       </div>
@@ -215,8 +215,8 @@
       </div>
        <!-- View More -->
        <div class="p-r">
-        <div class="view-more" *ngIf="displayedNotifications$.length > 4" (click)="getNotification(10,'viewmore')">
-          <button mat-button class="btn-more" [disabled]="displayedNotifications$.length === totalCount">View More</button>
+        <div class="view-more" *ngIf="displayedNotifications$.length > 4" >
+          <button mat-button class="btn-more" [disabled]="displayedNotifications$.length === totalCount" (click)="getNotification(10,'viewmore')">View More</button>
         </div>
        </div>
       </div>
