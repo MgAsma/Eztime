@@ -147,11 +147,6 @@ export class NotificationComponent implements OnInit {
       this.page_size += page_size;
     }
   
-    if (this.page_size > this.totalCount + 1) {
-      this.disabledView = true;
-      return;
-    }
-  
     let params = `${environment.live_url}/${environment.notification}/?user-id=${this.user_id}&page=1&page_size=${this.page_size}`;
     
     this.api.getData(params).subscribe(
