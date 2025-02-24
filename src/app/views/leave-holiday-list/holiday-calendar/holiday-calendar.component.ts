@@ -33,9 +33,9 @@ export class HolidayCalendarComponent implements OnInit {
 
   ngOnInit(): void {
     this.common_service.setTitle(this.BreadCrumbsTitle);
-    this.organization_id = sessionStorage.getItem('organization_id');
+    this.organization_id = sessionStorage.getItem('organization_id') || '0';
     this.user_id = sessionStorage.getItem('user_id');
-    this.userRole = sessionStorage.getItem('user_role_name');
+    this.userRole = sessionStorage.getItem('user_role_name') || '';
     this.getHolidayList()
     this.initForm();
     this.getModuleAccess();
@@ -62,51 +62,116 @@ export class HolidayCalendarComponent implements OnInit {
   }
   selectedFile: File | null = null;
 
+  // onFileSelected(event: Event): void {
+  //   if(event){
+  //   const input = event.target as HTMLInputElement;
+  //   if (input.files && input.files[0]) {
+  //     this.file = input.files[0];
+  //     this.fileDataUrl = input.files[0]
+  //     // Validate file type (optional)
+  //     if (this.file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || 
+  //         this.file.type === "application/vnd.ms-excel") {
+  //       this.selectedFile = this.file;
+  //      // console.log('Selected file:', this.file);
+  //     }
+  //     //  else {
+  //     //   this.api.showError('Invalid file type. Only Excel files are allowed.');
+  //     //   this.selectedFile = null; // Reset if file type is invalid
+  //     // }
+  //   }
+  // }
+  // }
   onFileSelected(event: Event): void {
-    if(event){
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      this.file = input.files[0];
-      this.fileDataUrl = input.files[0]
-      // Validate file type (optional)
-      if (this.file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || 
-          this.file.type === "application/vnd.ms-excel") {
+  
+    if (input.files && input.files.length > 0) {
+      const selectedFile = input.files[0];
+  
+      // Validate file type
+      if (
+        selectedFile.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+        selectedFile.type === "application/vnd.ms-excel"
+      ) {
+        this.file = selectedFile;
         this.selectedFile = this.file;
-       // console.log('Selected file:', this.file);
+  
+        // Reset input value after a slight delay to allow re-selection
+        setTimeout(() => {
+          input.value = "";
+        }, 100); // Small delay to ensure the selection is registered
+      } else {
+        this.api.showError("Invalid file type. Only Excel files are allowed.");
+        this.selectedFile = null;
       }
-      //  else {
-      //   this.api.showError('Invalid file type. Only Excel files are allowed.');
-      //   this.selectedFile = null; // Reset if file type is invalid
-      // }
     }
   }
-  }
+  
+  
   get f(){
     return this.holidayListForm.controls
   }
-  submit(){
-    if(this.holidayListForm.invalid){
-      this.holidayListForm.markAllAsTouched()
-    }else{
-      this.formData = new FormData();
+  // submit(){
+  //   if(this.holidayListForm.invalid){
+  //     this.holidayListForm.markAllAsTouched()
+  //   }else{
+  //     this.formData = new FormData();
 
-      if (this.file) {
-         this.formData.set('file',this.file);
-         this.formData.set('organization_id',this.organization_id)
-      }
-      this.api.postData(`${environment.live_url}/${environment.holiday_calender}/`,this.formData).subscribe((res:any)=>{
-       if(res){
-         this.api.showSuccess(`Holiday list uploaded successfully!`)
-         this.getHolidayList()
-         this.holidayListForm.reset()
-         this.fileDataUrl = ""
-       }
-      },(error:any)=>{
-       this.api.showError(error?.error.message)
-      })
-    }
+  //     if (this.file) {
+  //        this.formData.set('file',this.file);
+  //        this.formData.set('organization_id',this.organization_id)
+  //     }
+  //     this.api.postData(`${environment.live_url}/${environment.holiday_calender}/`,this.formData).subscribe((res:any)=>{
+  //      if(res){
+  //        this.api.showSuccess(`Holiday list uploaded successfully!`)
+  //        this.getHolidayList()
+  //        this.holidayListForm.reset()
+  //        this.fileDataUrl = ""
+  //        this.selectedFile = null;
+  //        this.file = ""
+  //      }
+  //     },(error:any)=>{
+  //      this.api.showError(error?.error.message)
+       
+  //     })
+  //   }
     
+  // }
+  submit() {
+    if (this.holidayListForm.invalid) {
+      this.holidayListForm.markAllAsTouched();
+    } else {
+      this.formData = new FormData();
+  
+      if (this.file) {
+        this.formData.set("file", this.file);
+        this.formData.set("organization_id", this.organization_id);
+      }
+  
+      this.api.postData(`${environment.live_url}/${environment.holiday_calender}/`, this.formData).subscribe(
+        (res: any) => {
+          if (res) {
+            this.api.showSuccess(`Holiday list uploaded successfully!`);
+            this.getHolidayList();
+            this.holidayListForm.reset();
+  
+            // Reset file references properly
+            this.file = null;
+            this.selectedFile = null;
+  
+            // Reset the file input field
+            const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+            if (fileInput) {
+              fileInput.value = "";
+            }
+          }
+        },
+        (error: any) => {
+          this.api.showError(error?.error.message);
+        }
+      );
+    }
   }
+  
   fileFormatValidator(control: AbstractControl): ValidationErrors | null {
     const allowedFormats = ['.xlsx','.xls'];
     const file = control.value;

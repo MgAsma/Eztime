@@ -8,9 +8,9 @@
           <div class="image-container w-100 d-flex justify-content-between align-items-center" style="padding: 3px 15px;"
           *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || accessPermissions[0]?.create || userRole === 'Admin'">
              
-              <mat-label >{{fileDataUrl ? fileDataUrl.name : 'Upload Holiday List'}} </mat-label>
+              <mat-label >{{selectedFile ? selectedFile.name : 'Upload Holiday List'}} </mat-label>
               <button type="button" mat-icon-button (click)="triggerFileInput()">
-                  <i matTooltip="{{fileDataUrl ? 'Edit' : 'Upload Excel'}}" class="{{fileDataUrl ? 'bi bi-pencil-fill' : 'bi bi-file-earmark-spreadsheet'}}" id="edit-or-upload-icon"></i>
+                  <i matTooltip="{{selectedFile ? 'Edit' : 'Upload Excel'}}" class="{{selectedFile ? 'bi bi-pencil-fill' : 'bi bi-file-earmark-spreadsheet'}}" id="edit-or-upload-icon"></i>
                 </button>
           </div>
           <div  *ngIf="f['file_attachment']?.touched && f['file_attachment']?.invalid" style="font-size: 11px;padding-left: 10px;color:red">
