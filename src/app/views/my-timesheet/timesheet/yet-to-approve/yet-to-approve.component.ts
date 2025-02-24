@@ -51,7 +51,7 @@ export class YetToApproveComponent implements OnInit {
   ngOnInit(): void {
     this.user_id = sessionStorage.getItem('user_id')
     this.orgId = sessionStorage.getItem('org_id')
-    this.userRole = sessionStorage.getItem('user_role_name');
+    this.userRole = sessionStorage.getItem('user_role_name') || '';
     this.getModuleAccess();
     
   }
