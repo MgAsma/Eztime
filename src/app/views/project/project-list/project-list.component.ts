@@ -96,9 +96,9 @@ export class ProjectListComponent implements OnInit {
 
   getFilterBaseUrl(): string {
     if(this.userRole==='Employee'){
-      return `?${'organization'}=${this.orgId}&${'employee_id'}=${this.user_id}&page=${1}&page_size=${5}`
+      return `?${'organization'}=${this.orgId}&${'employee_id'}=${this.user_id}&page=${this.page}&page_size=${this.tableSize}`
     } else{
-      return `?${'organization'}=${this.orgId}&page=${1}&page_size=${5}`
+      return `?${'organization'}=${this.orgId}&page=${this.page}&page_size=${this.tableSize}`
     }
    
   }
