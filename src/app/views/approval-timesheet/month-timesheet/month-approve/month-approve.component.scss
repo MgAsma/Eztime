@@ -20,7 +20,7 @@ ul{
     padding: 10px;
     border-radius: 5px;
     margin: 0;
-
+    overflow: auto;
 }
 .proceedbtn{
     background-color: #3F51B5;
@@ -58,9 +58,7 @@ select{
     height: 40px;
     margin: 2px 1px;
 }
-span{
-    color: red;
-}
+
 p{
     color: grey;
 }
