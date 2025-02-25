@@ -614,7 +614,7 @@ clearTaskList(projectIndex: number): void {
     return this.builder.group({
       client_id: ['',Validators.required],
       project_id: ['',Validators.required],
-      description: [''],
+      description: ['',[Validators.pattern(/^\S.*$/),Validators.maxLength(200)]],
       created_date: ['',Validators.required],
       clientList: [[]],
       projectList: [[]],
