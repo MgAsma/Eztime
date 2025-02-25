@@ -7,11 +7,10 @@
                 <thead>
                     <tr>
                       <th scope="col">S.No</th>
-                      <th scope="col" class="text-center">Date </th>
-                      <th scope="col" class="text-center">Employee</th>
-                      <th scope="col" class="text-center">Project</th>
-                      <th scope="col" class="text-center">Task</th>
+                      <th scope="col" class="text-center">Created Date </th>
+                      <th scope="col" class="text-center">Project/Task</th>
                       <th scope="col" class="text-center">Hours</th>
+                      <th scope="col" class="text-center">Description</th>
                       <th scope="col" class="text-center">Rejected On</th>
                       <th scope="col" class="text-center">Rejected By</th>
                       <th scope="col" class="text-center">Comments</th>
@@ -22,14 +21,16 @@
                     <tr *ngFor='let item of result|paginate:paginationConfig; let i=index'>
                         <td>{{getContinuousIndex(i)}}</td>
                         <td class="text-center">{{item.created_date | date :'dd/MM/YYYY'}}</td>
-                        <td class="text-center">{{item.created_by_first_name|titlecase}}</td>
-                        <td class="text-center">{{item.project_name || 'NA'}}</td>
+                       
                         <td class="text-center" *ngIf="item.tasks.length">
-                          <div *ngFor="let task of item.tasks; let j = index">
+                        
+                          <div *ngFor="let task of item?.tasks; let j = index">
                             <div>
-                              {{ task?.task__task_name || 'NA' }} <br/>
+                              <span  *ngIf="j === 0">{{ item.project_name }} / </span> 
+                              {{ task?.task__task_name || 'NA' }}{{ j !== item.tasks.length - 1 ? ',' : '' }}
                             </div>
                           </div>
+                      
                         </td>
                         <td *ngIf="item.tasks.length === 0">
                           {{'NA'}}
@@ -43,6 +44,9 @@
                         </td>
                         <td *ngIf="item?.tasks?.length === 0">
                           {{'NA'}}
+                        </td>
+                        <td class="text-center" [title]="item.description">
+                          {{ item.description?.length > 20 ? (item.description | slice:0:20) + '...' : item.description || 'NA' }}
                         </td>
                         <td class="text-center">{{(item.rejected_on |date) || 'NA'}}</td>
                         <td class="text-center">{{(item.rejected_by_name  |titlecase) || 'NA'}}</td>
@@ -104,14 +108,7 @@
                 </div>
               </div>
               <div class="col-5">
-                  <ng-container>
-                      <!-- <span style="float: right;">
-
-                          <img src="../../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete" (click)="open(item)"/>
-                        </span>
-                        
-                     -->
-                  </ng-container>
+                  
                   
               </div>
             </div>
@@ -171,35 +168,18 @@
                     </div>
                   </div>
                   <div class="row">
-             
                     <div class="col-6">
                       <div class="row">
                         <div class="col-12">
-                          <h6 class="card-subtitle">Project</h6>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-12 val-r">
-                          <div >
-                            <div>
-                              {{ item?.project_name || 'NA' }}
-                            </div>
-                          </div>
-                        </div>
-                        
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-12">
-                          <h6 class="card-subtitle">Task name</h6>
+                          <h6 class="card-subtitle">Project/Task</h6>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-12 val-r" *ngIf="item?.tasks?.length">
                           <div *ngFor="let task of item?.tasks; let j = index">
                             <div>
-                              {{ task?.task__task_name || 'NA' }} <br/>
+                              <span  *ngIf="j === 0">{{ item.project_name }} / </span> 
+                              {{ task?.task__task_name || 'NA' }}{{ j !== item.tasks.length - 1 ? ',' : '' }}
                             </div>
                           </div>
                         </div>
@@ -208,12 +188,6 @@
                         </div>
                       </div>
                     </div>
-                 
-                 
-                  </div>
-             
-                  <div class="row">
-                   
                     <div class="col-6">
                       <div class="row">
                         <div class="col-12">
@@ -233,6 +207,12 @@
                         </div>
                       </div>
                     </div>
+                 
+                  </div>
+             
+                  <div class="row">
+                   
+                  
                     <div class="col-6">
                       <div class="row">
                         <div class="col-12">
@@ -248,7 +228,20 @@
                         
                       </div>
                     </div>
-                   
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-12">
+                          <h6 class="card-subtitle">Description</h6>
+                        </div>
+                      </div>
+                      <div class="row">
+                                       
+                        <div class="col-12 val-r" [title]="item.description">
+                          {{ item.description?.length > 50 ? (item.description | slice:0:50) + '...' : item.description || 'NA' }}
+                        </div>
+                        
+                      </div>
+                    </div>
                   </div>
 
               
