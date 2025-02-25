@@ -12,6 +12,7 @@
                     <th scope="col" class="text-center">Project/Task</th>
                     <th scope="col" class="text-center">Hours</th>
                     <th scope="col" class="text-center">Description</th>
+                    <th scope="col" class="text-center">Submitted Date</th>
                     <th scope="col" class="text-center">Action</th>
                   </tr>
                 </thead>
@@ -44,10 +45,10 @@
                       <td *ngIf="item?.tasks?.length === 0">
                         {{'NA'}}
                       </td>
-                     
                       <td class="text-center" [title]="item.description">
                         {{ item.description?.length > 20 ? (item.description | slice:0:20) + '...' : item.description || 'NA' }}
                       </td>
+                      <td class="text-center">{{item.updated_datetime | date :'dd/MM/YYYY'}}</td> 
                        <td class="text-center">
                           <span *ngIf="userRole ==='Employee' && accessPermissions[0]?.delete || userRole === 'Admin'">
                             <img src="../../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete" (click)="open(item)"/>

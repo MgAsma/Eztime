@@ -11,6 +11,7 @@
                       <th scope="col" class="text-center">Project/Task</th>
                       <th scope="col" class="text-center">Hours</th>
                       <th scope="col" class="text-center">Description</th>
+                      <th scope="col" class="text-center">Submitted Date</th>
                       <th scope="col" class="text-center">Approved On</th>
                       <th scope="col" class="text-center">Approved By</th>
                     </tr>
@@ -45,6 +46,7 @@
                         <td class="text-center" [title]="item.description">
                           {{ item.description?.length > 20 ? (item.description | slice:0:20) + '...' : item.description || 'NA' }}
                         </td>
+                        <td class="text-center">{{(item?.updated_datetime | date) || 'NA'}}</td>
                         <td class="text-center">{{(item?.approved_on | date) || 'NA'}}</td>
                         <td class="text-center">{{(item.approved_by_name | titlecase) || 'NA'}}</td>
                     </tr>

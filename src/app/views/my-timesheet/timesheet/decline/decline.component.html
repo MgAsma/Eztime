@@ -3,7 +3,7 @@
 <div class="bg">
     <div class="row">
         <div class="col px-0">
-            <table class="table table-hover table-list" *ngIf="list?.length">
+            <table class="table table-hover table-list table-responsive" *ngIf="list?.length">
                 <thead>
                     <tr>
                       <th scope="col">S.No</th>
@@ -11,6 +11,7 @@
                       <th scope="col" class="text-center">Project/Task</th>
                       <th scope="col" class="text-center">Hours</th>
                       <th scope="col" class="text-center">Description</th>
+                      <th scope="col" class="text-center">Submitted Date</th>
                       <th scope="col" class="text-center">Rejected On</th>
                       <th scope="col" class="text-center">Rejected By</th>
                       <th scope="col" class="text-center">Comments</th>
@@ -48,6 +49,7 @@
                         <td class="text-center" [title]="item.description">
                           {{ item.description?.length > 20 ? (item.description | slice:0:20) + '...' : item.description || 'NA' }}
                         </td>
+                        <td class="text-center">{{(item?.updated_datetime | date) || 'NA'}}</td>
                         <td class="text-center">{{(item.rejected_on |date) || 'NA'}}</td>
                         <td class="text-center">{{(item.rejected_by_name  |titlecase) || 'NA'}}</td>
                         <td class="text-center">{{item.comment || 'NA'}}</td>                                                  
