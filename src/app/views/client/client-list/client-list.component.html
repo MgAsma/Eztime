@@ -31,6 +31,12 @@
                 <i (click)="sort('desc','contact_person_name')" *ngIf="arrowState['contact_person_name']"
                   class="bi bi-arrow-down"></i>
               </th>
+              <th scope="col">Email
+                <i *ngIf="!arrowState['email']" (click)="sort('asc','email')"
+                  class="bi bi-arrow-up"></i>
+                <i (click)="sort('desc','email')" *ngIf="arrowState['email']"
+                  class="bi bi-arrow-down"></i>
+              </th>
               <th scope="col">Reg. Date
                 <i *ngIf="!arrowState['created_datetime']" (click)="sort('asc','created_datetime')"
                   class="bi bi-arrow-up"></i>
@@ -50,6 +56,7 @@
                 <td>{{getContinuousIndex(i)}}</td>
                 <td>{{item.clint_name|titlecase}}</td>
                 <td>{{item.contact_person_name|titlecase}}</td>
+                <td>{{item.email}}</td>
                 <td>{{item.created_datetime | date:'mediumDate'}}</td>
 
                 <td>
