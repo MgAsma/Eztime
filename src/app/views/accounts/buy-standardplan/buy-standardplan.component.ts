@@ -232,51 +232,96 @@ export class BuyStandardplanComponent implements OnInit {
     }
   }
 
+  // openRazorpay(data: any) {
+  //   this.dialogue.closeAll()
+  //   const RazorpayOptions: any = {
+  //     description: 'Sample Rozarpay demo',
+  //     currency: 'INR',
+  //     amount: data.amount,
+  //     name: 'Project Ace',
+  //     key: environment.Razorpay_test_key,
+  //     //key:'rzp_test_Z6PoT6HRL71TiC',
+  //     image: '../assets/images/logo.png',
+  //     order_id: data.razor_pay_order_id,
+  //     handler: function (response: any): any {
+  //       if (response) {
+  //         //console.log(response)
+  //         successCallback(response)
+  //       }
+  //     },
+  //     modal: {
+  //       ondismiss: () => {
+  //         // console.log('dismissed')
+  //         this.ngZone.run(() => {
+  //           this.transactionFailed();
+  //         });
+  //       }
+  //     }
+
+  //   }
+  //   const successCallback = (response: any) => {
+  //     this.ngZone.run(() => {
+  //       const reqData: any = {
+  //         razorpay_payment_id: response.razorpay_payment_id,
+  //         razorpay_order_id: response.razorpay_order_id,
+  //         razorpay_signature: response.razorpay_signature,
+  //       };
+  //       this.buySubscription(reqData);
+  //     });
+
+  //   }
+  //   const failureCallback = (e: any) => {
+  //     if (e) {
+  //       // this.btnEnable = false
+  //     }
+  //   }
+
+  //   Razorpay.open(RazorpayOptions, successCallback)
+  // }
+
   openRazorpay(data: any) {
-    this.dialogue.closeAll()
+    this.dialogue.closeAll();
+
     const RazorpayOptions: any = {
-      description: 'Sample Rozarpay demo',
+      description: 'Sample Razorpay Demo',
       currency: 'INR',
       amount: data.amount,
       name: 'Project Ace',
-      key: environment.Razorpay_test_key,
-      //key:'rzp_test_Z6PoT6HRL71TiC',
+      key: environment.Razorpay_test_key, // Ensure you use rzp_live_xxxxx for production
       image: '../assets/images/logo.png',
       order_id: data.razor_pay_order_id,
-      handler: function (response: any): any {
-        if (response) {
-          //console.log(response)
-          successCallback(response)
-        }
+      handler: (response: any) => {
+        this.ngZone.run(() => {
+          this.successCallback(response);
+        });
       },
       modal: {
         ondismiss: () => {
-          // console.log('dismissed')
           this.ngZone.run(() => {
             this.transactionFailed();
           });
         }
       }
+    };
 
-    }
-    const successCallback = (response: any) => {
-      this.ngZone.run(() => {
-        const reqData: any = {
-          razorpay_payment_id: response.razorpay_payment_id,
-          razorpay_order_id: response.razorpay_order_id,
-          razorpay_signature: response.razorpay_signature,
-        };
-        this.buySubscription(reqData);
-      });
+    const rzp1 = new Razorpay(RazorpayOptions);
 
-    }
-    const failureCallback = (e: any) => {
-      if (e) {
-        // this.btnEnable = false
-      }
-    }
+    rzp1.on('payment.failed', (response: any) => {
+      console.error('Payment Failed:', response);
+    });
 
-    Razorpay.open(RazorpayOptions, successCallback)
+    rzp1.open();
+  }
+
+  successCallback(response: any) {
+    this.ngZone.run(() => {
+      const reqData: any = {
+        razorpay_payment_id: response.razorpay_payment_id,
+        razorpay_order_id: response.razorpay_order_id,
+        razorpay_signature: response.razorpay_signature,
+      };
+      this.buySubscription(reqData);
+    });
   }
 
   buySubscription(datas: any) {
