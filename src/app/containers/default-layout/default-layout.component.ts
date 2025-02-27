@@ -9,6 +9,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonServiceService } from '../../service/common-service.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { WebsocketService } from '../../service/websocket.service';
+import { EmployeeStatusWebsocketService } from '../../service/employee-status-websocket.service';
+import { UserAccessWebsocketService } from '../../service/user-access-websocket.service';
+
 interface NavItem {
   name: string;
   url?: string;
@@ -62,7 +66,8 @@ export class DefaultLayoutComponent {
   constructor(private ngxService: NgxUiLoaderService,
     private api: ApiserviceService, private modalService: NgbModal,private cdref: ChangeDetectorRef,
     private common_service: CommonServiceService,
-    private router: Router) {
+    private router: Router,  private webSocket: WebsocketService, private employeeSocket:EmployeeStatusWebsocketService,
+    private useraccessSocket:UserAccessWebsocketService) {
       this.common_service.profilePhoto$.subscribe(
         (data:any)=>{
           if(data){
@@ -431,6 +436,9 @@ testingFunction() {
         this.api.showSuccess('You have been logged out!')
         localStorage.clear();
         sessionStorage.clear()
+        this.webSocket.closeWebSocket();
+        this.employeeSocket.closeWebSocket();
+        this.useraccessSocket.closeWebSocket();
         this.router.navigate(['/login'])
         location.reload();
         modelRef.close();

@@ -76,6 +76,7 @@ import { UserGuideModalComponent } from './views/user-guide-modal/user-guide-mod
 import {MatDialogModule} from '@angular/material/dialog';
 import { UserWelcomeMsgComponent } from './views/user-welcome-msg/user-welcome-msg.component';
 import { RazorpayService } from './service/razorpay.service';
+import { UseraccessInfoPopupComponent } from './views/useraccess-info-popup/useraccess-info-popup.component';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -92,6 +93,7 @@ const APP_CONTAINERS = [
     VirtualScrollDirective,
     UserGuideModalComponent,
     UserWelcomeMsgComponent,
+    UseraccessInfoPopupComponent,
   ],
   imports: [
     // ChartsModule,

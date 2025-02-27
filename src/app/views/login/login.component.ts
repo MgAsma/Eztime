@@ -3,6 +3,9 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ApiserviceService } from '../../service/apiservice.service';
 import { Router } from '@angular/router';
 import { jwtDecode } from "jwt-decode";
+import { WebsocketService } from '../../service/websocket.service';
+import { EmployeeStatusWebsocketService } from 'src/app/service/employee-status-websocket.service';
+import { UserAccessWebsocketService } from 'src/app/service/user-access-websocket.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -12,7 +15,10 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   permission: any;
   showFieldset: boolean = false;
-  constructor(private builder: FormBuilder, private api: ApiserviceService, private router: Router) { }
+  constructor(private builder: FormBuilder, private api: ApiserviceService, private router: Router,
+    private websocketService:WebsocketService, private employeeSocket:EmployeeStatusWebsocketService,
+    private useraccessSocket:UserAccessWebsocketService
+  ) { }
   time = new Date();
   message = '';
   error: boolean;
@@ -87,6 +93,13 @@ export class LoginComponent implements OnInit {
                 this.router.navigate([data.access_list[0].url || data.access_list[0].children[0].url]);
               } else{
                 this.router.navigate(['profile'])
+              }
+              if(sessionStorage.getItem('user_role_name')!='SuperAdmin'){
+                this.websocketService.connectWebSocket();
+              }
+              if(sessionStorage.getItem('user_role_name')==='Employee'){
+                this.employeeSocket.connectWebSocket();
+                this.useraccessSocket.connectWebSocket();
               }
               this.api.showSuccess('Login successful!');
           },

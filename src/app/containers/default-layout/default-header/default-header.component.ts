@@ -15,6 +15,9 @@ import { UserGuideModalComponent } from 'src/app/views/user-guide-modal/user-gui
 import { MatDialog } from '@angular/material/dialog';
 import { UserWelcomeMsgComponent } from 'src/app/views/user-welcome-msg/user-welcome-msg.component';
 import { NotificationService } from '../../../views/pages/notification/notification.service';
+import { WebsocketService } from '../../../service/websocket.service';
+import { EmployeeStatusWebsocketService } from '../../../service/employee-status-websocket.service';
+import { UserAccessWebsocketService } from '../../../service/user-access-websocket.service';
 
 @Component({
   selector: 'app-default-header',
@@ -70,7 +73,9 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     private api: ApiserviceService, private cdref: ChangeDetectorRef,
     private common_service: CommonServiceService, private userGuideModel: BsModalService,
    private location:Location, public dialog: MatDialog,
-   private notificationServive:NotificationService) {
+   private notificationServive:NotificationService,
+   private webSocket:WebsocketService, private employeeSocket:EmployeeStatusWebsocketService,
+   private useraccessSocket:UserAccessWebsocketService) {
     super();
     this.getScreenSize()
   }
@@ -150,6 +155,9 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     modelRef.componentInstance.status.subscribe(resp => {
       if (resp === "ok") {
         this.api.showSuccess('You have been logged out!')
+        this.webSocket.closeWebSocket();
+        this.employeeSocket.closeWebSocket();
+        this.useraccessSocket.closeWebSocket();
         this.router.navigate(['/login'])
         localStorage.clear();
         sessionStorage.clear();

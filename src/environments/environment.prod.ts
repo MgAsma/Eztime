@@ -7,18 +7,22 @@ export const environment = {
    
   media_url: 'https://projectacedevelop.thestorywallcafe.com',
   live_url:'https://projectacedevelop.thestorywallcafe.com/api',
+  socket_url:'projectacedevelop.thestorywallcafe.com',
  
   // live_url: 'https://projectacetest.thestorywallcafe.com/api',
   // media_url:'https://projectacetest.thestorywallcafe.com',
+  // socket_url:'projectacetest.thestorywallcafe.com',
  
   // live_url: 'https://app.projectace.in/api',
   // media_url: 'https://app.projectace.in',
+  // socket_url:'app.projectace.in',
 
   // live_url: 'https://projectaceprod.thestorywallcafe.com/api',
   // media_url: 'https://projectaceprod.thestorywallcafe.com/media',
 
   // live_url: 'https://projectaceuat.thestorywallcafe.com/api',
   // media_url: 'https://projectaceuat.thestorywallcafe.com',
+  // socket_url:'projectaceuat.thestorywallcafe.com',
 
   // live_url: 'https://projectaceprod.thestorywallcafe.com/api',
   // media_url: 'https://projectaceprod.thestorywallcafe.com/media',
