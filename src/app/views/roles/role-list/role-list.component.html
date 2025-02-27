@@ -52,7 +52,7 @@
                   <td>{{getContinuousIndex(i)}}</td>
                   <td>{{item.designation_name}}</td>
                   <!-- <td>{{item.description | titlecase}}</td> -->
-                  <td>{{item.created_datetime | date : 'dd/MM/yyyy'}}</td>
+                  <td>{{item.created_datetime | date : 'dd-MM-yyyy'}}</td>
                   <!-- <td>{{item.role_status | titlecase}}</td> -->
                   <td class="text-center" *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'">
                     <a routerLink="/designation/roles-access/{{item.id}}">
@@ -167,7 +167,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{item.created_datetime | date : 'dd/MM/yyyy'}}
+                      {{item.created_datetime | date : 'dd-MM-yyyy'}}
                     </div>
                   </div>
                 </div>

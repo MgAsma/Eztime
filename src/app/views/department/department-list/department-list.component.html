@@ -50,7 +50,7 @@
                           }; let i=index'>
                 <td>{{getContinuousIndex(i)}}</td>
                 <td>{{item.department_name|titlecase }}</td>
-                <td>{{item.created_datetime | date:'mediumDate'}}</td>
+                <td>{{item.created_datetime | date:'dd-MM-yyyy'}}</td>
                 <!-- <td>{{item.od_status|titlecase}}</td> -->
                 <td>
                   <ng-container>
@@ -168,7 +168,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 value-container">
-                      {{item.created_datetime | date:'mediumDate'}}
+                      {{item.created_datetime | date:'dd-MM-yyyy'}}
                     </div>
                   </div>
                 </div>
