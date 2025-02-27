@@ -1,6 +1,6 @@
 <div class="container-fluid webView">
  
-  <div class="bg">
+  <div class="bg" [ngClass]="approvedAll.length ? 'over-flow' : ''">
     <div class="row">
       <div class="col">
         <table class="table table-hover table-list" *ngIf="approvedAll?.length">

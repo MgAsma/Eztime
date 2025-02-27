@@ -20,7 +20,9 @@ ul{
     padding: 10px;
     border-radius: 5px;
     margin: 0;
-    overflow: auto;
+}
+.over-flow{
+  overflow: auto !important;
 }
 .proceedbtn{
     background-color: #3F51B5;

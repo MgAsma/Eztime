@@ -1,5 +1,5 @@
 <div class="container-fluid webView">
-  <div class="bg">
+  <div class="bg" [ngClass]="list.length ? 'over-flow' : ''">
     <div class="row">
       <div class="col px-0">
         <table class="table table-list" *ngIf="list?.length">

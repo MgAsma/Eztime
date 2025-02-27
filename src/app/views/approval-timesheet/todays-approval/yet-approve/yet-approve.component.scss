@@ -13,7 +13,9 @@ li{
 ul{
     padding: 0px;
 }
-
+.over-flow{
+  overflow: auto !important;
+}
 @media(max-width:768px){
     .bg{
         
