@@ -9,9 +9,10 @@
               <th scope="col">S.No</th>
               <th scope="col" class="text-center">Created Date</th>
               <th scope="col" class="text-center">Employee</th>
-              <th scope="col" class="text-center">Project</th>
-              <th scope="col" class="text-center">Task</th>
+              <th scope="col" class="text-center">Project/Task</th>
               <th scope="col" class="text-center">Hours</th>
+              <th scope="col" class="text-center">Description</th>
+              <th scope="col" class="text-center">Submitted On</th>
               <th scope="col" class="text-center">Action</th>
             </tr>
           </thead>
@@ -22,11 +23,12 @@
 
                 <td class="text-center">{{item.created_date | date :'dd/MM/YYYY'}}</td>
                 <td class="text-center">{{item.created_by_first_name ?item.created_by_first_name :'NA' |titlecase}}</td>
-                <td class="text-center">{{item.project_name || 'NA'}}</td>
+               
                 <td class="text-center" *ngIf="item.tasks.length">
                   <div *ngFor="let task of item.tasks; let j = index">
                     <div>
-                      {{ task?.task__task_name || 'NA' }} <br/>
+                      <span  *ngIf="j === 0">{{ item.project_name }} / </span> 
+                      {{ task?.task__task_name || 'NA' }}{{ j !== item.tasks.length - 1 ? ',' : '' }}
                     </div>
                   </div>
                 </td>
@@ -43,13 +45,18 @@
                 <td *ngIf="item.tasks.length === 0">
                   {{'NA'}}
                 </td>
-                
+                <td class="text-center" [title]="item.description">
+                  {{ item.description?.length > 20 ? (item.description | slice:0:20) + '...' : item.description || 'NA' }}
+                </td>
+                <td class="text-center">
+                  {{ item.updated_datetime | date :'dd/MM/YYYY' }}
+                </td>
                 <td class="text-center">
                   <ng-container>
-                    <span *ngIf="userRole ==='Employee' && accessPermissions[0]?.delete || userRole === 'Admin'">
+                    <!-- <span *ngIf="userRole ==='Employee' && accessPermissions[0]?.delete || userRole === 'Admin'">
                      
                         <img src="../../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete" (click)="open(item)"/>
-                    </span>
+                    </span> -->
                     <span *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'">
                       <img src="../../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Approve" (click)="openDialogue(item,'Approve')"/>
                     </span>
@@ -109,19 +116,14 @@
               </div>
             </div>
             <div class="col-5">
-              <ng-container *ngFor="let approval of accessConfig">
-               
-                <span  style="float: right;">
-                     
-                  <img src="../../../../../assets/images/Delete.svg" class="icon-image" container="body" ngbTooltip="Delete" (click)="open(item)"/>
-              </span>
-             
-              <span  style="float: right;">
-                <img src="../../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Decline"  (click)="openDialogue(item,'Decline')"/>
-              </span>
-              <span  style="float: right;">
-                <img src="../../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Approve" (click)="openDialogue(item,'Approve')"/>
-              </span>
+              <ng-container>
+                <span style="float: right;" *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'">
+                  <img src="../../../../../assets/images/tick.svg" class="icon-image" container="body" ngbTooltip="Approve" (click)="openDialogue(item,'Approve')"/>
+                </span>
+                <span style="float: right;" *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'">
+                  <img src="../../../../../assets/images/Close.svg" class="icon-image"  container="body" ngbTooltip="Decline"  (click)="openDialogue(item,'Decline')"/>
+                </span>
+              <span style="float: right;" *ngIf="userRole ==='Employee' && !accessPermissions[0]?.update && !accessPermissions[0]?.delete">-</span>
               </ng-container>
             </div>
           </div>
@@ -155,24 +157,6 @@
                 </div>
               </div>
               <div class="row">
-             
-                <div class="col-6">
-                  <div class="row">
-                    <div class="col-12">
-                      <h6 class="card-subtitle">Project</h6>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12 val-r">
-                      <div >
-                        <div>
-                          {{ item?.project_name || 'NA' }}
-                        </div>
-                      </div>
-                    </div>
-                    
-                  </div>
-                </div>
                 <div class="col-6">
                   <div class="row">
                     <div class="col-12">
@@ -183,7 +167,8 @@
                     <div class="col-12 val-r" *ngIf="item?.tasks?.length">
                       <div *ngFor="let task of item?.tasks; let j = index">
                         <div>
-                          {{ task?.task__task_name || 'NA' }} <br/>
+                          <span  *ngIf="j === 0">{{ item.project_name }} / </span> 
+                          {{ task?.task__task_name || 'NA' }}{{ j !== item.tasks.length - 1 ? ',' : '' }}
                         </div>
                       </div>
                     </div>
@@ -192,12 +177,6 @@
                     </div>
                   </div>
                 </div>
-             
-             
-              </div>
-         
-              <div class="row">
-               
                 <div class="col-6">
                   <div class="row">
                     <div class="col-12">
@@ -216,6 +195,25 @@
                       {{'NA'}}
                     </div>
                   </div>
+                </div>
+             
+              </div>
+         
+              <div class="row">
+               
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-12">
+                      <h6 class="card-subtitle">Description</h6>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 val-r" [title]="item.description">
+                      {{ item.description?.length > 130 ? (item.description | slice:0:130) + '...' : item.description || 'NA' }}
+                    </div>
+                    </div>
+                   
+                  
                 </div>
               
               </div>
