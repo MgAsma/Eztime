@@ -57,7 +57,7 @@
                 <td>{{item.clint_name|titlecase}}</td>
                 <td>{{item.contact_person_name|titlecase}}</td>
                 <td>{{item.email}}</td>
-                <td>{{item.created_datetime | date:'mediumDate'}}</td>
+                <td>{{item.created_datetime | date:'dd-MM-yyyy'}}</td>
 
                 <td>
                   <ng-container>
@@ -140,7 +140,7 @@
             <div class="row">
               <div class="col-6">
                 <h6 class="card-subtitle"><i class="bi bi-calendar-week"></i> Reg. date</h6>
-                <div class="value-container">{{item.created_datetime | date:'mediumDate'}}</div>
+                <div class="value-container">{{item.created_datetime | date:'dd-MM-yyyy'}}</div>
               </div>
               <div class="col-6">
                 <h6 class="card-subtitle"><i class="bi bi-person-rolodex"></i> Contact person</h6>
