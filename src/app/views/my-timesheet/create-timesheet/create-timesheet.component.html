@@ -117,7 +117,10 @@
                      <!-- Description -->
                      <div class="flex-grow-1">
                       <mat-label class="text-muted">Description</mat-label>
-                      <div class="preview-label">{{ project.get('description')?.value || 'NA' }}</div>
+                      <div class="preview-label">
+                        {{ (project.get('description')?.value?.length > 25) ? (project.get('description')?.value | slice:0:25) + '...' : (project.get('description')?.value || 'NA') }}
+                      </div>
+                      
                     </div>
 
                   </div>
@@ -175,7 +178,9 @@
                        <!-- Description -->
                        <div class="flex-grow-1">
                         <mat-label class="text-muted">Description</mat-label>
-                        <div class="preview-label">{{ project.get('description')?.value || 'NA' }}</div>
+                        <div class="preview-label">
+                          {{ (project.get('description')?.value?.length > 25) ? (project.get('description')?.value | slice:0:25) + '...' : (project.get('description')?.value || 'NA') }}
+                        </div>
                       </div>
   
                     </div>
@@ -253,8 +258,11 @@
                   <mat-label>Description</mat-label>
                   <textarea matInput formControlName="description" placeholder="Enter description"></textarea>
                   <mat-error *ngIf="project.get('description').touched">
-                    <span class="error-text" *ngIf="project.get('description').hasError('pattern')">Cannot start with a space.</span>
+                    <span class="error-text" *ngIf="project.get('description').hasError('pattern') && !project.get('description').hasError('maxlength')">Cannot start with a space.</span>
+                    <span class="error-text" *ngIf="!project.get('description').hasError('pattern') && project.get('description').hasError('maxlength') ">Description cannot exceed more than 200 characters.</span>
                   </mat-error>
+                
+                  <mat-hint align="end">{{project.get('description')?.value?.length}}/200 characters</mat-hint>
                 </mat-form-field>
               </div>
             </div>

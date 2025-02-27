@@ -9,9 +9,10 @@
               <th scope="col">S.No</th>
               <th scope="col" class="text-center">Created Date </th>
               <th scope="col" class="text-center">Employee</th>
-              <th scope="col" class="text-center">Task</th>
+              <th scope="col" class="text-center">Project/Task</th>
               <th scope="col" class="text-center">Hours</th>
-              <!-- <th scope="col">Saved On</th> -->
+              <th scope="col">Description</th>
+              <th scope="col">Submitted On</th> 
               <th scope="col" class="text-center">Approved On</th>
               <th scope="col" class="text-center">Approved By</th>
              
@@ -28,13 +29,15 @@
                 <td class="text-center" *ngIf="items.tasks.length">
                   <div *ngFor="let task of items.tasks; let j = index">
                     <div>
-                    {{ task?.task__task_name || 'NA' }} <br/>
+                      <span  *ngIf="j === 0">{{ items.project_name }} / </span> 
+                      {{ task?.task__task_name || 'NA' }}{{ j !== items.tasks.length - 1 ? ',' : '' }}
                     </div>
                   </div>
                 </td>
                 <td *ngIf="items.tasks.length === 0">
                   {{'NA'}}
                 </td>
+                
                 <td class="text-center" *ngIf="items?.tasks?.length">
                   <div *ngFor="let task of items.tasks; let j = index">
                     <div>
@@ -45,6 +48,10 @@
                 <td *ngIf="items?.tasks?.length === 0">
                   {{'NA'}}
                 </td>
+                <td class="text-center" [title]="items.description">
+                  {{ items.description?.length > 20 ? (items.description | slice:0:20) + '...' : items.description || 'NA' }}
+                </td>
+                <td class="text-center">{{(items?.updated_datetime | date :"mediumDate") || 'NA'}}</td>
                 <td class="text-center">{{(items?.approved_on | date :"mediumDate") || 'NA'}}</td>
                 <td class="text-center">{{(items?.approved_by_name|titlecase) || 'NA'}}</td>
                 
@@ -153,12 +160,12 @@
                   <div class="col-6">
                     <div class="row">
                       <div class="col-12">
-                        <h6 class="card-subtitle">Task name</h6>
+                        <h6 class="card-subtitle">Project/Task</h6>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-12 val-r" *ngIf="item?.tasks?.length">
-                        <div *ngFor="let task of item?.task_list; let j = index">
+                        <div *ngFor="let task of item?.task; let j = index">
                           <div>
                             {{ task?.task__task_name || 'NA' }} <br/>
                           </div>
@@ -197,6 +204,21 @@
                   </div>
                 </div>
               </div>
+
+              <div class="row">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-12">
+                      <h6 class="card-subtitle">Description</h6>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 val-r" [title]="item.description">
+                      {{ item.description?.length > 130 ? (item.description | slice:0:130) + '...' : item.description || 'NA' }}
+                    </div>
+              </div>
+            </div>
+          </div>
             </div>
           </div>
         </div>
