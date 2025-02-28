@@ -18,7 +18,7 @@
         <ng-container *ngIf="(yetToApproveAll) as result">
           <tr *ngFor="let items of result|paginate:paginationConfig;let i=index">
             <td>{{getContinuousIndex(i)}}</td>
-            <td>{{items.created_date_time | date :'mediumDate'}}</td>
+            <td>{{items.created_date_time | date :'dd-MM-yyyy'}}</td>
             <td>{{items.created_by_name?items.created_by_name:"NA"|titlecase}}</td>
             <!-- <td>{{items.id ? items.id :'NA'|titlecase}}</td> -->
             <td>{{items.time_spent|titlecase}}</td>
@@ -120,7 +120,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{item['created_date_time'] | date : 'mediumDate'}}
+                      {{item['created_date_time'] | date : 'dd-MM-yyyy'}}
                     </div>
                   </div>
                 </div>

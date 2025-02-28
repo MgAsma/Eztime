@@ -53,7 +53,7 @@
                             ; let i=index' [class.active]="i == currentIndex">
                             <td>{{getContinuousIndex(i)}}</td>
                             <td>{{item.tag_name | titlecase}}</td>
-                            <td>{{item.added_date | date:'mediumDate'}}</td>
+                            <td>{{item.added_date | date:'dd-MM-yyyy'}}</td>
                             
                             <td>{{item.tage_status ? item.tage_status : "NA" | titlecase}}</td>
                             <td>
@@ -139,7 +139,7 @@
       <div class="row">
         <div class="col-6">
             <h6 class="card-subtitle">Added Date</h6>
-            <p class="value-container">{{item.added_date | date:'mediumDate'|titlecase}}</p>
+            <p class="value-container">{{item.added_date | date:'dd-MM-yyyy'|titlecase}}</p>
         </div>
         <div class="col-6">
             <h6 class="card-subtitle">Status</h6>

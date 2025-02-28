@@ -22,7 +22,7 @@
             <ng-container *ngIf="(declinedAll) as result">
               <tr *ngFor="let item of result|paginate:paginationConfig;let i=index">
                 <td>{{getContinuousIndex(i)}}</td>
-                <td class="text-center">{{item['created_date'] | date : 'mediumDate'}}</td>
+                <td class="text-center">{{item['created_date'] | date : 'dd-MM-yyyy'}}</td>
                 <td class="text-center">{{item.created_by_first_name?item.created_by_first_name:'NA'}}</td>
              
                 <td class="text-center" *ngIf="item.tasks.length">
@@ -50,7 +50,7 @@
                         {{ item.description?.length > 20 ? (item.description | slice:0:20) + '...' : item.description || 'NA' }}
                 </td>
                 <td>{{item.updated_datetime | date}}</td>
-                <td class="text-center">{{(item.rejected_on | date) || 'NA'}}</td>
+                <td class="text-center">{{(item.rejected_on  |date : 'dd-MM-yyyy') || 'NA'}}</td>
                 <td class="text-center">{{item.rejected_by_name?item.rejected_by_name:'NA'}}</td>
               
                 <td class="text-center">{{item.comment || 'NA'}}</td>
@@ -117,7 +117,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{item['created_date'] | date : 'mediumDate'}}
+                      {{item['created_date'] | date : 'dd-MM-yyyy'}}
                     </div>
                   </div>
                 </div>
@@ -189,7 +189,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{ (item['rejected_on'] | date : 'mediumDate') || 'NA' }}
+                      {{ (item['rejected_on'] | date : 'dd-MM-yyyy') || 'NA' }}
                     </div>
                   </div>
                 </div>

@@ -44,12 +44,12 @@
                             totalItems: count
                           };let i=index">
                         <td>{{i+1}}</td>
-                        <td>{{items.created_date_time | date :'mediumDate'}}</td>
+                        <td>{{items.created_date_time | date :'dd-MM-yyyy'}}</td>
                         <td>{{items.created_by_id?items.created_by_id:"NA"}}</td>
                         <td>{{items.description ? items.description :'NA'}}</td>
                         <td>{{items.time_spent}}</td>
                         <td>{{items.created_by_id?items.created_by_id:"NA"}}</td>
-                        <td>{{items.approved_date_time| date :'mediumDate'}}</td>
+                        <td>{{items.approved_date_time| date :'dd-MM-yyyy'}}</td>
                         <td>{{items.approved_by_id?items.approved_by_id:'NA'}}</td>
                         <td>{{items.approved_state}}</td>
                         <!-- <td>

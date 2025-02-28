@@ -21,7 +21,7 @@
               <tr *ngFor="let item of result|paginate:paginationConfig;let i = index">
                 <td>{{getContinuousIndex(i)}}</td>
 
-                <td class="text-center">{{item.created_date | date :'dd/MM/YYYY'}}</td>
+                <td class="text-center">{{item.created_date | date : 'dd-MM-yyyy'}}</td>
                 <td class="text-center">{{item.created_by_first_name ?item.created_by_first_name :'NA' |titlecase}}</td>
                
                 <td class="text-center" *ngIf="item.tasks.length">
@@ -49,7 +49,7 @@
                   {{ item.description?.length > 20 ? (item.description | slice:0:20) + '...' : item.description || 'NA' }}
                 </td>
                 <td class="text-center">
-                  {{ item.updated_datetime | date :'dd/MM/YYYY' }}
+                  {{ item.updated_datetime | date : 'dd-MM-yyyy' }}
                 </td>
                 <td class="text-center">
                   <ng-container>
@@ -139,7 +139,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{item['created_date'] | date : 'mediumDate'}}
+                      {{item['created_date'] | date : 'dd-MM-yyyy'}}
                     </div>
                   </div>
                 </div>

@@ -40,12 +40,12 @@
                         totalItems: count
                       };  let i=index'>
                       <td>{{i+1}}</td>
-                      <td class="text-center">{{item.leaveApplication_from_date *1000 | date: 'dd/MM/yyyy'}}</td>
-                      <td class="text-center">{{item.leaveApplication_to_date *1000 | date: 'dd/MM/yyyy'}}</td>
+                      <td class="text-center">{{item.leaveApplication_from_date *1000 | date : 'dd-MM-yyyy'}}</td>
+                      <td class="text-center">{{item.leaveApplication_to_date *1000 | date : 'dd-MM-yyyy'}}</td>
                       <td class="text-center">{{item.days}}</td>
                       <!-- <td>{{item.alloted_leaves}}</td> -->
                       <!-- <td>{{item.used_leaves}}</td> -->
-                      <td class="text-center">{{item.c_timestamp | date: 'dd/MM/yyyy'}}</td>
+                      <td class="text-center">{{item.c_timestamp | date : 'dd-MM-yyyy'}}</td>
                       <td class="text-center">{{item.approved_state}}</td>                             
                         <!-- <td *ngIf="!entryPoint['approver']">
                             <button mat-raised-button style="border: none;background-color: inherit;" (click)="open(item)"> <i class="fas fa-trash-alt" style="color: red;" container="body" ngbTooltip="Delete"></i></button>
@@ -150,7 +150,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12 val-r">
-                        {{item.leaveApplication_from_date *1000 | date: 'dd/MM/yyyy' }}
+                        {{item.leaveApplication_from_date *1000 | date : 'dd-MM-yyyy' }}
                       </div>
                     </div>
                   </div>
@@ -162,7 +162,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12 val-r">
-                        {{ item.leaveApplication_to_date *1000 | date: 'dd/MM/yyyy' }}
+                        {{ item.leaveApplication_to_date *1000 | date : 'dd-MM-yyyy' }}
                       </div>
                     </div>
                   </div>
@@ -189,7 +189,7 @@
                     </div>
                     <div class="row">
                       <div class="col-12 val-r">
-                        {{ item.c_timestamp | date: 'dd/MM/yyyy' }}
+                        {{ item.c_timestamp | date : 'dd-MM-yyyy' }}
                       </div>
                     </div>
                   </div>

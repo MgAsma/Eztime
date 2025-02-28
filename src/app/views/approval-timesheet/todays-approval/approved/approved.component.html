@@ -20,7 +20,7 @@
             <ng-container *ngIf="(list) as result">
               <tr *ngFor="let items of result|paginate:paginationConfig;let i=index">
                 <td>{{getContinuousIndex(i)}}</td>
-                <td class="text-center">{{items['created_date'] | date : 'mediumDate'}}</td>
+                <td class="text-center">{{items['created_date'] | date : 'dd-MM-yyyy'}}</td>
                 <td class="text-center">{{items['created_by_name']|titlecase }}</td>
                 <td class="text-center" *ngIf="items.tasks.length">
                   <div *ngFor="let task of items.tasks; let j = index">
@@ -46,8 +46,8 @@
                 <td class="text-center" [title]="items.description">
                   {{ items.description?.length > 20 ? (items.description | slice:0:20) + '...' : items.description || 'NA' }}
                 </td>
-                <td>{{items.updated_datetime | date :'mediumDate' }}</td>
-                <td class="text-center">{{items['approved_on'] | date : 'mediumDate' }}</td>
+                <td>{{items.updated_datetime | date :'dd-MM-yyyy' }}</td>
+                <td class="text-center">{{items['approved_on'] | date : 'dd-MM-yyyy' }}</td>
                 <td class="text-center">{{items['approved_by_name']?items['approved_by_name']:'NA'|titlecase
                   }}</td>
                
@@ -114,7 +114,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{item['created_date'] | date : 'mediumDate'}}
+                      {{item['created_date'] | date : 'dd-MM-yyyy'}}
                     </div>
                   </div>
                 </div>
@@ -140,7 +140,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{ (item['approved_on'] | date : 'mediumDate') || 'NA' }}
+                      {{ (item['approved_on'] | date : 'dd-MM-yyyy') || 'NA' }}
                     </div>
                   </div>
                 </div>

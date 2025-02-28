@@ -32,7 +32,7 @@
                 <td *ngIf="userRole ==='Employee' && accessPermissions[0]?.update || userRole === 'Admin'"><input type="checkbox" [(ngModel)]="item.selected" (change)="onCheckboxChange(item.id)"/></td>
                 <td>{{getContinuousIndex(i)}}</td>
                
-                <td class="text-center">{{(item?.created_date | date) || 'NA' }}</td>
+                <td class="text-center">{{(item?.created_date |date:'dd-MM-yyyy') || 'NA' }}</td>
                 <td class="text-center">{{(item?.created_by_first_name |titlecase) || 'NA'}}</td>
                
                 <td class="text-center" *ngIf="item.tasks.length">
@@ -60,7 +60,7 @@
                   {{ item.description?.length > 20 ? (item.description | slice:0:20) + '...' : item.description || 'NA' }}
                 </td>
                 <td class="text-center">
-                  {{(item?.updated_datetime | date) || 'NA' }}
+                  {{(item?.updated_datetime |date:'dd-MM-yyyy') || 'NA' }}
                 </td>
                 <td class="text-center">
                   <ng-container>
@@ -140,7 +140,7 @@
                   </div>
                   <div class="row">
                     <div class="col-12 val-r">
-                      {{(item['created_date'] | date : 'mediumDate') || 'NA'}}
+                      {{(item['created_date'] |date:'dd-MM-yyyy' : 'dd-MM-yyyy') || 'NA'}}
                     </div>
                   </div>
                 </div>
