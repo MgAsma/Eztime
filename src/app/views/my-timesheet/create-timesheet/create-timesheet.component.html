@@ -330,6 +330,28 @@
                     </div>
 
 
+                    <div class="column">
+                     
+                      <button  type="button" class="w-100 select-btn" >
+                        <mat-label class="p-ab task-labels"> Minutes<b class="r-star">*</b></mat-label>
+                        <mat-select formControlName="hours_to_complete"
+                          placeholder="Select minutes"
+                          panelClass="custom-select-panel" [disableOptionCentering]="true">
+                          <mat-option *ngFor="let item of createdProject.value[i]?.time" [value]="item.hours">
+                             {{ item.hours }}
+                          </mat-option>
+                        </mat-select>
+                      </button>
+                      <div *ngIf="taskForm.get('hours_to_complete').touched && taskForm.get('hours_to_complete').invalid"
+                        class="error-text">
+                        <span  *ngIf="taskForm.get('hours_to_complete').hasError('required')">
+                          Minutes is required.
+                        </span>
+                      
+                      </div>
+                   
+                    </div>
+
 
                   </div>
                 </div>
@@ -393,6 +415,24 @@
                         Hours are required.
                       </mat-error>
                     </div>
+
+                    <div class="column position-relative">
+                      <div class="w-100 select-btn">
+                        <mat-label class="p-ab task-labels">Minutes <b class="r-star">*</b></mat-label>
+                        <!-- <mat-select  formControlName="hours_to_complete" placeholder="Select hours" [disabled]="!task?.get('isEditing').value"
+                        panelClass="custom-select-panel" [disableOptionCentering]="true" (selectionChange)="getValue(i,j,task?.get('task_spent')?.value,'time')"> -->
+                        <mat-select  formControlName="hours_to_complete" placeholder="Select minutes" 
+                        panelClass="custom-select-panel" [disableOptionCentering]="true" (selectionChange)="getValue(i,j,task?.get('task_spent')?.value,'time')">
+                        <mat-option *ngFor="let item of createdProject.value[i]?.time" [value]="item.hours"
+                          [disabled]="item.time > getRemainingHours(i)">
+                            {{ item.hours }}
+                          </mat-option>
+                        </mat-select>
+                      </div>
+                      <mat-error class="error-text" *ngIf="task.get('hours_to_complete').hasError('required') && task.get('hours_to_complete').touched">
+                        Minutes is required.
+                      </mat-error>
+                    </div>
                   </div>
                 </div>
             
@@ -408,7 +448,7 @@
                 </div>
               </div>
 
-              <div class="row w-100 my-2">
+              <div class="row w-100 my-3">
                 <div class="col"></div>
                 <!-- <div class="col-4 text-end" ><mat-label>Hours left :{{calculateTotalHoursForDate(project.get('created_date')?.value) >= 0 ? calculateTotalHoursForDate(project.get('created_date')?.value) : 0}}</mat-label></div> -->
                 <div class="col-4 text-end" ><mat-label>Hours left :{{calculateTotalHoursForDate(project.get('created_date')?.value) >= 0 ? calculateTotalHoursForDate(project.get('created_date')?.value) : 0}}</mat-label></div>
