@@ -12,6 +12,9 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddOrganizationComponent } from './add-organization/add-organization.component';
 import { SubscriptionConfigComponent } from './subscription-config/subscription-config.component';
+import { TimesheetConfiguartionComponent } from './timesheet-configuartion/timesheet-configuartion.component';
+import { CreateOrganizationWorkingHoursComponent } from './timesheet-configuartion/create-organization-working-hours/create-organization-working-hours.component';
+import { UpdateOrganizationWorkingHoursComponent } from './timesheet-configuartion/update-organization-working-hours/update-organization-working-hours.component';
 
 @NgModule({
     declarations: [
@@ -20,7 +23,10 @@ import { SubscriptionConfigComponent } from './subscription-config/subscription-
         UpdateOrganizationComponent,
         OrganizationListComponent,
         AddOrganizationComponent,
-        SubscriptionConfigComponent
+        SubscriptionConfigComponent,
+        TimesheetConfiguartionComponent,
+        CreateOrganizationWorkingHoursComponent,
+        UpdateOrganizationWorkingHoursComponent
     ],
     imports: [
         CommonModule,

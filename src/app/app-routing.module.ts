@@ -19,6 +19,7 @@ import { SubscriptionConfigComponent } from './views/organization/subscription-c
 import { NoInternetComponent } from './views/pages/no-internet/no-internet.component';
 import { Page504Component } from './views/pages/page504/page504.component';
 import { Page503Component } from './views/pages/page503/page503.component';
+import { TimesheetConfiguartionComponent } from './views/organization/timesheet-configuartion/timesheet-configuartion.component';
 
 
 
@@ -120,7 +121,10 @@ const routes: Routes = [
           import('./views/admin-panel/admin-panel.module').then((m) => m.AdminPanelModule),
       },
       {
-        path:'subscription_configuration',component:SubscriptionConfigComponent
+        path:'subscription-configuration',component:SubscriptionConfigComponent
+      },
+      {
+        path:'working-hour-configuration',component:TimesheetConfiguartionComponent
       },
       {
         path: 'pages',
