@@ -87,7 +87,8 @@ export const environment = {
   configure_subscription:`configure-subscription`,
   my_subscription:`my-subscription`,
   cancel_my_subscription:`cancel-my-subscription`,
-  plan_types:`plan-types`
+  plan_types:`plan-types`,
+ working_hour_config: `super-admin-conf-working-hour`
 };
 
 /*

@@ -183,8 +183,12 @@
       width: 80% !important;
       margin-top: 30px !important;
       transform: scale(0.9) !important;
+      //z-index: 900000 !important; /* Set a higher z-index value */
     }
     .state-select .mat-select-panel {
+      z-index: 900000 !important; /* Set a higher z-index value */
+    }
+    .mat-select-panel {
       z-index: 900000 !important; /* Set a higher z-index value */
     }
     

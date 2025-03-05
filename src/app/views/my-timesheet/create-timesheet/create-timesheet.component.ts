@@ -61,6 +61,8 @@ export class CreateTimesheetComponent implements OnInit {
   updatedTasks: any[];
   accessPermissions: any=[];
   totalHoursWorked: any;
+  minutes_to_complete: any = [];
+  minutesList: any[] = [];
 
   constructor(
     private builder: FormBuilder,
@@ -223,7 +225,8 @@ getValue(i,j,value,type?){
   taskInitForm(){
     this.taskForm = this.builder.group({
       task_id: ['', [Validators.required]],
-      hours_to_complete: ['', [Validators.required]],
+      hours_to_complete: ['1', [Validators.required]],
+      minutes_to_complete: ['15', [Validators.required]],
       hours_left:[''],
       isEditing: [false],
       created_date:['']
@@ -237,7 +240,7 @@ getValue(i,j,value,type?){
   openTaskForm(i) {
     const projectGroup = this.getProjectControl(i);
     projectGroup.get('isTaskForm')?.setValue(true);
-   
+    
   }
 
   addProjectDetails(): void {
@@ -382,33 +385,13 @@ saveTask(projectIndex: number): void {
   const task = taskArray.at(taskIndex) as FormGroup;
   task?.get('task_id')?.disable();
   task?.get('hours_to_complete')?.disable();
+  task?.get('minutes_to_complete')?.disable();
   // this.disableTaskDetailsBasedOnEditing(projectIndex,taskIndex,false)
     projectGroup.get('isTaskForm')?.setValue(false);
     this.taskForm.reset();
   }
 }
-// calculateHoursLeft(taskList: any[], maxHoursPerDay: number = 8): any[] {
-//   const hoursByDate: { [date: string]: number } = {};
 
-//   // Calculate total hours_to_complete for each date
-//   taskList.forEach(task => {
-//     const date = task.created_date;
-//     const hours = parseFloat(task.hours_to_complete) || 0;
-//     if (!hoursByDate[date]) {
-//       hoursByDate[date] = 0;
-//     }
-//     hoursByDate[date] += hours;
-//   });
-
-//   // Update hours_left for each task
-//   taskList.forEach(task => {
-//     const date = task.created_date;
-//     const totalHoursForDate = hoursByDate[date] || 0;
-//     task.hours_left = Math.max(0, maxHoursPerDay - totalHoursForDate);
-//   });
-
-//   return taskList;
-// }
 
 disableTaskDetailsBasedOnEditing(projectIndex: number, taskIndex: number,isEditing:boolean): void {
   const taskArray = this.getTaskArray(projectIndex); // Get the FormArray containing tasks
@@ -417,10 +400,12 @@ disableTaskDetailsBasedOnEditing(projectIndex: number, taskIndex: number,isEditi
     // If isEditing is true, enable the fields
     task?.get('task_id')?.enable();
     task?.get('hours_to_complete')?.enable();
+    task?.get('minutes_to_complete')?.enable();
   } else {
     // If isEditing is false, disable the fields
     task?.get('task_id')?.disable();
     task?.get('hours_to_complete')?.disable();
+    task?.get('minutes_to_complete')?.disable();
   }
  
 }
@@ -578,14 +563,7 @@ isPointerDisabled(): boolean {
   
   }
   
-  
-  // clearTaskList(projectIndex: number): void {
-  //   const taskArray = this.getTaskArray(projectIndex);
-  //   taskArray.clear(); // Removes all tasks in the `task_list` without deleting the project
-  //   const projectGroup = this.getProjectControl(projectIndex);
-  //   projectGroup.get('isTaskForm')?.setValue(true);
-  //   this.taskForm.reset()
-  // }
+ 
       // Update clearTaskList to properly handle validation
 clearTaskList(projectIndex: number): void {
   const taskArray = this.getTaskArray(projectIndex);
@@ -597,11 +575,13 @@ clearTaskList(projectIndex: number): void {
   this.taskForm.reset();
   this.taskForm.get('task_id')?.setValidators([Validators.required]);
   this.taskForm.get('hours_to_complete')?.setValidators([Validators.required]);
+  this.taskForm.get('minutes_to_complete')?.setValidators([Validators.required]);
   this.taskForm.updateValueAndValidity();
   
   // Mark as touched to show validation messages
   this.taskForm.get('task_id')?.markAsTouched();
   this.taskForm.get('hours_to_complete')?.markAsTouched();
+  this.taskForm.get('minutes_to_complete')?.markAsTouched();
 }
 
   resetTaskForm(i): void {
@@ -620,6 +600,7 @@ clearTaskList(projectIndex: number): void {
       projectList: [[]],
       taskList: [[]],
       time: [[]],
+      minutes:[[]],
       task_list: this.builder.array([]),
       showSave: [true],  // Add variable to control save button visibility
       isTaskForm: [true], // Add variable to control task form visibility
@@ -685,7 +666,10 @@ clearTaskList(projectIndex: number): void {
         const projectControl = this.createdProject.at(i);
   
         // Update only the relevant index's project list
-        projectControl.patchValue({ clientList: allClient });
+        projectControl.patchValue({ 
+          clientList: allClient
+          });
+       
       }
      
     }
@@ -717,44 +701,10 @@ clearTaskList(projectIndex: number): void {
     this.taskForm.reset();
     this.taskForm.get('task_id')?.markAsTouched();
     this.taskForm.get('hours_to_complete')?.markAsTouched();
+    this.taskForm.get('minutes_to_complete')?.markAsTouched();
   }
 
-  // Mark the required fields as touched to trigger validation
-  // projectForm.get('project_id')?.markAsTouched();
-  // projectForm.get('created_date')?.markAsTouched();
-
-  // // The validators should already be set in createProjectDetails()
-  // // but if you need to ensure they're set, you can do it here:
-  // if (!projectForm.get('project_id')?.hasValidator(Validators.required)) {
-  //   projectForm.get('project_id')?.setValidators([Validators.required]);
-  //   projectForm.get('project_id')?.updateValueAndValidity();
-  // }
-
-  // if (!projectForm.get('created_date')?.hasValidator(Validators.required)) {
-  //   projectForm.get('created_date')?.setValidators([Validators.required]);
-  //   projectForm.get('created_date')?.updateValueAndValidity();
-  // }
- 
-  // if (!projectForm.get('taskList')?.hasValidator(Validators.required)) {
-  //   projectForm.get('taskList')?.setValidators([Validators.required]);
-  //   projectForm.get('taskList')?.updateValueAndValidity();
-  // }
-
-  // // Ensure the controls are set to required and marked as touched
-  // projectForm.get('projectList')?.setValidators([Validators.required]);
-  // projectForm.get('projectList')?.updateValueAndValidity();
-  // projectForm.get('projectList')?.markAsTouched();
-
-  // projectForm.get('created_date')?.setValidators([Validators.required]);
-  // projectForm.get('created_date')?.updateValueAndValidity();
-  // projectForm.get('created_date')?.markAsTouched();
-
-  // projectForm.get('taskList')?.setValidators([Validators.required]);
-  // projectForm.get('taskList')?.updateValueAndValidity();
-  // projectForm.get('taskList')?.markAsTouched();
-
   
-
   // Only mark fields as touched if client has been changed
   
     projectForm.get('project_id')?.markAsTouched();
@@ -802,6 +752,7 @@ clearTaskList(projectIndex: number): void {
       this.taskForm.reset();
       this.taskForm.get('task_id')?.markAsTouched();
       this.taskForm.get('hours_to_complete')?.markAsTouched();
+      this.taskForm.get('minutes_to_complete')?.markAsTouched();
     }
     this.api.getData(`${environment.live_url}/${environment.project_task}/${query}`).subscribe((res:any)=>{
       if(res){
@@ -810,14 +761,14 @@ clearTaskList(projectIndex: number): void {
         // console.log(res.data[0].project_related_task_list,"RESPONSETASK n/----------------")
         this.createdProject.at(index)?.patchValue({taskList: this.taskList})
        
-        this.clearTaskList(index)
+       this.clearTaskList(index)
         if (this.taskForm) {
           Object.keys(this.taskForm.controls).forEach(key => {
             const control = this.taskForm.get(key);
             if (control) {
               control.updateValueAndValidity();
             }
-          });
+         });
         }
       }
       
@@ -830,9 +781,18 @@ clearTaskList(projectIndex: number): void {
     this.api.getData(`${environment.live_url}/${environment.task_hours}/`).subscribe((res:any)=>{
       if(res){
        this.hours_to_complete = res
+       this.minutes_to_complete = ['00','15','30','45'];
        this.timeList = [...this.hours_to_complete]
+       this.minutesList = [...this.minutes_to_complete]
         //console.log(res,"TIMESPENT n/----------------")
         this.createdProject?.at(index)?.patchValue({time: this.timeList})
+        this.createdProject?.at(index)?.patchValue({minutes: this.minutesList})
+       
+        this.taskForm.patchValue({
+          task_id:event,
+          hours_to_complete:'1',
+          minutes_to_complete: '15',
+        });
       }
       
     },(error =>{
