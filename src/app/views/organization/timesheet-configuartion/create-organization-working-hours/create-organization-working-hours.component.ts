@@ -12,11 +12,11 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class CreateOrganizationWorkingHoursComponent implements OnInit {
   workingHours:FormGroup;
   @Output() status = new EventEmitter();
-  @Inject(MAT_DIALOG_DATA) public data: any
   organizationData: any = [];
   constructor(
     private fb:FormBuilder,
-    private api:ApiserviceService
+    private api:ApiserviceService,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
     this.getOrgDetails()
     
@@ -24,9 +24,10 @@ export class CreateOrganizationWorkingHoursComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm()
+    console.log(this.data)
     this.workingHours.patchValue({
-      organization:this.data.organization,
-      working_hour:this.data.working_hour
+      organization:this.data?.organization,
+      working_hour:this.data?.working_hour
     })
   }
   initForm(){

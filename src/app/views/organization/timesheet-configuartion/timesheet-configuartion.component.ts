@@ -79,12 +79,12 @@ currentIndex: any;
   getHoursConfigData(params){
     this.api.getData(`${environment.live_url}/${environment.working_hour_config}/${params}`).subscribe(res=>{
       if(res){
-       this.workingHoursList = res?.['data']
+       this.workingHoursList = res?.['results']
       
-     // const noOfPages:number = res?.['total_pages']
-     // this.count  = noOfPages * this.tableSize;
-     // this.count = res?.['total_no_of_record']
-      this.page=1;
+    //  const noOfPages:number = res?.['total_pages']
+    // //  this.count  = noOfPages * this.tableSize;
+     this.count = res?.['total_no_of_record']
+      this.page=res['current_page'];
       }
     },(error =>{
       this.api.showError(error?.error?.message)
@@ -168,16 +168,25 @@ getContinuousIndex(index: number):number {
   return (this.page-1)*this.tableSize+ index + 1;
 }
 openEdit(event){
-  this.api.getData(`${environment.live_url}/${environment.working_hour_config}/${event.id}/`).subscribe(res=>{
+  this.api.getData(`${environment.live_url}/${environment.working_hour_config}/${event.id}/`).subscribe(async(res)=>{
     if(res){
-      const modelRef = this.dialog.open(CreateOrganizationWorkingHoursComponent, {
+     const modelRef = await this.dialog.open(CreateOrganizationWorkingHoursComponent, {
         data: res
+      
       });
-      modelRef.disableClose=true
+      modelRef.componentInstance.status.subscribe(resp => {
+        if(resp == "ok"){
+          this.getHoursConfigData(`?page=${1}&page_size=${5}`)
+         modelRef.close();
+        }
+        else{
+          modelRef.close();
+        }
+      })
     }},(error=>{
       this.api.showError(error?.error?.message)
     }))
-
+    this.dialog.closeAll()
 }
 addWorkingHours(){
     const modelRef = this.dialog.open(CreateOrganizationWorkingHoursComponent, {
@@ -198,14 +207,5 @@ addWorkingHours(){
 
 
 }
-//  buyStandardPlan() {
-//       const dialogRef = this.dialog.open(BuyStandardplanComponent, {
-//         data: { 'totalPeopleCount':this.totalPeopleCount,selectedValue: this.monthly},
-//         panelClass: 'custom-dialog'
-//       });
-//       dialogRef.disableClose=true
-//     }
-
-
 
 }

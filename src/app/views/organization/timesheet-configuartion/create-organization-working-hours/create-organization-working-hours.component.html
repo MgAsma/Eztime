@@ -7,7 +7,7 @@
                 <mat-label>Organization Name <b class="r-star">*</b></mat-label>
                 <mat-select formControlName="organization" placeholder="Select organization name"  autocomplete="off" 
                 
-                panelClass="custom-select-panel" [disableOptionCentering]="true">
+                panelClass="custom-select-panel" [disableOptionCentering]="true" [disabled]="data">
                   <mat-option *ngFor="let items of organizationData" [value]="items.organization_id">{{items.organization_name | titlecase }}</mat-option>
                 </mat-select>
                 <mat-error *ngIf="f['organization']?.touched && f['organization']?.invalid">
