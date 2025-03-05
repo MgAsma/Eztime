@@ -225,7 +225,7 @@ getValue(i,j,value,type?){
   taskInitForm(){
     this.taskForm = this.builder.group({
       task_id: ['', [Validators.required]],
-      hours_to_complete: ['1', [Validators.required]],
+      hours_to_complete: ['0', [Validators.required]],
       minutes_to_complete: ['15', [Validators.required]],
       hours_left:[''],
       isEditing: [false],
@@ -790,7 +790,7 @@ clearTaskList(projectIndex: number): void {
        
         this.taskForm.patchValue({
           task_id:event,
-          hours_to_complete:'1',
+          hours_to_complete:'0',
           minutes_to_complete: '15',
         });
       }
