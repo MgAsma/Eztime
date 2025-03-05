@@ -626,6 +626,7 @@ clearTaskList(projectIndex: number): void {
         task_list: task_list.map(task => ({
           task_id: task['task_id'],
           hours_to_complete: task['hours_to_complete'],
+          minutes_to_complete: task['minutes_to_complete'],
           hours_left:task['hours_left']
         }))
        
@@ -642,7 +643,7 @@ clearTaskList(projectIndex: number): void {
   
     this.api.postData(`${environment.live_url}/${environment.time_sheets}/`,data).subscribe(
       (response) => {
-        this.api.showSuccess('Timesheet added successfully!');
+        this.api.showSuccess(selectedArr.length > 1 ? 'Timesheets added successfully!' : 'Timesheet added successfully!');
         this.ngOnInit()
       },
       (error) => {
