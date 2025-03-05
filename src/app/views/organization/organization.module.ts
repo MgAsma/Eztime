@@ -14,7 +14,6 @@ import { AddOrganizationComponent } from './add-organization/add-organization.co
 import { SubscriptionConfigComponent } from './subscription-config/subscription-config.component';
 import { TimesheetConfiguartionComponent } from './timesheet-configuartion/timesheet-configuartion.component';
 import { CreateOrganizationWorkingHoursComponent } from './timesheet-configuartion/create-organization-working-hours/create-organization-working-hours.component';
-import { UpdateOrganizationWorkingHoursComponent } from './timesheet-configuartion/update-organization-working-hours/update-organization-working-hours.component';
 
 @NgModule({
     declarations: [
@@ -25,8 +24,7 @@ import { UpdateOrganizationWorkingHoursComponent } from './timesheet-configuarti
         AddOrganizationComponent,
         SubscriptionConfigComponent,
         TimesheetConfiguartionComponent,
-        CreateOrganizationWorkingHoursComponent,
-        UpdateOrganizationWorkingHoursComponent
+        CreateOrganizationWorkingHoursComponent
     ],
     imports: [
         CommonModule,
