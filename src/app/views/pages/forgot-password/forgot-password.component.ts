@@ -51,6 +51,7 @@ export class ForgotPasswordComponent implements OnInit {
          
         },(error  =>{
           //console.log(error,"MESSAGE")
+          this.disableButton  = false;
           this.api.showError(error.error.message)
         })
         
