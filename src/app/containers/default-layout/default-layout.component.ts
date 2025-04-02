@@ -3,7 +3,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { navItems } from '../../views/_nav';
 import { navItems1 } from '../../views/_nav1';
 import { ApiserviceService } from '../../service/apiservice.service';
-import { GenericDeleteComponent } from '../../generic-delete/generic-delete.component';
+import { GenericDeleteComponent } from '../../generic-components/generic-delete/generic-delete.component';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonServiceService } from '../../service/common-service.service';

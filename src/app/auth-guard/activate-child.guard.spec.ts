@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ActivateChildGuard } from './activate-child.guard';
+import { ActivateChildGuard } from '../activate-child.guard';
 
 describe('ActivateChildGuard', () => {
   let guard: ActivateChildGuard;

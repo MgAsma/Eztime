@@ -36,8 +36,8 @@
         <button type="button" class="act-btn btn-yes" (click)="modalStatus('ok')">Yes</button>
     </div> -->
     <div class="modal-footer" [ngClass]="title ? 'justify-content-center':''">
-        <button mat-button type="button"  class="btn-cancel"  (click)="modalStatus('cancel')">Back</button>
-        <button mat-button type="button" class="btn-yes" [style.backgroundColor]="message ? '' : '#B41212'" (click)="modalStatus('ok')" >{{message || 'Delete'}}</button>
+        <button mat-button type="button"  class="btn-cancel"  (click)="modalStatus('cancel')">{{message ===  'Confirmation Leave' ? 'Cancel' : 'Back'}}</button>
+        <button mat-button type="button"  class="btn-yes" [style.backgroundColor]="message ? '' : '#B41212'" (click)="modalStatus('ok')" >{{message ===  'Confirmation Leave' ? 'Ok' : message || 'Delete'}}</button>
     </div>
 </div>
 

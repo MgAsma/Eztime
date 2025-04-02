@@ -13,12 +13,14 @@ import { UpdateCentreComponent } from './update-centre/update-centre.component';
 import { UpdatePeopleComponent } from './update-people/update-people.component';
 import { UpdatePrefixSuffixComponent } from './update-prefix-suffix/update-prefix-suffix.component';
 import { UpdateTagComponent } from './update-tag/update-tag.component';
+import { CanDeactivateGuard } from '../../auth-guard/can-deactivate.guard';
 
 const routes: Routes = [
   {
     path:'', component:PeopleComponent, children:[
       {
-        path:'create-people', component:CreatePeopleComponent
+        path:'create-people', component:CreatePeopleComponent,
+        canDeactivate: [CanDeactivateGuard]
       },
       {
         path:'people-list', component: PeopleListComponent
@@ -54,7 +56,7 @@ const routes: Routes = [
         path:'updatePeople/:id/:page/:tableSize', component:UpdatePeopleComponent
       },
       {
-        path:'updatePeople', component:CreatePeopleComponent
+        path:'updatePeople', component:CreatePeopleComponent,canDeactivate: [CanDeactivateGuard]
       }
     ]
   }

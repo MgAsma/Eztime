@@ -65,8 +65,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 import { VirtualScrollDirective } from './virtualscroll.directive';
 import { SharedModule } from './shared/shared.module';
 import { NgxUiLoaderHttpModule, NgxUiLoaderModule } from "ngx-ui-loader";
-import { ActivateChildGuard } from './activate-child.guard';
-import { AuthGuard } from './auth.guard';
+
+
 import { OrgAuthGuard } from './org-auth.guard';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { CommonModule } from '@angular/common';
@@ -77,6 +77,9 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { UserWelcomeMsgComponent } from './views/user-welcome-msg/user-welcome-msg.component';
 import { RazorpayService } from './service/razorpay.service';
 import { UseraccessInfoPopupComponent } from './views/useraccess-info-popup/useraccess-info-popup.component';
+import { ActivateChildGuard } from './auth-guard/activate-child.guard';
+import { AuthGuard } from './auth-guard/auth.guard';
+import { CanDeactivateGuard } from './auth-guard/can-deactivate.guard';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -93,7 +96,7 @@ const APP_CONTAINERS = [
     VirtualScrollDirective,
     UserGuideModalComponent,
     UserWelcomeMsgComponent,
-    UseraccessInfoPopupComponent,
+    UseraccessInfoPopupComponent
   ],
   imports: [
     // ChartsModule,
@@ -166,6 +169,7 @@ const APP_CONTAINERS = [
     ActivateChildGuard,
     AuthGuard,
     OrgAuthGuard,
+    CanDeactivateGuard,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,

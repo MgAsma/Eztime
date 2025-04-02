@@ -18,17 +18,12 @@ constructor(private fb:FormBuilder){}
   modalStatus(data) {
     if (data === 'ok' && this.message === 'Decline' && !this.bulkAction) {
       if (this.declineForm.invalid) {
-      //  console.log('Form is invalid, stopping execution');
         this.declineForm.markAllAsTouched();
-        return; // Stop execution if form is invalid
+        return; 
       }
-  
-     // console.log('Emitting comments:', this.declineForm.value.comments);
-      this.comments.emit(this.declineForm.value.comments); // Emit comments before status
+      this.comments.emit(this.declineForm.value.comments); 
     }
-  
-    //console.log('Emitting status:', data);
-    this.status.emit(data); // Emit status only after handling comments
+    this.status.emit(data); 
   }
   
   

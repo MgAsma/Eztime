@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
 import { CommonServiceService } from 'src/app/service/common-service.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { GenericDeleteComponent } from 'src/app/generic-delete/generic-delete.component';
+import { GenericDeleteComponent } from 'src/app/generic-components/generic-delete/generic-delete.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-add-organization',
@@ -120,12 +120,7 @@ export class AddOrganizationComponent implements OnInit {
       is_active: [true],
     })
   }
-//   {
-//     "admin_name": "sandesh ek",
-//     "admin_email_id_id": "sandesh@ekfrazo.in",
-//     "admin_phone_number": 9999990188,
-//     "is_active": true
-// }
+
   
 
  emailMatchValidator(): ValidatorFn {
@@ -211,8 +206,6 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
             is_active: adminForm.value.is_active,
           };
            
-          // Show the success message
-          // this.api.showSuccess("Admin details updated successfully!");
           this.adminList[index].isEditing = false;
         
     }
@@ -227,8 +220,6 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
   
   async clearImage() {
   await this.triggerFileInput();
-    // this.fileDataUrl = null;
-    // this.f['organization_image'].reset();
   }
   goBack(event) {
     event.preventDefault(); // Prevent default back button behavior
@@ -318,7 +309,6 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
       if(res){
       this.state = res
       this.fileDataUrl = null;
-      // this.getCity(event);
       }
     }, ((error) => {
       this.api.showError(error.error.error.message)
@@ -380,7 +370,7 @@ duplicateEmailValidator(adminList: any[]): ValidationErrors | null {
           this.organizationForm.reset();
           this.isAdminForm = true;
           this.fileDataUrl = null;
-          this.adminList = []; // Clear the admin list after submission
+          this.adminList = []; 
         }
       },
       error => {
